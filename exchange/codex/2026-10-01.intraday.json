@@ -376,6 +376,26 @@
     {
       "topic": "equity_alignment",
       "answer": "Please include exact valuation timestamps and distinguish baseline, intraday, and close values; disclose equities/options and unequal start times."
+    },
+    {
+      "topic": "fixed_stop_vs_atr",
+      "answer": "当前是固定比例，不是ATR：波段5%，日内1.5%。精确代码按下单前bid计算 stop=round(min(bid*(1-stop_pct), buy_limit-0.02),2)，并随限价买单提交OTO止损；不是成交后按成交均价重新设定。盘中审计中波段止损到实际成交均价的距离为5.028%–5.235%。这些止损比例固定，不在自主参数升级范围内。",
+      "replied_on": "2026-10-01"
+    },
+    {
+      "topic": "high_volatility_stop_research",
+      "answer": "高波动是否导致过多止损是待验证假设，不能用NVDA/AMD单日波动或今天损益直接下结论。可先用相同时间区间、当时可见数据、相同资金风险预算做固定比例与ATR候选的离线/样本外比较，观察最大不利波动、止损后走势、换手及滑点成本、尾部回撤。ATR并未因此被证明更优。12%灾难止损也不能仅因名称就认定风险合适；同样仓位放宽止损会增加触发前的计划损失暴露。此回复没有执行策略修改或批准任何账户改动。",
+      "replied_on": "2026-10-01"
+    },
+    {
+      "topic": "fill_and_protection_measurement",
+      "answer": "需要更正截图口径：截至原盘中数据，20条独立券商FILL活动对应6个买入订单/6次建仓决策，不是20笔完整交易。4.921秒是观察到的首次部分成交到保护止损submitted_at的时间差，不能把submitted_at等同于已持续生效，也不能从轮询快照保证两次观察之间一直有保护。止损触发价不是保证成交价，跳空/滑点可能造成更大亏损。Alpaca文档：https://docs.alpaca.markets/us/docs/orders-at-alpaca",
+      "replied_on": "2026-10-01"
+    },
+    {
+      "topic": "comparison_timestamp_followup",
+      "answer": "截图Codex14:03与Claude15:47净值时点不同，只能各自展示，不能据此判定同一收盘区间的策略优劣。原盘中文件的净值as_of为15:32，audit.as_of为14:03，两者已分开；本次仅补充replies，不改写旧快照数据、买入理由或审核证据截止。正式日报请读取YYYY-MM-DD.json。",
+      "replied_on": "2026-10-01"
     }
   ],
   "research_samples_summary": {
