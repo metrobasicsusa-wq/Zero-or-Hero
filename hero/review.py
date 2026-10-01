@@ -97,3 +97,68 @@ def facts(journal: Path, cfg: dict, day: str) -> str | None:
     lines += [f"- {o['side']} {o['qty']} {option_label(o['symbol'])} {o['type']}"
               f"{' @ ' + o['limit_price'] if o.get('limit_price') else ''} ({o['status']})" for o in orders] or ["- none"]
     return "\n".join(lines) + "\n"
+
+
+TECH = {"QQQ", "XLK", "AAPL", "MSFT", "NVDA", "AMD", "AVGO", "GOOGL", "META"}
+CONCENTRATION_ALERT = 0.6
+
+
+def insights(journal: Path, cfg: dict, day: str) -> list[str]:
+    """Rule-based observations (Chinese) to sit above the fact sheet."""
+    rows = list(csv.DictReader(open(journal / "equity.csv")))
+    idx = next(i for i, r in enumerate(rows) if r["date"] == day)
+    row, prev = rows[idx], rows[idx - 1] if idx else None
+    snap_path = journal / "snapshot.json"
+    snap = json.loads(snap_path.read_text()) if snap_path.exists() else {}
+    acct = snap.get("account") or {}
+    equity = _f(acct.get("equity")) or _f(row["equity"])
+    last = _f(acct.get("last_equity")) or (_f(prev["equity"]) if prev else None)
+    notes = []
+
+    mine = equity / last - 1 if equity and last else None
+    b, bp = _f(row.get("benchmark")), _f(prev.get("benchmark")) if prev else None
+    spy = b / bp - 1 if b and bp else None
+    if mine is not None and spy is not None:
+        diff = mine - spy
+        verdict = "跑赢" if diff > 0.0005 else "跑输" if diff < -0.0005 else "持平"
+        notes.append(f"今日 {_pct(mine)}，SPY {_pct(spy)}，{verdict} {abs(diff):.2%}。")
+    elif mine is not None:
+        notes.append(f"今日 {_pct(mine)}（SPY 前一日数据不足，暂无对比）。")
+
+    positions = snap.get("positions") or []
+    if positions:
+        ranked = sorted(positions, key=lambda p: float(p["unrealized_pl"]))
+        worst, best = ranked[0], ranked[-1]
+        if float(best["unrealized_pl"]) > 0:
+            notes.append(f"浮盈最多：{option_label(best['symbol'])} {_usd(_f(best['unrealized_pl']))}（{_pct(_f(best['unrealized_plpc']))}）。")
+        if float(worst["unrealized_pl"]) < 0:
+            notes.append(f"浮亏最多：{option_label(worst['symbol'])} {_usd(_f(worst['unrealized_pl']))}（{_pct(_f(worst['unrealized_plpc']))}）。")
+        total = sum(abs(float(p["market_value"])) for p in positions)
+        tech = sum(abs(float(p["market_value"])) for p in positions
+                   if (p["symbol"][:-15] if len(p["symbol"]) > 15 else p["symbol"]) in TECH)
+        if total and tech / total >= CONCENTRATION_ALERT:
+            notes.append(f"⚠️ 科技相关持仓占 {tech / total:.0%}，板块集中度高。")
+        opts = sum(abs(float(p["market_value"])) for p in positions if p.get("asset_class") == "us_option")
+        if equity and opts:
+            notes.append(f"期权市值占净值 {opts / equity:.1%}（上限 {cfg['options']['allocation']:.0%}）。")
+
+    orders = snap.get("open_orders") or []
+    if orders:
+        notes.append(f"⚠️ 收盘时还有 {len(orders)} 笔挂单未完全成交：{', '.join(option_label(o['symbol']) for o in orders)}。")
+
+    trades_path = journal / "trades.jsonl"
+    if trades_path.exists():
+        for line in open(trades_path):
+            e = json.loads(line)
+            if e["ts"].startswith(day) and e["kind"] == "halt" and not e.get("dry_run"):
+                notes.append(f"⚠️ 今日触发了停止开仓（当日 {e['day_pl']:+.2%}）。")
+                break
+    return notes
+
+
+def report(journal: Path, cfg: dict, day: str) -> str | None:
+    body = facts(journal, cfg, day)
+    if body is None:
+        return None
+    notes = "\n".join(f"- {n}" for n in insights(journal, cfg, day)) or "- 无"
+    return f"# 盘后复盘 {day}（Claude）\n\n## 要点（规则自动生成）\n{notes}\n\n{body}"

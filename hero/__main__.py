@@ -4,10 +4,11 @@ from __future__ import annotations
 
 import argparse
 import json
-from datetime import date, timedelta
+from datetime import date, datetime, timedelta
+from zoneinfo import ZoneInfo
 from pathlib import Path
 
-from hero import backtest, dashboard, evolve, review
+from hero import backtest, dashboard, evolve, patrol, review
 from hero.alpaca import Alpaca
 from hero.engine import Engine
 from hero.journal import Journal
@@ -16,6 +17,10 @@ ROOT = Path(__file__).resolve().parent.parent
 CFG_PATH = ROOT / "config" / "strategy.json"
 JOURNAL = ROOT / "journal"
 EVOLVE_HISTORY_DAYS = 3 * 365
+
+
+def et_today() -> str:
+    return datetime.now(ZoneInfo("America/New_York")).date().isoformat()
 
 
 def main() -> None:
@@ -30,7 +35,9 @@ def main() -> None:
     d = sub.add_parser("dashboard", help="render the monitoring page from the journal")
     d.add_argument("--out", default=str(ROOT / "site" / "index.html"))
     rv = sub.add_parser("review", help="print the post-market fact sheet for a day")
-    rv.add_argument("--date", default=date.today().isoformat())
+    rv.add_argument("--date", default=et_today())
+    rv.add_argument("--write", action="store_true", help="save to journal/reviews/DATE.md instead of printing facts")
+    sub.add_parser("patrol", help="health checks; prints problems, one per line")
     args = ap.parse_args()
 
     cfg = json.loads(CFG_PATH.read_text())
@@ -39,9 +46,24 @@ def main() -> None:
         dashboard.write(JOURNAL, cfg, Path(args.out))
         return
     if args.cmd == "review":
-        print(review.facts(JOURNAL, cfg, args.date) or f"NO_TRADING_DAY {args.date}")
+        if not args.write:
+            print(review.facts(JOURNAL, cfg, args.date) or f"NO_TRADING_DAY {args.date}")
+            return
+        text = review.report(JOURNAL, cfg, args.date)
+        if text is None:
+            print(f"NO_TRADING_DAY {args.date}")
+            return
+        out = JOURNAL / "reviews" / f"{args.date}.md"
+        out.parent.mkdir(exist_ok=True)
+        out.write_text(text)
+        print(out)
         return
     client = Alpaca()
+
+    if args.cmd == "patrol":
+        for problem in patrol.check(patrol.load(JOURNAL), bool(client.clock().get("is_open"))):
+            print(problem)
+        return
 
     if args.cmd == "run":
         print(json.dumps(Engine(client, cfg, journal, args.dry_run).run(force=args.force)))

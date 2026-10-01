@@ -1,0 +1,39 @@
+name: patrol
+
+on:
+  schedule:
+    - cron: "47 14,16,18,19 * * 1-5"   # ~10:47 / 12:47 / 14:47 ET (EDT), shifted an hour in EST
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  patrol:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install -r requirements.txt
+      - name: Check health
+        env:
+          ALPACA_API_KEY: ${{ secrets.ALPACA_API_KEY }}
+          ALPACA_SECRET_KEY: ${{ secrets.ALPACA_SECRET_KEY }}
+        run: python -m hero patrol | tee problems.txt
+      - name: Raise an alert issue
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          [ -s problems.txt ] || exit 0
+          body="$(date -u +'%F %H:%M UTC') 巡检发现问题："$'\n\n'"$(sed 's/^/- /' problems.txt)"
+          # Keep one open alert issue and append to it instead of opening a new one each time.
+          num=$(gh issue list --state open --label patrol-alert --json number --jq '.[0].number')
+          if [ -n "$num" ]; then
+            gh issue comment "$num" --body "$body"
+          else
+            gh label create patrol-alert --color d93f0b --description "Automated health alert" 2>/dev/null || true
+            gh issue create --title "⚠️ 巡检告警（Claude 机器人）" --label patrol-alert --body "$body"
+          fi

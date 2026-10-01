@@ -6,7 +6,7 @@ import unittest
 from datetime import date, timedelta
 from pathlib import Path
 
-from hero import backtest, dashboard, evolve, review
+from hero import backtest, dashboard, evolve, patrol, review
 from hero.alpaca import Alpaca, AlpacaError
 from hero.engine import Engine, round_option_price
 from hero.indicators import max_drawdown, momentum, rsi, sma
@@ -197,6 +197,39 @@ class Review(unittest.TestCase):
             self.assertIsNone(review.facts(Path(d), cfg(), "2026-10-03"))
             self.assertIn("| Day | +1.00% ($1,000) | +1.00% |", text)
             self.assertIn("buy 2 NVDA 11/20 call 235 @ 11.40 (call on NVDA)", text)
+
+
+class Patrol(unittest.TestCase):
+    def test_checks(self):
+        from datetime import datetime, timezone
+        now = datetime(2026, 10, 2, 16, 0, tzinfo=timezone.utc)
+        snap = {"ts": "2026-10-02T15:00:00+00:00",
+                "account": {"equity": "97000", "last_equity": "100000"},
+                "positions": [{"symbol": "NVDA261120C00235000", "unrealized_plpc": "-0.4"},
+                              {"symbol": "AAPL", "unrealized_plpc": "0.02"}],
+                "open_orders": [{"symbol": "MSFT", "side": "buy", "status": "new", "submitted_at": "2026-10-02T13:30:00Z"}]}
+        problems = patrol.check(snap, market_open=True, now=now)
+        self.assertEqual(len(problems), 4)
+        self.assertTrue(problems[0].startswith("快照已 60 分钟"))
+        self.assertEqual(len(patrol.check(snap, market_open=False, now=now)), 3)
+        self.assertEqual(patrol.check({"ts": "2026-10-02T15:55:00+00:00"}, True, now), [])
+        self.assertTrue(patrol.check(None, True, now))
+
+    def test_review_report(self):
+        with tempfile.TemporaryDirectory() as d:
+            j = Journal(Path(d))
+            j.equity("2026-10-01", 100_000, 50_000, 0, 500.0)
+            j.equity("2026-10-02", 101_000, 50_000, 0, 505.0)
+            j.snapshot({"account": {"equity": "101000", "last_equity": "100000", "cash": "1"},
+                        "positions": [{"symbol": "NVDA", "asset_class": "us_equity", "qty": "1", "avg_entry_price": "1",
+                                       "current_price": "1", "market_value": "50000", "unrealized_pl": "900",
+                                       "unrealized_plpc": "0.02"}],
+                        "open_orders": []})
+            text = review.report(Path(d), cfg(), "2026-10-02")
+            self.assertIn("今日 +1.00%，SPY +1.00%，持平", text)
+            self.assertIn("浮盈最多：NVDA", text)
+            self.assertIn("科技相关持仓占 100%", text)
+            self.assertIsNone(review.report(Path(d), cfg(), "2026-10-03"))
 
 
 class Safety(unittest.TestCase):

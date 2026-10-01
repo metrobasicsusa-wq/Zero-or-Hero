@@ -1,0 +1,51 @@
+name: review
+
+on:
+  schedule:
+    - cron: "50 20,21 * * 1-5"   # 16:50 ET in EDT (20:50 UTC) and EST (21:50 UTC); a run that finds today's review already written does nothing
+  workflow_dispatch:
+    inputs:
+      date:
+        description: "Trading day (YYYY-MM-DD, ET); defaults to today"
+        required: false
+
+concurrency:
+  group: hero-journal
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  issues: write
+
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install -r requirements.txt
+      - name: Write review
+        id: write
+        run: |
+          day="${{ inputs.date }}"
+          [ -n "$day" ] || day=$(TZ=America/New_York date +%F)
+          echo "day=$day" >> "$GITHUB_OUTPUT"
+          if [ -f "journal/reviews/$day.md" ] && [ -z "${{ inputs.date }}" ]; then echo "already written"; exit 0; fi
+          out=$(python -m hero review --write --date "$day")
+          echo "$out"
+          case "$out" in NO_TRADING_DAY*) exit 0;; esac
+          echo "file=$out" >> "$GITHUB_OUTPUT"
+      - name: Commit and open issue
+        if: steps.write.outputs.file
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          day="${{ steps.write.outputs.day }}"
+          git config user.name "zero-or-hero-bot"
+          git config user.email "zero-or-hero-bot@users.noreply.github.com"
+          git add journal/reviews
+          git diff --cached --quiet || (git commit -m "review: post-market $day" && git pull --rebase && git push)
+          gh label create post-market --color 0e8a16 --description "Daily post-market review" 2>/dev/null || true
+          gh issue create --title "盘后复盘 $day（Claude）" --label post-market --body-file "journal/reviews/$day.md"
