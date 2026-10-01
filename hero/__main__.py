@@ -7,7 +7,7 @@ import json
 from datetime import date, timedelta
 from pathlib import Path
 
-from hero import backtest, dashboard, evolve
+from hero import backtest, dashboard, evolve, review
 from hero.alpaca import Alpaca
 from hero.engine import Engine
 from hero.journal import Journal
@@ -29,12 +29,17 @@ def main() -> None:
     sub.add_parser("backtest", help="backtest the current config")
     d = sub.add_parser("dashboard", help="render the monitoring page from the journal")
     d.add_argument("--out", default=str(ROOT / "site" / "index.html"))
+    rv = sub.add_parser("review", help="print the post-market fact sheet for a day")
+    rv.add_argument("--date", default=date.today().isoformat())
     args = ap.parse_args()
 
     cfg = json.loads(CFG_PATH.read_text())
     journal = Journal(JOURNAL)
     if args.cmd == "dashboard":
         dashboard.write(JOURNAL, cfg, Path(args.out))
+        return
+    if args.cmd == "review":
+        print(review.facts(JOURNAL, cfg, args.date) or f"NO_TRADING_DAY {args.date}")
         return
     client = Alpaca()
 

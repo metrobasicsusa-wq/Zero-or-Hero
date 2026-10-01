@@ -6,7 +6,7 @@ import unittest
 from datetime import date, timedelta
 from pathlib import Path
 
-from hero import backtest, dashboard, evolve
+from hero import backtest, dashboard, evolve, review
 from hero.alpaca import Alpaca, AlpacaError
 from hero.engine import Engine, round_option_price
 from hero.indicators import max_drawdown, momentum, rsi, sma
@@ -182,6 +182,21 @@ class Dashboard(unittest.TestCase):
             html = dashboard.render(data)
             self.assertNotIn("/*__DATA__*/null", html)
             self.assertNotIn("</script>\"", html)
+
+
+class Review(unittest.TestCase):
+    def test_facts(self):
+        with tempfile.TemporaryDirectory() as d:
+            j = Journal(Path(d))
+            j.equity("2026-10-01", 100_000, 50_000, 0, 500.0)
+            j.equity("2026-10-02", 101_000, 50_000, 0, 505.0)
+            (Path(d) / "trades.jsonl").write_text(json.dumps(
+                {"ts": "2026-10-02T15:00:00+00:00", "kind": "order", "symbol": "NVDA261120C00235000", "side": "buy",
+                 "qty": "2", "type": "limit", "limit_price": "11.40", "reason": "call on NVDA", "dry_run": False}) + "\n")
+            text = review.facts(Path(d), cfg(), "2026-10-02")
+            self.assertIsNone(review.facts(Path(d), cfg(), "2026-10-03"))
+            self.assertIn("| Day | +1.00% ($1,000) | +1.00% |", text)
+            self.assertIn("buy 2 NVDA 11/20 call 235 @ 11.40 (call on NVDA)", text)
 
 
 class Safety(unittest.TestCase):
