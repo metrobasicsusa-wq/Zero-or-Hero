@@ -232,6 +232,43 @@ class Patrol(unittest.TestCase):
             self.assertIsNone(review.report(Path(d), cfg(), "2026-10-03"))
 
 
+class Publication(unittest.TestCase):
+    def test_snapshot_drops_identifiers(self):
+        with tempfile.TemporaryDirectory() as d:
+            j = Journal(Path(d))
+            j.snapshot({"account": {"equity": "1", "account_number": "PA123", "id": "uuid"},
+                        "positions": [{"symbol": "AAPL", "asset_id": "x", "qty": "1"}],
+                        "open_orders": [{"symbol": "AAPL", "id": "o1", "client_order_id": "c1", "status": "new"}]})
+            text = (Path(d) / "snapshot.json").read_text()
+            for secret in ("PA123", "uuid", "asset_id", "o1", "c1"):
+                self.assertNotIn(secret, text)
+            self.assertIn('"equity": "1"', text)
+
+    def test_fills_dedupe_and_day(self):
+        with tempfile.TemporaryDirectory() as d:
+            j = Journal(Path(d))
+            fill = {"id": "act-1", "transaction_time": "2026-10-01T19:03:59Z", "symbol": "AAPL", "side": "buy",
+                    "qty": "47", "price": "329.75", "type": "partial_fill", "cum_qty": "47", "leaves_qty": "1"}
+            self.assertEqual(j.record_fills([fill]), 1)
+            self.assertEqual(j.record_fills([{**fill, "price": "329.70"}]), 0)  # broker correction, same id
+            self.assertEqual([f["price"] for f in j.fills("2026-10-01")], ["329.70"])
+            self.assertEqual(j.fills("2026-10-02"), [])
+            self.assertNotIn("act-1", (Path(d) / "fills.jsonl").read_text())
+
+    def test_final_only_after_close(self):
+        with tempfile.TemporaryDirectory() as d:
+            j = Journal(Path(d))
+            j.equity("2026-10-01", 100_000, 50_000, 0, 500.0)
+            (Path(d) / "snapshot.json").write_text(json.dumps({"ts": "2026-10-01T19:47:04+00:00"}))
+            self.assertFalse(review.is_final(Path(d), "2026-10-01"))
+            self.assertTrue(review.report(Path(d), cfg(), "2026-10-01").startswith("# 盘中预审"))
+            self.assertEqual(review.export(Path(d), cfg(), "2026-10-01")["status"], "intraday_snapshot")
+            (Path(d) / "snapshot.json").write_text(json.dumps({"ts": "2026-10-01T20:10:00+00:00"}))
+            self.assertTrue(review.is_final(Path(d), "2026-10-01"))
+            self.assertTrue(review.report(Path(d), cfg(), "2026-10-01").startswith("# 盘后复盘"))
+            self.assertEqual(review.export(Path(d), cfg(), "2026-10-01")["status"], "post_market_review")
+
+
 class Safety(unittest.TestCase):
     def test_refuses_live_endpoint(self):
         with self.assertRaises(AlpacaError):

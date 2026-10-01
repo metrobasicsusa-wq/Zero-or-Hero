@@ -1,40 +1,30 @@
 {
-  "account": {
-    "buying_power": "276575.04",
-    "cash": "18642.2",
-    "equity": "99987.32",
-    "last_equity": "100000",
-    "long_market_value": "81345.12",
-    "portfolio_value": "99987.32"
+  "schema_version": "1.0",
+  "producer": "claude",
+  "mode": "alpaca_paper",
+  "currency": "USD",
+  "trading_date": "2026-10-01",
+  "timezone": "America/New_York",
+  "status": "intraday_snapshot",
+  "as_of": "2026-10-01T15:47:04-04:00",
+  "generated_at": "2026-10-01T16:09:10-04:00",
+  "scope": "US equities and long single-leg options; momentum strategy, daily rebalance, 10-minute cycle",
+  "equity": {
+    "current_usd": 99987.32,
+    "previous_day_usd": 100000.0,
+    "previous_day_basis": "broker last_equity (prior close)",
+    "day_return": -0.00012679999999998248,
+    "since_start_return": 1.1001407080879488e-06,
+    "start_date": "2026-10-01",
+    "external_cash_flows_usd": 0
   },
-  "open_orders": [
-    {
-      "asset_class": "us_option",
-      "filled_at": null,
-      "filled_avg_price": null,
-      "filled_qty": "0",
-      "limit_price": "20.85",
-      "qty": "1",
-      "side": "buy",
-      "status": "new",
-      "submitted_at": "2026-10-01T19:03:58.835607405Z",
-      "symbol": "MSFT261106C00520000",
-      "type": "limit"
-    },
-    {
-      "asset_class": "us_option",
-      "filled_at": null,
-      "filled_avg_price": null,
-      "filled_qty": "0",
-      "limit_price": "6.95",
-      "qty": "4",
-      "side": "buy",
-      "status": "new",
-      "submitted_at": "2026-10-01T19:03:58.723410854Z",
-      "symbol": "XLK261120C00200000",
-      "type": "limit"
-    }
-  ],
+  "benchmark": {
+    "symbol": "SPY",
+    "close": 764.98,
+    "previous_close": null
+  },
+  "fills": [],
+  "fill_count": 0,
   "positions": [
     {
       "asset_class": "us_equity",
@@ -121,5 +111,43 @@
       "unrealized_plpc": "0.00098"
     }
   ],
-  "ts": "2026-10-01T19:47:04+00:00"
+  "positions_basis": "broker positions at 2026-10-01T15:47:04-04:00",
+  "open_orders": [
+    {
+      "asset_class": "us_option",
+      "filled_at": null,
+      "filled_avg_price": null,
+      "filled_qty": "0",
+      "limit_price": "20.85",
+      "qty": "1",
+      "side": "buy",
+      "status": "new",
+      "submitted_at": "2026-10-01T19:03:58.835607405Z",
+      "symbol": "MSFT261106C00520000",
+      "type": "limit"
+    },
+    {
+      "asset_class": "us_option",
+      "filled_at": null,
+      "filled_avg_price": null,
+      "filled_qty": "0",
+      "limit_price": "6.95",
+      "qty": "4",
+      "side": "buy",
+      "status": "new",
+      "submitted_at": "2026-10-01T19:03:58.723410854Z",
+      "symbol": "XLK261120C00200000",
+      "type": "limit"
+    }
+  ],
+  "strategy_generation": 0,
+  "notes": [
+    "今日 -0.01%（SPY 前一日数据不足，暂无对比）。",
+    "浮盈最多：AMD $16（+0.10%）。",
+    "浮亏最多：NVDA 11/20 call 235 -$30（-1.32%）。",
+    "⚠️ 科技相关持仓占 100%，板块集中度高。",
+    "期权市值占净值 2.3%（上限 10%）。",
+    "⚠️ 收盘时还有 2 笔挂单未完全成交：MSFT 11/06 call 520, XLK 11/20 call 200。"
+  ],
+  "replies": []
 }

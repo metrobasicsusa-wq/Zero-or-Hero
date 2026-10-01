@@ -4,7 +4,12 @@ from __future__ import annotations
 
 import csv
 import json
+from datetime import datetime, time
 from pathlib import Path
+
+from hero.journal import ET, Journal
+
+CLOSE = time(16, 0)
 
 
 def _f(x) -> float | None:
@@ -17,6 +22,22 @@ def _pct(x: float | None) -> str:
 
 def _usd(x: float | None) -> str:
     return "—" if x is None else f"{'-' if x < 0 else ''}${abs(x):,.0f}"
+
+
+def _snapshot(journal: Path) -> dict:
+    path = journal / "snapshot.json"
+    return json.loads(path.read_text()) if path.exists() else {}
+
+
+def snapshot_as_of(journal: Path) -> datetime | None:
+    ts = _snapshot(journal).get("ts")
+    return datetime.fromisoformat(ts).astimezone(ET) if ts else None
+
+
+def is_final(journal: Path, day: str) -> bool:
+    """A review is final only when the snapshot was taken after that day's close."""
+    t = snapshot_as_of(journal)
+    return bool(t) and (t.date().isoformat() > day or (t.date().isoformat() == day and t.time() >= CLOSE))
 
 
 def option_label(sym: str) -> str:
@@ -55,7 +76,10 @@ def facts(journal: Path, cfg: dict, day: str) -> str | None:
         f"| Since start ({first['date']}) | {_pct(ret(equity, _f(first['equity'])))} | {_pct(ret(bench, bench_first))} |",
         "",
         f"Equity {_usd(equity)} · cash {_usd(_f(acct.get('cash')) if fresh else _f(row['cash']))} · "
-        f"generation {cfg['generation']} · snapshot {snap.get('ts', 'none')}",
+        f"generation {cfg['generation']}",
+        "",
+        f"Status: **{'FINAL (post-close)' if is_final(journal, day) else 'PRELIMINARY (intraday)'}** · "
+        f"as of {snapshot_as_of(journal).strftime('%Y-%m-%d %H:%M ET') if snapshot_as_of(journal) else 'unknown'}",
         "",
         "## Today's actions",
     ]
@@ -79,6 +103,16 @@ def facts(journal: Path, cfg: dict, day: str) -> str | None:
             lines.append(f"- HALT: day P/L {e['day_pl']:+.2%}")
     if len(lines) and lines[-1] == "## Today's actions":
         lines.append("- none")
+
+    fills = Journal(journal).fills(day)
+    lines += ["", f"## Broker-confirmed fills ({len(fills)})"]
+    if fills:
+        lines += ["| Time (ET) | Symbol | Side | Qty | Price |", "|---|---|---|---|---|"]
+        for f in fills:
+            t = datetime.fromisoformat(f["transaction_time"].replace("Z", "+00:00")).astimezone(ET)
+            lines.append(f"| {t:%H:%M:%S} | {option_label(f['symbol'])} | {f['side']} | {f['qty']} | {float(f['price']):.2f} |")
+    else:
+        lines.append("- none recorded")
 
     lines += ["", "## Positions"]
     positions = snap.get("positions") or []
@@ -161,4 +195,52 @@ def report(journal: Path, cfg: dict, day: str) -> str | None:
     if body is None:
         return None
     notes = "\n".join(f"- {n}" for n in insights(journal, cfg, day)) or "- 无"
-    return f"# 盘后复盘 {day}（Claude）\n\n## 要点（规则自动生成）\n{notes}\n\n{body}"
+    kind = "盘后复盘" if is_final(journal, day) else "盘中预审（非收盘数据）"
+    return f"# {kind} {day}（Claude）\n\n## 要点（规则自动生成）\n{notes}\n\n{body}"
+
+
+def export(journal: Path, cfg: dict, day: str) -> dict | None:
+    """Machine-readable daily summary for exchange/claude/, mirroring Codex's exchange fields."""
+    rows = list(csv.DictReader(open(journal / "equity.csv"))) if (journal / "equity.csv").exists() else []
+    idx = next((i for i, r in enumerate(rows) if r["date"] == day), None)
+    if idx is None:
+        return None
+    row, prev = rows[idx], rows[idx - 1] if idx else None
+    snap = _snapshot(journal)
+    acct = snap.get("account") or {}
+    as_of = snapshot_as_of(journal)
+    fresh = bool(as_of) and as_of.date().isoformat() == day
+    equity = _f(acct.get("equity")) if fresh else _f(row["equity"])
+    previous = _f(acct.get("last_equity")) if fresh else (_f(prev["equity"]) if prev else None)
+    fills = Journal(journal).fills(day)
+    return {
+        "schema_version": "1.0",
+        "producer": "claude",
+        "mode": "alpaca_paper",
+        "currency": "USD",
+        "trading_date": day,
+        "timezone": "America/New_York",
+        "status": "post_market_review" if is_final(journal, day) else "intraday_snapshot",
+        "as_of": as_of.isoformat() if as_of else None,
+        "generated_at": datetime.now(ET).isoformat(timespec="seconds"),
+        "scope": "US equities and long single-leg options; momentum strategy, daily rebalance, 10-minute cycle",
+        "equity": {
+            "current_usd": equity,
+            "previous_day_usd": previous,
+            "previous_day_basis": "broker last_equity (prior close)" if fresh else "journal equity.csv prior row",
+            "day_return": equity / previous - 1 if equity and previous else None,
+            "since_start_return": equity / _f(rows[0]["equity"]) - 1 if equity and rows else None,
+            "start_date": rows[0]["date"] if rows else None,
+            "external_cash_flows_usd": 0,
+        },
+        "benchmark": {"symbol": cfg["regime_symbol"], "close": _f(row.get("benchmark")),
+                      "previous_close": _f(prev.get("benchmark")) if prev else None},
+        "fills": fills,
+        "fill_count": len(fills),
+        "positions": snap.get("positions") or [],
+        "positions_basis": f"broker positions at {as_of.isoformat() if as_of else 'unknown'}",
+        "open_orders": snap.get("open_orders") or [],
+        "strategy_generation": cfg["generation"],
+        "notes": insights(journal, cfg, day),
+        "replies": [],
+    }

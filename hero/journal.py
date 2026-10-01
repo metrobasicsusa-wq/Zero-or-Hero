@@ -3,12 +3,42 @@
 from __future__ import annotations
 
 import csv
+import hashlib
 import json
 from datetime import datetime, timezone
 from pathlib import Path
+from zoneinfo import ZoneInfo
+
+ET = ZoneInfo("America/New_York")
 
 
-EQUITY_HEADER = ["date", "equity", "cash", "generation", "benchmark"]
+EQUITY_HEADER = ["date", "equity", "cash", "generation", "benchmark", "as_of"]
+
+# The repo is public: only these broker fields are ever written to disk (no account
+# numbers, account/order/asset ids).
+ACCOUNT_FIELDS = ("equity", "last_equity", "cash", "buying_power", "long_market_value", "portfolio_value")
+POSITION_FIELDS = ("symbol", "asset_class", "side", "qty", "avg_entry_price", "current_price", "lastday_price",
+                   "market_value", "cost_basis", "unrealized_pl", "unrealized_plpc", "unrealized_intraday_pl")
+ORDER_FIELDS = ("symbol", "asset_class", "side", "qty", "filled_qty", "filled_avg_price", "type", "limit_price",
+                "status", "submitted_at", "filled_at")
+FILL_FIELDS = ("transaction_time", "symbol", "side", "qty", "price", "type", "cum_qty", "leaves_qty")
+
+
+def _pick(obj: dict, fields: tuple) -> dict:
+    return {k: obj.get(k) for k in fields}
+
+
+def sanitize(snapshot: dict) -> dict:
+    return {
+        "account": _pick(snapshot.get("account") or {}, ACCOUNT_FIELDS),
+        "positions": [_pick(p, POSITION_FIELDS) for p in snapshot.get("positions") or []],
+        "open_orders": [_pick(o, ORDER_FIELDS) for o in snapshot.get("open_orders") or []],
+    }
+
+
+def execution_key(activity_id: str) -> str:
+    """Stable, non-reversible id for a broker fill (the raw id is never published)."""
+    return hashlib.sha256(activity_id.encode()).hexdigest()[:16]
 
 
 class Journal:
@@ -33,7 +63,8 @@ class Journal:
         path = self.root / "equity.csv"
         rows = list(csv.reader(open(path))) if path.exists() else [EQUITY_HEADER]
         rows[0] = EQUITY_HEADER
-        row = [day, f"{equity:.2f}", f"{cash:.2f}", str(generation), f"{benchmark:.2f}" if benchmark else ""]
+        as_of = datetime.now(timezone.utc).isoformat(timespec="seconds")
+        row = [day, f"{equity:.2f}", f"{cash:.2f}", str(generation), f"{benchmark:.2f}" if benchmark else "", as_of]
         # One row per day: later runs overwrite the same day's snapshot.
         if rows[-1][0] == day:
             rows[-1] = row
@@ -43,8 +74,38 @@ class Journal:
             csv.writer(f).writerows(rows)
 
     def snapshot(self, data: dict) -> None:
-        data = {"ts": datetime.now(timezone.utc).isoformat(timespec="seconds"), **data}
+        data = {"ts": datetime.now(timezone.utc).isoformat(timespec="seconds"), **sanitize(data)}
         (self.root / "snapshot.json").write_text(json.dumps(data, indent=2, sort_keys=True) + "\n")
+
+    def record_fills(self, activities: list[dict]) -> int:
+        """Merge broker FILL activities into fills.jsonl, keyed by execution_key. Returns new count."""
+        path = self.root / "fills.jsonl"
+        known = {}
+        if path.exists():
+            for line in open(path):
+                f = json.loads(line)
+                known[f["execution_key"]] = f
+        added = 0
+        for a in activities:
+            key = execution_key(a["id"])
+            added += key not in known
+            known[key] = {"execution_key": key, **_pick(a, FILL_FIELDS)}
+        rows = sorted(known.values(), key=lambda f: (f["transaction_time"], f["execution_key"]))
+        path.write_text("".join(json.dumps(f, sort_keys=True) + "\n" for f in rows))
+        return added
+
+    def fills(self, day: str) -> list[dict]:
+        """Fills whose transaction time falls on the given US/Eastern trading day."""
+        path = self.root / "fills.jsonl"
+        if not path.exists():
+            return []
+        out = []
+        for line in open(path):
+            f = json.loads(line)
+            t = datetime.fromisoformat(f["transaction_time"].replace("Z", "+00:00")).astimezone(ET)
+            if t.date().isoformat() == day:
+                out.append(f)
+        return out
 
     def equity_curve(self) -> list[float]:
         path = self.root / "equity.csv"

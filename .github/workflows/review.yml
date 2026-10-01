@@ -2,7 +2,7 @@ name: review
 
 on:
   schedule:
-    - cron: "50 20,21 * * 1-5"   # 16:50 ET in EDT (20:50 UTC) and EST (21:50 UTC); a run that finds today's review already written does nothing
+    - cron: "50 20,21 * * 1-5"   # 16:50 ET in EDT (20:50 UTC) and EST (21:50 UTC); the job itself waits for the close
   workflow_dispatch:
     inputs:
       date:
@@ -26,26 +26,50 @@ jobs:
         with:
           python-version: "3.11"
       - run: pip install -r requirements.txt
-      - name: Write review
-        id: write
+      - name: Decide whether to write
+        id: gate
         run: |
           day="${{ inputs.date }}"
           [ -n "$day" ] || day=$(TZ=America/New_York date +%F)
           echo "day=$day" >> "$GITHUB_OUTPUT"
-          if [ -f "journal/reviews/$day.md" ] && [ -z "${{ inputs.date }}" ]; then echo "already written"; exit 0; fi
-          out=$(python -m hero review --write --date "$day")
+          f="journal/reviews/$day.md"
+          if [ -z "${{ inputs.date }}" ] && [ "$(TZ=America/New_York date +%H%M)" -lt 1605 ]; then
+            echo "before the close (EST schedule slot); skipping"; exit 0
+          fi
+          if [ -f "$f" ] && grep -q "^## AI 分析" "$f"; then echo "AI analysis already appended; leaving it"; exit 0; fi
+          if [ -f "$f" ] && head -1 "$f" | grep -q "^# 盘后复盘"; then echo "final review already written"; exit 0; fi
+          echo "go=1" >> "$GITHUB_OUTPUT"
+      - name: Refresh broker snapshot and fills
+        if: steps.gate.outputs.go
+        env:
+          ALPACA_API_KEY: ${{ secrets.ALPACA_API_KEY }}
+          ALPACA_SECRET_KEY: ${{ secrets.ALPACA_SECRET_KEY }}
+        run: python -m hero snapshot
+      - name: Write review
+        id: write
+        if: steps.gate.outputs.go
+        run: |
+          out=$(python -m hero review --write --date "${{ steps.gate.outputs.day }}")
           echo "$out"
           case "$out" in NO_TRADING_DAY*) exit 0;; esac
-          echo "file=$out" >> "$GITHUB_OUTPUT"
-      - name: Commit and open issue
+          echo "file=$(echo "$out" | head -1)" >> "$GITHUB_OUTPUT"
+          echo "status=$(echo "$out" | tail -1)" >> "$GITHUB_OUTPUT"
+      - name: Commit and publish issue
         if: steps.write.outputs.file
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          day="${{ steps.write.outputs.day }}"
+          day="${{ steps.gate.outputs.day }}"
           git config user.name "zero-or-hero-bot"
           git config user.email "zero-or-hero-bot@users.noreply.github.com"
-          git add journal/reviews
-          git diff --cached --quiet || (git commit -m "review: post-market $day" && git pull --rebase && git push)
-          gh label create post-market --color 0e8a16 --description "Daily post-market review" 2>/dev/null || true
-          gh issue create --title "盘后复盘 $day（Claude）" --label post-market --body-file "journal/reviews/$day.md"
+          git add journal exchange/claude
+          git diff --cached --quiet || (git commit -m "review: post-market $day (${{ steps.write.outputs.status }})" && git pull --rebase && git push)
+          title="盘后复盘 $day（Claude）"
+          num=$(gh issue list --state all --label post-market --search "$title in:title" --json number,title --jq ".[] | select(.title == \"$title\") | .number" | head -1)
+          if [ -n "$num" ]; then
+            gh issue edit "$num" --body-file "${{ steps.write.outputs.file }}"
+            gh issue comment "$num" --body "已用 $(TZ=America/New_York date +'%H:%M') ET 的券商快照重新生成（${{ steps.write.outputs.status }}），正文已更新。"
+          else
+            gh label create post-market --color 0e8a16 --description "Daily post-market review" 2>/dev/null || true
+            gh issue create --title "$title" --label post-market --body-file "${{ steps.write.outputs.file }}"
+          fi

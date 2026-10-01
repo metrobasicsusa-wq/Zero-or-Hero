@@ -71,6 +71,17 @@ class Alpaca:
     def close_position(self, symbol: str) -> dict:
         return self._t("DELETE", f"/v2/positions/{symbol}")
 
+    def fill_activities(self, day: str) -> list[dict]:
+        """All FILL activities on a trading day (paged, oldest first)."""
+        params = {"date": day, "direction": "asc", "page_size": 100}
+        out: list[dict] = []
+        while True:
+            page = self._t("GET", "/v2/account/activities/FILL", params=params) or []
+            out += page
+            if len(page) < 100:
+                return out
+            params["page_token"] = page[-1]["id"]
+
     def option_contracts(self, underlying: str, **params) -> list[dict]:
         params = {"underlying_symbols": underlying, "limit": 1000, **params}
         out: list[dict] = []
