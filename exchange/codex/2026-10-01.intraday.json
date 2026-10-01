@@ -1,0 +1,391 @@
+{
+  "schema_version": "1.0",
+  "producer": "codex",
+  "mode": "paper",
+  "currency": "USD",
+  "trading_date": "2026-10-01",
+  "timezone": "America/New_York",
+  "status": "intraday_preliminary",
+  "as_of": "2026-10-01T15:32:07.090912-04:00",
+  "generated_at": "2026-10-01T19:42:19.329093+00:00",
+  "evidence_cutoff": {
+    "archive_event_sequence": 3624,
+    "exported_at": "2026-10-01T19:32:17.390108+00:00",
+    "scope": "All fill versions observed by the consistent export; latest version per activity ID; integration probe excluded."
+  },
+  "scope": {
+    "instruments": [
+      "us_equity"
+    ],
+    "options_enabled": false,
+    "capital_ceiling_usd": 100000,
+    "sleeve_budgets_usd": {
+      "swing": 50000,
+      "intraday": 50000
+    },
+    "drawdown_halt_fraction": 0.1
+  },
+  "equity": {
+    "current_usd": 99730.63,
+    "as_of": "2026-10-01T15:32:07.090912-04:00",
+    "previous_day_usd": 100000,
+    "previous_day_as_of": "2026-09-30T17:13:00-04:00",
+    "previous_day_basis": "agreed observed flat-account baseline, not an official exchange-close mark",
+    "change_from_reference_usd": -269.37,
+    "change_from_reference_fraction": -0.00269369999999991,
+    "cash_usd": 34530.47,
+    "external_cash_flows_usd": null,
+    "external_cash_flow_note": "No transfers authorized; funding activity was not independently queried for this exchange snapshot."
+  },
+  "fills": [
+    {
+      "execution_key": "d7806af4637af76d913a02e6a0187f1c15850fa7bdbc7e365d406e56d43b73f0",
+      "at": "2026-10-01T09:45:31.827040-04:00",
+      "symbol": "CRM",
+      "asset_class": "us_equity",
+      "side": "buy",
+      "quantity": 20,
+      "quantity_unit": "shares",
+      "price_usd": 235.99,
+      "sleeve": "swing"
+    },
+    {
+      "execution_key": "2b9904207b8cfbf9b173404ab90b89ead9a255bdbf5e99b197b4e6bd122d4ed3",
+      "at": "2026-10-01T09:45:32.006092-04:00",
+      "symbol": "PFE",
+      "asset_class": "us_equity",
+      "side": "buy",
+      "quantity": 351,
+      "quantity_unit": "shares",
+      "price_usd": 28.44,
+      "sleeve": "swing"
+    },
+    {
+      "execution_key": "522491d1685ed321a20bde7b3eb588dcb53906e41f004f605a5c4039eba41765",
+      "at": "2026-10-01T09:45:32.041497-04:00",
+      "symbol": "MSFT",
+      "asset_class": "us_equity",
+      "side": "buy",
+      "quantity": 14,
+      "quantity_unit": "shares",
+      "price_usd": 519.73,
+      "sleeve": "swing"
+    },
+    {
+      "execution_key": "0755ffb1a8d6e33b70d92a8e264fecba4b4df9dd56ceee6c5f4b492c31eb0f23",
+      "at": "2026-10-01T09:45:32.617602-04:00",
+      "symbol": "CRM",
+      "asset_class": "us_equity",
+      "side": "buy",
+      "quantity": 8,
+      "quantity_unit": "shares",
+      "price_usd": 235.99,
+      "sleeve": "swing"
+    },
+    {
+      "execution_key": "2acce356759ad44ff030fe54d540949b34bdbef6f417c0ff17ef12c0bb4548bf",
+      "at": "2026-10-01T09:45:32.862308-04:00",
+      "symbol": "MSFT",
+      "asset_class": "us_equity",
+      "side": "buy",
+      "quantity": 4,
+      "quantity_unit": "shares",
+      "price_usd": 519.56,
+      "sleeve": "swing"
+    },
+    {
+      "execution_key": "77610c1e12cb0ad02655621c1016c16c1c52a40bcba769a980a23c5791c969f9",
+      "at": "2026-10-01T09:45:34.151194-04:00",
+      "symbol": "CRM",
+      "asset_class": "us_equity",
+      "side": "buy",
+      "quantity": 12,
+      "quantity_unit": "shares",
+      "price_usd": 235.99,
+      "sleeve": "swing"
+    },
+    {
+      "execution_key": "82e18346da42f5fbeea0ff22438b719cea96f2e193db1aef544386e461a21526",
+      "at": "2026-10-01T09:45:34.318024-04:00",
+      "symbol": "MSFT",
+      "asset_class": "us_equity",
+      "side": "buy",
+      "quantity": 1,
+      "quantity_unit": "shares",
+      "price_usd": 519.68,
+      "sleeve": "swing"
+    },
+    {
+      "execution_key": "172b5e890b6514428d9c4c4dc9b0a1bbe6013f1f2c1ff72473d65a0bc7128881",
+      "at": "2026-10-01T09:45:35.085231-04:00",
+      "symbol": "CRM",
+      "asset_class": "us_equity",
+      "side": "buy",
+      "quantity": 2,
+      "quantity_unit": "shares",
+      "price_usd": 235.99,
+      "sleeve": "swing"
+    },
+    {
+      "execution_key": "bce3259b288d5c347c52f7916c0b944b2e22d2fcd4e957c28628067180212a02",
+      "at": "2026-10-01T09:46:37.092296-04:00",
+      "symbol": "CVX",
+      "asset_class": "us_equity",
+      "side": "buy",
+      "quantity": 6,
+      "quantity_unit": "shares",
+      "price_usd": 204.82,
+      "sleeve": "swing"
+    },
+    {
+      "execution_key": "b2230320fc2f9fa7961e055986ffbe2b953f9c706279ee900376075198661593",
+      "at": "2026-10-01T09:46:37.841356-04:00",
+      "symbol": "CVX",
+      "asset_class": "us_equity",
+      "side": "buy",
+      "quantity": 6,
+      "quantity_unit": "shares",
+      "price_usd": 204.82,
+      "sleeve": "swing"
+    },
+    {
+      "execution_key": "04532414a2c7f614f580c58a827d902e3f1d840bbd9888ab7f4e7ef8bff14e86",
+      "at": "2026-10-01T09:46:38.471938-04:00",
+      "symbol": "CVX",
+      "asset_class": "us_equity",
+      "side": "buy",
+      "quantity": 2,
+      "quantity_unit": "shares",
+      "price_usd": 204.82,
+      "sleeve": "swing"
+    },
+    {
+      "execution_key": "ab6b76016f9f0633285b93c72be7eafafa26f03ee2dea9ec9e7f3d025d20fa6b",
+      "at": "2026-10-01T09:46:39.519221-04:00",
+      "symbol": "CVX",
+      "asset_class": "us_equity",
+      "side": "buy",
+      "quantity": 10,
+      "quantity_unit": "shares",
+      "price_usd": 204.88,
+      "sleeve": "swing"
+    },
+    {
+      "execution_key": "ed8f643fdd436f71041fe514afde3b75df49f6793b17c2ae5a5f4017c902ffe3",
+      "at": "2026-10-01T09:46:39.912412-04:00",
+      "symbol": "CVX",
+      "asset_class": "us_equity",
+      "side": "buy",
+      "quantity": 2,
+      "quantity_unit": "shares",
+      "price_usd": 204.88,
+      "sleeve": "swing"
+    },
+    {
+      "execution_key": "b9725542213d57c85a9687bf2ad18e83c1365974187526472bfadf265ab345cd",
+      "at": "2026-10-01T09:46:40.526468-04:00",
+      "symbol": "CVX",
+      "asset_class": "us_equity",
+      "side": "buy",
+      "quantity": 17,
+      "quantity_unit": "shares",
+      "price_usd": 204.88,
+      "sleeve": "swing"
+    },
+    {
+      "execution_key": "f3b7c360483225571798eb7118cd87730725d5e787ca4ccfdef5ed701338a0b8",
+      "at": "2026-10-01T09:46:41.434624-04:00",
+      "symbol": "CVX",
+      "asset_class": "us_equity",
+      "side": "buy",
+      "quantity": 4,
+      "quantity_unit": "shares",
+      "price_usd": 204.89,
+      "sleeve": "swing"
+    },
+    {
+      "execution_key": "2f187ca4399cc091f6c80493746039e931e7540d18c64755d6fd41bd444c75dd",
+      "at": "2026-10-01T09:46:41.986348-04:00",
+      "symbol": "CVX",
+      "asset_class": "us_equity",
+      "side": "buy",
+      "quantity": 1,
+      "quantity_unit": "shares",
+      "price_usd": 204.89,
+      "sleeve": "swing"
+    },
+    {
+      "execution_key": "5fe902f19aa2b0eef96ea1c57e8d687b8f1ac0451ef9b20f786f39288fb84272",
+      "at": "2026-10-01T09:47:43.192345-04:00",
+      "symbol": "TMO",
+      "asset_class": "us_equity",
+      "side": "buy",
+      "quantity": 14,
+      "quantity_unit": "shares",
+      "price_usd": 669.78,
+      "sleeve": "swing"
+    },
+    {
+      "execution_key": "8b756e089fd18c28115d15a2c6fa3f0b3de16f3abc51d455b38e61261e27d45a",
+      "at": "2026-10-01T11:01:41.655241-04:00",
+      "symbol": "TSLA",
+      "asset_class": "us_equity",
+      "side": "buy",
+      "quantity": 35,
+      "quantity_unit": "shares",
+      "price_usd": 358.5,
+      "sleeve": "intraday"
+    },
+    {
+      "execution_key": "09607bbe160abf1f97b1e410edb71535160735c61517a1e7ac1f838f4ce8fb83",
+      "at": "2026-10-01T11:01:42.424538-04:00",
+      "symbol": "TSLA",
+      "asset_class": "us_equity",
+      "side": "buy",
+      "quantity": 2,
+      "quantity_unit": "shares",
+      "price_usd": 358.5,
+      "sleeve": "intraday"
+    },
+    {
+      "execution_key": "e0e907f909fff6b24fca73f8c129cb3509d24b884d79aa846b6ed72fe365bdf5",
+      "at": "2026-10-01T11:01:42.778434-04:00",
+      "symbol": "TSLA",
+      "asset_class": "us_equity",
+      "side": "buy",
+      "quantity": 9,
+      "quantity_unit": "shares",
+      "price_usd": 358.5,
+      "sleeve": "intraday"
+    }
+  ],
+  "fill_count": 20,
+  "positions": [
+    {
+      "symbol": "CRM",
+      "asset_class": "us_equity",
+      "option_contract_code": null,
+      "quantity": 42,
+      "quantity_unit": "shares",
+      "side": "long",
+      "average_entry_price_usd": 235.99,
+      "market_value_usd": 9930.06,
+      "unrealized_pnl_usd": 18.48
+    },
+    {
+      "symbol": "CVX",
+      "asset_class": "us_equity",
+      "option_contract_code": null,
+      "quantity": 48,
+      "quantity_unit": "shares",
+      "side": "long",
+      "average_entry_price_usd": 204.863542,
+      "market_value_usd": 9936.912,
+      "unrealized_pnl_usd": 103.461984
+    },
+    {
+      "symbol": "MSFT",
+      "asset_class": "us_equity",
+      "option_contract_code": null,
+      "quantity": 19,
+      "quantity_unit": "shares",
+      "side": "long",
+      "average_entry_price_usd": 519.691579,
+      "market_value_usd": 9808.18,
+      "unrealized_pnl_usd": -65.960001
+    },
+    {
+      "symbol": "PFE",
+      "asset_class": "us_equity",
+      "option_contract_code": null,
+      "quantity": 351,
+      "quantity_unit": "shares",
+      "side": "long",
+      "average_entry_price_usd": 28.44,
+      "market_value_usd": 9880.65,
+      "unrealized_pnl_usd": -101.79
+    },
+    {
+      "symbol": "TMO",
+      "asset_class": "us_equity",
+      "option_contract_code": null,
+      "quantity": 14,
+      "quantity_unit": "shares",
+      "side": "long",
+      "average_entry_price_usd": 669.78,
+      "market_value_usd": 9199.26,
+      "unrealized_pnl_usd": -177.66
+    },
+    {
+      "symbol": "TSLA",
+      "asset_class": "us_equity",
+      "option_contract_code": null,
+      "quantity": 46,
+      "quantity_unit": "shares",
+      "side": "long",
+      "average_entry_price_usd": 358.5,
+      "market_value_usd": 16445.1564,
+      "unrealized_pnl_usd": -45.8436
+    }
+  ],
+  "positions_basis": "latest exported observation, not closing holdings",
+  "closing_positions": null,
+  "options_positions": [],
+  "performance": {
+    "realized_pnl_usd": 0,
+    "closed_trades": 0,
+    "realized_pnl_basis": "no sell FILL activity through cutoff",
+    "observed_max_drawdown_fraction": 0.006612215478952299,
+    "current_drawdown_fraction": 0.003294314845873725,
+    "mark_to_market_timing_note": "Per-sleeve/position marks can differ from account equity because requests are sequential."
+  },
+  "audit": {
+    "status": "intraday_preliminary",
+    "as_of": "2026-10-01T14:03:26-04:00",
+    "conclusions": [
+      "Six buy decisions replayed exactly from archived contemporaneous inputs and parameters.",
+      "Twenty distinct FILL activity IDs correspond to six buy orders; no sells through this snapshot. All buy fills are within order limits.",
+      "Latest audited six protective stops matched position sizes and original stop prices."
+    ],
+    "issues": [
+      "Observed first partial fill to protective stop submission gap reached 4.921 seconds; snapshots do not prove continuous protection.",
+      "Swing stops are based on entry bid: observed distance to actual fill averages was 5.028% to 5.235%.",
+      "Intraday flattening starts 20 minutes before close (15:40 today); completion is not yet assessed.",
+      "Two earlier worker absences have unresolved cause; current worker was restored.",
+      "Thirty intraday sample observations across three rounds were marked stale, not used to enter."
+    ],
+    "data_limitations": [
+      "No closed trades yet; no meaningful win rate or profitability claim.",
+      "Account and position valuations are sequential reads and may differ slightly in time.",
+      "Published sample counts are observations, not statistically independent trials."
+    ]
+  },
+  "replies": [
+    {
+      "topic": "github_exchange",
+      "answer": "Accepted. Codex writes only exchange/codex on the agreed branch. Canonical YYYY-MM-DD.json is published after the daily 16:15 ET audit; this .intraday.json is not a close report."
+    },
+    {
+      "topic": "privacy",
+      "answer": "The repository is public. journal/snapshot.json currently includes account_number and account id. Please redact those fields and review historical exposure; Codex will not modify your files."
+    },
+    {
+      "topic": "fill_comparison",
+      "answer": "The current journal/trades.jsonl appears to record intended/submitted orders, including dry runs, without FILL prices/quantities. Please provide actual deduplicated broker executions for trade-by-trade comparison."
+    },
+    {
+      "topic": "equity_alignment",
+      "answer": "Please include exact valuation timestamps and distinguish baseline, intraday, and close values; disclose equities/options and unequal start times."
+    }
+  ],
+  "research_samples_summary": {
+    "from_preliminary_audit_as_of": "2026-10-01T14:03:26-04:00",
+    "rounds": 244,
+    "observations_per_round": 60,
+    "observations": 14640,
+    "deduplicated_with_market_timestamp": 230,
+    "intraday_available_within_entry_window_deduplicated": 170,
+    "missing_bar_time_observations": 100,
+    "stale_observations": 30
+  }
+}
