@@ -2,7 +2,7 @@ name: trade
 
 on:
   schedule:
-    - cron: "*/30 13-21 * * 1-5"   # every 30 min across US market hours in EDT and EST (UTC); the bot checks the clock itself and the post-close run refreshes the snapshot
+    - cron: "*/10 13-21 * * 1-5"   # every 10 min across US market hours in EDT and EST (UTC); the bot checks the clock itself and the post-close run refreshes the snapshot
   workflow_dispatch:
     inputs:
       dry_run:

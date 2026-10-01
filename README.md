@@ -38,7 +38,7 @@ python -m unittest discover -s tests
 
 ## 自动化（GitHub Actions）
 
-- `trade.yml`：美股交易时段每 30 分钟跑一轮，交易记录自动提交回仓库
+- `trade.yml`：美股交易时段每 10 分钟跑一轮（期权止盈止损检查更及时），交易记录自动提交回仓库
 - `evolve.yml`：每周六进化一次参数
 - `test.yml`：每次推送都跑测试
 - `pages.yml`：每轮交易后重新生成监控面板，发布到 GitHub Pages（需要在 **Settings → Pages** 把 Source 设为 **GitHub Actions**）
