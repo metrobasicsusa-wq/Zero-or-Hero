@@ -1,0 +1,51 @@
+"""Render the static monitoring page (site/index.html) from the journal."""
+
+from __future__ import annotations
+
+import csv
+import json
+from datetime import datetime, timezone
+from pathlib import Path
+
+TEMPLATE = Path(__file__).with_name("dashboard.html")
+EVENT_KINDS = {"order", "close", "halt"}
+MAX_EVENTS = 200
+
+
+def collect(journal: Path, cfg: dict) -> dict:
+    equity_path = journal / "equity.csv"
+    equity = list(csv.DictReader(open(equity_path))) if equity_path.exists() else []
+
+    events, targets = [], None
+    trades_path = journal / "trades.jsonl"
+    if trades_path.exists():
+        for line in open(trades_path):
+            e = json.loads(line)
+            if e.get("dry_run"):
+                continue
+            if e["kind"] == "targets":
+                targets = e
+            elif e["kind"] in EVENT_KINDS:
+                events.append(e)
+
+    snap_path = journal / "snapshot.json"
+    evo_path = journal / "evolution.md"
+    return {
+        "generated": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+        "equity": equity,
+        "snapshot": json.loads(snap_path.read_text()) if snap_path.exists() else None,
+        "events": events[-MAX_EVENTS:][::-1],
+        "targets": targets,
+        "evolution": evo_path.read_text() if evo_path.exists() else "",
+        "config": cfg,
+    }
+
+
+def render(data: dict) -> str:
+    blob = json.dumps(data, separators=(",", ":")).replace("</", "<\\/")
+    return TEMPLATE.read_text().replace("/*__DATA__*/null", blob)
+
+
+def write(journal: Path, cfg: dict, out: Path) -> None:
+    out.parent.mkdir(parents=True, exist_ok=True)
+    out.write_text(render(collect(journal, cfg)))

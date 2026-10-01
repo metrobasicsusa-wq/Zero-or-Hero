@@ -7,7 +7,7 @@ import json
 from datetime import date, timedelta
 from pathlib import Path
 
-from hero import backtest, evolve
+from hero import backtest, dashboard, evolve
 from hero.alpaca import Alpaca
 from hero.engine import Engine
 from hero.journal import Journal
@@ -27,14 +27,21 @@ def main() -> None:
     sub.add_parser("status", help="account and positions")
     sub.add_parser("evolve", help="search parameters and maybe adopt a new generation")
     sub.add_parser("backtest", help="backtest the current config")
+    d = sub.add_parser("dashboard", help="render the monitoring page from the journal")
+    d.add_argument("--out", default=str(ROOT / "site" / "index.html"))
     args = ap.parse_args()
 
     cfg = json.loads(CFG_PATH.read_text())
-    client = Alpaca()
     journal = Journal(JOURNAL)
+    if args.cmd == "dashboard":
+        dashboard.write(JOURNAL, cfg, Path(args.out))
+        return
+    client = Alpaca()
 
     if args.cmd == "run":
         print(json.dumps(Engine(client, cfg, journal, args.dry_run).run(force=args.force)))
+        journal.snapshot({"account": client.account(), "positions": client.positions(),
+                          "open_orders": client.open_orders()})
     elif args.cmd == "status":
         a = client.account()
         print(f"equity {a['equity']}  cash {a['cash']}  buying power {a['buying_power']}")

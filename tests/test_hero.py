@@ -6,7 +6,7 @@ import unittest
 from datetime import date, timedelta
 from pathlib import Path
 
-from hero import backtest, evolve
+from hero import backtest, dashboard, evolve
 from hero.alpaca import Alpaca, AlpacaError
 from hero.engine import Engine, round_option_price
 from hero.indicators import max_drawdown, momentum, rsi, sma
@@ -166,6 +166,22 @@ class Evolution(unittest.TestCase):
         self.assertIn("decision:", report)
         self.assertIn("+10.00%", report)
         self.assertIn(new["generation"], (0, 1))
+
+
+class Dashboard(unittest.TestCase):
+    def test_render_skips_dry_runs_and_escapes(self):
+        with tempfile.TemporaryDirectory() as d:
+            j = Journal(Path(d))
+            j.event("order", symbol="AAPL", side="buy", qty="1", dry_run=True)
+            j.event("order", symbol="NVDA", side="buy", qty="2", dry_run=False, reason="</script>")
+            j.equity("2026-10-01", 100_000, 50_000, 0, 570.0)
+            j.snapshot({"account": {"equity": "100000"}, "positions": [], "open_orders": []})
+            data = dashboard.collect(Path(d), cfg())
+            self.assertEqual([e["symbol"] for e in data["events"]], ["NVDA"])
+            self.assertEqual(data["equity"][0]["benchmark"], "570.00")
+            html = dashboard.render(data)
+            self.assertNotIn("/*__DATA__*/null", html)
+            self.assertNotIn("</script>\"", html)
 
 
 class Safety(unittest.TestCase):

@@ -41,11 +41,19 @@ python -m unittest discover -s tests
 - `trade.yml`：美股交易时段每 30 分钟跑一轮，交易记录自动提交回仓库
 - `evolve.yml`：每周六进化一次参数
 - `test.yml`：每次推送都跑测试
+- `pages.yml`：每轮交易后重新生成监控面板，发布到 GitHub Pages（需要在 **Settings → Pages** 把 Source 设为 **GitHub Actions**）
 
 需要在仓库 **Settings → Secrets and variables → Actions** 里添加 `ALPACA_API_KEY` 和 `ALPACA_SECRET_KEY`。定时任务只在默认分支上运行。
+
+## 监控面板
+
+https://metrobasicsusa-wq.github.io/Zero-or-Hero/
+
+显示账户净值、累计收益和 SPY 的对比曲线、当前持仓、挂单、交易记录、当前参数和进化日志。本地生成：`python -m hero dashboard`，输出到 `site/index.html`。
 
 ## 记录
 
 - `journal/trades.jsonl`：每次下单、平仓、目标仓位和停止开仓事件
 - `journal/equity.csv`：每日净值，以及当时运行的是哪一代参数
 - `journal/evolution.md`：进化日志
+- `journal/snapshot.json`：最近一次运行时的账户、持仓和挂单
