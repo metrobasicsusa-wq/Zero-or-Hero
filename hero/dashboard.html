@@ -154,7 +154,10 @@ const $ = (id) => document.getElementById(id);
 const esc = (s) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 const num = (x) => (x === null || x === undefined || x === "" ? null : Number(x));
 const usd = (x, d = 0) => x === null ? "—" : (x < 0 ? "-$" : "$") + Math.abs(x).toLocaleString("en-US", { minimumFractionDigits: d, maximumFractionDigits: d });
-const pct = (x, d = 2) => x === null || !isFinite(x) ? "—" : (x > 0 ? "+" : "") + (x * 100).toFixed(d) + "%";
+// Values that round to zero at the shown precision read as flat, never "-0.00%".
+const flat = (x, d) => x === null || Math.abs(x * 100) < 0.5 * Math.pow(10, -d) ? 0 : x;
+const pct = (x, d = 2) => x === null || !isFinite(x) ? "—" : (flat(x, d) > 0 ? "+" : "") + (flat(x, d) * 100).toFixed(d) + "%";
+const ptone = (x, d = 2) => tone(flat(x, d)), parrow = (x, d = 2) => arrow(flat(x, d));
 const tone = (x) => x > 0 ? "up" : x < 0 ? "down" : "";
 const arrow = (x) => x > 0 ? "▲ " : x < 0 ? "▼ " : "";
 const fmtTime = (ts) => new Date(ts).toLocaleString("zh-CN", { month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit" });
@@ -189,9 +192,9 @@ function renderKpis() {
 
   const tiles = [
     ["账户净值", usd(equity), a ? `现金 ${usd(num(a.cash))}` : ""],
-    ["累计收益", `<span class="${tone(total)}">${arrow(total)}${pct(total)}</span>`, start ? `起始 ${usd(start)}` : "数据积累中"],
+    ["累计收益", `<span class="${ptone(total)}">${parrow(total)}${pct(total)}</span>`, start ? `起始 ${usd(start)}` : "数据积累中"],
     ["今日盈亏", `<span class="${tone(dayPl)}">${arrow(dayPl)}${usd(dayPl)}</span>`, pct(dayPct)],
-    ["跑赢 SPY", `<span class="${tone(excess)}">${arrow(excess)}${pct(excess)}</span>`, spy === null ? "数据积累中" : `SPY ${pct(spy)}`],
+    ["跑赢 SPY", `<span class="${ptone(excess)}">${parrow(excess)}${pct(excess)}</span>`, spy === null ? "数据积累中" : `SPY ${pct(spy)}`],
     ["持仓", String(positions.length), `股票 ${positions.length - opts} · 期权 ${opts}`],
     ["参数代数", "第 " + DATA.config.generation + " 代", "每周六进化"],
   ];
@@ -299,7 +302,7 @@ function renderPositions() {
         `<b>${esc(opt || p.symbol)}</b>`,
         `<span class="chip">${opt ? "期权" : "股票"}</span>`,
         esc(p.qty), usd(num(p.avg_entry_price), 2), usd(num(p.current_price), 2), usd(num(p.market_value)),
-        `<span class="${tone(pl)}">${usd(pl)}</span>`, `<span class="${tone(plpc)}">${arrow(plpc)}${pct(plpc, 1)}</span>`,
+        `<span class="${tone(pl)}">${usd(pl)}</span>`, `<span class="${ptone(plpc, 1)}">${parrow(plpc, 1)}${pct(plpc, 1)}</span>`,
       ];
     }));
 }
