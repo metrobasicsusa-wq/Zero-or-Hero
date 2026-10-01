@@ -1,0 +1,39 @@
+name: trade
+
+on:
+  schedule:
+    - cron: "*/30 13-20 * * 1-5"   # every 30 min across US market hours (UTC); the bot checks the clock itself
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Log orders without sending them"
+        type: boolean
+        default: false
+
+concurrency:
+  group: hero-journal
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install -r requirements.txt
+      - name: Trade
+        env:
+          ALPACA_API_KEY: ${{ secrets.ALPACA_API_KEY }}
+          ALPACA_SECRET_KEY: ${{ secrets.ALPACA_SECRET_KEY }}
+        run: python -m hero run ${{ inputs.dry_run && '--dry-run' || '' }}
+      - name: Commit journal
+        run: |
+          git config user.name "zero-or-hero-bot"
+          git config user.email "zero-or-hero-bot@users.noreply.github.com"
+          git add journal
+          git diff --cached --quiet || (git commit -m "journal: trading cycle $(date -u +%FT%TZ)" && git pull --rebase && git push)

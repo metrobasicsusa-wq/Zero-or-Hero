@@ -1,0 +1,35 @@
+name: evolve
+
+on:
+  schedule:
+    - cron: "17 14 * * 6"   # Saturdays, after the trading week
+  workflow_dispatch:
+
+concurrency:
+  group: hero-journal
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  evolve:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install -r requirements.txt
+      - run: python -m unittest discover -s tests
+      - name: Evolve
+        env:
+          ALPACA_API_KEY: ${{ secrets.ALPACA_API_KEY }}
+          ALPACA_SECRET_KEY: ${{ secrets.ALPACA_SECRET_KEY }}
+        run: python -m hero evolve
+      - name: Commit new generation
+        run: |
+          git config user.name "zero-or-hero-bot"
+          git config user.email "zero-or-hero-bot@users.noreply.github.com"
+          git add config journal
+          git diff --cached --quiet || (git commit -m "evolve: weekly parameter search $(date -u +%F)" && git pull --rebase && git push)
