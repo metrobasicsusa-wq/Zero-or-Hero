@@ -144,6 +144,7 @@ class EngineTests(unittest.TestCase):
         Engine(c, cfg(stocks={"rsi_max": 101}), self.j, dry_run=True).run(today=TODAY)
         self.assertEqual(c.orders, [])
         self.assertIn('"dry_run": true', (Path(self.tmp.name) / "trades.jsonl").read_text())
+        self.assertEqual(self.j.state(), {})
 
     def test_bear_regime_buys_index_put(self):
         self.closes["SPY"] = series(-0.002, seed=6)

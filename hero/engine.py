@@ -69,7 +69,9 @@ class Engine:
             self._option_entries(options, busy, closes, equity, today)
 
         state["last_run"] = today.isoformat()
-        self.j.save_state(state)
+        # A dry run must not mark the day as rebalanced, or the real run would skip it.
+        if not self.dry:
+            self.j.save_state(state)
         self.j.equity(today.isoformat(), equity, float(acct["cash"]), self.cfg["generation"])
         return {"status": "ok", "equity": equity, "day_pl": day_pl, "halted": halted}
 
