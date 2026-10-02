@@ -73,8 +73,10 @@ class Engine:
         if not force and not self.c.clock().get("is_open"):
             return {"status": "market_closed"}
         live_from = self.cfg.get("live_from")
-        if live_from and today.isoformat() < live_from and not self.dry:
-            self.dry = True  # rehearsal: decisions are journaled, nothing is sent
+        if live_from and not self.dry and (today.isoformat() < live_from or not self.cfg.get("launch_approved", True)):
+            # Rehearsal: decisions are journaled, nothing is sent. Reaching the date is not enough
+            # when the config asks for an explicit launch approval (set after the go/no-go review).
+            self.dry = True
 
         acct = self.c.account()
         equity, last = float(acct["equity"]), float(acct["last_equity"])
@@ -115,7 +117,7 @@ class Engine:
             self._rebalance(stocks, busy, closes, equity, halted)
             state["last_rebalance"] = today.isoformat()
         if self.cfg["options"]["enabled"] and not halted:
-            self._option_entries(options, busy, closes, equity, today)
+            self._option_entries(options, busy, closes, equity, today, stocks)
         self._reconcile_stops(stocks, busy, closes)
 
         state["last_run"] = today.isoformat()
@@ -127,30 +129,65 @@ class Engine:
         return {"status": "ok", "equity": equity, "day_pl": day_pl, "halted": halted}
 
     def _attempt_over(self, attempt: dict, equity: float, state: dict, today: date) -> bool:
-        """Start-capital loss ends the attempt: liquidate once, then stay flat until a new attempt
-        (a fresh or reset paper account and a new attempt number in the config) begins."""
-        key = f"attempt_{attempt['number']}_ended"
-        if state.get(key):
+        """Start-capital loss ends the attempt, in three phases:
+
+        1. stop opening: once the loss line is hit, an "ending" latch is saved; it never resets,
+           even if equity bounces back;
+        2. exit and reconcile: every cycle re-reads the broker, cancels stops and buys, and closes
+           what is left. A symbol with a working sell order is waited on, not re-sent;
+        3. confirm flat: only when the broker shows no positions and no open orders is the attempt
+           marked ended. A new attempt needs a fresh or reset account and a new number in the config."""
+        n = attempt["number"]
+        if state.get(f"attempt_{n}_ended"):
             return True
         start = attempt["start_capital"]
         loss = 1 - equity / start
-        if loss < attempt["end_loss"]:
-            return False
-        self.j.event("attempt_end", attempt=attempt["number"], equity=equity, start_capital=start,
-                     start_capital_loss=round(loss, 4), dry_run=self.dry,
-                     why=f"第 {attempt['number']} 次尝试结束：净值 ${equity:,.2f}，起始资金 ${start:,.0f} 已亏 {loss:.1%}"
-                         f"（结束线 {attempt['end_loss']:.0%}），全部平仓，等待下一次尝试")
-        for o in self.c.open_orders():
+        if not state.get(f"attempt_{n}_ending"):
+            if loss < attempt["end_loss"]:
+                return False
+            self.j.event("attempt_end", attempt=n, equity=equity, start_capital=start,
+                         start_capital_loss=round(loss, 4), dry_run=self.dry,
+                         why=f"第 {n} 次尝试触及结束线：净值 ${equity:,.2f}，起始资金 ${start:,.0f} 已亏 {loss:.1%}"
+                             f"（结束线 {attempt['end_loss']:.0%}）。停止开新仓，开始平仓；券商确认无持仓、无挂单后本轮才算结束")
             if not self.dry:
-                try:
-                    self.c.cancel_order(o["id"])
-                except AlpacaError as e:
-                    self.j.event("order_error", symbol=o.get("symbol"), error=f"cancel at attempt end: {e}"[:300])
-        for pos in self.c.positions():
-            self._close(pos["symbol"], "attempt_end", why="尝试结束，全部平仓")
-        if not self.dry:
-            state[key] = today.isoformat()
-            self.j.save_state(state)
+                state[f"attempt_{n}_ending"] = today.isoformat()
+                self.j.save_state(state)
+
+        positions, orders = self.c.positions(), self.c.open_orders()
+        if not positions and not orders:
+            self.j.event("attempt_end_confirmed", attempt=n, equity=equity, dry_run=self.dry,
+                         why=f"券商确认无持仓、无挂单，第 {n} 次尝试结束（净值 ${equity:,.2f}）")
+            if not self.dry:
+                state[f"attempt_{n}_ended"] = today.isoformat()
+                self.j.save_state(state)
+            return True
+
+        exiting = {o["symbol"] for o in orders if o.get("side") == "sell" and not stoplib.is_protective_stop(o)}
+        blocked = set()
+        for o in orders:
+            if o["symbol"] in exiting and o.get("side") == "sell" and not stoplib.is_protective_stop(o):
+                continue  # an exit is already working: wait for it rather than send a second one
+            self.j.event("cancel", symbol=o.get("symbol"), reason="attempt_end", dry_run=self.dry,
+                         order_key=execution_key(o["id"]), why="尝试结束：撤销止损单和买单，准备平仓")
+            if self.dry:
+                continue
+            try:
+                status = self.c.cancel_order(o["id"])
+            except AlpacaError as e:
+                status = f"error: {str(e)[:300]}"
+            self.j.event("cancel_ack", symbol=o.get("symbol"), order_key=execution_key(o["id"]), status=status)
+            if status != "canceled":
+                blocked.add(o["symbol"])  # still live, filled or failed: re-read the broker next cycle
+        for pos in positions:
+            sym = pos["symbol"]
+            if sym in exiting:
+                self.j.event("attempt_exit_pending", symbol=sym, dry_run=self.dry,
+                             why="平仓单还在券商处理中，本轮等待，不重复下单")
+            elif sym in blocked:
+                self.j.event("attempt_exit_pending", symbol=sym, dry_run=self.dry,
+                             why="撤单未确认，下一轮重新核对券商状态后再平仓")
+            else:
+                self._close(sym, "attempt_end", why="尝试结束，平掉剩余仓位（每轮核对，直到券商确认清空）")
         return True
 
     def _cancel_stops(self, sym: str, why: str) -> bool:
@@ -283,7 +320,8 @@ class Engine:
         for sym, size, ref, why in buys:
             self._order("rebalance", ref, why, symbol=sym, **size, side="buy", type="market", time_in_force="day")
 
-    def _option_entries(self, options: dict, busy: set, closes: dict, equity: float, today: date) -> None:
+    def _option_entries(self, options: dict, busy: set, closes: dict, equity: float, today: date,
+                        stocks: dict | None = None) -> None:
         p = self.cfg["options"]
         pending = [s for s in busy if len(s) > 15 and s[-9] in "CP"]
         slots = p["max_positions"] - len(options) - len(pending)
@@ -292,10 +330,19 @@ class Engine:
         held = {option_underlying(s) for s in [*options, *pending]}
         regime = self.cfg["regime_symbol"]
         if regime in closes and not momentum.is_bullish(closes[regime]):
-            candidates = [(regime, "put")]
+            candidates = [(regime, "put")] if p.get("bear_puts", True) else []
         else:
             ranked = momentum.rank(closes, self.cfg["stocks"])
             candidates = [(s, "call") for s in ranked[: p.get("max_rank", len(ranked))]]
+            if p.get("require_held"):
+                # Only on stocks the broker confirms we hold: a rejected or unfilled stock buy must
+                # not leave a lone option behind. Same-cycle buys qualify from the next cycle.
+                owned = {s for s, pos in (stocks or {}).items() if float(pos.get("qty") or 0) > 0}
+                missing = [s for s, _ in candidates if s not in owned]
+                candidates = [(s, k) for s, k in candidates if s in owned]
+                if missing:
+                    self.j.event("option_skip", dry_run=self.dry,
+                                 why="没有买期权：" + "、".join(missing) + " 还没有券商确认的股票持仓（期权只买已持有的股票）")
         order_of = {s: i for i, (s, _) in enumerate(candidates, 1)}
         budget = p["allocation"] * equity / p["max_positions"]
         skipped = []  # why each candidate produced no order, so the journal shows options that were looked for

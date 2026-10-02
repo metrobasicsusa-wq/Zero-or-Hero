@@ -58,7 +58,9 @@
     "delta_max": 0.6,
     "max_quote_age_s": 120,
     "max_rank": 2,
-    "hold_overnight": true
+    "hold_overnight": true,
+    "require_held": true,
+    "bear_puts": false
   },
   "risk": {
     "max_position_pct": 0.35,
@@ -67,5 +69,6 @@
     "stop_min_pct": 0.05,
     "stop_max_pct": 0.12,
     "stop_tif": "day"
-  }
+  },
+  "launch_approved": false
 }

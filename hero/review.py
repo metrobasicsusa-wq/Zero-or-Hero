@@ -75,7 +75,8 @@ def decisions(journal: Path, day: str) -> list[dict]:
 
 def rehearsal(journal: Path, cfg: dict, day: str) -> dict | None:
     """Before live_from the bot runs dry: what the last cycle of the day would have done."""
-    if not day < cfg.get("live_from", ""):
+    live_from = cfg.get("live_from", "")
+    if not live_from or not (day < live_from or not cfg.get("launch_approved", True)):
         return None
     path = journal / "trades.jsonl"
     events = [json.loads(l) for l in open(path)] if path.exists() else []
@@ -84,7 +85,7 @@ def rehearsal(journal: Path, cfg: dict, day: str) -> dict | None:
     cycles = sorted({e["ts"] for e in dry})
     last = [e for e in dry if cycles and e["ts"] == cycles[-1]]
     skips = [e["why"] for e in dry if e["kind"] == "option_skip"]
-    return {"live_from": cfg["live_from"], "cycles": len(cycles), "last_cycle": cycles[-1] if cycles else None,
+    return {"live_from": cfg["live_from"], "launch_approved": cfg.get("launch_approved", True), "cycles": len(cycles), "last_cycle": cycles[-1] if cycles else None,
             "last_cycle_events": [{k: e.get(k) for k in ("kind", "symbol", "side", "qty", "notional", "type",
                                                             "limit_price", "reason", "why")} for e in last],
             "option_skips": len(skips), "last_option_skip": skips[-1] if skips else None}
@@ -170,7 +171,9 @@ def facts(journal: Path, cfg: dict, day: str) -> str | None:
 
     reh = rehearsal(journal, cfg, day)
     if reh:
-        lines += ["", f"## 演练（dry-run，未下单；{reh['live_from']} 起真实下单）",
+        start = (f"{reh['live_from']} 起真实下单" if reh["launch_approved"]
+                 else f"最早 {reh['live_from']}，且需首周复盘后批准（launch_approved）才真实下单")
+        lines += ["", f"## 演练（dry-run，未下单；{start}）",
                   f"- 今天共 {reh['cycles']} 轮演练，下面是最后一轮（{reh['last_cycle'] or '无'}）会做的事："]
         for e in reh["last_cycle_events"]:
             size = f"${e['notional']}" if e.get("notional") else (e.get("qty") or "")
@@ -235,7 +238,8 @@ def insights(journal: Path, cfg: dict, day: str) -> list[str]:
         notes.append(f"今日 {_pct(mine)}（{cfg['regime_symbol']} 前一日数据不足，暂无对比）。")
     reh = rehearsal(journal, cfg, day)
     if reh:
-        notes.append(f"演练阶段：今天 {reh['cycles']} 轮只记录不下单，{reh['live_from']} 起真实下单。")
+        notes.append(f"演练阶段：今天 {reh['cycles']} 轮只记录不下单" + (f"，{reh['live_from']} 起真实下单。" if reh["launch_approved"]
+                     else f"；最早 {reh['live_from']}，且需批准（launch_approved）才真实下单。"))
         if reh["last_option_skip"]:
             notes.append(f"期权：{reh['option_skips']} 轮没买到合格合约。最后一次：{reh['last_option_skip']}")
 

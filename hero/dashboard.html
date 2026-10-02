@@ -368,7 +368,7 @@ function renderEvents() {
   const es = DATA.events;
   if (!es.length) { $("events").innerHTML = empty("还没有交易"); return; }
   const kind = (e) => e.kind === "close" ? "平仓" : e.kind === "halt" ? "暂停开仓" : e.kind === "option_skip" ? "未买期权"
-    : e.kind === "attempt_end" ? "本轮结束" : e.side === "buy" ? "买入" : "卖出";
+    : e.kind === "attempt_end" ? "触及结束线" : e.kind === "attempt_end_confirmed" ? "本轮结束" : e.side === "buy" ? "买入" : "卖出";
   $("events").innerHTML = table(
     [["时间"], ["动作"], ["标的"], ["数量", 1], ["限价", 1], ["原因"]],
     es.slice(0, 60).map((e) => [fmtTime(e.ts), `<span class="chip">${kind(e)}</span>`,

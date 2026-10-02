@@ -8,7 +8,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 TEMPLATE = Path(__file__).with_name("dashboard.html")
-EVENT_KINDS = {"order", "close", "halt", "option_skip", "attempt_end"}
+EVENT_KINDS = {"order", "close", "halt", "option_skip", "attempt_end", "attempt_end_confirmed"}
 MAX_EVENTS = 200
 REPO_BLOB = "https://github.com/metrobasicsusa-wq/Zero-or-Hero/blob/claude/cloud-paper-trading-ivwxqk"
 

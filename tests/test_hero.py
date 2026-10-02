@@ -477,6 +477,8 @@ class LiveConfig(unittest.TestCase):
         self.assertIn(s500["regime_symbol"], s500["universe"])
         self.assertTrue(s500["stocks"]["fractional"])
         self.assertEqual(s500["risk"]["stop_tif"], "day")
+        self.assertIs(s500["launch_approved"], False)  # flipped only after the go/no-go review
+        self.assertTrue(s500["options"]["require_held"])
 
 
 class Reasons(unittest.TestCase):
@@ -642,20 +644,90 @@ class SmallAccount(unittest.TestCase):
             self.assertEqual(c.orders, [])
             self.assertIn('"dry_run": true', (Path(d) / "trades.jsonl").read_text())
 
-    def test_attempt_end_liquidates_once_then_stays_flat(self):
+    def test_attempt_end_confirms_flat_before_ending(self):
         with tempfile.TemporaryDirectory() as d:
             j = Journal(Path(d))
             closes = {"SPY": series(0.001, seed=5), "UP1": series(0.002, seed=1)}
             pos = {"symbol": "UP1", "asset_class": "us_equity", "qty": "1", "avg_entry_price": "400",
                    "current_price": "290", "market_value": "290"}
+            # Cycle 1: loss line hit -> latch, close sent, but not yet "ended".
             c = FakeClient(closes, positions=[pos], equity=295, last_equity=320)
-            res = Engine(c, self.s500_cfg(), j).run(today=TODAY)
-            self.assertEqual(res["status"], "attempt_ended")
+            self.assertEqual(Engine(c, self.s500_cfg(), j).run(today=TODAY)["status"], "attempt_ended")
             self.assertEqual(c.closed, ["UP1"])
-            self.assertTrue(j.state()["attempt_1_ended"])
-            c2 = FakeClient(closes, positions=[], equity=295, last_equity=295)
+            self.assertIn("attempt_1_ending", j.state())
+            self.assertNotIn("attempt_1_ended", j.state())
+            # Cycle 2: the exit is still working at the broker -> wait, no second sell.
+            exit_order = {"id": "x1", "symbol": "UP1", "side": "sell", "type": "market", "status": "new"}
+            c2 = FakeClient(closes, positions=[pos], open_orders=[exit_order], equity=330, last_equity=320)
             self.assertEqual(Engine(c2, self.s500_cfg(), j).run(today=TODAY)["status"], "attempt_ended")
-            self.assertEqual((c2.orders, c2.closed), ([], []))
+            self.assertEqual((c2.orders, c2.closed, getattr(c2, "cancelled", [])), ([], [], []))
+            # Equity bounced above the line (330), but the latch holds: still exiting, no new buys.
+            self.assertNotIn("attempt_1_ended", j.state())
+            # Cycle 3: broker shows flat -> confirmed and ended; later cycles do nothing.
+            c3 = FakeClient(closes, positions=[], equity=290, last_equity=290)
+            Engine(c3, self.s500_cfg(), j).run(today=TODAY)
+            self.assertIn("attempt_1_ended", j.state())
+            c4 = FakeClient(closes, positions=[], equity=290, last_equity=290)
+            self.assertEqual(Engine(c4, self.s500_cfg(), j).run(today=TODAY)["status"], "attempt_ended")
+            self.assertEqual((c4.orders, c4.closed), ([], []))
+
+    def test_attempt_end_retries_after_rejection_and_unconfirmed_cancel(self):
+        with tempfile.TemporaryDirectory() as d:
+            j = Journal(Path(d))
+            closes = {"SPY": series(0.001, seed=5), "UP1": series(0.002, seed=1)}
+            pos = {"symbol": "UP1", "asset_class": "us_equity", "qty": "1", "avg_entry_price": "400",
+                   "current_price": "290", "market_value": "290"}
+
+            class Rejecting(FakeClient):
+                def close_position(self, s):
+                    self.closed.append(s)
+                    raise AlpacaError("403 rejected")
+            c = Rejecting(closes, positions=[pos], equity=295, last_equity=320)
+            Engine(c, self.s500_cfg(), j).run(today=TODAY)  # rejection is journaled, not "ended"
+            self.assertNotIn("attempt_1_ended", j.state())
+            # Next cycle: a stop whose cancel is not confirmed -> no close this cycle.
+            stop = {"id": "s1", "symbol": "UP1", "side": "sell", "type": "stop", "client_order_id": "hero-stop-1"}
+            c2 = FakeClient(closes, positions=[pos], open_orders=[stop], equity=295, last_equity=295)
+            c2.cancel_result = "pending_cancel"
+            Engine(c2, self.s500_cfg(), j).run(today=TODAY)
+            self.assertEqual((c2.cancelled, c2.closed), (["s1"], []))
+            # Then the cancel goes through and the close is sent again.
+            c3 = FakeClient(closes, positions=[pos], open_orders=[stop], equity=295, last_equity=295)
+            Engine(c3, self.s500_cfg(), j).run(today=TODAY)
+            self.assertEqual((c3.cancelled, c3.closed), (["s1"], ["UP1"]))
+            self.assertNotIn("attempt_1_ended", j.state())
+
+    def test_options_only_on_broker_confirmed_holdings(self):
+        with tempfile.TemporaryDirectory() as d:
+            closes = {"SPY": series(0.001, seed=5), "UP1": series(0.002, seed=1), "UP2": series(0.0015, seed=2)}
+            conf = self.s500_cfg(options={**CFG["options"], "enabled": True, "max_positions": 1, "allocation": 0.2,
+                                          "require_held": True, "bear_puts": False})
+            c = FakeClient(closes, equity=100_000, last_equity=100_000)  # no stock held yet
+            Engine(c, conf, Journal(Path(d))).run(today=TODAY)
+            self.assertFalse([o for o in c.orders if o["type"] == "limit"])
+            self.assertIn("还没有券商确认的股票持仓", (Path(d) / "trades.jsonl").read_text())
+            held = {"symbol": "UP1", "asset_class": "us_equity", "qty": "3", "avg_entry_price": "100",
+                    "current_price": "110", "market_value": "330"}
+            c2 = FakeClient(closes, positions=[held], equity=100_000, last_equity=100_000)
+            Engine(c2, conf, Journal(Path(d))).run(today=TODAY)
+            opts = [o for o in c2.orders if o["type"] == "limit"]
+            self.assertTrue(opts and all(o["symbol"].startswith("UP1") for o in opts))
+            # Bear regime: no index puts for this experiment.
+            bear = {**closes, "SPY": series(-0.002, seed=4)}
+            c3 = FakeClient(bear, positions=[held], equity=100_000, last_equity=100_000)
+            Engine(c3, conf, Journal(Path(d))).run(today=TODAY)
+            self.assertFalse([o for o in c3.orders if o["type"] == "limit"])
+
+    def test_launch_needs_approval_not_just_the_date(self):
+        with tempfile.TemporaryDirectory() as d:
+            closes = {"SPY": series(0.001, seed=5), "UP1": series(0.002, seed=1)}
+            conf = {**self.s500_cfg(), "live_from": "2000-01-01", "launch_approved": False}
+            c = FakeClient(closes, equity=500, last_equity=500)
+            Engine(c, conf, Journal(Path(d))).run(today=TODAY)
+            self.assertEqual(c.orders, [])
+            c2 = FakeClient(closes, equity=500, last_equity=500)
+            Engine(c2, {**conf, "launch_approved": True}, Journal(Path(d))).run(today=TODAY)
+            self.assertTrue(c2.orders)
 
     def test_options_limited_to_top_ranked(self):
         with tempfile.TemporaryDirectory() as d:
