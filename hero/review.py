@@ -40,6 +40,38 @@ def is_final(journal: Path, day: str) -> bool:
     return bool(t) and (t.date().isoformat() > day or (t.date().isoformat() == day and t.time() >= CLOSE))
 
 
+def decisions(journal: Path, day: str) -> list[dict]:
+    """Each order/close decision of the day, joined to its broker acknowledgement and fills.
+
+    Decisions are journaled before the broker call with an intent_key; the order_ack event maps
+    that to the hashed broker order id (order_key), which fills.jsonl also carries."""
+    path = journal / "trades.jsonl"
+    if not path.exists():
+        return []
+    events = [json.loads(line) for line in open(path)]
+    acks = {e["intent_key"]: e for e in events if e["kind"] in ("order_ack", "order_error")}
+    fills = Journal(journal).fills(day)
+    out = []
+    for e in events:
+        if e["kind"] not in ("order", "close") or not e["ts"].startswith(day) or e.get("dry_run"):
+            continue
+        ack = acks.get(e.get("intent_key")) or {}
+        # Older entries (before intent keys) carried order_key directly on the event.
+        order_key = ack.get("order_key") or e.get("order_key")
+        got = [f for f in fills if order_key and f.get("order_key") == order_key]
+        qty = sum(float(f["qty"]) for f in got)
+        out.append({
+            "kind": e["kind"], "ts": e["ts"], "symbol": e["symbol"], "side": e.get("side", "close"),
+            "qty": e.get("qty"), "type": e.get("type"), "limit_price": e.get("limit_price"),
+            "reason": e["reason"], "evidence": e.get("evidence") or {}, "dry_run": e.get("dry_run", False),
+            "order_key": order_key, "broker_status": ack.get("status"), "error": ack.get("error"),
+            "filled_qty": qty, "fill_vwap": sum(float(f["qty"]) * float(f["price"]) for f in got) / qty if qty else None,
+            "fill_keys": [f["execution_key"] for f in got],
+            "legacy": "intent_key" not in e and not order_key,
+        })
+    return out
+
+
 def option_label(sym: str) -> str:
     if len(sym) <= 15:
         return sym
@@ -91,26 +123,28 @@ def facts(journal: Path, cfg: dict, day: str) -> str | None:
             if e["ts"].startswith(day) and not e.get("dry_run"):
                 events.append(e)
     targets = [e for e in events if e["kind"] == "targets"]
-    all_fills = Journal(journal).fills(day)
     if targets:
         lines.append(f"- targets: {', '.join(f'{s} {w:.0%}' for s, w in targets[-1]['weights'].items()) or 'cash'}")
+    for o in decisions(journal, day):
+        ev = o["evidence"]
+        quote = (f" · quote bid {ev['bid']} / ask {ev['ask']}, spread {ev['spread_pct_of_mid']:.1%} of mid"
+                 if ev.get("bid") is not None and ev.get("spread_pct_of_mid") is not None else "")
+        if o["filled_qty"]:
+            outcome = f" → filled {o['filled_qty']:g} @ {o['fill_vwap']:.2f}"
+        elif o["error"]:
+            outcome = f" → REJECTED/ERROR: {o['error'][:80]}"
+        elif o["order_key"]:
+            outcome = f" → accepted ({o['broker_status']}), no fills linked"
+        else:
+            outcome = (" → (journaled before order linking existed)" if o["legacy"]
+                       else " → no broker acknowledgement recorded")
+        if o["kind"] == "close":
+            lines.append(f"- close {option_label(o['symbol'])} ({o['reason']}){outcome}")
+        else:
+            price = f" @ {o['limit_price']}" if o.get("limit_price") else ""
+            lines.append(f"- {o['side']} {o['qty']} {option_label(o['symbol'])}{price} ({o['reason']}){quote}{outcome}")
     for e in events:
-        if e["kind"] == "order":
-            price = f" @ {e['limit_price']}" if e.get("limit_price") else ""
-            ev = e.get("evidence") or {}
-            quote = (f" · quote bid {ev['bid']} / ask {ev['ask']}, spread {ev['spread_pct_of_mid']:.1%} of mid"
-                     if ev.get("bid") is not None and ev.get("spread_pct_of_mid") is not None else "")
-            got = [f for f in all_fills if e.get("order_key") and f.get("order_key") == e["order_key"]]
-            if got:
-                q = sum(float(f["qty"]) for f in got)
-                vwap = sum(float(f["qty"]) * float(f["price"]) for f in got) / q
-                filled = f" → filled {q:g} @ {vwap:.2f}"
-            else:
-                filled = " → no fills linked" if e.get("order_key") else ""
-            lines.append(f"- {e['side']} {e['qty']} {option_label(e['symbol'])}{price} ({e['reason']}){quote}{filled}")
-        elif e["kind"] == "close":
-            lines.append(f"- close {option_label(e['symbol'])} ({e['reason']})")
-        elif e["kind"] == "halt":
+        if e["kind"] == "halt":
             lines.append(f"- HALT: day P/L {e['day_pl']:+.2%}")
     if len(lines) and lines[-1] == "## Today's actions":
         lines.append("- none")
@@ -246,6 +280,9 @@ def export(journal: Path, cfg: dict, day: str) -> dict | None:
         },
         "benchmark": {"symbol": cfg["regime_symbol"], "close": _f(row.get("benchmark")),
                       "previous_close": _f(prev.get("benchmark")) if prev else None},
+        "orders": decisions(journal, day),
+        "orders_basis": "decisions journaled before submission, with the quote/reference evidence they used, "
+                        "joined to broker acks and fills via hashed order ids",
         "fills": fills,
         "fill_count": len(fills),
         "positions": snap.get("positions") or [],

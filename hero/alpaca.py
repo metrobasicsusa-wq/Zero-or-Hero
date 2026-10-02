@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import os
 import time
+import uuid
 from typing import Any
 
 import requests
@@ -35,16 +36,19 @@ class Alpaca:
         if key and secret:
             self.s.headers.update({"APCA-API-KEY-ID": key, "APCA-API-SECRET-KEY": secret})
 
-    def _req(self, method: str, url: str, **kw) -> Any:
-        for attempt in range(4):
+    def _req(self, method: str, url: str, retry: bool = True, **kw) -> Any:
+        # Only idempotent requests are retried. Order submission is made idempotent with a
+        # client_order_id (see submit_order); position closes are never retried.
+        for attempt in range(4 if retry else 1):
             r = self.s.request(method, url, timeout=30, **kw)
-            if r.status_code == 429 or r.status_code >= 500:
+            if (r.status_code == 429 or r.status_code >= 500) and retry:
                 time.sleep(2 ** attempt)
                 continue
             if r.status_code >= 400:
                 raise AlpacaError(f"{method} {url} -> {r.status_code}: {r.text[:300]}")
             return r.json() if r.content else None
-        raise AlpacaError(f"{method} {url} failed after retries")
+            break
+        raise AlpacaError(f"{method} {url} -> {r.status_code} after {attempt + 1} attempt(s): {r.text[:300]}")
 
     def _t(self, method: str, path: str, **kw) -> Any:
         return self._req(method, self.base_url + path, **kw)
@@ -66,10 +70,21 @@ class Alpaca:
         return self._t("GET", "/v2/orders", params={"status": "open", "limit": 500})
 
     def submit_order(self, **order) -> dict:
-        return self._t("POST", "/v2/orders", json=order)
+        """Submit with a unique client_order_id so a retry after a lost response can never
+        create a second order: the broker rejects the duplicate id and we fetch the original."""
+        order.setdefault("client_order_id", uuid.uuid4().hex)
+        try:
+            return self._t("POST", "/v2/orders", json=order)
+        except AlpacaError as e:
+            if "client_order_id" not in str(e):
+                raise
+            return self.order_by_client_id(order["client_order_id"])
+
+    def order_by_client_id(self, client_order_id: str) -> dict:
+        return self._t("GET", "/v2/orders:by_client_order_id", params={"client_order_id": client_order_id})
 
     def close_position(self, symbol: str) -> dict:
-        return self._t("DELETE", f"/v2/positions/{symbol}")
+        return self._t("DELETE", f"/v2/positions/{symbol}", retry=False)
 
     def fill_activities(self, day: str) -> list[dict]:
         """All FILL activities on a trading day (paged, oldest first)."""

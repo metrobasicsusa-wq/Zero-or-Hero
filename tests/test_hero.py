@@ -45,7 +45,9 @@ class FakeClient:
     def submit_order(self, **o):
         self.orders.append(o)
         return {"id": f"order-{len(self.orders)}"}
-    def close_position(self, s): self.closed.append(s)
+    def close_position(self, s):
+        self.closed.append(s)
+        return {"id": f"close-{s}", "status": "accepted"}
 
     def option_contracts(self, und, **kw):
         spot = self.closes[und][-1]
@@ -291,6 +293,82 @@ class Publication(unittest.TestCase):
             self.assertTrue(review.is_final(Path(d), "2026-10-01"))
             self.assertTrue(review.report(Path(d), cfg(), "2026-10-01").startswith("# 盘后复盘"))
             self.assertEqual(review.export(Path(d), cfg(), "2026-10-01")["status"], "post_market_review")
+
+
+class OrderSafety(unittest.TestCase):
+    def setUp(self):
+        self.tmp = tempfile.TemporaryDirectory()
+        self.j = Journal(Path(self.tmp.name))
+
+    def tearDown(self):
+        self.tmp.cleanup()
+
+    def events(self):
+        return [json.loads(l) for l in (Path(self.tmp.name) / "trades.jsonl").read_text().splitlines()]
+
+    def test_decision_is_journaled_before_a_failing_submit(self):
+        class Boom(FakeClient):
+            def submit_order(self, **o):
+                raise TimeoutError("network down")
+        eng = Engine(Boom({}), cfg(), self.j)
+        with self.assertRaises(TimeoutError):
+            eng._order("test", {"bid": 1.0}, symbol="AAPL", qty="1", side="buy", type="market", time_in_force="day")
+        kinds = [e["kind"] for e in self.events()]
+        self.assertEqual(kinds, ["order", "order_error"])
+        self.assertEqual(self.events()[0]["evidence"], {"bid": 1.0})
+        self.assertNotIn("client_order_id", self.events()[0])
+
+    def test_close_is_linked_to_its_order(self):
+        c = FakeClient({})
+        Engine(c, cfg(), self.j)._close("AAPL", "dropped", {"current_price": "1"})
+        from hero.journal import execution_key
+        ack = self.events()[1]
+        self.assertEqual((ack["kind"], ack["order_key"]), ("order_ack", execution_key("close-AAPL")))
+        self.assertEqual(ack["intent_key"], self.events()[0]["intent_key"])
+
+    def test_submit_retry_cannot_duplicate(self):
+        class Resp:
+            def __init__(self, code, body):
+                self.status_code, self._body = code, body
+                self.text = json.dumps(body)
+                self.content = self.text.encode()
+            def json(self):
+                return self._body
+
+        class Session:
+            headers = {}
+            def __init__(self):
+                self.calls = []
+            def request(self, method, url, timeout, **kw):
+                self.calls.append((method, url))
+                if method == "POST" and len(self.calls) == 1:
+                    return Resp(502, {"message": "bad gateway"})  # order was accepted, response lost
+                if method == "POST":
+                    return Resp(422, {"message": "client_order_id must be unique"})
+                return Resp(200, {"id": "orig", "status": "new"})
+
+        import hero.alpaca as alpaca
+        sess = Session()
+        orig_sleep, alpaca.time.sleep = alpaca.time.sleep, lambda s: None
+        try:
+            placed = Alpaca(session=sess).submit_order(symbol="AAPL", qty="1", side="buy", type="market",
+                                                       time_in_force="day")
+        finally:
+            alpaca.time.sleep = orig_sleep
+        self.assertEqual(placed["id"], "orig")
+        self.assertEqual([m for m, _ in sess.calls], ["POST", "POST", "GET"])
+        self.assertIn("by_client_order_id", sess.calls[-1][1])
+
+    def test_close_position_is_not_retried(self):
+        class Session:
+            headers = {}
+            calls = 0
+            def request(self, method, url, timeout, **kw):
+                Session.calls += 1
+                return type("R", (), {"status_code": 503, "text": "down", "content": b"down"})()
+        with self.assertRaises(AlpacaError):
+            Alpaca(session=Session()).close_position("AAPL")
+        self.assertEqual(Session.calls, 1)
 
 
 class Safety(unittest.TestCase):

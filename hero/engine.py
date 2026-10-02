@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import math
+import uuid
 from datetime import date, timedelta
 
 from hero.journal import Journal, execution_key
@@ -30,16 +31,32 @@ class Engine:
         self.c, self.cfg, self.j, self.dry = client, cfg, journal, dry_run
 
     def _order(self, reason: str, evidence: dict | None = None, **order) -> None:
-        # Evidence (the quote the decision was based on) is logged only, never sent to the broker.
-        # The order key (hashed broker order id) links this decision to its fills in fills.jsonl.
-        placed = None if self.dry else self.c.submit_order(**order)
-        key = execution_key(placed["id"]) if placed and placed.get("id") else None
-        self.j.event("order", reason=reason, dry_run=self.dry, evidence=evidence or {}, order_key=key, **order)
+        # The decision and its evidence (the quote it was based on) are journaled before the
+        # broker call, so a timeout or crash cannot lose them. Evidence is never sent to the broker.
+        order["client_order_id"] = uuid.uuid4().hex
+        intent = execution_key(order["client_order_id"])
+        logged = {k: v for k, v in order.items() if k != "client_order_id"}
+        self.j.event("order", reason=reason, dry_run=self.dry, evidence=evidence or {}, intent_key=intent, **logged)
+        if not self.dry:
+            self._submit(intent, lambda: self.c.submit_order(**order))
 
     def _close(self, symbol: str, reason: str, evidence: dict | None = None) -> None:
-        self.j.event("close", symbol=symbol, reason=reason, dry_run=self.dry, evidence=evidence or {})
+        intent = execution_key(uuid.uuid4().hex)
+        self.j.event("close", symbol=symbol, reason=reason, dry_run=self.dry, evidence=evidence or {},
+                     intent_key=intent)
         if not self.dry:
-            self.c.close_position(symbol)
+            self._submit(intent, lambda: self.c.close_position(symbol))
+
+    def _submit(self, intent: str, call) -> None:
+        """Run a broker call and journal its outcome; the order_key (hashed broker order id)
+        links the intent to its fills in fills.jsonl."""
+        try:
+            placed = call() or {}
+        except Exception as e:
+            self.j.event("order_error", intent_key=intent, error=str(e)[:300])
+            raise
+        self.j.event("order_ack", intent_key=intent, status=placed.get("status"),
+                     order_key=execution_key(placed["id"]) if placed.get("id") else None)
 
     def run(self, today: date | None = None, force: bool = False) -> dict:
         today = today or date.today()
