@@ -331,6 +331,7 @@ function renderParams() {
   const c = DATA.config, s = c.stocks, o = c.options, r = c.risk;
   const items = [
     ["动量周期", s.momentum_lookback + " 天"], ["趋势均线", s.trend_sma + " 日"], ["持股数", s.top_n],
+    ["RSI 过热时", s.rsi_applies_to_holdings === false ? "只限制买入，持有的不卖" : "持有的也卖出"],
     ["股票总仓位", pct(s.gross_exposure, 0)], ["期权预算", pct(o.allocation, 0) + ` · 最多 ${o.max_positions} 个`],
     ["期权止盈 / 止损", pct(o.take_profit, 0) + " / " + pct(o.stop_loss, 0)],
     ["单只上限", pct(r.max_position_pct, 0)], ["日亏损暂停", pct(r.daily_loss_halt, 0)],

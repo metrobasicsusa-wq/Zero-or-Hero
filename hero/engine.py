@@ -106,7 +106,8 @@ class Engine:
 
     def _rebalance(self, stocks: dict, busy: set, closes: dict, equity: float, halted: bool) -> None:
         p, risk = self.cfg["stocks"], self.cfg["risk"]
-        targets = momentum.target_weights(closes, p, self.cfg["regime_symbol"], risk["max_position_pct"])
+        targets = momentum.target_weights(closes, p, self.cfg["regime_symbol"], risk["max_position_pct"],
+                                          held=frozenset(stocks))
         self.j.event("targets", weights={s: round(w, 4) for s, w in targets.items()})
 
         for sym in stocks:

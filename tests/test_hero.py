@@ -87,6 +87,15 @@ class Strategy(unittest.TestCase):
         self.assertNotIn("DOWN", ranked)
         self.assertEqual(ranked[0], "UP1")
 
+    def test_rsi_filter_on_holdings(self):
+        hot = [100.0 * 1.01 ** i for i in range(300)]  # steady climb: RSI 100
+        closes = {"HOT": hot}
+        p = {**CFG["stocks"], "rsi_max": 80}
+        self.assertEqual(mom.rank(closes, {**p, "rsi_applies_to_holdings": True}, frozenset({"HOT"})), [])
+        self.assertEqual(mom.rank(closes, {**p, "rsi_applies_to_holdings": False}, frozenset({"HOT"})), ["HOT"])
+        # Not held: still blocked from entry either way.
+        self.assertEqual(mom.rank(closes, {**p, "rsi_applies_to_holdings": False}), [])
+
     def test_bear_regime_scales_exposure(self):
         closes = {"SPY": series(-0.002, seed=4), "UP1": series(0.002, seed=1)}
         p = {**CFG["stocks"], "rsi_max": 101}

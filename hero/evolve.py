@@ -20,6 +20,8 @@ GRID = {
     "momentum_lookback": [63, 126, 189],
     "trend_sma": [50, 100, 200],
     "top_n": [3, 5, 8],
+    # True: RSI > rsi_max also forces out a held winner. False: RSI only gates new entries.
+    "rsi_applies_to_holdings": [True, False],
 }
 WARMUP = 210
 TRAIN_FRACTION = 0.7

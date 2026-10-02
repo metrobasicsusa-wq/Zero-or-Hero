@@ -28,7 +28,8 @@ def run(closes: dict[str, list[float]], p: dict, regime: str, max_pos: float,
         start: int, end: int) -> dict:
     rets, equity, w_prev = [], [1.0], {}
     for t in range(start, end - 1):
-        w = momentum.target_weights({s: xs[: t + 1] for s, xs in closes.items()}, p, regime, max_pos)
+        w = momentum.target_weights({s: xs[: t + 1] for s, xs in closes.items()}, p, regime, max_pos,
+                                    held=frozenset(w_prev))
         turnover = sum(abs(w.get(s, 0) - w_prev.get(s, 0)) for s in set(w) | set(w_prev))
         r = sum(wt * (closes[s][t + 1] / closes[s][t] - 1) for s, wt in w.items()) - COST * turnover
         rets.append(r)
