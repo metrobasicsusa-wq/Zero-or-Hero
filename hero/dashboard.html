@@ -144,7 +144,7 @@ footer { color: var(--muted); font-size: 12px; margin-top: 24px; }
     </div>
   </section>
 
-  <footer>Alpaca 模拟盘 · 交易时段每 10 分钟更新 · 数据来自仓库 journal/ 目录</footer>
+  <footer>Alpaca 模拟盘 · 交易时段每 10 分钟更新，页面打开时自动刷新 · 数据来自仓库 journal/ 目录</footer>
 </main>
 
 <script>
@@ -173,7 +173,22 @@ function empty(msg) { return `<div class="empty">${esc(msg)}</div>`; }
 
 function renderHeader() {
   const ts = DATA.snapshot?.ts || DATA.generated;
-  $("updated").textContent = "更新于 " + new Date(ts).toLocaleString("zh-CN");
+  const mins = Math.max(0, Math.round((Date.now() - new Date(ts)) / 60000));
+  const ago = mins < 1 ? "刚刚" : mins < 60 ? `${mins} 分钟前` : `${Math.floor(mins / 60)} 小时前`;
+  $("updated").textContent = `数据更新于 ${new Date(ts).toLocaleString("zh-CN")}（${ago}）`;
+}
+
+// The page is regenerated after every trading cycle. Poll for a newer build once a minute,
+// bypassing the browser and Pages caches, and reload when one is published.
+function watchForUpdates() {
+  setInterval(async () => {
+    renderHeader();
+    try {
+      const res = await fetch(location.pathname + "?t=" + Date.now(), { cache: "no-store" });
+      const m = (await res.text()).match(/"generated":"([^"]+)"/);
+      if (m && m[1] !== DATA.generated) location.replace(location.pathname + "?t=" + Date.now());
+    } catch (e) { /* offline: try again next minute */ }
+  }, 60000);
 }
 
 function renderKpis() {
@@ -355,6 +370,7 @@ renderOrders();
 renderEvents();
 renderParams();
 renderEvolution();
+watchForUpdates();
 </script>
 </body>
 </html>

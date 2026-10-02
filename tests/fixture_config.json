@@ -1,0 +1,50 @@
+{
+  "generation": 0,
+  "universe": [
+    "SPY",
+    "QQQ",
+    "IWM",
+    "DIA",
+    "XLK",
+    "XLF",
+    "XLE",
+    "XLV",
+    "XLY",
+    "XLI",
+    "AAPL",
+    "MSFT",
+    "NVDA",
+    "AMZN",
+    "GOOGL",
+    "META",
+    "TSLA",
+    "AMD",
+    "AVGO",
+    "JPM"
+  ],
+  "regime_symbol": "SPY",
+  "stocks": {
+    "momentum_lookback": 126,
+    "trend_sma": 100,
+    "top_n": 5,
+    "rsi_max": 80,
+    "gross_exposure": 0.8,
+    "rebalance_drift": 0.25,
+    "rsi_applies_to_holdings": true
+  },
+  "options": {
+    "enabled": true,
+    "allocation": 0.1,
+    "max_positions": 3,
+    "min_dte": 30,
+    "max_dte": 60,
+    "target_delta": 0.5,
+    "take_profit": 0.6,
+    "stop_loss": -0.4,
+    "exit_dte": 7
+  },
+  "risk": {
+    "max_position_pct": 0.2,
+    "daily_loss_halt": -0.03
+  }
+}

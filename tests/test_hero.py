@@ -14,7 +14,9 @@ from hero.journal import Journal
 from hero.strategies import momentum as mom
 from hero.strategies import options as opt
 
-CFG = json.loads((Path(__file__).resolve().parent.parent / "config" / "strategy.json").read_text())
+# A frozen copy of the generation-0 config: config/strategy.json changes every week as the
+# strategy evolves, and the tests must not depend on whatever generation is live.
+CFG = json.loads((Path(__file__).resolve().parent / "fixture_config.json").read_text())
 TODAY = date(2026, 10, 1)
 
 
@@ -378,6 +380,14 @@ class OrderSafety(unittest.TestCase):
         with self.assertRaises(AlpacaError):
             Alpaca(session=Session()).close_position("AAPL")
         self.assertEqual(Session.calls, 1)
+
+
+class LiveConfig(unittest.TestCase):
+    def test_live_config_has_every_fixture_key(self):
+        live = json.loads((Path(__file__).resolve().parent.parent / "config" / "strategy.json").read_text())
+        for section in ("stocks", "options", "risk"):
+            self.assertEqual(set(CFG[section]), set(live[section]), section)
+        self.assertIsInstance(live["generation"], int)
 
 
 class Safety(unittest.TestCase):
