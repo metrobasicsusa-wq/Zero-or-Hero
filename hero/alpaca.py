@@ -83,6 +83,19 @@ class Alpaca:
     def order_by_client_id(self, client_order_id: str) -> dict:
         return self._t("GET", "/v2/orders:by_client_order_id", params={"client_order_id": client_order_id})
 
+    def cancel_order(self, order_id: str, wait_s: float = 5.0) -> str:
+        """Cancel and wait until the broker reports a final state, so the shares the order held
+        are released before we sell them. Returns that state (e.g. "canceled", or "filled" if
+        the stop triggered first)."""
+        self._t("DELETE", f"/v2/orders/{order_id}", retry=False)
+        status, deadline = "pending_cancel", time.monotonic() + wait_s
+        while time.monotonic() < deadline:
+            status = self._t("GET", f"/v2/orders/{order_id}").get("status", status)
+            if status in ("canceled", "filled", "expired", "rejected", "replaced"):
+                break
+            time.sleep(0.5)
+        return status
+
     def close_position(self, symbol: str) -> dict:
         return self._t("DELETE", f"/v2/positions/{symbol}", retry=False)
 

@@ -20,7 +20,7 @@ ACCOUNT_FIELDS = ("equity", "last_equity", "cash", "buying_power", "long_market_
 POSITION_FIELDS = ("symbol", "asset_class", "side", "qty", "avg_entry_price", "current_price", "lastday_price",
                    "market_value", "cost_basis", "unrealized_pl", "unrealized_plpc", "unrealized_intraday_pl")
 ORDER_FIELDS = ("symbol", "asset_class", "side", "qty", "filled_qty", "filled_avg_price", "type", "limit_price",
-                "status", "submitted_at", "filled_at")
+                "stop_price", "time_in_force", "status", "submitted_at", "filled_at", "protective_stop")
 FILL_FIELDS = ("transaction_time", "symbol", "side", "qty", "price", "type", "cum_qty", "leaves_qty")
 
 
@@ -32,7 +32,8 @@ def sanitize(snapshot: dict) -> dict:
     return {
         "account": _pick(snapshot.get("account") or {}, ACCOUNT_FIELDS),
         "positions": [_pick(p, POSITION_FIELDS) for p in snapshot.get("positions") or []],
-        "open_orders": [_pick(o, ORDER_FIELDS) for o in snapshot.get("open_orders") or []],
+        "open_orders": [_pick({**o, "protective_stop": (o.get("client_order_id") or "").startswith("hero-stop-")},
+                              ORDER_FIELDS) for o in snapshot.get("open_orders") or []],
     }
 
 

@@ -6,7 +6,7 @@ import unittest
 from datetime import date, timedelta
 from pathlib import Path
 
-from hero import backtest, dashboard, evolve, patrol, review
+from hero import backtest, dashboard, evolve, patrol, review, stops
 from hero.alpaca import Alpaca, AlpacaError
 from hero.engine import Engine, round_option_price
 from hero.indicators import max_drawdown, momentum, rsi, sma
@@ -47,6 +47,10 @@ class FakeClient:
     def submit_order(self, **o):
         self.orders.append(o)
         return {"id": f"order-{len(self.orders)}"}
+    def cancel_order(self, oid):
+        self.cancelled = getattr(self, "cancelled", []) + [oid]
+        return getattr(self, "cancel_result", "canceled")
+
     def close_position(self, s):
         self.closed.append(s)
         return {"id": f"close-{s}", "status": "accepted"}
@@ -380,6 +384,34 @@ class OrderSafety(unittest.TestCase):
         self.assertEqual([m for m, _ in sess.calls], ["POST", "POST", "GET"])
         self.assertIn("by_client_order_id", sess.calls[-1][1])
 
+    def test_cancel_waits_for_final_state(self):
+        class Resp:
+            def __init__(self, code, body=None):
+                self.status_code, self._b = code, body
+                self.content = json.dumps(body).encode() if body is not None else b""
+                self.text = self.content.decode()
+            def json(self):
+                return self._b
+
+        class Session:
+            headers = {}
+            def __init__(self):
+                self.gets = 0
+            def request(self, method, url, timeout, **kw):
+                if method == "DELETE":
+                    return Resp(204)
+                self.gets += 1
+                return Resp(200, {"status": "pending_cancel" if self.gets < 3 else "canceled"})
+
+        import hero.alpaca as alpaca
+        orig, alpaca.time.sleep = alpaca.time.sleep, lambda s: None
+        try:
+            sess = Session()
+            self.assertEqual(Alpaca(session=sess).cancel_order("o1"), "canceled")
+            self.assertEqual(sess.gets, 3)
+        finally:
+            alpaca.time.sleep = orig
+
     def test_close_position_is_not_retried(self):
         class Session:
             headers = {}
@@ -414,6 +446,90 @@ class Reasons(unittest.TestCase):
         self.assertEqual(mom.why_dropped("UP1", sc2["UP1"], loose), "动量排名第 2，只持有前 1 名")
         self.assertTrue(mom.why_selected("HOT", sc2["HOT"], loose).startswith("动量排名第 1/1"))
         self.assertEqual(mom.why_dropped("GONE", None, p), "不在股票池或没有行情数据")
+
+
+class ProtectiveStops(unittest.TestCase):
+    def setUp(self):
+        self.tmp = tempfile.TemporaryDirectory()
+        self.j = Journal(Path(self.tmp.name))
+        self.closes = {"SPY": series(0.001, seed=5), "UP1": series(0.002, seed=1)}
+
+    def tearDown(self):
+        self.tmp.cleanup()
+
+    def pos(self, sym, qty="10", entry="100", cur="105"):
+        return {"symbol": sym, "asset_class": "us_equity", "qty": qty, "avg_entry_price": entry,
+                "current_price": cur, "market_value": str(float(qty) * float(cur))}
+
+    def stop_order(self, sym, qty, oid="s1"):
+        return {"id": oid, "symbol": sym, "qty": qty, "side": "sell", "type": "stop", "status": "new",
+                "client_order_id": stops.PREFIX + "abc", "submitted_at": "2026-10-01T14:00:00Z"}
+
+    def run_engine(self, c, **over):
+        conf = cfg(stocks={"rsi_max": 101}, options={"enabled": False}, **over)
+        Engine(c, conf, self.j).run(today=TODAY)
+        return c
+
+    def test_places_gtc_stop_sized_to_volatility(self):
+        c = self.run_engine(FakeClient(self.closes, positions=[self.pos("UP1")]))
+        placed = [o for o in c.orders if o["type"] == "stop"]
+        self.assertEqual(len(placed), 1)
+        o = placed[0]
+        self.assertEqual((o["symbol"], o["qty"], o["side"], o["time_in_force"]), ("UP1", "10", "sell", "gtc"))
+        self.assertTrue(o["client_order_id"].startswith(stops.PREFIX))
+        pct = 1 - float(o["stop_price"]) / 100  # below the entry (100), which is under the current price
+        self.assertTrue(CFG["risk"]["stop_min_pct"] - 0.001 <= pct <= CFG["risk"]["stop_max_pct"] + 0.001, pct)
+
+    def test_existing_matching_stop_is_kept_and_does_not_block_rebalance(self):
+        c = FakeClient(self.closes, positions=[self.pos("UP1")], open_orders=[self.stop_order("UP1", "10")])
+        self.run_engine(c)
+        self.assertFalse([o for o in c.orders if o["type"] == "stop"])
+        self.assertFalse(getattr(c, "cancelled", []))
+        # UP1 is held with a resting stop, yet the rebalance still sized it (stop is not "busy").
+        targets = [json.loads(l) for l in (Path(self.tmp.name) / "trades.jsonl").read_text().splitlines()
+                   if '"targets"' in l]
+        self.assertIn("UP1", targets[0]["weights"])
+
+    def test_quantity_change_replaces_stop(self):
+        c = FakeClient(self.closes, positions=[self.pos("UP1", qty="12")], open_orders=[self.stop_order("UP1", "10")])
+        self.run_engine(c)
+        self.assertEqual(c.cancelled, ["s1"])
+        self.assertEqual([o["qty"] for o in c.orders if o["type"] == "stop"], ["12"])
+
+    def test_stop_cancelled_before_closing_position(self):
+        down = {**self.pos("DOWN"), "current_price": "50"}
+        closes = {**self.closes, "DOWN": series(-0.002, seed=3)}
+        c = FakeClient(closes, positions=[down], open_orders=[self.stop_order("DOWN", "10", "sd")])
+        self.run_engine(c)
+        self.assertEqual(c.cancelled, ["sd"])
+        self.assertIn("DOWN", c.closed)
+        kinds = [json.loads(l)["kind"] for l in (Path(self.tmp.name) / "trades.jsonl").read_text().splitlines()
+                 if '"DOWN"' in l]
+        self.assertLess(kinds.index("cancel"), kinds.index("close"))
+        self.assertFalse([o for o in c.orders if o["type"] == "stop" and o["symbol"] == "DOWN"])
+
+    def test_stop_that_already_filled_blocks_the_sale(self):
+        down = {**self.pos("DOWN"), "current_price": "50"}
+        closes = {**self.closes, "DOWN": series(-0.002, seed=3)}
+        c = FakeClient(closes, positions=[down], open_orders=[self.stop_order("DOWN", "10", "sd")])
+        c.cancel_result = "filled"
+        self.run_engine(c)
+        self.assertNotIn("DOWN", c.closed)  # the stop already sold it; never sell twice
+
+    def test_stop_price_never_above_market(self):
+        self.assertEqual(stops.stop_price(100, 80, 0.1), 72.0)
+        self.assertEqual(stops.stop_price(100, 120, 0.1), 90.0)
+        self.assertEqual(stops.stop_pct(None, CFG["risk"]), (CFG["risk"]["stop_max_pct"], None))
+
+    def test_patrol_ignores_resting_stops_but_flags_missing_ones(self):
+        from datetime import datetime, timezone
+        now = datetime(2026, 10, 2, 20, 0, tzinfo=timezone.utc)
+        snap = {"ts": "2026-10-02T19:55:00+00:00", "account": {},
+                "positions": [{"symbol": "AAPL", "asset_class": "us_equity", "unrealized_plpc": "0"},
+                              {"symbol": "MSFT", "asset_class": "us_equity", "unrealized_plpc": "0"}],
+                "open_orders": [{"symbol": "AAPL", "side": "sell", "status": "new", "protective_stop": True,
+                                 "submitted_at": "2026-09-01T14:00:00Z"}]}
+        self.assertEqual(patrol.check(snap, market_open=True, now=now), ["MSFT 没有券商端保护性止损单"])
 
 
 class Safety(unittest.TestCase):

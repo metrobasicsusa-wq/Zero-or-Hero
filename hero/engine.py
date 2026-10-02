@@ -6,6 +6,7 @@ import math
 import uuid
 from datetime import date, timedelta
 
+from hero import stops as stoplib
 from hero.journal import Journal, execution_key
 from hero.strategies import momentum
 from hero.strategies import options as opt
@@ -30,10 +31,11 @@ class Engine:
     def __init__(self, client, cfg: dict, journal: Journal, dry_run: bool = False):
         self.c, self.cfg, self.j, self.dry = client, cfg, journal, dry_run
 
-    def _order(self, reason: str, evidence: dict | None = None, why: str = "", **order) -> None:
+    def _order(self, reason: str, evidence: dict | None = None, why: str = "", cid_prefix: str = "",
+               **order) -> None:
         # The decision and its evidence (the quote it was based on) are journaled before the
         # broker call, so a timeout or crash cannot lose them. Evidence is never sent to the broker.
-        order["client_order_id"] = uuid.uuid4().hex
+        order["client_order_id"] = cid_prefix + uuid.uuid4().hex
         intent = execution_key(order["client_order_id"])
         logged = {k: v for k, v in order.items() if k != "client_order_id"}
         self.j.event("order", reason=reason, why=why, dry_run=self.dry, evidence=evidence or {}, intent_key=intent,
@@ -72,7 +74,14 @@ class Engine:
             self.j.event("halt", day_pl=round(day_pl, 4))
 
         positions = self.c.positions()
-        busy = {o["symbol"] for o in self.c.open_orders()}
+        open_orders = self.c.open_orders()
+        # Our resting protective stops are not "pending trades": they must not block the rebalance.
+        self.stops: dict[str, list[dict]] = {}
+        for o in open_orders:
+            if stoplib.is_protective_stop(o):
+                self.stops.setdefault(o["symbol"], []).append(o)
+        busy = {o["symbol"] for o in open_orders if not stoplib.is_protective_stop(o)}
+        self.touched: set[str] = set()
         stocks = {p["symbol"]: p for p in positions if p.get("asset_class") == "us_equity"}
         options = {p["symbol"]: p for p in positions if p.get("asset_class") == "us_option"}
 
@@ -87,6 +96,7 @@ class Engine:
             state["last_rebalance"] = today.isoformat()
         if self.cfg["options"]["enabled"] and not halted:
             self._option_entries(options, busy, closes, equity, today)
+        self._reconcile_stops(stocks, busy, closes)
 
         state["last_run"] = today.isoformat()
         # A dry run must not mark the day as rebalanced, or the real run would skip it.
@@ -95,6 +105,53 @@ class Engine:
         bench = closes.get(self.cfg["regime_symbol"], [None])[-1]
         self.j.equity(today.isoformat(), equity, float(acct["cash"]), self.cfg["generation"], bench)
         return {"status": "ok", "equity": equity, "day_pl": day_pl, "halted": halted}
+
+    def _cancel_stops(self, sym: str, why: str) -> bool:
+        """Cancel our resting stops on sym. Returns False if a stop had already filled, i.e. the
+        position is (partly) gone and the caller must not sell it again this cycle."""
+        self.touched.add(sym)
+        clear = True
+        for o in self.stops.pop(sym, []):
+            self.j.event("cancel", symbol=sym, reason="protective_stop", why=why, dry_run=self.dry,
+                         order_key=execution_key(o["id"]), stop_price=o.get("stop_price"), qty=o.get("qty"))
+            if self.dry:
+                continue
+            try:
+                status = self.c.cancel_order(o["id"])
+            except Exception as e:
+                status = f"error: {str(e)[:300]}"
+            self.j.event("cancel_ack", symbol=sym, order_key=execution_key(o["id"]), status=status)
+            if status != "canceled":
+                clear = False  # filled, still pending or failed: re-read the broker next cycle
+        return clear
+
+    def _reconcile_stops(self, stocks: dict, busy: set, closes: dict) -> None:
+        """Every held stock gets exactly one resting GTC stop for its full quantity.
+
+        Symbols sold, trimmed or with pending orders this cycle are skipped: their quantity is
+        changing, so the next cycle sizes the stop to the settled position."""
+        risk = self.cfg["risk"]
+        for sym, pos in stocks.items():
+            if sym in busy or sym in self.touched:
+                continue
+            qty = float(pos["qty"])
+            if qty <= 0:
+                continue
+            existing = self.stops.get(sym, [])
+            if len(existing) == 1 and float(existing[0]["qty"]) == qty:
+                continue
+            if existing:
+                self._cancel_stops(sym, f"持股数变为 {qty:g}，撤销旧止损单后按新股数重挂")
+            pct, daily = stoplib.stop_pct(closes.get(sym), risk)
+            entry, current = float(pos["avg_entry_price"]), float(pos["current_price"])
+            price = stoplib.stop_price(entry, current, pct)
+            basis = (f"{risk['stop_vol_mult']:g} 倍日波动率 {daily:.1%}" if daily is not None else "波动率数据不足，取上限")
+            why = (f"保护性止损（挂在券商端，GTC 长期有效）：成本 ${entry:,.2f}，现价 ${current:,.2f}；"
+                   f"止损距离 {pct:.1%}（{basis}，限制在 {risk['stop_min_pct']:.0%}–{risk['stop_max_pct']:.0%}），"
+                   f"止损价 ${price:,.2f}")
+            evidence = {"avg_entry_price": entry, "current_price": current, "daily_vol": daily, "stop_pct": pct}
+            self._order("protective_stop", evidence, why, cid_prefix=stoplib.PREFIX, symbol=sym, qty=f"{qty:g}",
+                        side="sell", type="stop", stop_price=f"{price:.2f}", time_in_force="gtc")
 
     def _option_exits(self, options: dict, busy: set, today: date) -> None:
         for sym, pos in options.items():
@@ -119,6 +176,8 @@ class Engine:
 
         for sym in stocks:
             if sym not in targets and sym not in busy:
+                if not self._cancel_stops(sym, "卖出前先撤销保护性止损单，释放被占用的股份"):
+                    continue
                 self._close(sym, "dropped_from_targets", {k: score.get(sym, {}).get(k) for k in
                                                           ("momentum", "above_trend", "rsi", "rank")},
                             why="移出目标：" + momentum.why_dropped(sym, score.get(sym), p))
@@ -143,6 +202,8 @@ class Engine:
             if not bull:
                 why += f"；{regime} 跌破 200 日均线，总仓位降到 {momentum.BEAR_EXPOSURE_SCALE:.0%}"
             if want < have:
+                if not self._cancel_stops(sym, "减仓前先撤销保护性止损单，减仓后按新股数重挂"):
+                    continue
                 self._order("trim", ref, why, symbol=sym, qty=str(qty), side="sell", type="market", time_in_force="day")
             else:
                 buys.append((sym, qty, ref, why))

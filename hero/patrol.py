@@ -35,7 +35,15 @@ def check(snapshot: dict | None, market_open: bool, now: datetime | None = None)
         if pl <= POSITION_LOSS_ALERT:
             problems.append(f"{p['symbol']} 亏损 {pl:.0%}，接近或超过止损线")
 
-    for o in snapshot.get("open_orders") or []:
+    orders = snapshot.get("open_orders") or []
+    protected = {o["symbol"] for o in orders if o.get("protective_stop")}
+    for p in snapshot.get("positions") or []:
+        if p.get("asset_class") == "us_equity" and p["symbol"] not in protected:
+            problems.append(f"{p['symbol']} 没有券商端保护性止损单")
+
+    for o in orders:
+        if o.get("protective_stop"):
+            continue  # resting GTC stops are meant to stay open
         hours = (now - _ts(o["submitted_at"])).total_seconds() / 3600
         if o.get("status") in ("new", "accepted", "partially_filled") and hours >= ORDER_STUCK_HOURS:
             problems.append(f"{o['symbol']} {o['side']} 挂单 {hours:.1f} 小时未完全成交（{o['status']}）")

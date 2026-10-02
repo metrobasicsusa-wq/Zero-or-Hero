@@ -131,7 +131,7 @@ footer { color: var(--muted); font-size: 12px; margin-top: 24px; }
   </section>
 
   <section class="card">
-    <h2>挂单</h2>
+    <h2>挂单与止损单</h2>
     <div id="orders"></div>
   </section>
 
@@ -332,10 +332,13 @@ function renderPositions() {
 function renderOrders() {
   const os = DATA.snapshot?.open_orders || [];
   if (!os.length) { $("orders").innerHTML = empty("没有挂单"); return; }
+  os.sort((a, b) => (a.protective_stop ? 1 : 0) - (b.protective_stop ? 1 : 0));
   $("orders").innerHTML = table(
-    [["提交时间"], ["标的"], ["方向"], ["数量", 1], ["类型"], ["限价", 1]],
+    [["提交时间"], ["标的"], ["方向"], ["数量", 1], ["类型"], ["价格", 1]],
     os.map((o) => [fmtTime(o.submitted_at), `<b>${esc(optionLabel(o.symbol) || o.symbol)}</b>`,
-      o.side === "buy" ? "买入" : "卖出", esc(o.qty), esc(o.type), o.limit_price ? usd(num(o.limit_price), 2) : "—"]));
+      o.side === "buy" ? "买入" : "卖出", esc(o.qty),
+      o.protective_stop ? '<span class="chip">保护性止损 · GTC</span>' : esc(o.type),
+      o.stop_price ? "止损 " + usd(num(o.stop_price), 2) : o.limit_price ? usd(num(o.limit_price), 2) : "—"]));
 }
 
 function renderEvents() {
@@ -358,6 +361,7 @@ function renderParams() {
     ["股票总仓位", pct(s.gross_exposure, 0)], ["期权预算", pct(o.allocation, 0) + ` · 最多 ${o.max_positions} 个`],
     ["期权止盈 / 止损", pct(o.take_profit, 0) + " / " + pct(o.stop_loss, 0)],
     ["单只上限", pct(r.max_position_pct, 0)], ["日亏损暂停", pct(r.daily_loss_halt, 0)],
+    ["股票止损", `${r.stop_vol_mult} 倍日波动率，${Math.round(r.stop_min_pct * 100)}%–${Math.round(r.stop_max_pct * 100)}%，券商端 GTC`],
   ];
   if (DATA.targets) items.push(["最新选股", Object.keys(DATA.targets.weights).join("、") || "空仓"]);
   $("params").innerHTML = `<dl class="params">${items.map(([k, v]) => `<dt>${k}</dt><dd>${esc(v)}</dd>`).join("")}</dl>`;

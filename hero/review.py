@@ -223,9 +223,16 @@ def insights(journal: Path, cfg: dict, day: str) -> list[str]:
         if equity and opts:
             notes.append(f"期权市值占净值 {opts / equity:.1%}（上限 {cfg['options']['allocation']:.0%}）。")
 
-    orders = snap.get("open_orders") or []
+    all_orders = snap.get("open_orders") or []
+    orders = [o for o in all_orders if not o.get("protective_stop")]
     if orders:
         notes.append(f"⚠️ 收盘时还有 {len(orders)} 笔挂单未完全成交：{', '.join(option_label(o['symbol']) for o in orders)}。")
+    stocks = [p["symbol"] for p in positions if p.get("asset_class") == "us_equity"]
+    if stocks:
+        covered = {o["symbol"] for o in all_orders if o.get("protective_stop")}
+        missing = [s for s in stocks if s not in covered]
+        notes.append(f"券商端止损单覆盖 {len(stocks) - len(missing)}/{len(stocks)} 只股票"
+                     + (f"；⚠️ 缺少：{', '.join(missing)}。" if missing else "。"))
 
     trades_path = journal / "trades.jsonl"
     if trades_path.exists():
