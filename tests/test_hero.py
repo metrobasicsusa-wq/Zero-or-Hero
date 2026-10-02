@@ -1180,6 +1180,16 @@ class ResearchUniverse(unittest.TestCase):
         self.assertIn("股票池回测", ru.markdown(rep))
 
 
+class ResearchS500(unittest.TestCase):
+    def test_restart_rule_replay(self):
+        from hero import research_s500 as r5
+        self.assertEqual(r5.attempts([0.1, 0.1]), {"attempts": 1, "final_attempt_multiple": 1.21, "net_per_500": 105.0})
+        # -50% ends attempt 1; attempt 2 starts fresh at $500 and doubles: $1000 - $1000 allocated = 0
+        self.assertEqual(r5.attempts([-0.5, 1.0]), {"attempts": 2, "final_attempt_multiple": 2.0, "net_per_500": 0.0})
+        p = r5.params(10, 2)
+        self.assertEqual((p["trend_sma"], p["top_n"], p["gross_exposure"]), (20, 2, 0.9))
+
+
 class Safety(unittest.TestCase):
     def test_refuses_live_endpoint(self):
         with self.assertRaises(AlpacaError):
