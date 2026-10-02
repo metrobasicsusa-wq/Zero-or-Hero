@@ -91,6 +91,7 @@ def facts(journal: Path, cfg: dict, day: str) -> str | None:
             if e["ts"].startswith(day) and not e.get("dry_run"):
                 events.append(e)
     targets = [e for e in events if e["kind"] == "targets"]
+    all_fills = Journal(journal).fills(day)
     if targets:
         lines.append(f"- targets: {', '.join(f'{s} {w:.0%}' for s, w in targets[-1]['weights'].items()) or 'cash'}")
     for e in events:
@@ -99,7 +100,14 @@ def facts(journal: Path, cfg: dict, day: str) -> str | None:
             ev = e.get("evidence") or {}
             quote = (f" · quote bid {ev['bid']} / ask {ev['ask']}, spread {ev['spread_pct_of_mid']:.1%} of mid"
                      if ev.get("bid") is not None and ev.get("spread_pct_of_mid") is not None else "")
-            lines.append(f"- {e['side']} {e['qty']} {option_label(e['symbol'])}{price} ({e['reason']}){quote}")
+            got = [f for f in all_fills if e.get("order_key") and f.get("order_key") == e["order_key"]]
+            if got:
+                q = sum(float(f["qty"]) for f in got)
+                vwap = sum(float(f["qty"]) * float(f["price"]) for f in got) / q
+                filled = f" → filled {q:g} @ {vwap:.2f}"
+            else:
+                filled = " → no fills linked" if e.get("order_key") else ""
+            lines.append(f"- {e['side']} {e['qty']} {option_label(e['symbol'])}{price} ({e['reason']}){quote}{filled}")
         elif e["kind"] == "close":
             lines.append(f"- close {option_label(e['symbol'])} ({e['reason']})")
         elif e["kind"] == "halt":

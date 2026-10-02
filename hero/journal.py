@@ -89,7 +89,8 @@ class Journal:
         for a in activities:
             key = execution_key(a["id"])
             added += key not in known
-            known[key] = {"execution_key": key, **_pick(a, FILL_FIELDS)}
+            order_key = execution_key(a["order_id"]) if a.get("order_id") else None
+            known[key] = {"execution_key": key, "order_key": order_key, **_pick(a, FILL_FIELDS)}
         rows = sorted(known.values(), key=lambda f: (f["transaction_time"], f["execution_key"]))
         path.write_text("".join(json.dumps(f, sort_keys=True) + "\n" for f in rows))
         return added

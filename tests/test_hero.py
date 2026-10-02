@@ -42,7 +42,9 @@ class FakeClient:
     def positions(self): return self.pos
     def open_orders(self): return self.oo
     def daily_bars(self, symbols, start): return {s: bars(self.closes[s]) for s in symbols if s in self.closes}
-    def submit_order(self, **o): self.orders.append(o)
+    def submit_order(self, **o):
+        self.orders.append(o)
+        return {"id": f"order-{len(self.orders)}"}
     def close_position(self, s): self.closed.append(s)
 
     def option_contracts(self, und, **kw):
@@ -129,7 +131,10 @@ class EngineTests(unittest.TestCase):
         self.assertIn("C", option_buys[0]["symbol"][-9])
         self.assertEqual(self.j.state()["last_rebalance"], TODAY.isoformat())
         # Quote evidence is journaled with each order but never sent to the broker.
-        self.assertFalse(any("evidence" in o for o in c.orders))
+        self.assertFalse(any("evidence" in o or "order_key" in o for o in c.orders))
+        from hero.journal import execution_key
+        self.assertTrue(any(json.loads(l).get("order_key") == execution_key("order-1")
+                            for l in (Path(self.tmp.name) / "trades.jsonl").read_text().splitlines()))
         logged = [json.loads(l) for l in (Path(self.tmp.name) / "trades.jsonl").read_text().splitlines()]
         opt_ev = next(e["evidence"] for e in logged if e["kind"] == "order" and e["type"] == "limit")
         self.assertEqual((opt_ev["bid"], opt_ev["ask"], opt_ev["mid"]), (4.0, 4.2, 4.1))
@@ -201,7 +206,15 @@ class Review(unittest.TestCase):
             (Path(d) / "trades.jsonl").write_text(json.dumps(
                 {"ts": "2026-10-02T15:00:00+00:00", "kind": "order", "symbol": "NVDA261120C00235000", "side": "buy",
                  "qty": "2", "type": "limit", "limit_price": "11.40", "reason": "call on NVDA", "dry_run": False}) + "\n")
+            from hero.journal import execution_key
+            with open(Path(d) / "trades.jsonl") as f:
+                lines = f.read().splitlines()
+            ev = json.loads(lines[0]); ev["order_key"] = execution_key("o1")
+            (Path(d) / "trades.jsonl").write_text(json.dumps(ev) + "\n")
+            j.record_fills([{"id": "a1", "order_id": "o1", "transaction_time": "2026-10-02T15:01:00Z",
+                             "symbol": "NVDA261120C00235000", "side": "buy", "qty": "2", "price": "11.35"}])
             text = review.facts(Path(d), cfg(), "2026-10-02")
+            self.assertIn("→ filled 2 @ 11.35", text)
             self.assertIsNone(review.facts(Path(d), cfg(), "2026-10-03"))
             self.assertIn("| Day | +1.00% ($1,000) | +1.00% |", text)
             self.assertIn("buy 2 NVDA 11/20 call 235 @ 11.40 (call on NVDA)", text)
@@ -255,12 +268,15 @@ class Publication(unittest.TestCase):
     def test_fills_dedupe_and_day(self):
         with tempfile.TemporaryDirectory() as d:
             j = Journal(Path(d))
-            fill = {"id": "act-1", "transaction_time": "2026-10-01T19:03:59Z", "symbol": "AAPL", "side": "buy",
+            fill = {"id": "act-1", "order_id": "ord-9", "transaction_time": "2026-10-01T19:03:59Z", "symbol": "AAPL", "side": "buy",
                     "qty": "47", "price": "329.75", "type": "partial_fill", "cum_qty": "47", "leaves_qty": "1"}
             self.assertEqual(j.record_fills([fill]), 1)
             self.assertEqual(j.record_fills([{**fill, "price": "329.70"}]), 0)  # broker correction, same id
             self.assertEqual([f["price"] for f in j.fills("2026-10-01")], ["329.70"])
             self.assertEqual(j.fills("2026-10-02"), [])
+            from hero.journal import execution_key
+            self.assertEqual(j.fills("2026-10-01")[0]["order_key"], execution_key("ord-9"))
+            self.assertNotIn("ord-9", (Path(d) / "fills.jsonl").read_text())
             self.assertNotIn("act-1", (Path(d) / "fills.jsonl").read_text())
 
     def test_final_only_after_close(self):

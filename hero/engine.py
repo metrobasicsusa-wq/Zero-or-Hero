@@ -5,7 +5,7 @@ from __future__ import annotations
 import math
 from datetime import date, timedelta
 
-from hero.journal import Journal
+from hero.journal import Journal, execution_key
 from hero.strategies import momentum
 from hero.strategies import options as opt
 
@@ -31,9 +31,10 @@ class Engine:
 
     def _order(self, reason: str, evidence: dict | None = None, **order) -> None:
         # Evidence (the quote the decision was based on) is logged only, never sent to the broker.
-        self.j.event("order", reason=reason, dry_run=self.dry, evidence=evidence or {}, **order)
-        if not self.dry:
-            self.c.submit_order(**order)
+        # The order key (hashed broker order id) links this decision to its fills in fills.jsonl.
+        placed = None if self.dry else self.c.submit_order(**order)
+        key = execution_key(placed["id"]) if placed and placed.get("id") else None
+        self.j.event("order", reason=reason, dry_run=self.dry, evidence=evidence or {}, order_key=key, **order)
 
     def _close(self, symbol: str, reason: str, evidence: dict | None = None) -> None:
         self.j.event("close", symbol=symbol, reason=reason, dry_run=self.dry, evidence=evidence or {})
@@ -107,7 +108,8 @@ class Engine:
             qty = math.floor(abs(want - have) / price)
             if qty < 1:
                 continue
-            ref = {"reference_price": price, "reference": "latest daily close (IEX)", "target_weight": w}
+            ref = {"reference_price": price, "reference": "IEX daily bar, latest trade at fetch time (may lag)",
+                   "target_weight": w}
             if want < have:
                 self._order("trim", ref, symbol=sym, qty=str(qty), side="sell", type="market", time_in_force="day")
             else:
@@ -158,7 +160,8 @@ class Engine:
                         "ask_size": quote.get("as"), "quote_time": quote.get("t"), "mid": round(price, 4),
                         "spread_pct_of_mid": round((quote["ap"] - quote["bp"]) / price, 4),
                         "delta": greeks.get("delta"), "iv": snap.get("impliedVolatility"),
-                        "underlying_last_close": spot, "feed": "indicative"}
+                        "underlying_price": spot,
+                        "underlying_price_source": "IEX daily bar, latest trade at fetch time (may lag)", "feed": "indicative"}
             self._order(f"{kind} on {und}", evidence, symbol=contract["symbol"], qty=str(qty), side="buy",
                         type="limit", limit_price=f"{round_option_price(price):.2f}", time_in_force="day")
             held.add(und)
