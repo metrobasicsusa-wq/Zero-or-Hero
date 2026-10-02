@@ -57,7 +57,7 @@ class Journal:
     def event(self, kind: str, **data) -> None:
         rec = {"ts": datetime.now(timezone.utc).isoformat(timespec="seconds"), "kind": kind, **data}
         with open(self.root / "trades.jsonl", "a") as f:
-            f.write(json.dumps(rec, sort_keys=True) + "\n")
+            f.write(json.dumps(rec, sort_keys=True, ensure_ascii=False) + "\n")
 
     def equity(self, day: str, equity: float, cash: float, generation: int,
                benchmark: float | None = None) -> None:

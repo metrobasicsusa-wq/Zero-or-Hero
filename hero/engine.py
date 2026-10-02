@@ -278,6 +278,7 @@ class Engine:
             candidates = [(s, "call") for s in ranked[: p.get("max_rank", len(ranked))]]
         order_of = {s: i for i, (s, _) in enumerate(candidates, 1)}
         budget = p["allocation"] * equity / p["max_positions"]
+        skipped = []  # why each candidate produced no order, so the journal shows options that were looked for
 
         for und, kind in candidates:
             if slots <= 0:
@@ -292,14 +293,20 @@ class Engine:
                 strike_price_gte=f"{spot * (1 - p.get('strike_band', 0.1)):.2f}",
                 strike_price_lte=f"{spot * (1 + p.get('strike_band', 0.1)):.2f}")
             if not contracts:
+                skipped.append(f"{und}：期限和行权价范围内没有合约")
                 continue
             snaps = self.c.option_snapshots([c["symbol"] for c in contracts])
             pick = opt.pick_contract(contracts, snaps, spot, p, budget if p.get("budget_filter") else None)
             if not pick:
+                cheapest = min((m * 100 for m in (opt.mid(snaps[c["symbol"]], 1.0) if c["symbol"] in snaps else None
+                                                  for c in contracts) if m), default=None)
+                skipped.append(f"{und}：{len(contracts)} 张合约都不合格（预算 ${budget:,.0f}"
+                               + (f"，最便宜一张约 ${cheapest:,.0f}" if cheapest else "，没有有效报价") + "）")
                 continue
             contract, price = pick
             qty = math.floor(budget / (price * 100))
             if qty < 1:
+                skipped.append(f"{und}：合格合约一张 ${price * 100:,.0f}，超过预算 ${budget:,.0f}")
                 continue
             snap = snaps[contract["symbol"]]
             quote, greeks = snap.get("latestQuote") or {}, snap.get("greeks") or {}
@@ -321,3 +328,5 @@ class Engine:
                         type="limit", limit_price=f"{round_option_price(price):.2f}", time_in_force="day")
             held.add(und)
             slots -= 1
+        if skipped and slots > 0:
+            self.j.event("option_skip", dry_run=self.dry, why="没有买期权：" + "；".join(skipped))

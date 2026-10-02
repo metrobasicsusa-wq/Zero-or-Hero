@@ -634,6 +634,18 @@ class SmallAccount(unittest.TestCase):
             top = mom.rank(closes, conf["stocks"])[0]
             self.assertTrue(opts and all(o["symbol"].startswith(top) for o in opts), (top, opts))
 
+    def test_option_skip_is_explained(self):
+        with tempfile.TemporaryDirectory() as d:
+            closes = {"SPY": series(0.001, seed=5), "UP1": series(0.002, seed=1)}
+            conf = self.s500_cfg(options={**CFG["options"], "enabled": True, "max_positions": 1,
+                                          "allocation": 0.2, "budget_filter": True})
+            c = FakeClient(closes, equity=500, last_equity=500)  # fake contracts cost $410 each
+            Engine(c, conf, Journal(Path(d))).run(today=TODAY)
+            self.assertFalse([o for o in c.orders if o["type"] == "limit"])
+            text = (Path(d) / "trades.jsonl").read_text()
+            self.assertIn("没有买期权", text)
+            self.assertIn("预算 $100", text)
+
     def test_broker_rejection_does_not_abort_cycle(self):
         class Rejecting(FakeClient):
             def submit_order(self, **o):

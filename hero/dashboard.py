@@ -8,7 +8,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 TEMPLATE = Path(__file__).with_name("dashboard.html")
-EVENT_KINDS = {"order", "close", "halt"}
+EVENT_KINDS = {"order", "close", "halt", "option_skip", "attempt_end"}
 MAX_EVENTS = 200
 
 
