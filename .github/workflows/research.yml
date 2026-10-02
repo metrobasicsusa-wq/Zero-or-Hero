@@ -8,7 +8,7 @@ on:
       study:
         description: "Which study to run"
         type: choice
-        options: [short, universe, s500, earnings]
+        options: [short, universe, s500, earnings, lottery]
         default: short
 
 concurrency:
