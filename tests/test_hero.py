@@ -51,6 +51,14 @@ class FakeClient:
         self.cancelled = getattr(self, "cancelled", []) + [oid]
         return getattr(self, "cancel_result", "canceled")
 
+    def order_by_client_id(self, cid):
+        found = getattr(self, "by_cid", {})
+        if cid not in found:
+            raise AlpacaError(f"GET order {cid} -> 404", 404)
+        if isinstance(found[cid], Exception):
+            raise found[cid]
+        return found[cid]
+
     def close_position(self, s):
         self.closed.append(s)
         return {"id": f"close-{s}", "status": "accepted"}
@@ -696,27 +704,48 @@ class SmallAccount(unittest.TestCase):
             self.assertNotIn("attempt_1_ended", Journal(Path(d)).state())
 
     def test_attempt_end_uncertain_submit_then_restart(self):
-        with tempfile.TemporaryDirectory() as d:
+        closes = {"SPY": series(0.001, seed=5), "UP1": series(0.002, seed=1)}
+
+        def crashed(d):
             class Timeout(FakeClient):
                 def submit_order(self, **o):
                     self.orders.append(o)
                     raise TimeoutError("read timed out")  # did it reach the broker? unknown
-            c = Timeout({"SPY": series(0.001, seed=5), "UP1": series(0.002, seed=1)},
-                        positions=[self.POS], equity=295, last_equity=320)
+            c = Timeout(closes, positions=[self.POS], equity=295, last_equity=320)
             with self.assertRaises(TimeoutError):
                 self._ending(d, None, client=c)
-            self.assertIn("attempt_1_ending", Journal(Path(d)).state())  # latch survived the crash
+            st = Journal(Path(d)).state()
+            self.assertIn("attempt_1_ending", st)  # the latch survived the crash
             cid = c.orders[0]["client_order_id"]
-            # Restart, case 1: the order did reach the broker -> found by its client_order_id, no duplicate.
-            seen = {"id": "x1", "symbol": "UP1", "side": "sell", "type": "market", "status": "accepted",
-                    "client_order_id": cid}
-            self.assertEqual(self._ending(d, [self.POS], open_orders=[seen]).orders, [])
-            # Restart, case 2: it never arrived (no order, position intact) -> sent once.
-            self.assertEqual(len(self._exits(self._ending(d, [self.POS]))), 1)
-            # Restart, case 3: it arrived and filled -> flat, ended, nothing sent.
-            c4 = self._ending(d, [])
-            self.assertEqual(c4.orders, [])
+            self.assertEqual(st["attempt_1_exits"], {"UP1": cid})  # saved before the broker call
+            return cid
+
+        def restart(d, **broker):
+            c = FakeClient(closes, positions=broker.pop("positions", [self.POS]), equity=295, last_equity=295,
+                           open_orders=broker.pop("open_orders", []))
+            c.by_cid = broker.pop("by_cid", {})
+            self._ending(d, None, client=c)
+            return c
+
+        with tempfile.TemporaryDirectory() as d:  # reached the broker, not yet in the open-orders list
+            cid = crashed(d)
+            self.assertEqual(restart(d, by_cid={cid: {"status": "accepted"}}).orders, [])
+        with tempfile.TemporaryDirectory() as d:  # broker answers "not found": never arrived -> send once
+            crashed(d)
+            self.assertEqual(len(self._exits(restart(d))), 1)
+        with tempfile.TemporaryDirectory() as d:  # lookup itself fails: unknown -> wait, no resend
+            cid = crashed(d)
+            c = restart(d, by_cid={cid: AlpacaError("GET -> 503", 503)})
+            self.assertEqual(c.orders, [])
+            self.assertIn("无法确认上一张平仓单的状态", (Path(d) / "trades.jsonl").read_text())
+        with tempfile.TemporaryDirectory() as d:  # it filled: flat -> confirmed and ended
+            cid = crashed(d)
+            c = restart(d, positions=[], by_cid={cid: {"status": "filled"}})
+            self.assertEqual(c.orders, [])
             self.assertIn("attempt_1_ended", Journal(Path(d)).state())
+        with tempfile.TemporaryDirectory() as d:  # it was canceled with the position intact -> send again
+            cid = crashed(d)
+            self.assertEqual(len(self._exits(restart(d, by_cid={cid: {"status": "canceled"}}))), 1)
 
     def test_attempt_end_cancel_and_fill_interleave(self):
         with tempfile.TemporaryDirectory() as d:

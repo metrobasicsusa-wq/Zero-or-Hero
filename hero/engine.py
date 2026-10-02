@@ -40,7 +40,7 @@ class Engine:
                **order) -> None:
         # The decision and its evidence (the quote it was based on) are journaled before the
         # broker call, so a timeout or crash cannot lose them. Evidence is never sent to the broker.
-        order["client_order_id"] = cid_prefix + uuid.uuid4().hex
+        order.setdefault("client_order_id", cid_prefix + uuid.uuid4().hex)
         intent = execution_key(order["client_order_id"])
         logged = {k: v for k, v in order.items() if k != "client_order_id"}
         self.j.event("order", reason=reason, why=why, dry_run=self.dry, evidence=evidence or {}, intent_key=intent,
@@ -197,6 +197,24 @@ class Engine:
             self.j.event("cancel_ack", symbol=o.get("symbol"), order_key=execution_key(o["id"]), status=status)
             if status != "canceled":
                 blocked.add(o["symbol"])  # still live, filled or failed: re-read the broker next cycle
+        # Exits sent earlier whose outcome we did not see (crash, timeout): ask the broker by our own
+        # client_order_id before sending another. Only "not found" (404) proves it never arrived.
+        sent = state.setdefault(f"attempt_{n}_exits", {})
+        for sym, cid in list(sent.items()):
+            try:
+                o = self.c.order_by_client_id(cid)
+            except AlpacaError as e:
+                if e.status == 404:
+                    del sent[sym]  # never reached the broker: safe to send again
+                else:
+                    exiting.add(sym)  # unknown: wait rather than risk a duplicate exit
+                    self.j.event("attempt_exit_pending", symbol=sym, dry_run=self.dry,
+                                 why=f"无法确认上一张平仓单的状态（{str(e)[:80]}），本轮不重发")
+                continue
+            if o.get("status") in ("filled", "canceled", "expired", "rejected", "done_for_day"):
+                del sent[sym]  # final: the position read above already reflects it
+            else:
+                exiting.add(sym)
         for pos in positions:
             sym = pos["symbol"]
             if sym in exiting:
@@ -207,9 +225,13 @@ class Engine:
                              why="撤单未确认，下一轮重新核对券商状态后再平仓")
             else:
                 qty = abs(float(pos["qty"]))
+                cid = EXIT_PREFIX + uuid.uuid4().hex
+                if not self.dry:
+                    sent[sym] = cid  # persisted before the broker call, so a crash cannot lose it
+                    self.j.save_state(state)
                 self._order("attempt_end", {"qty": pos["qty"], "current_price": pos.get("current_price")},
                             "尝试结束，平掉剩余仓位（按券商确认的剩余数量；每轮核对，直到券商确认清空）",
-                            cid_prefix=EXIT_PREFIX, symbol=sym, qty=f"{qty:.9g}",
+                            client_order_id=cid, symbol=sym, qty=f"{qty:.9g}",
                             side="sell" if float(pos["qty"]) > 0 else "buy", type="market", time_in_force="day")
         return True
 

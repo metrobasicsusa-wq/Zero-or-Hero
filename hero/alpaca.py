@@ -19,7 +19,9 @@ DATA_URL = "https://data.alpaca.markets"
 
 
 class AlpacaError(RuntimeError):
-    pass
+    def __init__(self, msg: str, status: int | None = None):
+        super().__init__(msg)
+        self.status = status  # HTTP status, when the broker answered
 
 
 class Alpaca:
@@ -45,10 +47,11 @@ class Alpaca:
                 time.sleep(2 ** attempt)
                 continue
             if r.status_code >= 400:
-                raise AlpacaError(f"{method} {url} -> {r.status_code}: {r.text[:300]}")
+                raise AlpacaError(f"{method} {url} -> {r.status_code}: {r.text[:300]}", r.status_code)
             return r.json() if r.content else None
             break
-        raise AlpacaError(f"{method} {url} -> {r.status_code} after {attempt + 1} attempt(s): {r.text[:300]}")
+        raise AlpacaError(f"{method} {url} -> {r.status_code} after {attempt + 1} attempt(s): {r.text[:300]}",
+                          r.status_code)
 
     def _t(self, method: str, path: str, **kw) -> Any:
         return self._req(method, self.base_url + path, **kw)
