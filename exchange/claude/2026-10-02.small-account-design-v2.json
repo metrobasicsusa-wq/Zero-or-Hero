@@ -23,14 +23,23 @@
         "https://docs.alpaca.markets/us/docs/options-trading",
         "https://docs.alpaca.markets/us/changelog/2026-08-27-options-stop-orders-08e9371"
       ],
-      "verification_status": {"official_documented": true, "implemented_in_claude_code": false, "mock_tested": false, "paper_verified": false}
+      "verification_status": {
+        "official_documented": true,
+        "implemented_in_claude_code": false,
+        "mock_tested": false,
+        "paper_verified": false
+      }
     },
     {
       "key": "fractional_protection",
       "accepted": true,
       "statement": "碎股专门文档列出 market、limit、stop、stop_limit，只能 DAY；通用下单文档存在不一致。DAY 止损不会延续到下一交易日。",
       "rule": "每天第一轮按『券商确认的可卖数量』（不是入场金额）挂当日止损；收盘后保护失效，隔夜无券商端保护并在日报披露。具体组合（按金额的止损、按数量的碎股止损）在子实验首日用最小数量实际下单验收，验收前不依赖它。",
-      "verification_status": {"official_documented": "partly (pages disagree)", "implemented_in_claude_code": false, "paper_verified": false}
+      "verification_status": {
+        "official_documented": "partly (pages disagree)",
+        "implemented_in_claude_code": false,
+        "paper_verified": false
+      }
     },
     {
       "key": "allocation_exceeds_budget",
@@ -71,7 +80,28 @@
   "claude_s500_design_v2": {
     "start": "2026-10-07 首周复盘之后的下一个交易日开盘；之前只做 dry-run（记录不下单）",
     "initial_allocation_usd": 500,
-    "universe": ["TQQQ", "SOXL", "SMH", "PLTR", "COIN", "HOOD", "SOFI", "MU", "ARM", "CRWD", "NFLX", "UBER", "SHOP", "MSTR", "RKLB", "IONQ", "SMCI", "AMAT", "LRCX", "ORCL"],
+    "universe": [
+      "TQQQ",
+      "SOXL",
+      "SMH",
+      "PLTR",
+      "COIN",
+      "HOOD",
+      "SOFI",
+      "MU",
+      "ARM",
+      "CRWD",
+      "NFLX",
+      "UBER",
+      "SHOP",
+      "MSTR",
+      "RKLB",
+      "IONQ",
+      "SMCI",
+      "AMAT",
+      "LRCX",
+      "ORCL"
+    ],
     "stocks": "集中动量：20 日动量排名，价格在 20 日均线之上，持前 2 名；有期权时各 35%，无期权时各 45%；按金额买碎股；每天第一轮调仓",
     "stock_stops": "每天第一轮按券商确认的可卖数量挂当日止损（2.5 倍日波动率，限制 5%–12%）；每 10 分钟轮询；隔夜无保护",
     "options": "最多 1 张，≤ 子账户净值 20%；只买排名第一标的的看涨期权；14–45 天、|delta| 0.25–0.6、价差 ≤12%、报价 ≤2 分钟；止盈 +80%、止损 −50%（软件轮询 + GTC 止损单，待验收）；到期处理见 expiry_and_exit_failure。合格合约不存在时期权部分空着，股票按无期权比例",
@@ -85,5 +115,32 @@
     "子实验开始前在 dry-run 下运行至少 2 个交易日，只记录不下单",
     "子实验首日用最小数量验收：碎股当日止损、期权 GTC 止损；验收结果写入交换文件，区分官方能力 / mock / paper 实测"
   ],
-  "main_experiment_followup": "官方支持期权 GTC 止损后，Claude 主实验的期权也可加券商端止损；先在子实验验收，再决定是否用于主实验。"
+  "main_experiment_followup": "官方支持期权 GTC 止损后，Claude 主实验的期权也可加券商端止损；先在子实验验收，再决定是否用于主实验。",
+  "changes_after_publication": [
+    {
+      "what": "架构改为独立账户",
+      "detail": "用户在 2026-10-02 另开了一个只有 500 美元的 PAPER 账户（Claude-500），并把它的 Key 单独存入 GitHub Secrets。所以 parent_and_child_cash_isolation、ledger_and_ownership 里『同账户隔离』的规则不再需要：资金、持仓、购买力和 PDT 都由券商按这个独立账户计算。重开时由用户重置或新开账户，attempt 编号写在 config/s500.json。",
+      "effect": "PDT 现在真实适用；被券商拒绝的订单会被记录，周期继续执行。"
+    },
+    {
+      "what": "期权只买持有的前 2 名",
+      "detail": "首次演练（2026-10-02 13:10 ET，dry-run）中，前 4 名都没有 100 美元以内的合格合约，程序顺延到第 5 名 SMCI，买 14 天、delta 0.29 的看涨期权。这不符合『放大趋势』的本意，已改为 options.max_rank = 2，只在持有的两只股票上找合约，找不到就不买。"
+    },
+    {
+      "what": "无期权时股票比例尚未切换到 90%",
+      "detail": "当前实现固定为股票合计 70%（每只 35%），没有期权时剩余 30% 留现金，比 v2 写的更保守。后续再实现按是否持有期权切换比例。"
+    },
+    {
+      "what": "期权券商端 GTC 止损尚未实现",
+      "detail": "期权仍只靠每 10 分钟轮询止盈止损；首日实测之后再接入。"
+    }
+  ],
+  "implementation": {
+    "config": "config/s500.json",
+    "journal": "journal-s500/",
+    "exchange": "exchange/claude/s500/",
+    "dashboard": "https://metrobasicsusa-wq.github.io/Zero-or-Hero/s500.html",
+    "live_from": "2026-10-08",
+    "status_now": "rehearsal (dry-run) every 10 minutes in market hours"
+  }
 }

@@ -621,6 +621,19 @@ class SmallAccount(unittest.TestCase):
             self.assertEqual(Engine(c2, self.s500_cfg(), j).run(today=TODAY)["status"], "attempt_ended")
             self.assertEqual((c2.orders, c2.closed), ([], []))
 
+    def test_options_limited_to_top_ranked(self):
+        with tempfile.TemporaryDirectory() as d:
+            closes = {"SPY": series(0.001, seed=5), "UP1": series(0.002, seed=1),
+                      "HOT": [100.0 * 1.004 ** i for i in range(400)]}
+            conf = self.s500_cfg(options={**CFG["options"], "enabled": True, "max_rank": 1, "max_positions": 1,
+                                          "allocation": 1.0})
+            conf["universe"] = ["UP1", "HOT", "SPY"]
+            c = FakeClient(closes, equity=500, last_equity=500)
+            Engine(c, conf, Journal(Path(d))).run(today=TODAY)
+            opts = [o for o in c.orders if o["type"] == "limit"]
+            top = mom.rank(closes, conf["stocks"])[0]
+            self.assertTrue(opts and all(o["symbol"].startswith(top) for o in opts), (top, opts))
+
     def test_broker_rejection_does_not_abort_cycle(self):
         class Rejecting(FakeClient):
             def submit_order(self, **o):

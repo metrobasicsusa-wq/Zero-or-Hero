@@ -274,7 +274,8 @@ class Engine:
         if regime in closes and not momentum.is_bullish(closes[regime]):
             candidates = [(regime, "put")]
         else:
-            candidates = [(s, "call") for s in momentum.rank(closes, self.cfg["stocks"])]
+            ranked = momentum.rank(closes, self.cfg["stocks"])
+            candidates = [(s, "call") for s in ranked[: p.get("max_rank", len(ranked))]]
         order_of = {s: i for i, (s, _) in enumerate(candidates, 1)}
         budget = p["allocation"] * equity / p["max_positions"]
 
