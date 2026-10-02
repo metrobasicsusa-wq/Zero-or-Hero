@@ -6,7 +6,7 @@ import unittest
 from datetime import date, timedelta
 from pathlib import Path
 
-from hero import backtest, dashboard, evolve, patrol, review, stops
+from hero import backtest, dashboard, evolve, macro, patrol, review, stops
 from hero.alpaca import Alpaca, AlpacaError
 from hero.engine import Engine, round_option_price
 from hero.indicators import max_drawdown, momentum, rsi, sma
@@ -108,6 +108,26 @@ class Strategy(unittest.TestCase):
         w = mom.target_weights(closes, p, "SPY", 1.0)
         self.assertAlmostEqual(w["UP1"], p["gross_exposure"] * mom.BEAR_EXPOSURE_SCALE)
 
+    def test_macro_gauges_and_scaling(self):
+        flat = [100.0] * 60
+        calm = {"TLT": flat, "USO": flat, "VIXY": flat, "UUP": flat}
+        stress = {"TLT": flat[:-20] + [100 - i * 0.4 for i in range(20)],   # bonds -7.6%: yields up
+                  "USO": flat[:-20] + [100 + i for i in range(20)],         # oil +19%
+                  "VIXY": flat, "UUP": flat}
+        self.assertFalse(macro.risk_off(macro.gauges(calm)))
+        g = macro.gauges(stress)
+        self.assertTrue(g["rates"]["flag"] and g["oil"]["flag"])
+        self.assertTrue(macro.risk_off(g))
+        self.assertIn("2/4", macro.summary(g))
+        closes = {"UP1": series(0.002, seed=1)}
+        p = {**CFG["stocks"], "rsi_max": 101}
+        base = mom.target_weights(closes, p, "SPY", 1.0, macro_closes=stress)["UP1"]
+        self.assertAlmostEqual(base, p["gross_exposure"])  # scale 1.0: record only
+        cut = mom.target_weights(closes, {**p, "macro_scale": 0.5}, "SPY", 1.0, macro_closes=stress)["UP1"]
+        self.assertAlmostEqual(cut, p["gross_exposure"] * 0.5)
+        calm_w = mom.target_weights(closes, {**p, "macro_scale": 0.5}, "SPY", 1.0, macro_closes=calm)["UP1"]
+        self.assertAlmostEqual(calm_w, p["gross_exposure"])
+
     def test_option_helpers(self):
         self.assertEqual(opt.occ_expiration("AAPL261120C00150000"), "2026-11-20")
         self.assertIsNone(opt.mid({"latestQuote": {"bp": 1.0, "ap": 2.0}}))  # too wide
@@ -168,6 +188,19 @@ class EngineTests(unittest.TestCase):
         Engine(c2, cfg(stocks={"rsi_max": 101}, options={"enabled": False}), self.j).run(today=TODAY)
         self.assertEqual(c2.orders, [])
 
+    def test_macro_cut_is_applied_and_explained(self):
+        flat = [100.0] * 400
+        stress = {"TLT": flat[:-20] + [100 - i * 0.4 for i in range(20)],
+                  "USO": flat[:-20] + [100 + i for i in range(20)], "VIXY": flat, "UUP": flat}
+        c = FakeClient({**self.closes, **stress})
+        Engine(c, cfg(stocks={"rsi_max": 101, "macro_scale": 0.5}), self.j).run(today=TODAY)
+        logged = [json.loads(l) for l in (Path(self.tmp.name) / "trades.jsonl").read_text().splitlines()]
+        t = next(e for e in logged if e["kind"] == "targets")
+        self.assertTrue(t["macro_risk_off"] and t["macro_applied"])
+        self.assertNotIn("TLT", t["weights"])  # gauges are never traded
+        buys = [e for e in logged if e["kind"] == "order" and e.get("reason") == "rebalance"]
+        self.assertTrue(buys and all("宏观警报 2/4" in e["why"] for e in buys))
+
     def test_daily_loss_halt_blocks_buys(self):
         c = FakeClient(self.closes, equity=95_000, last_equity=100_000)
         Engine(c, cfg(stocks={"rsi_max": 101}), self.j).run(today=TODAY)
@@ -200,6 +233,9 @@ class Evolution(unittest.TestCase):
         self.assertIn("decision:", report)
         self.assertIn("+10.00%", report)
         self.assertIn(new["generation"], (0, 1))
+        mc = {"TLT": series(0, 700, 11), "USO": series(0, 700, 12), "VIXY": series(0, 700, 13), "UUP": series(0, 700, 14)}
+        new, report = evolve.evolve(c, closes, [], TODAY, mc)
+        self.assertIn(new["stocks"]["macro_scale"], (1.0, 0.5))
 
 
 class Dashboard(unittest.TestCase):

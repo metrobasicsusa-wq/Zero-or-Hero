@@ -22,30 +22,35 @@ GRID = {
     "top_n": [3, 5, 8],
     # True: RSI > rsi_max also forces out a held winner. False: RSI only gates new entries.
     "rsi_applies_to_holdings": [True, False],
+    # 1.0: macro gauges are only recorded. 0.5: halve the stock book when two or more are flagged.
+    "macro_scale": [1.0, 0.5],
 }
 WARMUP = 210
 TRAIN_FRACTION = 0.7
 MIN_IMPROVEMENT = 0.15
 
 
-def evaluate(closes: dict, p: dict, cfg: dict, n: int) -> dict:
+def evaluate(closes: dict, p: dict, cfg: dict, n: int, macro_closes: dict | None = None) -> dict:
     split = WARMUP + int((n - WARMUP) * TRAIN_FRACTION)
     args = (cfg["regime_symbol"], cfg["risk"]["max_position_pct"])
-    train = backtest.run(closes, p, *args, WARMUP, split)
-    val = backtest.run(closes, p, *args, split, n)
+    train = backtest.run(closes, p, *args, WARMUP, split, macro_closes)
+    val = backtest.run(closes, p, *args, split, n, macro_closes)
     return {"train": train, "val": val, "score": min(train["sharpe"], val["sharpe"])}
 
 
-def evolve(cfg: dict, closes: dict, live_curve: list[float], today: date) -> tuple[dict, str]:
+def evolve(cfg: dict, closes: dict, live_curve: list[float], today: date,
+           macro_closes: dict | None = None) -> tuple[dict, str]:
     n = min(len(xs) for xs in closes.values())
     if n < WARMUP + 120:
         return cfg, f"not enough history ({n} days)"
 
-    current = evaluate(closes, cfg["stocks"], cfg, n)
+    current = evaluate(closes, cfg["stocks"], cfg, n, macro_closes)
     best_p, best = cfg["stocks"], current
     for combo in itertools.product(*GRID.values()):
         p = {**cfg["stocks"], **dict(zip(GRID, combo))}
-        res = evaluate(closes, p, cfg, n)
+        if p["macro_scale"] < 1.0 and not macro_closes:
+            continue  # cannot test a macro rule without macro history
+        res = evaluate(closes, p, cfg, n, macro_closes)
         if res["score"] > best["score"]:
             best_p, best = p, res
 
@@ -58,7 +63,7 @@ def evolve(cfg: dict, closes: dict, live_curve: list[float], today: date) -> tup
     live = ""
     if len(live_curve) >= 2:
         live = f"- live return since start: {live_curve[-1] / live_curve[0] - 1:+.2%} over {len(live_curve)} days\n"
-    changed = {k: f"{cfg['stocks'][k]} -> {best_p[k]}" for k in GRID if cfg["stocks"][k] != best_p[k]}
+    changed = {k: f"{cfg['stocks'].get(k)} -> {best_p[k]}" for k in GRID if cfg["stocks"].get(k) != best_p[k]}
     report = (
         f"## {today.isoformat()} — generation {new['generation']}\n"
         f"{live}"

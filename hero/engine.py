@@ -6,6 +6,7 @@ import math
 import uuid
 from datetime import date, timedelta
 
+from hero import macro
 from hero import stops as stoplib
 from hero.alpaca import AlpacaError
 from hero.journal import Journal, execution_key
@@ -104,7 +105,10 @@ class Engine:
 
         universe = self.cfg["universe"]
         start = (today - timedelta(days=HISTORY_DAYS)).isoformat()
-        closes = closes_from_bars(self.c.daily_bars(universe, start))
+        macro_syms = [s for s in macro.SYMBOLS.values() if s not in universe]
+        bars = self.c.daily_bars(universe + macro_syms, start)
+        closes = closes_from_bars({s: b for s, b in bars.items() if s in universe})
+        self.macro_closes = closes_from_bars({s: bars.get(s, []) for s in macro.SYMBOLS.values()})
 
         self._option_exits(options, busy, today)
         if state.get("last_rebalance") != today.isoformat():
@@ -220,12 +224,18 @@ class Engine:
     def _rebalance(self, stocks: dict, busy: set, closes: dict, equity: float, halted: bool) -> None:
         p, risk = self.cfg["stocks"], self.cfg["risk"]
         held = frozenset(stocks)
-        targets = momentum.target_weights(closes, p, self.cfg["regime_symbol"], risk["max_position_pct"], held=held)
+        mc = getattr(self, "macro_closes", None)
+        targets = momentum.target_weights(closes, p, self.cfg["regime_symbol"], risk["max_position_pct"], held=held,
+                                          macro_closes=mc)
         score = momentum.scores(closes, p, held)
         regime = self.cfg["regime_symbol"]
         bull = regime not in closes or momentum.is_bullish(closes[regime])
+        gauges = macro.gauges(mc or {})
+        macro_cut = p.get("macro_scale", 1.0) < 1.0 and macro.risk_off(gauges)
         self.j.event("targets", weights={s: round(w, 4) for s, w in targets.items()}, scores=score,
-                     regime="bull" if bull else "bear")
+                     regime="bull" if bull else "bear", macro=gauges, macro_risk_off=macro.risk_off(gauges),
+                     macro_applied=macro_cut, why=macro.summary(gauges)
+                     + ("" if p.get("macro_scale", 1.0) < 1.0 else "（目前只记录，不影响仓位）"))
 
         for sym in stocks:
             if sym not in targets and sym not in busy:
@@ -260,6 +270,8 @@ class Engine:
                    + (f"，偏离超过 {p['rebalance_drift']:.0%}" if have else "") + "）")
             if not bull:
                 why += f"；{regime} 跌破 200 日均线，总仓位降到 {momentum.BEAR_EXPOSURE_SCALE:.0%}"
+            if macro_cut:
+                why += f"；{macro.summary(gauges)}，总仓位再乘 {p['macro_scale']:.0%}"
             if want < have:
                 if not self._cancel_stops(sym, "减仓前先撤销保护性止损单，减仓后按新股数重挂"):
                     continue

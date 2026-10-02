@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from hero import macro
 from hero.indicators import momentum, rsi, sma
 
 REGIME_SMA = 200
@@ -33,13 +34,16 @@ def rank(closes: dict[str, list[float]], p: dict, held: frozenset = frozenset())
 
 
 def target_weights(closes: dict[str, list[float]], p: dict, regime_symbol: str,
-                   max_position_pct: float, held: frozenset = frozenset()) -> dict[str, float]:
+                   max_position_pct: float, held: frozenset = frozenset(),
+                   macro_closes: dict[str, list[float]] | None = None) -> dict[str, float]:
     picks = rank(closes, p, frozenset(held))[: p["top_n"]]
     if not picks:
         return {}
     gross = p["gross_exposure"]
     if regime_symbol in closes and not is_bullish(closes[regime_symbol]):
         gross *= BEAR_EXPOSURE_SCALE
+    if macro_closes and p.get("macro_scale", 1.0) < 1.0 and macro.risk_off(macro.gauges(macro_closes)):
+        gross *= p["macro_scale"]
     w = min(gross / len(picks), max_position_pct)
     return {s: w for s in picks}
 

@@ -79,3 +79,9 @@
 - 复盘：`journal/reviews/YYYY-MM-DD.md`
 - 交换文件：`exchange/claude/YYYY-MM-DD.json`（含 `orders` 和 `replies`）
 - 参数与进化：`config/strategy.json`、`journal/evolution.md`
+
+## 宏观（2026-10-02 新增）
+
+- **价格型宏观指标**（`hero/macro.py`）：TLT（长期美债，20 日跌 ≥4% = 利率快速上升）、USO（油价，20 日涨 ≥15%）、VIXY（比 20 日均值高 ≥15% = 恐慌）、UUP（美元，20 日涨 ≥3%）。≥2 项警报 = 避险信号。每天调仓时记录在 `targets` 事件（`macro`、`macro_risk_off`、`macro_applied`）。
+- 是否据此减仓由参数 `stocks.macro_scale` 决定：1.0 只记录（当前），0.5 = 避险时股票仓位减半。每周进化把 `macro_scale ∈ {1.0, 0.5}` 放进网格，只有样本内外都更好才采用。
+- **AI 盘前简报**：每个交易日 8:50 ET 写入 `macro/briefings/YYYY-MM-DD.md`（新闻：美债、美联储、油价、美元、地缘冲突、当日数据）。**只记录，不影响交易**；几周后对照实际走势评估。

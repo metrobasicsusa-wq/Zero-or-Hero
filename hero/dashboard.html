@@ -126,6 +126,17 @@ footer { color: var(--muted); font-size: 12px; margin-top: 24px; }
     <div id="review"></div>
   </section>
 
+  <section class="grid2">
+    <div class="card">
+      <h2>宏观指标</h2>
+      <div id="macro"></div>
+    </div>
+    <div class="card">
+      <h2>盘前宏观简报（AI，只记录）</h2>
+      <div id="briefing"></div>
+    </div>
+  </section>
+
   <section class="card">
     <h2>当前持仓</h2>
     <div id="positions"></div>
@@ -389,6 +400,24 @@ function renderReview() {
     `<ul style="margin:0;padding-left:20px">${items}</ul>`;
 }
 
+function renderMacro() {
+  const m = DATA.macro;
+  if (!m) { $("macro").innerHTML = empty("下一次调仓时开始记录"); return; }
+  const rows = Object.values(m.gauges).map((g) =>
+    [g.flag ? `<span class="chip" style="color:var(--down)">警报</span>` : `<span class="chip">正常</span>`, esc(g.text)]);
+  const mode = DATA.config.stocks.macro_scale < 1
+    ? `两项及以上警报时股票仓位乘 ${Math.round(DATA.config.stocks.macro_scale * 100)}%` : "目前只记录，不影响仓位（由每周进化决定是否启用）";
+  $("macro").innerHTML = `<div class="meta" style="margin-bottom:8px">${fmtTime(m.ts)} · ` +
+    `${m.risk_off ? "避险信号" : "无避险信号"} · ${esc(mode)}</div>` + table([["状态"], ["读数"]], rows);
+}
+
+function renderBriefing() {
+  const b = DATA.briefing;
+  if (!b) { $("briefing").innerHTML = empty("每个交易日 9:00（美东）生成"); return; }
+  $("briefing").innerHTML = `<div class="meta" style="margin-bottom:8px">${esc(b.date)} · ` +
+    `<a href="${esc(b.url)}" target="_blank" rel="noopener">查看全文</a></div><pre>${esc(b.text)}</pre>`;
+}
+
 function renderEvolution() {
   const text = DATA.evolution.replace(/^# Evolution log\s*/, "").trim();
   $("evolution").innerHTML = text ? `<pre>${esc(text)}</pre>` : empty("第一次进化在本周六");
@@ -406,6 +435,8 @@ renderEvents();
 renderParams();
 renderEvolution();
 renderReview();
+renderMacro();
+renderBriefing();
 watchForUpdates();
 </script>
 </body>

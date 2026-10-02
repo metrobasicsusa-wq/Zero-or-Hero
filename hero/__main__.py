@@ -8,7 +8,7 @@ from datetime import date, datetime, timedelta
 from zoneinfo import ZoneInfo
 from pathlib import Path
 
-from hero import backtest, dashboard, evolve, patrol, review
+from hero import backtest, dashboard, evolve, macro, patrol, review
 from hero.alpaca import Alpaca
 from hero.engine import Engine
 from hero.journal import Journal
@@ -87,12 +87,15 @@ def main() -> None:
             print(f"{p['symbol']:<24}{p['qty']:>8}  mv {p['market_value']:>12}  pl {float(p['unrealized_plpc']):+.1%}")
     else:
         start = (date.today() - timedelta(days=EVOLVE_HISTORY_DAYS)).isoformat()
-        _, closes = backtest.align(client.daily_bars(cfg["universe"], start), cfg["regime_symbol"])
+        macro_syms = [s for s in macro.SYMBOLS.values() if s not in cfg["universe"]]
+        _, aligned = backtest.align(client.daily_bars(cfg["universe"] + macro_syms, start), cfg["regime_symbol"])
+        closes = {s: xs for s, xs in aligned.items() if s in cfg["universe"]}
+        macro_closes = {s: aligned[s] for s in macro.SYMBOLS.values() if s in aligned} or None
         if args.cmd == "backtest":
             n = min(len(xs) for xs in closes.values())
-            print(json.dumps(evolve.evaluate(closes, cfg["stocks"], cfg, n), indent=2))
+            print(json.dumps(evolve.evaluate(closes, cfg["stocks"], cfg, n, macro_closes), indent=2))
         else:
-            new, report = evolve.evolve(cfg, closes, journal.equity_curve(), date.today())
+            new, report = evolve.evolve(cfg, closes, journal.equity_curve(), date.today(), macro_closes)
             evolve.save(new, report, cfg_path, jdir / "evolution.md")
             print(report)
 
