@@ -8,7 +8,7 @@ on:
       study:
         description: "Which study to run"
         type: choice
-        options: [short, universe, s500, earnings, lottery]
+        options: [short, universe, s500, earnings, lottery, flow]
         default: short
 
 concurrency:
@@ -21,7 +21,7 @@ permissions:
 jobs:
   study:
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    timeout-minutes: 150
     steps:
       - uses: actions/checkout@v4
         with:

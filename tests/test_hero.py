@@ -1301,6 +1301,21 @@ class ResearchLottery(unittest.TestCase):
                                           rl.summarize(trades)))
 
 
+class ResearchFlow(unittest.TestCase):
+    def test_signal_needs_both_surge_and_breakout(self):
+        from hero import research_flow as rf
+        self.assertEqual(rf.months("2024-01-15", "2024-03-02")[-1], ("2024-03-01", "2024-03-02"))
+        dates = [f"d{i:03d}" for i in range(40)]
+        closes = [100.0] * 25 + [101.0, 99.0, 102.0] + [100.0] * 12
+        vol = {d: 10.0 for d in dates}
+        vol["d025"] = 50.0   # surge on a breakout day -> signal
+        vol["d026"] = 50.0   # surge without a breakout -> nothing
+        sig, brk = rf.signals(dates, closes, vol)
+        self.assertEqual([dates[i] for i in sig], ["d025"])
+        self.assertIn(27, brk)  # breakout without a surge
+        self.assertAlmostEqual(rf.forward([100.0, 110.0, 121.0], [0], 2)[0], 0.21)
+
+
 class Safety(unittest.TestCase):
     def test_refuses_live_endpoint(self):
         with self.assertRaises(AlpacaError):
