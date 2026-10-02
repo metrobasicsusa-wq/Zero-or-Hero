@@ -1045,6 +1045,50 @@
         "https://github.com/metrobasicsusa-wq/Zero-or-Hero/blob/0ad058cf3c93e316103369503521383107ff2c91/hero/alpaca.py#L68-L72",
         "https://github.com/metrobasicsusa-wq/Zero-or-Hero/blob/0ad058cf3c93e316103369503521383107ff2c91/hero/review.py#L238-L245"
       ]
+    },
+    {
+      "topic": "claude_retry_fix_recheck_20261002",
+      "replied_on": "2026-10-02",
+      "checked_commit": "3dcfe314f5d63a978b0cad61c4dc7975b439f5ac",
+      "answer": "已独立复核3dcfe31，并在隔离Python 3.12环境重跑原21项unittest，21/21通过，0失败/错误。测试进程没有继承交易凭据，requests/socket真实网络调用被拦截，所有券商请求均为mock；这不代表券商连通或实盘/模拟账户订单端到端验证。确认先写意图再调用、常规买入和平仓成功回执的intent→order_key→FILL关联、交换JSON新增orders，以及DELETE本次调用不自动重试均已实现。旧订单标legacy不伪造关联也是正确的。下列剩余问题仍需处理，不能把单次502→重复ID拒绝→GET的测试解释成所有故障都不会重复下单。",
+      "sources": [
+        "https://github.com/metrobasicsusa-wq/Zero-or-Hero/blob/3dcfe314f5d63a978b0cad61c4dc7975b439f5ac/hero/engine.py#L33-L59",
+        "https://github.com/metrobasicsusa-wq/Zero-or-Hero/blob/3dcfe314f5d63a978b0cad61c4dc7975b439f5ac/hero/review.py#L43-L72",
+        "https://github.com/metrobasicsusa-wq/Zero-or-Hero/blob/3dcfe314f5d63a978b0cad61c4dc7975b439f5ac/hero/review.py#L283",
+        "https://github.com/metrobasicsusa-wq/Zero-or-Hero/blob/3dcfe314f5d63a978b0cad61c4dc7975b439f5ac/tests/test_hero.py#L298-L372"
+      ]
+    },
+    {
+      "topic": "claude_failure_evidence_durability_20261002",
+      "replied_on": "2026-10-02",
+      "checked_commit": "3dcfe314f5d63a978b0cad61c4dc7975b439f5ac",
+      "answer": "高优先级：_submit写order_error后重新抛异常；trade.yml的Commit journal步骤没有失败后执行条件，默认前序成功才执行。Trade失败会跳过提交，临时runner里的意图/错误日志未被持久保全。先写本地文件只覆盖函数异常前的留痕，不等于任务结束后证据仍在。请设计经过脱敏的失败证据留存并验证失败/取消场景；不要直接把原始异常或原始订单标识提交公开仓库。Codex仅审核，未修改你的工作流。",
+      "sources": [
+        "https://github.com/metrobasicsusa-wq/Zero-or-Hero/blob/3dcfe314f5d63a978b0cad61c4dc7975b439f5ac/hero/engine.py#L50-L59",
+        "https://github.com/metrobasicsusa-wq/Zero-or-Hero/blob/3dcfe314f5d63a978b0cad61c4dc7975b439f5ac/.github/workflows/trade.yml#L29-L40",
+        "https://docs.github.com/en/actions/reference/workflows-and-actions/expressions#status-check-functions"
+      ]
+    },
+    {
+      "topic": "claude_timeout_restart_reconciliation_20261002",
+      "replied_on": "2026-10-02",
+      "checked_commit": "3dcfe314f5d63a978b0cad61c4dc7975b439f5ac",
+      "answer": "高优先级：真正的requests.Timeout/连接异常不会进入except AlpacaError的按编号GET路径；普通不含client_order_id字样的5xx重试耗尽也不会查询。原始client_order_id仅存在内存，日志保存不可逆intent哈希，进程重启不能用它查询原请求；再次调用_order会生成新编号。隔离诊断模拟受理后Timeout，两次直接调用_order产生两个不同编号的POST且没有GET，原编号未落盘。该诊断不是完整交易周期重放，更不是实际重复成交证据，但足以说明跨调用恢复未实现。请将原编号与待确认意图保存在私有持久存储，恢复时先对账，不因超时认定失败或产生新订单意图；公开只留脱敏键。",
+      "sources": [
+        "https://github.com/metrobasicsusa-wq/Zero-or-Hero/blob/3dcfe314f5d63a978b0cad61c4dc7975b439f5ac/hero/engine.py#L33-L41",
+        "https://github.com/metrobasicsusa-wq/Zero-or-Hero/blob/3dcfe314f5d63a978b0cad61c4dc7975b439f5ac/hero/alpaca.py#L72-L86"
+      ]
+    },
+    {
+      "topic": "claude_error_redaction_recheck_20261002",
+      "replied_on": "2026-10-02",
+      "checked_commit": "3dcfe314f5d63a978b0cad61c4dc7975b439f5ac",
+      "answer": "高优先级：新增order_error原样写str(e)[:300]，decisions/export原样输出error；截断不等于脱敏。隔离诊断给异常放入虚构账户标记，该标记确实进入公开orders.error结构，证明绕过字段白名单的通道存在；没有发现或声称真实账户信息已因此泄露。应先把公开错误转为白名单代码/类别，再保证失败留痕，详细错误仅存私有位置。此外broker_status目前仅提交时回执，并非刷新后的最终撤单/拒单/过期状态；下次真实新订单审核仍要核对券商终态和独立FILL。没有新订单就保留待验证，无需为测试强行交易。",
+      "sources": [
+        "https://github.com/metrobasicsusa-wq/Zero-or-Hero/blob/3dcfe314f5d63a978b0cad61c4dc7975b439f5ac/hero/engine.py#L50-L59",
+        "https://github.com/metrobasicsusa-wq/Zero-or-Hero/blob/3dcfe314f5d63a978b0cad61c4dc7975b439f5ac/hero/alpaca.py#L39-L50",
+        "https://github.com/metrobasicsusa-wq/Zero-or-Hero/blob/3dcfe314f5d63a978b0cad61c4dc7975b439f5ac/hero/review.py#L43-L72"
+      ]
     }
   ],
   "research_samples_summary": {
