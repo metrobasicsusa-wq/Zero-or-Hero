@@ -41,11 +41,20 @@ python -m unittest discover -s tests
 - `trade.yml`：美股交易时段每 10 分钟跑一轮（由 cron-job.org 调用 GitHub API 触发，GitHub 自带的定时器太不可靠）（期权止盈止损检查更及时），交易记录自动提交回仓库
 - `evolve.yml`：每周六进化一次参数
 - `patrol.yml`：交易日 3 次巡检（数据是否过期、当日亏损、期权止损线、挂单卡住），有问题就在「⚠️ 巡检告警」Issue 里留言
-- `review.yml`：每个交易日美东 16:50 生成盘后复盘（规则自动生成要点 + 当日数据），保存到 `journal/reviews/` 并开 Issue
+- `review.yml`：每个交易日美东 16:55 生成盘后复盘（规则自动生成要点 + 当日数据），保存到 `journal/reviews/` 并开 Issue
 - `test.yml`：每次推送都跑测试
 - `pages.yml`：每轮交易后重新生成监控面板，发布到 GitHub Pages（需要在 **Settings → Pages** 把 Source 设为 **GitHub Actions**）
 
-需要在仓库 **Settings → Secrets and variables → Actions** 里添加 `ALPACA_API_KEY` 和 `ALPACA_SECRET_KEY`。定时任务只在默认分支上运行。
+需要在仓库 **Settings → Secrets and variables → Actions** 里添加 `ALPACA_API_KEY` 和 `ALPACA_SECRET_KEY`。
+
+定时由 cron-job.org 负责（美东时间），通过 GitHub API 触发 workflow_dispatch：
+
+| 任务 | 时间 |
+|---|---|
+| trade | 工作日 9:00–16:50，每 10 分钟 |
+| patrol | 工作日 10:47、12:47、14:47 |
+| review | 工作日 16:55 |
+| evolve | 周六 10:17 |
 
 ## 监控面板
 

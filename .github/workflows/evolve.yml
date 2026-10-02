@@ -1,8 +1,7 @@
 name: evolve
 
 on:
-  schedule:
-    - cron: "17 14 * * 6"   # Saturdays, after the trading week
+  # Scheduled by cron-job.org via the workflow_dispatch API (GitHub's cron was unreliable).
   workflow_dispatch:
 
 concurrency:

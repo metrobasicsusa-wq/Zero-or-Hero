@@ -1,8 +1,7 @@
 name: patrol
 
 on:
-  schedule:
-    - cron: "47 14,16,18,19 * * 1-5"   # ~10:47 / 12:47 / 14:47 ET (EDT), shifted an hour in EST
+  # Scheduled by cron-job.org via the workflow_dispatch API (GitHub's cron was unreliable).
   workflow_dispatch:
 
 permissions:
