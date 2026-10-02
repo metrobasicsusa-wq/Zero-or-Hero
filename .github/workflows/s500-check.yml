@@ -1,0 +1,31 @@
+name: s500-check
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install -r requirements.txt
+      - name: Read-only connection check (no orders)
+        env:
+          ALPACA_API_KEY: ${{ secrets.ALPACA_S500_API_KEY }}
+          ALPACA_SECRET_KEY: ${{ secrets.ALPACA_S500_SECRET_KEY }}
+        run: |
+          python - <<'PY'
+          from hero.alpaca import Alpaca
+          c = Alpaca()
+          a = c.account()
+          print("equity", a["equity"], "cash", a["cash"], "buying_power", a["buying_power"])
+          print("options_trading_level", a.get("options_trading_level"), "approved", a.get("options_approved_level"))
+          print("pattern_day_trader", a.get("pattern_day_trader"), "daytrade_count", a.get("daytrade_count"))
+          print("positions", len(c.positions()), "open_orders", len(c.open_orders()))
+          PY
