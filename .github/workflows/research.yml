@@ -8,7 +8,7 @@ on:
       study:
         description: "Which study to run"
         type: choice
-        options: [short, universe, s500]
+        options: [short, universe, s500, earnings]
         default: short
 
 concurrency:
@@ -34,6 +34,7 @@ jobs:
         env:
           ALPACA_API_KEY: ${{ secrets.ALPACA_API_KEY }}
           ALPACA_SECRET_KEY: ${{ secrets.ALPACA_SECRET_KEY }}
+          SEC_CONTACT_EMAIL: ${{ secrets.SEC_CONTACT_EMAIL }}
         run: python -m hero.research_${{ inputs.study }}
       - name: Commit results
         run: |

@@ -125,9 +125,9 @@ class Alpaca:
             params["page_token"] = token
 
     # --- market data ---
-    def daily_bars(self, symbols: list[str], start: str) -> dict[str, list[dict]]:
+    def daily_bars(self, symbols: list[str], start: str, adjustment: str = "all") -> dict[str, list[dict]]:
         params = {"symbols": ",".join(symbols), "timeframe": "1Day", "start": start,
-                  "adjustment": "all", "feed": "iex", "limit": 10000}
+                  "adjustment": adjustment, "feed": "iex", "limit": 10000}
         out: dict[str, list[dict]] = {}
         while True:
             page = self._d("/v2/stocks/bars", params)
@@ -140,6 +140,19 @@ class Alpaca:
 
     def assets(self) -> list[dict]:
         return self._t("GET", "/v2/assets", params={"status": "active", "asset_class": "us_equity"})
+
+    def option_bars(self, symbols: list[str], start: str, end: str) -> dict[str, list[dict]]:
+        """Historical daily option bars (Alpaca has them from early 2024)."""
+        params = {"symbols": ",".join(symbols), "timeframe": "1Day", "start": start, "end": end, "limit": 10000}
+        out: dict[str, list[dict]] = {}
+        while True:
+            page = self._d("/v1beta1/options/bars", params) or {}
+            for sym, bars in (page.get("bars") or {}).items():
+                out.setdefault(sym, []).extend(bars)
+            token = page.get("next_page_token")
+            if not token:
+                return out
+            params["page_token"] = token
 
     def stock_snapshots(self, symbols: list[str]) -> dict[str, dict]:
         """Latest trade and previous daily bar per symbol (IEX), for intraday moves."""

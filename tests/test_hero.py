@@ -1260,6 +1260,29 @@ class PoolFilters(unittest.TestCase):
         self.assertEqual(pool, ["GOOGL", "NVDA"])  # GOOG is the same company
 
 
+class ResearchEarnings(unittest.TestCase):
+    def test_reaction_day_and_summary(self):
+        from datetime import datetime
+        from hero import research_earnings as re_
+        dates = ["2026-01-05", "2026-01-06", "2026-01-07"]
+        pre = datetime(2026, 1, 6, 7, 2, tzinfo=re_.ET)
+        post = datetime(2026, 1, 6, 16, 5, tzinfo=re_.ET)
+        self.assertEqual(re_.reaction_index(dates, pre), 1)   # before the open: reacts that day
+        self.assertEqual(re_.reaction_index(dates, post), 2)  # after the close: reacts next day
+        self.assertIsNone(re_.reaction_index(dates, datetime(2026, 1, 7, 16, 30, tzinfo=re_.ET)))
+        block = {"form": ["8-K", "8-K", "10-Q"], "filingDate": ["2026-01-06", "2026-01-08", "2026-01-06"],
+                 "acceptanceDateTime": ["2026-01-06T21:05:00.000Z", "2026-01-08T12:00:00.000Z", "2026-01-06T21:00:00.000Z"],
+                 "items": ["2.02,9.01", "5.02", ""]}
+        self.assertEqual([t.hour for t in re_._item_202(block, "2026-01-01")], [16])
+        ev = [{"symbol": "X", "move": m, "gap": m, "reaction_day": "2026-01-06", "timing": "after close",
+               "implied_move": 0.05, "ratio": abs(m) / 0.05, "mom126": mo, "cheapness": c}
+              for m, mo, c in [(0.2, 0.5, 0.5), (-0.02, 0.1, 1.0), (0.03, -0.1, 1.2)] * 12]
+        s = re_.summarize({"events": ev})
+        self.assertEqual((s["big"], s["big_up"]), (12, 12))
+        self.assertEqual(s["by_mom126"][2]["rate"], 1.0)  # the strong-momentum third holds every big up-move
+        self.assertIn("超过预期", re_.markdown({"generated": "2026-10-02", "symbols": 1, "since": "2021", "missing": []}, s))
+
+
 class Safety(unittest.TestCase):
     def test_refuses_live_endpoint(self):
         with self.assertRaises(AlpacaError):
