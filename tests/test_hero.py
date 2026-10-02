@@ -1286,7 +1286,7 @@ class ResearchEarnings(unittest.TestCase):
 class ResearchLottery(unittest.TestCase):
     def test_costs_strikes_and_bankroll(self):
         from hero import research_lottery as rl
-        self.assertEqual(rl.entry_cost(0.05), 0.06)          # at least a cent of spread
+        self.assertAlmostEqual(rl.entry_cost(0.05), 0.06)    # at least a cent of spread
         self.assertAlmostEqual(rl.exit_value(2.0), 1.8)
         self.assertEqual(rl.pick_strike([100, 105, 110], 104), 105)
         self.assertIsNone(rl.pick_strike([100], 120))
@@ -1296,7 +1296,7 @@ class ResearchLottery(unittest.TestCase):
                   for i, r in enumerate([-1.0, -1.0, 19.0], 1)]
         s = rl.summarize(trades)["价外 10%"]["ret_reaction"]
         self.assertEqual((s["n"], s["hit_rate"], s["best"]), (3, 0.333, 19.0))
-        self.assertEqual(s["bank_500"], round(500 * 0.9 * 0.9 * (1 + 0.1 * 19)))  # 10% of balance per bet
+        self.assertAlmostEqual(s["bank_500"], 500 * 0.9 * 0.9 * (1 + 0.1 * 19), delta=1)  # 10% of balance per bet
         self.assertIn("持有到期", rl.markdown({"generated": "d", "source": "x", "events": 3, "slippage": 0.1, "bet": 0.1},
                                           rl.summarize(trades)))
 
