@@ -11,32 +11,36 @@ import json
 from datetime import datetime, timedelta
 from pathlib import Path
 
-from hero.research_universe import ETFS, LOOKBACK_DV, MIN_PRICE, candidates
+from hero.research_universe import ETFS, LOOKBACK_DV, MIN_PRICE, candidates, top_by_company
 
 HISTORY_DAYS = 400  # calendar days: enough for a year of trading history
+VERSION = 2  # bump when the selection rule changes, so this month's pool is rebuilt
 
 
 def build(client, size: int, now: datetime) -> dict:
-    stocks = candidates(client)
+    stocks = candidates(client)  # {symbol: company}: operating companies only, no funds
     start = (now - timedelta(days=HISTORY_DAYS)).date().isoformat()
     ranked, seen = [], 0
-    for i in range(0, len(stocks), 200):
-        for sym, bars in client.daily_bars(stocks[i:i + 200], start).items():
+    syms = list(stocks)
+    for i in range(0, len(syms), 200):
+        for sym, bars in client.daily_bars(syms[i:i + 200], start).items():
             seen += 1
             if len(bars) < 252 or float(bars[-1]["c"]) < MIN_PRICE:
                 continue
             recent = bars[-LOOKBACK_DV:]
             ranked.append((sum(float(b["c"]) * float(b.get("v") or 0) for b in recent) / len(recent), sym))
-    pool = [s for _, s in sorted(ranked, reverse=True)[:size]]
-    return {"month": now.strftime("%Y-%m"), "built_at": now.isoformat(timespec="seconds"), "size": size,
-            "method": f"top {size} by {LOOKBACK_DV}-day average dollar volume (IEX), price > ${MIN_PRICE}, "
-                      f">= 252 trading days of history; plus {len(ETFS)} ETFs",
+    pool = top_by_company(ranked, stocks, size)
+    return {"version": VERSION, "month": now.strftime("%Y-%m"), "built_at": now.isoformat(timespec="seconds"), "size": size,
+            "method": f"top {size} operating companies (no ETFs/ETNs/funds, one share class each) by "
+                      f"{LOOKBACK_DV}-day average dollar volume (IEX), price > ${MIN_PRICE}, >= 252 trading days "
+                      f"of history; plus {len(ETFS)} broad and sector ETFs",
             "candidates": len(stocks), "with_data": seen, "stocks": pool, "etfs": ETFS}
 
 
 def refresh(path: Path, client, size: int, now: datetime) -> str:
     current = load(path)
-    if current and current["month"] == now.strftime("%Y-%m") and current["size"] == size:
+    if current and current["month"] == now.strftime("%Y-%m") and current["size"] == size \
+            and current.get("version") == VERSION:
         return "fresh"
     data = build(client, size, now)
     if len(data["stocks"]) < size // 2:

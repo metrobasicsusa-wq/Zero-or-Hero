@@ -13,6 +13,7 @@ than a hand-picked list.
 from __future__ import annotations
 
 import json
+import re
 import sys
 from datetime import date, timedelta
 from pathlib import Path
@@ -28,14 +29,47 @@ ETFS = ["SPY", "QQQ", "IWM", "DIA", "XLK", "XLF", "XLE", "XLV", "XLY", "XLI", "X
         "SMH"]
 
 
-def candidates(client) -> list[str]:
-    out = []
+# Exchange-traded products are not companies: leveraged, inverse, bond, commodity and crypto
+# funds would let a stock-momentum rule turn into a leveraged bet or a short. Matched on the
+# issuer's name as Alpaca lists it; the broad and sector ETFs we want are added back explicitly.
+FUND_NAME = re.compile(r"\b(ETF|ETN|ETP|Fund|ProShares|Direxion|iShares|SPDR|Invesco|Vanguard|Grayscale|"
+                       r"WisdomTree|VanEck|GraniteShares|Defiance|Tradr|Leverage Shares|ProFunds|Roundhill|"
+                       r"ARK |Global X|Schwab|First Trust|Bitcoin|Ether|Treasury|Bond|Index|Daily|"
+                       r"[0-9](\.[0-9])?[xX]|Ultra|UltraPro|Inverse|Bear|Bull)\b", re.I)
+SHARE_CLASS = re.compile(r"\b(class [a-z]|series [a-z]|common stock|ordinary shares|capital stock|"
+                         r"american depositary shares?|ads|inc\.?|corp\.?|corporation|ltd\.?|plc|n\.?v\.?|"
+                         r"s\.?a\.?|holdings?|co\.?|company)\b|[^a-z0-9 ]", re.I)
+
+
+def company(name: str, symbol: str) -> str:
+    """One key per company, so GOOG and GOOGL (or FOX/FOXA) count as one name."""
+    key = " ".join(SHARE_CLASS.sub(" ", name or "").lower().split())
+    return key or symbol
+
+
+def candidates(client) -> dict[str, str]:
+    """Listed operating companies we could trade, as {symbol: company key}."""
+    out = {}
     for a in client.assets():
-        s = a.get("symbol", "")
+        s, name = a.get("symbol", ""), a.get("name") or ""
         if (a.get("tradable") and a.get("marginable") and a.get("shortable") and a.get("fractionable")
-                and a.get("exchange") in ("NYSE", "NASDAQ") and s.isalpha()):
-            out.append(s)
-    return sorted(set(out))
+                and a.get("exchange") in ("NYSE", "NASDAQ") and s.isalpha() and not FUND_NAME.search(name)):
+            out[s] = company(name, s)
+    return dict(sorted(out.items()))
+
+
+def top_by_company(ranked: list[tuple[float, str]], keys: dict[str, str], size: int) -> list[str]:
+    """Highest dollar volume first, one share class per company."""
+    pool, seen = [], set()
+    for _, s in sorted(ranked, reverse=True):
+        k = keys.get(s, s)
+        if k in seen:
+            continue
+        seen.add(k)
+        pool.append(s)
+        if len(pool) == size:
+            break
+    return pool
 
 
 def align(bars: dict[str, list[dict]], calendar: str):
@@ -57,8 +91,9 @@ def align(bars: dict[str, list[dict]], calendar: str):
     return dates, closes, dvol
 
 
-def monthly_pools(dates, closes, dvol, firsts, stocks: list[str], size: int, start: int) -> dict[int, list[str]]:
-    """Pool for each month-start index, using only data before that day."""
+def monthly_pools(dates, closes, dvol, firsts, stocks, size: int, start: int) -> dict[int, list[str]]:
+    """stocks: {symbol: company key} (or a plain list, without share-class de-duplication)."""
+    # Pool for each month-start index, using only data before that day.
     pools, month = {}, None
     for t in range(start, len(dates)):
         if dates[t][:7] == month:
@@ -71,7 +106,7 @@ def monthly_pools(dates, closes, dvol, firsts, stocks: list[str], size: int, sta
             if first is None or t - first < 252 or not xs[t - 1] or xs[t - 1] < MIN_PRICE:
                 continue
             ranked.append((sum(dvol[s][t - LOOKBACK_DV: t]) / LOOKBACK_DV, s))
-        pools[t] = [s for _, s in sorted(ranked, reverse=True)[:size]]
+        pools[t] = top_by_company(ranked, stocks if isinstance(stocks, dict) else {}, size)
     return pools
 
 
@@ -118,7 +153,7 @@ def run(client, root: Path) -> dict:
     for s in syms:
         closes.setdefault(s, [None] * len(dates))
         dvol.setdefault(s, [0.0] * len(dates))
-    have = [s for s in stocks if s in bars]
+    have = {s: k for s, k in stocks.items() if s in bars}
     firsts = {s: next((i for i, x in enumerate(xs) if x is not None), None) for s, xs in closes.items()}
     report = {"generated": date.today().isoformat(), "candidates": len(have), "years": YEARS, "results": {}}
     for exp, cfg_name in (("Claude", "strategy.json"), ("Claude-500", "s500.json")):

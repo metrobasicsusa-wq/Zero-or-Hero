@@ -1242,6 +1242,24 @@ class DynamicUniverse(unittest.TestCase):
             cli.UNIVERSE = orig
 
 
+class PoolFilters(unittest.TestCase):
+    def test_funds_excluded_and_share_classes_merged(self):
+        from hero import research_universe as ru
+
+        class Assets:
+            def assets(self):
+                base = {"tradable": True, "marginable": True, "shortable": True, "fractionable": True, "exchange": "NASDAQ"}
+                return [{**base, "symbol": s, "name": n} for s, n in (
+                    ("TQQQ", "ProShares UltraPro QQQ"), ("SQQQ", "ProShares UltraPro Short QQQ"),
+                    ("TLT", "iShares 20+ Year Treasury Bond ETF"), ("IBIT", "iShares Bitcoin Trust ETF"),
+                    ("GOOGL", "Alphabet Inc. Class A Common Stock"), ("GOOG", "Alphabet Inc. Class C Capital Stock"),
+                    ("NVDA", "NVIDIA Corporation Common Stock"))]
+        c = ru.candidates(Assets())
+        self.assertEqual(sorted(c), ["GOOG", "GOOGL", "NVDA"])
+        pool = ru.top_by_company([(5.0, "GOOGL"), (4.0, "GOOG"), (3.0, "NVDA")], c, 2)
+        self.assertEqual(pool, ["GOOGL", "NVDA"])  # GOOG is the same company
+
+
 class Safety(unittest.TestCase):
     def test_refuses_live_endpoint(self):
         with self.assertRaises(AlpacaError):

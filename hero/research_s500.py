@@ -73,7 +73,7 @@ def run(client, root: Path) -> dict:
         closes.setdefault(s, [None] * len(dates))
         dvol.setdefault(s, [0.0] * len(dates))
     firsts = {s: next((i for i, x in enumerate(xs) if x is not None), None) for s, xs in closes.items()}
-    have = [s for s in stocks if s in bars]
+    have = {s: k for s, k in stocks.items() if s in bars}
     warm = 260 + LOOKBACK_DV
 
     pools = {"固定 20 只": lambda t: cfg["universe"]}
