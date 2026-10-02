@@ -29,13 +29,14 @@ class Engine:
     def __init__(self, client, cfg: dict, journal: Journal, dry_run: bool = False):
         self.c, self.cfg, self.j, self.dry = client, cfg, journal, dry_run
 
-    def _order(self, reason: str, **order) -> None:
-        self.j.event("order", reason=reason, dry_run=self.dry, **order)
+    def _order(self, reason: str, evidence: dict | None = None, **order) -> None:
+        # Evidence (the quote the decision was based on) is logged only, never sent to the broker.
+        self.j.event("order", reason=reason, dry_run=self.dry, evidence=evidence or {}, **order)
         if not self.dry:
             self.c.submit_order(**order)
 
-    def _close(self, symbol: str, reason: str) -> None:
-        self.j.event("close", symbol=symbol, reason=reason, dry_run=self.dry)
+    def _close(self, symbol: str, reason: str, evidence: dict | None = None) -> None:
+        self.j.event("close", symbol=symbol, reason=reason, dry_run=self.dry, evidence=evidence or {})
         if not self.dry:
             self.c.close_position(symbol)
 
@@ -82,7 +83,8 @@ class Engine:
                 continue
             reason = opt.should_exit(pos, today, opt.occ_expiration(sym), self.cfg["options"])
             if reason:
-                self._close(sym, reason)
+                self._close(sym, reason, {k: pos.get(k) for k in
+                                          ("avg_entry_price", "current_price", "unrealized_plpc", "qty")})
 
     def _rebalance(self, stocks: dict, busy: set, closes: dict, equity: float, halted: bool) -> None:
         p, risk = self.cfg["stocks"], self.cfg["risk"]
@@ -105,14 +107,15 @@ class Engine:
             qty = math.floor(abs(want - have) / price)
             if qty < 1:
                 continue
+            ref = {"reference_price": price, "reference": "latest daily close (IEX)", "target_weight": w}
             if want < have:
-                self._order("trim", symbol=sym, qty=str(qty), side="sell", type="market", time_in_force="day")
+                self._order("trim", ref, symbol=sym, qty=str(qty), side="sell", type="market", time_in_force="day")
             else:
-                buys.append((sym, qty))
+                buys.append((sym, qty, ref))
         if halted:
             return
-        for sym, qty in buys:
-            self._order("rebalance", symbol=sym, qty=str(qty), side="buy", type="market", time_in_force="day")
+        for sym, qty, ref in buys:
+            self._order("rebalance", ref, symbol=sym, qty=str(qty), side="buy", type="market", time_in_force="day")
 
     def _option_entries(self, options: dict, busy: set, closes: dict, equity: float, today: date) -> None:
         p = self.cfg["options"]
@@ -149,7 +152,14 @@ class Engine:
             qty = math.floor(budget / (price * 100))
             if qty < 1:
                 continue
-            self._order(f"{kind} on {und}", symbol=contract["symbol"], qty=str(qty), side="buy",
+            snap = snaps[contract["symbol"]]
+            quote, greeks = snap.get("latestQuote") or {}, snap.get("greeks") or {}
+            evidence = {"bid": quote.get("bp"), "ask": quote.get("ap"), "bid_size": quote.get("bs"),
+                        "ask_size": quote.get("as"), "quote_time": quote.get("t"), "mid": round(price, 4),
+                        "spread_pct_of_mid": round((quote["ap"] - quote["bp"]) / price, 4),
+                        "delta": greeks.get("delta"), "iv": snap.get("impliedVolatility"),
+                        "underlying_last_close": spot, "feed": "indicative"}
+            self._order(f"{kind} on {und}", evidence, symbol=contract["symbol"], qty=str(qty), side="buy",
                         type="limit", limit_price=f"{round_option_price(price):.2f}", time_in_force="day")
             held.add(und)
             slots -= 1

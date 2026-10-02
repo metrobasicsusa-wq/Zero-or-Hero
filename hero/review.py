@@ -96,7 +96,10 @@ def facts(journal: Path, cfg: dict, day: str) -> str | None:
     for e in events:
         if e["kind"] == "order":
             price = f" @ {e['limit_price']}" if e.get("limit_price") else ""
-            lines.append(f"- {e['side']} {e['qty']} {option_label(e['symbol'])}{price} ({e['reason']})")
+            ev = e.get("evidence") or {}
+            quote = (f" · quote bid {ev['bid']} / ask {ev['ask']}, spread {ev['spread_pct_of_mid']:.1%} of mid"
+                     if ev.get("bid") is not None and ev.get("spread_pct_of_mid") is not None else "")
+            lines.append(f"- {e['side']} {e['qty']} {option_label(e['symbol'])}{price} ({e['reason']}){quote}")
         elif e["kind"] == "close":
             lines.append(f"- close {option_label(e['symbol'])} ({e['reason']})")
         elif e["kind"] == "halt":

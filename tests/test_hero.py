@@ -128,6 +128,14 @@ class EngineTests(unittest.TestCase):
         # Delta closest to 0.5 is the middle (ATM) contract.
         self.assertIn("C", option_buys[0]["symbol"][-9])
         self.assertEqual(self.j.state()["last_rebalance"], TODAY.isoformat())
+        # Quote evidence is journaled with each order but never sent to the broker.
+        self.assertFalse(any("evidence" in o for o in c.orders))
+        logged = [json.loads(l) for l in (Path(self.tmp.name) / "trades.jsonl").read_text().splitlines()]
+        opt_ev = next(e["evidence"] for e in logged if e["kind"] == "order" and e["type"] == "limit")
+        self.assertEqual((opt_ev["bid"], opt_ev["ask"], opt_ev["mid"]), (4.0, 4.2, 4.1))
+        self.assertAlmostEqual(opt_ev["spread_pct_of_mid"], 0.0488, places=4)
+        close_ev = next(e["evidence"] for e in logged if e["kind"] == "close" and e["symbol"].startswith("XYZ"))
+        self.assertEqual(close_ev["unrealized_plpc"], "0.9")
 
         # Second run the same day must not rebalance again.
         c2 = FakeClient(self.closes)
