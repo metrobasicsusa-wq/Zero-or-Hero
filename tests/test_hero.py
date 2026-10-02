@@ -1317,6 +1317,25 @@ class ResearchFlow(unittest.TestCase):
         self.assertAlmostEqual(rf.forward([100.0, 110.0, 121.0], [0], 2)[0], 0.21)
 
 
+class ResearchRatchet(unittest.TestCase):
+    def test_switches_after_a_hit_and_caps_the_loss(self):
+        from hero import research_ratchet as rr
+        days = ["2025-01-02", "2025-01-03", "2025-01-06", "2025-01-07"]
+        idx = rr.growth_index(days, [0.0, 0.0, 0.10, 0.0])
+        self.assertAlmostEqual(rr.value_at(idx, days, "2025-01-06"), 1.1)
+        self.assertEqual(rr.value_at(idx, days, "2024-12-31"), 1.0)
+        evs = [{"reaction_day": "2025-01-03", "ret": -1.0}, {"reaction_day": "2025-01-03", "ret": 19.0},
+               {"reaction_day": "2025-01-07", "ret": -1.0}]
+        w = rr.window(evs, idx, days, "2025-01-02", "2025-01-07", stake=10, budget=100)
+        # core 400 * 1.1; pot 100 - 10 + 190 = 280, switched on 01-03 then +10%; the last bet is never placed
+        self.assertTrue(w["hit"])
+        self.assertAlmostEqual(w["final"], 400 * 1.1 + 280 * 1.1)
+        loss = rr.window([{"reaction_day": "2025-01-03", "ret": -1.0}] * 20, idx, days, "2025-01-02", "2025-01-07", 10, 100)
+        self.assertAlmostEqual(loss["final"], 400 * 1.1)  # the most it can lose is the lottery budget
+        weekly = rr.pick([{"reaction_day": "2025-01-06", "mom126": 0.1}, {"reaction_day": "2025-01-07", "mom126": 0.5}], "weekly")
+        self.assertEqual([e["mom126"] for e in weekly], [0.5])
+
+
 class Safety(unittest.TestCase):
     def test_refuses_live_endpoint(self):
         with self.assertRaises(AlpacaError):

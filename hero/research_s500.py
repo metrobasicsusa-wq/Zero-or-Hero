@@ -29,6 +29,7 @@ END_LOSS = 0.4
 LOOKBACKS = (10, 20, 63, 126)
 TOP_NS = (1, 2, 3, 4)
 LEVERED = {"TQQQ": "QQQ", "SOXL": "SMH"}
+KEEP_SERIES = {(126, 2), (63, 3)}
 
 
 def attempts(rets: list[float]) -> dict:
@@ -82,15 +83,18 @@ def run(client, root: Path) -> dict:
         keys = sorted(mp)
         pools[f"动态前 {size}"] = lambda t, mp=mp, keys=keys: mp[max(k for k in keys if k <= t)] + ETFS
 
-    rows = []
+    rows, series = [], {}
     for pool, pool_at in pools.items():
         for lb in LOOKBACKS:
             for n in TOP_NS:
                 rets, _ = simulate(dates, closes, firsts, params(lb, n), cfg["regime_symbol"], 1.0, warm, pool_at)
+                if (lb, n) in KEEP_SERIES:
+                    series[f"{pool}|{lb}|{n}"] = [round(r, 6) for r in rets]
                 rows.append({"pool": pool, "lookback": lb, "top_n": n, **stats(rets), **attempts(rets),
                              "by_year": by_year(dates, rets, warm)})
     for etf, gauge in LEVERED.items():
         rets = levered_trend(dates, closes, firsts, etf, gauge, warm)
+        series[etf] = [round(r, 6) for r in rets]
         rows.append({"pool": f"{etf}（{gauge} 在 200 日线上方时持有）", "lookback": None, "top_n": None,
                      **stats(rets), **attempts(rets), "by_year": by_year(dates, rets, warm)})
 
@@ -103,6 +107,9 @@ def run(client, root: Path) -> dict:
             dyn.setdefault(key(r), []).append(r)
     robust = [k for k, rs in dyn.items() if len(rs) == 2 and all((x["cagr"] or -1) > 0 for x in rs)]
     return {"generated": date.today().isoformat(), "period": f"{dates[warm]} → {dates[-1]}",
+            # Daily returns of the leading variants, keyed "pool|lookback|top_n" (and the levered ETFs);
+            # series_dates[i] is the day each return is earned on (close i to close i+1).
+            "series_dates": dates[warm + 1: len(dates)], "series": series,
             "candidates": len(have), "gross": GROSS, "end_loss": END_LOSS, "rows": rows,
             "robust": [{"lookback": k[0], "top_n": k[1],
                         "dyn_cagr": [x["cagr"] for x in dyn[k]], "dyn_attempts": [x["attempts"] for x in dyn[k]]}
