@@ -133,11 +133,11 @@ class EngineTests(unittest.TestCase):
     def test_full_cycle(self):
         c = FakeClient(self.closes, positions=[
             {"symbol": "DOWN", "asset_class": "us_equity", "market_value": "5000"},
-            {"symbol": "XYZ261001C00010000", "asset_class": "us_option", "unrealized_plpc": "0.9"}])
+            {"symbol": "UP2261001C00010000", "asset_class": "us_option", "unrealized_plpc": "0.9"}])
         res = Engine(c, cfg(stocks={"rsi_max": 101}), self.j).run(today=TODAY)
         self.assertEqual(res["status"], "ok")
         self.assertIn("DOWN", c.closed)
-        self.assertIn("XYZ261001C00010000", c.closed)
+        self.assertIn("UP2261001C00010000", c.closed)
         stock_buys = {o["symbol"] for o in c.orders if o["type"] == "market"}
         expected = set(mom.rank(self.closes, {**CFG["stocks"], "rsi_max": 101})[: CFG["stocks"]["top_n"]])
         self.assertTrue(expected and expected == stock_buys)
@@ -157,10 +157,10 @@ class EngineTests(unittest.TestCase):
         self.assertEqual((opt_ev["bid"], opt_ev["ask"], opt_ev["mid"]), (4.0, 4.2, 4.1))
         self.assertAlmostEqual(opt_ev["spread_pct_of_mid"], 0.0488, places=4)
         whys = {e["symbol"]: e.get("why", "") for e in logged if e["kind"] in ("order", "close")}
-        self.assertIn("达到止盈线", whys["XYZ261001C00010000"])
+        self.assertIn("达到止盈线", whys["UP2261001C00010000"])
         self.assertTrue(whys["DOWN"].startswith("移出目标：跌破"))
         self.assertTrue(all(w for w in whys.values()), whys)
-        close_ev = next(e["evidence"] for e in logged if e["kind"] == "close" and e["symbol"].startswith("XYZ"))
+        close_ev = next(e["evidence"] for e in logged if e["kind"] == "close" and e["symbol"].startswith("UP2261"))
         self.assertEqual(close_ev["unrealized_plpc"], "0.9")
 
         # Second run the same day must not rebalance again.
@@ -530,6 +530,20 @@ class ProtectiveStops(unittest.TestCase):
                 "open_orders": [{"symbol": "AAPL", "side": "sell", "status": "new", "protective_stop": True,
                                  "submitted_at": "2026-09-01T14:00:00Z"}]}
         self.assertEqual(patrol.check(snap, market_open=True, now=now), ["MSFT 没有券商端保护性止损单"])
+
+
+class Ownership(unittest.TestCase):
+    def test_positions_outside_universe_are_left_alone(self):
+        with tempfile.TemporaryDirectory() as d:
+            closes = {"SPY": series(0.001, seed=5), "UP1": series(0.002, seed=1)}
+            foreign = [{"symbol": "PLTR", "asset_class": "us_equity", "qty": "0.6", "avg_entry_price": "20",
+                        "current_price": "21", "market_value": "12.6"},
+                       {"symbol": "PLTR261120C00025000", "asset_class": "us_option", "qty": "1",
+                        "unrealized_plpc": "-0.9"}]
+            c = FakeClient(closes, positions=foreign)
+            Engine(c, cfg(stocks={"rsi_max": 101}), Journal(Path(d))).run(today=TODAY)
+            self.assertEqual(c.closed, [])  # not sold, not stopped out, even at -90%
+            self.assertFalse([o for o in c.orders if o["symbol"].startswith("PLTR")])
 
 
 class Safety(unittest.TestCase):

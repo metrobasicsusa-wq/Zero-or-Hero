@@ -82,8 +82,12 @@ class Engine:
                 self.stops.setdefault(o["symbol"], []).append(o)
         busy = {o["symbol"] for o in open_orders if not stoplib.is_protective_stop(o)}
         self.touched: set[str] = set()
-        stocks = {p["symbol"]: p for p in positions if p.get("asset_class") == "us_equity"}
-        options = {p["symbol"]: p for p in positions if p.get("asset_class") == "us_option"}
+        # Only manage what this strategy owns: stocks in its universe and options on them. Anything
+        # else in the account (e.g. another experiment's positions) is left alone.
+        mine = set(self.cfg["universe"])
+        stocks = {p["symbol"]: p for p in positions if p.get("asset_class") == "us_equity" and p["symbol"] in mine}
+        options = {p["symbol"]: p for p in positions
+                   if p.get("asset_class") == "us_option" and option_underlying(p["symbol"]) in mine}
 
         universe = self.cfg["universe"]
         start = (today - timedelta(days=HISTORY_DAYS)).isoformat()
