@@ -6,6 +6,7 @@ import math
 import uuid
 from datetime import date, timedelta
 
+from hero import earnings as earn
 from hero import macro
 from hero import stops as stoplib
 from hero.alpaca import AlpacaError
@@ -33,8 +34,9 @@ def round_option_price(x: float) -> float:
 
 
 class Engine:
-    def __init__(self, client, cfg: dict, journal: Journal, dry_run: bool = False):
+    def __init__(self, client, cfg: dict, journal: Journal, dry_run: bool = False, earnings: dict | None = None):
         self.c, self.cfg, self.j, self.dry = client, cfg, journal, dry_run
+        self.earnings = earnings  # calendar from hero.earnings; None = unavailable
 
     def _order(self, reason: str, evidence: dict | None = None, why: str = "", cid_prefix: str = "",
                **order) -> None:
@@ -73,6 +75,7 @@ class Engine:
 
     def run(self, today: date | None = None, force: bool = False) -> dict:
         today = today or date.today()
+        self.today = today
         if not force and not self.c.clock().get("is_open"):
             return {"status": "market_closed"}
         if not self.dry and not self._launch_allowed(today):
@@ -289,6 +292,14 @@ class Engine:
             if sym in busy:
                 continue
             exp = opt.occ_expiration(sym)
+            report = earn.next_report(self.earnings, option_underlying(sym), today) \
+                if self.cfg["options"].get("earnings_guard") else None
+            if report and earn.last_safe_expiry(report) < date.fromisoformat(exp) \
+                    and (date.fromisoformat(report["date"]) - today).days <= 1:
+                # Safety net for a report moved earlier after we bought: sell before it, not after.
+                self._close(sym, "earnings", {k: pos.get(k) for k in ("unrealized_plpc", "qty")},
+                            why=f"{option_underlying(sym)} 将于 {earn.describe(report)} 发财报，合约 {exp} 到期会跨过财报，财报前平仓")
+                continue
             reason = opt.should_exit(pos, today, exp, self.cfg["options"])
             if reason and reason.startswith("take_profit") and self.cfg["options"].get("hold_overnight") \
                     and self._bought_today(sym, today):
@@ -314,6 +325,16 @@ class Engine:
         bull = regime not in closes or momentum.is_bullish(closes[regime])
         gauges = macro.gauges(mc or {})
         macro_cut = p.get("macro_scale", 1.0) < 1.0 and macro.risk_off(gauges)
+        soon = {}
+        today = getattr(self, "today", date.today())
+        if earn.usable(self.earnings, today):
+            for sym in sorted(set(targets) | set(stocks)):
+                r = earn.next_report(self.earnings, sym, today)
+                if r and (date.fromisoformat(r["date"]) - today).days <= 3:
+                    soon[sym] = r
+        if soon:
+            self.j.event("earnings_watch", dry_run=self.dry, reports=soon,
+                         why="3 天内发财报（只提示，不改股票仓位）：" + "；".join(f"{s} {earn.describe(r)}" for s, r in soon.items()))
         self.j.event("targets", weights={s: round(w, 4) for s, w in targets.items()}, scores=score,
                      regime="bull" if bull else "bear", macro=gauges, macro_risk_off=macro.risk_off(gauges),
                      macro_applied=macro_cut, why=macro.summary(gauges)
@@ -398,10 +419,23 @@ class Engine:
             if und in held or und not in closes:
                 continue
             spot = closes[und][-1]
+            latest = today + timedelta(days=p["max_dte"])
+            if p.get("earnings_guard"):
+                # Never hold a short-dated option through an earnings report: the expiry must settle
+                # before it. An unavailable calendar means unknown, and unknown means no option.
+                if not earn.usable(self.earnings, today):
+                    skipped.append(f"{und}：财报日历不可用或过期，无法确认到期前没有财报")
+                    continue
+                report = earn.next_report(self.earnings, und, today)
+                if report and earn.last_safe_expiry(report) < latest:
+                    latest = earn.last_safe_expiry(report)
+                    if latest < today + timedelta(days=p["min_dte"]):
+                        skipped.append(f"{und}：{earn.describe(report)} 发财报，{p['min_dte']} 天以上的合约都会跨过财报")
+                        continue
             contracts = self.c.option_contracts(
                 und, type=kind, status="active",
                 expiration_date_gte=(today + timedelta(days=p["min_dte"])).isoformat(),
-                expiration_date_lte=(today + timedelta(days=p["max_dte"])).isoformat(),
+                expiration_date_lte=latest.isoformat(),
                 strike_price_gte=f"{spot * (1 - p.get('strike_band', 0.1)):.2f}",
                 strike_price_lte=f"{spot * (1 + p.get('strike_band', 0.1)):.2f}")
             if not contracts:

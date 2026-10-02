@@ -8,7 +8,7 @@ from datetime import date, datetime, timedelta
 from zoneinfo import ZoneInfo
 from pathlib import Path
 
-from hero import backtest, dashboard, evolve, macro, patrol, review
+from hero import backtest, dashboard, earnings, evolve, macro, patrol, review
 from hero.alpaca import Alpaca
 from hero.engine import Engine
 from hero.journal import Journal
@@ -16,6 +16,7 @@ from hero.journal import Journal
 ROOT = Path(__file__).resolve().parent.parent
 CFG_PATH = ROOT / "config" / "strategy.json"
 JOURNAL = ROOT / "journal"
+EARNINGS = ROOT / "data" / "earnings.json"
 EVOLVE_HISTORY_DAYS = 3 * 365
 
 
@@ -42,6 +43,8 @@ def main() -> None:
     rv.add_argument("--write", action="store_true", help="save to journal/reviews/DATE.md instead of printing facts")
     sub.add_parser("patrol", help="health checks; prints problems, one per line")
     sub.add_parser("snapshot", help="refresh account/positions/orders snapshot and today's fills from the broker")
+    e = sub.add_parser("earnings", help="refresh the earnings calendar (at most one API call per ET day)")
+    e.add_argument("--configs", nargs="+", default=[str(CFG_PATH), str(ROOT / "config" / "s500.json")])
     args = ap.parse_args()
 
     cfg_path, jdir = Path(args.config), Path(args.journal)
@@ -67,6 +70,12 @@ def main() -> None:
         print(out)
         print("FINAL" if review.is_final(jdir, args.date) else "PRELIMINARY")
         return
+    if args.cmd == "earnings":
+        import os
+        symbols = set().union(*(json.loads(Path(c).read_text())["universe"] for c in args.configs))
+        now = datetime.now(ZoneInfo("America/New_York"))
+        print(earnings.refresh(EARNINGS, symbols, os.environ["ALPHAVANTAGE_API_KEY"], now))
+        return
     client = Alpaca()
 
     if args.cmd == "patrol":
@@ -76,7 +85,8 @@ def main() -> None:
 
     if args.cmd in ("run", "snapshot"):
         if args.cmd == "run":
-            print(json.dumps(Engine(client, cfg, journal, args.dry_run).run(force=args.force)))
+            cal = earnings.load(EARNINGS)
+            print(json.dumps(Engine(client, cfg, journal, args.dry_run, earnings=cal).run(force=args.force)))
         journal.snapshot({"account": client.account(), "positions": client.positions(),
                           "open_orders": client.open_orders()})
         print(f"fills: {journal.record_fills(client.fill_activities(et_today()))} new")

@@ -6,7 +6,7 @@ import unittest
 from datetime import date, timedelta
 from pathlib import Path
 
-from hero import backtest, dashboard, evolve, macro, patrol, review, stops
+from hero import backtest, dashboard, earnings, evolve, macro, patrol, review, stops
 from hero.alpaca import Alpaca, AlpacaError
 from hero.engine import Engine, round_option_price
 from hero.indicators import max_drawdown, momentum, rsi, sma
@@ -64,6 +64,7 @@ class FakeClient:
         return {"id": f"close-{s}", "status": "accepted"}
 
     def option_contracts(self, und, **kw):
+        self.contract_queries = getattr(self, "contract_queries", []) + [(und, kw)]
         spot = self.closes[und][-1]
         exp = (TODAY + timedelta(days=45)).isoformat()
         t = "C" if kw["type"] == "call" else "P"
@@ -894,6 +895,84 @@ class SmallAccount(unittest.TestCase):
             res = Engine(c, self.s500_cfg(), Journal(Path(d))).run(today=TODAY)
             self.assertEqual(res["status"], "ok")
             self.assertIn("pattern day trading", (Path(d) / "trades.jsonl").read_text())
+
+
+class Earnings(unittest.TestCase):
+    ROWS = [{"symbol": "UP1", "reportDate": (TODAY + timedelta(days=5)).isoformat(), "timeOfTheDay": "pre-market",
+             "estimate": "1.0", "fiscalDateEnding": "2026-09-30"},
+            {"symbol": "ZZZ", "reportDate": TODAY.isoformat(), "timeOfTheDay": "", "estimate": "", "fiscalDateEnding": ""}]
+
+    def cal(self, rows=None, fetched=TODAY):
+        from datetime import datetime
+        return earnings.build(self.ROWS if rows is None else rows, {"UP1", "UP2", "SPY"},
+                              datetime(fetched.year, fetched.month, fetched.day, 9, 0))
+
+    def test_calendar_helpers(self):
+        c = self.cal()
+        self.assertEqual(list(c["reports"]), ["UP1"])  # only our own symbols are kept
+        r = earnings.next_report(c, "UP1", TODAY)
+        self.assertEqual(earnings.last_safe_expiry(r), TODAY + timedelta(days=4))  # pre-market: day before
+        post = {**r, "time": "post-market"}
+        self.assertEqual(earnings.last_safe_expiry(post), TODAY + timedelta(days=5))  # after the close: same day ok
+        self.assertIsNone(earnings.next_report(c, "UP2", TODAY))
+        self.assertTrue(earnings.usable(c, TODAY + timedelta(days=3)))
+        self.assertFalse(earnings.usable(c, TODAY + timedelta(days=4)))
+        self.assertFalse(earnings.usable(None, TODAY))
+
+    def test_refresh_calls_api_once_per_day(self):
+        from datetime import datetime
+        calls = []
+        orig = earnings.fetch
+        earnings.fetch = lambda key: calls.append(key) or self.ROWS
+        try:
+            with tempfile.TemporaryDirectory() as d:
+                path = Path(d) / "earnings.json"
+                now = datetime(2026, 10, 1, 9, 35)
+                self.assertTrue(earnings.refresh(path, {"UP1"}, "k", now).startswith("fetched"))
+                self.assertEqual(earnings.refresh(path, {"UP1"}, "k", now), "fresh")
+                self.assertTrue((Path(d) / "earnings" / "2026-10-01.json").exists())  # point-in-time archive
+                earnings.refresh(path, {"UP1"}, "k", datetime(2026, 10, 2, 9, 35))
+                self.assertEqual(len(calls), 2)
+        finally:
+            earnings.fetch = orig
+
+    def engine(self, d, cal, positions=()):
+        closes = {"SPY": series(0.001, seed=5), "UP1": series(0.002, seed=1)}
+        conf = cfg(stocks={"rsi_max": 101, "top_n": 1},
+                   options={"enabled": True, "max_positions": 1, "allocation": 0.2, "min_dte": 3, "max_dte": 10,
+                            "earnings_guard": True, "exit_dte": 1, "max_rank": 1})
+        c = FakeClient(closes, positions=list(positions))
+        Engine(c, conf, Journal(Path(d)), earnings=cal).run(today=TODAY)
+        return c, (Path(d) / "trades.jsonl").read_text()
+
+    def test_no_calendar_no_option(self):
+        with tempfile.TemporaryDirectory() as d:
+            c, log = self.engine(d, None)
+            self.assertNotIn("UP1", [u for u, _ in getattr(c, "contract_queries", [])])
+            self.assertIn("财报日历不可用", log)
+
+    def test_expiry_capped_before_report(self):
+        with tempfile.TemporaryDirectory() as d:
+            c, _ = self.engine(d, self.cal())
+            und, kw = c.contract_queries[0]
+            self.assertEqual(kw["expiration_date_lte"], (TODAY + timedelta(days=4)).isoformat())
+
+    def test_report_too_close_skips(self):
+        rows = [{**self.ROWS[0], "reportDate": (TODAY + timedelta(days=2)).isoformat()}]
+        with tempfile.TemporaryDirectory() as d:
+            c, log = self.engine(d, self.cal(rows))
+            self.assertNotIn("UP1", [u for u, _ in getattr(c, "contract_queries", [])])
+            self.assertIn("会跨过财报", log)
+
+    def test_held_option_sold_before_report(self):
+        exp = TODAY + timedelta(days=6)
+        sym = f"UP1{exp:%y%m%d}C00100000"
+        pos = {"symbol": sym, "asset_class": "us_option", "unrealized_plpc": "0.1", "qty": "1"}
+        rows = [{**self.ROWS[0], "reportDate": (TODAY + timedelta(days=1)).isoformat()}]
+        with tempfile.TemporaryDirectory() as d:
+            c, log = self.engine(d, self.cal(rows), positions=[pos])
+            self.assertIn(sym, c.closed)
+            self.assertIn("财报前平仓", log)
 
 
 class Safety(unittest.TestCase):

@@ -147,6 +147,10 @@
     {
       "what": "启动需要批准，不只看日期",
       "detail": "新增 launch_approved（当前 false）。live_from 日期到了且 launch_approved=true 才会真实下单；否则继续只记录。2026-10-07 首周复盘后，若上述修复和演练结果没有问题，再在一次单独的提交里改为 true，并在交换文件说明。"
+    },
+    {
+      "what": "期权不跨财报（earnings_guard）",
+      "detail": "数据源：Alpha Vantage EARNINGS_CALENDAR（免费 Key，horizon=3month），每个美东交易日最多调用 1 次，只保留两个实验股票池的标的，写入 data/earnings.json，并按日期存档 data/earnings/YYYY-MM-DD.json（保留当时可见的日期，回测不用事后修订值）。规则（Claude-500 启用，主实验未启用）：买入时合约到期日必须早于财报——盘前或时间未知的财报日 E，到期日 ≤ E−1；盘后财报，到期日 ≤ E；3–10 天范围内没有这样的合约就不买。日历不可用或超过 3 天未更新 = 未知 = 不买。已持有的期权若财报日被提前到到期日之前，财报前 1 天平仓。股票 3 天内有财报只记录 earnings_watch 提示，不改仓位。某标的在日历中没有记录只表示 3 个月内没有已知财报（或是 ETF），不等于确认无财报；对 3–10 天的期权这一区分不影响结论。"
     }
   ],
   "implementation": {

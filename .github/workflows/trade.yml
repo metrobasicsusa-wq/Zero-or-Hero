@@ -28,6 +28,11 @@ jobs:
         with:
           python-version: "3.11"
       - run: pip install -r requirements.txt
+      - name: Earnings calendar (one Alpha Vantage call per ET day at most)
+        continue-on-error: true   # without it, the earnings guard simply blocks short-dated options
+        env:
+          ALPHAVANTAGE_API_KEY: ${{ secrets.ALPHAVANTAGE_API_KEY }}
+        run: python -m hero earnings
       - name: Trade
         env:
           ALPACA_API_KEY: ${{ secrets.ALPACA_API_KEY }}
@@ -44,7 +49,7 @@ jobs:
         run: |
           git config user.name "zero-or-hero-bot"
           git config user.email "zero-or-hero-bot@users.noreply.github.com"
-          git add journal journal-s500
+          git add journal journal-s500 data
           git diff --cached --quiet || (git commit -m "journal: trading cycle $(date -u +%FT%TZ)" && git pull --rebase && git push)
 
   pages:
