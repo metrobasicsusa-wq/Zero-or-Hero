@@ -96,6 +96,7 @@ tr:last-child td { border-bottom: 0; }
 .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
 @media (max-width: 760px) { .grid2 { grid-template-columns: 1fr; } }
 .grid2 .card { margin-bottom: 0; }
+a { color: var(--series-1); }
 .params { display: grid; grid-template-columns: auto 1fr; gap: 4px 16px; font-size: 13px; }
 .params dt { color: var(--ink-2); }
 .params dd { margin: 0; font-variant-numeric: tabular-nums; }
@@ -116,6 +117,11 @@ footer { color: var(--muted); font-size: 12px; margin-top: 24px; }
     <h2>累计收益 vs SPY</h2>
     <div class="legend" id="legend"></div>
     <div class="chart-wrap" id="chart"></div>
+  </section>
+
+  <section class="card" id="review-card">
+    <h2>最新复盘</h2>
+    <div id="review"></div>
   </section>
 
   <section class="card">
@@ -355,6 +361,15 @@ function renderParams() {
   $("params").innerHTML = `<dl class="params">${items.map(([k, v]) => `<dt>${k}</dt><dd>${esc(v)}</dd>`).join("")}</dl>`;
 }
 
+function renderReview() {
+  const r = DATA.review;
+  if (!r) { $("review").innerHTML = empty("第一份复盘在今天收盘后生成"); return; }
+  const items = r.points.map((p) => `<li>${esc(p)}</li>`).join("") || "<li>无</li>";
+  $("review").innerHTML = `<div class="meta" style="margin-bottom:8px">${esc(r.title)} · ` +
+    `${r.has_ai ? "含 AI 分析" : "AI 分析待生成（17:05 后）"} · <a href="${esc(r.url)}" target="_blank" rel="noopener">查看全文</a></div>` +
+    `<ul style="margin:0;padding-left:20px">${items}</ul>`;
+}
+
 function renderEvolution() {
   const text = DATA.evolution.replace(/^# Evolution log\s*/, "").trim();
   $("evolution").innerHTML = text ? `<pre>${esc(text)}</pre>` : empty("第一次进化在本周六");
@@ -370,6 +385,7 @@ renderOrders();
 renderEvents();
 renderParams();
 renderEvolution();
+renderReview();
 watchForUpdates();
 </script>
 </body>

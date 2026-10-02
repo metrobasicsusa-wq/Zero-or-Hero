@@ -74,3 +74,12 @@ jobs:
             gh label create post-market --color 0e8a16 --description "Daily post-market review" 2>/dev/null || true
             gh issue create --title "$title" --label post-market --body-file "${{ steps.write.outputs.file }}"
           fi
+
+  pages:
+    needs: review
+    if: always()
+    uses: ./.github/workflows/pages.yml
+    permissions:
+      contents: read
+      pages: write
+      id-token: write

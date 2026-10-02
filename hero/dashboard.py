@@ -30,6 +30,7 @@ def collect(journal: Path, cfg: dict) -> dict:
 
     snap_path = journal / "snapshot.json"
     evo_path = journal / "evolution.md"
+    reviews = sorted((journal / "reviews").glob("*.md")) if (journal / "reviews").exists() else []
     return {
         "generated": datetime.now(timezone.utc).isoformat(timespec="seconds"),
         "equity": equity,
@@ -37,8 +38,24 @@ def collect(journal: Path, cfg: dict) -> dict:
         "events": events[-MAX_EVENTS:][::-1],
         "targets": targets,
         "evolution": evo_path.read_text() if evo_path.exists() else "",
+        "review": latest_review(reviews[-1]) if reviews else None,
         "config": cfg,
     }
+
+
+def latest_review(path: Path) -> dict:
+    """Title, rule-based key points and whether the AI analysis has been appended."""
+    lines = path.read_text().splitlines()
+    points, in_points = [], False
+    for line in lines:
+        if line.startswith("#"):  # any heading ends the key-points section
+            in_points = line.startswith("## 要点")
+            continue
+        if in_points and line.startswith("- "):
+            points.append(line[2:])
+    return {"date": path.stem, "title": lines[0].lstrip("# ") if lines else path.stem, "points": points,
+            "has_ai": any(l.startswith("## AI 分析") for l in lines),
+            "url": f"https://github.com/metrobasicsusa-wq/Zero-or-Hero/blob/claude/cloud-paper-trading-ivwxqk/journal/reviews/{path.name}"}
 
 
 def render(data: dict) -> str:

@@ -208,6 +208,12 @@ class Dashboard(unittest.TestCase):
             html = dashboard.render(data)
             self.assertNotIn("/*__DATA__*/null", html)
             self.assertNotIn("</script>\"", html)
+            self.assertIsNone(data["review"])
+            (Path(d) / "reviews").mkdir()
+            (Path(d) / "reviews" / "2026-10-01.md").write_text(
+                "# 盘后复盘 2026-10-01（Claude）\n\n## 要点（规则自动生成）\n- 今日 +1.00%\n\n# Facts\n- buy 1 X\n\n## AI 分析\nok\n")
+            r = dashboard.collect(Path(d), cfg())["review"]
+            self.assertEqual((r["date"], r["points"], r["has_ai"]), ("2026-10-01", ["今日 +1.00%"], True))
 
 
 class Review(unittest.TestCase):
