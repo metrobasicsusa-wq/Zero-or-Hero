@@ -38,12 +38,12 @@ def collect(journal: Path, cfg: dict) -> dict:
         "events": events[-MAX_EVENTS:][::-1],
         "targets": targets,
         "evolution": evo_path.read_text() if evo_path.exists() else "",
-        "review": latest_review(reviews[-1]) if reviews else None,
+        "review": latest_review(reviews[-1], journal.name) if reviews else None,
         "config": cfg,
     }
 
 
-def latest_review(path: Path) -> dict:
+def latest_review(path: Path, journal_dir: str = "journal") -> dict:
     """Title, rule-based key points and whether the AI analysis has been appended."""
     lines = path.read_text().splitlines()
     points, in_points = [], False
@@ -55,7 +55,7 @@ def latest_review(path: Path) -> dict:
             points.append(line[2:])
     return {"date": path.stem, "title": lines[0].lstrip("# ") if lines else path.stem, "points": points,
             "has_ai": any(l.startswith("## AI 分析") for l in lines),
-            "url": f"https://github.com/metrobasicsusa-wq/Zero-or-Hero/blob/claude/cloud-paper-trading-ivwxqk/journal/reviews/{path.name}"}
+            "url": f"https://github.com/metrobasicsusa-wq/Zero-or-Hero/blob/claude/cloud-paper-trading-ivwxqk/{journal_dir}/reviews/{path.name}"}
 
 
 def render(data: dict) -> str:

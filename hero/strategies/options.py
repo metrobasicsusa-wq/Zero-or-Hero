@@ -5,35 +5,67 @@ Risk per trade is capped at the premium paid, so no margin or spread approval is
 
 from __future__ import annotations
 
-from datetime import date
+from datetime import date, datetime, timezone
 
 
 def dte(expiration: str, today: date) -> int:
     return (date.fromisoformat(expiration) - today).days
 
 
-def mid(snapshot: dict) -> float | None:
+def mid(snapshot: dict, max_spread: float = 0.15) -> float | None:
     q = snapshot.get("latestQuote") or {}
     bid, ask = q.get("bp") or 0, q.get("ap") or 0
     if bid <= 0 or ask <= 0 or ask < bid:
         return None
-    # Skip illiquid contracts with spreads wider than 15% of mid.
+    # Skip illiquid contracts with spreads wider than max_spread of mid.
     m = (bid + ask) / 2
-    return m if (ask - bid) / m <= 0.15 else None
+    return m if (ask - bid) / m <= max_spread else None
+
+
+def parse_ts(t: str) -> datetime:
+    """RFC 3339 timestamp, as Alpaca sends it (often with nanoseconds and a Z suffix)."""
+    t = t.replace("Z", "+00:00")
+    if "." in t:
+        head, rest = t.split(".", 1)
+        frac = "".join(ch for ch in rest if ch.isdigit())
+        tz = rest[len(frac):]
+        t = f"{head}.{frac[:6]}{tz}"
+    ts = datetime.fromisoformat(t)
+    return ts if ts.tzinfo else ts.replace(tzinfo=timezone.utc)
+
+
+def quote_age_s(snapshot: dict, now: datetime | None = None) -> float | None:
+    t = (snapshot.get("latestQuote") or {}).get("t")
+    if not t:
+        return None
+    return ((now or datetime.now(timezone.utc)) - parse_ts(t)).total_seconds()
 
 
 def pick_contract(contracts: list[dict], snapshots: dict[str, dict], spot: float,
-                  p: dict) -> tuple[dict, float] | None:
-    """Contract whose delta is closest to the target (falls back to moneyness)."""
+                  p: dict, budget: float | None = None, now: datetime | None = None) -> tuple[dict, float] | None:
+    """Contract whose delta is closest to the target (falls back to moneyness).
+
+    Optional filters from p: max_spread, delta_min/delta_max, max_quote_age_s; and with a
+    budget, only contracts whose full premium (mid x 100) fits are considered."""
     best, best_score = None, float("inf")
     for c in contracts:
         snap = snapshots.get(c["symbol"])
         if not snap or not c.get("tradable", True):
             continue
-        price = mid(snap)
+        price = mid(snap, p.get("max_spread", 0.15))
         if price is None:
             continue
+        if budget is not None and price * 100 > budget:
+            continue
+        if "max_quote_age_s" in p:
+            age = quote_age_s(snap, now)
+            if age is None or age > p["max_quote_age_s"]:
+                continue
         delta = (snap.get("greeks") or {}).get("delta")
+        if delta is not None and not p.get("delta_min", 0) <= abs(delta) <= p.get("delta_max", 1):
+            continue
+        if delta is None and "delta_min" in p:
+            continue  # a delta band was asked for; without greeks we cannot honour it
         if delta is not None:
             score = abs(abs(delta) - p["target_delta"])
         else:

@@ -19,10 +19,18 @@ permissions:
 jobs:
   review:
     runs-on: ubuntu-latest
+    strategy:
+      max-parallel: 1   # one experiment at a time: both commit to the same branch
+      fail-fast: false
+      matrix:
+        exp:
+          - {name: Claude, args: "", journal: journal, exchange: exchange/claude, key: ALPACA_API_KEY, secret: ALPACA_SECRET_KEY}
+          - {name: Claude-500, args: "--config config/s500.json --journal journal-s500 --exchange exchange/claude/s500", journal: journal-s500, exchange: exchange/claude/s500, key: ALPACA_S500_API_KEY, secret: ALPACA_S500_SECRET_KEY}
     steps:
       - uses: actions/checkout@v4
         with:
           ref: ${{ github.ref_name }}   # latest head, not the commit current when this run was queued
+      - run: git pull -q origin ${{ github.ref_name }}   # pick up the previous matrix leg's commit
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
@@ -33,7 +41,7 @@ jobs:
           day="${{ inputs.date }}"
           [ -n "$day" ] || day=$(TZ=America/New_York date +%F)
           echo "day=$day" >> "$GITHUB_OUTPUT"
-          f="journal/reviews/$day.md"
+          f="${{ matrix.exp.journal }}/reviews/$day.md"
           if [ -z "${{ inputs.date }}" ] && [ "$(TZ=America/New_York date +%H%M)" -lt 1605 ]; then
             echo "before the close (EST schedule slot); skipping"; exit 0
           fi
@@ -43,14 +51,14 @@ jobs:
       - name: Refresh broker snapshot and fills
         if: steps.gate.outputs.go
         env:
-          ALPACA_API_KEY: ${{ secrets.ALPACA_API_KEY }}
-          ALPACA_SECRET_KEY: ${{ secrets.ALPACA_SECRET_KEY }}
-        run: python -m hero snapshot
+          ALPACA_API_KEY: ${{ secrets[matrix.exp.key] }}
+          ALPACA_SECRET_KEY: ${{ secrets[matrix.exp.secret] }}
+        run: python -m hero ${{ matrix.exp.args }} snapshot
       - name: Write review
         id: write
         if: steps.gate.outputs.go
         run: |
-          out=$(python -m hero review --write --date "${{ steps.gate.outputs.day }}")
+          out=$(python -m hero ${{ matrix.exp.args }} review --write --date "${{ steps.gate.outputs.day }}")
           echo "$out"
           case "$out" in NO_TRADING_DAY*) exit 0;; esac
           echo "file=$(echo "$out" | head -1)" >> "$GITHUB_OUTPUT"
@@ -63,9 +71,9 @@ jobs:
           day="${{ steps.gate.outputs.day }}"
           git config user.name "zero-or-hero-bot"
           git config user.email "zero-or-hero-bot@users.noreply.github.com"
-          git add journal exchange/claude
-          git diff --cached --quiet || (git commit -m "review: post-market $day (${{ steps.write.outputs.status }})" && git pull --rebase && git push)
-          title="盘后复盘 $day（Claude）"
+          git add ${{ matrix.exp.journal }} ${{ matrix.exp.exchange }}
+          git diff --cached --quiet || (git commit -m "review: post-market $day ${{ matrix.exp.name }} (${{ steps.write.outputs.status }})" && git pull --rebase && git push)
+          title="盘后复盘 $day（${{ matrix.exp.name }}）"
           num=$(gh issue list --state all --label post-market --search "$title in:title" --json number,title --jq ".[] | select(.title == \"$title\") | .number" | head -1)
           if [ -n "$num" ]; then
             gh issue edit "$num" --body-file "${{ steps.write.outputs.file }}"

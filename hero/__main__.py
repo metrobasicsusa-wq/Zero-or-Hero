@@ -25,6 +25,9 @@ def et_today() -> str:
 
 def main() -> None:
     ap = argparse.ArgumentParser(prog="hero")
+    ap.add_argument("--config", default=str(CFG_PATH), help="strategy config (one per experiment)")
+    ap.add_argument("--journal", default=str(JOURNAL), help="journal directory (one per experiment)")
+    ap.add_argument("--exchange", default=str(ROOT / "exchange" / "claude"), help="where daily exchange files go")
     sub = ap.add_subparsers(dest="cmd", required=True)
     r = sub.add_parser("run", help="one trading cycle")
     r.add_argument("--dry-run", action="store_true", help="log orders without sending them")
@@ -41,32 +44,33 @@ def main() -> None:
     sub.add_parser("snapshot", help="refresh account/positions/orders snapshot and today's fills from the broker")
     args = ap.parse_args()
 
-    cfg = json.loads(CFG_PATH.read_text())
-    journal = Journal(JOURNAL)
+    cfg_path, jdir = Path(args.config), Path(args.journal)
+    cfg = json.loads(cfg_path.read_text())
+    journal = Journal(jdir)
     if args.cmd == "dashboard":
-        dashboard.write(JOURNAL, cfg, Path(args.out))
+        dashboard.write(jdir, cfg, Path(args.out))
         return
     if args.cmd == "review":
         if not args.write:
-            print(review.facts(JOURNAL, cfg, args.date) or f"NO_TRADING_DAY {args.date}")
+            print(review.facts(jdir, cfg, args.date) or f"NO_TRADING_DAY {args.date}")
             return
-        text = review.report(JOURNAL, cfg, args.date)
+        text = review.report(jdir, cfg, args.date)
         if text is None:
             print(f"NO_TRADING_DAY {args.date}")
             return
-        out = JOURNAL / "reviews" / f"{args.date}.md"
+        out = jdir / "reviews" / f"{args.date}.md"
         out.parent.mkdir(exist_ok=True)
         out.write_text(text)
-        exchange = ROOT / "exchange" / "claude" / f"{args.date}.json"
+        exchange = Path(args.exchange) / f"{args.date}.json"
         exchange.parent.mkdir(parents=True, exist_ok=True)
-        exchange.write_text(json.dumps(review.export(JOURNAL, cfg, args.date), indent=2, ensure_ascii=False) + "\n")
+        exchange.write_text(json.dumps(review.export(jdir, cfg, args.date), indent=2, ensure_ascii=False) + "\n")
         print(out)
-        print("FINAL" if review.is_final(JOURNAL, args.date) else "PRELIMINARY")
+        print("FINAL" if review.is_final(jdir, args.date) else "PRELIMINARY")
         return
     client = Alpaca()
 
     if args.cmd == "patrol":
-        for problem in patrol.check(patrol.load(JOURNAL), bool(client.clock().get("is_open"))):
+        for problem in patrol.check(patrol.load(jdir), bool(client.clock().get("is_open"))):
             print(problem)
         return
 
@@ -89,7 +93,7 @@ def main() -> None:
             print(json.dumps(evolve.evaluate(closes, cfg["stocks"], cfg, n), indent=2))
         else:
             new, report = evolve.evolve(cfg, closes, journal.equity_curve(), date.today())
-            evolve.save(new, report, CFG_PATH, JOURNAL / "evolution.md")
+            evolve.save(new, report, cfg_path, jdir / "evolution.md")
             print(report)
 
 

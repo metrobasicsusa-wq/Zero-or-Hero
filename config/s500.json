@@ -1,0 +1,68 @@
+{
+  "name": "Claude-500",
+  "generation": 0,
+  "live_from": "2026-10-08",
+  "attempt": {
+    "number": 1,
+    "start_capital": 500,
+    "end_loss": 0.4
+  },
+  "universe": [
+    "TQQQ",
+    "SOXL",
+    "SMH",
+    "PLTR",
+    "COIN",
+    "HOOD",
+    "SOFI",
+    "MU",
+    "ARM",
+    "CRWD",
+    "NFLX",
+    "UBER",
+    "SHOP",
+    "MSTR",
+    "RKLB",
+    "IONQ",
+    "SMCI",
+    "AMAT",
+    "LRCX",
+    "ORCL"
+  ],
+  "regime_symbol": "SMH",
+  "stocks": {
+    "momentum_lookback": 20,
+    "trend_sma": 20,
+    "top_n": 2,
+    "rsi_max": 85,
+    "gross_exposure": 0.7,
+    "rebalance_drift": 0.25,
+    "rsi_applies_to_holdings": false,
+    "fractional": true
+  },
+  "options": {
+    "enabled": true,
+    "allocation": 0.2,
+    "max_positions": 1,
+    "min_dte": 14,
+    "max_dte": 45,
+    "target_delta": 0.45,
+    "take_profit": 0.8,
+    "stop_loss": -0.5,
+    "exit_dte": 3,
+    "strike_band": 0.3,
+    "budget_filter": true,
+    "max_spread": 0.12,
+    "delta_min": 0.25,
+    "delta_max": 0.6,
+    "max_quote_age_s": 120
+  },
+  "risk": {
+    "max_position_pct": 0.35,
+    "daily_loss_halt": -1.0,
+    "stop_vol_mult": 2.5,
+    "stop_min_pct": 0.05,
+    "stop_max_pct": 0.12,
+    "stop_tif": "day"
+  }
+}

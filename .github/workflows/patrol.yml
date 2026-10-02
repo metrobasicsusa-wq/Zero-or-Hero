@@ -11,6 +11,13 @@ permissions:
 jobs:
   patrol:
     runs-on: ubuntu-latest
+    strategy:
+      max-parallel: 1   # one experiment at a time: both commit to the same branch
+      fail-fast: false
+      matrix:
+        exp:
+          - {name: Claude, args: "", journal: journal, exchange: exchange/claude, key: ALPACA_API_KEY, secret: ALPACA_SECRET_KEY}
+          - {name: Claude-500, args: "--config config/s500.json --journal journal-s500 --exchange exchange/claude/s500", journal: journal-s500, exchange: exchange/claude/s500, key: ALPACA_S500_API_KEY, secret: ALPACA_S500_SECRET_KEY}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -21,15 +28,15 @@ jobs:
       - run: pip install -r requirements.txt
       - name: Check health
         env:
-          ALPACA_API_KEY: ${{ secrets.ALPACA_API_KEY }}
-          ALPACA_SECRET_KEY: ${{ secrets.ALPACA_SECRET_KEY }}
-        run: python -m hero patrol | tee problems.txt
+          ALPACA_API_KEY: ${{ secrets[matrix.exp.key] }}
+          ALPACA_SECRET_KEY: ${{ secrets[matrix.exp.secret] }}
+        run: python -m hero ${{ matrix.exp.args }} patrol | tee problems.txt
       - name: Raise an alert issue
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           [ -s problems.txt ] || exit 0
-          body="$(date -u +'%F %H:%M UTC') 巡检发现问题："$'\n\n'"$(sed 's/^/- /' problems.txt)"
+          body="$(date -u +'%F %H:%M UTC') ${{ matrix.exp.name }} 巡检发现问题："$'\n\n'"$(sed 's/^/- /' problems.txt)"
           # Keep one open alert issue and append to it instead of opening a new one each time.
           num=$(gh issue list --state open --label patrol-alert --json number --jq '.[0].number')
           if [ -n "$num" ]; then

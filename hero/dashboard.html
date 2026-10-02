@@ -108,7 +108,8 @@ footer { color: var(--muted); font-size: 12px; margin-top: 24px; }
 <body>
 <main>
   <header>
-    <h1>Zero-or-Hero <span>· Claude</span></h1>
+    <h1>Zero-or-Hero <span id="exp-name">· Claude</span></h1>
+    <nav class="meta" id="exp-nav"></nav>
     <div class="meta" id="updated"></div>
   </header>
 
@@ -177,6 +178,17 @@ function optionLabel(sym) {
 }
 
 function empty(msg) { return `<div class="empty">${esc(msg)}</div>`; }
+
+const EXPERIMENTS = [["Claude 主实验 $100k", "index.html"], ["Claude-500 子实验", "s500.html"]];
+
+function renderNav() {
+  const name = DATA.config.name || "Claude";
+  $("exp-name").textContent = "· " + name;
+  document.title = `Zero-or-Hero · ${name}`;
+  const here = location.pathname.split("/").pop() || "index.html";
+  $("exp-nav").innerHTML = EXPERIMENTS.map(([label, href]) =>
+    href === here ? `<b>${esc(label)}</b>` : `<a href="${href}">${esc(label)}</a>`).join(" · ");
+}
 
 function renderHeader() {
   const ts = DATA.snapshot?.ts || DATA.generated;
@@ -381,6 +393,7 @@ function renderEvolution() {
   $("evolution").innerHTML = text ? `<pre>${esc(text)}</pre>` : empty("第一次进化在本周六");
 }
 
+renderNav();
 renderHeader();
 renderKpis();
 renderChart();

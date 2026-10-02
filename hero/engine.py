@@ -7,6 +7,7 @@ import uuid
 from datetime import date, timedelta
 
 from hero import stops as stoplib
+from hero.alpaca import AlpacaError
 from hero.journal import Journal, execution_key
 from hero.strategies import momentum
 from hero.strategies import options as opt
@@ -55,6 +56,11 @@ class Engine:
         links the intent to its fills in fills.jsonl."""
         try:
             placed = call() or {}
+        except AlpacaError as e:
+            # A broker rejection (e.g. pattern-day-trader limit, insufficient buying power) is
+            # journaled and the cycle carries on with its other decisions.
+            self.j.event("order_error", intent_key=intent, error=str(e)[:300])
+            return
         except Exception as e:
             self.j.event("order_error", intent_key=intent, error=str(e)[:300])
             raise
@@ -65,9 +71,16 @@ class Engine:
         today = today or date.today()
         if not force and not self.c.clock().get("is_open"):
             return {"status": "market_closed"}
+        live_from = self.cfg.get("live_from")
+        if live_from and today.isoformat() < live_from and not self.dry:
+            self.dry = True  # rehearsal: decisions are journaled, nothing is sent
 
         acct = self.c.account()
         equity, last = float(acct["equity"]), float(acct["last_equity"])
+        state = self.j.state()
+        attempt = self.cfg.get("attempt")
+        if attempt and self._attempt_over(attempt, equity, state, today):
+            return {"status": "attempt_ended", "equity": equity}
         day_pl = equity / last - 1 if last else 0.0
         halted = day_pl <= self.cfg["risk"]["daily_loss_halt"]
         if halted:
@@ -94,7 +107,6 @@ class Engine:
         closes = closes_from_bars(self.c.daily_bars(universe, start))
 
         self._option_exits(options, busy, today)
-        state = self.j.state()
         if state.get("last_rebalance") != today.isoformat():
             self._rebalance(stocks, busy, closes, equity, halted)
             state["last_rebalance"] = today.isoformat()
@@ -109,6 +121,33 @@ class Engine:
         bench = closes.get(self.cfg["regime_symbol"], [None])[-1]
         self.j.equity(today.isoformat(), equity, float(acct["cash"]), self.cfg["generation"], bench)
         return {"status": "ok", "equity": equity, "day_pl": day_pl, "halted": halted}
+
+    def _attempt_over(self, attempt: dict, equity: float, state: dict, today: date) -> bool:
+        """Start-capital loss ends the attempt: liquidate once, then stay flat until a new attempt
+        (a fresh or reset paper account and a new attempt number in the config) begins."""
+        key = f"attempt_{attempt['number']}_ended"
+        if state.get(key):
+            return True
+        start = attempt["start_capital"]
+        loss = 1 - equity / start
+        if loss < attempt["end_loss"]:
+            return False
+        self.j.event("attempt_end", attempt=attempt["number"], equity=equity, start_capital=start,
+                     start_capital_loss=round(loss, 4), dry_run=self.dry,
+                     why=f"第 {attempt['number']} 次尝试结束：净值 ${equity:,.2f}，起始资金 ${start:,.0f} 已亏 {loss:.1%}"
+                         f"（结束线 {attempt['end_loss']:.0%}），全部平仓，等待下一次尝试")
+        for o in self.c.open_orders():
+            if not self.dry:
+                try:
+                    self.c.cancel_order(o["id"])
+                except AlpacaError as e:
+                    self.j.event("order_error", symbol=o.get("symbol"), error=f"cancel at attempt end: {e}"[:300])
+        for pos in self.c.positions():
+            self._close(pos["symbol"], "attempt_end", why="尝试结束，全部平仓")
+        if not self.dry:
+            state[key] = today.isoformat()
+            self.j.save_state(state)
+        return True
 
     def _cancel_stops(self, sym: str, why: str) -> bool:
         """Cancel our resting stops on sym. Returns False if a stop had already filled, i.e. the
@@ -142,7 +181,7 @@ class Engine:
             if qty <= 0:
                 continue
             existing = self.stops.get(sym, [])
-            if len(existing) == 1 and float(existing[0]["qty"]) == qty:
+            if len(existing) == 1 and abs(float(existing[0]["qty"]) - qty) < 1e-9:
                 continue
             if existing:
                 self._cancel_stops(sym, f"持股数变为 {qty:g}，撤销旧止损单后按新股数重挂")
@@ -150,12 +189,14 @@ class Engine:
             entry, current = float(pos["avg_entry_price"]), float(pos["current_price"])
             price = stoplib.stop_price(entry, current, pct)
             basis = (f"{risk['stop_vol_mult']:g} 倍日波动率 {daily:.1%}" if daily is not None else "波动率数据不足，取上限")
-            why = (f"保护性止损（挂在券商端，GTC 长期有效）：成本 ${entry:,.2f}，现价 ${current:,.2f}；"
+            tif = risk.get("stop_tif", "gtc")
+            life = "GTC 长期有效" if tif == "gtc" else "当日有效，收盘失效，次日第一轮重挂"
+            why = (f"保护性止损（挂在券商端，{life}）：成本 ${entry:,.2f}，现价 ${current:,.2f}；"
                    f"止损距离 {pct:.1%}（{basis}，限制在 {risk['stop_min_pct']:.0%}–{risk['stop_max_pct']:.0%}），"
                    f"止损价 ${price:,.2f}")
             evidence = {"avg_entry_price": entry, "current_price": current, "daily_vol": daily, "stop_pct": pct}
-            self._order("protective_stop", evidence, why, cid_prefix=stoplib.PREFIX, symbol=sym, qty=f"{qty:g}",
-                        side="sell", type="stop", stop_price=f"{price:.2f}", time_in_force="gtc")
+            self._order("protective_stop", evidence, why, cid_prefix=stoplib.PREFIX, symbol=sym, qty=f"{qty:.9g}",
+                        side="sell", type="stop", stop_price=f"{price:.2f}", time_in_force=tif)
 
     def _option_exits(self, options: dict, busy: set, today: date) -> None:
         for sym, pos in options.items():
@@ -195,9 +236,15 @@ class Engine:
             want = w * equity
             if have and abs(have - want) / want <= p["rebalance_drift"]:
                 continue
-            qty = math.floor(abs(want - have) / price)
-            if qty < 1:
-                continue
+            if p.get("fractional"):
+                size = {"notional": f"{abs(want - have):.2f}"}  # dollar amount; broker fills fractional shares
+                if abs(want - have) < 1:
+                    continue
+            else:
+                qty = math.floor(abs(want - have) / price)
+                if qty < 1:
+                    continue
+                size = {"qty": str(qty)}
             ref = {"reference_price": price, "reference": "IEX daily bar, latest trade at fetch time (may lag)",
                    "target_weight": w, **{k: score[sym].get(k) for k in ("momentum", "above_trend", "rsi", "rank")}}
             now = f"当前 {have / equity:.1%}" if have else "新建仓"
@@ -208,13 +255,13 @@ class Engine:
             if want < have:
                 if not self._cancel_stops(sym, "减仓前先撤销保护性止损单，减仓后按新股数重挂"):
                     continue
-                self._order("trim", ref, why, symbol=sym, qty=str(qty), side="sell", type="market", time_in_force="day")
+                self._order("trim", ref, why, symbol=sym, **size, side="sell", type="market", time_in_force="day")
             else:
-                buys.append((sym, qty, ref, why))
+                buys.append((sym, size, ref, why))
         if halted:
             return
-        for sym, qty, ref, why in buys:
-            self._order("rebalance", ref, why, symbol=sym, qty=str(qty), side="buy", type="market", time_in_force="day")
+        for sym, size, ref, why in buys:
+            self._order("rebalance", ref, why, symbol=sym, **size, side="buy", type="market", time_in_force="day")
 
     def _option_entries(self, options: dict, busy: set, closes: dict, equity: float, today: date) -> None:
         p = self.cfg["options"]
@@ -241,11 +288,12 @@ class Engine:
                 und, type=kind, status="active",
                 expiration_date_gte=(today + timedelta(days=p["min_dte"])).isoformat(),
                 expiration_date_lte=(today + timedelta(days=p["max_dte"])).isoformat(),
-                strike_price_gte=f"{spot * 0.9:.2f}", strike_price_lte=f"{spot * 1.1:.2f}")
+                strike_price_gte=f"{spot * (1 - p.get('strike_band', 0.1)):.2f}",
+                strike_price_lte=f"{spot * (1 + p.get('strike_band', 0.1)):.2f}")
             if not contracts:
                 continue
             snaps = self.c.option_snapshots([c["symbol"] for c in contracts])
-            pick = opt.pick_contract(contracts, snaps, spot, p)
+            pick = opt.pick_contract(contracts, snaps, spot, p, budget if p.get("budget_filter") else None)
             if not pick:
                 continue
             contract, price = pick

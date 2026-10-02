@@ -250,7 +250,7 @@ def report(journal: Path, cfg: dict, day: str) -> str | None:
         return None
     notes = "\n".join(f"- {n}" for n in insights(journal, cfg, day)) or "- 无"
     kind = "盘后复盘" if is_final(journal, day) else "盘中预审（非收盘数据）"
-    return f"# {kind} {day}（Claude）\n\n## 要点（规则自动生成）\n{notes}\n\n{body}"
+    return f"# {kind} {day}（{cfg.get('name', 'Claude')}）\n\n## 要点（规则自动生成）\n{notes}\n\n{body}"
 
 
 def export(journal: Path, cfg: dict, day: str) -> dict | None:
@@ -270,6 +270,7 @@ def export(journal: Path, cfg: dict, day: str) -> dict | None:
     return {
         "schema_version": "1.0",
         "producer": "claude",
+        "experiment": cfg.get("name", "Claude"),
         "mode": "alpaca_paper",
         "currency": "USD",
         "trading_date": day,

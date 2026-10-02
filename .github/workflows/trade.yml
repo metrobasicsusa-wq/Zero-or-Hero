@@ -33,11 +33,18 @@ jobs:
           ALPACA_API_KEY: ${{ secrets.ALPACA_API_KEY }}
           ALPACA_SECRET_KEY: ${{ secrets.ALPACA_SECRET_KEY }}
         run: python -m hero run ${{ inputs.dry_run && '--dry-run' || '' }}
+      - name: Trade Claude-500
+        # Separate $500 paper account. A failure here must not stop the main journal from being saved.
+        continue-on-error: true
+        env:
+          ALPACA_API_KEY: ${{ secrets.ALPACA_S500_API_KEY }}
+          ALPACA_SECRET_KEY: ${{ secrets.ALPACA_S500_SECRET_KEY }}
+        run: python -m hero --config config/s500.json --journal journal-s500 run ${{ inputs.dry_run && '--dry-run' || '' }}
       - name: Commit journal
         run: |
           git config user.name "zero-or-hero-bot"
           git config user.email "zero-or-hero-bot@users.noreply.github.com"
-          git add journal
+          git add journal journal-s500
           git diff --cached --quiet || (git commit -m "journal: trading cycle $(date -u +%FT%TZ)" && git pull --rebase && git push)
 
   pages:

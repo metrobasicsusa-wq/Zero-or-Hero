@@ -431,6 +431,17 @@ class LiveConfig(unittest.TestCase):
             self.assertEqual(set(CFG[section]), set(live[section]), section)
         self.assertIsInstance(live["generation"], int)
 
+    def test_s500_config_is_complete_and_disjoint(self):
+        root = Path(__file__).resolve().parent.parent
+        s500 = json.loads((root / "config" / "s500.json").read_text())
+        live = json.loads((root / "config" / "strategy.json").read_text())
+        for section in ("stocks", "options", "risk"):
+            self.assertLessEqual(set(CFG[section]), set(s500[section]), section)
+        self.assertFalse(set(s500["universe"]) & set(live["universe"]))
+        self.assertIn(s500["regime_symbol"], s500["universe"])
+        self.assertTrue(s500["stocks"]["fractional"])
+        self.assertEqual(s500["risk"]["stop_tif"], "day")
+
 
 class Reasons(unittest.TestCase):
     def test_drop_reasons(self):
@@ -544,6 +555,84 @@ class Ownership(unittest.TestCase):
             Engine(c, cfg(stocks={"rsi_max": 101}), Journal(Path(d))).run(today=TODAY)
             self.assertEqual(c.closed, [])  # not sold, not stopped out, even at -90%
             self.assertFalse([o for o in c.orders if o["symbol"].startswith("PLTR")])
+
+
+class SmallAccount(unittest.TestCase):
+    def test_timestamp_parsing(self):
+        from datetime import datetime, timezone
+        for t in ("2026-10-02T16:00:23Z", "2026-10-02T16:00:23.123456789Z", "2026-10-02T16:00:23.5+00:00"):
+            self.assertEqual(opt.parse_ts(t).replace(microsecond=0), datetime(2026, 10, 2, 16, 0, 23, tzinfo=timezone.utc))
+
+    def test_option_filters_budget_delta_age(self):
+        from datetime import datetime, timezone
+        now = datetime(2026, 10, 2, 16, 1, 0, tzinfo=timezone.utc)
+        contracts = [{"symbol": f"C{i}", "strike_price": "10"} for i in range(4)]
+        snaps = {
+            "C0": {"latestQuote": {"bp": 2.0, "ap": 2.1, "t": "2026-10-02T16:00:30Z"}, "greeks": {"delta": 0.5}},   # too expensive
+            "C1": {"latestQuote": {"bp": 0.80, "ap": 0.84, "t": "2026-10-02T16:00:30Z"}, "greeks": {"delta": 0.1}},  # delta out of band
+            "C2": {"latestQuote": {"bp": 0.80, "ap": 0.84, "t": "2026-10-02T15:50:00Z"}, "greeks": {"delta": 0.45}}, # stale quote
+            "C3": {"latestQuote": {"bp": 0.80, "ap": 0.86, "t": "2026-10-02T16:00:30Z"}, "greeks": {"delta": 0.35}}, # ok
+        }
+        p = {"target_delta": 0.5, "max_spread": 0.12, "delta_min": 0.25, "delta_max": 0.6, "max_quote_age_s": 120}
+        c, price = opt.pick_contract(contracts, snaps, 10.0, p, budget=100, now=now)
+        self.assertEqual(c["symbol"], "C3")
+        self.assertAlmostEqual(price, 0.83)
+
+    def s500_cfg(self, **over):
+        c = cfg(stocks={"rsi_max": 101, "fractional": True, "top_n": 2, "gross_exposure": 0.7},
+                options={"enabled": False}, risk={"stop_tif": "day", "daily_loss_halt": -1.0})
+        c["universe"] = ["UP1", "UP2", "SPY"]
+        c["attempt"] = {"number": 1, "start_capital": 500, "end_loss": 0.4}
+        c.update(over)
+        return c
+
+    def test_fractional_notional_orders_and_day_stops(self):
+        with tempfile.TemporaryDirectory() as d:
+            closes = {"SPY": series(0.001, seed=5), "UP1": series(0.002, seed=1)}
+            held = {"symbol": "SPY", "asset_class": "us_equity", "qty": "0.137", "avg_entry_price": "700",
+                    "current_price": "720", "market_value": "98.64"}
+            c = FakeClient(closes, positions=[held], equity=500, last_equity=500)
+            Engine(c, self.s500_cfg(), Journal(Path(d))).run(today=TODAY)
+            buys = [o for o in c.orders if o["side"] == "buy"]
+            self.assertTrue(buys and all("notional" in o and "qty" not in o for o in buys), buys)
+            stop = next(o for o in c.orders if o["type"] == "stop")
+            self.assertEqual((stop["qty"], stop["time_in_force"]), ("0.137", "day"))
+
+    def test_rehearsal_before_live_date_sends_nothing(self):
+        with tempfile.TemporaryDirectory() as d:
+            closes = {"SPY": series(0.001, seed=5), "UP1": series(0.002, seed=1)}
+            c = FakeClient(closes, equity=500, last_equity=500)
+            Engine(c, self.s500_cfg(live_from="2026-10-08"), Journal(Path(d))).run(today=TODAY)
+            self.assertEqual(c.orders, [])
+            self.assertIn('"dry_run": true', (Path(d) / "trades.jsonl").read_text())
+
+    def test_attempt_end_liquidates_once_then_stays_flat(self):
+        with tempfile.TemporaryDirectory() as d:
+            j = Journal(Path(d))
+            closes = {"SPY": series(0.001, seed=5), "UP1": series(0.002, seed=1)}
+            pos = {"symbol": "UP1", "asset_class": "us_equity", "qty": "1", "avg_entry_price": "400",
+                   "current_price": "290", "market_value": "290"}
+            c = FakeClient(closes, positions=[pos], equity=295, last_equity=320)
+            res = Engine(c, self.s500_cfg(), j).run(today=TODAY)
+            self.assertEqual(res["status"], "attempt_ended")
+            self.assertEqual(c.closed, ["UP1"])
+            self.assertTrue(j.state()["attempt_1_ended"])
+            c2 = FakeClient(closes, positions=[], equity=295, last_equity=295)
+            self.assertEqual(Engine(c2, self.s500_cfg(), j).run(today=TODAY)["status"], "attempt_ended")
+            self.assertEqual((c2.orders, c2.closed), ([], []))
+
+    def test_broker_rejection_does_not_abort_cycle(self):
+        class Rejecting(FakeClient):
+            def submit_order(self, **o):
+                if o["side"] == "buy":
+                    raise AlpacaError("POST /v2/orders -> 403: pattern day trading protection")
+                return super().submit_order(**o)
+        with tempfile.TemporaryDirectory() as d:
+            closes = {"SPY": series(0.001, seed=5), "UP1": series(0.002, seed=1)}
+            c = Rejecting(closes, equity=500, last_equity=500)
+            res = Engine(c, self.s500_cfg(), Journal(Path(d))).run(today=TODAY)
+            self.assertEqual(res["status"], "ok")
+            self.assertIn("pattern day trading", (Path(d) / "trades.jsonl").read_text())
 
 
 class Safety(unittest.TestCase):

@@ -29,7 +29,9 @@ jobs:
         with:
           python-version: "3.11"
       - run: pip install -r requirements.txt
-      - run: python -m hero dashboard
+      - run: |
+          python -m hero dashboard
+          python -m hero --config config/s500.json --journal journal-s500 dashboard --out site/s500.html
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
