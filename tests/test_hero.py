@@ -1126,6 +1126,26 @@ class Alerts(unittest.TestCase):
         self.assertEqual(c.closed, [])
 
 
+class ResearchShort(unittest.TestCase):
+    def test_runs_on_both_universes_with_late_listings(self):
+        from hero import research_short as rs
+
+        class Bars:
+            def daily_bars(self, symbols, start):
+                out = {}
+                for k, sym in enumerate(symbols):
+                    xs = series(0.0004 * (k % 5 - 2), 700, k)
+                    late = 200 if k % 7 == 3 else 0  # some names list part-way through
+                    out[sym] = bars(xs)[late:]
+                return out
+        rep = rs.run(Bars(), Path(__file__).resolve().parent.parent)
+        self.assertEqual(set(rep["results"]), {"Claude", "Claude-500"})
+        for r in rep["results"].values():
+            self.assertEqual(set(r["variants"]), {"long_only", "short_leg", "long_short", "bear_short", "bear_inverse"})
+            self.assertTrue(all(v["days"] > 100 for v in r["variants"].values()))
+        self.assertIn("做空研究回测", rs.markdown(rep))
+
+
 class Safety(unittest.TestCase):
     def test_refuses_live_endpoint(self):
         with self.assertRaises(AlpacaError):

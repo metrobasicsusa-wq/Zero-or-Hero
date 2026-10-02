@@ -1,0 +1,36 @@
+name: research
+
+# Research backtests on real Alpaca daily bars (market data only, never trades). Results are
+# committed to research/.
+on:
+  workflow_dispatch:
+
+concurrency:
+  group: hero-journal
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  short-backtest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install -r requirements.txt
+      - name: Short-side backtest
+        env:
+          ALPACA_API_KEY: ${{ secrets.ALPACA_API_KEY }}
+          ALPACA_SECRET_KEY: ${{ secrets.ALPACA_SECRET_KEY }}
+        run: python -m hero.research_short
+      - name: Commit results
+        run: |
+          git config user.name "zero-or-hero-bot"
+          git config user.email "zero-or-hero-bot@users.noreply.github.com"
+          git add research
+          git diff --cached --quiet || (git commit -m "research: short-side backtest $(date -u +%F)" && git pull --rebase && git push)
