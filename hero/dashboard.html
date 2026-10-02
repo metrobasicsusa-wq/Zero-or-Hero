@@ -402,13 +402,26 @@ function renderReview() {
 
 function renderMacro() {
   const m = DATA.macro;
-  if (!m) { $("macro").innerHTML = empty("下一次调仓时开始记录"); return; }
+  if (!m) { $("macro").innerHTML = empty("下一次调仓时开始记录") + renderMarket(); return; }
   const rows = Object.values(m.gauges).map((g) =>
     [g.flag ? `<span class="chip" style="color:var(--down)">警报</span>` : `<span class="chip">正常</span>`, esc(g.text)]);
   const mode = DATA.config.stocks.macro_scale < 1
     ? `两项及以上警报时股票仓位乘 ${Math.round(DATA.config.stocks.macro_scale * 100)}%` : "目前只记录，不影响仓位（由每周进化决定是否启用）";
   $("macro").innerHTML = `<div class="meta" style="margin-bottom:8px">${fmtTime(m.ts)} · ` +
-    `${m.risk_off ? "避险信号" : "无避险信号"} · ${esc(mode)}</div>` + table([["状态"], ["读数"]], rows);
+    `${m.risk_off ? "避险信号" : "无避险信号"} · ${esc(mode)}</div>` + table([["状态"], ["读数"]], rows) + renderMarket();
+}
+
+function renderMarket() {
+  const m = DATA.market;
+  if (!m) return "";
+  const held = new Set((DATA.snapshot?.positions || []).map((p) => p.symbol));
+  const news = Object.entries(m.news || {}).sort((a, b) => (held.has(b[0]) - held.has(a[0])) || b[1].articles - a[1].articles)
+    .slice(0, 8).map(([s, v]) => [`<b>${esc(s)}</b>${held.has(s) ? " · 持有" : ""}`, esc(v.label),
+      String(v.articles), `<span class="why">${esc((v.top[0] || {}).title || "")}</span>`]);
+  return `<div class="meta" style="margin:12px 0 6px">真实数据（Alpha Vantage，${fmtTime(m.fetched_at)}，只记录）</div>` +
+    `<ul style="margin:0 0 8px;padding-left:20px">${m.lines.map((l) => `<li>${esc(l)}</li>`).join("")}</ul>` +
+    (news.length ? `<div class="meta" style="margin:8px 0 6px">过去 24 小时新闻情绪</div>` +
+      table([["标的"], ["情绪"], ["篇数", 1], ["最相关标题"]], news) : "");
 }
 
 function renderBriefing() {

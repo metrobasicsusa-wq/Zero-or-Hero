@@ -8,7 +8,7 @@ from datetime import date, datetime, timedelta
 from zoneinfo import ZoneInfo
 from pathlib import Path
 
-from hero import backtest, dashboard, earnings, evolve, macro, patrol, review
+from hero import backtest, dashboard, earnings, evolve, macro, market, patrol, review
 from hero.alpaca import Alpaca
 from hero.engine import Engine
 from hero.journal import Journal
@@ -17,6 +17,7 @@ ROOT = Path(__file__).resolve().parent.parent
 CFG_PATH = ROOT / "config" / "strategy.json"
 JOURNAL = ROOT / "journal"
 EARNINGS = ROOT / "data" / "earnings.json"
+MARKET = ROOT / "data" / "market.json"
 EVOLVE_HISTORY_DAYS = 3 * 365
 
 
@@ -45,6 +46,8 @@ def main() -> None:
     sub.add_parser("snapshot", help="refresh account/positions/orders snapshot and today's fills from the broker")
     e = sub.add_parser("earnings", help="refresh the earnings calendar (at most one API call per ET day)")
     e.add_argument("--configs", nargs="+", default=[str(CFG_PATH), str(ROOT / "config" / "s500.json")])
+    m = sub.add_parser("market", help="refresh yields, oil and news sentiment (at most 4 API calls per ET day)")
+    m.add_argument("--configs", nargs="+", default=[str(CFG_PATH), str(ROOT / "config" / "s500.json")])
     args = ap.parse_args()
 
     cfg_path, jdir = Path(args.config), Path(args.journal)
@@ -70,11 +73,12 @@ def main() -> None:
         print(out)
         print("FINAL" if review.is_final(jdir, args.date) else "PRELIMINARY")
         return
-    if args.cmd == "earnings":
+    if args.cmd in ("earnings", "market"):
         import os
         symbols = set().union(*(json.loads(Path(c).read_text())["universe"] for c in args.configs))
         now = datetime.now(ZoneInfo("America/New_York"))
-        print(earnings.refresh(EARNINGS, symbols, os.environ["ALPHAVANTAGE_API_KEY"], now))
+        mod, path = (earnings, EARNINGS) if args.cmd == "earnings" else (market, MARKET)
+        print(mod.refresh(path, symbols, os.environ["ALPHAVANTAGE_API_KEY"], now))
         return
     client = Alpaca()
 

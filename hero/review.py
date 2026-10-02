@@ -7,6 +7,7 @@ import json
 from datetime import datetime, time
 from pathlib import Path
 
+from hero import market
 from hero.journal import ET, Journal
 
 CLOSE = time(16, 0)
@@ -271,6 +272,16 @@ def insights(journal: Path, cfg: dict, day: str) -> list[str]:
         notes.append(f"券商端止损单覆盖 {len(stocks) - len(missing)}/{len(stocks)} 只股票"
                      + (f"；⚠️ 缺少：{', '.join(missing)}。" if missing else "。"))
 
+    mkt_path = journal.resolve().parent / "data" / "market.json"
+    mkt = json.loads(mkt_path.read_text()) if mkt_path.exists() else None
+    if mkt and mkt.get("fetched_on") == day:
+        readings = market.lines(mkt)
+        if readings:
+            notes.append("宏观（只记录）：" + "；".join(readings) + "。")
+        held = {p["symbol"] for p in positions if p.get("asset_class") == "us_equity"}
+        moods = [f"{s} {v['label']}（{v['articles']} 篇）" for s, v in sorted((mkt.get("news") or {}).items()) if s in held]
+        if moods:
+            notes.append("持仓新闻情绪（只记录）：" + "，".join(moods) + "。")
     trades_path = journal / "trades.jsonl"
     if trades_path.exists():
         for line in open(trades_path):

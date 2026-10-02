@@ -7,6 +7,8 @@ import json
 from datetime import datetime, timezone
 from pathlib import Path
 
+from hero import market
+
 TEMPLATE = Path(__file__).with_name("dashboard.html")
 EVENT_KINDS = {"order", "close", "halt", "option_skip", "attempt_end", "attempt_end_confirmed", "earnings_watch"}
 MAX_EVENTS = 200
@@ -35,6 +37,8 @@ def collect(journal: Path, cfg: dict) -> dict:
     snap_path = journal / "snapshot.json"
     evo_path = journal / "evolution.md"
     reviews = sorted((journal / "reviews").glob("*.md")) if (journal / "reviews").exists() else []
+    mkt_path = journal.resolve().parent / "data" / "market.json"
+    mkt = json.loads(mkt_path.read_text()) if mkt_path.exists() else None
     brief_dir = journal.resolve().parent / "macro" / "briefings"
     briefs = sorted(brief_dir.glob("20*.md")) if brief_dir.exists() else []
     return {
@@ -47,6 +51,9 @@ def collect(journal: Path, cfg: dict) -> dict:
         "review": latest_review(reviews[-1], journal.name) if reviews else None,
         "config": cfg,
         "macro": gauges,
+        "market": {"fetched_at": mkt["fetched_at"], "lines": market.lines(mkt),
+                   "news": {s: v for s, v in (mkt.get("news") or {}).items() if s in cfg["universe"]}}
+                  if mkt else None,
         "briefing": {"date": briefs[-1].stem, "text": briefs[-1].read_text()[:6000],
                      "url": f"{REPO_BLOB}/macro/briefings/{briefs[-1].name}"} if briefs else None,
     }

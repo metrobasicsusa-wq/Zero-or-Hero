@@ -85,3 +85,8 @@
 - **价格型宏观指标**（`hero/macro.py`）：TLT（长期美债，20 日跌 ≥4% = 利率快速上升）、USO（油价，20 日涨 ≥15%）、VIXY（比 20 日均值高 ≥15% = 恐慌）、UUP（美元，20 日涨 ≥3%）。≥2 项警报 = 避险信号。每天调仓时记录在 `targets` 事件（`macro`、`macro_risk_off`、`macro_applied`）。
 - 是否据此减仓由参数 `stocks.macro_scale` 决定：1.0 只记录（当前），0.5 = 避险时股票仓位减半。每周进化把 `macro_scale ∈ {1.0, 0.5}` 放进网格，只有样本内外都更好才采用。
 - **AI 盘前简报**：每个交易日 8:50 ET 写入 `macro/briefings/YYYY-MM-DD.md`（新闻：美债、美联储、油价、美元、地缘冲突、当日数据）。**只记录，不影响交易**；几周后对照实际走势评估。
+
+## 市场数据（2026-10-02 新增，Alpha Vantage 免费 Key）
+
+- `data/earnings.json`：财报日历（每美东日最多 1 次调用），按日存档 `data/earnings/YYYY-MM-DD.json`。Claude-500 的期权到期日不跨财报（`options.earnings_guard`）；日历不可用 = 不买期权。
+- `data/market.json`：2 年/10 年美债收益率、WTI 原油、过去 24 小时新闻情绪（全市场新闻流里按相关度加权，只保留两个实验的标的），每美东日最多 4 次调用、失败最多重试 1 次，按日存档 `data/market/YYYY-MM-DD.json`。**只记录，不影响交易**；出现在面板「宏观指标」和每日复盘要点里。

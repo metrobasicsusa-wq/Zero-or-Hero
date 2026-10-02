@@ -6,7 +6,7 @@ import unittest
 from datetime import date, timedelta
 from pathlib import Path
 
-from hero import backtest, dashboard, earnings, evolve, macro, patrol, review, stops
+from hero import backtest, dashboard, earnings, evolve, macro, market, patrol, review, stops
 from hero.alpaca import Alpaca, AlpacaError
 from hero.engine import Engine, round_option_price
 from hero.indicators import max_drawdown, momentum, rsi, sma
@@ -973,6 +973,64 @@ class Earnings(unittest.TestCase):
             c, log = self.engine(d, self.cal(rows), positions=[pos])
             self.assertIn(sym, c.closed)
             self.assertIn("财报前平仓", log)
+
+
+class Market(unittest.TestCase):
+    def test_series_and_news_summaries(self):
+        pts = [{"date": f"2026-09-{d:02d}", "value": str(4.0 + d / 100)} for d in range(1, 30)] + \
+              [{"date": "2026-09-30", "value": "."}]
+        x = market.summarize_series(pts, "%")
+        self.assertEqual((x["date"], x["latest"], x["chg_1d"]), ("2026-09-29", 4.29, 0.01))
+        self.assertEqual(x["chg_20d"], 0.2)
+        feed = [{"title": "Up", "url": "u1", "source": "s", "time_published": "t",
+                 "ticker_sentiment": [{"ticker": "NVDA", "relevance_score": "0.9", "ticker_sentiment_score": "0.5"},
+                                      {"ticker": "XYZ", "relevance_score": "1", "ticker_sentiment_score": "-1"}]},
+                {"title": "Down", "url": "u2", "source": "s", "time_published": "t",
+                 "ticker_sentiment": [{"ticker": "NVDA", "relevance_score": "0.1", "ticker_sentiment_score": "-0.5"}]}]
+        n = market.summarize_news(feed, {"NVDA"})
+        self.assertEqual(list(n), ["NVDA"])  # only our symbols
+        self.assertEqual((n["NVDA"]["articles"], n["NVDA"]["sentiment"]), (2, 0.4))  # relevance-weighted
+        self.assertEqual(n["NVDA"]["label"], "偏多")
+        self.assertEqual(n["NVDA"]["top"][0]["title"], "Up")
+
+    def test_build_survives_one_failed_series(self):
+        calls = []
+
+        def fake(params, key):
+            calls.append(params["function"])
+            if params.get("maturity") == "2year":
+                raise RuntimeError("premium endpoint")
+            if params["function"] == "NEWS_SENTIMENT":
+                return {"feed": []}
+            return {"data": [{"date": "2026-10-01", "value": "4.1"}]}
+        orig = market._get
+        market._get = fake
+        try:
+            from datetime import datetime
+            d = market.build("k", {"NVDA"}, datetime(2026, 10, 2, 9, 0), pause=0)
+        finally:
+            market._get = orig
+        self.assertEqual(len(calls), 4)
+        self.assertIn("us2y", d["errors"])
+        self.assertEqual(sorted(d["series"]), ["us10y", "wti"])
+        self.assertTrue(any("10 年期美债 4.10%" in l for l in market.lines(d)))
+
+    def test_refresh_caps_daily_calls(self):
+        from datetime import datetime
+        runs = []
+        orig = market.build
+        market.build = lambda key, symbols, now: runs.append(1) or {"fetched_on": now.date().isoformat(),
+                                                                    "series": {}, "errors": {"us2y": "x"}}
+        try:
+            with tempfile.TemporaryDirectory() as d:
+                path, now = Path(d) / "market.json", datetime(2026, 10, 2, 9, 0)
+                for _ in range(5):  # every 10-minute cycle of the day
+                    market.refresh(path, {"NVDA"}, "k", now)
+                self.assertEqual(len(runs), market.MAX_ATTEMPTS)
+                market.refresh(path, {"NVDA"}, "k", datetime(2026, 10, 5, 9, 0))  # next day: fetch again
+                self.assertEqual(len(runs), market.MAX_ATTEMPTS + 1)
+        finally:
+            market.build = orig
 
 
 class Safety(unittest.TestCase):
