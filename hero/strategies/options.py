@@ -75,6 +75,37 @@ def pick_contract(contracts: list[dict], snapshots: dict[str, dict], spot: float
     return best
 
 
+def reject_reasons(contracts: list[dict], snapshots: dict[str, dict], p: dict, budget: float | None = None,
+                   now: datetime | None = None) -> dict[str, int]:
+    """Why each contract failed pick_contract's filters (first failing filter only), for the skip log."""
+    out: dict[str, int] = {}
+
+    def bump(k):
+        out[k] = out.get(k, 0) + 1
+
+    for c in contracts:
+        snap = snapshots.get(c["symbol"])
+        if not snap or not c.get("tradable", True):
+            bump("无报价")
+            continue
+        raw = mid(snap, 1.0)
+        if raw is None:
+            bump("无报价")
+        elif budget is not None and raw * 100 > budget:
+            bump("超预算")
+        elif mid(snap, p.get("max_spread", 0.15)) is None:
+            bump("价差太宽")
+        elif "max_quote_age_s" in p and (quote_age_s(snap, now) is None or quote_age_s(snap, now) > p["max_quote_age_s"]):
+            bump("报价过旧")
+        else:
+            delta = (snap.get("greeks") or {}).get("delta")
+            if delta is None and "delta_min" in p:
+                bump("无 delta")
+            elif delta is not None and not p.get("delta_min", 0) <= abs(delta) <= p.get("delta_max", 1):
+                bump("delta 不在范围")
+    return out
+
+
 def should_exit(position: dict, today: date, expiration: str, p: dict) -> str | None:
     pl = float(position.get("unrealized_plpc") or 0)
     if pl >= p["take_profit"]:

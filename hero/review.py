@@ -73,6 +73,23 @@ def decisions(journal: Path, day: str) -> list[dict]:
     return out
 
 
+def rehearsal(journal: Path, cfg: dict, day: str) -> dict | None:
+    """Before live_from the bot runs dry: what the last cycle of the day would have done."""
+    if not day < cfg.get("live_from", ""):
+        return None
+    path = journal / "trades.jsonl"
+    events = [json.loads(l) for l in open(path)] if path.exists() else []
+    dry = [e for e in events if e["ts"].startswith(day) and e.get("dry_run")
+           and e["kind"] in ("order", "close", "option_skip", "attempt_end")]
+    cycles = sorted({e["ts"] for e in dry})
+    last = [e for e in dry if cycles and e["ts"] == cycles[-1]]
+    skips = [e["why"] for e in dry if e["kind"] == "option_skip"]
+    return {"live_from": cfg["live_from"], "cycles": len(cycles), "last_cycle": cycles[-1] if cycles else None,
+            "last_cycle_events": [{k: e.get(k) for k in ("kind", "symbol", "side", "qty", "notional", "type",
+                                                            "limit_price", "reason", "why")} for e in last],
+            "option_skips": len(skips), "last_option_skip": skips[-1] if skips else None}
+
+
 def option_label(sym: str) -> str:
     if len(sym) <= 15:
         return sym
@@ -103,7 +120,7 @@ def facts(journal: Path, cfg: dict, day: str) -> str | None:
     lines = [
         f"# Facts for {day}",
         "",
-        "| | Claude | SPY |",
+        f"| | {cfg.get('name', 'Claude')} | {cfg['regime_symbol']} |",
         "|---|---|---|",
         f"| Day | {_pct(ret(equity, last))} ({_usd(equity - last if equity and last else None)}) | {_pct(ret(bench, bench_prev))} |",
         f"| Since start ({first['date']}) | {_pct(ret(equity, _f(first['equity'])))} | {_pct(ret(bench, bench_first))} |",
@@ -150,6 +167,17 @@ def facts(journal: Path, cfg: dict, day: str) -> str | None:
             lines.append(f"- HALT: day P/L {e['day_pl']:+.2%}")
     if len(lines) and lines[-1] == "## Today's actions":
         lines.append("- none")
+
+    reh = rehearsal(journal, cfg, day)
+    if reh:
+        lines += ["", f"## 演练（dry-run，未下单；{reh['live_from']} 起真实下单）",
+                  f"- 今天共 {reh['cycles']} 轮演练，下面是最后一轮（{reh['last_cycle'] or '无'}）会做的事："]
+        for e in reh["last_cycle_events"]:
+            size = f"${e['notional']}" if e.get("notional") else (e.get("qty") or "")
+            what = "期权未买" if e["kind"] == "option_skip" else f"{e.get('side') or 'close'} {size} {option_label(e['symbol'])}"
+            lines.append(f"- {what}（{e.get('reason') or e['kind']}）\n  - 理由：{e.get('why') or ''}")
+        if not reh["last_cycle_events"]:
+            lines.append("- 无动作")
 
     fills = Journal(journal).fills(day)
     lines += ["", f"## Broker-confirmed fills ({len(fills)})"]
@@ -202,9 +230,14 @@ def insights(journal: Path, cfg: dict, day: str) -> list[str]:
     if mine is not None and spy is not None:
         diff = mine - spy
         verdict = "跑赢" if diff > 0.0005 else "跑输" if diff < -0.0005 else "持平"
-        notes.append(f"今日 {_pct(mine)}，SPY {_pct(spy)}，{verdict} {abs(diff):.2%}。")
+        notes.append(f"今日 {_pct(mine)}，{cfg['regime_symbol']} {_pct(spy)}，{verdict} {abs(diff):.2%}。")
     elif mine is not None:
-        notes.append(f"今日 {_pct(mine)}（SPY 前一日数据不足，暂无对比）。")
+        notes.append(f"今日 {_pct(mine)}（{cfg['regime_symbol']} 前一日数据不足，暂无对比）。")
+    reh = rehearsal(journal, cfg, day)
+    if reh:
+        notes.append(f"演练阶段：今天 {reh['cycles']} 轮只记录不下单，{reh['live_from']} 起真实下单。")
+        if reh["last_option_skip"]:
+            notes.append(f"期权：{reh['option_skips']} 轮没买到合格合约。最后一次：{reh['last_option_skip']}")
 
     positions = snap.get("positions") or []
     if positions:
@@ -250,6 +283,8 @@ def report(journal: Path, cfg: dict, day: str) -> str | None:
         return None
     notes = "\n".join(f"- {n}" for n in insights(journal, cfg, day)) or "- 无"
     kind = "盘后复盘" if is_final(journal, day) else "盘中预审（非收盘数据）"
+    if rehearsal(journal, cfg, day):
+        kind += "·演练"
     return f"# {kind} {day}（{cfg.get('name', 'Claude')}）\n\n## 要点（规则自动生成）\n{notes}\n\n{body}"
 
 
@@ -300,5 +335,6 @@ def export(journal: Path, cfg: dict, day: str) -> dict | None:
         "open_orders": snap.get("open_orders") or [],
         "strategy_generation": cfg["generation"],
         "notes": insights(journal, cfg, day),
+        "rehearsal": rehearsal(journal, cfg, day),
         "replies": [],
     }

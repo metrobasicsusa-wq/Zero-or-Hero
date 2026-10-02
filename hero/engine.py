@@ -320,8 +320,11 @@ class Engine:
             if not pick:
                 cheapest = min((m * 100 for m in (opt.mid(snaps[c["symbol"]], 1.0) if c["symbol"] in snaps else None
                                                   for c in contracts) if m), default=None)
+                why_not = opt.reject_reasons(contracts, snaps, p, budget if p.get("budget_filter") else None)
                 skipped.append(f"{und}：{len(contracts)} 张合约都不合格（预算 ${budget:,.0f}"
-                               + (f"，最便宜一张约 ${cheapest:,.0f}" if cheapest else "，没有有效报价") + "）")
+                               + (f"，最便宜一张约 ${cheapest:,.0f}" if cheapest else "，没有有效报价")
+                               + ("；" + "、".join(f"{k} {v}" for k, v in sorted(why_not.items(), key=lambda kv: -kv[1]))
+                                  if why_not else "") + "）")
                 continue
             contract, price = pick
             qty = math.floor(budget / (price * 100))

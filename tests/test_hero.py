@@ -681,6 +681,24 @@ class SmallAccount(unittest.TestCase):
             text = (Path(d) / "trades.jsonl").read_text()
             self.assertIn("没有买期权", text)
             self.assertIn("预算 $100", text)
+            self.assertIn("超预算", text)  # which filter rejected the contracts
+
+    def test_rehearsal_review_shows_would_be_trades(self):
+        with tempfile.TemporaryDirectory() as d:
+            closes = {"SPY": series(0.001, seed=5), "UP1": series(0.002, seed=1)}
+            conf = {**self.s500_cfg(), "live_from": "2099-01-01", "name": "Claude-500", "regime_symbol": "SPY"}
+            j = Journal(Path(d))
+            Engine(FakeClient(closes, equity=500, last_equity=500), conf, j).run(today=TODAY)
+            day = TODAY.isoformat()
+            log = Path(d) / "trades.jsonl"  # events carry the wall-clock time; pin them to the test day
+            log.write_text("\n".join(json.dumps({**json.loads(l), "ts": day + "T14:00:00+00:00"})
+                                     for l in log.read_text().splitlines()) + "\n")
+            text = review.report(Path(d), conf, day)
+            self.assertIn("演练", text.splitlines()[0])
+            self.assertIn("| | Claude-500 | SPY |", text)
+            self.assertIn("buy $", text)
+            self.assertEqual(review.export(Path(d), conf, day)["rehearsal"]["cycles"], 1)
+            self.assertIsNone(review.rehearsal(Path(d), {**conf, "live_from": "2000-01-01"}, day))
 
     def test_same_day_profit_held_overnight_but_stop_is_not(self):
         with tempfile.TemporaryDirectory() as d:
