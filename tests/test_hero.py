@@ -1299,6 +1299,7 @@ class ResearchLottery(unittest.TestCase):
         self.assertAlmostEqual(s["bank_500"], 500 * 0.9 * 0.9 * (1 + 0.1 * 19), delta=1)  # 10% of balance per bet
         self.assertIn("持有到期", rl.markdown({"generated": "d", "source": "x", "events": 3, "slippage": 0.1, "bet": 0.1},
                                           rl.summarize(trades)))
+        self.assertIn("ret_tp5", dict(rl.EXITS))
 
 
 class ResearchFlow(unittest.TestCase):

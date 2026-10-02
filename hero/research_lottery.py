@@ -5,7 +5,10 @@ event with option history (from 2024-02) it buys one call at the close of the da
 reaction, for the first expiry on or after the reaction day, at several strikes:
   moneyness +0% / +5% / +10% / +15% / +20% above the stock price, and
   1x / 1.5x / 2x the options-implied move above it.
-Exits: sell at the reaction day's close, or hold to expiry (intrinsic value at that close).
+Exits on the reaction day: sell at the open (right after the gap), take profit with a resting limit
+at 3x / 5x / 10x the cost if the day's high reached it (else sell at the close), sell at the close,
+or sell at the day's high (hindsight: an upper bound nobody can reach, used as a test: if even
+that loses on average, timing cannot save the idea). Or hold to expiry (intrinsic value).
 Option prices are daily closes (last trades), which for cheap contracts sit inside a wide
 spread, so a cost of paying 10% above and selling 10% below the close is applied on top
 (at least one cent). A contract with no trade on the entry day is skipped.
@@ -26,6 +29,11 @@ SLIP = 0.10
 MONEYNESS = (0.0, 0.05, 0.10, 0.15, 0.20)
 IMPLIED_MULT = (1.0, 1.5, 2.0)
 BET = 0.10
+TAKE_PROFIT = (3, 5, 10)
+EXITS = [("ret_open", "反应日开盘卖出"), ("ret_tp3", "挂单：赚到 3 倍就卖（否则收盘卖）"),
+         ("ret_tp5", "挂单：赚到 5 倍就卖（否则收盘卖）"), ("ret_tp10", "挂单：赚到 10 倍就卖（否则收盘卖）"),
+         ("ret_reaction", "反应日收盘卖出"), ("ret_high", "卖在当天最高价（理论上限，现实做不到）"),
+         ("ret_expiry", "持有到期")]
 
 
 def entry_cost(px: float) -> float:
@@ -103,6 +111,7 @@ def run(client, root: Path) -> dict:
             continue
         time.sleep(0.2)
         px = {sym: {b["t"][:10]: float(b["c"]) for b in bs} for sym, bs in bars.items()}
+        ohlc = {sym: {b["t"][:10]: b for b in bs} for sym, bs in bars.items()}
         for name, k in chosen.items():
             if k is None:
                 continue
@@ -115,11 +124,24 @@ def run(client, root: Path) -> dict:
             # No trade on the reaction day: fall back to intrinsic value (a floor; the real bid could be higher).
             val_r = exit_value(sell_r) if sell_r is not None else max(closes[r] - k, 0.0)
             val_exp = max((exp_close or 0) - k, 0.0) if exp_close is not None else None
+            bar_r = ohlc.get(sym, {}).get(r)
+            extra = {}
+            if bar_r:
+                o, h = float(bar_r.get("o") or 0), float(bar_r.get("h") or 0)
+                extra["ret_open"] = round(exit_value(o) / cost - 1, 4)
+                extra["ret_high"] = round(exit_value(h) / cost - 1, 4)
+                for m in TAKE_PROFIT:
+                    hit = h >= m * cost
+                    extra[f"ret_tp{m}"] = round((m - 1) if hit else val_r / cost - 1, 4)
+            else:  # no trade on the reaction day: only the intrinsic floor is known
+                for key in ["ret_open", "ret_high"] + [f"ret_tp{m}" for m in TAKE_PROFIT]:
+                    extra[key] = round(val_r / cost - 1, 4)
             trades.append({"symbol": e["symbol"], "reaction_day": r, "strategy": name, "strike": k, "spot": spot,
                            "entry_close": buy, "cost": round(cost, 4), "move": e["move"],
                            "ret_reaction": round(val_r / cost - 1, 4),
                            "ret_expiry": round(val_exp / cost - 1, 4) if val_exp is not None else None,
-                           "implied_move": e["implied_move"], "cheapness": e.get("cheapness"), "mom126": e.get("mom126")})
+                           "implied_move": e["implied_move"], "cheapness": e.get("cheapness"), "mom126": e.get("mom126"),
+                           **extra})
     return {"generated": date.today().isoformat(), "source": events_file(root).name, "events": len(events),
             "slippage": SLIP, "bet": BET, "trades": trades}
 
@@ -129,8 +151,8 @@ def summarize(trades: list[dict]) -> dict:
     for name in dict.fromkeys(t["strategy"] for t in trades):
         rows = sorted([t for t in trades if t["strategy"] == name], key=lambda t: t["reaction_day"])
         res = {}
-        for exit_key in ("ret_reaction", "ret_expiry"):
-            rets = [t[exit_key] for t in rows if t[exit_key] is not None]
+        for exit_key, _ in EXITS:
+            rets = [t[exit_key] for t in rows if t.get(exit_key) is not None]
             if not rets:
                 continue
             bank = 500.0
@@ -147,9 +169,10 @@ def summarize(trades: list[dict]) -> dict:
 def markdown(rep: dict, s: dict) -> str:
     out = [f"# 财报彩票期权真实盈亏（第 3 步）{rep['generated']}", "",
            f"事件来自 {rep['source']}（有期权数据的 {rep['events']} 次）。反应日前一天收盘买入一张看涨期权（到期日 = 反应日当天或之后最近的一个），"
-           f"两种退出：反应日收盘卖出 / 持有到期。价格用日线收盘价，另加买卖各 {rep['slippage']:.0%} 的价差成本（至少 1 美分）。"
+           f"比较多种卖法：开盘卖、挂止盈单（3/5/10 倍）、收盘卖、卖在当天最高价（理论上限）、持有到期。价格用日线开/高/收，"
+           f"市价卖出另扣买卖各 {rep['slippage']:.0%} 的价差成本（至少 1 美分），止盈挂单按挂单价成交。"
            f"「$500 账户」= 按时间顺序每次押当前余额的 {rep['bet']:.0%}。只研究，不改交易。", ""]
-    for exit_key, label in (("ret_reaction", "反应日收盘卖出"), ("ret_expiry", "持有到期")):
+    for exit_key, label in EXITS:
         out += [f"## {label}", "", "| 行权价 | 次数 | 赚钱比例 | 平均每 $1 回报 | 中位数 | 最大倍数 | ≥10 倍的比例 | $500 账户最后 |",
                 "|---|---|---|---|---|---|---|---|"]
         for name, res in s.items():
