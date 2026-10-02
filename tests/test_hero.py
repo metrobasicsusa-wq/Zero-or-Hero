@@ -1146,6 +1146,40 @@ class ResearchShort(unittest.TestCase):
         self.assertIn("做空研究回测", rs.markdown(rep))
 
 
+class ResearchUniverse(unittest.TestCase):
+    def test_dynamic_pool_uses_only_past_liquidity(self):
+        from hero import research_universe as ru
+
+        class Fake:
+            def assets(self):
+                return [{"symbol": s, "tradable": True, "marginable": True, "shortable": True, "fractionable": True,
+                         "exchange": "NYSE"} for s in ("AAA", "BBB", "CCC", "DDD")] + \
+                       [{"symbol": "BRK.B", "tradable": True, "marginable": True, "shortable": True,
+                         "fractionable": True, "exchange": "NYSE"}]
+
+            def daily_bars(self, symbols, start):
+                out = {}
+                for k, sym in enumerate(symbols):
+                    bs = bars(series(0.0003 * (k % 4 - 1), 900, k))
+                    for i, b in enumerate(bs):
+                        # DDD becomes the most traded name only in the second half
+                        b["v"] = 1e7 if (sym == "DDD" and i > 600) else 1e5 * (10 - k)
+                    out[sym] = bs
+                return out
+        self.assertNotIn("BRK.B", ru.candidates(Fake()))
+        c = Fake()
+        syms = ["AAA", "BBB", "CCC", "DDD", "SPY"]
+        dates, closes, dvol = ru.align(c.daily_bars(syms, "2020-01-01"), "SPY")
+        firsts = {s: 0 for s in syms}
+        pools = ru.monthly_pools(dates, closes, dvol, firsts, ["AAA", "BBB", "CCC", "DDD"], 1, 300)
+        early, late = pools[min(pools)], pools[max(pools)]
+        self.assertNotEqual(early, ["DDD"])
+        self.assertEqual(late, ["DDD"])  # picked up once it became liquid, not before
+        rep = ru.run(c, Path(__file__).resolve().parent.parent)
+        self.assertEqual(len(rep["results"]["Claude"]["variants"]), 3)
+        self.assertIn("股票池回测", ru.markdown(rep))
+
+
 class Safety(unittest.TestCase):
     def test_refuses_live_endpoint(self):
         with self.assertRaises(AlpacaError):

@@ -138,6 +138,9 @@ class Alpaca:
                 return out
             params["page_token"] = token
 
+    def assets(self) -> list[dict]:
+        return self._t("GET", "/v2/assets", params={"status": "active", "asset_class": "us_equity"})
+
     def stock_snapshots(self, symbols: list[str]) -> dict[str, dict]:
         """Latest trade and previous daily bar per symbol (IEX), for intraday moves."""
         return self._d("/v2/stocks/snapshots", {"symbols": ",".join(symbols), "feed": "iex"}) or {}
