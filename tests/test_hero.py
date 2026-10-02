@@ -646,6 +646,23 @@ class SmallAccount(unittest.TestCase):
             self.assertIn("没有买期权", text)
             self.assertIn("预算 $100", text)
 
+    def test_same_day_profit_held_overnight_but_stop_is_not(self):
+        with tempfile.TemporaryDirectory() as d:
+            j = Journal(Path(d))
+            j.record_fills([{"id": "f1", "order_id": "o1", "transaction_time": "2026-10-01T15:00:00Z",
+                             "symbol": "UP1261009C00300000", "side": "buy", "qty": "1", "price": "0.9"}])
+            closes = {"SPY": series(0.001, seed=5), "UP1": series(0.002, seed=1)}
+            conf = self.s500_cfg(options={**CFG["options"], "enabled": False, "hold_overnight": True,
+                                          "take_profit": 0.8, "stop_loss": -0.5, "exit_dte": 1})
+            win = {"symbol": "UP1261009C00300000", "asset_class": "us_option", "unrealized_plpc": "1.2"}
+            c = FakeClient(closes, positions=[win], equity=500, last_equity=500)
+            Engine(c, conf, j).run(today=TODAY)
+            self.assertNotIn(win["symbol"], c.closed)  # +120% on the day it was bought: wait until tomorrow
+            lose = {**win, "unrealized_plpc": "-0.6"}
+            c2 = FakeClient(closes, positions=[lose], equity=500, last_equity=500)
+            Engine(c2, conf, j).run(today=TODAY)
+            self.assertIn(lose["symbol"], c2.closed)  # stop-loss still exits the same day
+
     def test_broker_rejection_does_not_abort_cycle(self):
         class Rejecting(FakeClient):
             def submit_order(self, **o):

@@ -204,10 +204,18 @@ class Engine:
                 continue
             exp = opt.occ_expiration(sym)
             reason = opt.should_exit(pos, today, exp, self.cfg["options"])
+            if reason and reason.startswith("take_profit") and self.cfg["options"].get("hold_overnight") \
+                    and self._bought_today(sym, today):
+                # Small accounts get three day trades per five sessions; don't spend one on a same-day
+                # profit. Stop-loss and expiry exits still go out the same day.
+                continue
             if reason:
                 self._close(sym, reason, {k: pos.get(k) for k in
                                           ("avg_entry_price", "current_price", "unrealized_plpc", "qty")},
                             why=opt.why_exit(pos, today, exp, self.cfg["options"]))
+
+    def _bought_today(self, sym: str, today: date) -> bool:
+        return any(f["symbol"] == sym and f["side"] == "buy" for f in self.j.fills(today.isoformat()))
 
     def _rebalance(self, stocks: dict, busy: set, closes: dict, equity: float, halted: bool) -> None:
         p, risk = self.cfg["stocks"], self.cfg["risk"]
