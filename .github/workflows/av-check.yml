@@ -1,0 +1,44 @@
+name: av-check
+
+# One-off check of which Alpha Vantage endpoints the free key can use (about 5 of the 25 daily calls).
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install requests
+      - name: Probe endpoints (prints status only)
+        env:
+          AV_KEY: ${{ secrets.ALPHAVANTAGE_API_KEY }}
+        run: |
+          python - <<'PY'
+          import os, time, requests
+          key = os.environ["AV_KEY"]
+          print("key present:", bool(key))
+          probes = [
+              ("EARNINGS_CALENDAR", {"horizon": "3month"}),
+              ("TREASURY_YIELD", {"interval": "daily", "maturity": "10year"}),
+              ("WTI", {"interval": "daily"}),
+              ("NEWS_SENTIMENT", {"tickers": "NVDA", "limit": "5"}),
+              ("EARNINGS", {"symbol": "JPM"}),
+          ]
+          for fn, extra in probes:
+              r = requests.get("https://www.alphavantage.co/query", params={"function": fn, "apikey": key, **extra}, timeout=60)
+              body = r.text.replace(key, "***")
+              if fn == "EARNINGS_CALENDAR":
+                  lines = body.splitlines()
+                  ok = lines and lines[0].startswith("symbol,")
+                  print(fn, r.status_code, "OK" if ok else "FAIL", f"{len(lines) - 1} rows", "|", lines[1] if ok and len(lines) > 1 else body[:200])
+              else:
+                  ok = r.ok and not any(k in body[:300] for k in ('"Information"', '"Note"', '"Error Message"'))
+                  print(fn, r.status_code, "OK" if ok else "FAIL", "|", body[:160].replace("\n", " "))
+              time.sleep(15)  # stay under any per-minute limit
+          PY
