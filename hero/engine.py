@@ -104,16 +104,23 @@ class Engine:
         self.touched: set[str] = set()
         # Only manage what this strategy owns: stocks in its universe and options on them. Anything
         # else in the account (e.g. another experiment's positions) is left alone.
-        mine = set(self.cfg["universe"])
+        # An experiment with its own account (owns_account) manages every position in it, so a name
+        # that left a dynamic universe is still sold; otherwise only its universe is ours.
+        held_stocks = {p["symbol"] for p in positions if p.get("asset_class") == "us_equity"}
+        held_unds = {option_underlying(p["symbol"]) for p in positions if p.get("asset_class") == "us_option"}
+        mine = set(self.cfg["universe"]) | ((held_stocks | held_unds) if self.cfg.get("owns_account") else set())
         stocks = {p["symbol"]: p for p in positions if p.get("asset_class") == "us_equity" and p["symbol"] in mine}
         options = {p["symbol"]: p for p in positions
                    if p.get("asset_class") == "us_option" and option_underlying(p["symbol"]) in mine}
 
-        universe = self.cfg["universe"]
+        universe = sorted(set(self.cfg["universe"]) | (set(stocks) | {option_underlying(o) for o in options}))
         start = (today - timedelta(days=HISTORY_DAYS)).isoformat()
         macro_syms = [s for s in macro.SYMBOLS.values() if s not in universe]
         bars = self.c.daily_bars(universe + macro_syms, start)
         closes = closes_from_bars({s: b for s, b in bars.items() if s in universe})
+        # Only the configured universe competes for a place; held names outside it can only be sold.
+        ranked_pool = set(self.cfg["universe"]) | {self.cfg["regime_symbol"]}
+        self.rank_closes = {s: xs for s, xs in closes.items() if s in ranked_pool}
         self.macro_closes = closes_from_bars({s: bars.get(s, []) for s in macro.SYMBOLS.values()})
         self._intraday(stocks, today)
 
@@ -384,9 +391,10 @@ class Engine:
         p, risk = self.cfg["stocks"], self.cfg["risk"]
         held = frozenset(stocks)
         mc = getattr(self, "macro_closes", None)
-        targets = momentum.target_weights(closes, p, self.cfg["regime_symbol"], risk["max_position_pct"], held=held,
+        pool = getattr(self, "rank_closes", closes)
+        targets = momentum.target_weights(pool, p, self.cfg["regime_symbol"], risk["max_position_pct"], held=held,
                                           macro_closes=mc)
-        score = momentum.scores(closes, p, held)
+        score = momentum.scores(pool, p, held)
         regime = self.cfg["regime_symbol"]
         bull = regime not in closes or momentum.is_bullish(closes[regime])
         gauges = macro.gauges(mc or {})
@@ -469,7 +477,7 @@ class Engine:
         if regime in closes and not momentum.is_bullish(closes[regime]):
             candidates = [(regime, "put")] if p.get("bear_puts", True) else []
         else:
-            ranked = momentum.rank(closes, self.cfg["stocks"])
+            ranked = momentum.rank(getattr(self, "rank_closes", closes), self.cfg["stocks"])
             candidates = [(s, "call") for s in ranked[: p.get("max_rank", len(ranked))]]
             if p.get("require_held"):
                 # Only on stocks the broker confirms we hold: a rejected or unfilled stock buy must

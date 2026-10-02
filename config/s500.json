@@ -31,8 +31,8 @@
   ],
   "regime_symbol": "SMH",
   "stocks": {
-    "momentum_lookback": 20,
-    "trend_sma": 20,
+    "momentum_lookback": 126,
+    "trend_sma": 50,
     "top_n": 2,
     "rsi_max": 85,
     "gross_exposure": 0.7,
@@ -71,5 +71,11 @@
     "stop_max_pct": 0.12,
     "stop_tif": "day"
   },
-  "launch_approved": false
+  "launch_approved": false,
+  "dynamic_universe": {
+    "size": 100,
+    "rebuilt": "monthly",
+    "note": "data/universe.json; the static 'universe' list is only the fallback when that file is missing"
+  },
+  "owns_account": true
 }

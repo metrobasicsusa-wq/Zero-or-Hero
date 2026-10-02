@@ -28,6 +28,12 @@ jobs:
         with:
           python-version: "3.11"
       - run: pip install -r requirements.txt
+      - name: Dynamic universe (rebuilt once per ET month)
+        continue-on-error: true   # without it the experiment keeps last month's pool or its static list
+        env:
+          ALPACA_API_KEY: ${{ secrets.ALPACA_S500_API_KEY }}
+          ALPACA_SECRET_KEY: ${{ secrets.ALPACA_S500_SECRET_KEY }}
+        run: python -m hero universe --size 100
       - name: Earnings calendar (one Alpha Vantage call per ET day at most)
         continue-on-error: true   # without it, the earnings guard simply blocks short-dated options
         env:

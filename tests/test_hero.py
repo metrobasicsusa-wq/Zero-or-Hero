@@ -1190,6 +1190,58 @@ class ResearchS500(unittest.TestCase):
         self.assertEqual((p["trend_sma"], p["top_n"], p["gross_exposure"]), (20, 2, 0.9))
 
 
+class DynamicUniverse(unittest.TestCase):
+    class Broker:
+        def assets(self):
+            return [{"symbol": s, "tradable": True, "marginable": True, "shortable": True, "fractionable": True,
+                     "exchange": "NASDAQ"} for s in ("BIG", "MID", "SMALL", "CHEAP", "NEW")]
+
+        def daily_bars(self, symbols, start):
+            spec = {"BIG": (300, 50, 1e7), "MID": (300, 50, 1e6), "SMALL": (300, 50, 1e4),
+                    "CHEAP": (300, 5, 1e9), "NEW": (100, 50, 1e9)}  # (days, price, volume)
+            return {s: [{"t": f"d{i}", "c": spec[s][1], "v": spec[s][2]} for i in range(spec[s][0])]
+                    for s in symbols if s in spec}
+
+    def test_build_ranks_by_dollar_volume_with_filters(self):
+        from datetime import datetime
+        from hero import universe
+        d = universe.build(self.Broker(), 2, datetime(2026, 10, 2, 9, 0))
+        self.assertEqual(d["stocks"], ["BIG", "MID"])  # CHEAP under $10, NEW under a year: excluded
+        self.assertEqual(d["month"], "2026-10")
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "universe.json"
+            self.assertTrue(universe.refresh(path, self.Broker(), 2, datetime(2026, 10, 2)).startswith("built"))
+            self.assertEqual(universe.refresh(path, self.Broker(), 2, datetime(2026, 10, 20)), "fresh")
+            self.assertTrue((Path(tmp) / "universe" / "2026-10.json").exists())
+            self.assertIn("SPY", universe.symbols(universe.load(path)))
+
+    def test_held_name_outside_the_pool_is_sold_when_the_account_is_ours(self):
+        closes = {"SPY": series(0.001, seed=5), "UP1": series(0.002, seed=1), "OLD": series(0.003, seed=9)}
+        held = {"symbol": "OLD", "asset_class": "us_equity", "qty": "2", "market_value": "500",
+                "avg_entry_price": "100", "current_price": "250"}
+        conf = cfg(stocks={"rsi_max": 101, "top_n": 1})
+        conf["universe"] = ["SPY", "UP1"]
+        with tempfile.TemporaryDirectory() as d:
+            c = FakeClient(closes, positions=[held])
+            Engine(c, conf, Journal(Path(d))).run(today=TODAY)
+            self.assertEqual(c.closed, [])  # not ours without owns_account: left alone
+        with tempfile.TemporaryDirectory() as d:
+            c = FakeClient(closes, positions=[held])
+            Engine(c, {**conf, "owns_account": True}, Journal(Path(d))).run(today=TODAY)
+            self.assertEqual(c.closed, ["OLD"])  # strongest momentum, but no longer in the pool
+            self.assertIn("不在股票池", (Path(d) / "trades.jsonl").read_text())
+
+    def test_config_falls_back_to_static_list(self):
+        from hero import __main__ as cli
+        conf = {"universe": ["A"], "dynamic_universe": {"size": 100}}
+        orig = cli.UNIVERSE
+        try:
+            cli.UNIVERSE = Path("/nonexistent/universe.json")
+            self.assertEqual(cli.apply_dynamic_universe(conf)["universe"], ["A"])
+        finally:
+            cli.UNIVERSE = orig
+
+
 class Safety(unittest.TestCase):
     def test_refuses_live_endpoint(self):
         with self.assertRaises(AlpacaError):

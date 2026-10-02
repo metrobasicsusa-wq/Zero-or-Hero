@@ -8,7 +8,7 @@ from datetime import date, datetime, timedelta
 from zoneinfo import ZoneInfo
 from pathlib import Path
 
-from hero import backtest, dashboard, earnings, evolve, macro, market, patrol, review
+from hero import backtest, dashboard, earnings, evolve, macro, market, patrol, review, universe
 from hero.alpaca import Alpaca
 from hero.engine import Engine
 from hero.journal import Journal
@@ -18,6 +18,16 @@ CFG_PATH = ROOT / "config" / "strategy.json"
 JOURNAL = ROOT / "journal"
 EARNINGS = ROOT / "data" / "earnings.json"
 MARKET = ROOT / "data" / "market.json"
+UNIVERSE = ROOT / "data" / "universe.json"
+
+
+def apply_dynamic_universe(cfg: dict) -> dict:
+    """Swap in this month's dynamic universe; keep the static list if the file is missing."""
+    dyn = cfg.get("dynamic_universe")
+    data = universe.load(UNIVERSE) if dyn else None
+    if data and data["size"] == dyn["size"]:
+        cfg = {**cfg, "universe": universe.symbols(data), "universe_month": data["month"]}
+    return cfg
 EVOLVE_HISTORY_DAYS = 3 * 365
 
 
@@ -46,12 +56,14 @@ def main() -> None:
     sub.add_parser("snapshot", help="refresh account/positions/orders snapshot and today's fills from the broker")
     e = sub.add_parser("earnings", help="refresh the earnings calendar (at most one API call per ET day)")
     e.add_argument("--configs", nargs="+", default=[str(CFG_PATH), str(ROOT / "config" / "s500.json")])
+    u = sub.add_parser("universe", help="rebuild the monthly dynamic universe (once per ET month)")
+    u.add_argument("--size", type=int, default=100)
     m = sub.add_parser("market", help="refresh yields, oil and news sentiment (at most 4 API calls per ET day)")
     m.add_argument("--configs", nargs="+", default=[str(CFG_PATH), str(ROOT / "config" / "s500.json")])
     args = ap.parse_args()
 
     cfg_path, jdir = Path(args.config), Path(args.journal)
-    cfg = json.loads(cfg_path.read_text())
+    cfg = apply_dynamic_universe(json.loads(cfg_path.read_text()))
     journal = Journal(jdir)
     if args.cmd == "dashboard":
         dashboard.write(jdir, cfg, Path(args.out))
@@ -75,12 +87,16 @@ def main() -> None:
         return
     if args.cmd in ("earnings", "market"):
         import os
-        symbols = set().union(*(json.loads(Path(c).read_text())["universe"] for c in args.configs))
+        symbols = set().union(*(json.loads(Path(c).read_text())["universe"] for c in args.configs),
+                              universe.symbols(universe.load(UNIVERSE)))
         now = datetime.now(ZoneInfo("America/New_York"))
         mod, path = (earnings, EARNINGS) if args.cmd == "earnings" else (market, MARKET)
         print(mod.refresh(path, symbols, os.environ["ALPHAVANTAGE_API_KEY"], now))
         return
     client = Alpaca()
+    if args.cmd == "universe":
+        print(universe.refresh(UNIVERSE, client, args.size, datetime.now(ZoneInfo("America/New_York"))))
+        return
 
     if args.cmd == "patrol":
         for problem in patrol.check(patrol.load(jdir), bool(client.clock().get("is_open"))):
