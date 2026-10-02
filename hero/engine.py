@@ -30,19 +30,20 @@ class Engine:
     def __init__(self, client, cfg: dict, journal: Journal, dry_run: bool = False):
         self.c, self.cfg, self.j, self.dry = client, cfg, journal, dry_run
 
-    def _order(self, reason: str, evidence: dict | None = None, **order) -> None:
+    def _order(self, reason: str, evidence: dict | None = None, why: str = "", **order) -> None:
         # The decision and its evidence (the quote it was based on) are journaled before the
         # broker call, so a timeout or crash cannot lose them. Evidence is never sent to the broker.
         order["client_order_id"] = uuid.uuid4().hex
         intent = execution_key(order["client_order_id"])
         logged = {k: v for k, v in order.items() if k != "client_order_id"}
-        self.j.event("order", reason=reason, dry_run=self.dry, evidence=evidence or {}, intent_key=intent, **logged)
+        self.j.event("order", reason=reason, why=why, dry_run=self.dry, evidence=evidence or {}, intent_key=intent,
+                     **logged)
         if not self.dry:
             self._submit(intent, lambda: self.c.submit_order(**order))
 
-    def _close(self, symbol: str, reason: str, evidence: dict | None = None) -> None:
+    def _close(self, symbol: str, reason: str, evidence: dict | None = None, why: str = "") -> None:
         intent = execution_key(uuid.uuid4().hex)
-        self.j.event("close", symbol=symbol, reason=reason, dry_run=self.dry, evidence=evidence or {},
+        self.j.event("close", symbol=symbol, reason=reason, why=why, dry_run=self.dry, evidence=evidence or {},
                      intent_key=intent)
         if not self.dry:
             self._submit(intent, lambda: self.c.close_position(symbol))
@@ -99,20 +100,28 @@ class Engine:
         for sym, pos in options.items():
             if sym in busy:
                 continue
-            reason = opt.should_exit(pos, today, opt.occ_expiration(sym), self.cfg["options"])
+            exp = opt.occ_expiration(sym)
+            reason = opt.should_exit(pos, today, exp, self.cfg["options"])
             if reason:
                 self._close(sym, reason, {k: pos.get(k) for k in
-                                          ("avg_entry_price", "current_price", "unrealized_plpc", "qty")})
+                                          ("avg_entry_price", "current_price", "unrealized_plpc", "qty")},
+                            why=opt.why_exit(pos, today, exp, self.cfg["options"]))
 
     def _rebalance(self, stocks: dict, busy: set, closes: dict, equity: float, halted: bool) -> None:
         p, risk = self.cfg["stocks"], self.cfg["risk"]
-        targets = momentum.target_weights(closes, p, self.cfg["regime_symbol"], risk["max_position_pct"],
-                                          held=frozenset(stocks))
-        self.j.event("targets", weights={s: round(w, 4) for s, w in targets.items()})
+        held = frozenset(stocks)
+        targets = momentum.target_weights(closes, p, self.cfg["regime_symbol"], risk["max_position_pct"], held=held)
+        score = momentum.scores(closes, p, held)
+        regime = self.cfg["regime_symbol"]
+        bull = regime not in closes or momentum.is_bullish(closes[regime])
+        self.j.event("targets", weights={s: round(w, 4) for s, w in targets.items()}, scores=score,
+                     regime="bull" if bull else "bear")
 
         for sym in stocks:
             if sym not in targets and sym not in busy:
-                self._close(sym, "dropped_from_targets")
+                self._close(sym, "dropped_from_targets", {k: score.get(sym, {}).get(k) for k in
+                                                          ("momentum", "above_trend", "rsi", "rank")},
+                            why="移出目标：" + momentum.why_dropped(sym, score.get(sym), p))
 
         buys = []
         for sym, w in targets.items():
@@ -127,15 +136,20 @@ class Engine:
             if qty < 1:
                 continue
             ref = {"reference_price": price, "reference": "IEX daily bar, latest trade at fetch time (may lag)",
-                   "target_weight": w}
+                   "target_weight": w, **{k: score[sym].get(k) for k in ("momentum", "above_trend", "rsi", "rank")}}
+            now = f"当前 {have / equity:.1%}" if have else "新建仓"
+            why = (f"{momentum.why_selected(sym, score[sym], p)}；目标仓位 {w:.0%}（{now}"
+                   + (f"，偏离超过 {p['rebalance_drift']:.0%}" if have else "") + "）")
+            if not bull:
+                why += f"；{regime} 跌破 200 日均线，总仓位降到 {momentum.BEAR_EXPOSURE_SCALE:.0%}"
             if want < have:
-                self._order("trim", ref, symbol=sym, qty=str(qty), side="sell", type="market", time_in_force="day")
+                self._order("trim", ref, why, symbol=sym, qty=str(qty), side="sell", type="market", time_in_force="day")
             else:
-                buys.append((sym, qty, ref))
+                buys.append((sym, qty, ref, why))
         if halted:
             return
-        for sym, qty, ref in buys:
-            self._order("rebalance", ref, symbol=sym, qty=str(qty), side="buy", type="market", time_in_force="day")
+        for sym, qty, ref, why in buys:
+            self._order("rebalance", ref, why, symbol=sym, qty=str(qty), side="buy", type="market", time_in_force="day")
 
     def _option_entries(self, options: dict, busy: set, closes: dict, equity: float, today: date) -> None:
         p = self.cfg["options"]
@@ -149,6 +163,7 @@ class Engine:
             candidates = [(regime, "put")]
         else:
             candidates = [(s, "call") for s in momentum.rank(closes, self.cfg["stocks"])]
+        order_of = {s: i for i, (s, _) in enumerate(candidates, 1)}
         budget = p["allocation"] * equity / p["max_positions"]
 
         for und, kind in candidates:
@@ -180,7 +195,15 @@ class Engine:
                         "delta": greeks.get("delta"), "iv": snap.get("impliedVolatility"),
                         "underlying_price": spot,
                         "underlying_price_source": "IEX daily bar, latest trade at fetch time (may lag)", "feed": "indicative"}
-            self._order(f"{kind} on {und}", evidence, symbol=contract["symbol"], qty=str(qty), side="buy",
+            days = opt.dte(contract["expiration_date"], today)
+            delta = f"delta {evidence['delta']:.2f}" if evidence["delta"] is not None else "delta 缺失，按最接近平值选"
+            if kind == "put":
+                why = f"{regime} 跌破 200 日均线（熊市信号），买看跌期权防守"
+            else:
+                why = f"{und} 是动量排名第 {order_of[und]} 且还没有期权的标的，买看涨期权放大趋势收益"
+            why += (f"；选 {days} 天到期、delta 最接近 {p['target_delta']} 的合约（{delta}），"
+                    f"每笔预算约 ${budget:,.0f}，买卖价差 {evidence['spread_pct_of_mid']:.1%}")
+            self._order(f"{kind} on {und}", evidence, why, symbol=contract["symbol"], qty=str(qty), side="buy",
                         type="limit", limit_price=f"{round_option_price(price):.2f}", time_in_force="day")
             held.add(und)
             slots -= 1

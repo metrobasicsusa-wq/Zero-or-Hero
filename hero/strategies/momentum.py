@@ -42,3 +42,43 @@ def target_weights(closes: dict[str, list[float]], p: dict, regime_symbol: str,
         gross *= BEAR_EXPOSURE_SCALE
     w = min(gross / len(picks), max_position_pct)
     return {s: w for s in picks}
+
+
+def scores(closes: dict[str, list[float]], p: dict, held: frozenset = frozenset()) -> dict[str, dict]:
+    """Per-symbol indicators, eligibility and momentum rank: the evidence behind rank()."""
+    rsi_on_held = p.get("rsi_applies_to_holdings", True)
+    out = {}
+    for sym, xs in closes.items():
+        mom = momentum(xs, p["momentum_lookback"])
+        trend = sma(xs, p["trend_sma"])
+        r = rsi(xs)
+        if mom is None or trend is None or r is None:
+            out[sym] = {"eligible": False, "fail": ["数据不足"]}
+            continue
+        above = xs[-1] / trend - 1
+        fail = []
+        if above <= 0:
+            fail.append(f"跌破 {p['trend_sma']} 日均线（低 {-above:.1%}）")
+        if mom <= 0:
+            fail.append(f"{p['momentum_lookback']} 日动量为负（{mom:+.1%}）")
+        if r >= p["rsi_max"] and (sym not in held or rsi_on_held):
+            fail.append(f"RSI {r:.0f} 过热（上限 {p['rsi_max']}）")
+        out[sym] = {"momentum": round(mom, 4), "above_trend": round(above, 4), "rsi": round(r, 1),
+                    "eligible": not fail, "fail": fail}
+    ranked = rank(closes, p, held)
+    for i, sym in enumerate(ranked, 1):
+        out[sym]["rank"] = i
+    return out
+
+
+def why_selected(sym: str, s: dict, p: dict) -> str:
+    return (f"动量排名第 {s['rank']}/{p['top_n']}：{p['momentum_lookback']} 日涨 {s['momentum']:+.1%}，"
+            f"高于 {p['trend_sma']} 日均线 {s['above_trend']:.1%}，RSI {s['rsi']:.0f}")
+
+
+def why_dropped(sym: str, s: dict | None, p: dict) -> str:
+    if not s:
+        return "不在股票池或没有行情数据"
+    if s.get("fail"):
+        return "；".join(s["fail"])
+    return f"动量排名第 {s['rank']}，只持有前 {p['top_n']} 名"

@@ -54,6 +54,15 @@ def should_exit(position: dict, today: date, expiration: str, p: dict) -> str | 
     return None
 
 
+def why_exit(position: dict, today: date, expiration: str, p: dict) -> str:
+    pl = float(position.get("unrealized_plpc") or 0)
+    if pl >= p["take_profit"]:
+        return f"盈利 {pl:+.0%}，达到止盈线 {p['take_profit']:+.0%}"
+    if pl <= p["stop_loss"]:
+        return f"亏损 {pl:+.0%}，触及止损线 {p['stop_loss']:+.0%}"
+    return f"距到期只剩 {dte(expiration, today)} 天（≤{p['exit_dte']} 天就平仓，避免时间价值加速流失）"
+
+
 def occ_expiration(symbol: str) -> str:
     """Expiration date from an OCC symbol like AAPL250117C00150000."""
     tail = symbol[-15:]

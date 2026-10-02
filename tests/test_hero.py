@@ -152,6 +152,10 @@ class EngineTests(unittest.TestCase):
         opt_ev = next(e["evidence"] for e in logged if e["kind"] == "order" and e["type"] == "limit")
         self.assertEqual((opt_ev["bid"], opt_ev["ask"], opt_ev["mid"]), (4.0, 4.2, 4.1))
         self.assertAlmostEqual(opt_ev["spread_pct_of_mid"], 0.0488, places=4)
+        whys = {e["symbol"]: e.get("why", "") for e in logged if e["kind"] in ("order", "close")}
+        self.assertIn("达到止盈线", whys["XYZ261001C00010000"])
+        self.assertTrue(whys["DOWN"].startswith("移出目标：跌破"))
+        self.assertTrue(all(w for w in whys.values()), whys)
         close_ev = next(e["evidence"] for e in logged if e["kind"] == "close" and e["symbol"].startswith("XYZ"))
         self.assertEqual(close_ev["unrealized_plpc"], "0.9")
 
@@ -394,6 +398,22 @@ class LiveConfig(unittest.TestCase):
         for section in ("stocks", "options", "risk"):
             self.assertEqual(set(CFG[section]), set(live[section]), section)
         self.assertIsInstance(live["generation"], int)
+
+
+class Reasons(unittest.TestCase):
+    def test_drop_reasons(self):
+        p = {**CFG["stocks"], "rsi_max": 80, "top_n": 1}
+        closes = {"UP1": series(0.002, seed=1), "UP2": series(0.0015, seed=2),
+                  "HOT": [100.0 * 1.01 ** i for i in range(300)]}
+        sc = mom.scores(closes, p)
+        self.assertIn("RSI 100 过热", mom.why_dropped("HOT", sc["HOT"], p))
+        # With RSI unconstrained both climbers are eligible; the steeper one ranks first.
+        loose = {**p, "rsi_max": 101}
+        sc2 = mom.scores({"HOT": closes["HOT"], "UP1": closes["UP1"]}, loose)
+        self.assertEqual((sc2["HOT"]["rank"], sc2["UP1"]["rank"]), (1, 2))
+        self.assertEqual(mom.why_dropped("UP1", sc2["UP1"], loose), "动量排名第 2，只持有前 1 名")
+        self.assertTrue(mom.why_selected("HOT", sc2["HOT"], loose).startswith("动量排名第 1/1"))
+        self.assertEqual(mom.why_dropped("GONE", None, p), "不在股票池或没有行情数据")
 
 
 class Safety(unittest.TestCase):

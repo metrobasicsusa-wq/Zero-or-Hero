@@ -90,6 +90,7 @@ svg { display: block; width: 100%; height: auto; }
 table { width: 100%; border-collapse: collapse; font-size: 13px; }
 th { text-align: left; color: var(--muted); font-weight: 500; font-size: 12px; padding: 6px 8px; border-bottom: 1px solid var(--grid); white-space: nowrap; }
 td { padding: 8px; border-bottom: 1px solid var(--grid); white-space: nowrap; }
+td:has(.why) { white-space: normal; min-width: 280px; color: var(--ink-2); }
 td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
 tr:last-child td { border-bottom: 0; }
 .chip { display: inline-block; padding: 1px 8px; border-radius: 999px; background: var(--chip); font-size: 12px; color: var(--ink-2); }
@@ -345,7 +346,8 @@ function renderEvents() {
     [["时间"], ["动作"], ["标的"], ["数量", 1], ["限价", 1], ["原因"]],
     es.slice(0, 60).map((e) => [fmtTime(e.ts), `<span class="chip">${kind(e)}</span>`,
       e.symbol ? `<b>${esc(optionLabel(e.symbol) || e.symbol)}</b>` : "—", esc(e.qty || ""),
-      e.limit_price ? usd(num(e.limit_price), 2) : "—", esc(e.reason || (e.day_pl !== undefined ? "当日 " + pct(e.day_pl) : ""))]));
+      e.limit_price ? usd(num(e.limit_price), 2) : "—",
+      `<span class="why">${esc(e.why || e.reason || (e.day_pl !== undefined ? "当日 " + pct(e.day_pl) : ""))}</span>`]));
 }
 
 function renderParams() {

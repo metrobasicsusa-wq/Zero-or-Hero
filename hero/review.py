@@ -63,7 +63,8 @@ def decisions(journal: Path, day: str) -> list[dict]:
         out.append({
             "kind": e["kind"], "ts": e["ts"], "symbol": e["symbol"], "side": e.get("side", "close"),
             "qty": e.get("qty"), "type": e.get("type"), "limit_price": e.get("limit_price"),
-            "reason": e["reason"], "evidence": e.get("evidence") or {}, "dry_run": e.get("dry_run", False),
+            "reason": e["reason"], "why": e.get("why", ""), "evidence": e.get("evidence") or {},
+            "dry_run": e.get("dry_run", False),
             "order_key": order_key, "broker_status": ack.get("status"), "error": ack.get("error"),
             "filled_qty": qty, "fill_vwap": sum(float(f["qty"]) * float(f["price"]) for f in got) / qty if qty else None,
             "fill_keys": [f["execution_key"] for f in got],
@@ -138,11 +139,12 @@ def facts(journal: Path, cfg: dict, day: str) -> str | None:
         else:
             outcome = (" → (journaled before order linking existed)" if o["legacy"]
                        else " → no broker acknowledgement recorded")
+        why = f"\n  - 理由：{o['why']}" if o["why"] else ""
         if o["kind"] == "close":
-            lines.append(f"- close {option_label(o['symbol'])} ({o['reason']}){outcome}")
+            lines.append(f"- close {option_label(o['symbol'])} ({o['reason']}){outcome}{why}")
         else:
             price = f" @ {o['limit_price']}" if o.get("limit_price") else ""
-            lines.append(f"- {o['side']} {o['qty']} {option_label(o['symbol'])}{price} ({o['reason']}){quote}{outcome}")
+            lines.append(f"- {o['side']} {o['qty']} {option_label(o['symbol'])}{price} ({o['reason']}){quote}{outcome}{why}")
     for e in events:
         if e["kind"] == "halt":
             lines.append(f"- HALT: day P/L {e['day_pl']:+.2%}")
