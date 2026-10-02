@@ -621,6 +621,7 @@ class SmallAccount(unittest.TestCase):
                 options={"enabled": False}, risk={"stop_tif": "day", "daily_loss_halt": -1.0})
         c["universe"] = ["UP1", "UP2", "SPY"]
         c["attempt"] = {"number": 1, "start_capital": 500, "end_loss": 0.4}
+        c["live_from"], c["launch_approved"] = "2000-01-01", True  # a gated experiment, already approved
         c.update(over)
         return c
 
@@ -644,58 +645,111 @@ class SmallAccount(unittest.TestCase):
             self.assertEqual(c.orders, [])
             self.assertIn('"dry_run": true', (Path(d) / "trades.jsonl").read_text())
 
+    def _ending(self, d, pos, **kw):
+        """Run one cycle of an account past its 40% loss line; returns the client."""
+        closes = {"SPY": series(0.001, seed=5), "UP1": series(0.002, seed=1)}
+        c = kw.pop("client", None) or FakeClient(closes, positions=pos, equity=kw.pop("equity", 295),
+                                                 last_equity=320, **kw)
+        Engine(c, self.s500_cfg(), Journal(Path(d))).run(today=TODAY)
+        return c
+
+    @staticmethod
+    def _exits(c):
+        return [o for o in c.orders if o["client_order_id"].startswith("hero-exit-")]
+
+    POS = {"symbol": "UP1", "asset_class": "us_equity", "qty": "1.5", "avg_entry_price": "400",
+           "current_price": "290", "market_value": "435"}
+
     def test_attempt_end_confirms_flat_before_ending(self):
         with tempfile.TemporaryDirectory() as d:
             j = Journal(Path(d))
-            closes = {"SPY": series(0.001, seed=5), "UP1": series(0.002, seed=1)}
-            pos = {"symbol": "UP1", "asset_class": "us_equity", "qty": "1", "avg_entry_price": "400",
-                   "current_price": "290", "market_value": "290"}
-            # Cycle 1: loss line hit -> latch, close sent, but not yet "ended".
-            c = FakeClient(closes, positions=[pos], equity=295, last_equity=320)
-            self.assertEqual(Engine(c, self.s500_cfg(), j).run(today=TODAY)["status"], "attempt_ended")
-            self.assertEqual(c.closed, ["UP1"])
+            # Cycle 1: loss line hit -> latch, exit sent for the broker-confirmed quantity, not "ended".
+            c = self._ending(d, [self.POS])
+            self.assertEqual([(o["symbol"], o["qty"], o["side"]) for o in self._exits(c)], [("UP1", "1.5", "sell")])
             self.assertIn("attempt_1_ending", j.state())
             self.assertNotIn("attempt_1_ended", j.state())
-            # Cycle 2: the exit is still working at the broker -> wait, no second sell.
-            exit_order = {"id": "x1", "symbol": "UP1", "side": "sell", "type": "market", "status": "new"}
-            c2 = FakeClient(closes, positions=[pos], open_orders=[exit_order], equity=330, last_equity=320)
-            self.assertEqual(Engine(c2, self.s500_cfg(), j).run(today=TODAY)["status"], "attempt_ended")
+            # Cycle 2 (new process): the exit is still working -> wait, nothing re-sent, even though
+            # equity bounced above the line.
+            working = {"id": "x1", "symbol": "UP1", "side": "sell", "type": "market", "status": "new",
+                       "client_order_id": c.orders[0]["client_order_id"]}
+            c2 = self._ending(d, [self.POS], open_orders=[working], equity=330)
             self.assertEqual((c2.orders, c2.closed, getattr(c2, "cancelled", [])), ([], [], []))
-            # Equity bounced above the line (330), but the latch holds: still exiting, no new buys.
             self.assertNotIn("attempt_1_ended", j.state())
             # Cycle 3: broker shows flat -> confirmed and ended; later cycles do nothing.
-            c3 = FakeClient(closes, positions=[], equity=290, last_equity=290)
-            Engine(c3, self.s500_cfg(), j).run(today=TODAY)
+            self._ending(d, [], equity=290)
             self.assertIn("attempt_1_ended", j.state())
-            c4 = FakeClient(closes, positions=[], equity=290, last_equity=290)
-            self.assertEqual(Engine(c4, self.s500_cfg(), j).run(today=TODAY)["status"], "attempt_ended")
+            c4 = self._ending(d, [], equity=290)
             self.assertEqual((c4.orders, c4.closed), ([], []))
+
+    def test_attempt_end_partial_fill(self):
+        with tempfile.TemporaryDirectory() as d:
+            self._ending(d, [self.POS])
+            # Partially filled and still working: wait.
+            partial = {**self.POS, "qty": "0.4"}
+            working = {"id": "x1", "symbol": "UP1", "side": "sell", "type": "market", "status": "partially_filled",
+                       "client_order_id": "hero-exit-abc", "qty": "1.5", "filled_qty": "1.1"}
+            c2 = self._ending(d, [partial], open_orders=[working])
+            self.assertEqual(c2.orders, [])
+            # The rest expired unfilled: exactly one new exit, for the remaining 0.4 only.
+            c3 = self._ending(d, [partial])
+            self.assertEqual([o["qty"] for o in self._exits(c3)], ["0.4"])
+            self.assertNotIn("attempt_1_ended", Journal(Path(d)).state())
+
+    def test_attempt_end_uncertain_submit_then_restart(self):
+        with tempfile.TemporaryDirectory() as d:
+            class Timeout(FakeClient):
+                def submit_order(self, **o):
+                    self.orders.append(o)
+                    raise TimeoutError("read timed out")  # did it reach the broker? unknown
+            c = Timeout({"SPY": series(0.001, seed=5), "UP1": series(0.002, seed=1)},
+                        positions=[self.POS], equity=295, last_equity=320)
+            with self.assertRaises(TimeoutError):
+                self._ending(d, None, client=c)
+            self.assertIn("attempt_1_ending", Journal(Path(d)).state())  # latch survived the crash
+            cid = c.orders[0]["client_order_id"]
+            # Restart, case 1: the order did reach the broker -> found by its client_order_id, no duplicate.
+            seen = {"id": "x1", "symbol": "UP1", "side": "sell", "type": "market", "status": "accepted",
+                    "client_order_id": cid}
+            self.assertEqual(self._ending(d, [self.POS], open_orders=[seen]).orders, [])
+            # Restart, case 2: it never arrived (no order, position intact) -> sent once.
+            self.assertEqual(len(self._exits(self._ending(d, [self.POS]))), 1)
+            # Restart, case 3: it arrived and filled -> flat, ended, nothing sent.
+            c4 = self._ending(d, [])
+            self.assertEqual(c4.orders, [])
+            self.assertIn("attempt_1_ended", Journal(Path(d)).state())
+
+    def test_attempt_end_cancel_and_fill_interleave(self):
+        with tempfile.TemporaryDirectory() as d:
+            stop = {"id": "s1", "symbol": "UP1", "side": "sell", "type": "stop", "client_order_id": "hero-stop-1"}
+            # The stop filled while we were cancelling it: do not also sell this cycle.
+            c = FakeClient({"SPY": series(0.001, seed=5), "UP1": series(0.002, seed=1)},
+                           positions=[self.POS], open_orders=[stop], equity=295, last_equity=320)
+            c.cancel_result = "filled"
+            self._ending(d, None, client=c)
+            self.assertEqual((c.cancelled, c.orders), (["s1"], []))
+            # Next cycle the broker shows the stop's partial fill left 0.5: exit only that.
+            c2 = self._ending(d, [{**self.POS, "qty": "0.5"}])
+            self.assertEqual([o["qty"] for o in self._exits(c2)], ["0.5"])
 
     def test_attempt_end_retries_after_rejection_and_unconfirmed_cancel(self):
         with tempfile.TemporaryDirectory() as d:
-            j = Journal(Path(d))
-            closes = {"SPY": series(0.001, seed=5), "UP1": series(0.002, seed=1)}
-            pos = {"symbol": "UP1", "asset_class": "us_equity", "qty": "1", "avg_entry_price": "400",
-                   "current_price": "290", "market_value": "290"}
-
             class Rejecting(FakeClient):
-                def close_position(self, s):
-                    self.closed.append(s)
+                def submit_order(self, **o):
+                    self.orders.append(o)
                     raise AlpacaError("403 rejected")
-            c = Rejecting(closes, positions=[pos], equity=295, last_equity=320)
-            Engine(c, self.s500_cfg(), j).run(today=TODAY)  # rejection is journaled, not "ended"
-            self.assertNotIn("attempt_1_ended", j.state())
-            # Next cycle: a stop whose cancel is not confirmed -> no close this cycle.
+            c = Rejecting({"SPY": series(0.001, seed=5), "UP1": series(0.002, seed=1)},
+                          positions=[self.POS], equity=295, last_equity=320)
+            self._ending(d, None, client=c)  # rejection is journaled, not "ended"
+            self.assertIn("order_error", (Path(d) / "trades.jsonl").read_text())
+            self.assertNotIn("attempt_1_ended", Journal(Path(d)).state())
             stop = {"id": "s1", "symbol": "UP1", "side": "sell", "type": "stop", "client_order_id": "hero-stop-1"}
-            c2 = FakeClient(closes, positions=[pos], open_orders=[stop], equity=295, last_equity=295)
+            c2 = FakeClient({"SPY": series(0.001, seed=5), "UP1": series(0.002, seed=1)},
+                            positions=[self.POS], open_orders=[stop], equity=295, last_equity=295)
             c2.cancel_result = "pending_cancel"
-            Engine(c2, self.s500_cfg(), j).run(today=TODAY)
-            self.assertEqual((c2.cancelled, c2.closed), (["s1"], []))
-            # Then the cancel goes through and the close is sent again.
-            c3 = FakeClient(closes, positions=[pos], open_orders=[stop], equity=295, last_equity=295)
-            Engine(c3, self.s500_cfg(), j).run(today=TODAY)
-            self.assertEqual((c3.cancelled, c3.closed), (["s1"], ["UP1"]))
-            self.assertNotIn("attempt_1_ended", j.state())
+            self._ending(d, None, client=c2)
+            self.assertEqual((c2.cancelled, c2.orders), (["s1"], []))
+            c3 = self._ending(d, [self.POS], open_orders=[stop])
+            self.assertEqual((c3.cancelled, len(self._exits(c3))), (["s1"], 1))
 
     def test_options_only_on_broker_confirmed_holdings(self):
         with tempfile.TemporaryDirectory() as d:
@@ -719,15 +773,25 @@ class SmallAccount(unittest.TestCase):
             self.assertFalse([o for o in c3.orders if o["type"] == "limit"])
 
     def test_launch_needs_approval_not_just_the_date(self):
-        with tempfile.TemporaryDirectory() as d:
-            closes = {"SPY": series(0.001, seed=5), "UP1": series(0.002, seed=1)}
-            conf = {**self.s500_cfg(), "live_from": "2000-01-01", "launch_approved": False}
-            c = FakeClient(closes, equity=500, last_equity=500)
-            Engine(c, conf, Journal(Path(d))).run(today=TODAY)
-            self.assertEqual(c.orders, [])
-            c2 = FakeClient(closes, equity=500, last_equity=500)
-            Engine(c2, {**conf, "launch_approved": True}, Journal(Path(d))).run(today=TODAY)
-            self.assertTrue(c2.orders)
+        closes = {"SPY": series(0.001, seed=5), "UP1": series(0.002, seed=1)}
+        base = {k: v for k, v in self.s500_cfg().items() if k not in ("live_from", "launch_approved")}
+
+        def sends(conf):
+            with tempfile.TemporaryDirectory() as d:
+                c = FakeClient(closes, equity=500, last_equity=500)
+                Engine(c, conf, Journal(Path(d))).run(today=TODAY)
+                return bool(c.orders)
+        ok = {**base, "live_from": "2000-01-01", "launch_approved": True}
+        self.assertTrue(sends(ok))
+        # Every missing, empty or malformed gate field means rehearsal.
+        for bad in ({"launch_approved": False}, {"launch_approved": None}, {"launch_approved": "true"},
+                    {"live_from": None}, {"live_from": ""}, {"live_from": "soon"}, {"live_from": "2099-01-01"}):
+            self.assertFalse(sends({**ok, **bad}), bad)
+        self.assertFalse(sends({k: v for k, v in ok.items() if k != "launch_approved"}))
+        self.assertFalse(sends({k: v for k, v in ok.items() if k != "live_from"}))
+        # The main account has no gate at all and trades normally.
+        main = {k: v for k, v in base.items() if k != "attempt"}
+        self.assertTrue(sends(main))
 
     def test_options_limited_to_top_ranked(self):
         with tempfile.TemporaryDirectory() as d:

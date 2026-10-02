@@ -20,6 +20,9 @@ def closes_from_bars(bars: dict[str, list[dict]]) -> dict[str, list[float]]:
     return {s: [float(b["c"]) for b in bs] for s, bs in bars.items() if bs}
 
 
+EXIT_PREFIX = "hero-exit-"
+
+
 def option_underlying(symbol: str) -> str:
     return symbol[:-15]
 
@@ -72,11 +75,8 @@ class Engine:
         today = today or date.today()
         if not force and not self.c.clock().get("is_open"):
             return {"status": "market_closed"}
-        live_from = self.cfg.get("live_from")
-        if live_from and not self.dry and (today.isoformat() < live_from or not self.cfg.get("launch_approved", True)):
-            # Rehearsal: decisions are journaled, nothing is sent. Reaching the date is not enough
-            # when the config asks for an explicit launch approval (set after the go/no-go review).
-            self.dry = True
+        if not self.dry and not self._launch_allowed(today):
+            self.dry = True  # rehearsal: decisions are journaled, nothing is sent
 
         acct = self.c.account()
         equity, last = float(acct["equity"]), float(acct["last_equity"])
@@ -128,6 +128,20 @@ class Engine:
         self.j.equity(today.isoformat(), equity, float(acct["cash"]), self.cfg["generation"], bench)
         return {"status": "ok", "equity": equity, "day_pl": day_pl, "halted": halted}
 
+    def _launch_allowed(self, today: date) -> bool:
+        """A gated experiment (one with an attempt or a live_from date) trades only with a valid
+        live_from that has arrived AND launch_approved explicitly true. A missing, empty or
+        malformed field means rehearsal, never a launch. Ungated configs (the main account) trade."""
+        gated = any(k in self.cfg for k in ("attempt", "live_from", "launch_approved"))
+        if not gated:
+            return True
+        live_from = self.cfg.get("live_from")
+        try:
+            start = date.fromisoformat(live_from) if isinstance(live_from, str) else None
+        except ValueError:
+            start = None
+        return start is not None and today >= start and self.cfg.get("launch_approved") is True
+
     def _attempt_over(self, attempt: dict, equity: float, state: dict, today: date) -> bool:
         """Start-capital loss ends the attempt, in three phases:
 
@@ -162,11 +176,16 @@ class Engine:
                 self.j.save_state(state)
             return True
 
-        exiting = {o["symbol"] for o in orders if o.get("side") == "sell" and not stoplib.is_protective_stop(o)}
+        # A working exit (ours, recognised by its client_order_id prefix, or any other non-stop sell)
+        # is waited on: after a crash or an uncertain submit the broker's open orders are the truth.
+        def is_exit(o):
+            return ((o.get("client_order_id") or "").startswith(EXIT_PREFIX)
+                    or (o.get("side") == "sell" and not stoplib.is_protective_stop(o)))
+        exiting = {o["symbol"] for o in orders if is_exit(o)}
         blocked = set()
         for o in orders:
-            if o["symbol"] in exiting and o.get("side") == "sell" and not stoplib.is_protective_stop(o):
-                continue  # an exit is already working: wait for it rather than send a second one
+            if is_exit(o):
+                continue
             self.j.event("cancel", symbol=o.get("symbol"), reason="attempt_end", dry_run=self.dry,
                          order_key=execution_key(o["id"]), why="尝试结束：撤销止损单和买单，准备平仓")
             if self.dry:
@@ -187,7 +206,11 @@ class Engine:
                 self.j.event("attempt_exit_pending", symbol=sym, dry_run=self.dry,
                              why="撤单未确认，下一轮重新核对券商状态后再平仓")
             else:
-                self._close(sym, "attempt_end", why="尝试结束，平掉剩余仓位（每轮核对，直到券商确认清空）")
+                qty = abs(float(pos["qty"]))
+                self._order("attempt_end", {"qty": pos["qty"], "current_price": pos.get("current_price")},
+                            "尝试结束，平掉剩余仓位（按券商确认的剩余数量；每轮核对，直到券商确认清空）",
+                            cid_prefix=EXIT_PREFIX, symbol=sym, qty=f"{qty:.9g}",
+                            side="sell" if float(pos["qty"]) > 0 else "buy", type="market", time_in_force="day")
         return True
 
     def _cancel_stops(self, sym: str, why: str) -> bool:
