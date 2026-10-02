@@ -1,5 +1,5 @@
 {
-  "generation": 0,
+  "generation": 1,
   "universe": [
     "SPY",
     "QQQ",
@@ -24,13 +24,13 @@
   ],
   "regime_symbol": "SPY",
   "stocks": {
-    "momentum_lookback": 126,
-    "trend_sma": 100,
-    "top_n": 5,
+    "momentum_lookback": 63,
+    "trend_sma": 50,
+    "top_n": 8,
     "rsi_max": 80,
     "gross_exposure": 0.8,
     "rebalance_drift": 0.25,
-    "rsi_applies_to_holdings": true
+    "rsi_applies_to_holdings": false
   },
   "options": {
     "enabled": true,
