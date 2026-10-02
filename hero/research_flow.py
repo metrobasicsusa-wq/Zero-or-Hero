@@ -9,6 +9,9 @@ Daily call volume per stock = sum of volume over calls 0-20% above the month's o
 expiring within 35 days (where speculative buying shows up). Signal day: that volume is at least
 SURGE x its previous 20-day average AND the stock closes at a 20-day high. Compared with all
 days and with breakout days without a surge: the stock's next 5 / 10 / 21-day returns.
+Control: the very same option trade on the same stocks every 21 trading days regardless of any
+signal ("any day"), and on breakout days without a surge. If the control earns as much, the
+profit comes from the stock list (today's winners), not from the signal.
 Then the real option trade on each signal: buy the call closest to 7.5% out of the money with
 25-50 days left at the signal-day close, sell 21 trading days later (or at the last close before
 expiry), paying 10% spread each way (at least one cent).
@@ -138,6 +141,7 @@ def run(client, root: Path) -> dict:
         raw.update(client.daily_bars(pool[i:i + 50], start, adjustment="raw"))
     rows, sig_all, brk_all, base_all, trades = [], {h: [] for h in HORIZONS}, {h: [] for h in HORIZONS}, \
         {h: [] for h in HORIZONS}, []
+    controls: dict[str, list[dict]] = {}
     for sym in pool:
         if sym not in adj or sym not in raw:
             continue
@@ -163,17 +167,31 @@ def run(client, root: Path) -> dict:
             if t:
                 trades.append({"symbol": sym, "day": dates[i], "stock_21d": round(closes[i + 21] / closes[i] - 1, 4), **t})
                 last_trade = i
+        for label, idxs in (("any_day", everyday[::21]), ("breakout_only", brk)):
+            last_trade = None
+            for i in idxs:
+                if last_trade is not None and i - last_trade < 21:
+                    continue
+                if i + 21 >= len(dates) or dates[i] not in rawc:
+                    continue
+                t = option_trade(client, sym, dates[i], dates[i + 21], rawc[dates[i]])
+                if t:
+                    controls.setdefault(label, []).append({"symbol": sym, "day": dates[i], **t})
+                    last_trade = i
         rows.append({"symbol": sym, "signals": len(sig), "breakouts": len(brk)})
-    rets = [t["ret"] for t in trades]
-    bank = 500.0
-    for t in sorted(trades, key=lambda t: t["day"]):
-        bank += bank * 0.10 * t["ret"]
+    def book(ts):
+        rets = [t["ret"] for t in ts]
+        bank = 500.0
+        for t in sorted(ts, key=lambda t: t["day"]):
+            bank += bank * 0.10 * t["ret"]
+        return {**stats(rets), "best": max(rets) if rets else None,
+                "share_3x": round(sum(r >= 2 for r in rets) / len(rets), 3) if rets else None,
+                "bank_500_bet10pct": round(bank, 0)}
     return {"generated": today, "pool": len(rows), "surge": SURGE,
             "forward": {str(h): {"signal": stats(sig_all[h]), "breakout_only": stats(brk_all[h]),
                                  "all_days": stats(base_all[h])} for h in HORIZONS},
-            "options": {**stats(rets), "best": max(rets) if rets else None,
-                        "share_3x": round(sum(r >= 2 for r in rets) / len(rets), 3) if rets else None,
-                        "bank_500_bet10pct": round(bank, 0)},
+            "options": book(trades),
+            "controls": {k: book(v) for k, v in controls.items()},
             "per_symbol": rows, "trades": trades}
 
 
@@ -195,6 +213,11 @@ def markdown(rep: dict) -> str:
                 f"- $500 账户每次押余额 10%，按时间顺序：最后 ${o['bank_500_bet10pct']:,.0f}"]
     else:
         out.append("- 没有可成交的交易")
+    names = {"any_day": "对照：同样的股票、每 21 个交易日买一次（不看信号）", "breakout_only": "对照：只有突破、没有期权暴增的日子"}
+    for k, c in rep.get("controls", {}).items():
+        if c.get("n"):
+            out.append(f"- {names.get(k, k)}：交易 {c['n']} 次，赚钱比例 {c['win']:.0%}，平均每 $1 回报 {c['mean']:+.0%}，"
+                       f"中位数 {c['median']:+.0%}，$500 账户最后 ${c['bank_500_bet10pct']:,.0f}")
     out += ["", "## 信号最多的股票", ""]
     for r in sorted(rep["per_symbol"], key=lambda r: -r["signals"])[:15]:
         out.append(f"- {r['symbol']}：信号 {r['signals']} 次，单纯突破 {r['breakouts']} 次")
