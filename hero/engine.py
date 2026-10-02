@@ -4,8 +4,9 @@ from __future__ import annotations
 
 import math
 import uuid
-from datetime import date, timedelta
+from datetime import date, datetime, timedelta, timezone
 
+from hero import alerts
 from hero import earnings as earn
 from hero import macro
 from hero import stops as stoplib
@@ -114,12 +115,13 @@ class Engine:
         bars = self.c.daily_bars(universe + macro_syms, start)
         closes = closes_from_bars({s: b for s, b in bars.items() if s in universe})
         self.macro_closes = closes_from_bars({s: bars.get(s, []) for s in macro.SYMBOLS.values()})
+        self._intraday(stocks, today)
 
         self._option_exits(options, busy, today)
         if state.get("last_rebalance") != today.isoformat():
             self._rebalance(stocks, busy, closes, equity, halted)
             state["last_rebalance"] = today.isoformat()
-        if self.cfg["options"]["enabled"] and not halted:
+        if self.cfg["options"]["enabled"] and not halted and not self.breaker:
             self._option_entries(options, busy, closes, equity, today, stocks)
         self._reconcile_stops(stocks, busy, closes)
 
@@ -130,6 +132,61 @@ class Engine:
         bench = closes.get(self.cfg["regime_symbol"], [None])[-1]
         self.j.equity(today.isoformat(), equity, float(acct["cash"]), self.cfg["generation"], bench)
         return {"status": "ok", "equity": equity, "day_pl": day_pl, "halted": halted}
+
+    def _intraday(self, stocks: dict, today: date) -> None:
+        """Price circuit breaker and news alerts for this cycle. Sets self.breaker (why the market
+        breaker is on, or None) and self.cautious ({symbol: why}). Both only make the bot more
+        careful: no new buys or options, tighter stops; neither sells anything by itself.
+
+        The alert bookkeeping (alerts.json) is saved even in a dry run: it only de-duplicates the
+        journal and never touches state.json."""
+        c = alerts.settings(self.cfg)
+        self.breaker, self.cautious, self.circuit = None, {}, c
+        day = today.isoformat()
+        saved = self.j.alerts()
+        book = saved if saved.get("date") == day else {"date": day}
+        try:
+            snaps = self.c.stock_snapshots(sorted(set(stocks) | {c["index"], c["fear"]}))
+        except Exception as e:
+            snaps = {}
+            self.j.event("alert_error", source="snapshots", error=str(e)[:200])
+
+        self.breaker = alerts.market_breaker(snaps, c)
+        if self.breaker and not book.get("breaker"):
+            self.j.event("circuit", dry_run=self.dry, why=f"市场熔断：{self.breaker}。今天停止买入和开期权，所有止损收紧到现价下方 "
+                                                        f"{c['tight_stop_pct']:.0%}（只收紧不放松）；不主动卖出")
+        book["breaker"] = book.get("breaker") or self.breaker
+
+        for sym, move in alerts.stock_drops(snaps, set(stocks), c).items():
+            why = f"盘中 {move:+.1%}（线 {c['stock_drop']:+.0%}）"
+            self.cautious[sym] = why
+            if sym not in book.setdefault("drops", {}):
+                book["drops"][sym] = why
+                self.j.event("stock_drop_alert", symbol=sym, dry_run=self.dry,
+                             why=f"{sym} {why}：今天不加仓、不买它的期权，止损收紧到现价下方 {c['tight_stop_pct']:.0%}")
+        for sym, why in book.get("drops", {}).items():
+            self.cautious.setdefault(sym, why)
+
+        now = datetime.now(timezone.utc)
+        since = saved.get("news_checked") or (now - timedelta(hours=18)).isoformat(timespec="seconds")
+        try:
+            items = self.c.news(self.cfg["universe"], since)
+        except Exception as e:
+            items = []
+            self.j.event("alert_error", source="news", error=str(e)[:200])
+        for sym, hits in alerts.news_alerts(items, set(self.cfg["universe"])).items():
+            for h in hits:
+                if (h["id"], sym) in {tuple(x) for x in book.get("news_seen", [])}:
+                    continue
+                book.setdefault("news_seen", []).append([h["id"], sym])
+                book.setdefault("news", {}).setdefault(sym, []).append("、".join(h["matched"]))
+                self.j.event("news_alert", symbol=sym, dry_run=self.dry, matched=h["matched"], headline=h["headline"],
+                             source=h["source"], url=h["url"], published=h["created_at"],
+                             why=f"新闻警报（{'、'.join(h['matched'])}）：{h['headline']}。今天不加仓、不买它的期权，止损收紧；不因新闻直接卖出")
+        for sym, kinds in book.get("news", {}).items():
+            self.cautious.setdefault(sym, "新闻警报：" + "、".join(sorted(set(kinds))))
+        book["news_checked"] = now.isoformat(timespec="seconds")
+        self.j.save_alerts(book)
 
     def _launch_allowed(self, today: date) -> bool:
         """A gated experiment (one with an attempt or a live_from date) trades only with a valid
@@ -270,20 +327,29 @@ class Engine:
             if qty <= 0:
                 continue
             existing = self.stops.get(sym, [])
-            if len(existing) == 1 and abs(float(existing[0]["qty"]) - qty) < 1e-9:
-                continue
-            if existing:
-                self._cancel_stops(sym, f"持股数变为 {qty:g}，撤销旧止损单后按新股数重挂")
             pct, daily = stoplib.stop_pct(closes.get(sym), risk)
             entry, current = float(pos["avg_entry_price"]), float(pos["current_price"])
             price = stoplib.stop_price(entry, current, pct)
+            cautious = getattr(self, "cautious", {})
+            tighten = (getattr(self, "breaker", None) and f"市场熔断：{self.breaker}") or cautious.get(sym)
+            if tighten:
+                price = max(price, alerts.tight_stop(current, self.circuit))  # only ever raised
+            same_qty = len(existing) == 1 and abs(float(existing[0]["qty"]) - qty) < 1e-9
+            if same_qty and not (tighten and float(existing[0].get("stop_price") or 0) < price * 0.995):
+                continue
+            if existing:
+                self._cancel_stops(sym, f"{tighten}，止损收紧到 ${price:,.2f}" if same_qty
+                                   else f"持股数变为 {qty:g}，撤销旧止损单后按新股数重挂")
             basis = (f"{risk['stop_vol_mult']:g} 倍日波动率 {daily:.1%}" if daily is not None else "波动率数据不足，取上限")
             tif = risk.get("stop_tif", "gtc")
             life = "GTC 长期有效" if tif == "gtc" else "当日有效，收盘失效，次日第一轮重挂"
             why = (f"保护性止损（挂在券商端，{life}）：成本 ${entry:,.2f}，现价 ${current:,.2f}；"
                    f"止损距离 {pct:.1%}（{basis}，限制在 {risk['stop_min_pct']:.0%}–{risk['stop_max_pct']:.0%}），"
                    f"止损价 ${price:,.2f}")
-            evidence = {"avg_entry_price": entry, "current_price": current, "daily_vol": daily, "stop_pct": pct}
+            if tighten:
+                why += f"；{tighten}，收紧到现价下方 {self.circuit['tight_stop_pct']:.0%}（只收紧不放松）"
+            evidence = {"avg_entry_price": entry, "current_price": current, "daily_vol": daily, "stop_pct": pct,
+                        "tightened": bool(tighten)}
             self._order("protective_stop", evidence, why, cid_prefix=stoplib.PREFIX, symbol=sym, qty=f"{qty:.9g}",
                         side="sell", type="stop", stop_price=f"{price:.2f}", time_in_force=tif)
 
@@ -383,7 +449,12 @@ class Engine:
                 buys.append((sym, size, ref, why))
         if halted:
             return
+        breaker, cautious = getattr(self, "breaker", None), getattr(self, "cautious", {})
         for sym, size, ref, why in buys:
+            if breaker or sym in cautious:
+                self.j.event("buy_blocked", symbol=sym, dry_run=self.dry,
+                             why=f"本该买入（{why}），但{'市场熔断：' + breaker if breaker else cautious[sym]}，今天不买")
+                continue
             self._order("rebalance", ref, why, symbol=sym, **size, side="buy", type="market", time_in_force="day")
 
     def _option_entries(self, options: dict, busy: set, closes: dict, equity: float, today: date,
@@ -417,6 +488,9 @@ class Engine:
             if slots <= 0:
                 break
             if und in held or und not in closes:
+                continue
+            if und in getattr(self, "cautious", {}):
+                skipped.append(f"{und}：{self.cautious[und]}，今天不买它的期权")
                 continue
             spot = closes[und][-1]
             latest = today + timedelta(days=p["max_dte"])

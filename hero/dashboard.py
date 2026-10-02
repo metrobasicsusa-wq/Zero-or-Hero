@@ -10,7 +10,8 @@ from pathlib import Path
 from hero import market
 
 TEMPLATE = Path(__file__).with_name("dashboard.html")
-EVENT_KINDS = {"order", "close", "halt", "option_skip", "attempt_end", "attempt_end_confirmed", "earnings_watch"}
+EVENT_KINDS = {"order", "close", "halt", "option_skip", "attempt_end", "attempt_end_confirmed", "earnings_watch",
+               "circuit", "news_alert", "stock_drop_alert", "buy_blocked"}
 MAX_EVENTS = 200
 REPO_BLOB = "https://github.com/metrobasicsusa-wq/Zero-or-Hero/blob/claude/cloud-paper-trading-ivwxqk"
 

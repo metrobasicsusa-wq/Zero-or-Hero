@@ -286,6 +286,9 @@ def insights(journal: Path, cfg: dict, day: str) -> list[str]:
     if trades_path.exists():
         for line in open(trades_path):
             e = json.loads(line)
+            if e["ts"].startswith(day) and e["kind"] in ("circuit", "news_alert", "stock_drop_alert") \
+                    and not e.get("dry_run"):
+                notes.append("⚠️ " + e["why"][:160])
             if e["ts"].startswith(day) and e["kind"] == "halt" and not e.get("dry_run"):
                 notes.append(f"⚠️ 今日触发了停止开仓（当日 {e['day_pl']:+.2%}）。")
                 break

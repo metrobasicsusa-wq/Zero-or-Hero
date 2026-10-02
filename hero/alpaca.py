@@ -138,6 +138,16 @@ class Alpaca:
                 return out
             params["page_token"] = token
 
+    def stock_snapshots(self, symbols: list[str]) -> dict[str, dict]:
+        """Latest trade and previous daily bar per symbol (IEX), for intraday moves."""
+        return self._d("/v2/stocks/snapshots", {"symbols": ",".join(symbols), "feed": "iex"}) or {}
+
+    def news(self, symbols: list[str], start: str, limit: int = 50) -> list[dict]:
+        """Benzinga headlines via Alpaca's news API, newest first."""
+        page = self._d("/v1beta1/news", {"symbols": ",".join(symbols), "start": start, "limit": limit,
+                                         "sort": "desc", "include_content": "false"})
+        return (page or {}).get("news", [])
+
     def option_snapshots(self, symbols: list[str]) -> dict[str, dict]:
         out: dict[str, dict] = {}
         for i in range(0, len(symbols), 100):

@@ -54,6 +54,15 @@ class Journal:
     def save_state(self, state: dict) -> None:
         self.state_path.write_text(json.dumps(state, indent=2, sort_keys=True) + "\n")
 
+    def alerts(self) -> dict:
+        """Intraday alert bookkeeping (de-duplication only), kept apart from the trading state so
+        that a dry run can update it without touching the state the real run depends on."""
+        path = self.root / "alerts.json"
+        return json.loads(path.read_text()) if path.exists() else {}
+
+    def save_alerts(self, book: dict) -> None:
+        (self.root / "alerts.json").write_text(json.dumps(book, indent=1, ensure_ascii=False, sort_keys=True) + "\n")
+
     def event(self, kind: str, **data) -> None:
         rec = {"ts": datetime.now(timezone.utc).isoformat(timespec="seconds"), "kind": kind, **data}
         with open(self.root / "trades.jsonl", "a") as f:

@@ -6,7 +6,7 @@ import unittest
 from datetime import date, timedelta
 from pathlib import Path
 
-from hero import backtest, dashboard, earnings, evolve, macro, market, patrol, review, stops
+from hero import alerts, backtest, dashboard, earnings, evolve, macro, market, patrol, review, stops
 from hero.alpaca import Alpaca, AlpacaError
 from hero.engine import Engine, round_option_price
 from hero.indicators import max_drawdown, momentum, rsi, sma
@@ -50,6 +50,12 @@ class FakeClient:
     def cancel_order(self, oid):
         self.cancelled = getattr(self, "cancelled", []) + [oid]
         return getattr(self, "cancel_result", "canceled")
+
+    def stock_snapshots(self, symbols):
+        return {s: v for s, v in getattr(self, "snaps", {}).items() if s in symbols}
+
+    def news(self, symbols, start, limit=50):
+        return getattr(self, "headlines", [])
 
     def order_by_client_id(self, cid):
         found = getattr(self, "by_cid", {})
@@ -1046,6 +1052,78 @@ class Market(unittest.TestCase):
                 self.assertEqual(len(runs), market.MAX_ATTEMPTS + 1)
         finally:
             market.build = orig
+
+
+def snap(prev, last):
+    return {"prevDailyBar": {"c": prev}, "latestTrade": {"p": last}}
+
+
+class Alerts(unittest.TestCase):
+    def test_headline_patterns(self):
+        hits = {
+            "Acme slashes full-year guidance as demand weakens": ["下调指引"],
+            "SEC opens probe into Acme accounting": ["监管调查"],
+            "Acme files for Chapter 11 bankruptcy protection": ["破产"],
+            "Morgan Stanley downgrades Acme to equal-weight": ["降级"],
+            "Acme CEO steps down effective immediately": ["高管离职"],
+            "Acme announces $500 million stock offering": ["增发"],
+            "Trading halted in Acme shares pending news": ["停牌"],
+        }
+        for headline, want in hits.items():
+            self.assertEqual(alerts.match(headline), want, headline)
+        for quiet in ("Acme raises guidance after record quarter", "Analyst upgrades Acme to buy",
+                      "Cramer recalls the 2008 crash", "Acme beats estimates; CEO says demand strong"):
+            self.assertEqual(alerts.match(quiet), [], quiet)
+
+    def setUp(self):
+        self.tmp = tempfile.TemporaryDirectory()
+        self.closes = {"SPY": series(0.001, seed=5), "UP1": series(0.002, seed=1), "UP2": series(0.0015, seed=2)}
+        self.conf = cfg(stocks={"rsi_max": 101, "top_n": 2})
+
+    def tearDown(self):
+        self.tmp.cleanup()
+
+    def run_with(self, snaps=None, headlines=(), positions=(), open_orders=()):
+        c = FakeClient(self.closes, positions=list(positions), open_orders=list(open_orders))
+        c.snaps, c.headlines = snaps or {}, list(headlines)
+        Engine(c, self.conf, Journal(Path(self.tmp.name))).run(today=TODAY)
+        log = [json.loads(l) for l in (Path(self.tmp.name) / "trades.jsonl").read_text().splitlines()]
+        return c, log
+
+    def test_market_breaker_blocks_buys_and_options_and_tightens(self):
+        held = {"symbol": "UP1", "asset_class": "us_equity", "qty": "10", "avg_entry_price": "100",
+                "current_price": "200", "market_value": "2000"}
+        old_stop = {"id": "s1", "symbol": "UP1", "side": "sell", "type": "stop", "qty": "10",
+                    "stop_price": "170.00", "client_order_id": "hero-stop-1"}
+        c, log = self.run_with(snaps={"SPY": snap(500, 487)}, positions=[held], open_orders=[old_stop])
+        kinds = [e["kind"] for e in log]
+        self.assertIn("circuit", kinds)
+        self.assertFalse([o for o in c.orders if o["side"] == "buy"])  # no stock buys, no options
+        self.assertIn("buy_blocked", kinds)
+        self.assertEqual(c.cancelled, ["s1"])
+        new = [o for o in c.orders if o["type"] == "stop"]
+        self.assertEqual(new[0]["stop_price"], "194.00")  # 3% under the 200 current price
+        self.assertEqual(c.closed, [])  # the breaker never sells by itself
+
+    def test_news_alert_blocks_that_name_only_and_is_logged_once(self):
+        h = {"id": 7, "headline": "UP1 slashes outlook on weak orders", "symbols": ["UP1"], "source": "benzinga",
+             "url": "https://example.com/7", "created_at": "2026-10-01T12:00:00Z"}
+        c, log = self.run_with(headlines=[h])
+        bought = {o["symbol"] for o in c.orders if o["side"] == "buy" and o["type"] == "market"}
+        self.assertNotIn("UP1", bought)
+        self.assertTrue(bought)  # the other targets are still bought
+        self.assertEqual([e["matched"] for e in log if e["kind"] == "news_alert"], [["下调指引"]])
+        _, log2 = self.run_with(headlines=[h])  # same headline next cycle: no second alert
+        self.assertEqual(sum(e["kind"] == "news_alert" for e in log2), 1)
+
+    def test_stock_drop_tightens_stop_without_selling(self):
+        held = {"symbol": "UP1", "asset_class": "us_equity", "qty": "10", "avg_entry_price": "100",
+                "current_price": "90", "market_value": "900"}
+        c, log = self.run_with(snaps={"UP1": snap(100, 90)}, positions=[held])
+        self.assertIn("stock_drop_alert", [e["kind"] for e in log])
+        stop = [o for o in c.orders if o["type"] == "stop"][0]
+        self.assertEqual(stop["stop_price"], "87.30")
+        self.assertEqual(c.closed, [])
 
 
 class Safety(unittest.TestCase):
