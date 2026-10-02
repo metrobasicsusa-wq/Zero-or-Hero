@@ -110,6 +110,7 @@ def main() -> None:
             print(json.dumps(evolve.evaluate(closes, cfg["stocks"], cfg, n, macro_closes), indent=2))
         else:
             new, report = evolve.evolve(cfg, closes, journal.equity_curve(), date.today(), macro_closes)
+            report += evolve.briefing_accuracy(ROOT / "macro" / "briefings" / "scores.csv")
             evolve.save(new, report, cfg_path, jdir / "evolution.md")
             print(report)
 

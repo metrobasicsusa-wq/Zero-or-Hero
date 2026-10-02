@@ -9,6 +9,7 @@ by a clear margin. Every decision is appended to journal/evolution.md.
 from __future__ import annotations
 
 import copy
+import csv
 import itertools
 import json
 from datetime import date
@@ -74,6 +75,31 @@ def evolve(cfg: dict, closes: dict, live_curve: list[float], today: date,
         f"- decision: {'ADOPT' if adopt else 'keep'}\n"
     )
     return new, report
+
+
+def briefing_accuracy(scores_path: Path) -> str:
+    """Report-only line on how the pre-market briefings' predictions scored.
+
+    Rows come from macro/briefings/scores.csv (date,kind,prediction,result,source), written
+    by the briefing/review routines. kind is "prediction" or "direction"; result is
+    hit, miss or na. This never feeds parameter selection.
+    """
+    if not scores_path.exists():
+        return ""
+    with open(scores_path, newline="") as f:
+        rows = list(csv.DictReader(f))
+    if not rows:
+        return ""
+    parts = []
+    for kind, label in (("prediction", "predictions"), ("direction", "bias vs SPY")):
+        rs = [r["result"].strip() for r in rows if r["kind"].strip() == kind]
+        hit, miss = rs.count("hit"), rs.count("miss")
+        if hit + miss:
+            parts.append(f"{label} {hit}/{hit + miss} ({hit / (hit + miss):.0%})")
+        if rs.count("na"):
+            parts.append(f"{label} unverifiable {rs.count('na')}")
+    days = len({r["date"] for r in rows})
+    return f"- briefing accuracy (record only, {days} days): {', '.join(parts) or 'nothing verified yet'}\n"
 
 
 def save(cfg: dict, report: str, cfg_path: Path, log_path: Path) -> None:

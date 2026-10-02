@@ -246,6 +246,21 @@ class Evolution(unittest.TestCase):
         new, report = evolve.evolve(c, closes, [], TODAY, mc)
         self.assertIn(new["stocks"]["macro_scale"], (1.0, 0.5))
 
+    def test_briefing_accuracy_is_reported(self):
+        with tempfile.TemporaryDirectory() as d:
+            path = Path(d) / "scores.csv"
+            self.assertEqual(evolve.briefing_accuracy(path), "")
+            path.write_text("date,kind,prediction,result,source\n"
+                            "2026-10-02,prediction,SPY 0%..+1%,hit,cnbc\n"
+                            "2026-10-02,prediction,10y > 5.20%,miss,cnbc\n"
+                            "2026-10-02,direction,bullish,hit,cnbc\n"
+                            "2026-10-05,prediction,VIX < 20,na,\n")
+            line = evolve.briefing_accuracy(path)
+        self.assertIn("2 days", line)
+        self.assertIn("predictions 1/2 (50%)", line)
+        self.assertIn("predictions unverifiable 1", line)
+        self.assertIn("bias vs SPY 1/1 (100%)", line)
+
 
 class Dashboard(unittest.TestCase):
     def test_render_skips_dry_runs_and_escapes(self):
