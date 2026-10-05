@@ -368,6 +368,8 @@ function renderEvents() {
   const es = DATA.events;
   if (!es.length) { $("events").innerHTML = empty("还没有交易"); return; }
   const kind = (e) => e.kind === "close" ? "平仓" : e.kind === "halt" ? "暂停开仓" : e.kind === "option_skip" ? "未买期权"
+    : e.kind === "zdte_result" ? "末日结果" : e.kind === "zdte_skip" ? "末日跳过"
+    : e.kind === "zdte_switch" ? "翻倍切换" : e.kind === "zdte_attempt_end" ? "本轮归零"
     : e.kind === "lottery_pick" ? "本周彩票" : e.kind === "lottery_skip" ? "彩票跳过" : e.kind === "lottery_result" ? "彩票结果"
     : e.kind === "circuit" ? "市场熔断" : e.kind === "news_alert" ? "新闻警报"
     : e.kind === "stock_drop_alert" ? "急跌警报" : e.kind === "buy_blocked" ? "暂停买入"

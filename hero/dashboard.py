@@ -12,7 +12,8 @@ from hero import market
 TEMPLATE = Path(__file__).with_name("dashboard.html")
 EVENT_KINDS = {"order", "close", "halt", "option_skip", "attempt_end", "attempt_end_confirmed", "earnings_watch",
                "circuit", "news_alert", "stock_drop_alert", "buy_blocked",
-               "lottery_pick", "lottery_skip", "lottery_result"}
+               "lottery_pick", "lottery_skip", "lottery_result",
+               "zdte_skip", "zdte_result", "zdte_switch", "zdte_attempt_end"}
 MAX_EVENTS = 200
 REPO_BLOB = "https://github.com/metrobasicsusa-wq/Zero-or-Hero/blob/claude/cloud-paper-trading-ivwxqk"
 

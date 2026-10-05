@@ -10,6 +10,7 @@ from zoneinfo import ZoneInfo
 from hero import alerts
 from hero import earnings as earn
 from hero import lottery as lot
+from hero import zero_dte as zd
 from hero import macro
 from hero import stops as stoplib
 from hero.alpaca import AlpacaError
@@ -127,22 +128,30 @@ class Engine:
         self.macro_closes = closes_from_bars({s: bars.get(s, []) for s in macro.SYMBOLS.values()})
         self._intraday(stocks, today)
 
-        # The lottery sleeve's call is managed only by the sleeve: the normal option rules (stops,
-        # the earnings guard) would sell it before the very report it is meant to hold through.
-        ledger = lot.Ledger(self.j.root / "lottery.json", lot.settings(self.cfg)) \
-            if self.cfg.get("lottery", {}).get("enabled") else None
-        if ledger and ledger.d["open"]:
-            options = {s: p for s, p in options.items() if s != ledger.d["open"]["symbol"]}
-        self._option_exits(options, busy, today)
-        if ledger:
-            self._lottery(ledger, closes, today)
-        core_equity = equity - (ledger.reserve() if ledger else 0.0)
-        if state.get("last_rebalance") != today.isoformat():
-            self._rebalance(stocks, busy, closes, core_equity, halted)
-            state["last_rebalance"] = today.isoformat()
-        if self.cfg["options"]["enabled"] and not halted and not self.breaker:
-            self._option_entries(options, busy, closes, core_equity, today, stocks)
-        self._reconcile_stops(stocks, busy, closes)
+        # Zero-or-hero phase 1: while it runs, the account does nothing but the daily 0DTE trade.
+        zp = zd.settings(self.cfg) if self.cfg.get("zero_dte", {}).get("enabled") else None
+        book = zd.Book(self.j.root / "zdte.json", float(self.cfg.get("attempt", {}).get("start_capital", equity))) \
+            if zp else None
+        if book and book.active:
+            self._zero_dte(book, zp, equity, today)
+            book.save()
+        if not (book and book.active):
+            # The lottery sleeve's call is managed only by the sleeve: the normal option rules (stops,
+            # the earnings guard) would sell it before the very report it is meant to hold through.
+            ledger = lot.Ledger(self.j.root / "lottery.json", lot.settings(self.cfg)) \
+                if self.cfg.get("lottery", {}).get("enabled") else None
+            if ledger and ledger.d["open"]:
+                options = {s: p for s, p in options.items() if s != ledger.d["open"]["symbol"]}
+            self._option_exits(options, busy, today)
+            if ledger:
+                self._lottery(ledger, closes, today)
+            core_equity = equity - (ledger.reserve() if ledger else 0.0)
+            if state.get("last_rebalance") != today.isoformat():
+                self._rebalance(stocks, busy, closes, core_equity, halted)
+                state["last_rebalance"] = today.isoformat()
+            if self.cfg["options"]["enabled"] and not halted and not self.breaker:
+                self._option_entries(options, busy, closes, core_equity, today, stocks)
+            self._reconcile_stops(stocks, busy, closes)
 
         state["last_run"] = today.isoformat()
         # A dry run must not mark the day as rebalanced, or the real run would skip it.
@@ -206,6 +215,104 @@ class Engine:
             self.cautious.setdefault(sym, "新闻警报：" + "、".join(sorted(set(kinds))))
         book["news_checked"] = now.isoformat(timespec="seconds")
         self.j.save_alerts(book)
+
+    def _zero_dte(self, book: "zd.Book", p: dict, equity: float, today: date) -> None:
+        """One same-day-expiry trade a day; see hero.zero_dte."""
+        day, now = today.isoformat(), zd.hhmm(self.now)
+        sim = self.dry
+        t = book.trade_today(day)
+        if t and t["status"] == "open":
+            try:
+                q = (self.c.option_snapshots([t["symbol"]]).get(t["symbol"]) or {}).get("latestQuote") or {}
+            except Exception:
+                q = {}
+            bid = float(q.get("bp") or 0)
+            if sim and bid >= t["take_price"]:
+                done = book.close(t["take_price"] * 100 * t["qty"], f"止盈 {p['take']:g} 倍", now)
+                self.j.event("zdte_result", dry_run=True, symbol=t["symbol"], ret=done["ret"],
+                             why=f"末日止盈：{t['symbol']} 碰到 ${t['take_price']:.2f}（{p['take']:g} 倍），"
+                                 f"卖得 ${done['proceeds']:,.2f}，模拟余额 ${book.d['sim_cash']:,.2f}")
+            elif not sim and t.get("take_order") and t["symbol"] not in {x["symbol"] for x in self.c.positions()}:
+                done = book.close(t["take_price"] * 100 * t["qty"], f"止盈 {p['take']:g} 倍（券商挂单成交）", now)
+                self.j.event("zdte_result", dry_run=False, symbol=t["symbol"], ret=done["ret"],
+                             why=f"末日止盈成交：{t['symbol']} @ ${t['take_price']:.2f}（{p['take']:g} 倍）")
+            elif not sim and not t.get("take_order"):
+                held = {x["symbol"]: x for x in self.c.positions()}
+                if t["symbol"] in held:
+                    t["filled"] = True
+                    self._order("zdte_take", {"cost": t["price"]}, f"末日止盈单：{t['take_price']:.2f}（{p['take']:g} 倍）挂在券商",
+                                symbol=t["symbol"], qty=held[t["symbol"]]["qty"], side="sell", type="limit",
+                                limit_price=f"{t['take_price']:.2f}", time_in_force="day")
+                    t["take_order"] = True
+            if t["status"] == "open" and now >= p["exit_at"]:
+                if sim:
+                    done = book.close(bid * 100 * t["qty"], "收盘前平仓", now)
+                else:
+                    for o in self.c.open_orders():
+                        if o["symbol"] == t["symbol"]:
+                            try:
+                                self.c.cancel_order(o["id"])
+                            except AlpacaError:
+                                pass
+                    held = {x["symbol"] for x in self.c.positions()}
+                    if t["symbol"] in held:
+                        self._close(t["symbol"], "zdte_exit", {"bid": q.get("bp")}, why="末日期权 15:30 前平仓，不留到收盘")
+                    done = book.close(bid * 100 * t["qty"], "收盘前平仓（按买价估算，以成交为准）", now)
+                self.j.event("zdte_result", dry_run=sim, symbol=t["symbol"], ret=done["ret"],
+                             why=f"末日平仓：{t['symbol']} 卖得约 ${done['proceeds']:,.2f}，回报 {done['ret']:+.0%}"
+                                 + (f"，模拟余额 ${book.d['sim_cash']:,.2f}" if sim else ""))
+        elif not t and p["entry"] <= now < p["exit_at"]:
+            und = p["underlying"]
+            try:
+                snap = self.c.stock_snapshots([und]).get(und) or {}
+                day_open = float((snap.get("dailyBar") or {}).get("o") or 0)
+                spot = float((snap.get("latestTrade") or {}).get("p") or 0)
+            except Exception as e:
+                day_open = spot = 0
+                self.j.event("alert_error", source="zdte", error=str(e)[:200])
+            if not day_open or not spot:
+                return
+            kind = zd.direction(p, day_open, spot)
+            strike = zd.strike_for(spot, kind, p["offset"])
+            sym = zd.occ(und, today, kind, strike)
+            try:
+                q = (self.c.option_snapshots([sym]).get(sym) or {}).get("latestQuote") or {}
+            except Exception:
+                q = {}
+            ask = float(q.get("ap") or 0)
+            cash = book.d["sim_cash"] if sim else equity
+            budget = p["fraction"] * cash
+            qty = math.floor(budget / (ask * 100)) if ask > 0 else 0
+            side = "看涨" if kind == "C" else "看跌"
+            if qty < 1:
+                book.d["today"] = {"date": day, "status": "skipped", "symbol": sym}
+                self.j.event("zdte_skip", dry_run=sim, symbol=sym,
+                             why=f"末日跳过：{sym} " + (f"一张 ${ask * 100:,.2f}，超过可用 ${budget:,.2f}" if ask else "没有报价（可能今天没有当天到期的合约）"))
+                return
+            take_price = round_option_price(ask * p["take"])
+            why = (f"末日买入：{und} 开盘 ${day_open:,.2f}、现在 ${spot:,.2f}，{'顺势' if p['direction'] == 'trend' else '只买看涨'}买{side}；"
+                   f"行权价 ${strike:,.0f}（离现价 {abs(strike / spot - 1):.1%}），今天到期，{qty} 张 × ${ask:.2f}；"
+                   f"止盈 ${take_price:.2f}（{p['take']:g} 倍），{p['exit_at']} 前没到就平仓")
+            self._order("zdte", {"ask": ask, "bid": q.get("bp"), "spot": spot, "open": day_open}, why, symbol=sym,
+                        qty=str(qty), side="buy", type="limit", limit_price=f"{round_option_price(ask):.2f}",
+                        time_in_force="day")
+            book.d["today"] = {"date": day, "status": "open", "symbol": sym, "qty": qty, "price": ask,
+                               "paid": round(ask * 100 * qty, 2), "take_price": take_price, "opened_at": now,
+                               "simulated": sim}
+            if sim:
+                book.d["sim_cash"] = round(book.d["sim_cash"] - ask * 100 * qty, 2)
+        # Phase bookkeeping: in rehearsal on the simulated balance, live on the account.
+        value = book.d["sim_cash"] if sim else equity
+        open_t = book.trade_today(day)
+        if not (open_t and open_t["status"] == "open"):
+            msg = book.maybe_switch(value, p, day)
+            if msg:
+                self.j.event("zdte_switch", dry_run=sim, why=msg)
+            elif sim and value < book.d["start"] * (1 - self.cfg.get("attempt", {}).get("end_loss", 0.9)):
+                self.j.event("zdte_attempt_end", dry_run=True,
+                             why=f"模拟余额 ${value:,.2f} 低于结束线，这一轮（演练）归零；模拟账户重置为 ${book.d['start']:,.0f}")
+                book.d["history"].append({"date": day, "attempt_end": value})
+                book.d["sim_cash"] = book.d["start"]
 
     def _lottery(self, ledger: "lot.Ledger", closes: dict, today: date) -> None:
         """One small earnings call a week until a 10x hit, a doubled pot or an empty budget."""

@@ -5,7 +5,8 @@
   "attempt": {
     "number": 1,
     "start_capital": 500,
-    "end_loss": 0.4
+    "end_loss": 0.9,
+    "note": "an attempt ends below $50 (90% loss): cheap 0DTE contracts still trade at a few cents"
   },
   "universe": [
     "TQQQ",
@@ -80,12 +81,24 @@
   },
   "owns_account": true,
   "lottery": {
-    "enabled": true,
+    "enabled": false,
     "budget": 200,
     "stake_max": 50,
     "otm": 0.1,
     "max_otm": 0.25,
     "hit": 9.0,
     "note": "one earnings call per week on the strongest 126-day momentum name; stop after a 10x, a doubled pot or an empty budget; research/2026-10-02-ratchet.md"
+  },
+  "zero_dte": {
+    "enabled": true,
+    "underlying": "SPY",
+    "entry": "12:00",
+    "offset": 0.003,
+    "direction": "trend",
+    "take": 5,
+    "fraction": 1.0,
+    "exit_at": "15:30",
+    "switch_at": 2.0,
+    "note": "phase 1 of zero-or-hero: one 0DTE trade a day until the account doubles, then momentum for good; parameters are placeholders until research/*-0dte.md"
   }
 }

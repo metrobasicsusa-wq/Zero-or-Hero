@@ -1466,6 +1466,58 @@ class Research0DTE(unittest.TestCase):
         self.assertEqual(z.at_or_after({"10:03": {}}, "10:00")[0], "10:03")
 
 
+class ZeroDTE(unittest.TestCase):
+    def setUp(self):
+        self.tmp = tempfile.TemporaryDirectory()
+        self.closes = {"SPY": series(0.001, seed=5), "UP1": series(0.002, seed=1)}
+        self.conf = {**cfg(stocks={"rsi_max": 101, "top_n": 1}, options={"enabled": False}),
+                     "attempt": {"number": 1, "start_capital": 500, "end_loss": 0.9},
+                     "live_from": "2000-01-01", "launch_approved": False,  # rehearsal: simulated fills
+                     "zero_dte": {"enabled": True, "underlying": "SPY", "entry": "12:00", "offset": 0.003,
+                                  "direction": "trend", "take": 5, "fraction": 1.0, "exit_at": "15:30", "switch_at": 2.0}}
+
+    def tearDown(self):
+        self.tmp.cleanup()
+
+    def cycle(self, hh, mm, bid=0.45, ask=0.50, day=TODAY, equity=500):
+        from datetime import datetime
+
+        class Broker(FakeClient):
+            def option_snapshots(self, symbols):
+                return {s: {"latestQuote": {"bp": bid, "ap": ask}} for s in symbols}
+        c = Broker(self.closes, equity=equity, last_equity=equity)
+        c.snaps = {"SPY": {"dailyBar": {"o": 600.0}, "latestTrade": {"p": 603.0}}}
+        Engine(c, self.conf, Journal(Path(self.tmp.name))).run(today=day, now=datetime(day.year, day.month, day.day, hh, mm))
+        book = json.loads((Path(self.tmp.name) / "zdte.json").read_text())
+        path = Path(self.tmp.name) / "trades.jsonl"
+        log = [json.loads(l) for l in path.read_text().splitlines()] if path.exists() else []
+        return c, book, log
+
+    def test_buy_take_profit_and_switch_to_momentum(self):
+        c, book, log = self.cycle(11, 50)
+        self.assertIsNone(book["today"])                      # before the entry time: nothing
+        self.assertFalse([e for e in log if e["kind"] == "targets"])  # and no momentum while phase 1 runs
+        c, book, log = self.cycle(12, 5)
+        t = book["today"]
+        self.assertEqual((t["symbol"], t["qty"], t["take_price"]), ("SPY261001C00605000", 10, 2.5))  # up day -> calls
+        self.assertEqual(book["sim_cash"], 0.0)               # all in
+        self.assertEqual(c.orders, [])                        # rehearsal sends nothing
+        c, book, log = self.cycle(12, 15, bid=2.6)
+        self.assertEqual(book["history"][0]["ret"], 4.0)
+        self.assertEqual(book["phase"], "momentum")           # $2,500 >= 2 x $500: phase 1 over for good
+        self.assertIn("zdte_switch", [e["kind"] for e in log])
+        c, book, log = self.cycle(12, 25)
+        self.assertTrue([e for e in log if e["kind"] == "targets"])  # momentum runs from now on
+
+    def test_losing_day_below_50_ends_the_round(self):
+        self.cycle(12, 5)
+        c, book, log = self.cycle(15, 35, bid=0.02)
+        self.assertEqual(book["history"][0]["proceeds"], 20.0)
+        self.assertIn("zdte_attempt_end", [e["kind"] for e in log])
+        self.assertEqual(book["sim_cash"], 500)                # rehearsal resets to a fresh $500
+        self.assertEqual(book["phase"], "zero_dte")
+
+
 class Safety(unittest.TestCase):
     def test_refuses_live_endpoint(self):
         with self.assertRaises(AlpacaError):
