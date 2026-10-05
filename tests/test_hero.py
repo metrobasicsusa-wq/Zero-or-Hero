@@ -1036,11 +1036,36 @@ class Market(unittest.TestCase):
         self.assertEqual(sorted(d["series"]), ["us10y", "wti"])
         self.assertTrue(any("10 年期美债 4.10%" in l for l in market.lines(d)))
 
+    def test_retry_only_requests_what_failed(self):
+        from datetime import datetime
+        calls = []
+
+        def fake(params, key):
+            calls.append(params.get("maturity") or params["function"])
+            if params["function"] == "NEWS_SENTIMENT":
+                return {"feed": []}
+            return {"data": [{"date": "2026-10-01", "value": "4.1"}]}
+        orig = market._get
+        market._get = fake
+        try:
+            now = datetime(2026, 10, 5, 9, 10)
+            prev = {"fetched_on": "2026-10-05", "series": {"us10y": {"latest": 5.2}, "wti": {"latest": 90.0}},
+                    "news": {"NVDA": {}}, "news_window": "w", "errors": {"us2y": "rate limited"}}
+            d = market.build("k", {"NVDA"}, now, pause=0, previous=prev)
+            self.assertEqual(calls, ["2year"])
+            self.assertEqual(d["errors"], {})
+            self.assertEqual(d["series"]["us10y"], {"latest": 5.2})
+            calls.clear()
+            market.build("k", {"NVDA"}, now, pause=0, previous={**prev, "fetched_on": "2026-10-02"})
+            self.assertEqual(len(calls), 4)  # yesterday's data is not reused
+        finally:
+            market._get = orig
+
     def test_refresh_caps_daily_calls(self):
         from datetime import datetime
         runs = []
         orig = market.build
-        market.build = lambda key, symbols, now: runs.append(1) or {"fetched_on": now.date().isoformat(),
+        market.build = lambda key, symbols, now, **kw: runs.append(1) or {"fetched_on": now.date().isoformat(),
                                                                     "series": {}, "errors": {"us2y": "x"}}
         try:
             with tempfile.TemporaryDirectory() as d:

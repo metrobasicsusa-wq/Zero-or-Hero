@@ -19,7 +19,7 @@ SERIES = {  # name -> (function, params, unit)
     "us10y": ("TREASURY_YIELD", {"interval": "daily", "maturity": "10year"}, "%"),
     "wti": ("WTI", {"interval": "daily"}, "$"),
 }
-PAUSE_S = 13  # stay under the free tier's per-minute limit
+PAUSE_S = 13  # free tier: 5 calls a minute and no bursts
 MAX_ATTEMPTS = 2
 
 
@@ -84,16 +84,28 @@ def label(score: float) -> str:
     return "偏多"
 
 
-def build(key: str, symbols: set[str], now: datetime, pause: float = PAUSE_S) -> dict:
+def build(key: str, symbols: set[str], now: datetime, pause: float = PAUSE_S,
+          previous: dict | None = None) -> dict:
+    """One call per item, each preceded by a pause: the step before this one (earnings) also calls
+    Alpha Vantage, and the free tier rejects bursts. Items already fetched today (in previous) are
+    kept instead of being requested again."""
     out = {"source": "alphavantage", "fetched_at": now.isoformat(timespec="seconds"),
            "fetched_on": now.date().isoformat(), "symbols": sorted(symbols), "series": {}, "errors": {}}
+    done = previous if previous and previous.get("fetched_on") == out["fetched_on"] else {}
     for name, (fn, params, unit) in SERIES.items():
+        if name in done.get("series", {}) and name not in done.get("errors", {}):
+            out["series"][name] = done["series"][name]
+            continue
+        time.sleep(pause)
         try:
             out["series"][name] = summarize_series(_get({"function": fn, **params}, key).get("data", []), unit)
         except Exception as e:  # one failed series must not lose the others
             out["errors"][name] = str(e)[:200]
-        time.sleep(pause)
+    if "news" in done and "news" not in done.get("errors", {}):
+        out["news"], out["news_window"] = done["news"], done.get("news_window")
+        return out
     since = (now - timedelta(hours=24)).strftime("%Y%m%dT%H%M")
+    time.sleep(pause)
     try:
         feed = _get({"function": "NEWS_SENTIMENT", "sort": "LATEST", "limit": "1000", "time_from": since}, key)
         out["news"] = summarize_news(feed.get("feed", []), symbols)
@@ -109,7 +121,7 @@ def refresh(path: Path, symbols: set[str], key: str, now: datetime) -> str:
     tries = current.get("attempts", 1) if current and current["fetched_on"] == today else 0
     if tries and (not current.get("errors") or tries >= MAX_ATTEMPTS):
         return "fresh"  # at most MAX_ATTEMPTS x 4 calls per day, even if something keeps failing
-    data = build(key, symbols, now)
+    data = build(key, symbols, now, previous=current)  # a retry only re-requests what failed
     data["attempts"] = tries + 1
     text = json.dumps(data, indent=1, ensure_ascii=False) + "\n"
     path.parent.mkdir(parents=True, exist_ok=True)
