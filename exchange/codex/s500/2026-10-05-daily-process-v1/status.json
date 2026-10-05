@@ -1,0 +1,16 @@
+{
+  "schema_version": "1.0-s500-daily-process",
+  "id": "codex-s500-daily-process-20261005-v1",
+  "supersedes": null,
+  "user_requirement": "Daily evidence-driven research and improvement for the separate USD 500 PAPER project.",
+  "proposed_run_time": "17:30",
+  "timezone": "America/New_York",
+  "frequency": "daily; market-day review and non-market-day method/data checks",
+  "schedule_status": "not_created",
+  "schedule_blocker": "No callable tool to create a recurring Codex research task is available in this session.",
+  "existing_observer": "Existing externally dispatched GitHub Actions observation workflow continues; it is not an autonomous research agent.",
+  "prepared": ["daily-process.md", "daily-task-prompt.txt"],
+  "actual_trading_enabled": false,
+  "new_market_backtest_completed_in_this_stage": false,
+  "required_activation_evidence": "A supported scheduler must run the prompt in this environment, and a real first run with dated, verified output must be observed before claiming daily automation works."
+}
