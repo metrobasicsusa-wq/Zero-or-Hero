@@ -290,6 +290,20 @@ class Dashboard(unittest.TestCase):
             self.assertEqual((r["date"], r["points"], r["has_ai"]), ("2026-10-01", ["今日 +1.00%"], True))
 
 
+    def test_rehearsal_shows_simulated_events_once_a_day(self):
+        with tempfile.TemporaryDirectory() as d:
+            j = Journal(Path(d))
+            for _ in range(3):
+                j.event("order", symbol="SPY261005C00777000", side="buy", qty="35", reason="zdte", dry_run=True)
+            (Path(d) / "zdte.json").write_text('{"phase": "zero_dte", "sim_cash": 255.0, "history": []}')
+            c = {**cfg(), "live_from": "2026-10-08", "launch_approved": False}
+            data = dashboard.collect(Path(d), c)
+            self.assertTrue(data["rehearsal"])
+            self.assertEqual(len(data["events"]), 1)
+            self.assertEqual(data["zdte"]["sim_cash"], 255.0)
+            self.assertEqual(dashboard.collect(Path(d), {**c, "launch_approved": True})["events"], [])
+
+
 class Review(unittest.TestCase):
     def test_facts(self):
         with tempfile.TemporaryDirectory() as d:

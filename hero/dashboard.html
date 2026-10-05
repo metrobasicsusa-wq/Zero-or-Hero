@@ -103,6 +103,7 @@ a { color: var(--series-1); }
 .params dd { margin: 0; font-variant-numeric: tabular-nums; }
 pre { white-space: pre-wrap; font: 12px/1.6 ui-monospace, SFMono-Regular, Menlo, monospace; margin: 0; color: var(--ink-2); max-height: 320px; overflow: auto; }
 footer { color: var(--muted); font-size: 12px; margin-top: 24px; }
+[hidden] { display: none !important; }
 </style>
 </head>
 <body>
@@ -137,6 +138,11 @@ footer { color: var(--muted); font-size: 12px; margin-top: 24px; }
     </div>
   </section>
 
+  <section class="card" id="zdte-card" hidden>
+    <h2>末日阶段（0DTE）</h2>
+    <div id="zdte"></div>
+  </section>
+
   <section class="card">
     <h2>当前持仓</h2>
     <div id="positions"></div>
@@ -148,7 +154,7 @@ footer { color: var(--muted); font-size: 12px; margin-top: 24px; }
   </section>
 
   <section class="card">
-    <h2>交易记录</h2>
+    <h2>交易记录 <span class="meta" id="events-note"></span></h2>
     <div id="events"></div>
   </section>
 
@@ -364,8 +370,35 @@ function renderOrders() {
       o.stop_price ? "止损 " + usd(num(o.stop_price), 2) : o.limit_price ? usd(num(o.limit_price), 2) : "—"]));
 }
 
+function renderZdte() {
+  const b = DATA.zdte, p = DATA.config.zero_dte;
+  if (!b || !p || !p.enabled) return;
+  $("zdte-card").hidden = false;
+  const t = b.today, hist = (b.history || []).slice().reverse();
+  const items = [
+    ["阶段", b.phase === "zero_dte" ? "末日阶段（翻倍前）" : `已切换为动量策略（${b.switched}）`],
+    ["起始资金", usd(b.start, 2)],
+    ["切换线 / 归零线", `${usd(b.start * p.switch_at)} / ${usd(b.start * (1 - (DATA.config.attempt?.end_loss ?? 0.9)))}`],
+    ["规则", `${p.underlying} ${p.entry} 买，离现价 ${(p.offset * 100).toFixed(1)}%，${p.direction === "trend" ? "顺势" : "只买看涨"}，${p.take} 倍止盈，每次用资金的 ${Math.round(p.fraction * 100)}%，${p.exit_at} 前平仓`],
+  ];
+  if (DATA.rehearsal) items.splice(1, 0, ["模拟现金", usd(b.sim_cash, 2)]);
+  const row = (x) => [esc(x.date), `<b>${esc(optionLabel(x.symbol) || x.symbol)}</b>`,
+    x.status === "skipped" ? '<span class="chip">跳过</span>' : x.status === "open" ? '<span class="chip">持有中</span>'
+      : `<span class="chip">${esc(x.exit || "已平仓")}</span>`,
+    esc(x.qty ?? ""), x.price !== undefined ? usd(x.price, 2) : "—", x.take_price !== undefined ? usd(x.take_price, 2) : "—",
+    x.paid !== undefined ? usd(x.paid, 2) : "—", x.proceeds !== undefined ? usd(x.proceeds, 2) : "—",
+    x.ret !== undefined ? `<span class="${tone(x.ret)}">${pct(x.ret, 0)}</span>` : "—"];
+  const rows = [];
+  if (t && t.status !== "closed") rows.push(row(t));
+  hist.forEach((x) => rows.push(row(x)));
+  $("zdte").innerHTML = `<dl class="params">${items.map(([k, v]) => `<dt>${k}</dt><dd>${esc(v)}</dd>`).join("")}</dl>` +
+    (rows.length ? table([["日期"], ["合约"], ["状态"], ["张数", 1], ["买价", 1], ["止盈价", 1], ["花费", 1], ["收回", 1], ["收益", 1]], rows)
+      : empty("还没有末日交易"));
+}
+
 function renderEvents() {
   const es = DATA.events;
+  if (DATA.rehearsal) $("events-note").textContent = "· 演练中：以下都是模拟，没有真下单";
   if (!es.length) { $("events").innerHTML = empty("还没有交易"); return; }
   const kind = (e) => e.kind === "close" ? "平仓" : e.kind === "halt" ? "暂停开仓" : e.kind === "option_skip" ? "未买期权"
     : e.kind === "zdte_result" ? "末日结果" : e.kind === "zdte_skip" ? "末日跳过"
@@ -376,7 +409,7 @@ function renderEvents() {
     : e.kind === "earnings_watch" ? "财报提醒" : e.kind === "attempt_end" ? "触及结束线" : e.kind === "attempt_end_confirmed" ? "本轮结束" : e.side === "buy" ? "买入" : "卖出";
   $("events").innerHTML = table(
     [["时间"], ["动作"], ["标的"], ["数量", 1], ["限价", 1], ["原因"]],
-    es.slice(0, 60).map((e) => [fmtTime(e.ts), `<span class="chip">${kind(e)}</span>`,
+    es.slice(0, 60).map((e) => [fmtTime(e.ts), `<span class="chip">${e.dry_run ? "模拟" : ""}${kind(e)}</span>`,
       e.symbol ? `<b>${esc(optionLabel(e.symbol) || e.symbol)}</b>` : "—", esc(e.qty || ""),
       e.limit_price ? usd(num(e.limit_price), 2) : "—",
       `<span class="why">${esc(e.why || e.reason || (e.day_pl !== undefined ? "当日 " + pct(e.day_pl) : ""))}</span>`]));
@@ -449,6 +482,7 @@ let lastW = $("chart").clientWidth;
 new ResizeObserver(() => { const w = $("chart").clientWidth; if (w !== lastW) { lastW = w; renderChart(); } }).observe($("chart"));
 renderPositions();
 renderOrders();
+renderZdte();
 renderEvents();
 renderParams();
 renderEvolution();

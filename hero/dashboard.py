@@ -18,11 +18,17 @@ MAX_EVENTS = 200
 REPO_BLOB = "https://github.com/metrobasicsusa-wq/Zero-or-Hero/blob/claude/cloud-paper-trading-ivwxqk"
 
 
+def rehearsal(cfg: dict) -> bool:
+    """A gated experiment not yet approved: everything it does is simulated, so show it, marked."""
+    return "live_from" in cfg and cfg.get("launch_approved") is not True
+
+
 def collect(journal: Path, cfg: dict) -> dict:
+    show_sim = rehearsal(cfg)
     equity_path = journal / "equity.csv"
     equity = list(csv.DictReader(open(equity_path))) if equity_path.exists() else []
 
-    events, targets, gauges = [], None, None
+    events, targets, gauges, seen = [], None, None, set()
     trades_path = journal / "trades.jsonl"
     if trades_path.exists():
         for line in open(trades_path):
@@ -30,11 +36,17 @@ def collect(journal: Path, cfg: dict) -> dict:
             if e["kind"] == "targets" and e.get("macro") is not None:
                 gauges = {"ts": e.get("ts"), "gauges": e["macro"], "risk_off": e.get("macro_risk_off"),
                           "applied": e.get("macro_applied")}  # market data: rehearsal readings count too
-            if e.get("dry_run"):
+            if e.get("dry_run") and not (show_sim and e["kind"] in EVENT_KINDS):
                 continue
             if e["kind"] == "targets":
                 targets = e
             elif e["kind"] in EVENT_KINDS:
+                if e.get("dry_run"):
+                    # a rehearsal repeats the same intent every cycle (nothing fills): show it once a day
+                    key = (e.get("ts", "")[:10], e["kind"], e.get("symbol"), e.get("side"), e.get("reason"))
+                    if key in seen:
+                        continue
+                    seen.add(key)
                 events.append(e)
 
     snap_path = journal / "snapshot.json"
@@ -44,7 +56,10 @@ def collect(journal: Path, cfg: dict) -> dict:
     mkt = json.loads(mkt_path.read_text()) if mkt_path.exists() else None
     brief_dir = journal.resolve().parent / "macro" / "briefings"
     briefs = sorted(brief_dir.glob("20*.md")) if brief_dir.exists() else []
+    zdte_path = journal / "zdte.json"
     return {
+        "rehearsal": show_sim,
+        "zdte": json.loads(zdte_path.read_text()) if zdte_path.exists() else None,
         "generated": datetime.now(timezone.utc).isoformat(timespec="seconds"),
         "equity": equity,
         "snapshot": json.loads(snap_path.read_text()) if snap_path.exists() else None,
