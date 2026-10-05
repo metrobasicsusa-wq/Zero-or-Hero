@@ -92,13 +92,13 @@
   "zero_dte": {
     "enabled": true,
     "underlying": "SPY",
-    "entry": "12:00",
-    "offset": 0.003,
+    "entry": "10:00",
+    "offset": 0.006,
     "direction": "trend",
-    "take": 5,
-    "fraction": 1.0,
+    "take": 3,
+    "fraction": 0.5,
     "exit_at": "15:30",
     "switch_at": 2.0,
-    "note": "phase 1 of zero-or-hero: one 0DTE trade a day until the account doubles, then momentum for good; parameters are placeholders until research/*-0dte.md"
+    "note": "phase 1 of zero-or-hero until the account doubles, then momentum for good; parameters from research/2026-10-05-0dte-double.md (fewest attempts per doubling)"
   }
 }
