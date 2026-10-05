@@ -141,9 +141,23 @@ class Alpaca:
     def assets(self) -> list[dict]:
         return self._t("GET", "/v2/assets", params={"status": "active", "asset_class": "us_equity"})
 
-    def option_bars(self, symbols: list[str], start: str, end: str) -> dict[str, list[dict]]:
-        """Historical daily option bars (Alpaca has them from early 2024)."""
-        params = {"symbols": ",".join(symbols), "timeframe": "1Day", "start": start, "end": end, "limit": 10000}
+    def stock_bars(self, symbols: list[str], start: str, end: str, timeframe: str = "1Min") -> dict[str, list[dict]]:
+        """Intraday stock bars (IEX), raw prices, for a date range."""
+        params = {"symbols": ",".join(symbols), "timeframe": timeframe, "start": start, "end": end,
+                  "adjustment": "raw", "feed": "iex", "limit": 10000}
+        out: dict[str, list[dict]] = {}
+        while True:
+            page = self._d("/v2/stocks/bars", params) or {}
+            for sym, bars in (page.get("bars") or {}).items():
+                out.setdefault(sym, []).extend(bars)
+            token = page.get("next_page_token")
+            if not token:
+                return out
+            params["page_token"] = token
+
+    def option_bars(self, symbols: list[str], start: str, end: str, timeframe: str = "1Day") -> dict[str, list[dict]]:
+        """Historical option bars (Alpaca has them from early 2024); timeframe e.g. 1Day, 1Min."""
+        params = {"symbols": ",".join(symbols), "timeframe": timeframe, "start": start, "end": end, "limit": 10000}
         out: dict[str, list[dict]] = {}
         while True:
             page = self._d("/v1beta1/options/bars", params) or {}

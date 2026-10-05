@@ -1453,6 +1453,19 @@ class ResearchHero(unittest.TestCase):
         self.assertEqual(rh.play(mix, d[0], 10)[:2], ("hero", d[3]))  # 3x, then the second leg doubles twice
 
 
+class Research0DTE(unittest.TestCase):
+    def test_symbols_strikes_and_exits(self):
+        from hero import research_0dte as z
+        self.assertEqual(z.occ("SPY", "2024-02-01", "C", 495.0), "SPY240201C00495000")
+        self.assertEqual(z.strike_for(490.2, "C", 0.003), 492.0)   # rounded outward
+        self.assertEqual(z.strike_for(490.2, "P", 0.003), 488.0)
+        bars = {"10:00": {"c": 0.10, "h": 0.10}, "11:00": {"c": 0.20, "h": 0.60}, "15:30": {"c": 0.05, "h": 0.05}}
+        self.assertAlmostEqual(z.trade(bars, "10:00", 5), 4.0)     # cost 0.11, the 0.60 high reaches 5x (0.55)
+        self.assertAlmostEqual(z.trade(bars, "10:00", 10), (0.04 / 0.11) - 1)  # never 10x: out at 15:30 minus a cent
+        self.assertIsNone(z.trade(bars, "12:00", 3))               # nothing traded within 5 minutes of 12:00
+        self.assertEqual(z.at_or_after({"10:03": {}}, "10:00")[0], "10:03")
+
+
 class Safety(unittest.TestCase):
     def test_refuses_live_endpoint(self):
         with self.assertRaises(AlpacaError):
