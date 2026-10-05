@@ -1,0 +1,417 @@
+{
+  "schema_version": "1.0-s500-storage-sector-replay",
+  "id": "codex-s500-20261005-storage-v1",
+  "supplements": "exchange/codex/s500/2026-10-05-premarket-replay-v1/",
+  "supersedes": null,
+  "protocol": {
+    "method_version": "storage-premarket-v1",
+    "created_at": "2026-10-05T15:41:00.091167+00:00",
+    "cutoff": "2026-10-05T09:25:00-04:00",
+    "universe": {
+      "MU": {
+        "name": "Micron 美光",
+        "segment": "DRAM/NAND"
+      },
+      "SNDK": {
+        "name": "Sandisk 闪迪",
+        "segment": "NAND/flash storage"
+      },
+      "WDC": {
+        "name": "Western Digital 西部数据",
+        "segment": "hard disk storage"
+      },
+      "STX": {
+        "name": "Seagate 希捷",
+        "segment": "hard disk storage"
+      },
+      "PSTG": {
+        "name": "Pure Storage",
+        "segment": "enterprise storage systems"
+      },
+      "NTAP": {
+        "name": "NetApp",
+        "segment": "enterprise storage systems/software"
+      },
+      "RMBS": {
+        "name": "Rambus",
+        "segment": "memory interface/IP; adjacent exposure"
+      },
+      "SIMO": {
+        "name": "Silicon Motion 慧荣",
+        "segment": "NAND controllers; adjacent exposure"
+      }
+    },
+    "rule": "Unchanged prior stock rule: absolute premarket gap >=1%, aligned09:00-09:25 move and last bar ending within5min of cutoff. Research watchlist only.",
+    "correction": "用户确认出错股指存储股，不是错杀股，也不是失败选股；本次补全存储板块。",
+    "universe_note": "US-listed storage/memory and adjacent companies, not exhaustive global storage coverage or a pure DRAM basket."
+  },
+  "method_source": {
+    "commit": "3b27850941398202be3a4bbe5ac52c7d51c1e296",
+    "path": "exchange/codex/s500/2026-10-05-premarket-replay-v1/scan.py",
+    "sha256": "33e3e3989d73a1d7ae2837d367767b4e7f404418dd3efc55a08bcf1e7e0164e9",
+    "changes": "No screening threshold change; user-requested sector expansion and documented symbol correction only."
+  },
+  "results": [
+    {
+      "symbol": "MU",
+      "url": "https://query1.finance.yahoo.com/v8/finance/chart/MU?interval=5m&range=5d&includePrePost=true",
+      "retrieved_at": "2026-10-05T15:41:00.501134+00:00",
+      "raw_sha256": "31e1bd232ccf971f54519cd3b83833f41f48843ef1d56b60bbf9a795042e02d6",
+      "category": "stock",
+      "discarded_future_or_incomplete_bars": 29,
+      "previous_session": "2026-10-02",
+      "previous_close_proxy": 1074.27001953125,
+      "previous_close_proxy_basis": "last available completed 5m regular-session close, not official auction close",
+      "last_completed_bar_start": "2026-10-05T09:20:00-04:00",
+      "last_completed_bar_end": "2026-10-05T09:25:00-04:00",
+      "premarket_last": 1071.05,
+      "premarket_gap_pct": -0.29974023967038743,
+      "premarket_high": 1089.081,
+      "premarket_low": 1065.77,
+      "premarket_bar_count": 65,
+      "late_premarket_return_pct": 0.0345574774909263,
+      "recorded_premarket_volume": 0,
+      "positive_complete_volume_available": false,
+      "prior_same_window_volume_days": 0,
+      "premarket_volume_ratio_to_short_history": null,
+      "same_direction_as_0900_to_0925": false,
+      "gap_threshold_pct": 1.0,
+      "screen_status": "does_not_pass_directional_screen",
+      "execution_eligible": false,
+      "execution_blockers": [
+        "no archived contemporaneous option bid/ask",
+        "no timestamp-verified premarket news review"
+      ],
+      "name": "Micron 美光",
+      "segment": "DRAM/NAND"
+    },
+    {
+      "symbol": "SNDK",
+      "url": "https://query1.finance.yahoo.com/v8/finance/chart/SNDK?interval=5m&range=5d&includePrePost=true",
+      "retrieved_at": "2026-10-05T15:41:00.538937+00:00",
+      "raw_sha256": "5437ee718e10bedec2e81e9c91687d50ad6030e18fee13972cfba5b70c82a2b2",
+      "category": "stock",
+      "discarded_future_or_incomplete_bars": 29,
+      "previous_session": "2026-10-02",
+      "previous_close_proxy": 1719.3499755859375,
+      "previous_close_proxy_basis": "last available completed 5m regular-session close, not official auction close",
+      "last_completed_bar_start": "2026-10-05T09:20:00-04:00",
+      "last_completed_bar_end": "2026-10-05T09:25:00-04:00",
+      "premarket_last": 1727.81,
+      "premarket_gap_pct": 0.49204783983431977,
+      "premarket_high": 1741.7375,
+      "premarket_low": 1719.9,
+      "premarket_bar_count": 65,
+      "late_premarket_return_pct": 0.13503488884252235,
+      "recorded_premarket_volume": 0,
+      "positive_complete_volume_available": false,
+      "prior_same_window_volume_days": 0,
+      "premarket_volume_ratio_to_short_history": null,
+      "same_direction_as_0900_to_0925": true,
+      "gap_threshold_pct": 1.0,
+      "screen_status": "does_not_pass_directional_screen",
+      "execution_eligible": false,
+      "execution_blockers": [
+        "no archived contemporaneous option bid/ask",
+        "no timestamp-verified premarket news review"
+      ],
+      "name": "Sandisk 闪迪",
+      "segment": "NAND/flash storage"
+    },
+    {
+      "symbol": "WDC",
+      "url": "https://query1.finance.yahoo.com/v8/finance/chart/WDC?interval=5m&range=5d&includePrePost=true",
+      "retrieved_at": "2026-10-05T15:41:00.556023+00:00",
+      "raw_sha256": "9da767760578a35757de5f9d223503e928994ceee645003b33ea3fd782c389b1",
+      "category": "stock",
+      "discarded_future_or_incomplete_bars": 29,
+      "previous_session": "2026-10-02",
+      "previous_close_proxy": 415.1199951171875,
+      "previous_close_proxy_basis": "last available completed 5m regular-session close, not official auction close",
+      "last_completed_bar_start": "2026-10-05T09:20:00-04:00",
+      "last_completed_bar_end": "2026-10-05T09:25:00-04:00",
+      "premarket_last": 426.06,
+      "premarket_gap_pct": 2.635383747228115,
+      "premarket_high": 427.0,
+      "premarket_low": 415.29,
+      "premarket_bar_count": 65,
+      "late_premarket_return_pct": 0.15043956560574223,
+      "recorded_premarket_volume": 0,
+      "positive_complete_volume_available": false,
+      "prior_same_window_volume_days": 0,
+      "premarket_volume_ratio_to_short_history": null,
+      "same_direction_as_0900_to_0925": true,
+      "gap_threshold_pct": 1.0,
+      "screen_status": "directional_watch_only",
+      "execution_eligible": false,
+      "execution_blockers": [
+        "no archived contemporaneous option bid/ask",
+        "no timestamp-verified premarket news review"
+      ],
+      "name": "Western Digital 西部数据",
+      "segment": "hard disk storage"
+    },
+    {
+      "symbol": "STX",
+      "url": "https://query1.finance.yahoo.com/v8/finance/chart/STX?interval=5m&range=5d&includePrePost=true",
+      "retrieved_at": "2026-10-05T15:41:00.475551+00:00",
+      "raw_sha256": "283fb2599e624057162238043273bbd417e70d90dd39476c999801316f18d26e",
+      "category": "stock",
+      "discarded_future_or_incomplete_bars": 29,
+      "previous_session": "2026-10-02",
+      "previous_close_proxy": 848.989990234375,
+      "previous_close_proxy_basis": "last available completed 5m regular-session close, not official auction close",
+      "last_completed_bar_start": "2026-10-05T09:20:00-04:00",
+      "last_completed_bar_end": "2026-10-05T09:25:00-04:00",
+      "premarket_last": 875.0013,
+      "premarket_gap_pct": 3.0637946341916633,
+      "premarket_high": 875.77,
+      "premarket_low": 848.99,
+      "premarket_bar_count": 65,
+      "late_premarket_return_pct": 0.333312502257499,
+      "recorded_premarket_volume": 0,
+      "positive_complete_volume_available": false,
+      "prior_same_window_volume_days": 0,
+      "premarket_volume_ratio_to_short_history": null,
+      "same_direction_as_0900_to_0925": true,
+      "gap_threshold_pct": 1.0,
+      "screen_status": "directional_watch_only",
+      "execution_eligible": false,
+      "execution_blockers": [
+        "no archived contemporaneous option bid/ask",
+        "no timestamp-verified premarket news review"
+      ],
+      "name": "Seagate 希捷",
+      "segment": "hard disk storage"
+    },
+    {
+      "symbol": "PSTG",
+      "url": "https://query1.finance.yahoo.com/v8/finance/chart/PSTG?interval=5m&range=5d&includePrePost=true",
+      "error": "HTTP_404",
+      "category": "stock",
+      "screen_status": "data_unavailable",
+      "name": "Pure Storage",
+      "segment": "enterprise storage systems"
+    },
+    {
+      "symbol": "NTAP",
+      "url": "https://query1.finance.yahoo.com/v8/finance/chart/NTAP?interval=5m&range=5d&includePrePost=true",
+      "retrieved_at": "2026-10-05T15:41:01.031272+00:00",
+      "raw_sha256": "7f7e7d0029e5fbed503fb299c891f261804a80abbe6c12f6111b7540821e5fc0",
+      "category": "stock",
+      "discarded_future_or_incomplete_bars": 29,
+      "previous_session": "2026-10-02",
+      "previous_close_proxy": 226.3000030517578,
+      "previous_close_proxy_basis": "last available completed 5m regular-session close, not official auction close",
+      "last_completed_bar_start": "2026-10-05T09:20:00-04:00",
+      "last_completed_bar_end": "2026-10-05T09:25:00-04:00",
+      "premarket_last": 227.18,
+      "premarket_gap_pct": 0.3888629855833159,
+      "premarket_high": 229.0,
+      "premarket_low": 224.0447,
+      "premarket_bar_count": 27,
+      "late_premarket_return_pct": 1.2523955965592526,
+      "recorded_premarket_volume": 0,
+      "positive_complete_volume_available": false,
+      "prior_same_window_volume_days": 0,
+      "premarket_volume_ratio_to_short_history": null,
+      "same_direction_as_0900_to_0925": true,
+      "gap_threshold_pct": 1.0,
+      "screen_status": "does_not_pass_directional_screen",
+      "execution_eligible": false,
+      "execution_blockers": [
+        "no archived contemporaneous option bid/ask",
+        "no timestamp-verified premarket news review"
+      ],
+      "name": "NetApp",
+      "segment": "enterprise storage systems/software"
+    },
+    {
+      "symbol": "RMBS",
+      "url": "https://query1.finance.yahoo.com/v8/finance/chart/RMBS?interval=5m&range=5d&includePrePost=true",
+      "retrieved_at": "2026-10-05T15:41:01.292469+00:00",
+      "raw_sha256": "e3f14b145d56d0fd6d524f61ca724f97116f728e3eefa3085c19a803058d0dc6",
+      "category": "stock",
+      "discarded_future_or_incomplete_bars": 29,
+      "previous_session": "2026-10-02",
+      "previous_close_proxy": 111.94999694824219,
+      "previous_close_proxy_basis": "last available completed 5m regular-session close, not official auction close",
+      "last_completed_bar_start": "2026-10-05T09:20:00-04:00",
+      "last_completed_bar_end": "2026-10-05T09:25:00-04:00",
+      "premarket_last": 112.04,
+      "premarket_gap_pct": 0.08039576079617028,
+      "premarket_high": 115.0,
+      "premarket_low": 110.0,
+      "premarket_bar_count": 36,
+      "late_premarket_return_pct": 0.9460311739796445,
+      "recorded_premarket_volume": 0,
+      "positive_complete_volume_available": false,
+      "prior_same_window_volume_days": 0,
+      "premarket_volume_ratio_to_short_history": null,
+      "same_direction_as_0900_to_0925": true,
+      "gap_threshold_pct": 1.0,
+      "screen_status": "does_not_pass_directional_screen",
+      "execution_eligible": false,
+      "execution_blockers": [
+        "no archived contemporaneous option bid/ask",
+        "no timestamp-verified premarket news review"
+      ],
+      "name": "Rambus",
+      "segment": "memory interface/IP; adjacent exposure"
+    },
+    {
+      "symbol": "SIMO",
+      "url": "https://query1.finance.yahoo.com/v8/finance/chart/SIMO?interval=5m&range=5d&includePrePost=true",
+      "retrieved_at": "2026-10-05T15:41:01.030359+00:00",
+      "raw_sha256": "944c6a42b2d0bb2e043c5869bb85c1496b8f79496ed6b48f1e7dfcbd2b6d7ab3",
+      "category": "stock",
+      "discarded_future_or_incomplete_bars": 29,
+      "previous_session": "2026-10-02",
+      "previous_close_proxy": 280.3299865722656,
+      "previous_close_proxy_basis": "last available completed 5m regular-session close, not official auction close",
+      "last_completed_bar_start": "2026-10-05T09:20:00-04:00",
+      "last_completed_bar_end": "2026-10-05T09:25:00-04:00",
+      "premarket_last": 279.49,
+      "premarket_gap_pct": -0.29964206916874847,
+      "premarket_high": 284.8432,
+      "premarket_low": 278.65,
+      "premarket_bar_count": 32,
+      "late_premarket_return_pct": 0.2594642760415766,
+      "recorded_premarket_volume": 0,
+      "positive_complete_volume_available": false,
+      "prior_same_window_volume_days": 0,
+      "premarket_volume_ratio_to_short_history": null,
+      "same_direction_as_0900_to_0925": false,
+      "gap_threshold_pct": 1.0,
+      "screen_status": "does_not_pass_directional_screen",
+      "execution_eligible": false,
+      "execution_blockers": [
+        "no archived contemporaneous option bid/ask",
+        "no timestamp-verified premarket news review"
+      ],
+      "name": "Silicon Motion 慧荣",
+      "segment": "NAND controllers; adjacent exposure"
+    },
+    {
+      "symbol": "P",
+      "url": "https://query1.finance.yahoo.com/v8/finance/chart/P?interval=5m&range=5d&includePrePost=true",
+      "retrieved_at": "2026-10-05T15:43:31.654691+00:00",
+      "raw_sha256": "e8450c54c50fec0fe277e61c3f246f5b110087ca381f23f774b01926dd2488ee",
+      "category": "stock",
+      "discarded_future_or_incomplete_bars": 28,
+      "previous_session": "2026-10-02",
+      "previous_close_proxy": 140.1199951171875,
+      "previous_close_proxy_basis": "last available completed 5m regular-session close, not official auction close",
+      "last_completed_bar_start": "2026-10-05T09:05:00-04:00",
+      "last_completed_bar_end": "2026-10-05T09:10:00-04:00",
+      "premarket_last": 140.3,
+      "premarket_gap_pct": 0.12846480808250682,
+      "premarket_high": 140.3,
+      "premarket_low": 139.0,
+      "premarket_bar_count": 17,
+      "late_premarket_return_pct": 0.1070281840884757,
+      "recorded_premarket_volume": 0,
+      "positive_complete_volume_available": false,
+      "prior_same_window_volume_days": 0,
+      "premarket_volume_ratio_to_short_history": null,
+      "same_direction_as_0900_to_0925": true,
+      "gap_threshold_pct": 1.0,
+      "screen_status": "does_not_pass_directional_screen",
+      "execution_eligible": false,
+      "execution_blockers": [
+        "no archived contemporaneous option bid/ask",
+        "no timestamp-verified premarket news review"
+      ],
+      "name": "Everpure (formerly Pure Storage)",
+      "segment": "enterprise storage systems",
+      "replaces_unavailable_symbol": "PSTG",
+      "identity_basis": "Yahoo current symbol search maps Everpure to NYSE:P and legacy Pure Storage names to the same foreign listings; change effective date not independently checked.",
+      "current_broker_identity": {
+        "symbol": "P",
+        "name": "Everpure, Inc.",
+        "exchange": "NYSE",
+        "status": "active",
+        "tradable": true
+      }
+    }
+  ],
+  "company_count": 8,
+  "symbol_requests_including_retired_symbol": 9,
+  "valid_price_series": 8,
+  "directional_price_screen_passes": [
+    "WDC",
+    "STX"
+  ],
+  "validation": {
+    "post_cutoff_data_perturbation_passed": [
+      "MU",
+      "SNDK",
+      "WDC",
+      "STX",
+      "NTAP",
+      "RMBS",
+      "SIMO",
+      "P"
+    ],
+    "retained_bars_cutoff_checked": true,
+    "orders_submitted": 0,
+    "simulated_fills": 0
+  },
+  "premarket_news_metadata": [
+    {
+      "title": "WDC, STX Stocks Rebound Premarket As Analysts Downplay Toshiba Capacity Expansion Fears",
+      "publisher": "Stocktwits",
+      "link": "https://finance.yahoo.com/markets/stocks/articles/wdc-stx-stocks-rebound-premarket-084952730.html",
+      "providerPublishTime": 1791190192,
+      "relatedTickers": [
+        "WDC",
+        "STX"
+      ]
+    }
+  ],
+  "news_limitations": "Provider-publication-time-filtered current search index; no immutable premarket full-text archive or independent causal verification.",
+  "expiry_catalog_after_open": [
+    {
+      "symbol": "STX",
+      "status": 200,
+      "same_day_contracts": 0,
+      "pagination_complete": true,
+      "query_time": "2026-10-05T15:42:13.628708+00:00",
+      "basis": "current catalog checked after open, not a historical premarket option quote"
+    },
+    {
+      "symbol": "WDC",
+      "status": 200,
+      "same_day_contracts": 0,
+      "pagination_complete": true,
+      "query_time": "2026-10-05T15:42:13.609349+00:00",
+      "basis": "current catalog checked after open, not a historical premarket option quote"
+    },
+    {
+      "symbol": "SNDK",
+      "status": 200,
+      "same_day_contracts": 0,
+      "pagination_complete": true,
+      "query_time": "2026-10-05T15:42:13.669961+00:00",
+      "basis": "current catalog checked after open, not a historical premarket option quote"
+    },
+    {
+      "symbol": "MU",
+      "status": 200,
+      "same_day_contracts": 308,
+      "pagination_complete": true,
+      "query_time": "2026-10-05T15:42:13.779723+00:00",
+      "basis": "current catalog checked after open, not a historical premarket option quote"
+    }
+  ],
+  "interpretation": "HDD names STX/WDC showed stronger premarket gaps and late direction than MU; storage subsectors should be scanned separately. No executable0DTE signal established.",
+  "limitations": [
+    "All returned premarket volumes were zero, treated as unusable.",
+    "This is a retrospective replay after intraday price exposure, not blind validation.",
+    "User selected the storage sector after the original scan; do not present the expanded universe as pre-registered before the market.",
+    "Current contract directory is checked after open and is not an archived09:25 options chain.",
+    "No archived premarket option bid/ask, no options fill model, no profits claimed.",
+    "PSTG returned404; current Yahoo search and broker asset identity resolve Everpure as P. Historical ticker-change effective date not independently verified.",
+    "Exact input archive remains local; public output is sanitized summaries and source hashes."
+  ]
+}
