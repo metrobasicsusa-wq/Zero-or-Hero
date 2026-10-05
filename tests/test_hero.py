@@ -1440,6 +1440,18 @@ class LotterySleeve(unittest.TestCase):
             self.assertIn("lottery_result", log)
 
 
+class ResearchHero(unittest.TestCase):
+    def test_attempts_end_at_target_or_loss_line(self):
+        from hero import research_hero as rh
+        stream = [("d1", -0.5), ("d2", 9.0), ("d3", 1.0)]
+        self.assertEqual(rh.play(stream, "d0", 10)[0], "zero")           # -50% crosses the 40% line
+        self.assertEqual(rh.play(stream, "d1", 10)[:2], ("hero", "d2"))  # a fresh attempt from d1 hits 10x
+        seq = rh.sequential(stream, "d0", 10)
+        self.assertEqual((seq["heroes"], seq["zeros"]), (1, 1))
+        mix = rh.mixed([("d1", 2.0), ("d5", 5.0)], [("d2", 1.0), ("d3", 1.0)], 3.0)
+        self.assertEqual(rh.play(mix, "d0", 10)[:2], ("hero", "d3"))  # 3x, then the second leg doubles twice
+
+
 class Safety(unittest.TestCase):
     def test_refuses_live_endpoint(self):
         with self.assertRaises(AlpacaError):
