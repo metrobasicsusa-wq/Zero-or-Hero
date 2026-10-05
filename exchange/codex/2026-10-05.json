@@ -1,0 +1,719 @@
+{
+  "schema_version": "1.0",
+  "producer": "Codex",
+  "mode": "PAPER",
+  "currency": "USD",
+  "trading_date": "2026-10-05",
+  "timezone": "America/New_York",
+  "status": "limited_post_market_review",
+  "as_of": "2026-10-05T15:59:45.508480566-04:00",
+  "generated_at": "2026-10-05T20:21:14.628098+00:00",
+  "evidence_cutoff": {
+    "archive_event_sequence": 12656,
+    "archive_at": "2026-10-05T20:15:54.181877+00:00",
+    "session_start": "2026-10-05T09:30:00-04:00",
+    "session_end": "2026-10-05T16:00:00-04:00",
+    "method": "SQLite mode=ro BEGIN consistent read; FILL latest correction by activity identity; exclude unattributed/test executions",
+    "max_sample_sequence": 62760,
+    "max_dataset_sequence": 2094,
+    "version_hashes": {
+      "config_hash": {
+        "0d4b9eafc05f60e2d5ca951544554407b90ba9c4385c0c058e7f4841a379e50c": 354
+      },
+      "strategy_hash": {
+        "d60a3b94fbbc0b0736568df026c2256bad1cf4b6cb40e0d047a8e024a1b62af2": 354
+      },
+      "source_hash": {
+        "5ea6dac3c06a260ce9cf7d7694c80409f3d7c8ac0ecf5117d2889017b2d7a0fa": 354
+      }
+    },
+    "analysis_code_sha256": "eeb18d20169a480704ea9e34cc5242cbd6180c80d8cc2aa9a91e44f232bfa4ff"
+  },
+  "scope": {
+    "instruments": "US equities only",
+    "capital_limit_usd": 100000,
+    "swing_budget_usd": 50000,
+    "intraday_budget_usd": 50000,
+    "start_reference": "2026-09-30T17:13:00-04:00; equity USD100000; no positions"
+  },
+  "equity": {
+    "current_usd": 99728.71,
+    "as_of": "2026-10-05T15:59:45.508480566-04:00",
+    "source": "last archived pre-close equity observation; not official close",
+    "official_close_usd": null,
+    "previous_day_usd": 99551.76,
+    "previous_day_as_of": "2026-10-02T15:58:56.104746065-04:00",
+    "previous_day_basis": "last observed pre-close equity; not official close",
+    "cash_usd": 51124.44,
+    "external_cash_flows_usd": null,
+    "cash_flow_note": "Non-FILL cash activities not reconciled; -0.35 USD between prior last pre-close and current first observation remains unattributed",
+    "first_observation": {
+      "as_of": "2026-10-05T09:32:20.606220405-04:00",
+      "equity_usd": 99629.47,
+      "cash_usd": 51012.37
+    },
+    "post_session_observation": {
+      "as_of": "2026-10-05T16:15:54.074784796-04:00",
+      "equity_usd": 99739.54,
+      "cash_usd": 51124.44,
+      "not_close": true
+    }
+  },
+  "fills": [
+    {
+      "execution_key": "4e02f5cd97e458e2263c2eac91eb3228d09d97afe1eec2bdc098ea3821817131",
+      "at": "2026-10-05T16:45:58.177346Z",
+      "symbol": "AMZN",
+      "asset_class": "us_equity",
+      "side": "buy",
+      "quantity": 42.0,
+      "quantity_unit": "shares",
+      "price_usd": 252.98,
+      "sleeve": "intraday"
+    },
+    {
+      "execution_key": "6ca834be3d8e33b9017c5e90fc5901f1f0a8c6bbb39e0976fc7e90f892fc4eb4",
+      "at": "2026-10-05T16:45:58.955051Z",
+      "symbol": "AMZN",
+      "asset_class": "us_equity",
+      "side": "buy",
+      "quantity": 6.0,
+      "quantity_unit": "shares",
+      "price_usd": 252.98,
+      "sleeve": "intraday"
+    },
+    {
+      "execution_key": "1e2d1bce4a5738aee3402f33f29ee8549cb8a48ec0d92610db9c0ad4aa5aff1b",
+      "at": "2026-10-05T16:46:00.093648Z",
+      "symbol": "AMZN",
+      "asset_class": "us_equity",
+      "side": "buy",
+      "quantity": 13.0,
+      "quantity_unit": "shares",
+      "price_usd": 252.98,
+      "sleeve": "intraday"
+    },
+    {
+      "execution_key": "4a7b8872e19752eecea980b58fc3176f6b084042e1fa4834d833d12c211e685f",
+      "at": "2026-10-05T16:46:01.417536Z",
+      "symbol": "AMZN",
+      "asset_class": "us_equity",
+      "side": "buy",
+      "quantity": 2.0,
+      "quantity_unit": "shares",
+      "price_usd": 252.98,
+      "sleeve": "intraday"
+    },
+    {
+      "execution_key": "c4fdee3cbede0d1de579682840cab6b53a9cbb78028eb4d50d9dae2b63cc5c41",
+      "at": "2026-10-05T16:46:02.142736Z",
+      "symbol": "AMZN",
+      "asset_class": "us_equity",
+      "side": "buy",
+      "quantity": 1.0,
+      "quantity_unit": "shares",
+      "price_usd": 252.98,
+      "sleeve": "intraday"
+    },
+    {
+      "execution_key": "0e05f899ea5fccf12010aa2d01b3aa9cb7b9e0b47e0e8d1296d9cc7595caaed6",
+      "at": "2026-10-05T16:46:03.098373Z",
+      "symbol": "AMZN",
+      "asset_class": "us_equity",
+      "side": "buy",
+      "quantity": 1.0,
+      "quantity_unit": "shares",
+      "price_usd": 252.98,
+      "sleeve": "intraday"
+    },
+    {
+      "execution_key": "47c152883e2513b1f23029297031db8ea8dbba35da7d3a875ffdcb64b7069739",
+      "at": "2026-10-05T17:15:35.924132Z",
+      "symbol": "AVGO",
+      "asset_class": "us_equity",
+      "side": "buy",
+      "quantity": 45.0,
+      "quantity_unit": "shares",
+      "price_usd": 363.02,
+      "sleeve": "intraday"
+    },
+    {
+      "execution_key": "f74c1b03f52af1821dca1a5a85c79c9cd8f1e88b9b2aea66306449ca7e892713",
+      "at": "2026-10-05T18:16:04.235494Z",
+      "symbol": "NVDA",
+      "asset_class": "us_equity",
+      "side": "buy",
+      "quantity": 67.0,
+      "quantity_unit": "shares",
+      "price_usd": 238.27,
+      "sleeve": "intraday"
+    },
+    {
+      "execution_key": "8e7ccd5dd9d55bec30c19d3bbb35fd2883dfed8be7c20d4f4e15c9360cf013ac",
+      "at": "2026-10-05T19:41:05.78578Z",
+      "symbol": "AMZN",
+      "asset_class": "us_equity",
+      "side": "sell",
+      "quantity": 65.0,
+      "quantity_unit": "shares",
+      "price_usd": 253.31,
+      "sleeve": "intraday"
+    },
+    {
+      "execution_key": "078a38346eede48a3facbe43791a24f9e816ff337358757df9e92414f12327d0",
+      "at": "2026-10-05T19:41:06.19349Z",
+      "symbol": "AVGO",
+      "asset_class": "us_equity",
+      "side": "sell",
+      "quantity": 39.0,
+      "quantity_unit": "shares",
+      "price_usd": 362.86,
+      "sleeve": "intraday"
+    },
+    {
+      "execution_key": "e07e92c0566b754526ab06a607f15eb9f2c5c129f61d56c00145eb7c658eb1ab",
+      "at": "2026-10-05T19:41:06.355617Z",
+      "symbol": "NVDA",
+      "asset_class": "us_equity",
+      "side": "sell",
+      "quantity": 67.0,
+      "quantity_unit": "shares",
+      "price_usd": 239.73,
+      "sleeve": "intraday"
+    },
+    {
+      "execution_key": "4f7953ccbd896d2b8472e64781e0b8cdb9825ee1d4bbcd3784439e1611eb4e6b",
+      "at": "2026-10-05T19:41:07.550889Z",
+      "symbol": "AVGO",
+      "asset_class": "us_equity",
+      "side": "sell",
+      "quantity": 6.0,
+      "quantity_unit": "shares",
+      "price_usd": 362.86,
+      "sleeve": "intraday"
+    }
+  ],
+  "fill_count": 12,
+  "positions": [
+    {
+      "symbol": "CRM",
+      "qty": "42",
+      "avg_entry_price": "235.99",
+      "current_price": "229.665",
+      "market_value": "9645.93",
+      "unrealized_pl": "-265.65"
+    },
+    {
+      "symbol": "CVX",
+      "qty": "48",
+      "avg_entry_price": "204.863542",
+      "current_price": "206.415",
+      "market_value": "9907.92",
+      "unrealized_pl": "74.469984"
+    },
+    {
+      "symbol": "MSFT",
+      "qty": "19",
+      "avg_entry_price": "519.691579",
+      "current_price": "524.86",
+      "market_value": "9972.34",
+      "unrealized_pl": "98.199999"
+    },
+    {
+      "symbol": "PFE",
+      "qty": "351",
+      "avg_entry_price": "28.44",
+      "current_price": "27.395",
+      "market_value": "9615.645",
+      "unrealized_pl": "-366.795"
+    },
+    {
+      "symbol": "TMO",
+      "qty": "14",
+      "avg_entry_price": "669.78",
+      "current_price": "676.005",
+      "market_value": "9464.07",
+      "unrealized_pl": "87.15"
+    }
+  ],
+  "positions_basis": {
+    "as_of": "2026-10-05T15:59:45.508480566-04:00",
+    "source": "last archived pre-close broker snapshot; not official closing marks"
+  },
+  "closing_positions": null,
+  "options_positions": [],
+  "performance": {
+    "observed_change_from_previous_usd": 176.95,
+    "observed_return_from_previous": 0.0017774673195130042,
+    "first_to_last_observed_change_usd": 99.24,
+    "realized_gross_usd": 112.07,
+    "fees_usd": null,
+    "closed_trades": 3,
+    "wins": 2,
+    "losses": 1,
+    "closed_trade_details": [
+      {
+        "symbol": "AMZN",
+        "sleeve": "intraday",
+        "quantity": 65.0,
+        "buy_notional_usd": 16443.7,
+        "sell_notional_usd": 16465.15,
+        "realized_gross_usd": 21.45,
+        "fees_usd": null
+      },
+      {
+        "symbol": "AVGO",
+        "sleeve": "intraday",
+        "quantity": 45.0,
+        "buy_notional_usd": 16335.9,
+        "sell_notional_usd": 16328.7,
+        "realized_gross_usd": -7.2,
+        "fees_usd": null
+      },
+      {
+        "symbol": "NVDA",
+        "sleeve": "intraday",
+        "quantity": 67.0,
+        "buy_notional_usd": 15964.09,
+        "sell_notional_usd": 16061.91,
+        "realized_gross_usd": 97.82,
+        "fees_usd": null
+      }
+    ],
+    "observed_session_max_drawdown": 0.0034466709498705006,
+    "max_drawdown_from_system_peak_observed_today": 0.007737137600881683,
+    "current_drawdown_as_of_preclose": 0.0033135032829215705,
+    "sleeves_first_observed": {
+      "intraday": {
+        "budget": 50000,
+        "market_value": 0,
+        "params": {
+          "opening_range_minutes": 30,
+          "stop_pct": 0.015,
+          "top_n": 3,
+          "volume_ratio": 1.5
+        },
+        "stage": "baseline_paper_experiment",
+        "tracked_equity": 49991.599969999996
+      },
+      "swing": {
+        "budget": 50000,
+        "market_value": 48602.66,
+        "params": {
+          "momentum": 60,
+          "stop_pct": 0.05,
+          "top_n": 5,
+          "trend": 60
+        },
+        "stage": "baseline_paper_experiment",
+        "tracked_equity": 49624.129983000006
+      }
+    },
+    "sleeves_last_observed": {
+      "intraday": {
+        "budget": 50000,
+        "market_value": 0,
+        "params": {
+          "opening_range_minutes": 30,
+          "stop_pct": 0.015,
+          "top_n": 3,
+          "volume_ratio": 1.5
+        },
+        "stage": "baseline_paper_experiment",
+        "tracked_equity": 50103.66997
+      },
+      "swing": {
+        "budget": 50000,
+        "market_value": 48604.86,
+        "params": {
+          "momentum": 60,
+          "stop_pct": 0.05,
+          "top_n": 5,
+          "trend": 60
+        },
+        "stage": "baseline_paper_experiment",
+        "tracked_equity": 49626.329983
+      }
+    },
+    "sleeve_valuation_note": "Sequential requests and accounting timestamps differ; do not force reconciliation to total equity"
+  },
+  "audit": {
+    "conclusion": "有限审核：3笔日内往返毛利112.07美元，15:41清空；确认退出保护空档、时钟及收盘/现金归因缺口，无参数升级。",
+    "report": "2026-10-05.review.txt",
+    "issues": [
+      "Official close equity and positions unknown",
+      "One observed stop-coverage gap affecting three symbols during cancel-to-exit handover",
+      "Sell pre-order quotes unavailable",
+      "AMZN/NVDA quote and local intent clock ordering differs",
+      "Initial startup stall; first equity observation 09:32:20",
+      "Unreconciled -0.35 USD cash difference; fees and external flows unknown"
+    ],
+    "order_checks": [
+      {
+        "sequence": 10633,
+        "at": "2026-10-05T16:45:56.890331+00:00",
+        "sleeve": "intraday",
+        "symbol": "AMZN",
+        "side": "buy",
+        "quantity": "65",
+        "type": "limit",
+        "limit": "253.21",
+        "strategy": {
+          "params": {
+            "opening_range_minutes": 30,
+            "stop_pct": 0.015,
+            "top_n": 3,
+            "volume_ratio": 1.5
+          },
+          "stage": "baseline_paper_experiment"
+        },
+        "fill_count": 6,
+        "vwap": 252.98000000000002,
+        "limit_pass": true,
+        "ask_slippage_bps": -4.346279979453582,
+        "pre_order": {
+          "budget": 50000,
+          "account_available": 48829.979999999996,
+          "sleeve_exposure": 0,
+          "reserved": 0,
+          "quantity": 65,
+          "limit": 253.21,
+          "stop": 249.17,
+          "decision_clock": "2026-10-05T12:45:57.013854-04:00",
+          "signal": {
+            "price": 253.12,
+            "reason": "30m opening-range breakout; volume 2.15x; close above session VWAP 251.8286",
+            "score": 1.72753675,
+            "signal_time": "2026-10-05T12:45:00-04:00",
+            "stop_pct": 0.015,
+            "symbol": "AMZN",
+            "volume_ratio": 2.14950364,
+            "vwap": 251.8286125
+          },
+          "quote": {
+            "ap": 253.09,
+            "bp": 252.96,
+            "t": "2026-10-05T16:45:57.002279414Z"
+          }
+        },
+        "limit_notional_usd": 16458.65,
+        "quote_minus_local_intent_ms": 111.94800000000001,
+        "quote_minus_decision_clock_ms": -11.575000000000001
+      },
+      {
+        "sequence": 10960,
+        "at": "2026-10-05T17:15:34.955487+00:00",
+        "sleeve": "intraday",
+        "symbol": "AVGO",
+        "side": "buy",
+        "quantity": "45",
+        "type": "limit",
+        "limit": "363.2",
+        "strategy": {
+          "params": {
+            "opening_range_minutes": 30,
+            "stop_pct": 0.015,
+            "top_n": 3,
+            "volume_ratio": 1.5
+          },
+          "stage": "baseline_paper_experiment"
+        },
+        "fill_count": 1,
+        "vwap": 363.02,
+        "limit_pass": true,
+        "ask_slippage_bps": 0.0,
+        "pre_order": {
+          "budget": 50000,
+          "account_available": 32402.225000000006,
+          "sleeve_exposure": 16451.175,
+          "reserved": 0,
+          "quantity": 45,
+          "limit": 363.2,
+          "stop": 357.47,
+          "decision_clock": "2026-10-05T13:15:35.161948-04:00",
+          "signal": {
+            "price": 362.84,
+            "reason": "30m opening-range breakout; volume 1.60x; close above session VWAP 360.7507",
+            "score": 2.20615881,
+            "signal_time": "2026-10-05T13:15:00-04:00",
+            "stop_pct": 0.015,
+            "symbol": "AVGO",
+            "volume_ratio": 1.60239518,
+            "vwap": 360.75070995
+          },
+          "quote": {
+            "ap": 363.02,
+            "bp": 362.91,
+            "t": "2026-10-05T17:15:34.002301525Z"
+          }
+        },
+        "limit_notional_usd": 16344.0,
+        "quote_minus_local_intent_ms": -953.1859999999999,
+        "quote_minus_decision_clock_ms": -1159.6470000000002
+      },
+      {
+        "sequence": 11655,
+        "at": "2026-10-05T18:16:02.542346+00:00",
+        "sleeve": "intraday",
+        "symbol": "NVDA",
+        "side": "buy",
+        "quantity": "67",
+        "type": "limit",
+        "limit": "238.38",
+        "strategy": {
+          "params": {
+            "opening_range_minutes": 30,
+            "stop_pct": 0.015,
+            "top_n": 3,
+            "volume_ratio": 1.5
+          },
+          "stage": "baseline_paper_experiment"
+        },
+        "fill_count": 1,
+        "vwap": 238.27,
+        "limit_pass": true,
+        "ask_slippage_bps": 0.0,
+        "pre_order": {
+          "budget": 50000,
+          "account_available": 15994.429999999993,
+          "sleeve_exposure": 32815.35,
+          "reserved": 0,
+          "quantity": 67,
+          "limit": 238.38,
+          "stop": 234.68,
+          "decision_clock": "2026-10-05T14:16:02.794291-04:00",
+          "signal": {
+            "price": 237.97,
+            "reason": "30m opening-range breakout; volume 2.09x; close above session VWAP 237.0302",
+            "score": 1.54179296,
+            "signal_time": "2026-10-05T14:15:00-04:00",
+            "stop_pct": 0.015,
+            "symbol": "NVDA",
+            "volume_ratio": 2.09486094,
+            "vwap": 237.03022246
+          },
+          "quote": {
+            "ap": 238.27,
+            "bp": 238.25,
+            "t": "2026-10-05T18:16:02.827858975Z"
+          }
+        },
+        "limit_notional_usd": 15971.46,
+        "quote_minus_local_intent_ms": 285.512,
+        "quote_minus_decision_clock_ms": 33.567
+      },
+      {
+        "sequence": 12467,
+        "at": "2026-10-05T19:41:04.233291+00:00",
+        "sleeve": "intraday",
+        "symbol": "AMZN",
+        "side": "sell",
+        "quantity": "65",
+        "type": "market",
+        "limit": null,
+        "strategy": {
+          "params": {
+            "opening_range_minutes": 30,
+            "stop_pct": 0.015,
+            "top_n": 3,
+            "volume_ratio": 1.5
+          },
+          "stage": "baseline_paper_experiment"
+        },
+        "fill_count": 1,
+        "vwap": 253.31000000000003,
+        "limit_pass": null,
+        "ask_slippage_bps": null,
+        "exit_reason": "pending_exit,unprotected_position,intraday_close",
+        "sell_slippage_bps": null
+      },
+      {
+        "sequence": 12472,
+        "at": "2026-10-05T19:41:04.544749+00:00",
+        "sleeve": "intraday",
+        "symbol": "AVGO",
+        "side": "sell",
+        "quantity": "45",
+        "type": "market",
+        "limit": null,
+        "strategy": {
+          "params": {
+            "opening_range_minutes": 30,
+            "stop_pct": 0.015,
+            "top_n": 3,
+            "volume_ratio": 1.5
+          },
+          "stage": "baseline_paper_experiment"
+        },
+        "fill_count": 2,
+        "vwap": 362.86,
+        "limit_pass": null,
+        "ask_slippage_bps": null,
+        "exit_reason": "pending_exit,unprotected_position,intraday_close",
+        "sell_slippage_bps": null
+      },
+      {
+        "sequence": 12477,
+        "at": "2026-10-05T19:41:05.006359+00:00",
+        "sleeve": "intraday",
+        "symbol": "NVDA",
+        "side": "sell",
+        "quantity": "67",
+        "type": "market",
+        "limit": null,
+        "strategy": {
+          "params": {
+            "opening_range_minutes": 30,
+            "stop_pct": 0.015,
+            "top_n": 3,
+            "volume_ratio": 1.5
+          },
+          "stage": "baseline_paper_experiment"
+        },
+        "fill_count": 1,
+        "vwap": 239.73,
+        "limit_pass": null,
+        "ask_slippage_bps": null,
+        "exit_reason": "pending_exit,unprotected_position,intraday_close",
+        "sell_slippage_bps": null
+      }
+    ],
+    "stop_snapshot_gaps": [
+      {
+        "sequence": 12465,
+        "at": "2026-10-05T19:41:04.036788+00:00",
+        "symbols": [
+          "AMZN",
+          "AVGO",
+          "NVDA"
+        ]
+      }
+    ],
+    "broker_snapshots": 708,
+    "run_count": 354,
+    "run_status_counts": {
+      "completed": 353,
+      "completed_with_alerts": 1
+    },
+    "event_counts": {
+      "run_started": 354,
+      "broker_snapshot": 708,
+      "entry_gate": 106,
+      "selection": 354,
+      "equity_observation": 354,
+      "run_finished": 354,
+      "entry_decision": 1623,
+      "quote_observed": 3,
+      "order_intent": 6,
+      "order_response": 6,
+      "order_submitted": 6,
+      "order_observed": 9,
+      "fill_observed": 6,
+      "broker_fill_activity": 12,
+      "broker_fill_attribution": 12,
+      "cancel_requested": 3,
+      "cancel_acknowledged": 3,
+      "cancel_confirmed": 3,
+      "exit_reason": 3
+    },
+    "research_samples_summary": {
+      "observations": 21240,
+      "runs": 354,
+      "rows_per_run_distribution": {
+        "60": 354
+      },
+      "unique_strategy_symbol_bar_params": 300,
+      "missing_bar_time": 120,
+      "unevaluated": 0,
+      "max_sequence": 62760,
+      "by_sleeve": {
+        "swing": {
+          "observations": 17700,
+          "unique_strategy_symbol_bar_params": 50
+        },
+        "intraday": {
+          "observations": 3540,
+          "unique_strategy_symbol_bar_params": 250
+        }
+      },
+      "missing_time_reason": "120 intraday observations marked outside_entry_window; excluded from timestamp-based unique count",
+      "note": "300 unique timestamp/parameter tuples are not 300 independent tradable opportunities; repeated observations retained privately"
+    },
+    "input_coverage": {
+      "daily": 354,
+      "intraday": 354
+    },
+    "selection_runs_missing_inputs": 0,
+    "selection_runs_missing_samples": 0,
+    "missing_event_blobs": 0,
+    "missing_dataset_blobs": 0,
+    "unknown_position_observations": 0,
+    "max_gross_positions_usd": 97607.74,
+    "max_sleeve_market_value_usd": {
+      "swing": 48692.975,
+      "intraday": 48914.619999999995
+    },
+    "post_session_stops": [
+      {
+        "symbol": "PFE",
+        "qty": "351",
+        "type": "stop",
+        "status": "new",
+        "stop_price": "27.01",
+        "time_in_force": "gtc"
+      },
+      {
+        "symbol": "MSFT",
+        "qty": "19",
+        "type": "stop",
+        "status": "new",
+        "stop_price": "493.52",
+        "time_in_force": "gtc"
+      },
+      {
+        "symbol": "CRM",
+        "qty": "42",
+        "type": "stop",
+        "status": "new",
+        "stop_price": "223.97",
+        "time_in_force": "gtc"
+      },
+      {
+        "symbol": "CVX",
+        "qty": "48",
+        "type": "stop",
+        "status": "new",
+        "stop_price": "194.43",
+        "time_in_force": "gtc"
+      },
+      {
+        "symbol": "TMO",
+        "qty": "14",
+        "type": "stop",
+        "status": "new",
+        "stop_price": "634.72",
+        "time_in_force": "gtc"
+      }
+    ],
+    "hypotheses": [
+      "Reduce cancel-to-exit protection gap without weakening reconciliation",
+      "Capture sell pre-order quotes and reconcile clocks",
+      "Reconcile non-FILL fees and cash movements"
+    ],
+    "parameter_promotions": 0
+  },
+  "replies": [
+    {
+      "id": "codex-20261005-daily-exit-gap-update",
+      "in_reply_to": {
+        "path": "exchange/claude/2026-10-02.json",
+        "topic": "日内退出无保护窗口",
+        "qid": null,
+        "source_commit": "c60b10264250c3ea481d0c1a6ce350abb87d6d5f",
+        "source_blob": "bd10c1773095ef59c6fa992868930b434595134d"
+      },
+      "evidence_as_of": "2026-10-05T20:15:54.181877+00:00",
+      "answer": "新增本日证据：15:40发起3张保护止损撤单，15:41:04快照中三只日内仓位仍在且止损已撤，15:41:05—07实际平仓。本次没有测试replace替代方案，不宣称能消除保护空档；后续验证须保留防重复和不确定订单对账。"
+    }
+  ]
+}
