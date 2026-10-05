@@ -1,6 +1,6 @@
 {
  "source": "alphavantage",
- "fetched_at": "2026-10-05T09:00:26-04:00",
+ "fetched_at": "2026-10-05T09:10:16-04:00",
  "fetched_on": "2026-10-05",
  "symbols": [
   "AAPL",
@@ -127,6 +127,13 @@
   "XOM"
  ],
  "series": {
+  "us2y": {
+   "unit": "%",
+   "date": "2026-10-01",
+   "latest": 4.78,
+   "chg_1d": -0.1,
+   "chg_20d": 0.39
+  },
   "us10y": {
    "unit": "%",
    "date": "2026-10-01",
@@ -142,13 +149,11 @@
    "chg_20d": 9.13
   }
  },
- "errors": {
-  "us2y": "alpha vantage TREASURY_YIELD: Thank you for using Alpha Vantage! Please consider spreading out your free API requests more sparingly (1 request per second). You may subscribe to any of the premium pla"
- },
+ "errors": {},
  "news": {
   "TMO": {
    "articles": 3,
-   "sentiment": 0.431,
+   "sentiment": 0.43,
    "label": "偏多",
    "top": [
     {
@@ -161,15 +166,15 @@
     },
     {
      "relevance": 1.0,
-     "score": 0.499,
+     "score": 0.494,
      "title": "Thermo Fisher Scientific accelerates market access by prioritizing the right KOLs",
      "source": "MedTech Dive",
      "url": "https://www.medtechdive.com/spons/thermo-fisher-scientific-accelerates-market-access-by-prioritizing-the-righ/831441/",
      "published": "20261005T090615"
     },
     {
-     "relevance": 0.62,
-     "score": 0.227,
+     "relevance": 0.602,
+     "score": 0.222,
      "title": "RBC Raises Price Target on Danaher to $250 From $215, Keeps Outperform Rating",
      "source": "marketscreener.com",
      "url": "https://www.marketscreener.com/news/rbc-raises-price-target-on-danaher-to-250-from-215-keeps-outperform-rating-ce785ddbd08cf726",
@@ -177,14 +182,76 @@
     }
    ]
   },
-  "MSFT": {
-   "articles": 23,
-   "sentiment": 0.189,
+  "JPM": {
+   "articles": 26,
+   "sentiment": 0.184,
    "label": "略偏多",
    "top": [
     {
      "relevance": 1.0,
-     "score": 0.306,
+     "score": 0.443,
+     "title": "Chase opens new branch in Bluffton",
+     "source": "The State",
+     "url": "https://www.thestate.com/news/article317494203.html",
+     "published": "20261005T091806"
+    },
+    {
+     "relevance": 1.0,
+     "score": 0.406,
+     "title": "Chase opens new branch in Bluffton",
+     "source": "Bluffton Today",
+     "url": "https://www.blufftontoday.com/story/news/2026/10/05/chase-holds-ribbon-cutting-for-new-branch-in-bluffton/91993350007/",
+     "published": "20261005T090234"
+    },
+    {
+     "relevance": 0.957,
+     "score": 0.292,
+     "title": "15,324 JPMorgan Chase & Co. $JPM Shares Purchased by CX Institutional",
+     "source": "MarketBeat",
+     "url": "https://www.marketbeat.com/instant-alerts/filing-15324-jpmorgan-chase-co-jpm-shares-purchased-by-cx-institutional-2026-10-05/",
+     "published": "20261005T070853"
+    }
+   ]
+  },
+  "BAC": {
+   "articles": 14,
+   "sentiment": 0.06,
+   "label": "中性",
+   "top": [
+    {
+     "relevance": 1.0,
+     "score": -0.22,
+     "title": "Jefferies cuts target for Bank of America stock from USD 75 to USD 70",
+     "source": "AD HOC NEWS",
+     "url": "https://www.ad-hoc-news.de/boerse/news/corporate-news/jefferies-cuts-target-for-bank-of-america-stock-from-usd-75-to-usd-70/70232894",
+     "published": "20261005T115108"
+    },
+    {
+     "relevance": 1.0,
+     "score": 0.403,
+     "title": "MassMutual Private Wealth & Trust FSB Purchases 107,466 Shares of Bank of America Corporation $BAC",
+     "source": "MarketBeat",
+     "url": "https://www.marketbeat.com/instant-alerts/filing-massmutual-private-wealth-trust-fsb-purchases-107466-shares-of-bank-of-america-corporation-bac-2026-10-05/",
+     "published": "20261005T110742"
+    },
+    {
+     "relevance": 1.0,
+     "score": -0.335,
+     "title": "Goldman Sachs Adjusts Price Target on Bank of America to $66 From $76, Maintains Buy Rating",
+     "source": "www.marketscreener.com",
+     "url": "https://www.marketscreener.com/news/goldman-sachs-adjusts-price-target-on-bank-of-america-to-66-from-76-maintains-buy-rating-ce785ddbd089ff25",
+     "published": "20261005T101820"
+    }
+   ]
+  },
+  "MSFT": {
+   "articles": 23,
+   "sentiment": 0.187,
+   "label": "略偏多",
+   "top": [
+    {
+     "relevance": 1.0,
+     "score": 0.347,
      "title": "Nadella's Next Act: Can Microsoft's AI Bet Match Cloud Success?",
      "source": "The Tech Buzz",
      "url": "https://www.techbuzz.ai/articles/nadella-s-next-act-can-microsoft-s-ai-bet-match-cloud-success",
@@ -192,7 +259,7 @@
     },
     {
      "relevance": 1.0,
-     "score": 0.843,
+     "score": 0.81,
      "title": "Microsoft stock adds US$1 trillion in its best quarter since 1998",
      "source": "Wealth Professional",
      "url": "https://www.wealthprofessional.ca/news/industry-news/microsoft-stock-adds-us1-trillion-in-its-best-quarter-since-1998/393691",
@@ -200,7 +267,7 @@
     },
     {
      "relevance": 1.0,
-     "score": 0.459,
+     "score": 0.487,
      "title": "Wells Fargo raises target for Microsoft stock from USD 700 to USD 725",
      "source": "AD HOC NEWS",
      "url": "https://www.ad-hoc-news.de/boerse/news/corporate-news/wells-fargo-raises-target-for-microsoft-stock-from-usd-700-to-usd-725/70232116",
@@ -210,43 +277,43 @@
   },
   "GOOGL": {
    "articles": 12,
-   "sentiment": 0.086,
+   "sentiment": 0.085,
    "label": "中性",
    "top": [
     {
-     "relevance": 0.736,
-     "score": 0.149,
+     "relevance": 0.724,
+     "score": 0.118,
      "title": "Nadella's Next Act: Can Microsoft's AI Bet Match Cloud Success?",
      "source": "The Tech Buzz",
      "url": "https://www.techbuzz.ai/articles/nadella-s-next-act-can-microsoft-s-ai-bet-match-cloud-success",
      "published": "20261005T123748"
     },
     {
-     "relevance": 0.648,
-     "score": 0.113,
-     "title": "Don't Sell Netflix: NFLX Is the One Streaming Pick I'd Add to Today",
-     "source": "The Globe and Mail",
-     "url": "https://www.theglobeandmail.com/investing/markets/markets-news/motley/4953188/don-t-sell-netflix-nflx-is-the-one-streaming-pick-i-d-add-to-today/",
-     "published": "20261004T234235"
+     "relevance": 0.643,
+     "score": 0.143,
+     "title": "Apple tightens Mac security for AI agents",
+     "source": "Techzine Global",
+     "url": "https://www.techzine.eu/news/security/144745/apple-tightens-mac-security-for-ai-agents/",
+     "published": "20261005T095120"
     },
     {
-     "relevance": 0.632,
-     "score": 0.233,
-     "title": "Did Cheaper Loan Repricing Just Shift Pitney Bowes (PBI) Investment Narrative?",
-     "source": "Simply Wall Street",
-     "url": "https://simplywall.st/stocks/us/commercial-services/nyse-pbi/pitney-bowes/news/did-cheaper-loan-repricing-just-shift-pitney-bowes-pbi-inves",
-     "published": "20261004T225713"
+     "relevance": 0.634,
+     "score": -0.335,
+     "title": "Michael Burry Raises Red Flag on Oracle’s $664B Backlog and AI Spending: ‘The Customer Is Now the Lender’",
+     "source": "Benzinga",
+     "url": "https://www.benzinga.com/markets/equities/26/10/62154739/michael-burry-raises-red-flag-on-oracles-664b-backlog-and-ai-spending-the-customer-is-now-the-lender",
+     "published": "20261005T075935"
     }
    ]
   },
   "AMZN": {
-   "articles": 24,
-   "sentiment": 0.255,
+   "articles": 23,
+   "sentiment": 0.259,
    "label": "略偏多",
    "top": [
     {
      "relevance": 1.0,
-     "score": 0.345,
+     "score": 0.309,
      "title": "Amazon.com, Inc. $AMZN Shares Newly Acquired by Succession Financial Inc.",
      "source": "MarketBeat",
      "url": "https://www.marketbeat.com/instant-alerts/filing-amazoncom-inc-amzn-shares-newly-acquired-by-succession-financial-inc-2026-10-05/",
@@ -254,7 +321,7 @@
     },
     {
      "relevance": 1.0,
-     "score": 0.408,
+     "score": 0.405,
      "title": "Advisory Solutions Group LLC Buys New Stake in Amazon.com, Inc. $AMZN",
      "source": "MarketBeat",
      "url": "https://www.marketbeat.com/instant-alerts/filing-advisory-solutions-group-llc-buys-new-stake-in-amazoncom-inc-amzn-2026-10-05/",
@@ -262,7 +329,7 @@
     },
     {
      "relevance": 1.0,
-     "score": 0.395,
+     "score": 0.417,
      "title": "Amazon.com, Inc. $AMZN Stock Holdings Boosted by Azimuth Capital Investment Management LLC",
      "source": "MarketBeat",
      "url": "https://www.marketbeat.com/instant-alerts/filing-amazoncom-inc-amzn-stock-holdings-boosted-by-azimuth-capital-investment-management-llc-2026-10-05/",
@@ -272,12 +339,12 @@
   },
   "NVDA": {
    "articles": 30,
-   "sentiment": 0.199,
+   "sentiment": 0.194,
    "label": "略偏多",
    "top": [
     {
      "relevance": 1.0,
-     "score": 0.493,
+     "score": 0.473,
      "title": "Nvidia Partner Hon Hai Beats Sales Estimates Due to AI Frenzy",
      "source": "Bloomberg.com",
      "url": "https://www.bloomberg.com/news/articles/2026-10-05/nvidia-partner-hon-hai-beats-sales-estimates-due-to-ai-frenzy",
@@ -285,15 +352,15 @@
     },
     {
      "relevance": 1.0,
-     "score": 0.428,
+     "score": 0.414,
      "title": "Nvidia Stock Briefly Tops Key Level as Earnings Season Puts AI Spending in Focus",
      "source": "Benzinga",
      "url": "https://www.benzinga.com/markets/equities/26/10/62152809/nvidia-stock-briefly-tops-key-level-as-earnings-season-puts-ai-spending-in-focus",
      "published": "20261004T181450"
     },
     {
-     "relevance": 0.943,
-     "score": 0.645,
+     "relevance": 0.941,
+     "score": 0.612,
      "title": "Nvidia Partner Hon Hai Beats Sales Estimates Due to AI Frenzy",
      "source": "Yahoo Finance",
      "url": "https://finance.yahoo.com/technology/ai/articles/nvidia-partner-hon-hai-beats-074315755.html",
@@ -303,11 +370,11 @@
   },
   "META": {
    "articles": 9,
-   "sentiment": -0.058,
+   "sentiment": -0.06,
    "label": "中性",
    "top": [
     {
-     "relevance": 0.814,
+     "relevance": 0.847,
      "score": 0.015,
      "title": "AMD Has Promised OpenAI and Meta Up to 320 Million Shares for a Penny Each. Here's What That Does to the Share Count.",
      "source": "The Globe and Mail",
@@ -315,16 +382,16 @@
      "published": "20261005T104506"
     },
     {
-     "relevance": 0.726,
-     "score": 0.034,
+     "relevance": 0.712,
+     "score": 0.008,
      "title": "Apple tightens Mac security for AI agents",
      "source": "Techzine Global",
      "url": "https://www.techzine.eu/news/security/144745/apple-tightens-mac-security-for-ai-agents/",
      "published": "20261005T095120"
     },
     {
-     "relevance": 0.642,
-     "score": -0.318,
+     "relevance": 0.636,
+     "score": -0.346,
      "title": "Michael Burry Raises Red Flag on Oracle’s $664B Backlog and AI Spending: ‘The Customer Is Now the Lender’",
      "source": "Benzinga",
      "url": "https://www.benzinga.com/markets/equities/26/10/62154739/michael-burry-raises-red-flag-on-oracles-664b-backlog-and-ai-spending-the-customer-is-now-the-lender",
@@ -333,13 +400,13 @@
    ]
   },
   "WFC": {
-   "articles": 28,
-   "sentiment": 0.075,
+   "articles": 27,
+   "sentiment": 0.081,
    "label": "中性",
    "top": [
     {
      "relevance": 1.0,
-     "score": -0.294,
+     "score": -0.26,
      "title": "JPMorgan Chase Earned More in 2025 Than Bank of America and Wells Fargo Combined. Can the Stock Keep Outrunning Them?",
      "source": "The Globe and Mail",
      "url": "https://www.theglobeandmail.com/investing/markets/stocks/WFC/pressreleases/4960472/jpmorgan-chase-earned-more-in-2025-than-bank-of-america-and-wells-fargo-combined-can-the-stock-keep-outrunning-them/",
@@ -347,7 +414,7 @@
     },
     {
      "relevance": 1.0,
-     "score": 0.046,
+     "score": 0.01,
      "title": "Wells Fargo to Announce Third Quarter 2026 Earnings on Oct. 13, 2026",
      "source": "wellsfargo.com",
      "url": "https://newsroom.wf.com/news-releases/news-details/2026/Wells-Fargo-to-Announce-Third-Quarter-2026-Earnings-on-Oct--13-2026/default.aspx",
@@ -355,7 +422,7 @@
     },
     {
      "relevance": 1.0,
-     "score": 0.038,
+     "score": 0.045,
      "title": "Wells Fargo to Announce Third Quarter 2026 Earnings on Oct. 13, 2026",
      "source": "Business Wire",
      "url": "https://www.businesswire.com/news/home/20261005655050/en/Wells-Fargo-to-Announce-Third-Quarter-2026-Earnings-on-Oct.-13-2026",
@@ -370,7 +437,7 @@
    "top": [
     {
      "relevance": 1.0,
-     "score": 0.415,
+     "score": 0.412,
      "title": "Morgan Stanley bullish on Continental as tyre margins and cash returns rise",
      "source": "Yahoo Finance Singapore",
      "url": "https://sg.finance.yahoo.com/news/morgan-stanley-bullish-continental-tyre-103822405.html",
@@ -378,15 +445,15 @@
     },
     {
      "relevance": 1.0,
-     "score": 0.324,
+     "score": 0.335,
      "title": "What is Morgan Stanley’s (MS) Economic Moat, and is it Widening or Narrowing?",
      "source": "Yahoo Finance Singapore",
      "url": "https://sg.finance.yahoo.com/news/morgan-stanley-ms-economic-moat-210650766.html",
      "published": "20261004T210744"
     },
     {
-     "relevance": 0.956,
-     "score": -0.209,
+     "relevance": 0.979,
+     "score": -0.205,
      "title": "Morgan Stanley cuts Group 1 Automotive stock rating on execution risks",
      "source": "Investing.com Nigeria",
      "url": "https://ng.investing.com/news/stock-market-news/morgan-stanley-cuts-group-1-automotive-stock-rating-on-execution-risks-93CH-2720871",
@@ -394,71 +461,9 @@
     }
    ]
   },
-  "JPM": {
-   "articles": 25,
-   "sentiment": 0.18,
-   "label": "略偏多",
-   "top": [
-    {
-     "relevance": 1.0,
-     "score": 0.422,
-     "title": "Chase opens new branch in Bluffton",
-     "source": "The State",
-     "url": "https://www.thestate.com/news/article317494203.html",
-     "published": "20261005T091806"
-    },
-    {
-     "relevance": 1.0,
-     "score": 0.45,
-     "title": "Chase opens new branch in Bluffton",
-     "source": "Bluffton Today",
-     "url": "https://www.blufftontoday.com/story/news/2026/10/05/chase-holds-ribbon-cutting-for-new-branch-in-bluffton/91993350007/",
-     "published": "20261005T090234"
-    },
-    {
-     "relevance": 0.995,
-     "score": 0.257,
-     "title": "15,324 JPMorgan Chase & Co. $JPM Shares Purchased by CX Institutional",
-     "source": "MarketBeat",
-     "url": "https://www.marketbeat.com/instant-alerts/filing-15324-jpmorgan-chase-co-jpm-shares-purchased-by-cx-institutional-2026-10-05/",
-     "published": "20261005T070853"
-    }
-   ]
-  },
-  "BAC": {
-   "articles": 13,
-   "sentiment": 0.043,
-   "label": "中性",
-   "top": [
-    {
-     "relevance": 1.0,
-     "score": -0.222,
-     "title": "Jefferies cuts target for Bank of America stock from USD 75 to USD 70",
-     "source": "AD HOC NEWS",
-     "url": "https://www.ad-hoc-news.de/boerse/news/corporate-news/jefferies-cuts-target-for-bank-of-america-stock-from-usd-75-to-usd-70/70232894",
-     "published": "20261005T115108"
-    },
-    {
-     "relevance": 1.0,
-     "score": 0.382,
-     "title": "MassMutual Private Wealth & Trust FSB Purchases 107,466 Shares of Bank of America Corporation $BAC",
-     "source": "MarketBeat",
-     "url": "https://www.marketbeat.com/instant-alerts/filing-massmutual-private-wealth-trust-fsb-purchases-107466-shares-of-bank-of-america-corporation-bac-2026-10-05/",
-     "published": "20261005T110742"
-    },
-    {
-     "relevance": 1.0,
-     "score": -0.341,
-     "title": "Goldman Sachs Adjusts Price Target on Bank of America to $66 From $76, Maintains Buy Rating",
-     "source": "www.marketscreener.com",
-     "url": "https://www.marketscreener.com/news/goldman-sachs-adjusts-price-target-on-bank-of-america-to-66-from-76-maintains-buy-rating-ce785ddbd089ff25",
-     "published": "20261005T101820"
-    }
-   ]
-  },
   "GS": {
-   "articles": 17,
-   "sentiment": 0.13,
+   "articles": 18,
+   "sentiment": 0.127,
    "label": "中性",
    "top": [
     {
@@ -470,16 +475,16 @@
      "published": "20261005T000508"
     },
     {
-     "relevance": 0.941,
-     "score": 0.345,
+     "relevance": 0.944,
+     "score": 0.316,
      "title": "Hermès Gets Rare Sell Calls as Goldman, UBS See Weaker Growth",
      "source": "Bloomberg.com",
      "url": "https://www.bloomberg.com/news/articles/2026-10-05/hermes-gets-rare-sell-calls-as-goldman-ubs-see-weaker-growth",
      "published": "20261005T093900"
     },
     {
-     "relevance": 0.834,
-     "score": 0.23,
+     "relevance": 0.844,
+     "score": 0.231,
      "title": "Goldman Sachs Adjusts Price Target on Citigroup to $156 From $169, Maintains Buy Rating",
      "source": "marketscreener.com",
      "url": "https://www.marketscreener.com/news/goldman-sachs-adjusts-price-target-on-citigroup-to-156-from-169-maintains-buy-rating-ce785ddbd089ff22",
@@ -489,12 +494,12 @@
   },
   "C": {
    "articles": 9,
-   "sentiment": 0.115,
+   "sentiment": 0.116,
    "label": "中性",
    "top": [
     {
      "relevance": 1.0,
-     "score": -0.248,
+     "score": -0.243,
      "title": "Goldman Sachs Adjusts Price Target on Citigroup to $156 From $169, Maintains Buy Rating",
      "source": "marketscreener.com",
      "url": "https://www.marketscreener.com/news/goldman-sachs-adjusts-price-target-on-citigroup-to-156-from-169-maintains-buy-rating-ce785ddbd089ff22",
@@ -502,15 +507,15 @@
     },
     {
      "relevance": 1.0,
-     "score": 0.113,
+     "score": 0.107,
      "title": "Citigroup Global Markets Introduces Auto-Callable Notes Tied to VanEck Gold Miners ETF",
      "source": "Kalkine Media",
      "url": "https://kalkinemedia.com/us/news/announcements/citigroup-global-markets-introduces-auto-callable-notes-tied-to-vaneck-gold-miners-etf",
      "published": "20261005T100820"
     },
     {
-     "relevance": 0.998,
-     "score": 0.706,
+     "relevance": 0.966,
+     "score": 0.738,
      "title": "Once 'Nearly Impossible,' Now Reality: Brian Armstrong Cheers Citi Partnership, Says Coinbase 'Has Come a Long Way'",
      "source": "Benzinga",
      "url": "https://www.benzinga.com/crypto/cryptocurrency/26/10/62154401/brian-armstrong-citi-coinbase-partnership-crypto-banking",
@@ -520,12 +525,12 @@
   },
   "BKNG": {
    "articles": 1,
-   "sentiment": 0.484,
+   "sentiment": 0.486,
    "label": "偏多",
    "top": [
     {
      "relevance": 1.0,
-     "score": 0.484,
+     "score": 0.486,
      "title": "Booking Holdings spends nearly $9 billion a year to reach travelers. Its CFO explains how AI is changing trip planning",
      "source": "Fortune",
      "url": "https://fortune.com/2026/10/05/booking-holdings-spends-nearly-9-billion-a-year-reach-travelers-cfo-ai-changing-trip-planning/",
@@ -535,28 +540,28 @@
   },
   "INTC": {
    "articles": 4,
-   "sentiment": -0.217,
+   "sentiment": -0.208,
    "label": "略偏空",
    "top": [
     {
      "relevance": 1.0,
-     "score": -0.448,
+     "score": -0.418,
      "title": "Intel Shares Fall as TSMC Discusses Potential Terafab Collaboration",
      "source": "Yahoo Finance",
      "url": "https://finance.yahoo.com/markets/stocks/articles/intel-shares-fall-tsmc-discusses-121249159.html",
      "published": "20261005T071200"
     },
     {
-     "relevance": 0.748,
-     "score": -0.418,
+     "relevance": 0.723,
+     "score": -0.412,
      "title": "Align Technology, Group 1 Automotive And Other Big Stocks Moving Lower In Monday’s Pre-Market Session",
      "source": "Benzinga",
      "url": "https://www.benzinga.com/trading-ideas/movers/26/10/62158836/hubspot-intel-and-other-big-stocks-moving-lower-in-mondays-pre-market-session",
      "published": "20261005T120225"
     },
     {
-     "relevance": 0.627,
-     "score": 0.128,
+     "relevance": 0.634,
+     "score": 0.104,
      "title": "Nvidia Stock Briefly Tops Key Level as Earnings Season Puts AI Spending in Focus",
      "source": "Benzinga",
      "url": "https://www.benzinga.com/markets/equities/26/10/62152809/nvidia-stock-briefly-tops-key-level-as-earnings-season-puts-ai-spending-in-focus",
@@ -566,28 +571,28 @@
   },
   "AMAT": {
    "articles": 3,
-   "sentiment": 0.212,
+   "sentiment": 0.222,
    "label": "略偏多",
    "top": [
     {
      "relevance": 1.0,
-     "score": 0.147,
+     "score": 0.144,
      "title": "Applied Materials expands Besi partnership and Applied Materials stock trades at EUR 478.50",
      "source": "AD HOC NEWS",
      "url": "https://www.ad-hoc-news.de/boerse/news/corporate-news/applied-materials-expands-besi-partnership-and-applied-materials-stock/70232964",
      "published": "20261005T120126"
     },
     {
-     "relevance": 0.628,
-     "score": 0.305,
+     "relevance": 0.614,
+     "score": 0.335,
      "title": "E&R Engineering to Launch New Malaysia Plant: Expanding Global Packaging Materials Production and Localized Services",
      "source": "Morningstar",
      "url": "https://www.morningstar.com/news/pr-newswire/20261004hk63207/er-engineering-to-launch-new-malaysia-plant-expanding-global-packaging-materials-production-and-localized-services",
      "published": "20261004T230355"
     },
     {
-     "relevance": 0.595,
-     "score": 0.22,
+     "relevance": 0.563,
+     "score": 0.237,
      "title": "Toshiba Is Doubling Hard Drive Output. Seagate (STX) and Western Digital (WDC) Fell 10% Each",
      "source": "Yahoo Finance",
      "url": "https://finance.yahoo.com/markets/stocks/articles/toshiba-doubling-hard-drive-output-014807229.html",
@@ -597,12 +602,12 @@
   },
   "AAPL": {
    "articles": 11,
-   "sentiment": 0.141,
+   "sentiment": 0.136,
    "label": "中性",
    "top": [
     {
      "relevance": 1.0,
-     "score": 0.207,
+     "score": 0.225,
      "title": "Investigating Apple's Standing In Technology Hardware, Storage & Peripherals Industry Compared To Com",
      "source": "Benzinga",
      "url": "https://www.benzinga.com/news/26/10/62155683/investigating-apple-s-standing-technology-hardware-storage-amp-peripherals-industry-compared-competi",
@@ -610,7 +615,7 @@
     },
     {
      "relevance": 1.0,
-     "score": 0.144,
+     "score": 0.134,
      "title": "Apple tightens Mac security for AI agents",
      "source": "Techzine Global",
      "url": "https://www.techzine.eu/news/security/144745/apple-tightens-mac-security-for-ai-agents/",
@@ -618,7 +623,7 @@
     },
     {
      "relevance": 1.0,
-     "score": 0.053,
+     "score": 0.074,
      "title": "Apple Inc. $AAPL Stake Decreased by Leo H. Evart Inc.",
      "source": "MarketBeat",
      "url": "https://www.marketbeat.com/instant-alerts/filing-apple-inc-aapl-stake-decreased-by-leo-h-evart-inc-2026-10-05/",
@@ -628,12 +633,12 @@
   },
   "VZ": {
    "articles": 4,
-   "sentiment": 0.005,
+   "sentiment": 0.014,
    "label": "中性",
    "top": [
     {
      "relevance": 1.0,
-     "score": 0.385,
+     "score": 0.412,
      "title": "Does Verizon's 6.2% Dividend Yield Have A Starlink Risk? (NYSE:VZ)",
      "source": "Seeking Alpha",
      "url": "https://seekingalpha.com/article/4951896-does-verizon-6_2-percent-dividend-yield-have-starlink-risk",
@@ -641,7 +646,7 @@
     },
     {
      "relevance": 1.0,
-     "score": -0.238,
+     "score": -0.23,
      "title": "Don't Race Out To Buy Verizon Communications Inc. (NYSE:VZ) Just Because It's Going Ex-Dividend",
      "source": "Simply Wall Street",
      "url": "https://simplywall.st/stocks/us/telecom/nyse-vz/verizon-communications/news/dont-race-out-to-buy-verizon-communications-inc-nysevz-just",
@@ -649,7 +654,7 @@
     },
     {
      "relevance": 1.0,
-     "score": -0.238,
+     "score": -0.212,
      "title": "Scotiabank cuts target for Verizon Communications stock to USD 51.50",
      "source": "AD HOC NEWS",
      "url": "https://www.ad-hoc-news.de/boerse/news/corporate-news/scotiabank-cuts-target-for-verizon-communications-stock-to-usd-51-50/70231764",
@@ -659,12 +664,12 @@
   },
   "BSX": {
    "articles": 1,
-   "sentiment": -0.217,
+   "sentiment": -0.204,
    "label": "略偏空",
    "top": [
     {
-     "relevance": 0.96,
-     "score": -0.217,
+     "relevance": 0.951,
+     "score": -0.204,
      "title": "Citigroup Adjusts Price Target on Boston Scientific to $48 From $50, Keeps Neutral Rating",
      "source": "marketscreener.com",
      "url": "https://www.marketscreener.com/news/citigroup-adjusts-price-target-on-boston-scientific-to-48-from-50-keeps-neutral-rating-ce785ddbd08eff27",
@@ -674,43 +679,43 @@
   },
   "T": {
    "articles": 5,
-   "sentiment": 0.18,
+   "sentiment": 0.181,
    "label": "略偏多",
    "top": [
     {
-     "relevance": 0.748,
-     "score": 0.148,
+     "relevance": 0.737,
+     "score": 0.145,
      "title": "ASTS Stock Edges Up Overnight: Retail Traders Seize On T-Mobile Dropping Starlink Name From Satellite Page",
      "source": "TradingView",
      "url": "https://www.tradingview.com/news/stocktwits:22aceae31094b:0-asts-stock-edges-up-overnight-retail-traders-seize-on-t-mobile-dropping-starlink-name-from-satellite-page/",
      "published": "20261005T044423"
     },
     {
-     "relevance": 0.726,
-     "score": 0.217,
+     "relevance": 0.731,
+     "score": 0.236,
      "title": "Leidos Holdings stock adds AT&T technology leader to its board",
      "source": "AD HOC NEWS",
      "url": "https://www.ad-hoc-news.de/boerse/news/corporate-news/leidos-holdings-stock-adds-at-and-t-technology-leader-to-its-board/70227841",
      "published": "20261004T185258"
     },
     {
-     "relevance": 0.635,
-     "score": 0.143,
-     "title": "Leidos adds AT&T executive to board and Leidos Holdings stock costs EUR 105.05",
+     "relevance": 0.641,
+     "score": 0.066,
+     "title": "GE HealthCare stock pre-market at EUR 57.22: minus 0.10 percent",
      "source": "AD HOC NEWS",
-     "url": "https://www.ad-hoc-news.de/boerse/news/corporate-news/leidos-adds-at-and-t-executive-to-board-and-leidos-holdings-stock-costs/70232670",
-     "published": "20261005T112652"
+     "url": "https://www.ad-hoc-news.de/boerse/news/vorboerse/ge-healthcare-stock-pre-market-at-eur-57-22-minus-0-10-percent/70229808",
+     "published": "20261005T075042"
     }
    ]
   },
   "PFE": {
    "articles": 3,
-   "sentiment": 0.177,
+   "sentiment": 0.191,
    "label": "略偏多",
    "top": [
     {
      "relevance": 1.0,
-     "score": 0.465,
+     "score": 0.498,
      "title": "Pfizer’s Turnaround Could Be Bigger Than Investors Think, Set For 20% Upside",
      "source": "24/7 Wall St.",
      "url": "https://247wallst.com/investing/2026/10/05/pfizers-turnaround-could-be-bigger-than-investors-think-set-for-20-upside/",
@@ -718,15 +723,15 @@
     },
     {
      "relevance": 1.0,
-     "score": -0.132,
+     "score": -0.149,
      "title": "Pfizer Inc. Stock Grades | PFE",
      "source": "Barron's",
      "url": "https://www.barrons.com/market-data/stocks/pfe/stock-grader?amp%252525252525253Bmod=stock_picks_lp&amp%25252525252525253Bmod=stock_picks_lp&mod=quotes&amp%2525252525252525253Bmod=stock_picks_lp",
      "published": "20261005T044029"
     },
     {
-     "relevance": 0.632,
-     "score": 0.208,
+     "relevance": 0.64,
+     "score": 0.242,
      "title": "Precision Medicine: A 62-Asset Test Of Whether The Vertex Model Travels Beyond Oncology",
      "source": "insights.citeline.com",
      "url": "https://insights.citeline.com/in-vivo/innovation/advanced-therapies/precision-medicine-a-62-asset-test-of-whether-the-vertex-model-travels-beyond-oncology-2VRK5KZDBBBFLE5DKTQ4LOM64M/",
@@ -736,90 +741,90 @@
   },
   "NKE": {
    "articles": 4,
-   "sentiment": -0.098,
+   "sentiment": -0.092,
    "label": "中性",
    "top": [
     {
-     "relevance": 0.647,
-     "score": 0.031,
+     "relevance": 0.628,
+     "score": 0.036,
      "title": "Fossil Group, Inc. (NASDAQ:FOSL) Stock Now Rated \"Moderate Buy\" by Wall Street Analysts",
      "source": "MarketBeat",
      "url": "https://www.marketbeat.com/instant-alerts/consensus-fossil-group-inc-nasdaq-fosl-stock-now-rated-moderate-buy-by-wall-street-analysts-2026-10-05/",
      "published": "20261005T082920"
     },
     {
-     "relevance": 0.596,
-     "score": 0.014,
+     "relevance": 0.595,
+     "score": 0.011,
      "title": "Ambev S.A. $ABEV Stock Sold by Corient Private Wealth LP",
      "source": "MarketBeat",
      "url": "https://www.marketbeat.com/instant-alerts/filing-ambev-sa-abev-stock-sold-by-corient-private-wealth-lp-2026-10-05/",
      "published": "20261005T072645"
     },
     {
-     "relevance": 0.593,
-     "score": -0.142,
-     "title": "Corient Private Wealth LP Sells 28,548 Shares of Freshpet, Inc. $FRPT",
+     "relevance": 0.591,
+     "score": -0.316,
+     "title": "461,226 Axon Enterprise, Inc $AXON Shares Acquired by MassMutual Private Wealth & Trust FSB",
      "source": "MarketBeat",
-     "url": "https://www.marketbeat.com/instant-alerts/filing-corient-private-wealth-lp-sells-28548-shares-of-freshpet-inc-frpt-2026-10-05/",
-     "published": "20261005T073445"
+     "url": "https://www.marketbeat.com/instant-alerts/filing-461226-axon-enterprise-inc-axon-shares-acquired-by-massmutual-private-wealth-trust-fsb-2026-10-05/",
+     "published": "20261005T110943"
     }
    ]
   },
   "PLTR": {
-   "articles": 6,
-   "sentiment": 0.097,
+   "articles": 7,
+   "sentiment": 0.091,
    "label": "中性",
    "top": [
     {
-     "relevance": 0.607,
-     "score": 0.139,
+     "relevance": 0.641,
+     "score": 0.136,
      "title": "Roper Technologies (ROP) Board AI Pick Keeps Undervalued Narrative In Focus",
      "source": "Simply Wall Street",
      "url": "https://simplywall.st/stocks/us/software/nasdaq-rop/roper-technologies/news/roper-technologies-rop-board-ai-pick-keeps-undervalued-narra",
      "published": "20261005T091951"
     },
     {
-     "relevance": 0.597,
-     "score": 0.206,
-     "title": "461,226 Axon Enterprise, Inc $AXON Shares Acquired by MassMutual Private Wealth & Trust FSB",
+     "relevance": 0.629,
+     "score": 0.037,
+     "title": "Fiverr International (NYSE:FVRR) Stock Has Consensus Target Price of $12.56 According to Brokerages",
      "source": "MarketBeat",
-     "url": "https://www.marketbeat.com/instant-alerts/filing-461226-axon-enterprise-inc-axon-shares-acquired-by-massmutual-private-wealth-trust-fsb-2026-10-05/",
-     "published": "20261005T110943"
+     "url": "https://www.marketbeat.com/instant-alerts/consensus-fiverr-international-nyse-fvrr-stock-has-consensus-target-price-of-1256-according-to-brokerages-2026-10-05/",
+     "published": "20261005T065841"
     },
     {
-     "relevance": 0.594,
-     "score": 0.11,
-     "title": "Amazon.com, Inc. $AMZN Holdings Trimmed by Fund 1 Investments LLC",
+     "relevance": 0.598,
+     "score": 0.025,
+     "title": "Ambev S.A. $ABEV Stock Sold by Corient Private Wealth LP",
      "source": "MarketBeat",
-     "url": "https://www.marketbeat.com/instant-alerts/filing-amazoncom-inc-amzn-holdings-trimmed-by-fund-1-investments-llc-2026-10-05/",
-     "published": "20261005T070918"
+     "url": "https://www.marketbeat.com/instant-alerts/filing-ambev-sa-abev-stock-sold-by-corient-private-wealth-lp-2026-10-05/",
+     "published": "20261005T072645"
     }
    ]
   },
   "CSCO": {
    "articles": 3,
-   "sentiment": 0.28,
+   "sentiment": 0.297,
    "label": "略偏多",
    "top": [
     {
      "relevance": 1.0,
-     "score": 0.208,
+     "score": 0.216,
      "title": "MassMutual Private Wealth & Trust FSB Lowers Stock Holdings in Cisco Systems, Inc. $CSCO",
      "source": "MarketBeat",
      "url": "https://www.marketbeat.com/instant-alerts/filing-massmutual-private-wealth-trust-fsb-lowers-stock-holdings-in-cisco-systems-inc-csco-2026-10-05/",
      "published": "20261005T110754"
     },
     {
-     "relevance": 0.934,
-     "score": 0.458,
+     "relevance": 0.941,
+     "score": 0.486,
      "title": "WiFi NOW lands Extreme Networks, HPE, and Cisco as WiFi NOW Partners for the 2026-2027 season",
      "source": "Wi-Fi NOW Global",
      "url": "https://wifinowglobal.com/uncategorized/wifi-now-signs-up-extreme-networks-hpe-and-cisco-as-wifi-now-partners-for-the-2026-2027-season/",
      "published": "20261004T202738"
     },
     {
-     "relevance": 0.343,
-     "score": 0.004,
+     "relevance": 0.335,
+     "score": 0.006,
      "title": "Cisco Systems stock pre-market at EUR 99.73: plus 0.09 percent",
      "source": "AD HOC NEWS",
      "url": "https://www.ad-hoc-news.de/boerse/news/vorboerse/cisco-systems-stock-pre-market-at-eur-99-73-plus-0-09-percent/70229877",
@@ -829,12 +834,12 @@
   },
   "PANW": {
    "articles": 4,
-   "sentiment": 0.21,
+   "sentiment": 0.211,
    "label": "略偏多",
    "top": [
     {
      "relevance": 1.0,
-     "score": 0.127,
+     "score": 0.137,
      "title": "5,091 Palo Alto Networks, Inc. $PANW Shares Sold by MassMutual Private Wealth & Trust FSB",
      "source": "MarketBeat",
      "url": "https://www.marketbeat.com/instant-alerts/filing-5091-palo-alto-networks-inc-panw-shares-sold-by-massmutual-private-wealth-trust-fsb-2026-10-05/",
@@ -842,7 +847,7 @@
     },
     {
      "relevance": 1.0,
-     "score": 0.407,
+     "score": 0.41,
      "title": "Palo Alto Networks Stock And The AI Governance Shift Investors Should Watch",
      "source": "Simply Wall Street",
      "url": "https://simplywall.st/stocks/us/software/nasdaq-panw/palo-alto-networks/news/palo-alto-networks-stock-and-the-ai-governance-shift-investo",
@@ -850,7 +855,7 @@
     },
     {
      "relevance": 1.0,
-     "score": 0.047,
+     "score": 0.051,
      "title": "Palo Alto Networks, Inc. (PANW) Options Chain",
      "source": "Yahoo! Finance Canada",
      "url": "https://ca.finance.yahoo.com/quote/PANW/options/?date=1794528000&straddle=false&type=all",
@@ -860,12 +865,12 @@
   },
   "ORCL": {
    "articles": 8,
-   "sentiment": 0.176,
+   "sentiment": 0.175,
    "label": "略偏多",
    "top": [
     {
      "relevance": 1.0,
-     "score": 0.082,
+     "score": 0.074,
      "title": "Violich Capital Management Inc. Decreases Stock Holdings in Oracle Corporation $ORCL",
      "source": "MarketBeat",
      "url": "https://www.marketbeat.com/instant-alerts/filing-violich-capital-management-inc-decreases-stock-holdings-in-oracle-corporation-orcl-2026-10-05/",
@@ -873,7 +878,7 @@
     },
     {
      "relevance": 1.0,
-     "score": -0.416,
+     "score": -0.437,
      "title": "Michael Burry Raises Red Flag on Oracle’s $664B Backlog and AI Spending: ‘The Customer Is Now the Lender’",
      "source": "TradingView",
      "url": "https://www.tradingview.com/news/benzinga:3a7f8e2e3094b:0-michael-burry-raises-red-flag-on-oracle-s-664b-backlog-and-ai-spending-the-customer-is-now-the-lender/",
@@ -881,7 +886,7 @@
     },
     {
      "relevance": 1.0,
-     "score": -0.407,
+     "score": -0.411,
      "title": "Michael Burry Raises Red Flag on Oracle’s $664B Backlog and AI Spending: ‘The Customer Is Now the Lender’",
      "source": "Benzinga",
      "url": "https://www.benzinga.com/markets/equities/26/10/62154739/michael-burry-raises-red-flag-on-oracles-664b-backlog-and-ai-spending-the-customer-is-now-the-lender",
@@ -890,13 +895,13 @@
    ]
   },
   "MRNA": {
-   "articles": 3,
-   "sentiment": 0.087,
+   "articles": 4,
+   "sentiment": 0.088,
    "label": "中性",
    "top": [
     {
      "relevance": 1.0,
-     "score": -0.234,
+     "score": -0.238,
      "title": "ETFs Are Net Sellers of Moderna (MRNA) on Thursday",
      "source": "GuruFocus",
      "url": "https://www.gurufocus.com/news/9109091/etfs-are-net-sellers-of-moderna-mrna-on-thursday",
@@ -904,30 +909,30 @@
     },
     {
      "relevance": 1.0,
-     "score": 0.425,
+     "score": 0.418,
      "title": "Moderna (MRNA) Soars 175% in Q3: Can The Stock Keep Running?",
      "source": "Yahoo Finance Singapore",
      "url": "https://sg.finance.yahoo.com/news/moderna-mrna-soars-175-q3-030725604.html",
      "published": "20261005T024427"
     },
     {
-     "relevance": 0.309,
-     "score": 0.03,
-     "title": "Moderna to join Nasdaq 100, replacing Warner Bros Discovery",
-     "source": "www.marketscreener.com",
-     "url": "https://www.marketscreener.com/news/moderna-to-join-nasdaq-100-replacing-warner-bros-discovery-ce785ddbdd81f026",
-     "published": "20261005T063125"
+     "relevance": 0.721,
+     "score": 0.121,
+     "title": "Grail Jumps as Cancer Test Nears Market",
+     "source": "The Daily Upside",
+     "url": "https://www.thedailyupside.com/industries/healthcare/grail-jumps-as-cancer-test-nears-market/",
+     "published": "20261005T040537"
     }
    ]
   },
   "DHR": {
    "articles": 2,
-   "sentiment": 0.448,
+   "sentiment": 0.454,
    "label": "偏多",
    "top": [
     {
      "relevance": 1.0,
-     "score": 0.491,
+     "score": 0.47,
      "title": "RBC Raises Price Target on Danaher to $250 From $215, Keeps Outperform Rating",
      "source": "marketscreener.com",
      "url": "https://www.marketscreener.com/news/rbc-raises-price-target-on-danaher-to-250-from-215-keeps-outperform-rating-ce785ddbd08cf726",
@@ -935,7 +940,7 @@
     },
     {
      "relevance": 1.0,
-     "score": 0.405,
+     "score": 0.438,
      "title": "DANAHER CORPORATION : RBC RAISES TARGET PRICE TO $250 FROM $215",
      "source": "Moomoo",
      "url": "https://www.moomoo.com/news/flash/1000587904/danaher-corporation-rbc-raises-target-price-to-250-from-215",
@@ -945,20 +950,20 @@
   },
   "WMT": {
    "articles": 2,
-   "sentiment": 0.213,
+   "sentiment": 0.222,
    "label": "略偏多",
    "top": [
     {
-     "relevance": 0.697,
-     "score": 0.282,
+     "relevance": 0.708,
+     "score": 0.291,
      "title": "Krispy Kreme Q2 2026 Earnings Call Transcript",
      "source": "Benzinga",
      "url": "https://www.benzinga.com/news/26/10/62156927/krispy-kreme-q2-2026-earnings-call-transcript",
      "published": "20261005T105235"
     },
     {
-     "relevance": 0.615,
-     "score": 0.135,
+     "relevance": 0.619,
+     "score": 0.144,
      "title": "Costco Q4 Comp Sales Up 9.4%; FY26 Net Sales Hit $297.2B",
      "source": "The Shelby Report",
      "url": "https://theshelbyreport.com/2026/10/04/costco-q4-comp-sales-up-9-4-fy26-net-sales-hit-297-2b/",
@@ -981,15 +986,15 @@
     },
     {
      "relevance": 1.0,
-     "score": 0.009,
+     "score": 0.049,
      "title": "AMD Has Promised OpenAI and Meta Up to 320 Million Shares for a Penny Each. Here's What That Does to the Share Count.",
      "source": "The Globe and Mail",
      "url": "https://www.theglobeandmail.com/investing/markets/stocks/NVDA-Q/pressreleases/4957662/amd-has-promised-openai-and-meta-up-to-320-million-shares-for-a-penny-each-here-s-what-that-does-to-the-share-count/",
      "published": "20261005T104506"
     },
     {
-     "relevance": 0.829,
-     "score": -0.212,
+     "relevance": 0.846,
+     "score": -0.218,
      "title": "Stocktwits M&A Watch: Paramount-Warner Bros Combination, Skyworks-Qorvo Merger, AMD’s World Labs Acquisition In Focus",
      "source": "Stocktwits",
      "url": "https://stocktwits.com/news-articles/markets/equity/stocktwits-m-and-a-watch-paramount-warner-bros-combination-skyworks-qorvo-merger-amd-s-world-labs-acquisition-in-focus/cZDpoFbRBSi",
@@ -999,43 +1004,43 @@
   },
   "MU": {
    "articles": 8,
-   "sentiment": 0.232,
+   "sentiment": 0.228,
    "label": "略偏多",
    "top": [
     {
-     "relevance": 0.971,
-     "score": 0.472,
+     "relevance": 0.986,
+     "score": 0.489,
      "title": "Micron Has a Major Catalyst: A Huge Buyback Could Be Coming",
      "source": "Benzinga",
      "url": "https://www.benzinga.com/markets/equities/26/10/62152836/micron-stock-has-a-major-catalyst-a-huge-buyback-could-be-coming",
      "published": "20261004T181239"
     },
     {
-     "relevance": 0.724,
-     "score": 0.104,
-     "title": "SanDisk Corp. R (BW9.HA) interactive stock chart",
-     "source": "Yahoo Finance Australia",
-     "url": "https://au.finance.yahoo.com/quote/BW9.HA/chart/",
-     "published": "20261004T215345"
-    },
-    {
-     "relevance": 0.722,
-     "score": 0.341,
+     "relevance": 0.746,
+     "score": 0.346,
      "title": "Nvidia Partner Hon Hai Beats Sales Estimates Due to AI Frenzy",
      "source": "Yahoo Finance",
      "url": "https://finance.yahoo.com/technology/ai/articles/nvidia-partner-hon-hai-beats-074315755.html",
      "published": "20261005T081258"
+    },
+    {
+     "relevance": 0.724,
+     "score": 0.133,
+     "title": "SanDisk Corp. R (BW9.HA) interactive stock chart",
+     "source": "Yahoo Finance Australia",
+     "url": "https://au.finance.yahoo.com/quote/BW9.HA/chart/",
+     "published": "20261004T215345"
     }
    ]
   },
   "ANET": {
    "articles": 2,
-   "sentiment": 0.266,
+   "sentiment": 0.267,
    "label": "略偏多",
    "top": [
     {
      "relevance": 1.0,
-     "score": 0.412,
+     "score": 0.423,
      "title": "MassMutual Private Wealth & Trust FSB Purchases 88,361 Shares of Arista Networks, Inc. $ANET",
      "source": "MarketBeat",
      "url": "https://www.marketbeat.com/instant-alerts/filing-massmutual-private-wealth-trust-fsb-purchases-88361-shares-of-arista-networks-inc-anet-2026-10-05/",
@@ -1043,7 +1048,7 @@
     },
     {
      "relevance": 1.0,
-     "score": 0.12,
+     "score": 0.111,
      "title": "Arista (ANET) Has $13.3 Billion of Cash and No Debt at All. What Is That Worth?",
      "source": "Yahoo Finance Singapore",
      "url": "https://sg.finance.yahoo.com/news/arista-anet-13-3-billion-010014704.html",
@@ -1053,55 +1058,55 @@
   },
   "NEE": {
    "articles": 2,
-   "sentiment": 0.237,
+   "sentiment": 0.236,
    "label": "略偏多",
    "top": [
     {
-     "relevance": 0.632,
-     "score": 0.349,
-     "title": "DTE Energy Completes 100MW Cold Creek Solar Park in Michigan",
-     "source": "IndexBox",
-     "url": "https://www.indexbox.io/blog/dte-energy-completes-100mw-cold-creek-solar-park-in-michigan/",
-     "published": "20261005T103411"
-    },
-    {
-     "relevance": 0.61,
-     "score": 0.121,
+     "relevance": 0.631,
+     "score": 0.144,
      "title": "Dominion Energy stock reports a quarterly earnings beat",
      "source": "AD HOC NEWS",
      "url": "https://www.ad-hoc-news.de/boerse/news/corporate-news/dominion-energy-stock-reports-a-quarterly-earnings-beat/70228070",
      "published": "20261004T194236"
+    },
+    {
+     "relevance": 0.605,
+     "score": 0.332,
+     "title": "DTE Energy Completes 100MW Cold Creek Solar Park in Michigan",
+     "source": "IndexBox",
+     "url": "https://www.indexbox.io/blog/dte-energy-completes-100mw-cold-creek-solar-park-in-michigan/",
+     "published": "20261005T103411"
     }
    ]
   },
   "TSLA": {
-   "articles": 3,
-   "sentiment": 0.182,
+   "articles": 4,
+   "sentiment": 0.216,
    "label": "略偏多",
    "top": [
     {
-     "relevance": 0.605,
-     "score": 0.317,
+     "relevance": 0.644,
+     "score": 0.305,
      "title": "OKX and NYSE Owner ICE Plan 24/7 Tokenized Stock Trading Under SEC Exemption",
      "source": "Decrypt News",
      "url": "https://decrypt.co/380032/okx-and-nyse-owner-ice-plan-24-7-tokenized-stock-trading-under-sec-exemption",
      "published": "20261005T102341"
     },
     {
-     "relevance": 0.601,
-     "score": 0.322,
+     "relevance": 0.626,
+     "score": 0.326,
      "title": "Cardano Climbs 10% In Rally",
      "source": "Investing.com",
      "url": "https://www.investing.com/news/cryptocurrency-news/cardano-climbs-10-in-rally-4930987",
      "published": "20261005T022724"
     },
     {
-     "relevance": 0.589,
-     "score": -0.1,
-     "title": "NIO (NIO) Is Down 5.9% After Q3 Delivery Growth Slows Has The Bull Case Changed?",
-     "source": "Yahoo Finance",
-     "url": "https://finance.yahoo.com/markets/stocks/articles/nio-nio-down-5-9-220550752.html",
-     "published": "20261004T215450"
+     "relevance": 0.613,
+     "score": 0.325,
+     "title": "Solana spot ETFs see $2.43M net inflows led by Grayscale and Fidelity funds in early October",
+     "source": "Pluang",
+     "url": "https://pluang.com/en/news-feed/etf-spot-solana-catat-inflow-neto-mingguan-2-juta-dolar",
+     "published": "20261005T030035"
     }
    ]
   },
@@ -1112,7 +1117,7 @@
    "top": [
     {
      "relevance": 1.0,
-     "score": 0.222,
+     "score": 0.194,
      "title": "What's Going On With Seagate Technology Stock Monday?",
      "source": "Benzinga",
      "url": "https://www.benzinga.com/markets/tech/26/10/62156369/whats-going-on-with-seagate-technology-stock-monday",
@@ -1120,15 +1125,15 @@
     },
     {
      "relevance": 1.0,
-     "score": 0.341,
+     "score": 0.348,
      "title": "Western Digital vs. Seagate: Which Is the Better AI Infrastructure Stock to Own for the Next 5 Years?",
      "source": "The Motley Fool",
      "url": "https://www.fool.com/investing/2026/10/04/western-digital-vs-seagate-which-is-the-better-ai/",
      "published": "20261004T175451"
     },
     {
-     "relevance": 0.958,
-     "score": -0.422,
+     "relevance": 0.99,
+     "score": -0.428,
      "title": "Toshiba Is Doubling Hard Drive Output. Seagate (STX) and Western Digital (WDC) Fell 10% Each",
      "source": "Yahoo Finance",
      "url": "https://finance.yahoo.com/markets/stocks/articles/toshiba-doubling-hard-drive-output-014807229.html",
@@ -1138,20 +1143,20 @@
   },
   "UBER": {
    "articles": 2,
-   "sentiment": 0.216,
+   "sentiment": 0.209,
    "label": "略偏多",
    "top": [
     {
      "relevance": 1.0,
-     "score": 0.26,
+     "score": 0.27,
      "title": "Wells Fargo Adjusts Price Target on Uber Technologies to $92 From $89, Keeps Overweight Rating",
      "source": "marketscreener.com",
      "url": "https://www.marketscreener.com/news/wells-fargo-adjusts-price-target-on-uber-technologies-to-92-from-89-keeps-overweight-rating-ce785ddbd089ff20",
      "published": "20261005T101902"
     },
     {
-     "relevance": 0.625,
-     "score": 0.145,
+     "relevance": 0.642,
+     "score": 0.114,
      "title": "Costco Q4 Comp Sales Up 9.4%; FY26 Net Sales Hit $297.2B",
      "source": "The Shelby Report",
      "url": "https://theshelbyreport.com/2026/10/04/costco-q4-comp-sales-up-9-4-fy26-net-sales-hit-297-2b/",
@@ -1161,12 +1166,12 @@
   },
   "KO": {
    "articles": 1,
-   "sentiment": -0.253,
+   "sentiment": -0.292,
    "label": "略偏空",
    "top": [
     {
      "relevance": 1.0,
-     "score": -0.253,
+     "score": -0.292,
      "title": "Wells Fargo Adjusts Price Target on Coca-Cola to $90 From $95, Keeps Overweight Rating",
      "source": "www.marketscreener.com",
      "url": "https://www.marketscreener.com/news/wells-fargo-adjusts-price-target-on-coca-cola-to-90-from-95-keeps-overweight-rating-ce785ddbd089f124",
@@ -1176,19 +1181,19 @@
   },
   "TXN": {
    "articles": 2,
-   "sentiment": 0.216,
+   "sentiment": 0.208,
    "label": "略偏多",
    "top": [
     {
      "relevance": 1.0,
-     "score": 0.347,
+     "score": 0.334,
      "title": "Texas Instruments raises dividend and Texas Instruments stock costs EUR 259.48",
      "source": "AD HOC NEWS",
      "url": "https://www.ad-hoc-news.de/boerse/news/corporate-news/texas-instruments-raises-dividend-and-texas-instruments-stock-costs-eur/70231980",
      "published": "20261005T100227"
     },
     {
-     "relevance": 0.617,
+     "relevance": 0.618,
      "score": 0.004,
      "title": "Cencora (COR) Adds Robert E. Sanchez To Its Board, Is The Stock Still Cheap?",
      "source": "Simply Wall Street",
@@ -1199,28 +1204,28 @@
   },
   "HPE": {
    "articles": 4,
-   "sentiment": 0.263,
+   "sentiment": 0.278,
    "label": "略偏多",
    "top": [
     {
-     "relevance": 0.988,
-     "score": 0.408,
+     "relevance": 1.0,
+     "score": 0.409,
      "title": "WiFi NOW lands Extreme Networks, HPE, and Cisco as WiFi NOW Partners for the 2026-2027 season",
      "source": "Wi-Fi NOW Global",
      "url": "https://wifinowglobal.com/uncategorized/wifi-now-signs-up-extreme-networks-hpe-and-cisco-as-wifi-now-partners-for-the-2026-2027-season/",
      "published": "20261004T202738"
     },
     {
-     "relevance": 0.719,
-     "score": 0.319,
+     "relevance": 0.748,
+     "score": 0.347,
      "title": "Arrow Electronics expands HPE rights: Arrow Electronics stock sits 2.12 percent below its high",
      "source": "AD HOC NEWS",
      "url": "https://www.ad-hoc-news.de/boerse/news/nebenwerte/arrow-electronics-expands-hpe-rights-arrow-electronics-stock-sits-2-12/70229482",
      "published": "20261005T045431"
     },
     {
-     "relevance": 0.601,
-     "score": 0.112,
+     "relevance": 0.632,
+     "score": 0.104,
      "title": "Investigating Apple's Standing In Technology Hardware, Storage & Peripherals Industry Compared To Com",
      "source": "Benzinga",
      "url": "https://www.benzinga.com/news/26/10/62155683/investigating-apple-s-standing-technology-hardware-storage-amp-peripherals-industry-compared-competi",
@@ -1230,12 +1235,12 @@
   },
   "WDC": {
    "articles": 3,
-   "sentiment": -0.046,
+   "sentiment": -0.043,
    "label": "中性",
    "top": [
     {
      "relevance": 1.0,
-     "score": -0.433,
+     "score": -0.407,
      "title": "Toshiba Is Doubling Hard Drive Output. Seagate (STX) and Western Digital (WDC) Fell 10% Each",
      "source": "Yahoo Finance",
      "url": "https://finance.yahoo.com/markets/stocks/articles/toshiba-doubling-hard-drive-output-014807229.html",
@@ -1243,15 +1248,15 @@
     },
     {
      "relevance": 1.0,
-     "score": 0.236,
+     "score": 0.215,
      "title": "Western Digital vs. Seagate: Which Is the Better AI Infrastructure Stock to Own for the Next 5 Years?",
      "source": "The Motley Fool",
      "url": "https://www.fool.com/investing/2026/10/04/western-digital-vs-seagate-which-is-the-better-ai/",
      "published": "20261004T175451"
     },
     {
-     "relevance": 0.604,
-     "score": 0.125,
+     "relevance": 0.642,
+     "score": 0.123,
      "title": "Investigating Apple's Standing In Technology Hardware, Storage & Peripherals Industry Compared To Com",
      "source": "Benzinga",
      "url": "https://www.benzinga.com/news/26/10/62155683/investigating-apple-s-standing-technology-hardware-storage-amp-peripherals-industry-compared-competi",
@@ -1261,28 +1266,28 @@
   },
   "SMCI": {
    "articles": 3,
-   "sentiment": -0.045,
+   "sentiment": -0.031,
    "label": "中性",
    "top": [
     {
-     "relevance": 0.979,
-     "score": -0.33,
+     "relevance": 0.99,
+     "score": -0.32,
      "title": "California man arrested on charges of smuggling banned Nvidia chips to China; follows arrest of Super Micro Computer founder, may face 20 years in jail",
      "source": "The Times of India",
      "url": "https://timesofindia.indiatimes.com/technology/tech-news/california-man-arrested-on-charges-of-smuggling-banned-nvidia-chips-to-china-follows-arrest-of-super-micro-computer-founder-may-face-20-years-in-jail/articleshow/134684341.cms",
      "published": "20261005T031152"
     },
     {
-     "relevance": 0.631,
-     "score": 0.118,
+     "relevance": 0.62,
+     "score": 0.131,
      "title": "Investigating Apple's Standing In Technology Hardware, Storage & Peripherals Industry Compared To Com",
      "source": "Benzinga",
      "url": "https://www.benzinga.com/news/26/10/62155683/investigating-apple-s-standing-technology-hardware-storage-amp-peripherals-industry-compared-competi",
      "published": "20261005T095920"
     },
     {
-     "relevance": 0.567,
-     "score": 0.268,
+     "relevance": 0.57,
+     "score": 0.296,
      "title": "Silicon Motion Technology: Growth Potential in Memory Market",
      "source": "Intellectia AI",
      "url": "https://intellectia.ai/news/stock/silicon-motion-technology-growth-potential-in-memory-market",
@@ -1292,74 +1297,74 @@
   },
   "XOM": {
    "articles": 6,
-   "sentiment": 0.261,
+   "sentiment": 0.263,
    "label": "略偏多",
    "top": [
     {
      "relevance": 1.0,
-     "score": 0.475,
+     "score": 0.471,
      "title": "ExxonMobil, Visa Among 16 Dividend Growth Companies To Announce Annual Dividend Increases In October",
      "source": "Seeking Alpha",
      "url": "https://seekingalpha.com/article/4951879-exxonmobil-visa-among-16-dividend-growth-companies-to-announce-annual-dividend-increases-in-october",
      "published": "20261005T024236"
     },
     {
-     "relevance": 0.712,
-     "score": 0.349,
+     "relevance": 0.73,
+     "score": 0.329,
      "title": "ConocoPhillips (COP) sees US oil production exceeding 14mln BPD in 2027 if prices remain at current levels",
      "source": "Newsquawk",
      "url": "https://www.newsquawk.com/headlines/conocophillips-cop-sees-us-oil-production-exceeding-14mln-bpd-in-2027-if-prices-remain-at-current-levels",
      "published": "20261005T095043"
     },
     {
-     "relevance": 0.647,
-     "score": 0.225,
-     "title": "Suncor to sell offshore Canada oil stakes to Ithaca for $842 million",
-     "source": "Reuters",
-     "url": "https://www.reuters.com/business/energy/suncor-sell-canadian-offshore-assets-ithaca-108-billion-2026-10-05/",
-     "published": "20261005T011800"
+     "relevance": 0.63,
+     "score": 0.146,
+     "title": "BofA cuts target for SLB stock from USD 57.00 to USD 56.00",
+     "source": "AD HOC NEWS",
+     "url": "https://www.ad-hoc-news.de/boerse/news/corporate-news/bofa-cuts-target-for-slb-stock-from-usd-57-00-to-usd-56-00/70231132",
+     "published": "20261005T081536"
     }
    ]
   },
   "CVX": {
-   "articles": 6,
-   "sentiment": 0.198,
+   "articles": 5,
+   "sentiment": 0.178,
    "label": "略偏多",
    "top": [
     {
-     "relevance": 0.678,
-     "score": 0.323,
+     "relevance": 0.661,
+     "score": 0.322,
      "title": "ConocoPhillips (COP) sees US oil production exceeding 14mln BPD in 2027 if prices remain at current levels",
      "source": "Newsquawk",
      "url": "https://www.newsquawk.com/headlines/conocophillips-cop-sees-us-oil-production-exceeding-14mln-bpd-in-2027-if-prices-remain-at-current-levels",
      "published": "20261005T095043"
     },
     {
-     "relevance": 0.624,
-     "score": 0.022,
+     "relevance": 0.649,
+     "score": 0.04,
      "title": "Valero (VLO) vs Phillips 66 (PSX): Which is a Better Stock to Buy?",
      "source": "Yahoo Finance",
      "url": "https://finance.yahoo.com/markets/stocks/articles/valero-vlo-vs-phillips-66-214058034.html",
      "published": "20261004T214139"
     },
     {
-     "relevance": 0.613,
-     "score": 0.241,
-     "title": "Suncor to sell offshore Canada oil stakes to Ithaca for $842 million",
-     "source": "Reuters",
-     "url": "https://www.reuters.com/business/energy/suncor-sell-canadian-offshore-assets-ithaca-108-billion-2026-10-05/",
-     "published": "20261005T011800"
+     "relevance": 0.629,
+     "score": 0.149,
+     "title": "Woodside Retreats on Clean Energy to Double Down on LNG",
+     "source": "EnergyNow.com",
+     "url": "https://energynow.com/2026/08/woodside-retreats-on-clean-energy-to-double-down-on-lng/",
+     "published": "20261004T175743"
     }
    ]
   },
   "PG": {
    "articles": 4,
-   "sentiment": 0.084,
+   "sentiment": 0.095,
    "label": "中性",
    "top": [
     {
      "relevance": 1.0,
-     "score": 0.403,
+     "score": 0.432,
      "title": "The Four Priorities Powering P&G Product Supply",
      "source": "Procter & Gamble",
      "url": "https://us.pg.com/blogs/product-supply-four-priorities/",
@@ -1367,15 +1372,15 @@
     },
     {
      "relevance": 1.0,
-     "score": -0.176,
+     "score": -0.194,
      "title": "Procter & Gamble (PG) Pantene Launch Puts Its Pricey Valuation Back In Focus",
      "source": "Simply Wall Street",
      "url": "https://simplywall.st/stocks/us/household/nyse-pg/procter-gamble/news/procter-gamble-pg-pantene-launch-puts-its-pricey-valuation-b",
      "published": "20261005T012606"
     },
     {
-     "relevance": 0.846,
-     "score": 0.065,
+     "relevance": 0.813,
+     "score": 0.07,
      "title": "Jim Cramer Flags PepsiCo’s (PEP) Frito-Lay Problem While Pointing to Procter & Gamble (PG)",
      "source": "Yahoo! Finance Canada",
      "url": "https://ca.finance.yahoo.com/news/jim-cramer-flags-pepsico-pep-204243527.html",
@@ -1385,28 +1390,28 @@
   },
   "WBD": {
    "articles": 3,
-   "sentiment": 0.161,
+   "sentiment": 0.165,
    "label": "略偏多",
    "top": [
     {
-     "relevance": 0.92,
-     "score": 0.112,
+     "relevance": 0.905,
+     "score": 0.123,
      "title": "Stocktwits M&A Watch: Paramount-Warner Bros Combination, Skyworks-Qorvo Merger, AMD’s World Labs Acquisition In Focus",
      "source": "Stocktwits",
      "url": "https://stocktwits.com/news-articles/markets/equity/stocktwits-m-and-a-watch-paramount-warner-bros-combination-skyworks-qorvo-merger-amd-s-world-labs-acquisition-in-focus/cZDpoFbRBSi",
      "published": "20261005T073047"
     },
     {
-     "relevance": 0.712,
-     "score": 0.249,
+     "relevance": 0.734,
+     "score": 0.232,
      "title": "Bugs Bunny and friends will appear on Krispy Kreme doughnuts for the first time Oct. 6",
      "source": "Stock Titan",
      "url": "https://www.stocktitan.net/news/DNUT/trick-or-tweet-krispy-kreme-teams-up-with-warner-bros-for-a-u3llvozzge8s.html",
      "published": "20261005T093435"
     },
     {
-     "relevance": 0.639,
-     "score": 0.135,
+     "relevance": 0.635,
+     "score": 0.147,
      "title": "Moderna (MRNA) Soars 175% in Q3: Can The Stock Keep Running?",
      "source": "Yahoo Finance Singapore",
      "url": "https://sg.finance.yahoo.com/news/moderna-mrna-soars-175-q3-030725604.html",
@@ -1416,12 +1421,12 @@
   },
   "GLW": {
    "articles": 2,
-   "sentiment": 0.446,
+   "sentiment": 0.404,
    "label": "偏多",
    "top": [
     {
      "relevance": 1.0,
-     "score": 0.444,
+     "score": 0.403,
      "title": "Corning signs more than USD 3 billion fiber deal as Corning stock trades at EUR 146.67",
      "source": "AD HOC NEWS",
      "url": "https://www.ad-hoc-news.de/boerse/news/corporate-news/corning-signs-more-than-usd-3-billion-fiber-deal-as-corning-stock-trades/70231511",
@@ -1429,7 +1434,7 @@
     },
     {
      "relevance": 1.0,
-     "score": 0.448,
+     "score": 0.406,
      "title": "Corning agrees to fiber deal worth over USD 3 billion and Corning stock costs EUR 146.06",
      "source": "AD HOC NEWS",
      "url": "https://www.ad-hoc-news.de/boerse/news/corporate-news/corning-agrees-to-fiber-deal-worth-over-usd-3-billion-and-corning-stock/70226863",
@@ -1439,32 +1444,32 @@
   },
   "CRM": {
    "articles": 6,
-   "sentiment": 0.144,
-   "label": "中性",
+   "sentiment": 0.159,
+   "label": "略偏多",
    "top": [
     {
-     "relevance": 0.643,
-     "score": 0.33,
-     "title": "Palo Alto Networks Stock And The AI Governance Shift Investors Should Watch",
-     "source": "Simply Wall Street",
-     "url": "https://simplywall.st/stocks/us/software/nasdaq-panw/palo-alto-networks/news/palo-alto-networks-stock-and-the-ai-governance-shift-investo",
-     "published": "20261005T051258"
-    },
-    {
-     "relevance": 0.638,
-     "score": 0.107,
+     "relevance": 0.634,
+     "score": 0.118,
      "title": "Roper Technologies (ROP) Board AI Pick Keeps Undervalued Narrative In Focus",
      "source": "Simply Wall Street",
      "url": "https://simplywall.st/stocks/us/software/nasdaq-rop/roper-technologies/news/roper-technologies-rop-board-ai-pick-keeps-undervalued-narra",
      "published": "20261005T091951"
     },
     {
-     "relevance": 0.634,
-     "score": -0.247,
-     "title": "EnerSys (ENS) Climbed, But What Is Driving Attention Now?",
+     "relevance": 0.631,
+     "score": 0.348,
+     "title": "Palo Alto Networks Stock And The AI Governance Shift Investors Should Watch",
      "source": "Simply Wall Street",
-     "url": "https://simplywall.st/stocks/us/capital-goods/nyse-ens/enersys/news/enersys-ens-climbed-but-what-is-driving-attention-now/amp",
-     "published": "20261005T005742"
+     "url": "https://simplywall.st/stocks/us/software/nasdaq-panw/palo-alto-networks/news/palo-alto-networks-stock-and-the-ai-governance-shift-investo",
+     "published": "20261005T051258"
+    },
+    {
+     "relevance": 0.626,
+     "score": 0.343,
+     "title": "Did Cheaper Loan Repricing Just Shift Pitney Bowes (PBI) Investment Narrative?",
+     "source": "Simply Wall Street",
+     "url": "https://simplywall.st/stocks/us/commercial-services/nyse-pbi/pitney-bowes/news/did-cheaper-loan-repricing-just-shift-pitney-bowes-pbi-inves",
+     "published": "20261004T225713"
     }
    ]
   },
@@ -1475,7 +1480,7 @@
    "top": [
     {
      "relevance": 1.0,
-     "score": 0.49,
+     "score": 0.479,
      "title": "Huawei and Qualcomm Announce Broad Patent License Agreement",
      "source": "Qualcomm",
      "url": "https://www.qualcomm.com/news/releases/2026/10/huawei-and-qualcomm-announce-broad-patent-license-agreement",
@@ -1483,7 +1488,7 @@
     },
     {
      "relevance": 1.0,
-     "score": 0.41,
+     "score": 0.416,
      "title": "QCOM Gains Overnight After Patent Deal With China’s Huawei Covering AI Chip Tech",
      "source": "TradingView",
      "url": "https://www.tradingview.com/news/stocktwits:a04a6a2ea094b:0-qcom-gains-overnight-after-patent-deal-with-china-s-huawei-covering-ai-chip-tech/",
@@ -1491,7 +1496,7 @@
     },
     {
      "relevance": 1.0,
-     "score": 0.469,
+     "score": 0.483,
      "title": "Huawei and Qualcomm Announce Broad Patent License Agreement",
      "source": "The National Law Review",
      "url": "https://natlawreview.com/press-releases/huawei-and-qualcomm-announce-broad-patent-license-agreement",
@@ -1500,60 +1505,60 @@
    ]
   },
   "ABBV": {
-   "articles": 3,
-   "sentiment": 0.157,
+   "articles": 5,
+   "sentiment": 0.174,
    "label": "略偏多",
    "top": [
     {
      "relevance": 1.0,
-     "score": 0.446,
+     "score": 0.431,
      "title": "BofA raises target for AbbVie stock to USD 289.00",
      "source": "AD HOC NEWS",
      "url": "https://www.ad-hoc-news.de/boerse/news/corporate-news/bofa-raises-target-for-abbvie-stock-to-usd-289-00/70231046",
      "published": "20261005T080154"
     },
     {
-     "relevance": 0.991,
-     "score": -0.114,
+     "relevance": 0.987,
+     "score": -0.118,
      "title": "AbbVie Announced Its 340B Rebate Pilot on October 2. Here’s What It Means for the Stock Before Vraylar’s 2027 Medicare Price Cut",
      "source": "TIKR.com",
      "url": "https://www.tikr.com/blog/abbvie-announced-its-340b-rebate-pilot-on-october-2-heres-what-it-means-for-the-stock-before-vraylars-2027-medicare-price-cut",
      "published": "20261005T091204"
     },
     {
-     "relevance": 0.639,
-     "score": 0.124,
-     "title": "How Investors Are Reacting To Regeneron Pharmaceuticals (REGN) Sanofi Alliance Expansion",
-     "source": "Simply Wall Street",
-     "url": "https://simplywall.st/stocks/us/pharmaceuticals-biotech/nasdaq-regn/regeneron-pharmaceuticals/news/how-investors-are-reacting-to-regeneron-pharmaceuticals-regn",
-     "published": "20261004T193359"
+     "relevance": 0.943,
+     "score": 0.27,
+     "title": "Genmab’s latest phase 2 data spur claim ADC is ‘clearly superior’ to AbbVie’s Elahere",
+     "source": "Fierce Biotech",
+     "url": "https://www.fiercebiotech.com/biotech/genmab-data-spur-claim-adc-clearly-superior-abbvies-elahere",
+     "published": "20261005T080425"
     }
    ]
   },
   "IBM": {
    "articles": 3,
-   "sentiment": 0.03,
+   "sentiment": 0.055,
    "label": "中性",
    "top": [
     {
-     "relevance": 0.962,
-     "score": -0.141,
+     "relevance": 0.977,
+     "score": -0.118,
      "title": "IBM Stock Fell 22% in the Third Quarter. History Says It's Usually Higher a Year Later.",
      "source": "The Globe and Mail",
      "url": "https://www.theglobeandmail.com/investing/markets/stocks/IBM/pressreleases/4956456/ibm-stock-fell-22-in-the-third-quarter-history-says-its-usually-higher-a-year-later/",
      "published": "20261005T085009"
     },
     {
-     "relevance": 0.647,
-     "score": 0.216,
+     "relevance": 0.643,
+     "score": 0.236,
      "title": "Gartner Identifies Top Five Actions for CISOs To Take by End of 2026",
      "source": "SMEStreet",
      "url": "https://smestreet.in/technology/gartner-identifies-top-five-actions-for-cisos-to-take-by-end-of-2026-12624626",
      "published": "20261005T062732"
     },
     {
-     "relevance": 0.587,
-     "score": 0.105,
+     "relevance": 0.582,
+     "score": 0.144,
      "title": "FY2026 Earnings Estimate for PPL Issued By Scotiabank",
      "source": "MarketBeat",
      "url": "https://www.marketbeat.com/instant-alerts/estimates-fy2026-earnings-estimate-for-ppl-issued-by-scotiabank-2026-10-05/",
@@ -1562,29 +1567,21 @@
    ]
   },
   "HD": {
-   "articles": 3,
-   "sentiment": 0.123,
-   "label": "中性",
+   "articles": 2,
+   "sentiment": 0.207,
+   "label": "略偏多",
    "top": [
     {
      "relevance": 1.0,
-     "score": 0.305,
+     "score": 0.314,
      "title": "Home Depot stock pre-market at EUR 253.43: plus 0.65 percent",
      "source": "AD HOC NEWS",
      "url": "https://www.ad-hoc-news.de/boerse/news/vorboerse/home-depot-stock-pre-market-at-eur-253-43-plus-0-65-percent/70230362",
      "published": "20261005T084000"
     },
     {
-     "relevance": 1.0,
-     "score": 0.006,
-     "title": "Home Depot announces holiday decor while Home Depot stock trades at EUR 251.80",
-     "source": "AD HOC NEWS",
-     "url": "https://www.ad-hoc-news.de/boerse/news/corporate-news/home-depot-announces-holiday-decor-while-home-depot-stock-trades-at-eur/70226722",
-     "published": "20261004T175000"
-    },
-    {
-     "relevance": 0.643,
-     "score": 0.024,
+     "relevance": 0.648,
+     "score": 0.042,
      "title": "Jim Cramer Says Housing Slump Is Hurting QXO More Than Toll Brothers (TOL)",
      "source": "Yahoo Finance",
      "url": "https://finance.yahoo.com/real-estate/articles/jim-cramer-says-housing-slump-212516265.html",
@@ -1594,28 +1591,28 @@
   },
   "NFLX": {
    "articles": 6,
-   "sentiment": 0.083,
+   "sentiment": 0.094,
    "label": "中性",
    "top": [
     {
-     "relevance": 0.988,
-     "score": 0.459,
+     "relevance": 0.952,
+     "score": 0.462,
      "title": "Don't Sell Netflix: NFLX Is the One Streaming Pick I'd Add to Today",
      "source": "The Globe and Mail",
      "url": "https://www.theglobeandmail.com/investing/markets/markets-news/motley/4953188/don-t-sell-netflix-nflx-is-the-one-streaming-pick-i-d-add-to-today/",
      "published": "20261004T234235"
     },
     {
-     "relevance": 0.631,
-     "score": -0.141,
+     "relevance": 0.62,
+     "score": -0.105,
      "title": "Fossil Group, Inc. (NASDAQ:FOSL) Stock Now Rated \"Moderate Buy\" by Wall Street Analysts",
      "source": "MarketBeat",
      "url": "https://www.marketbeat.com/instant-alerts/consensus-fossil-group-inc-nasdaq-fosl-stock-now-rated-moderate-buy-by-wall-street-analysts-2026-10-05/",
      "published": "20261005T082920"
     },
     {
-     "relevance": 0.599,
-     "score": 0.038,
+     "relevance": 0.591,
+     "score": 0.031,
      "title": "Ambev S.A. $ABEV Stock Sold by Corient Private Wealth LP",
      "source": "MarketBeat",
      "url": "https://www.marketbeat.com/instant-alerts/filing-ambev-sa-abev-stock-sold-by-corient-private-wealth-lp-2026-10-05/",
@@ -1625,20 +1622,20 @@
   },
   "MDT": {
    "articles": 2,
-   "sentiment": 0.181,
+   "sentiment": 0.19,
    "label": "略偏多",
    "top": [
     {
      "relevance": 1.0,
-     "score": 0.206,
+     "score": 0.229,
      "title": "Medtronic wins CPT approvals as TD Cowen maintains target for Medtronic stock",
      "source": "AD HOC NEWS",
      "url": "https://www.ad-hoc-news.de/boerse/news/corporate-news/medtronic-wins-cpt-approvals-as-td-cowen-maintains-target-for-medtronic/70231103",
      "published": "20261005T081336"
     },
     {
-     "relevance": 0.629,
-     "score": 0.141,
+     "relevance": 0.609,
+     "score": 0.125,
      "title": "Insulet (PODD) Reworks Debt Terms, Is It Still Trading At A Discount?",
      "source": "Simply Wall Street",
      "url": "https://simplywall.st/stocks/us/healthcare/nasdaq-podd/insulet/news/insulet-podd-reworks-debt-terms-is-it-still-trading-at-a-dis",
@@ -1648,12 +1645,12 @@
   },
   "COST": {
    "articles": 4,
-   "sentiment": 0.374,
+   "sentiment": 0.378,
    "label": "偏多",
    "top": [
     {
      "relevance": 1.0,
-     "score": 0.14,
+     "score": 0.149,
      "title": "Deutsche Bank cuts target for Costco Wholesale stock to USD 1,079.00",
      "source": "AD HOC NEWS",
      "url": "https://www.ad-hoc-news.de/boerse/news/corporate-news/deutsche-bank-cuts-target-for-costco-wholesale-stock-to-usd-1-079-00/70230913",
@@ -1661,7 +1658,7 @@
     },
     {
      "relevance": 1.0,
-     "score": 0.399,
+     "score": 0.384,
      "title": "Costco Wholesale stock pre-market at EUR 820.20: plus 0.50 percent",
      "source": "AD HOC NEWS",
      "url": "https://www.ad-hoc-news.de/boerse/news/vorboerse/costco-wholesale-stock-pre-market-at-eur-820-20-plus-0-50-percent/70229605",
@@ -1669,7 +1666,7 @@
     },
     {
      "relevance": 1.0,
-     "score": 0.813,
+     "score": 0.833,
      "title": "Costco Q4 Comp Sales Up 9.4%; FY26 Net Sales Hit $297.2B",
      "source": "The Shelby Report",
      "url": "https://theshelbyreport.com/2026/10/04/costco-q4-comp-sales-up-9-4-fy26-net-sales-hit-297-2b/",
@@ -1678,52 +1675,52 @@
    ]
   },
   "LLY": {
-   "articles": 4,
-   "sentiment": 0.287,
+   "articles": 3,
+   "sentiment": 0.274,
    "label": "略偏多",
    "top": [
     {
      "relevance": 1.0,
-     "score": 0.402,
+     "score": 0.438,
      "title": "Eli Lilly and Co. stock pre-market at EUR 1,021.50: plus 0.48 percent",
      "source": "AD HOC NEWS",
      "url": "https://www.ad-hoc-news.de/boerse/news/vorboerse/eli-lilly-and-co-stock-pre-market-at-eur-1-021-50-plus-0-48-percent/70230617",
      "published": "20261005T071145"
     },
     {
-     "relevance": 1.0,
-     "score": 0.345,
-     "title": "Eli Lilly expands Jaypirca use as Eli Lilly stock trades EUR 1016.60 flat",
-     "source": "AD HOC NEWS",
-     "url": "https://www.ad-hoc-news.de/boerse/news/corporate-news/eli-lilly-expands-jaypirca-use-as-eli-lilly-stock-trades-eur-1016-60-flat/70227286",
-     "published": "20261004T171443"
-    },
-    {
-     "relevance": 0.725,
-     "score": 0.173,
+     "relevance": 0.73,
+     "score": 0.168,
      "title": "Better Healthcare ETF: Fidelity's Broad, Low-Cost FHLC vs. State Street's XBI Targeting Biotech",
      "source": "The Motley Fool",
      "url": "https://www.fool.com/coverage/etfs/2026/10/05/better-healthcare-etf-fidelity-s-broad-low-cost-fhlc-vs-state-street-s-xbi-targeting-biotech/",
      "published": "20261005T055438"
+    },
+    {
+     "relevance": 0.648,
+     "score": 0.139,
+     "title": "Pfizer Inc. Stock Grades | PFE",
+     "source": "Barron's",
+     "url": "https://www.barrons.com/market-data/stocks/pfe/stock-grader?amp%252525252525253Bmod=stock_picks_lp&amp%25252525252525253Bmod=stock_picks_lp&mod=quotes&amp%2525252525252525253Bmod=stock_picks_lp",
+     "published": "20261005T044029"
     }
    ]
   },
   "UNH": {
    "articles": 2,
-   "sentiment": 0.192,
+   "sentiment": 0.186,
    "label": "略偏多",
    "top": [
     {
      "relevance": 1.0,
-     "score": 0.244,
+     "score": 0.228,
      "title": "UnitedHealth Group stock trades 28.19 percent below its 52-week high",
      "source": "AD HOC NEWS",
      "url": "https://www.ad-hoc-news.de/boerse/news/corporate-news/unitedhealth-group-stock-trades-28-19-percent-below-its-52-week-high/70230682",
      "published": "20261005T071031"
     },
     {
-     "relevance": 0.331,
-     "score": 0.035,
+     "relevance": 0.302,
+     "score": 0.048,
      "title": "UnitedHealthcare, Aetna Tighten Medicare Advantage Networks as 2027 Costs Rise: ‘We Can’t Ignore the Realities…’",
      "source": "Benzinga",
      "url": "https://www.benzinga.com/news/health-care/26/10/62152824/unitedhealthcare-aetna-tighten-medicare-advantage-networks-as-2027-costs-rise-we-cant-ignore-the-realities",
@@ -1733,28 +1730,28 @@
   },
   "LRCX": {
    "articles": 3,
-   "sentiment": 0.203,
+   "sentiment": 0.217,
    "label": "略偏多",
    "top": [
     {
-     "relevance": 0.645,
-     "score": 0.212,
-     "title": "Toshiba Is Doubling Hard Drive Output. Seagate (STX) and Western Digital (WDC) Fell 10% Each",
-     "source": "Yahoo Finance",
-     "url": "https://finance.yahoo.com/markets/stocks/articles/toshiba-doubling-hard-drive-output-014807229.html",
-     "published": "20261005T014805"
-    },
-    {
-     "relevance": 0.613,
-     "score": 0.113,
+     "relevance": 0.619,
+     "score": 0.135,
      "title": "Can Broadcom Keep Growing Its Dividend as AI Customers Gain Power?",
      "source": "Yahoo Finance",
      "url": "https://finance.yahoo.com/markets/stocks/articles/broadcom-keep-growing-dividend-ai-203334720.html",
      "published": "20261004T203417"
     },
     {
-     "relevance": 0.6,
-     "score": 0.284,
+     "relevance": 0.612,
+     "score": 0.234,
+     "title": "Toshiba Is Doubling Hard Drive Output. Seagate (STX) and Western Digital (WDC) Fell 10% Each",
+     "source": "Yahoo Finance",
+     "url": "https://finance.yahoo.com/markets/stocks/articles/toshiba-doubling-hard-drive-output-014807229.html",
+     "published": "20261005T014805"
+    },
+    {
+     "relevance": 0.565,
+     "score": 0.288,
      "title": "CX Institutional Cuts Stake in Vistra Corp. $VST",
      "source": "MarketBeat",
      "url": "https://www.marketbeat.com/instant-alerts/filing-cx-institutional-cuts-stake-in-vistra-corp-vst-2026-10-05/",
@@ -1764,51 +1761,51 @@
   },
   "COIN": {
    "articles": 10,
-   "sentiment": 0.241,
+   "sentiment": 0.242,
    "label": "略偏多",
    "top": [
     {
      "relevance": 1.0,
-     "score": 0.667,
+     "score": 0.668,
      "title": "Once 'Nearly Impossible,' Now Reality: Brian Armstrong Cheers Citi Partnership, Says Coinbase 'Has Come a Long Way'",
      "source": "Benzinga",
      "url": "https://www.benzinga.com/crypto/cryptocurrency/26/10/62154401/brian-armstrong-citi-coinbase-partnership-crypto-banking",
      "published": "20261005T065942"
     },
     {
-     "relevance": 0.806,
-     "score": 0.645,
+     "relevance": 0.813,
+     "score": 0.635,
      "title": "Bitcoin is about to get a major bullish signal it hasn't had in over a year",
      "source": "CoinDesk",
      "url": "https://www.coindesk.com/markets/2026/10/05/bitcoin-is-about-to-get-a-major-bullish-signal-it-hasn-t-had-in-over-a-year",
      "published": "20261005T065740"
     },
     {
-     "relevance": 0.645,
-     "score": 0.043,
-     "title": "AtriCure (ATRC) Stock Gets Fair Value Bump As Analysts Weigh Procedure Growth And Risks",
+     "relevance": 0.642,
+     "score": 0.013,
+     "title": "3M Stock Has a 17x Forward P/E. Is it too Cheap to Ignore?",
      "source": "Yahoo Finance",
-     "url": "https://finance.yahoo.com/markets/stocks/articles/atricure-atrc-stock-gets-fair-001957310.html",
-     "published": "20261004T201900"
+     "url": "https://finance.yahoo.com/markets/stocks/articles/3m-stock-17x-forward-p-225706587.html",
+     "published": "20261004T185704"
     }
    ]
   },
   "CRWD": {
    "articles": 2,
-   "sentiment": 0.355,
+   "sentiment": 0.367,
    "label": "偏多",
    "top": [
     {
-     "relevance": 0.726,
-     "score": 0.41,
+     "relevance": 0.709,
+     "score": 0.449,
      "title": "Palo Alto Networks Stock And The AI Governance Shift Investors Should Watch",
      "source": "Simply Wall Street",
      "url": "https://simplywall.st/stocks/us/software/nasdaq-panw/palo-alto-networks/news/palo-alto-networks-stock-and-the-ai-governance-shift-investo",
      "published": "20261005T051258"
     },
     {
-     "relevance": 0.589,
-     "score": 0.287,
+     "relevance": 0.564,
+     "score": 0.264,
      "title": "Gartner Identifies Top Five Actions for CISOs To Take by End of 2026",
      "source": "SMEStreet",
      "url": "https://smestreet.in/technology/gartner-identifies-top-five-actions-for-cisos-to-take-by-end-of-2026-12624626",
@@ -1818,43 +1815,43 @@
   },
   "JNJ": {
    "articles": 3,
-   "sentiment": 0.105,
+   "sentiment": 0.113,
    "label": "中性",
    "top": [
     {
-     "relevance": 0.65,
-     "score": 0.192,
-     "title": "Better Healthcare ETF: Fidelity's Broad, Low-Cost FHLC vs. State Street's XBI Targeting Biotech",
-     "source": "The Motley Fool",
-     "url": "https://www.fool.com/coverage/etfs/2026/10/05/better-healthcare-etf-fidelity-s-broad-low-cost-fhlc-vs-state-street-s-xbi-targeting-biotech/",
-     "published": "20261005T055438"
-    },
-    {
-     "relevance": 0.636,
-     "score": 0.01,
+     "relevance": 0.637,
+     "score": 0.04,
      "title": "What is Linde’s (LIN) Economic Moat, and is it Widening or Narrowing?",
      "source": "Yahoo Finance UK",
      "url": "https://uk.finance.yahoo.com/news/linde-lin-economic-moat-widening-000056393.html",
      "published": "20261005T001709"
     },
     {
-     "relevance": 0.633,
-     "score": 0.113,
+     "relevance": 0.636,
+     "score": 0.148,
      "title": "Pfizer Inc. Stock Grades | PFE",
      "source": "Barron's",
      "url": "https://www.barrons.com/market-data/stocks/pfe/stock-grader?amp%252525252525253Bmod=stock_picks_lp&amp%25252525252525253Bmod=stock_picks_lp&mod=quotes&amp%2525252525252525253Bmod=stock_picks_lp",
      "published": "20261005T044029"
+    },
+    {
+     "relevance": 0.621,
+     "score": 0.152,
+     "title": "Better Healthcare ETF: Fidelity's Broad, Low-Cost FHLC vs. State Street's XBI Targeting Biotech",
+     "source": "The Motley Fool",
+     "url": "https://www.fool.com/coverage/etfs/2026/10/05/better-healthcare-etf-fidelity-s-broad-low-cost-fhlc-vs-state-street-s-xbi-targeting-biotech/",
+     "published": "20261005T055438"
     }
    ]
   },
   "MA": {
    "articles": 1,
-   "sentiment": 0.289,
+   "sentiment": 0.296,
    "label": "略偏多",
    "top": [
     {
      "relevance": 1.0,
-     "score": 0.289,
+     "score": 0.296,
      "title": "Mastercard stock pre-market at EUR 492.80: plus 0.87 percent",
      "source": "AD HOC NEWS",
      "url": "https://www.ad-hoc-news.de/boerse/news/vorboerse/mastercard-stock-pre-market-at-eur-492-80-plus-0-87-percent/70229649",
@@ -1864,28 +1861,28 @@
   },
   "ABT": {
    "articles": 3,
-   "sentiment": 0.225,
+   "sentiment": 0.224,
    "label": "略偏多",
    "top": [
     {
-     "relevance": 0.925,
-     "score": 0.369,
+     "relevance": 0.912,
+     "score": 0.357,
      "title": "She bought 3 Abbott shares for $180 in 1935; after her death at 100, her $7 million fortune went to help college students",
      "source": "The Times of India",
      "url": "https://timesofindia.indiatimes.com/world/us/she-bought-3-abbott-shares-for-180-in-1935-after-her-death-at-100-her-7-million-fortune-went-to-help-college-students/articleshow/134637364.cms",
      "published": "20261005T043106"
     },
     {
-     "relevance": 0.633,
-     "score": 0.127,
+     "relevance": 0.648,
+     "score": 0.131,
      "title": "Pfizer Inc. Stock Grades | PFE",
      "source": "Barron's",
      "url": "https://www.barrons.com/market-data/stocks/pfe/stock-grader?amp%252525252525253Bmod=stock_picks_lp&amp%25252525252525253Bmod=stock_picks_lp&mod=quotes&amp%2525252525252525253Bmod=stock_picks_lp",
      "published": "20261005T044029"
     },
     {
-     "relevance": 0.628,
-     "score": 0.112,
+     "relevance": 0.609,
+     "score": 0.124,
      "title": "Insulet (PODD) Reworks Debt Terms, Is It Still Trading At A Discount?",
      "source": "Simply Wall Street",
      "url": "https://simplywall.st/stocks/us/healthcare/nasdaq-podd/insulet/news/insulet-podd-reworks-debt-terms-is-it-still-trading-at-a-dis",
@@ -1895,28 +1892,28 @@
   },
   "BA": {
    "articles": 4,
-   "sentiment": 0.276,
+   "sentiment": 0.267,
    "label": "略偏多",
    "top": [
     {
      "relevance": 1.0,
-     "score": 0.435,
+     "score": 0.418,
      "title": "Boeing extends Dayton site's Navy aircraft work with $31.5M extension",
      "source": "The Business Journals",
      "url": "https://www.bizjournals.com/dayton/news/2026/10/04/boeing-p-8a-poseidon-315m-contract-extension-work.html",
      "published": "20261004T175410"
     },
     {
-     "relevance": 0.914,
-     "score": 0.108,
+     "relevance": 0.908,
+     "score": 0.101,
      "title": "U.S. Sanctions Aim to ‘Shut Down’ Iran’s Airlines, but This Boeing Plane Is Still Flying",
      "source": "The New York Times",
      "url": "https://www.nytimes.com/2026/10/05/world/asia/boeing-777-plane-iran-us-sanctions-flights.html",
      "published": "20261005T041918"
     },
     {
-     "relevance": 0.617,
-     "score": 0.207,
+     "relevance": 0.626,
+     "score": 0.22,
      "title": "3 US Large Cap Stocks Investors Are Watching As Pro Business Rules Gain Clarity",
      "source": "Simply Wall Street",
      "url": "https://simplywall.st/stocks/us/capital-goods/nasdaq-nxt/nextpower/news/3-us-large-cap-stocks-investors-are-watching-as-pro-business/amp",
@@ -1926,20 +1923,20 @@
   },
   "KLAC": {
    "articles": 2,
-   "sentiment": 0.197,
+   "sentiment": 0.202,
    "label": "略偏多",
    "top": [
     {
-     "relevance": 0.834,
-     "score": 0.185,
+     "relevance": 0.802,
+     "score": 0.196,
      "title": "Semiconductor Manufacturing Stocks Q2 Results: Benchmarking FormFactor (NASDAQ:FORM)",
      "source": "TradingView",
      "url": "https://www.tradingview.com/news/stockstory:e6daf2668094b:0-semiconductor-manufacturing-stocks-q2-results-benchmarking-formfactor-nasdaq-form/",
      "published": "20261005T033440"
     },
     {
-     "relevance": 0.572,
-     "score": 0.214,
+     "relevance": 0.582,
+     "score": 0.21,
      "title": "Toshiba Is Doubling Hard Drive Output. Seagate (STX) and Western Digital (WDC) Fell 10% Each",
      "source": "Yahoo Finance",
      "url": "https://finance.yahoo.com/markets/stocks/articles/toshiba-doubling-hard-drive-output-014807229.html",
@@ -1949,12 +1946,12 @@
   },
   "GEV": {
    "articles": 1,
-   "sentiment": 0.336,
+   "sentiment": 0.348,
    "label": "略偏多",
    "top": [
     {
-     "relevance": 0.731,
-     "score": 0.336,
+     "relevance": 0.702,
+     "score": 0.348,
      "title": "BWX Technologies Already Builds Reactors for the Navy. Here's Why It's My Top Nuclear Pick.",
      "source": "Yahoo Finance",
      "url": "https://finance.yahoo.com/energy/articles/bwx-technologies-already-builds-reactors-030500360.html",
@@ -1962,22 +1959,37 @@
     }
    ]
   },
+  "ACN": {
+   "articles": 1,
+   "sentiment": -0.244,
+   "label": "略偏空",
+   "top": [
+    {
+     "relevance": 0.639,
+     "score": -0.244,
+     "title": "Solana spot ETFs see $2.43M net inflows led by Grayscale and Fidelity funds in early October",
+     "source": "Pluang",
+     "url": "https://pluang.com/en/news-feed/etf-spot-solana-catat-inflow-neto-mingguan-2-juta-dolar",
+     "published": "20261005T030035"
+    }
+   ]
+  },
   "V": {
    "articles": 2,
-   "sentiment": 0.214,
+   "sentiment": 0.221,
    "label": "略偏多",
    "top": [
     {
      "relevance": 1.0,
-     "score": 0.034,
+     "score": 0.03,
      "title": "VISA INC-CLASS A (V-USD.SW) Balance Sheet",
      "source": "Yahoo! Finance Canada",
      "url": "https://ca.finance.yahoo.com/quote/V-USD.SW/balance-sheet/",
      "published": "20261004T183910"
     },
     {
-     "relevance": 0.95,
-     "score": 0.403,
+     "relevance": 0.926,
+     "score": 0.427,
      "title": "ExxonMobil, Visa Among 16 Dividend Growth Companies To Announce Annual Dividend Increases In October",
      "source": "Seeking Alpha",
      "url": "https://seekingalpha.com/article/4951879-exxonmobil-visa-among-16-dividend-growth-companies-to-announce-annual-dividend-increases-in-october",
@@ -1987,28 +1999,28 @@
   },
   "AVGO": {
    "articles": 3,
-   "sentiment": 0.12,
+   "sentiment": 0.102,
    "label": "中性",
    "top": [
     {
      "relevance": 1.0,
-     "score": 0.133,
+     "score": 0.1,
      "title": "Can Broadcom Keep Growing Its Dividend as AI Customers Gain Power?",
      "source": "Yahoo Finance",
      "url": "https://finance.yahoo.com/markets/stocks/articles/broadcom-keep-growing-dividend-ai-203334720.html",
      "published": "20261004T203417"
     },
     {
-     "relevance": 0.73,
-     "score": 0.107,
+     "relevance": 0.749,
+     "score": 0.101,
      "title": "AI Custom Chip Stocks Roundup: Beyond Broadcom, Which Deserves More Attention Among Marvell Technology, TSMC, and Amkor?",
      "source": "TradingKey",
      "url": "https://www.tradingkey.com/analysis/stocks/us-stocks/262199139-tsm-mrvl-akmor-ai-acsi-tsml-jay-tradingkey",
      "published": "20261005T023017"
     },
     {
-     "relevance": 0.64,
-     "score": 0.116,
+     "relevance": 0.604,
+     "score": 0.108,
      "title": "Arista (ANET) Has $13.3 Billion of Cash and No Debt at All. What Is That Worth?",
      "source": "Yahoo Finance Singapore",
      "url": "https://sg.finance.yahoo.com/news/arista-anet-13-3-billion-010014704.html",
@@ -2017,21 +2029,13 @@
    ]
   },
   "FCX": {
-   "articles": 2,
-   "sentiment": 0.03,
-   "label": "中性",
+   "articles": 1,
+   "sentiment": -0.43,
+   "label": "偏空",
    "top": [
     {
-     "relevance": 0.944,
-     "score": 0.315,
-     "title": "The Copper Treasure Hunt: 3 Ways to Look for a Payoff",
-     "source": "InvestorPlace",
-     "url": "https://investorplace.com/smartmoney/2026/10/the-copper-treasure-hunt-3-ways-to-look-for-a-payoff/",
-     "published": "20261004T172312"
-    },
-    {
-     "relevance": 0.609,
-     "score": -0.411,
+     "relevance": 0.626,
+     "score": -0.43,
      "title": "How Much Will Falling Iron Ore Prices Hurt BHP (ASX:BHP)?",
      "source": "Kalkine Media",
      "url": "https://kalkinemedia.com/au/stocks/bluechip/how-much-will-falling-iron-ore-prices-hurt-bhp-asxbhp",
@@ -2041,12 +2045,12 @@
   },
   "SOFI": {
    "articles": 1,
-   "sentiment": 0.211,
+   "sentiment": 0.218,
    "label": "略偏多",
    "top": [
     {
      "relevance": 1.0,
-     "score": 0.211,
+     "score": 0.218,
      "title": "SOFI Stock Is Down More Than 40% In 2026, But This Analyst Sees Attractive Growth Opportunity In Loan Platform Business",
      "source": "TradingView",
      "url": "https://www.tradingview.com/news/stocktwits:1396131ce094b:0-sofi-stock-is-down-more-than-40-in-2026-but-this-analyst-sees-attractive-growth-opportunity-in-loan-platform-business/",
@@ -2055,13 +2059,13 @@
    ]
   },
   "VLO": {
-   "articles": 5,
-   "sentiment": 0.18,
-   "label": "略偏多",
+   "articles": 4,
+   "sentiment": 0.109,
+   "label": "中性",
    "top": [
     {
      "relevance": 1.0,
-     "score": 0.133,
+     "score": 0.122,
      "title": "VLO5998538 Bond Profile: Coupon and Redemption",
      "source": "TradingView",
      "url": "https://www.tradingview.com/symbols/FINRA-VLO5998538/profile/",
@@ -2069,7 +2073,7 @@
     },
     {
      "relevance": 1.0,
-     "score": 0.31,
+     "score": 0.322,
      "title": "Valero (VLO) vs Phillips 66 (PSX): Which is a Better Stock to Buy?",
      "source": "Yahoo Finance",
      "url": "https://finance.yahoo.com/markets/stocks/articles/valero-vlo-vs-phillips-66-214058034.html",
@@ -2077,7 +2081,7 @@
     },
     {
      "relevance": 1.0,
-     "score": 0.021,
+     "score": 0.019,
      "title": "US91913YBF60 Bond Profile: Coupon and Redemption",
      "source": "TradingView",
      "url": "https://www.tradingview.com/symbols/SWB-US91913YBF60/profile/",
@@ -2087,12 +2091,12 @@
   },
   "GE": {
    "articles": 1,
-   "sentiment": 0.0,
+   "sentiment": 0.026,
    "label": "中性",
    "top": [
     {
-     "relevance": 0.552,
-     "score": 0.0,
+     "relevance": 0.556,
+     "score": 0.026,
      "title": "What is Linde’s (LIN) Economic Moat, and is it Widening or Narrowing?",
      "source": "Yahoo Finance UK",
      "url": "https://uk.finance.yahoo.com/news/linde-lin-economic-moat-widening-000056393.html",
@@ -2102,12 +2106,12 @@
   },
   "SNDK": {
    "articles": 1,
-   "sentiment": 0.427,
+   "sentiment": 0.404,
    "label": "偏多",
    "top": [
     {
      "relevance": 1.0,
-     "score": 0.427,
+     "score": 0.404,
      "title": "SanDisk Corp. R (BW9.HA) interactive stock chart",
      "source": "Yahoo Finance Australia",
      "url": "https://au.finance.yahoo.com/quote/BW9.HA/chart/",
@@ -2122,15 +2126,15 @@
    "top": [
     {
      "relevance": 1.0,
-     "score": 0.449,
+     "score": 0.443,
      "title": "Adobe’s Vision for AI-Driven Text-to-3D Worlds Unveiled in New Patents",
      "source": "freeyork",
      "url": "https://freeyork.org/technology/adobe-ai-text-to-3d-worlds-adobes-vision-worlds/",
      "published": "20261004T194235"
     },
     {
-     "relevance": 0.32,
-     "score": 0.011,
+     "relevance": 0.311,
+     "score": 0.021,
      "title": "Adobe stock: Here are 5 strategic questions into new leadership By Investing.com",
      "source": "Investing.com South Africa",
      "url": "https://za.investing.com/news/stock-market-news/adobe-stock-here-are-5-strategic-questions-into-new-leadership-4489083",
@@ -2140,35 +2144,20 @@
   },
   "IONQ": {
    "articles": 1,
-   "sentiment": 0.302,
+   "sentiment": 0.334,
    "label": "略偏多",
    "top": [
     {
      "relevance": 1.0,
-     "score": 0.302,
+     "score": 0.334,
      "title": "IonQ Expands Enterprise Push With New EPB Quantum Business Program",
      "source": "TipRanks",
      "url": "https://www.tipranks.com/news/ionq-expands-enterprise-push-with-new-epb-quantum-business-program",
      "published": "20261004T200400"
     }
    ]
-  },
-  "INTU": {
-   "articles": 1,
-   "sentiment": 0.122,
-   "label": "中性",
-   "top": [
-    {
-     "relevance": 1.0,
-     "score": 0.122,
-     "title": "Intuit stock trades below its consensus target despite growth guidance",
-     "source": "AD HOC NEWS",
-     "url": "https://www.ad-hoc-news.de/boerse/news/corporate-news/intuit-stock-trades-below-its-consensus-target-despite-growth-guidance/70227544",
-     "published": "20261004T174758"
-    }
-   ]
   }
  },
- "news_window": "since 20261004T0900 (market-wide feed, up to 1000 articles)",
- "attempts": 1
+ "news_window": "since 20261004T0910 (market-wide feed, up to 1000 articles)",
+ "attempts": 2
 }
