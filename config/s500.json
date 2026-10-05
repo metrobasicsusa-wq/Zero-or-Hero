@@ -35,14 +35,14 @@
     "trend_sma": 50,
     "top_n": 2,
     "rsi_max": 85,
-    "gross_exposure": 0.7,
+    "gross_exposure": 0.9,
     "rebalance_drift": 0.25,
     "rsi_applies_to_holdings": false,
     "fractional": true,
     "macro_scale": 1.0
   },
   "options": {
-    "enabled": true,
+    "enabled": false,
     "allocation": 0.2,
     "max_positions": 1,
     "min_dte": 3,
@@ -61,7 +61,8 @@
     "hold_overnight": true,
     "require_held": true,
     "bear_puts": false,
-    "earnings_guard": true
+    "earnings_guard": true,
+    "note": "replaced by the lottery sleeve on 2026-10-05 (both competed for the same small cash; the candidate backtest is stock-only momentum)"
   },
   "risk": {
     "max_position_pct": 0.35,
@@ -77,5 +78,14 @@
     "rebuilt": "monthly",
     "note": "data/universe.json; the static 'universe' list is only the fallback when that file is missing"
   },
-  "owns_account": true
+  "owns_account": true,
+  "lottery": {
+    "enabled": true,
+    "budget": 200,
+    "stake_max": 50,
+    "otm": 0.1,
+    "max_otm": 0.25,
+    "hit": 9.0,
+    "note": "one earnings call per week on the strongest 126-day momentum name; stop after a 10x, a doubled pot or an empty budget; research/2026-10-02-ratchet.md"
+  }
 }

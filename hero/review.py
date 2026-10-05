@@ -82,7 +82,8 @@ def rehearsal(journal: Path, cfg: dict, day: str) -> dict | None:
     path = journal / "trades.jsonl"
     events = [json.loads(l) for l in open(path)] if path.exists() else []
     dry = [e for e in events if e["ts"].startswith(day) and e.get("dry_run")
-           and e["kind"] in ("order", "close", "option_skip", "attempt_end")]
+           and e["kind"] in ("order", "close", "option_skip", "attempt_end", "lottery_pick", "lottery_skip",
+                             "lottery_result")]
     cycles = sorted({e["ts"] for e in dry})
     last = [e for e in dry if cycles and e["ts"] == cycles[-1]]
     skips = [e["why"] for e in dry if e["kind"] == "option_skip"]

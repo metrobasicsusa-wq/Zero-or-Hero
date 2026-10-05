@@ -5,9 +5,11 @@ from __future__ import annotations
 import math
 import uuid
 from datetime import date, datetime, timedelta, timezone
+from zoneinfo import ZoneInfo
 
 from hero import alerts
 from hero import earnings as earn
+from hero import lottery as lot
 from hero import macro
 from hero import stops as stoplib
 from hero.alpaca import AlpacaError
@@ -74,8 +76,9 @@ class Engine:
         self.j.event("order_ack", intent_key=intent, status=placed.get("status"),
                      order_key=execution_key(placed["id"]) if placed.get("id") else None)
 
-    def run(self, today: date | None = None, force: bool = False) -> dict:
+    def run(self, today: date | None = None, force: bool = False, now: datetime | None = None) -> dict:
         today = today or date.today()
+        self.now = now or datetime.now(ZoneInfo("America/New_York"))
         self.today = today
         if not force and not self.c.clock().get("is_open"):
             return {"status": "market_closed"}
@@ -124,12 +127,21 @@ class Engine:
         self.macro_closes = closes_from_bars({s: bars.get(s, []) for s in macro.SYMBOLS.values()})
         self._intraday(stocks, today)
 
+        # The lottery sleeve's call is managed only by the sleeve: the normal option rules (stops,
+        # the earnings guard) would sell it before the very report it is meant to hold through.
+        ledger = lot.Ledger(self.j.root / "lottery.json", lot.settings(self.cfg)) \
+            if self.cfg.get("lottery", {}).get("enabled") else None
+        if ledger and ledger.d["open"]:
+            options = {s: p for s, p in options.items() if s != ledger.d["open"]["symbol"]}
         self._option_exits(options, busy, today)
+        if ledger:
+            self._lottery(ledger, closes, today)
+        core_equity = equity - (ledger.reserve() if ledger else 0.0)
         if state.get("last_rebalance") != today.isoformat():
-            self._rebalance(stocks, busy, closes, equity, halted)
+            self._rebalance(stocks, busy, closes, core_equity, halted)
             state["last_rebalance"] = today.isoformat()
         if self.cfg["options"]["enabled"] and not halted and not self.breaker:
-            self._option_entries(options, busy, closes, equity, today, stocks)
+            self._option_entries(options, busy, closes, core_equity, today, stocks)
         self._reconcile_stops(stocks, busy, closes)
 
         state["last_run"] = today.isoformat()
@@ -194,6 +206,90 @@ class Engine:
             self.cautious.setdefault(sym, "新闻警报：" + "、".join(sorted(set(kinds))))
         book["news_checked"] = now.isoformat(timespec="seconds")
         self.j.save_alerts(book)
+
+    def _lottery(self, ledger: "lot.Ledger", closes: dict, today: date) -> None:
+        """One small earnings call a week until a 10x hit, a doubled pot or an empty budget."""
+        p, d = ledger.p, ledger.d
+        if not ledger.active:
+            return
+        bet = d["open"]
+        if bet and today.isoformat() >= bet["exit"]:
+            try:
+                quote = (self.c.option_snapshots([bet["symbol"]]).get(bet["symbol"]) or {}).get("latestQuote") or {}
+            except Exception:
+                quote = {}
+            bid = float(quote.get("bp") or 0)
+            why = (f"彩票仓卖出：{bet['underlying']} 财报后开盘卖出（{bet['report']}）；"
+                   f"买价 ${bet['cost']:,.2f}，按买价 ${bid:.2f} 估算卖得 ${bid * 100:,.2f}")
+            if self.dry:
+                self.j.event("close", symbol=bet["symbol"], reason="lottery_exit", why=why, dry_run=True,
+                             evidence={"bid": quote.get("bp"), "ask": quote.get("ap")}, intent_key="dry")
+            else:
+                self._close(bet["symbol"], "lottery_exit", {"bid": quote.get("bp"), "ask": quote.get("ap")}, why=why)
+            done = ledger.closed(bid * 100, today.isoformat())
+            self.j.event("lottery_result", dry_run=self.dry, symbol=bet["symbol"], ret=done["ret"], pot=round(d["pot"], 2),
+                         why=f"彩票仓结果：{bet['underlying']} 回报 {done['ret']:+.0%}，彩票资金 ${d['pot']:,.2f}"
+                             + (f"；{d['done']}" if d["done"] else ""))
+            ledger.save()
+            return
+        if bet:
+            ledger.save()
+            return
+        pick = d.get("pick")
+        week = "%d-W%02d" % today.isocalendar()[:2]
+        if not pick or pick.get("week") != week:
+            moms = {}
+            for s in self.cfg["universe"]:
+                xs = getattr(self, "rank_closes", closes).get(s)
+                if xs and len(xs) > 127:
+                    moms[s] = xs[-1] / xs[-127] - 1
+            pick = lot.pick_for_week(self.earnings, moms, today)
+            pick = {**(pick or {}), "week": week}
+            d["pick"] = pick
+            self.j.event("lottery_pick", dry_run=self.dry, **{k: v for k, v in pick.items() if k != "report"},
+                         why=(f"本周彩票：{pick['symbol']}（财报 {earn.describe(pick['report'])}，126 天动量 {pick['momentum']:+.0%}，"
+                              f"本周发财报的股票里最强），{pick['entry']} 收盘前买入，{pick['exit']} 开盘卖出")
+                         if pick.get("symbol") else "本周股票池里没有合适的财报，不买彩票")
+        if not pick.get("symbol") or pick.get("bought") or pick.get("skipped") or pick["entry"] != today.isoformat():
+            ledger.save()
+            return
+        if not lot.entry_time(self.now) or pick["symbol"] not in closes:
+            ledger.save()
+            return
+        sym, spot = pick["symbol"], closes[pick["symbol"]][-1]
+        exit_day = date.fromisoformat(pick["exit"])
+        try:
+            contracts = self.c.option_contracts(sym, type="call", status="active",
+                                                expiration_date_gte=exit_day.isoformat(),
+                                                expiration_date_lte=(exit_day + timedelta(days=10)).isoformat(),
+                                                strike_price_gte=f"{spot * (1 + p['otm']):.2f}",
+                                                strike_price_lte=f"{spot * (1 + p['max_otm']):.2f}")
+            first = min((c["expiration_date"] for c in contracts), default=None)
+            contracts = [c for c in contracts if c["expiration_date"] == first]
+            snaps = self.c.option_snapshots([c["symbol"] for c in contracts]) if contracts else {}
+        except Exception as ex:
+            contracts, snaps = [], {}
+            self.j.event("alert_error", source="lottery", error=str(ex)[:200])
+        choice = lot.choose_contract(contracts, snaps, spot, p)
+        stake = min(p["stake_max"], d["pot"])
+        if not choice or choice[1] * 100 > stake:
+            pick["skipped"] = True
+            self.j.event("lottery_skip", dry_run=self.dry, symbol=sym,
+                         why=f"彩票仓跳过 {sym}：现价 ${spot:,.2f} 上方 {p['otm']:.0%}–{p['max_otm']:.0%} 没有一张在 ${stake:,.0f} 以内的看涨期权")
+            ledger.save()
+            return
+        c, ask = choice
+        cost = ask * 100
+        why = (f"彩票仓买入：{sym} 将于 {earn.describe(pick['report'])} 发财报，本周 126 天动量最强（{pick['momentum']:+.0%}）；"
+               f"行权价 ${float(c['strike_price']):,.2f}（现价上方 {float(c['strike_price']) / spot - 1:.0%}），{c['expiration_date']} 到期，"
+               f"一张 ${cost:,.2f}；最多亏掉这 ${cost:,.2f}，{pick['exit']} 开盘卖出。彩票资金剩 ${d['pot'] - cost:,.2f}")
+        self._order("lottery", {"ask": ask, "spot": spot, "strike": c["strike_price"]}, why, symbol=c["symbol"], qty="1",
+                    side="buy", type="limit", limit_price=f"{round_option_price(ask):.2f}", time_in_force="day")
+        ledger.opened({"symbol": c["symbol"], "underlying": sym, "strike": float(c["strike_price"]),
+                       "expiry": c["expiration_date"], "cost": round(cost, 2), "entry": today.isoformat(),
+                       "exit": pick["exit"], "report": earn.describe(pick["report"]), "dry_run": self.dry})
+        pick["bought"] = True
+        ledger.save()
 
     def _launch_allowed(self, today: date) -> bool:
         """A gated experiment (one with an attempt or a live_from date) trades only with a valid

@@ -1361,6 +1361,85 @@ class ResearchRatchet(unittest.TestCase):
         self.assertEqual([e["mom126"] for e in weekly], [0.5])
 
 
+class LotterySleeve(unittest.TestCase):
+    def test_schedule_pick_and_contract(self):
+        from datetime import date
+        from hero import lottery as lot
+        fri = date(2026, 10, 9)
+        self.assertEqual(lot.schedule({"date": "2026-10-09", "time": "pre-market"}), (date(2026, 10, 8), fri))
+        self.assertEqual(lot.schedule({"date": "2026-10-09", "time": "post-market"}), (fri, date(2026, 10, 12)))
+        self.assertEqual(lot.schedule({"date": "2026-10-12", "time": "unknown"}), (fri, date(2026, 10, 13)))
+        cal = {"reports": {"A": [{"date": "2026-10-08", "time": "post-market"}],
+                           "B": [{"date": "2026-10-09", "time": "pre-market"}],
+                           "C": [{"date": "2026-10-20", "time": "post-market"}]}}
+        pick = lot.pick_for_week(cal, {"A": 0.5, "B": 0.9, "C": 2.0}, date(2026, 10, 5))
+        self.assertEqual((pick["symbol"], pick["entry"], pick["exit"]), ("B", "2026-10-08", "2026-10-09"))
+        p = lot.settings({})
+        cs = [{"symbol": f"K{k}", "strike_price": str(k)} for k in (105, 110, 115, 130)]
+        snaps = {"K110": {"latestQuote": {"ap": 0.80}}, "K115": {"latestQuote": {"ap": 0.40}},
+                 "K130": {"latestQuote": {"ap": 0.05}}}
+        c, ask = lot.choose_contract(cs, snaps, 100.0, p)
+        self.assertEqual((c["symbol"], ask), ("K115", 0.40))  # 110 costs $80 > $50, so walk out to 115
+
+    def test_ledger_stops(self):
+        from hero import lottery as lot
+        with tempfile.TemporaryDirectory() as d:
+            L = lot.Ledger(Path(d) / "lottery.json", lot.settings({}))
+            L.opened({"symbol": "X", "cost": 40.0})
+            self.assertEqual(L.reserve(), 160.0)
+            L.closed(0.0, "d1")
+            self.assertTrue(L.active)
+            L.opened({"symbol": "Y", "cost": 20.0})
+            L.closed(400.0, "d2")  # 20x
+            self.assertFalse(L.active)
+            self.assertIn("中奖", L.d["done"])
+            self.assertEqual(L.reserve(), 0.0)  # everything goes back to the momentum book
+
+    def test_engine_buys_late_on_entry_day_and_sells_after_the_report(self):
+        from datetime import datetime, timedelta
+        from hero import lottery as lot
+        today = TODAY  # 2026-10-01, a Thursday
+        cal = {"fetched_on": today.isoformat(),
+               "reports": {"UP1": [{"date": (today + timedelta(days=1)).isoformat(), "time": "pre-market"}]}}
+        closes = {"SPY": series(0.001, seed=5), "UP1": series(0.002, seed=1)}
+        spot = closes["UP1"][-1]
+
+        class Broker(FakeClient):
+            def option_contracts(self, und, **kw):
+                exp = kw["expiration_date_gte"]
+                return [{"symbol": f"{und}C{k}", "strike_price": str(k), "expiration_date": exp, "type": "call"}
+                        for k in (round(spot * 1.12, 2), round(spot * 1.2, 2))]
+
+            def option_snapshots(self, symbols):
+                return {s: {"latestQuote": {"bp": getattr(self, "bid", 0.3), "ap": 0.35}} for s in symbols}
+        conf = {**cfg(stocks={"rsi_max": 101, "top_n": 1}, options={"enabled": False}),
+                "lottery": {"enabled": True, "budget": 200, "stake_max": 50}}
+        with tempfile.TemporaryDirectory() as d:
+            early = Broker(closes)
+            Engine(early, conf, Journal(Path(d)), earnings=cal).run(today=today, now=datetime(2026, 10, 1, 11, 0))
+            self.assertFalse([o for o in early.orders if o.get("type") == "limit"])  # picked, but not bought before 15:30
+            late = Broker(closes)
+            Engine(late, conf, Journal(Path(d)), earnings=cal).run(today=today, now=datetime(2026, 10, 1, 15, 40))
+            calls = [o for o in late.orders if o.get("type") == "limit"]
+            self.assertEqual([(o["qty"], o["limit_price"]) for o in calls], [("1", "0.35")])
+            ledger = json.loads((Path(d) / "lottery.json").read_text())
+            self.assertEqual((ledger["pot"], ledger["open"]["exit"]), (165.0, "2026-10-02"))
+            # Next day: the call is held as a position with a big loss; the normal stop rules must not touch it,
+            # the sleeve sells it at the open after the report.
+            pos = {"symbol": ledger["open"]["symbol"], "asset_class": "us_option", "unrealized_plpc": "-0.9", "qty": "1"}
+            nxt = Broker(closes, positions=[pos])
+            nxt.bid = 3.5  # it paid off
+            Engine(nxt, conf, Journal(Path(d)), earnings=cal).run(today=today + timedelta(days=1),
+                                                                  now=datetime(2026, 10, 2, 9, 35))
+            self.assertEqual(nxt.closed, [pos["symbol"]])
+            ledger = json.loads((Path(d) / "lottery.json").read_text())
+            self.assertEqual(ledger["bets"][0]["ret"], 9.0)
+            self.assertIn("中奖", ledger["done"])
+            log = (Path(d) / "trades.jsonl").read_text()
+            self.assertIn("lottery_pick", log)
+            self.assertIn("lottery_result", log)
+
+
 class Safety(unittest.TestCase):
     def test_refuses_live_endpoint(self):
         with self.assertRaises(AlpacaError):
