@@ -1,0 +1,70 @@
+{
+  "schema_version": "1.0-s500-publication-validation",
+  "message_id": "codex-s500-20261005-cloud-schedule-trial-v1-validation",
+  "generated_at": "2026-10-05T18:31:29.363Z",
+  "evidence_sha256": "c5ae73420c7ec2d4dfd40db8df0edc4b9098a2d13036e8db73b9c752f982613d",
+  "source_ref": "9667253f4930b01bfc593c35e9b715e91041ef6f",
+  "publication_base": "cbc872268975e101d357491c376651fce379c777",
+  "published_commit": "ead3e6c5c85dd7e80d7388903187a677429354c7",
+  "nonforce_branch_update_confirmed": true,
+  "observed_branch_head": "ead3e6c5c85dd7e80d7388903187a677429354c7",
+  "expected_changed_files": [
+    "exchange/codex/s500/2026-10-05-cloud-schedule-trial-v1/report.md",
+    "exchange/codex/s500/2026-10-05-cloud-schedule-trial-v1/audit.json",
+    "exchange/codex/s500/2026-10-05-cloud-schedule-trial-v1/audit.mjs"
+  ],
+  "actual_diff": [
+    {
+      "filename": "exchange/codex/s500/2026-10-05-cloud-schedule-trial-v1/audit.json",
+      "status": "added",
+      "additions": 1939,
+      "deletions": 0,
+      "changes": 1939,
+      "previous_filename": null
+    },
+    {
+      "filename": "exchange/codex/s500/2026-10-05-cloud-schedule-trial-v1/audit.mjs",
+      "status": "added",
+      "additions": 6,
+      "deletions": 0,
+      "changes": 6,
+      "previous_filename": null
+    },
+    {
+      "filename": "exchange/codex/s500/2026-10-05-cloud-schedule-trial-v1/report.md",
+      "status": "added",
+      "additions": 33,
+      "deletions": 0,
+      "changes": 33,
+      "previous_filename": null
+    }
+  ],
+  "exact_readbacks": [
+    {
+      "path": "exchange/codex/s500/2026-10-05-cloud-schedule-trial-v1/report.md",
+      "exact_utf8_match": true,
+      "git_blob_sha": "c2628289277d42885b21857b3f39e599822d9c5b",
+      "sha256": "7c04f497d7c8607a419c63fda89d6adbda171eee02e650a0838c0a89856b270b"
+    },
+    {
+      "path": "exchange/codex/s500/2026-10-05-cloud-schedule-trial-v1/audit.json",
+      "exact_utf8_match": true,
+      "git_blob_sha": "353b033e504d96bf01db0d98917ee1a9bd641ea6",
+      "sha256": "ab9884b05c8b9d49d28fdd3c589f0a78cc8c11f23a48ecf855006f9a15801c0a"
+    },
+    {
+      "path": "exchange/codex/s500/2026-10-05-cloud-schedule-trial-v1/audit.mjs",
+      "exact_utf8_match": true,
+      "git_blob_sha": "d1df63874dadde2abdd243d66ca4cf53e5a735c0",
+      "sha256": "4914fb9f514caad4ad3df2a21bf941192a2b2c1fe6fc048121faef08039e2727"
+    }
+  ],
+  "code_output_matches_executed_audit": true,
+  "git_read_write_trial": "passed",
+  "scheduled_wakeup_trial": "not_yet_observed",
+  "direct_broker_query": "not_performed",
+  "orders_submitted": 0,
+  "simulated_fills_created": 0,
+  "scope": "证据审查与发布验证，不是历史行情重跑或交易上线。",
+  "receipt_self_verification": "本文件在发布后由本会话精确回读；自身提交哈希与回读结果在最终回复中报告，避免递归自证。"
+}
