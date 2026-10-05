@@ -1,11 +1,11 @@
 {
   "account": {
-    "buying_power": "264961.6",
-    "cash": "13537.53",
-    "equity": "101376.01",
+    "buying_power": "263655.01",
+    "cash": "69.93",
+    "equity": "102757.54",
     "last_equity": "101018.46",
-    "long_market_value": "87838.48",
-    "portfolio_value": "101376.01"
+    "long_market_value": "102687.61",
+    "portfolio_value": "102757.54"
   },
   "open_orders": [
     {
@@ -14,15 +14,15 @@
       "filled_avg_price": null,
       "filled_qty": "0",
       "limit_price": null,
-      "protective_stop": false,
+      "protective_stop": true,
       "qty": "215",
-      "side": "buy",
+      "side": "sell",
       "status": "pending_new",
-      "stop_price": null,
-      "submitted_at": "2026-10-05T13:30:18.98604907Z",
+      "stop_price": "57.38",
+      "submitted_at": "2026-10-05T13:40:17.564675495Z",
       "symbol": "XLE",
-      "time_in_force": "day",
-      "type": "market"
+      "time_in_force": "gtc",
+      "type": "stop"
     },
     {
       "asset_class": "us_equity",
@@ -110,114 +110,128 @@
       "asset_class": "us_equity",
       "avg_entry_price": "329.75",
       "cost_basis": "15828",
-      "current_price": "332.195",
+      "current_price": "335.04",
       "lastday_price": "333.69",
-      "market_value": "15945.36",
+      "market_value": "16081.92",
       "qty": "48",
       "side": "long",
       "symbol": "AAPL",
-      "unrealized_intraday_pl": "-71.76",
-      "unrealized_pl": "117.36",
-      "unrealized_plpc": "0.00741"
+      "unrealized_intraday_pl": "64.8",
+      "unrealized_pl": "253.92",
+      "unrealized_plpc": "0.01604"
     },
     {
       "asset_class": "us_option",
       "avg_entry_price": "10.8",
       "cost_basis": "3240",
-      "current_price": "9.45",
+      "current_price": "10.95",
       "lastday_price": "10.45",
-      "market_value": "2835",
+      "market_value": "3285",
       "qty": "3",
       "side": "long",
       "symbol": "AAPL261106C00335000",
-      "unrealized_intraday_pl": "-300",
-      "unrealized_pl": "-405",
-      "unrealized_plpc": "-0.125"
+      "unrealized_intraday_pl": "150",
+      "unrealized_pl": "45",
+      "unrealized_plpc": "0.01389"
     },
     {
       "asset_class": "us_equity",
       "avg_entry_price": "733.543636",
       "cost_basis": "16137.959992",
-      "current_price": "728.815",
+      "current_price": "735.39",
       "lastday_price": "728.08",
-      "market_value": "16033.93",
+      "market_value": "16178.58",
       "qty": "22",
       "side": "long",
       "symbol": "META",
-      "unrealized_intraday_pl": "16.17",
-      "unrealized_pl": "-104.029992",
-      "unrealized_plpc": "-0.00645"
+      "unrealized_intraday_pl": "160.82",
+      "unrealized_pl": "40.620008",
+      "unrealized_plpc": "0.00252"
     },
     {
       "asset_class": "us_equity",
       "avg_entry_price": "515.715806",
       "cost_basis": "15987.189986",
-      "current_price": "523.72",
+      "current_price": "529.62",
       "lastday_price": "517.53",
-      "market_value": "16235.32",
+      "market_value": "16418.22",
       "qty": "31",
       "side": "long",
       "symbol": "MSFT",
-      "unrealized_intraday_pl": "191.89",
-      "unrealized_pl": "248.130014",
-      "unrealized_plpc": "0.01552"
+      "unrealized_intraday_pl": "374.79",
+      "unrealized_pl": "431.030014",
+      "unrealized_plpc": "0.02696"
     },
     {
       "asset_class": "us_option",
       "avg_entry_price": "20.7",
       "cost_basis": "2070",
-      "current_price": "22.8",
+      "current_price": "26.3",
       "lastday_price": "19.8",
-      "market_value": "2280",
+      "market_value": "2630",
       "qty": "1",
       "side": "long",
       "symbol": "MSFT261106C00520000",
-      "unrealized_intraday_pl": "300",
-      "unrealized_pl": "210",
-      "unrealized_plpc": "0.10145"
+      "unrealized_intraday_pl": "650",
+      "unrealized_pl": "560",
+      "unrealized_plpc": "0.27053"
     },
     {
       "asset_class": "us_option",
       "avg_entry_price": "11.4",
       "cost_basis": "2280",
-      "current_price": "13",
+      "current_price": "13.55",
       "lastday_price": "11.92",
-      "market_value": "2600",
+      "market_value": "2710",
       "qty": "2",
       "side": "long",
       "symbol": "NVDA261120C00235000",
-      "unrealized_intraday_pl": "216",
-      "unrealized_pl": "320",
-      "unrealized_plpc": "0.14035"
+      "unrealized_intraday_pl": "326",
+      "unrealized_pl": "430",
+      "unrealized_plpc": "0.1886"
     },
     {
       "asset_class": "us_equity",
       "avg_entry_price": "753.61",
       "cost_basis": "15825.81",
-      "current_price": "749.62",
+      "current_price": "752.06",
       "lastday_price": "749.58",
-      "market_value": "15742.02",
+      "market_value": "15793.26",
       "qty": "21",
       "side": "long",
       "symbol": "QQQ",
-      "unrealized_intraday_pl": "0.84",
-      "unrealized_pl": "-83.79",
-      "unrealized_plpc": "-0.00529"
+      "unrealized_intraday_pl": "52.08",
+      "unrealized_pl": "-32.55",
+      "unrealized_plpc": "-0.00206"
     },
     {
       "asset_class": "us_equity",
       "avg_entry_price": "772.13",
       "cost_basis": "16214.73",
-      "current_price": "769.87",
+      "current_price": "770.52",
       "lastday_price": "769.64",
-      "market_value": "16167.27",
+      "market_value": "16180.92",
       "qty": "21",
       "side": "long",
       "symbol": "SPY",
-      "unrealized_intraday_pl": "4.83",
-      "unrealized_pl": "-47.46",
-      "unrealized_plpc": "-0.00293"
+      "unrealized_intraday_pl": "18.48",
+      "unrealized_pl": "-33.81",
+      "unrealized_plpc": "-0.00209"
+    },
+    {
+      "asset_class": "us_equity",
+      "avg_entry_price": "62.64",
+      "cost_basis": "13467.6",
+      "current_price": "62.37",
+      "lastday_price": "62.82",
+      "market_value": "13409.55",
+      "qty": "215",
+      "side": "long",
+      "symbol": "XLE",
+      "unrealized_intraday_pl": "-58.05",
+      "unrealized_pl": "-58.05",
+      "unrealized_plpc": "-0.00431"
     }
   ],
-  "ts": "2026-10-05T13:30:19+00:00"
+  "ts": "2026-10-05T13:40:17+00:00"
 }
