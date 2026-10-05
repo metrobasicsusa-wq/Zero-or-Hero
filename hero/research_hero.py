@@ -56,7 +56,7 @@ def mixed(first: list[tuple[str, float]], then: list[tuple[str, float]], switch_
     return {"first": first, "then": then, "switch_at": switch_at}
 
 
-def play(stream, start: str, target: float, end_day: str | None = None):
+def play(stream, start: str, target: float, end_day: str | None = None, end_loss: float = END_LOSS):
     """Run one attempt from `start`. Returns (outcome, end date, multiple): outcome is
     'hero' (target reached), 'zero' (40% loss line) or 'open' (data/horizon ran out)."""
     bank = 1.0
@@ -70,7 +70,7 @@ def play(stream, start: str, target: float, end_day: str | None = None):
             bank *= 1 + r
             if bank >= target:
                 return "hero", d, bank
-            if bank <= 1 - END_LOSS:
+            if bank <= 1 - end_loss:
                 return "zero", d, bank
             if not switched and bank >= stream["switch_at"]:
                 switched = True
@@ -84,16 +84,16 @@ def play(stream, start: str, target: float, end_day: str | None = None):
         bank *= 1 + r
         if bank >= target:
             return "hero", d, bank
-        if bank <= 1 - END_LOSS:
+        if bank <= 1 - end_loss:
             return "zero", d, bank
     return "open", None, bank
 
 
-def sequential(stream, first_day: str, target: float) -> dict:
+def sequential(stream, first_day: str, target: float, end_loss: float = END_LOSS) -> dict:
     """Restart after every hero or zero, back to back through the whole period."""
     start, heroes, zeros, days_to_hero = first_day, 0, 0, []
     while True:
-        outcome, end, _ = play(stream, start, target)
+        outcome, end, _ = play(stream, start, target, end_loss=end_loss)
         if outcome == "open":
             break
         if outcome == "hero":
@@ -106,13 +106,13 @@ def sequential(stream, first_day: str, target: float) -> dict:
             "median_days_to_hero": statistics.median(days_to_hero) if days_to_hero else None}
 
 
-def windows(stream, first_day: str, last_day: str, target: float) -> dict:
+def windows(stream, first_day: str, last_day: str, target: float, end_loss: float = END_LOSS) -> dict:
     """Fresh attempt at each month start: chance of the target within 12 months."""
     d = date.fromisoformat(first_day).replace(day=1)
     out = []
     while d + timedelta(days=HORIZON_DAYS) <= date.fromisoformat(last_day):
         s = (d - timedelta(days=1)).isoformat()
-        outcome, _, mult = play(stream, s, target, (d + timedelta(days=HORIZON_DAYS)).isoformat())
+        outcome, _, mult = play(stream, s, target, (d + timedelta(days=HORIZON_DAYS)).isoformat(), end_loss)
         out.append((outcome, mult))
         d = (d.replace(day=28) + timedelta(days=4)).replace(day=1)
     n = len(out)

@@ -9,7 +9,9 @@ Every trading day from 2024-02 (Alpaca's option history), with one-minute bars:
 Costs: pay 10% over the minute close to get in (at least a cent), get 10% under it on a
 market exit; the limit fills at its price. A contract with no trade within 5 minutes of the
 entry time is skipped that day.
-Then each rule is replayed as the experiment would run it, with restarts after the 40% loss line:
+Then each rule is replayed as the experiment would run it: an attempt ends when the account
+falls below $50 of its $500 (cheap 0DTE contracts still trade at a few cents, so a 40% line
+would end attempts that can still recover), and a fresh $500 attempt begins:
 all of the account on every trade, or 20% of it; and the chances of 5x / 10x / 100x.
 Record only. Run: python -m hero.research_0dte
 """
@@ -36,6 +38,7 @@ TAKE = (3, 5, 10)
 EXIT_AT = "15:30"
 SLIP = 0.10
 FRACTIONS = (1.0, 0.2)
+END_LOSS = 0.9  # the attempt is over below $50 of $500
 
 
 def occ(und: str, day: str, kind: str, strike: float) -> str:
@@ -158,12 +161,14 @@ def run(client) -> dict:
             stream = [(d, max(f * r, -1.0)) for d, r in ts]
             first = (date.fromisoformat(ts[0][0]) - timedelta(days=1)).isoformat()
             for target in rh.TARGETS:
-                seq = rh.sequential(stream, first, target)
-                win = rh.windows(stream, first, last_day, target)
+                seq = rh.sequential(stream, first, target, END_LOSS)
+                win = rh.windows(stream, first, last_day, target, END_LOSS)
                 row[f"f{f}_t{target}"] = {"heroes": seq["heroes"], "zeros": seq["zeros"],
                                           "days": seq["median_days_to_hero"], "p12": win["p_hero"]}
         rows.append(row)
-    return {"generated": date.today().isoformat(), "start": START, "days_used": days_used, "rows": rows}
+    return {"generated": date.today().isoformat(), "start": START, "days_used": days_used, "rows": rows,
+            # every trade per rule, so the replay can be redone with other end lines or targets
+            "trades": {k: [[d, round(r, 4)] for d, r in v] for k, v in trades.items()}}
 
 
 def markdown(rep: dict) -> str:
@@ -171,7 +176,7 @@ def markdown(rep: dict) -> str:
            f"自 {rep['start']}，用到的交易日：{rep['days_used']}。每天在 10:00 / 12:00 / 14:00 买 1 张当天到期的 SPY 或 QQQ 期权，"
            "行权价离现价 0.3% / 0.6% / 1.0%，方向为「顺势」（开盘以来涨就买看涨、跌就买看跌）或「只买看涨」，"
            "挂 3 / 5 / 10 倍止盈单，没到就 15:30 卖出。买入多付 10%、卖出少拿 10%（至少 1 美分），止盈按挂单价成交。"
-           "资金：每次全仓（100%）或每次 20%；亏 40% 算归零、用新的 $500 重来。只研究，不改交易。", ""]
+           "资金：每次全仓（100%）或每次 20%；账户低于 $50 算归零、用新的 $500 重来。只研究，不改交易。", ""]
     rows = rep["rows"]
     out += ["## 每笔交易的平均结果（最好的 10 种和最差的 5 种）", "",
             "| 标的 | 买入 | 距离 | 方向 | 止盈 | 次数 | 赚钱比例 | 碰到止盈 | 平均每 $1 |", "|---|---|---|---|---|---|---|---|---|"]
