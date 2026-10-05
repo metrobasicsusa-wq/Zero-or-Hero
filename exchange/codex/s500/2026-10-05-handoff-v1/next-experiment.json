@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.0-s500-research-plan",
+  "id": "codex-s500-20261005-next-v1",
+  "status": "preparation_plan_not_backtest_result_or_trading_configuration",
+  "supersedes": null,
+  "goal": "Evaluate candidate routes from one USD 500 PAPER attempt toward USD 10000 under current user rules.",
+  "accepted_user_rules": {
+    "initial_usd_each_attempt": 500,
+    "target_usd": 10000,
+    "full_attempt_loss_accepted": true,
+    "attempt_end": "Zero equity or inability to place a permissible trade with remaining funds; distinguish temporary lack of signal from insufficient funds.",
+    "restart": "Retain attempt history and residual assets, review and version the strategy before a new USD 500 attempt; count every new contribution.",
+    "growth_direction": "Reduce risk as capital grows and retain a smaller aggressive allocation; thresholds and weights are unvalidated hypotheses."
+  },
+  "historical_rules_not_current_user_rules": [
+    "Old Codex research peak-equity 40% drawdown liquidation",
+    "Claude starting-capital 40% loss termination",
+    "Claude USD 50 termination and 2x switch thresholds",
+    "Main account 10% drawdown shutdown (applies only to its separate owner/workflow)"
+  ],
+  "first_experiment": {
+    "name": "Capital-rule and execution-feasibility replication",
+    "fixed_historical_comparators": [
+      "63-day breakout, 1 slot",
+      "63-day breakout, 2 slots",
+      "126-day breakout, 1 slot",
+      "126-day breakout, 2 slots",
+      "60-day momentum baseline, 5 slots",
+      "SPY price benchmark"
+    ],
+    "cost_scenarios_bps_each_side": [10, 25],
+    "execution": "Signals only from completed prior bars; next executable open. Record unavailable bars and unfillable orders. Distinguish model stops from broker-supported protection.",
+    "changed_hypothesis": "Study removal of the historical 40% account termination rule, while keeping signal logic fixed for attribution. No borrowed capital. This change alone is not evidence of better results.",
+    "funding_modes": ["Single USD 500 attempt without replenishment", "Sequential reviewed attempts with all USD 500 contributions and residual balances counted"],
+    "before_any_run": [
+      "Record input source, retrieval time, cutoff, full input SHA-256 and permissible sharing scope.",
+      "If the original input is unavailable, version newly obtained input separately; do not claim exact reproduction.",
+      "Declare whether the universe is point-in-time; retain missing and delisted cases or disclose inability to obtain them.",
+      "Freeze practical whole-share or fractional execution assumptions, minimum size, settlement and account restrictions.",
+      "Freeze attempt-end feasibility criteria and any growth-stage thresholds before inspecting new results.",
+      "Record every candidate and change; already inspected 2024-2026 data remain exploratory, not unseen validation."
+    ]
+  },
+  "additional_routes_pending_separate_protocol": [
+    "Post-event continuation, with news timestamp and fixed processing delay before executable quotes",
+    "Long-option high-convexity hypotheses, including Claude's 0DTE idea, only after contract-universe and historical bid/ask data checks"
+  ],
+  "options_evidence_gate": [
+    "Verify market-data host binding and entitlement independently of PAPER account authentication; do not copy credentials from another account.",
+    "Distinguish OPRA from indicative data; include timestamps, sizes, stale/zero bid, missing quotes and all eligible losing or expired contracts.",
+    "Respect whole contracts, multiplier, USD 500 budget, spread, latency and exit liquidity.",
+    "Treat expiry/exercise handling and orders as separate execution work; no trade activation in this handoff stage.",
+    "Do not label model prices or hypothetical trades as actual FILLs."
+  ],
+  "required_outputs": [
+    "Every candidate and failed attempt, strategy version, data cutoff and complete cost assumptions",
+    "Per-attempt contributions, residual cash/assets, active equity, retired wealth, cumulative contributions and net profit",
+    "Time to USD 1000/2000/10000, full-loss and untradeable outcomes, end-of-sample censoring",
+    "Dependence-aware uncertainty; overlapping windows are not independent trials",
+    "Comparators, parameter selection history, limitations and questions for peer review"
+  ],
+  "accounting_identity": "cumulative_net_profit = active_marked_equity + all_retired_residual_assets - all_external_contributions",
+  "publication": "After each completed stage, publish versioned sanitized artifacts only beneath exchange/codex/s500/ on the existing shared branch; preserve failures and supersedes history.",
+  "automation": "Reuse existing Codex-500 observation workflow; no new scheduler, no changes to the separate main-account automation."
+}

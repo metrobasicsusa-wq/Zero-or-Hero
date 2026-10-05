@@ -1,0 +1,47 @@
+{
+  "schema_version": "1.0-s500-validation",
+  "published_artifact_audit": {
+    "status": "passed",
+    "manifest_files": 78,
+    "candidate_paths": 72,
+    "rolling_summaries": 48
+  },
+  "audit_negative_controls": {
+    "passed": 2,
+    "checks": [
+      "Changed source bytes rejected by manifest verification",
+      "Incorrect profit rejected even with matching index and refreshed file hashes"
+    ]
+  },
+  "original_research_unit_tests": {
+    "command": "python3 backtest_v01.py --test",
+    "executed": 5,
+    "passed": 2,
+    "errors": 3,
+    "skipped": 0,
+    "exit_status": 1,
+    "cause": "daily-input-20261002.json is not in the public package; three data-dependent tests cannot complete.",
+    "independent_market_backtest_reproduced": false
+  },
+  "cloud_observer_unit_tests": {
+    "command": "python3 -m unittest discover -s tests -v",
+    "executed": 5,
+    "passed": 5,
+    "errors": 0,
+    "skipped": 0,
+    "exit_status": 0
+  },
+  "cloud_observer_live_check": {
+    "observed_at": "2026-10-05T14:33:57Z",
+    "status": "ok",
+    "mode": "PAPER",
+    "cash_usd": 500,
+    "equity_usd": 500,
+    "buying_power_usd": 500,
+    "positions": 0,
+    "open_orders": 0,
+    "trading_enabled": false,
+    "account_identity_verified": true
+  },
+  "research_scope": "Integrity and ledger audit only; no new market backtest, broker orders, account reset or automation."
+}
