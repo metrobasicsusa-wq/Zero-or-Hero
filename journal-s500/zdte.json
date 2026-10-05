@@ -1,18 +1,38 @@
 {
  "phase": "zero_dte",
  "switched": null,
- "sim_cash": 255.0,
+ "sim_cash": 990.0,
  "start": 500.0,
  "today": {
   "date": "2026-10-05",
-  "status": "open",
+  "status": "closed",
   "symbol": "SPY261005C00777000",
   "qty": 35,
   "price": 0.07,
   "paid": 245.0,
   "take_price": 0.21,
   "opened_at": "10:40",
-  "simulated": true
+  "simulated": true,
+  "proceeds": 735.0,
+  "exit": "止盈 3 倍",
+  "closed_at": "15:25",
+  "ret": 2.0
  },
- "history": []
+ "history": [
+  {
+   "date": "2026-10-05",
+   "status": "closed",
+   "symbol": "SPY261005C00777000",
+   "qty": 35,
+   "price": 0.07,
+   "paid": 245.0,
+   "take_price": 0.21,
+   "opened_at": "10:40",
+   "simulated": true,
+   "proceeds": 735.0,
+   "exit": "止盈 3 倍",
+   "closed_at": "15:25",
+   "ret": 2.0
+  }
+ ]
 }
