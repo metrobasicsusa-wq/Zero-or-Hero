@@ -1443,13 +1443,14 @@ class LotterySleeve(unittest.TestCase):
 class ResearchHero(unittest.TestCase):
     def test_attempts_end_at_target_or_loss_line(self):
         from hero import research_hero as rh
-        stream = [("d1", -0.5), ("d2", 9.0), ("d3", 1.0)]
-        self.assertEqual(rh.play(stream, "d0", 10)[0], "zero")           # -50% crosses the 40% line
-        self.assertEqual(rh.play(stream, "d1", 10)[:2], ("hero", "d2"))  # a fresh attempt from d1 hits 10x
-        seq = rh.sequential(stream, "d0", 10)
-        self.assertEqual((seq["heroes"], seq["zeros"]), (1, 1))
-        mix = rh.mixed([("d1", 2.0), ("d5", 5.0)], [("d2", 1.0), ("d3", 1.0)], 3.0)
-        self.assertEqual(rh.play(mix, "d0", 10)[:2], ("hero", "d3"))  # 3x, then the second leg doubles twice
+        d = ["2025-01-01", "2025-01-02", "2025-01-03", "2025-01-06", "2025-01-07", "2025-01-08"]
+        stream = [(d[1], -0.5), (d[2], 9.0), (d[3], 1.0)]
+        self.assertEqual(rh.play(stream, d[0], 10)[0], "zero")             # -50% crosses the 40% line
+        self.assertEqual(rh.play(stream, d[1], 10)[:2], ("hero", d[2]))    # a fresh attempt from d1 hits 10x
+        seq = rh.sequential(stream, d[0], 10)
+        self.assertEqual((seq["heroes"], seq["zeros"], seq["median_days_to_hero"]), (1, 1, 1))
+        mix = rh.mixed([(d[1], 2.0), (d[5], 5.0)], [(d[2], 1.0), (d[3], 1.0)], 3.0)
+        self.assertEqual(rh.play(mix, d[0], 10)[:2], ("hero", d[3]))  # 3x, then the second leg doubles twice
 
 
 class Safety(unittest.TestCase):
