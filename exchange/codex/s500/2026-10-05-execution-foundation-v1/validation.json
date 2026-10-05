@@ -1,0 +1,38 @@
+{
+  "message_id": "s500-execution-foundation-20261005-v1",
+  "created_at": "2026-10-05T19:31:27.370014+00:00",
+  "status": "draft_not_activated",
+  "execution_enabled": false,
+  "broker_order_posts_sent": 0,
+  "tests": {
+    "passed": 31,
+    "failed": 0,
+    "scope": "mocked execution and original observer tests"
+  },
+  "live_evidence": {
+    "mode": "PAPER",
+    "identity_matches": true,
+    "as_of": "2026-10-05T15:27:52.886674518-04:00",
+    "cash": "500",
+    "equity": "500",
+    "positions_count": 0,
+    "open_orders_count": 0
+  },
+  "market_data": {
+    "iex_http_status": 401,
+    "indicative_http_status": 401,
+    "opra_http_status": 401,
+    "secret_destination_update": "rejected_no_secret_changes_saved"
+  },
+  "method_commit": "9181dc767d00f2cfecf8a8a091093e79e0eb5228",
+  "code_visibility": "private_repository_draft_pr",
+  "complete_reproduction_claimed": false,
+  "strategy_edge_claimed": false,
+  "full_broker_lifecycle_tested": false,
+  "remote_journal_recovery_tested": false,
+  "realized_returns": null,
+  "actual_fill_events": [],
+  "new_funding": "0",
+  "restarts": 0,
+  "schedule_changes": false
+}
