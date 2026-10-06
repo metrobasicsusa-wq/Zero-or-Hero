@@ -12,7 +12,8 @@ so no "today's winners" tilt), since 2024-02:
   exits:  claude-b's trail (once worth 2x, sell when 40% below the best minute close), a 3x
           limit, or sold at 15:50; values are minute closes less 10% (at least a cent);
   "market day": SPY itself gapped 0.7%+ that morning (a macro day), reported apart;
-  "AMD-like" (the user's idea, decided before the open): the 63-day trend and volatility both in
+  "chips / Mag 7" (the user's focus): AMD's peers, every one of their gap-downs kept (not sampled);
+  "AMD-like" (decided before the open): the 63-day trend and volatility both in
           the top quarter of all gap-down events, and/or the stock's own last 3-6 gap-downs within a
           year rose from the open to the close on average.
 Then the $500 game: half of the account on each event in date order, a round ends below $50 or at
@@ -37,6 +38,11 @@ START = "2024-02-01"
 POOL = 100
 OTM = (0.01, 0.02, 0.03)
 GAP = 0.02
+# The user's focus: the AMD-style rebound now shows up mainly in chip stocks and the Magnificent 7.
+MAG7 = {"AAPL", "MSFT", "GOOGL", "GOOG", "AMZN", "META", "NVDA", "TSLA"}
+SEMIS = {"NVDA", "AMD", "AVGO", "MU", "INTC", "QCOM", "TSM", "ARM", "MRVL", "AMAT", "LRCX", "KLAC", "ADI", "TXN",
+         "ON", "NXPI", "MCHP", "ASML", "MPWR", "TER", "ENTG", "GFS", "SNDK", "SMH", "SOXX"}
+FOCUS = MAG7 | SEMIS
 SAMPLES = {"gap_down": 3000, "gap_up": 400, "ordinary": 400}  # caps keep a run inside the time limit
 EXITS = ("trail", "tp3", "close")
 
@@ -140,9 +146,12 @@ def run(client) -> dict:
             if kind:
                 cand[kind].append((d, s, round(g, 4), features(closes[s], opens.get(s, {}), dates, t)))
     rng = random.Random(7)
-    for k, n in SAMPLES.items():
-        if len(cand[k]) > n:
-            cand[k] = sorted(rng.sample(cand[k], n))
+    for k, n in SAMPLES.items():  # chip / Mag 7 gap-downs are always kept; the rest are sampled
+        keep = [c for c in cand[k] if k == "gap_down" and c[1] in FOCUS]
+        rest = [c for c in cand[k] if c not in keep]
+        if len(rest) > n:
+            rest = rng.sample(rest, n)
+        cand[k] = sorted(keep + rest)
     rows = []
     for kind, evs in cand.items():
         for d, s, g, feat in evs:
@@ -203,6 +212,12 @@ def table(rows: list[dict]) -> dict:
     bouncer = lambda r: r.get("prior_n", 0) >= 3 and (r.get("prior_rebound") or -1) > 0
     gd = lambda r: r["kind"] == "gap_down"
     groups = {
+        "低开 + 半导体 / Mag 7": lambda r: gd(r) and r["symbol"] in FOCUS,
+        "低开 + 半导体 / Mag 7 + 像 AMD": lambda r: gd(r) and r["symbol"] in FOCUS and strong(r) and wild(r),
+        "低开 + 半导体 / Mag 7 + 常收复": lambda r: gd(r) and r["symbol"] in FOCUS and bouncer(r),
+        "低开 + 半导体 / Mag 7，2026 年以来": lambda r: gd(r) and r["symbol"] in FOCUS and r["day"] >= "2026-01-01",
+        "低开 + 半导体 / Mag 7，当天到期": lambda r: gd(r) and r["symbol"] in FOCUS and r["same_day"],
+        "低开 + 其他股票": lambda r: gd(r) and r["symbol"] not in FOCUS,
         "低开 + 63 天涨幅前 25%": lambda r: gd(r) and strong(r),
         "低开 + 波动前 25%": lambda r: gd(r) and wild(r),
         "低开 + 强势且高波动（像 AMD）": lambda r: gd(r) and strong(r) and wild(r),
@@ -257,7 +272,8 @@ def markdown(rep: dict, t: dict) -> str:
                    f"{r['game_trail']['heroes']} / {r['game_trail']['zeros']} |")
     c = t.get("_cuts", {})
     out += ["", f"「像 AMD」= 低开前 63 天涨幅和波动率都在所有低开事件的前 25%（涨幅 ≥ {c.get('mom63_top25', 0):+.0%}、"
-            f"年化波动 ≥ {c.get('vol63_top25', 0):.0%}）；「常收复」= 过去一年最近 3～6 次低开当天从开盘到收盘平均是涨的。都只用开盘前已知的数据。"]
+            f"年化波动 ≥ {c.get('vol63_top25', 0):.0%}）；「常收复」= 过去一年最近 3～6 次低开当天从开盘到收盘平均是涨的。都只用开盘前已知的数据。"
+            "「半导体 / Mag 7」= " + "、".join(sorted(FOCUS)) + "（在当月股票池里才算；这些股票的低开全部保留，不抽样）。"]
     gd = [(k, r) for k, r in t.items() if k.startswith("低开 2%+（全部）")]
     out += ["", "## 按股票（低开全部，回撤卖，至少 5 笔的股票）", ""]
     for k, r in gd:
