@@ -1,0 +1,53 @@
+{
+  "generated_at": "2026-10-06T20:15:35.685683+00:00",
+  "families": {
+    "OR5": {
+      "counts": {
+        "pass": 270,
+        "fail": 700,
+        "unknown": 109
+      },
+      "status_counts": {
+        "signal_and_entry_reference_ready": 270,
+        "opening_range_volume_gate_failed": 411,
+        "no_breakout_before_11": 283,
+        "signal_data_unknown": 38,
+        "opening_gap_gate_failed": 6,
+        "opening_range_data_unknown": 71
+      }
+    },
+    "OR15": {
+      "counts": {
+        "pass": 137,
+        "fail": 843,
+        "unknown": 99
+      },
+      "status_counts": {
+        "signal_and_entry_reference_ready": 137,
+        "opening_range_volume_gate_failed": 607,
+        "no_breakout_before_11": 230,
+        "opening_range_data_unknown": 79,
+        "signal_data_unknown": 20,
+        "opening_gap_gate_failed": 6
+      }
+    },
+    "OR30": {
+      "counts": {
+        "pass": 73,
+        "fail": 894,
+        "unknown": 112
+      },
+      "status_counts": {
+        "signal_and_entry_reference_ready": 73,
+        "opening_range_volume_gate_failed": 710,
+        "no_breakout_before_11": 179,
+        "opening_range_data_unknown": 103,
+        "signal_data_unknown": 9,
+        "opening_gap_gate_failed": 5
+      }
+    }
+  },
+  "all_ready_union_count": 275,
+  "or30_parent_qualification_signal_changes": [],
+  "gate_sha256": "d2f1f7fdb333e278c6bcb12ce812fce3f931048a8b68e0ca881ded4876d79037"
+}

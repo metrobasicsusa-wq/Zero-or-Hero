@@ -1,0 +1,166 @@
+{
+  "audited_at": "2026-10-06T20:33:39.575255+00:00",
+  "status": "passed_with_explicit_conditional_model_and_retrospective_scope_limits",
+  "blocking_unresolved_implementation_or_reconciliation_findings": [],
+  "tests": {
+    "implementation": 38,
+    "independent": 42,
+    "total": 80,
+    "failed": 0,
+    "before_first_wealth_run": true
+  },
+  "registered_and_actual_results": {
+    "gates": 3237,
+    "unique_original_candidates": 1079,
+    "ready_family_cases": 480,
+    "unique_ready_stock_days": 275,
+    "isolated": 3840,
+    "portfolios": 72,
+    "total_wealth_results": 3912
+  },
+  "source_coverage_checks": {
+    "minute_raw_pages": 630,
+    "prefix_pages": 179,
+    "parent_holding_pages": 246,
+    "new_holding_pages": 205,
+    "new_bars": 692348,
+    "required_unique_symbol_sessions": 2584,
+    "reused": 703,
+    "new": 1881,
+    "requested_session_failures": 0,
+    "revision_conflicts": 0,
+    "daily_raw_files": 104,
+    "daily_wanted_symbols": 243,
+    "daily_selected_bars": 55749,
+    "action_source_rows": 41181,
+    "action_selected_rows": 149,
+    "unmapped_action_rows_retained": 19,
+    "historical_event_exhaustiveness_proven": false
+  },
+  "ledger_totals": {
+    "trades_checked": 6748,
+    "buys_checked": 3838,
+    "sales_checked": 2910,
+    "daily_snapshots_checked": 16642,
+    "ma_decisions_checked": 0
+  },
+  "extension_totals": {
+    "skipped_minutes_checked": 136495,
+    "gap_spans_checked": 99370,
+    "stale_snapshots_checked": 810,
+    "eligible_snapshots_checked": 15788,
+    "excluded_snapshots_checked": 854
+  },
+  "portfolio_daily_selection_checks": 2597,
+  "paired_rows_checked": 2208,
+  "group_numeric_summaries_checked": 24,
+  "isolated_statuses": {
+    "complete": 2940,
+    "incomplete": 794,
+    "censored_open_position": 106
+  },
+  "portfolio_statuses": {
+    "incomplete": 60,
+    "censored_open_position": 12
+  },
+  "provider_retrospective_endpoints": {
+    "OR5": {
+      "count": 4,
+      "conditional_open_position_mark_range": [
+        "230.460829",
+        "453.88780075"
+      ],
+      "realized_profit": null,
+      "all_daily_milestones_unreached": true
+    },
+    "OR15": {
+      "count": 4,
+      "conditional_open_position_mark_range": [
+        "100.893056",
+        "359.17041900"
+      ],
+      "realized_profit": null,
+      "all_daily_milestones_unreached": true
+    },
+    "OR30": {
+      "count": 4,
+      "conditional_open_position_mark_range": [
+        "96.226928",
+        "304.89462525"
+      ],
+      "realized_profit": null,
+      "all_daily_milestones_unreached": true
+    }
+  },
+  "unchanged_history": {
+    "parent_input_sha256_checks": 20,
+    "or30_parent_gate_signal_entry_checks": 1079,
+    "or30_parent_financial_cases": 584,
+    "changed_financial_cases": 0
+  },
+  "pre_run_hardening_findings_resolved": [
+    {
+      "finding": "Source conflict flag initially not consumed by entry engine.",
+      "resolution": "Final engine stops isolated conflicted input at planned entry without a modeled purchase; actual source conflicts zero."
+    },
+    {
+      "finding": "Conflict details singular/plural mismatch and later-ranked conflict could evade strict precedence.",
+      "resolution": "Runner uses plural details; every same-day conflicted candidate conservatively blocks flat portfolio selection regardless of its old ranking. Tested before first returns."
+    },
+    {
+      "finding": "Preliminary input plan missing-request language could imply early suppression of unused future requests.",
+      "resolution": "Final pre-run validation explicitly freezes failure at time of actual use. Source-version conflict quarantine remains conservatively whole-window; actual missing requests zero."
+    }
+  ],
+  "unresolved_research_limits": [
+    "Original1079 current-directory daily-open screened cohort is not complete point-in-time universe.",
+    "All Jan2-Oct5 history already explored; no independent holdout or forward validation.",
+    "Linear N/30 opening volume is an unvalidated heuristic, not historical same-time relative volume.",
+    "Range changes timing, qualification and stop together; paired family results are overlapping evidence.",
+    "Historical returned-time bars and current corporate actions do not certify live availability, identity completeness, stop fills or quote execution.",
+    "No dense-minute or exhaustive event claim follows from complete request chains; provider model is a declared additional assumption.",
+    "Whole planned-window source revision quarantine could overblock unused later conflicts; current source conflict count zero.",
+    "Signalless unknown candidate precedence is deliberately conservative and may block an earlier known signal.",
+    "Closed independent cases are selected by coverage and are not sequential wealth; all 12 provider retrospective portfolios remain open with null realized profit.",
+    "Unresolved/censored/data failures are not zero returns, bankruptcy, or authorization for new funding.",
+    "Public archive omits full raw market inputs and is not self-contained reproducibility."
+  ],
+  "next_stage_review": "Historical option contract/quote and whole-contract500 feasibility only; proposal explicitly not registered or run, no leverage edge inferred.",
+  "artifacts_sha256": {
+    "study-design.json": "c5b24f33b7e093819fd223f8b96af72e7b086090b3c78d31ecc920ea58113396",
+    "pre-run-validation.json": "3bcdacd92fd7f9bd93bba7120fe032eea7eede5efd3397b3358b0d5b0b614e1f",
+    "early_gates.py": "97d7d301a8fccef2f45f281fbdcc9d44e70fa13b274b2dfcde1e9db8dcfed432",
+    "early_engine.py": "1a4dab5eb349bb21623dc99c8fd0810314f5c7ca0133a7c121c671dfe4c24c0f",
+    "run_early_paths.py": "d01eb7e58f1f28bdbde8be9f983cf2623881a8fb353341a501d205dae4a90c93",
+    "engine-conflict-version-note.json": "09d1d3824ab85a5382241187741f2fdf9ba3e5539a0d46f884050fb8cdc4295d",
+    "independent-final-test-binding.json": "08cac30ac395c3a7c5959e9e010edb11f473ab902de40faaeb3a4462e5653194",
+    "independent-final-tests.log": "992aba5a464c772c86cde69d4afead7912b2c32ab95a25ced35c6f7c37493bb8",
+    "independent-registration-review.json": "456caad781d74f589bc7eaed67522d20f40321b93ece6d1501aae882479c4e9b",
+    "independent-actual-gate-audit.json": "855c403b7b73e9fe0843df8dff640667465bc2899309939428257169e287c0e9",
+    "independent-new-source-audit.json": "4eb97f7b522455e2a9a1e41ed9412233ad836089d6fe7180e7fb2789486fad3d",
+    "independent-daily-actions-audit.json": "fa1fec9c85cd4e3f4baeca640e8cacc2d03665bf8c0744b78ba0f28c4695599b",
+    "independent-runner-review.json": "5357f982026ea0300e6a063fb590ce136afe1838bea15d2dbf6020b79d790958",
+    "independent-ledger-audit.json": "b285b5899eeec0a5662d329f8b7fcf2df4bbb4f8a2fb75bb9fc3bbb54f21f7c6",
+    "independent-extension-audit.json": "f86553cd47a04169e31f097d711c9de805a32e64cb579f9c286677f7c1902528",
+    "independent_actual_gates.py": "9772d0bb49314a659c158137c5d6991072f7a7f4ece4916c8306f227c68efc2f",
+    "independent_gate_tests.py": "eb1ee160cc31683aed44e56a35a95602c2dc6951497e6674871f22b6689a39ae",
+    "independent_engine_tests.py": "e5abfdf39268c82537492e3affdaa86317819aa7a090ba3e3444c2675b2371d5",
+    "independent_ledger_audit.py": "b8179344ff5e94a34bf4876b080fbb39f6f076e81dbf520791b241fe5ae22bc4",
+    "independent_extension_audit.py": "5014d368ca90866f2b98f89a5d7c39900c585fd12c3f08727985d424094e3710",
+    "independent-new-source-audit.py": "7e88186b3465c56df3a732d337b6f1dbee6b3565ce196eb825995d4d467d1f2b",
+    "independent-daily-actions-audit.py": "8e089d4a205b4c60655b59d3b544efb195b4485e57424b13d2fa8acf24d5d94a",
+    "isolated-results.json": "6e61bc216051e472613af163a9ee3462a0960f6ebdcfac593d818eb397924a68",
+    "portfolio-results.json": "1a8a7ad4f0e40998152f009354b2a76b10ff6f5bb0c4bce97cacc8d747d63899",
+    "run-summary.json": "32bcf964d593e5e7fdc738b4137697d4a5d0037d7849ae83949b71d80aa04159",
+    "paired-diagnostics.json": "4fcdbe3d2c342128bd79bca6a175bfaf79a56752c9e7e729becb945eab7aa99c",
+    "all-candidate-registry.json": "7f163439904ba40b7b7f364f35b02fd15f9115cc995d3ee85e97508826af3c21",
+    "next-stage-proposal.json": "8531384ea7a8d992eb1db5e54d28ed817fb39beb548eef84da3b954a37f1f68c",
+    "independent-report-review.json": "fc6e54704580ba5c0a4c57b0a8393da53e1c95ccfafdd458061827771883e52c",
+    "REPORT.zh.md": "e8b584ef1cc4008448704ad1fd9ca5d68366ae8601bf6e82984d9d73c0e7a443",
+    "REPRODUCE.md": "b8760158c6b8f34862f03e465b2f865e9176fa6bf5a3e8c1ee8a06cd3f95a854"
+  },
+  "new_network_calls_by_auditor": 0,
+  "new_actual_outcome_simulations_by_auditor": 0,
+  "broker_orders_sent": 0,
+  "final_report_review": "All12 portfolio rows,3 paired rows,6 status/failure bullets and headline findings verified; two editorial timing/preregistration wording issues resolved."
+}

@@ -1,0 +1,36 @@
+{
+  "reviewed_at": "2026-10-06T20:33:39.531288+00:00",
+  "status": "passed_final_report_and_unrun_next_stage_proposal",
+  "portfolio_table_rows": 12,
+  "paired_table_rows": 3,
+  "scope_status_bullets": 6,
+  "all_displayed_ending_values_are_censored_marks": true,
+  "all_realized_profit_fields_null": true,
+  "new_holdout_or_real_broker_result_not_claimed": true,
+  "input_sha256": {
+    "REPORT.zh.md": "e8b584ef1cc4008448704ad1fd9ca5d68366ae8601bf6e82984d9d73c0e7a443",
+    "REPRODUCE.md": "b8760158c6b8f34862f03e465b2f865e9176fa6bf5a3e8c1ee8a06cd3f95a854",
+    "next-stage-proposal.json": "8531384ea7a8d992eb1db5e54d28ed817fb39beb548eef84da3b954a37f1f68c",
+    "portfolio-results.json": "1a8a7ad4f0e40998152f009354b2a76b10ff6f5bb0c4bce97cacc8d747d63899",
+    "paired-diagnostics.json": "4fcdbe3d2c342128bd79bca6a175bfaf79a56752c9e7e729becb945eab7aa99c",
+    "run-summary.json": "32bcf964d593e5e7fdc738b4137697d4a5d0037d7849ae83949b71d80aa04159"
+  },
+  "wording_findings_resolved": [
+    {
+      "finding": "Unsupported claim that the displayed single budget/cost cell had itself been preselected.",
+      "resolution": "Removed pre-specified display wording; all8 cells retained."
+    },
+    {
+      "finding": "Before11 wording could exclude the m89 bar completing exactly11:00.",
+      "resolution": "Report now says minute bars completed through11:00 inclusive, matching the frozen m<=89 rule."
+    }
+  ],
+  "additional_conclusions_verified": {
+    "all12_provider_retrospective_marks_below500": true,
+    "all12_still_open_and_profit_null": true,
+    "all_provider_closed_case_group_means_negative": true,
+    "no_valid_daily_1000_milestones": true,
+    "does_not_claim_all_intraday_prices_examined": true,
+    "next_options_feasibility_proposal_unregistered_unrun": true
+  }
+}

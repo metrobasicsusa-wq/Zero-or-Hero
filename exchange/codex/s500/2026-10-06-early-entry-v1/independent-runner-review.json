@@ -1,0 +1,58 @@
+{
+  "status": "passed_static_runner_and_independent_source_review",
+  "completed_at": "2026-10-06T20:26:21.356049+00:00",
+  "source_audit_sha256": "4eb97f7b522455e2a9a1e41ed9412233ad836089d6fe7180e7fb2789486fad3d",
+  "source_audit_status": "passed",
+  "checked_code_sha256": {
+    "run_early_paths.py": "d01eb7e58f1f28bdbde8be9f983cf2623881a8fb353341a501d205dae4a90c93",
+    "early_engine.py": "1a4dab5eb349bb21623dc99c8fd0810314f5c7ca0133a7c121c671dfe4c24c0f",
+    "prepare_inputs.py": "9633b8e9cd89ee4e812e6528fc92ed89984d72598cee3d1f6ba1584261702063",
+    "collect_inputs.py": "9381ee00a21a073d83f93623ec21a641511f23fa3f081ce3f385c02c14f2fc96"
+  },
+  "independent_plan_reconciliation": {
+    "family_ready_counts": {
+      "OR5": 270,
+      "OR15": 137,
+      "OR30": 73
+    },
+    "unique_ready_cases": 275,
+    "unique_symbols": 243,
+    "case_session_pairs": 2639,
+    "required_symbol_sessions": 2584,
+    "old_verified_reuse": 703,
+    "new_verified_sessions": 1881,
+    "new_tasks": 205,
+    "cutoff_censored_case_windows": 14,
+    "isolated_results_expected": 3840,
+    "portfolio_results_expected": 72,
+    "total_results_expected": 3912
+  },
+  "scope_guards": {
+    "full_universe_strict_passes_all_1079_and_original_daily_coverage": true,
+    "original_registry_unknown_guard_passes_all_1079": true,
+    "retrospective_only_passes_ready_members_and_is_explicitly_labeled": true,
+    "news_is_descriptive_only": true,
+    "source_revision_any_candidate_blocks_flat_day_selection_regardless_of_old_rank": true
+  },
+  "review_findings": [
+    {
+      "issue": "Source conflict provenance field singular/plural mismatch",
+      "status": "fixed_and_statically_rechecked",
+      "evidence": "runner and engine now both use source_revision_conflict_details"
+    },
+    {
+      "issue": "Source-conflict candidate retained old signal rank and could be ignored",
+      "status": "fixed_and_statically_rechecked",
+      "evidence": "conflict is unresolved before pass/fail branch and always a flat-day precedence blocker"
+    },
+    {
+      "issue": "Missing future planned-session request handling",
+      "status": "root_decision_recorded",
+      "evidence": "source_input_incomplete is an audit flag; a missing source stops only when a held or exact-execution dependency needs it. A trade already closed does not depend on unused later sessions. Current archive has zero missing requests."
+    }
+  ],
+  "quarantine_limitation": "Source-version conflicts anywhere in a predeclared whole ten-session window conservatively quarantine the candidate, even if that session would be unused after an earlier exit. This is retrospective source-version consistency quarantine, not a contemporaneous event or a causal trading rule. Current archive has zero such conflicts.",
+  "protocol_wording_note": "The initial collection plan broadly says fail affected cases for missing requests; the communicated governing interpretation is time of use. The immutable request membership and source selection are unchanged.",
+  "no_strategy_outcomes_run_or_parsed_by_review": true,
+  "network_requests_by_review": 0
+}

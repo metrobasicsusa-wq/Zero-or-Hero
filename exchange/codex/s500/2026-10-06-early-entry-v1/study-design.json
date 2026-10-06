@@ -1,0 +1,116 @@
+{
+  "id": "s500_technical_gap_early_entry_v1",
+  "registered_at": "2026-10-06T20:12:11.616416+00:00",
+  "status": "frozen_before_new_early_gates_and_returns",
+  "period": [
+    "2026-01-02",
+    "2026-10-05"
+  ],
+  "parent_commit": "4919eeb5366f3a60a132e9ef3450fabc92ce7cb0",
+  "scope": "All1079 original candidate rows, all families; original retrospective/current-directory daily-opening preselection is not a complete point-in-time market universe.",
+  "hypothesis": "Compare packages of earlier opening-range breakout and proportional opening-volume threshold; this changes timing AND qualification, not a timing-only treatment.",
+  "families": [
+    {
+      "id": "OR5",
+      "opening_minutes": 5,
+      "volume_threshold_numerator": 5,
+      "volume_threshold_denominator": 30
+    },
+    {
+      "id": "OR15",
+      "opening_minutes": 15,
+      "volume_threshold_numerator": 15,
+      "volume_threshold_denominator": 30
+    },
+    {
+      "id": "OR30",
+      "opening_minutes": 30,
+      "volume_threshold_numerator": 30,
+      "volume_threshold_denominator": 30
+    }
+  ],
+  "volume_assumption": "At opening-range completion use accumulated V_N/prior20 adjusted vendor FULL-DAY mean >= N/30. This linear-duration heuristic is NOT historical same-time RVOL; opening volume is nonlinear. No future30minute or full-day input.",
+  "gate_rules": {
+    "prior_close_minimum": "2",
+    "prior20_median_dollar_volume_minimum": "10000000",
+    "regular_open_gap_minimum": "0.10",
+    "opening_range": "Validate all offsets0..N-1 with original exact-timestamp/OHLCV rules; high/low/volume from those only.",
+    "signal": "First valid completed minute m in N..89 with close strictly above range high; earlier missing/malformed signal input is unknown, not silently skipped.",
+    "clock": "Source bar m completes m+1, then one full minute latency; intended entry is exact m+2 minute open. First possible OR5 entry09:37 ET. Source bars are revised historical aggregates, not proven realtime receipt.",
+    "entry_gap_stop": "Planned entry at/below already known opening-range low stays unresolved, no favorable retrospective cancellation."
+  },
+  "variant_grid": {
+    "exit_mode": [
+      "fixed10"
+    ],
+    "fraction": [
+      0.5,
+      1.0
+    ],
+    "cost_bps_each_side": [
+      25,
+      100
+    ]
+  },
+  "modes": [
+    "evidence_gated",
+    "provider_event_series_assumption"
+  ],
+  "money_and_exit_rules": {
+    "initial_cash": "500",
+    "target": "10000",
+    "shares": "Whole shares; quantity fixed using signal close plus cost and fraction of settled cash. At execution skip if original quantity unaffordable; no resizing or alternate symbol.",
+    "stop": "Opening-range low; same inherited gap-open/intrabar OHLC cost-stress rule. Not executable bid/ask fill evidence.",
+    "time_exit": "Tenth trading session including entry, last regular-minute OPEN; exact execution reference required; no deferral.",
+    "portfolio": "One position, T+1 sales receivables, no entry on holding/exit day; earliest signal completion then descending opening V_N/prior20mean then symbol.",
+    "corporate_actions": "Inherit unsupported-held-event unknown guard; no synthetic share/price adjustments.",
+    "data_and_valuation": "Inherit v2 verified full-session requirement for provider absence assumption, exact-coordinate evidence for strict mode, malformed-bar/empty-session failure, fresh-only daily drawdown/milestones and null terminal stale equity.",
+    "restarts": "No injections or resets in continuous portfolios; isolated500 cases are separate diagnostics, not cumulative wealth. No old40pctstop override."
+  },
+  "news_policy": "Technical-only gap experiment. News/primary-source statuses retained as descriptive evidence, never used to select, rank or filter returns. Do not invent passed news for new candidates. Not a verified-catalyst EP strategy.",
+  "registered_outputs": {
+    "gates": 3237,
+    "isolated": "Every ready candidate in each family x4 financial variants x2 modes, with all non-ready1079 rows retained in gate registry.",
+    "portfolios_per_family_mode_variant": [
+      "full_universe_strict",
+      "original_registry_unknown_guard",
+      "retrospective_ready_cohort"
+    ],
+    "portfolio_count": 72,
+    "strict": "Full-market coverage holes must stop full_universe_strict. Registry unknown guard retains unresolved same-day candidates conservatively; no unknown news guard because news is not part of this strategy.",
+    "retrospective": "Only ready market-gate members; explicitly conditional omission of unknown candidates, not a complete implementable market policy.",
+    "comparison": "OR30 gates and applicable financial fields must reproduce parent model given same inputs. Compare all frozen variants, do not promote best retrospectively."
+  },
+  "input_plan": "After gate tests, evaluate all1079 eachfamily; freeze union of every ready case and its first10 sessions through cutoff before new holding returns. Reuse source-verified old complete symbol-sessions, fetch missing sessions only with read-only fixed paginated requests. On overlap retain immutable old source; revised entry-prefix conflicts are explicit unknown, never favorable blending. Freeze full coverage/source hashes before return runs.",
+  "evidence_limitations": [
+    "2026Jan-Oct5 and prior strategies already observed; this is exploratory, not independent holdout. Oct6 excluded to hold comparison period fixed.",
+    "Original current6633-symbol directory, daily-open/RTH mismatch and incomplete daily histories remain; all1079 is broader than73 but not fullmarket.",
+    "Historical feeds/corporate actions/news availability and identity mapping are not proven point-in-time.",
+    "Cost scenarios do not establish actual execution, liquidity capacity or future edge. Multiple observed variants need independent future confirmation."
+  ],
+  "publication": "New exchange/codex-only immutable paths, all candidates/variants/failures/code/hashes/audits, exact-byte readback; no raw full feed/news corpus, credentials, private IDs or paths.",
+  "broker_orders_sent": 0,
+  "new_scheduler_deployed": false,
+  "input_sha256": {
+    "news/candidates.json": "74c90d92ef78faeef3c3f0f0124d22b73c552e25cd3dac129db34724582c9067",
+    "news/minute-market.json": "157568c79d7b9991ddd75a1492201f12b26267547caca317007b78fdf7f9ebf3",
+    "news/bars-input-manifest.json": "8cbccb9c99dd70dc2d42931e8bec29a69bed617cddb7f9bae37bba2f495e9aae",
+    "news/market_gates.py": "d3fcd1a2e920d6ea6d4e3c939eb9b4a6e1c2a2412b73fe7709b92c8181888626",
+    "news/market-gates.json": "9b275cc1a280a4ba8fc9248c7cf13f342cb2f9b7ce1ee06fa99ea7b21fd20867",
+    "news/candidate-readiness.json": "9ea089be503dea21ae458830301c189b99a4a3d0c06c2b6265e77f06f60e1e07",
+    "news/download_inputs.py": "6be7b33f75c4858913797ed50b8ecefcd50f67928ced1b1effa67557d663c588",
+    "paths/holding-input-design.json": "cd34191b84e72a2b0c9c1dd62c89669495b2d5bad963a0d3c674f57b3cab7a49",
+    "paths/holding-input-manifest.json": "e74fc4c0a845d65ab52e6f10f07481de97c57f1091db254216aa12b2bb589652",
+    "paths/holding-market.json": "cef5ef478dd3b8fc9601281968922e33aa81749c14a7a35634c78ccaa0061705",
+    "paths/portfolio-coverage.json": "8ae3737c43235097a8007c0c92f393790bd572f0f2a1b558d347ef70afec5f65",
+    "paths/all-new-primary-reviews.json": "46d8faf70b716fca31cd6c6cd05f49ea616f209f6727a89b72d5415d19fa3cdb",
+    "event_v2/ep_engine.py": "a52304e560e819ca3612fbbaeb5145cfddfb7d11181731783db7158402ca5c53",
+    "event_v2/ep_event_engine.py": "9aaf86645e593bb15bff098acbc55133666782c8d1690bf67f389031760b0024",
+    "event_v2/gap-evidence.json": "b891ecc2f587c52f18229794927ea110f6087a79130b80f92ac1f6f1fc69ce0e",
+    "event_v2/verified-symbol-sessions.json": "48c5bd0b9ddce89f758eb3df6603e9c03c5907824d1e1191809df1de7e2fa5a9",
+    "event_v2/source-verification.json": "1e22d3e1f4677ceb976db48a0d691c09d7117f8f439a733a5e977ad8e01bf28a",
+    "event_v2/next-stage-proposal.json": "45e452f5483add22ea78c180d921b1a2ce1cfd2ee1d937f2d05992701a55ddc8",
+    "event_v2/isolated-event-results.json": "f9e4feb61fccb6db8a41fa07b2193aaf0cd7a117054133b8dc624ff4f733e794",
+    "event_v2/portfolio-event-results.json": "231fbf87174bed7ed2e617d75c01b58a598f17fe744807f0d7ca51c6cbb63386"
+  }
+}

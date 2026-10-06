@@ -1,0 +1,38 @@
+{
+  "audited_at": "2026-10-06T20:19:54.361958+00:00",
+  "status": "passed",
+  "gate_rows_checked": 3237,
+  "source_pages_rehashed_and_request_chain_checked": 179,
+  "source_records_and_assembly_checked": 99272,
+  "families": {
+    "OR5": {
+      "pass": 270,
+      "fail": 700,
+      "unknown": 109
+    },
+    "OR15": {
+      "pass": 137,
+      "fail": 843,
+      "unknown": 99
+    },
+    "OR30": {
+      "pass": 73,
+      "fail": 894,
+      "unknown": 112
+    }
+  },
+  "union_ready": 275,
+  "or30_parent_signal_entry_comparisons": 1079,
+  "news_filter_used": false,
+  "new_returns_computed": false,
+  "new_network_calls": 0,
+  "source_scope": "Current historical returned-time data; no point-in-time completeness assertion",
+  "sha256": {
+    "study-design.json": "c5b24f33b7e093819fd223f8b96af72e7b086090b3c78d31ecc920ea58113396",
+    "market-gates.json": "d2f1f7fdb333e278c6bcb12ce812fce3f931048a8b68e0ca881ded4876d79037",
+    "gate-summary.json": "fae671580388e45c9d7110526df6c9419553a71b117f906c291bf269892a4819",
+    "gate-pre-run-validation.json": "f379fc7cc03d4aeffffda025a7f580d9efa67840e8fe162581eabd27c1d02a51",
+    "early_gates.py": "97d7d301a8fccef2f45f281fbdcc9d44e70fa13b274b2dfcde1e9db8dcfed432",
+    "independent_actual_gates.py": "9772d0bb49314a659c158137c5d6991072f7a7f4ece4916c8306f227c68efc2f"
+  }
+}

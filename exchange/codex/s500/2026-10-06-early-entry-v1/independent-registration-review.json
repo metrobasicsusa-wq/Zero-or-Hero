@@ -1,0 +1,56 @@
+{
+  "reviewed_at": "2026-10-06T20:14:54.057413+00:00",
+  "status": "passed_protocol_and_frozen_parent_input_checks",
+  "study_registered_at": "2026-10-06T20:12:11.616416+00:00",
+  "checked_parent_inputs": 20,
+  "parent_sha256": {
+    "news/candidates.json": "74c90d92ef78faeef3c3f0f0124d22b73c552e25cd3dac129db34724582c9067",
+    "news/minute-market.json": "157568c79d7b9991ddd75a1492201f12b26267547caca317007b78fdf7f9ebf3",
+    "news/bars-input-manifest.json": "8cbccb9c99dd70dc2d42931e8bec29a69bed617cddb7f9bae37bba2f495e9aae",
+    "news/market_gates.py": "d3fcd1a2e920d6ea6d4e3c939eb9b4a6e1c2a2412b73fe7709b92c8181888626",
+    "news/market-gates.json": "9b275cc1a280a4ba8fc9248c7cf13f342cb2f9b7ce1ee06fa99ea7b21fd20867",
+    "news/candidate-readiness.json": "9ea089be503dea21ae458830301c189b99a4a3d0c06c2b6265e77f06f60e1e07",
+    "news/download_inputs.py": "6be7b33f75c4858913797ed50b8ecefcd50f67928ced1b1effa67557d663c588",
+    "paths/holding-input-design.json": "cd34191b84e72a2b0c9c1dd62c89669495b2d5bad963a0d3c674f57b3cab7a49",
+    "paths/holding-input-manifest.json": "e74fc4c0a845d65ab52e6f10f07481de97c57f1091db254216aa12b2bb589652",
+    "paths/holding-market.json": "cef5ef478dd3b8fc9601281968922e33aa81749c14a7a35634c78ccaa0061705",
+    "paths/portfolio-coverage.json": "8ae3737c43235097a8007c0c92f393790bd572f0f2a1b558d347ef70afec5f65",
+    "paths/all-new-primary-reviews.json": "46d8faf70b716fca31cd6c6cd05f49ea616f209f6727a89b72d5415d19fa3cdb",
+    "event_v2/ep_engine.py": "a52304e560e819ca3612fbbaeb5145cfddfb7d11181731783db7158402ca5c53",
+    "event_v2/ep_event_engine.py": "9aaf86645e593bb15bff098acbc55133666782c8d1690bf67f389031760b0024",
+    "event_v2/gap-evidence.json": "b891ecc2f587c52f18229794927ea110f6087a79130b80f92ac1f6f1fc69ce0e",
+    "event_v2/verified-symbol-sessions.json": "48c5bd0b9ddce89f758eb3df6603e9c03c5907824d1e1191809df1de7e2fa5a9",
+    "event_v2/source-verification.json": "1e22d3e1f4677ceb976db48a0d691c09d7117f8f439a733a5e977ad8e01bf28a",
+    "event_v2/next-stage-proposal.json": "45e452f5483add22ea78c180d921b1a2ce1cfd2ee1d937f2d05992701a55ddc8",
+    "event_v2/isolated-event-results.json": "f9e4feb61fccb6db8a41fa07b2193aaf0cd7a117054133b8dc624ff4f733e794",
+    "event_v2/portfolio-event-results.json": "231fbf87174bed7ed2e617d75c01b58a598f17fe744807f0d7ca51c6cbb63386"
+  },
+  "copied_parent_code_bytes_equal": true,
+  "study_design_sha256": "c5b24f33b7e093819fd223f8b96af72e7b086090b3c78d31ecc920ea58113396",
+  "minimum_grid": {
+    "gate_records": 3237,
+    "financial_variants": 4,
+    "data_modes": 2,
+    "portfolio_scopes": 3,
+    "total_portfolios": 72
+  },
+  "news_policy": "Technical only; news descriptive and no news missingness guard. Earlier proposal alternative not controlling.",
+  "hypothesis": "N/30 linear volume threshold is unvalidated and range low differs; compare mechanism packages.",
+  "blocking_protocol_findings": [],
+  "source_limits_retained": [
+    "Original1079 not fullPITuniverse",
+    "No realtime/asof proof",
+    "Holding absence policy not applicable silently to strict gateconstruction",
+    "Same stockday/families overlapping, not independent observations",
+    "Known past not new holdout"
+  ],
+  "synthetic_gate_tests": {
+    "count": 20,
+    "passed": 20,
+    "early_gates_sha256": "97d7d301a8fccef2f45f281fbdcc9d44e70fa13b274b2dfcde1e9db8dcfed432",
+    "tests_sha256": "eb1ee160cc31683aed44e56a35a95602c2dc6951497e6674871f22b6689a39ae",
+    "log_sha256": "6fbb44a7cefd5508c4d73d406e578dd4ed495cbfc56b070382228a1a0aa43889"
+  },
+  "new_network_calls": 0,
+  "new_return_runs": 0
+}

@@ -1,0 +1,54 @@
+{
+  "candidate_count": 1079,
+  "unique_symbols": 723,
+  "candidate_dates": 179,
+  "manifest_complete": true,
+  "source_raw_pages_rehashed": 179,
+  "source_raw_records_count": 99272,
+  "all_0_through_91_complete_candidate_days": 879,
+  "empty_candidate_series": 0,
+  "nonvalid_minute_reasons": {
+    "missing_bar": 1065
+  },
+  "opening_window_coverage": {
+    "5": {
+      "candidates": 1079,
+      "opening_complete_valid": 1008,
+      "opening_unknown": 71,
+      "opening_valid_minute_slots": 5267,
+      "opening_missing_or_invalid_minute_slots": 128,
+      "post_range_signal_window_complete_valid": 909,
+      "entry_reference_window_complete_valid": 909
+    },
+    "15": {
+      "candidates": 1079,
+      "opening_complete_valid": 1000,
+      "opening_unknown": 79,
+      "opening_valid_minute_slots": 15989,
+      "opening_missing_or_invalid_minute_slots": 196,
+      "post_range_signal_window_complete_valid": 914,
+      "entry_reference_window_complete_valid": 911
+    },
+    "30": {
+      "candidates": 1079,
+      "opening_complete_valid": 976,
+      "opening_unknown": 103,
+      "opening_valid_minute_slots": 32063,
+      "opening_missing_or_invalid_minute_slots": 307,
+      "post_range_signal_window_complete_valid": 924,
+      "entry_reference_window_complete_valid": 921
+    }
+  },
+  "repair_overlap_bar_count": 9588,
+  "repair_overlap_field_conflict_count": 0,
+  "gate_decisions_computed": false,
+  "new_returns_computed": false,
+  "new_network_calls": 0,
+  "input_sha256": {
+    "s500-news-20261006/candidates.json": "74c90d92ef78faeef3c3f0f0124d22b73c552e25cd3dac129db34724582c9067",
+    "s500-news-20261006/minute-market.json": "157568c79d7b9991ddd75a1492201f12b26267547caca317007b78fdf7f9ebf3",
+    "s500-news-20261006/bars-input-manifest.json": "8cbccb9c99dd70dc2d42931e8bec29a69bed617cddb7f9bae37bba2f495e9aae",
+    "s500-ep-paths-20261006/repair-market.json": "51aeb5192b012c8bdde10bfdc6e4478f906a717c68758d794fa631bc366757b2",
+    "s500-orb-20261006/ep-candidate-inventory.json": "95df4912f57d78e29d5b1aa9c209bc77a09eb4924eaeea3e1d60b639eec89ae9"
+  }
+}

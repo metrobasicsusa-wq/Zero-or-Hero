@@ -1,0 +1,58 @@
+Frozen family registry, 275-case windows and plan bindings verified.
+All original prefix raw pages verified.
+All parent full-session raw pages and assembly verified.
+All new raw pages, bytes and token chains verified.
+{
+  "status": "passed",
+  "independently_reconstructed": {
+    "family_ready_counts": {
+      "OR5": 270,
+      "OR15": 137,
+      "OR30": 73
+    },
+    "unique_ready_cases": 275,
+    "unique_symbols": 243,
+    "case_session_pairs": 2639,
+    "required_symbol_sessions": 2584,
+    "old_verified_reuse": 703,
+    "new_verified_sessions": 1881,
+    "new_tasks": 205,
+    "cutoff_censored_case_windows": 14,
+    "isolated_results_expected": 3840,
+    "portfolio_results_expected": 72,
+    "total_results_expected": 3912
+  },
+  "raw_audits": {
+    "prefix": {
+      "requests": 179,
+      "pages": 179,
+      "bars": 99272,
+      "bytes": 10306290,
+      "symbol_sessions": 1079,
+      "manifest_sha256": "8cbccb9c99dd70dc2d42931e8bec29a69bed617cddb7f9bae37bba2f495e9aae"
+    },
+    "parent_holding": {
+      "requests": 246,
+      "pages": 246,
+      "bars": 1353239,
+      "bytes": 136468021,
+      "symbol_sessions": 3823,
+      "manifest_sha256": "e74fc4c0a845d65ab52e6f10f07481de97c57f1091db254216aa12b2bb589652"
+    },
+    "new_holding": {
+      "requests": 205,
+      "pages": 205,
+      "bars": 692348,
+      "bytes": 70989298,
+      "symbol_sessions": 1881,
+      "manifest_sha256": "fe0d44bfaf571f36a59a13a972983660856c7f6a6662265d5ec74ccdaaa241c3"
+    }
+  },
+  "prefix_comparison": {
+    "sessions": 286,
+    "offsets": 26546,
+    "conflicting_sessions": 0,
+    "affected_candidates": 0
+  },
+  "elapsed_seconds": 23.221
+}

@@ -1,0 +1,28 @@
+All 104 pinned raw daily files and all 243-symbol daily rows independently reconstructed.
+{
+  "status": "passed",
+  "daily_raw_batches": 104,
+  "daily_selected_symbols": 243,
+  "daily_selected_bars": 55749,
+  "actions": {
+    "full_source_rows": 41181,
+    "full_source_sha256": "e971f2a831a507395913c97c8e48e005912a6f0f60c5f398bb38c09a1f3a59ef",
+    "selected_symbol_keys": 243,
+    "selected_symbol_row_instances": 149,
+    "selected_unique_source_rows": 149,
+    "selected_rows_by_type": {
+      "cash_dividend": 141,
+      "forward_split": 2,
+      "reverse_split": 6
+    },
+    "symbols_with_empty_cached_action_list": 197,
+    "all_symbol_and_new_symbol_union_rows_match": true,
+    "unmapped_source_rows_preserved": 19,
+    "unmapped_source_row_details_match": true,
+    "selected_row_instances_missing_ex_date": 0,
+    "original_source_limitations_preserved": true,
+    "cached_empty_list_proves_no_historical_action": false
+  },
+  "elapsed_seconds": 2.818,
+  "output_sha256": "fa1fec9c85cd4e3f4baeca640e8cacc2d03665bf8c0744b78ba0f28c4695599b"
+}
