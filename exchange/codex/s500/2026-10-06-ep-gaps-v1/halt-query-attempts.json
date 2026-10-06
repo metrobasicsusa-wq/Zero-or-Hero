@@ -1,0 +1,70 @@
+{
+  "attempts": [
+    {
+      "symbol": "REPL",
+      "target_minute_et": "2026-06-01T09:31:00-04:00",
+      "url": "https://www.nasdaqtrader.com/RPCHandler.axd",
+      "method": "POST",
+      "query_parameters": {
+        "id": 1,
+        "method": "BL_TradeHalt.SearchTradeHaltsNEW",
+        "params": [
+          "REPL",
+          "",
+          "",
+          "",
+          "",
+          "",
+          ""
+        ]
+      },
+      "query_scope": "Exact symbol, other official search filters empty; vendor says last year.",
+      "retrieved_at": "2026-10-06T19:27:41.780112+00:00",
+      "authorization_headers_sent": false,
+      "tls_verification": true,
+      "method_parameter_source": "https://www.nasdaqtrader.com/Trader.aspx?id=TradingHaltSearch",
+      "transport_endpoint_confirmed_from_page": false,
+      "halt_at_target": null,
+      "absence_of_halt_established": false,
+      "event_query_attempt": 1,
+      "http_status": 200,
+      "final_url": "https://www.nasdaqtrader.com/RPCHandler.axd",
+      "content_type": "text/html",
+      "body_sha256": "d02032286070b4dd9d8fbd985a7bdca8af8edf52b89ff177db3bfcb2c8a9c43d",
+      "bytes": 212
+    },
+    {
+      "symbol": "SPCE",
+      "target_minute_et": "2026-06-01T10:16:00-04:00",
+      "url": "https://www.nasdaqtrader.com/RPCHandler.axd",
+      "method": "POST",
+      "query_parameters": {
+        "id": 1,
+        "method": "BL_TradeHalt.SearchTradeHaltsNEW",
+        "params": [
+          "SPCE",
+          "",
+          "",
+          "",
+          "",
+          "",
+          ""
+        ]
+      },
+      "query_scope": "Exact symbol, other official search filters empty; vendor says last year.",
+      "retrieved_at": "2026-10-06T19:27:41.780986+00:00",
+      "authorization_headers_sent": false,
+      "tls_verification": true,
+      "method_parameter_source": "https://www.nasdaqtrader.com/Trader.aspx?id=TradingHaltSearch",
+      "transport_endpoint_confirmed_from_page": false,
+      "halt_at_target": null,
+      "absence_of_halt_established": false,
+      "event_query_attempt": 1,
+      "http_status": 200,
+      "final_url": "https://www.nasdaqtrader.com/RPCHandler.axd",
+      "content_type": "text/html",
+      "body_sha256": "d02032286070b4dd9d8fbd985a7bdca8af8edf52b89ff177db3bfcb2c8a9c43d",
+      "bytes": 212
+    }
+  ]
+}

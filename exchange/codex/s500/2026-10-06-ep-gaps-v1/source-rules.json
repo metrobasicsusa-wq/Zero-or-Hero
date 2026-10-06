@@ -1,0 +1,841 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-10-06T19:23:10.107023+00:00",
+  "scope": "Official public documentation verification for the 38 missing-minute diagnostic study; no market-event classification or trading action.",
+  "sources": [
+    {
+      "key": "alpaca_conditions",
+      "url": "https://docs.alpaca.markets/reference/stockconditions",
+      "retrieved_at": "2026-10-06T19:18:03.071148+00:00",
+      "method": "GET",
+      "authorization_headers_sent": false,
+      "tls_verification": true,
+      "status": 404,
+      "error": "HTTPError",
+      "body_sha256": "3ebf748497d541c694bcda77bed86474163a68654ab2d9d077342ae3129ecdf4",
+      "bytes": 360432,
+      "doc_id": "alpaca_conditions-obsolete-path"
+    },
+    {
+      "key": "alpaca_conditions",
+      "url": "https://docs.alpaca.markets/reference/stockconditions-1",
+      "retrieved_at": "2026-10-06T19:18:56.464196+00:00",
+      "method": "GET",
+      "authorization_headers_sent": false,
+      "tls_verification": true,
+      "status": 404,
+      "error": "HTTPError",
+      "body_sha256": "0431a12b43f8218c45e740babdd4c22708a2e73150bfb82ff0eca8fe7fb57f9c",
+      "bytes": 360442,
+      "doc_id": "alpaca_conditions"
+    },
+    {
+      "key": "alpaca_conditions_reference",
+      "url": "https://docs.alpaca.markets/us/reference/stockmetaconditions-1.md",
+      "retrieved_at": "2026-10-06T19:20:56.383084+00:00",
+      "method": "GET",
+      "authorization_headers_sent": false,
+      "tls_verification": true,
+      "status": 200,
+      "final_url": "https://docs.alpaca.markets/us/reference/stockmetaconditions-1.md",
+      "content_type": "text/markdown; charset=utf-8",
+      "body_sha256": "45108001ad39ce8188f1416e913c1dfe759cc655dbd34bc1af87147638a203a3",
+      "bytes": 6464,
+      "doc_id": "alpaca_conditions_reference"
+    },
+    {
+      "key": "alpaca_faq",
+      "url": "https://docs.alpaca.markets/docs/market-data-faq",
+      "retrieved_at": "2026-10-06T19:18:02.115686+00:00",
+      "method": "GET",
+      "authorization_headers_sent": false,
+      "tls_verification": true,
+      "status": 200,
+      "final_url": "https://docs.alpaca.markets/us/docs/market-data-faq",
+      "content_type": "text/html; charset=utf-8",
+      "body_sha256": "f648f02e9b6ed5ec0c454b58fcdb257b606b621faf09543b7b673e67032dd69c",
+      "bytes": 634822,
+      "doc_id": "alpaca_faq"
+    },
+    {
+      "key": "alpaca_minute_article",
+      "url": "https://alpaca.markets/learn/stock-minute-bars/",
+      "retrieved_at": "2026-10-06T19:18:56.480459+00:00",
+      "method": "GET",
+      "authorization_headers_sent": false,
+      "tls_verification": true,
+      "status": 200,
+      "final_url": "https://alpaca.markets/learn/stock-minute-bars",
+      "content_type": "text/html; charset=utf-8",
+      "body_sha256": "c077240fcde693779f57b7115c8302a0f539cad7331487902f76201c2dc6d2ae",
+      "bytes": 479067,
+      "doc_id": "alpaca_minute_article"
+    },
+    {
+      "key": "alpaca_quotes",
+      "url": "https://docs.alpaca.markets/reference/stockquotes-1",
+      "retrieved_at": "2026-10-06T19:18:55.621665+00:00",
+      "method": "GET",
+      "authorization_headers_sent": false,
+      "tls_verification": true,
+      "status": 500,
+      "error": "HTTPError",
+      "body_sha256": "2573335bdc4626add142d53f792b8116cfef590ab018f5f142df68a9ec7e0e4d",
+      "bytes": 27395,
+      "doc_id": "alpaca_quotes-http500-first-attempt"
+    },
+    {
+      "key": "alpaca_quotes",
+      "url": "https://docs.alpaca.markets/reference/stockquotes",
+      "retrieved_at": "2026-10-06T19:18:02.946812+00:00",
+      "method": "GET",
+      "authorization_headers_sent": false,
+      "tls_verification": true,
+      "status": 404,
+      "error": "HTTPError",
+      "body_sha256": "67c9b7f2365fa3eebb8b5822fc81c6e8af8de0bd25023cf61b6f39791b2912cc",
+      "bytes": 360412,
+      "doc_id": "alpaca_quotes-obsolete-path"
+    },
+    {
+      "key": "alpaca_quotes",
+      "url": "https://docs.alpaca.markets/reference/stockquotes-1",
+      "retrieved_at": "2026-10-06T19:19:37.401280+00:00",
+      "method": "GET",
+      "authorization_headers_sent": false,
+      "tls_verification": true,
+      "status": 200,
+      "final_url": "https://docs.alpaca.markets/us/reference/stockquotes-1",
+      "content_type": "text/html; charset=utf-8",
+      "body_sha256": "ffd093c6e32cd95d72aeeb798ac88ae76481407c29c4e7e9ad8c3e94e232c30a",
+      "bytes": 982797,
+      "doc_id": "alpaca_quotes"
+    },
+    {
+      "key": "alpaca_quotes_markdown",
+      "url": "https://docs.alpaca.markets/us/reference/stockquotes-1.md",
+      "retrieved_at": "2026-10-06T19:19:37.403027+00:00",
+      "method": "GET",
+      "authorization_headers_sent": false,
+      "tls_verification": true,
+      "status": 200,
+      "final_url": "https://docs.alpaca.markets/us/reference/stockquotes-1.md",
+      "content_type": "text/markdown; charset=utf-8",
+      "body_sha256": "d408356bc3fc73d19fbab43a01501f05d1e888da60e21a03460cd3d2d7696cd9",
+      "bytes": 17723,
+      "doc_id": "alpaca_quotes_markdown"
+    },
+    {
+      "key": "alpaca_stocks",
+      "url": "https://docs.alpaca.markets/docs/stock-pricing-data",
+      "retrieved_at": "2026-10-06T19:18:02.116551+00:00",
+      "method": "GET",
+      "authorization_headers_sent": false,
+      "tls_verification": true,
+      "status": 404,
+      "error": "HTTPError",
+      "body_sha256": "2017cf8c70f2d71f797a6f697cbdf57ea80e6ac2c2cc0d31d5245323257923d3",
+      "bytes": 360405,
+      "doc_id": "alpaca_stocks-obsolete-path"
+    },
+    {
+      "key": "alpaca_stocks",
+      "url": "https://docs.alpaca.markets/docs/historical-stock-data-1",
+      "retrieved_at": "2026-10-06T19:18:55.619954+00:00",
+      "method": "GET",
+      "authorization_headers_sent": false,
+      "tls_verification": true,
+      "status": 200,
+      "final_url": "https://docs.alpaca.markets/us/docs/historical-stock-data-1",
+      "content_type": "text/html; charset=utf-8",
+      "body_sha256": "5569509783c29ca6148048ca4fc9728309b1c4a007e8329c03a3caf702e47d70",
+      "bytes": 470102,
+      "doc_id": "alpaca_stocks"
+    },
+    {
+      "key": "alpaca_stream",
+      "url": "https://docs.alpaca.markets/docs/real-time-stock-pricing-data",
+      "retrieved_at": "2026-10-06T19:18:03.280111+00:00",
+      "method": "GET",
+      "authorization_headers_sent": false,
+      "tls_verification": true,
+      "status": 200,
+      "final_url": "https://docs.alpaca.markets/us/docs/real-time-stock-pricing-data",
+      "content_type": "text/html; charset=utf-8",
+      "body_sha256": "821d9206e8a277614a9edbf13921e42a30fb233c6f7d770893a97bd0f5b769d1",
+      "bytes": 599016,
+      "doc_id": "alpaca_stream"
+    },
+    {
+      "key": "alpaca_trades",
+      "url": "https://docs.alpaca.markets/reference/stocktrades",
+      "retrieved_at": "2026-10-06T19:18:02.117088+00:00",
+      "method": "GET",
+      "authorization_headers_sent": false,
+      "tls_verification": true,
+      "status": 404,
+      "error": "HTTPError",
+      "body_sha256": "9af052c0da4055582dcc030998745127ab603950545fc926c85876a091ae246f",
+      "bytes": 360412,
+      "doc_id": "alpaca_trades-obsolete-path"
+    },
+    {
+      "key": "alpaca_trades",
+      "url": "https://docs.alpaca.markets/reference/stocktrades-1",
+      "retrieved_at": "2026-10-06T19:18:55.620865+00:00",
+      "method": "GET",
+      "authorization_headers_sent": false,
+      "tls_verification": true,
+      "status": 200,
+      "final_url": "https://docs.alpaca.markets/us/reference/stocktrades-1",
+      "content_type": "text/html; charset=utf-8",
+      "body_sha256": "69dab213854f4f001a3af4e9c6338a7ebc0c2b24280e45d7fb9a26f91cdb5b7c",
+      "bytes": 982721,
+      "doc_id": "alpaca_trades"
+    },
+    {
+      "key": "alpaca_trades_markdown",
+      "url": "https://docs.alpaca.markets/us/reference/stocktrades-1.md",
+      "retrieved_at": "2026-10-06T19:19:37.402301+00:00",
+      "method": "GET",
+      "authorization_headers_sent": false,
+      "tls_verification": true,
+      "status": 200,
+      "final_url": "https://docs.alpaca.markets/us/reference/stocktrades-1.md",
+      "content_type": "text/markdown; charset=utf-8",
+      "body_sha256": "492986a54cd1a0c12a9f7e88d2b0b15c396b605f30fbb96b3f516f7e8b48113a",
+      "bytes": 17450,
+      "doc_id": "alpaca_trades_markdown"
+    },
+    {
+      "key": "nasdaq_halt_codes",
+      "url": "https://www.nasdaqtrader.com/trader.aspx?id=TradeHaltCodes",
+      "retrieved_at": "2026-10-06T19:18:04.251701+00:00",
+      "method": "GET",
+      "authorization_headers_sent": false,
+      "tls_verification": true,
+      "status": 200,
+      "final_url": "https://www.nasdaqtrader.com/trader.aspx?id=TradeHaltCodes",
+      "content_type": "text/html; charset=utf-8",
+      "body_sha256": "ca59f89713eb168ae52b7d517e2576aa3ae22cbc68a26c3d35991e6d8e072864",
+      "bytes": 73634,
+      "doc_id": "nasdaq_halt_codes"
+    },
+    {
+      "key": "nasdaq_halt_history",
+      "url": "https://www.nasdaqtrader.com/trader.aspx?id=TradingHaltHistory",
+      "retrieved_at": "2026-10-06T19:18:03.868113+00:00",
+      "method": "GET",
+      "authorization_headers_sent": false,
+      "tls_verification": true,
+      "status": 200,
+      "final_url": "https://www.nasdaqtrader.com/trader.aspx?id=TradingHaltHistory",
+      "content_type": "text/html; charset=utf-8",
+      "body_sha256": "93da7f0972510bfe00126cda469c5b8c854a7082e605e94bfc3a3030b5632d20",
+      "bytes": 50327,
+      "doc_id": "nasdaq_halt_history"
+    },
+    {
+      "key": "nasdaq_halt_search",
+      "url": "https://www.nasdaqtrader.com/Trader.aspx?id=TradingHaltSearch",
+      "retrieved_at": "2026-10-06T19:18:56.600726+00:00",
+      "method": "GET",
+      "authorization_headers_sent": false,
+      "tls_verification": true,
+      "status": 200,
+      "final_url": "https://www.nasdaqtrader.com/Trader.aspx?id=TradingHaltSearch",
+      "content_type": "text/html; charset=utf-8",
+      "body_sha256": "431eb3281d7d4fb42bb00e6198150b4d430da1a7f7d9cfda40689b0e53ae4ad0",
+      "bytes": 88099,
+      "doc_id": "nasdaq_halt_search"
+    },
+    {
+      "key": "nyse_halts",
+      "url": "https://www.nyse.com/trade-halt",
+      "retrieved_at": "2026-10-06T19:18:04.550792+00:00",
+      "method": "GET",
+      "authorization_headers_sent": false,
+      "tls_verification": true,
+      "status": 200,
+      "final_url": "https://www.nyse.com/trade/trading-halts",
+      "content_type": "text/html; charset=utf-8",
+      "body_sha256": "213374ef2f78345d8ee09e7e1aa5b8baaf51a880a28df2de676a2bd1b70baa0f",
+      "bytes": 77631,
+      "doc_id": "nyse_halts"
+    }
+  ],
+  "statements": [
+    {
+      "id": "bar_interval",
+      "level": "documented_with_clock_conflict",
+      "sources": [
+        "alpaca_faq",
+        "alpaca_minute_article"
+      ],
+      "rule": "A minute bar uses a left-closed, right-open minute interval and is labeled by its left endpoint. The FAQ says SIP timestamp; the 2022-07-19 article says participant/execution timestamp. These official sources conflict on the clock.",
+      "diagnostic_use": "Use returned t to define returned-timestamp minute membership only; do not claim exact vendor bar reconstruction or receipt-time/PIT availability."
+    },
+    {
+      "id": "sparse_bars",
+      "level": "officially_documented",
+      "sources": [
+        "alpaca_faq"
+      ],
+      "rule": "A stock bar is emitted only when open, high, low, close and volume are nonzero. An interval with no trades, or only price-ineligible odd-lot trades, can legitimately have no bar.",
+      "diagnostic_use": "Missing bar alone proves neither zero trades nor a data outage, halt, or unfillable order."
+    },
+    {
+      "id": "trade_conditions",
+      "level": "officially_documented",
+      "sources": [
+        "alpaca_faq"
+      ],
+      "rule": "Update eligibility depends on tape, each condition and minute versus daily aggregation. Multiple conditions use the strictest update rule. Volume/trade count may change even when OHLC does not.",
+      "diagnostic_use": "Use the derived minute_condition_rules for supported tape/condition pairs. A blocking I on A/B/C/O is sufficient to establish no minute-price update even if another condition is unknown. Do not equate missing c, empty array, empty string or unknown tape with regular sale."
+    },
+    {
+      "id": "historical_interval_pagination",
+      "level": "officially_documented",
+      "sources": [
+        "alpaca_trades_markdown",
+        "alpaca_quotes_markdown"
+      ],
+      "rule": "REST historical start and end are inclusive. Results sort by symbol then timestamp; pagination limit is total across symbols, and a short page does not prove exhaustion.",
+      "diagnostic_use": "Follow next_page_token to null; locally filter exact nanosecond half-open intervals [minute,minute+60s). Keep query/feed/asof settings in provenance."
+    },
+    {
+      "id": "historical_timestamp",
+      "level": "officially_documented_limited_semantics",
+      "sources": [
+        "alpaca_trades_markdown",
+        "alpaca_quotes_markdown"
+      ],
+      "rule": "The t schema specifies RFC-3339 timestamps with nanosecond precision but does not itself identify receipt time, participant-versus-SIP clock, or historical availability of each revision.",
+      "diagnostic_use": "Retain nanosecond precision at interval boundaries; a historical response is a current retrospective data snapshot."
+    },
+    {
+      "id": "trade_updates",
+      "level": "officially_documented",
+      "sources": [
+        "alpaca_trades_markdown"
+      ],
+      "rule": "Historical trade.u is optional: missing means valid; canceled and incorrect are not valid trades; corrected identifies a correction of a prior incorrect trade.",
+      "diagnostic_use": "Count raw rows separately from currently valid rows; exclude canceled/incorrect from current-valid counts; accept corrected as currently valid while flagging unknown update values. This does not reconstruct when a correction became observable."
+    },
+    {
+      "id": "late_updates",
+      "level": "officially_documented",
+      "sources": [
+        "alpaca_stream"
+      ],
+      "rule": "The stream documents updated bars for late trades after the half-minute mark, and dedicated correction and cancel/error messages.",
+      "diagnostic_use": "Downloaded final bars need not equal the first real-time bar. A single historical REST t is insufficient to reconstruct the original announcement/receipt sequence."
+    },
+    {
+      "id": "quote_units",
+      "level": "official_rest_documentation_conflicts_with_older_stream_description",
+      "sources": [
+        "alpaca_quotes_markdown",
+        "alpaca_stream"
+      ],
+      "rule": "Historical REST quote sizes as/bs are shares on and after 2025-11-03, and round lots before that date. The stream page still describes sizes as round lots.",
+      "diagnostic_use": "For 2026 historical REST data use shares; do not multiply by 100. Treat quotes as indicative historical observations, not proof of execution."
+    },
+    {
+      "id": "quote_sides",
+      "level": "officially_documented",
+      "sources": [
+        "alpaca_quotes_markdown"
+      ],
+      "rule": "A zero ap or bp means that side has no active price. A single quote condition applies to both sides; two conditions apply to bid then ask.",
+      "diagnostic_use": "Quote presence alone does not prove a two-sided valid executable market. Retain zero/crossed/locked/stale/condition flags as diagnostic limits."
+    },
+    {
+      "id": "symbol_mapping",
+      "level": "officially_documented",
+      "sources": [
+        "alpaca_trades_markdown",
+        "alpaca_quotes_markdown",
+        "alpaca_faq"
+      ],
+      "rule": "Historical asof defaults to current date and can join prior symbols after renames. asof=- skips symbol mapping.",
+      "diagnostic_use": "Explicit asof=- supports exact-symbol comparisons but does not establish complete corporate-action identity coverage."
+    },
+    {
+      "id": "halt_sources",
+      "level": "official_source_locations_verified_not_event_results",
+      "sources": [
+        "nasdaq_halt_search",
+        "nasdaq_halt_history",
+        "nasdaq_halt_codes",
+        "nyse_halts"
+      ],
+      "rule": "Nasdaq search says it returns the last year and warns an empty result may mean no halt or invalid criteria. Its market selector includes multiple listing markets. NYSE history advertises one year of News Pending/Dissemination and LULD data with ET timestamps.",
+      "diagnostic_use": "A page fetch is not a completed symbol/date query. Dynamic/empty/failed results cannot establish no halt. A halt explanation requires a matching authoritative symbol/date/start/resumption interval, with timezone and scope checked."
+    }
+  ],
+  "minute_condition_rules": [
+    {
+      "condition": " ",
+      "meaning": "Regular Sale",
+      "tapes": [
+        "A",
+        "B"
+      ],
+      "bar_type": "minute",
+      "open_close": true,
+      "high_low": true,
+      "volume": true,
+      "source_doc_id": "alpaca_faq"
+    },
+    {
+      "condition": "@",
+      "meaning": "Regular Sale",
+      "tapes": [
+        "C",
+        "O"
+      ],
+      "bar_type": "minute",
+      "open_close": true,
+      "high_low": true,
+      "volume": true,
+      "source_doc_id": "alpaca_faq"
+    },
+    {
+      "condition": "A",
+      "meaning": "Acquisition",
+      "tapes": [
+        "C"
+      ],
+      "bar_type": "minute",
+      "open_close": true,
+      "high_low": true,
+      "volume": true,
+      "source_doc_id": "alpaca_faq"
+    },
+    {
+      "condition": "B",
+      "meaning": "Average Price Trade",
+      "tapes": [
+        "A",
+        "B"
+      ],
+      "bar_type": "minute",
+      "open_close": false,
+      "high_low": false,
+      "volume": true,
+      "source_doc_id": "alpaca_faq"
+    },
+    {
+      "condition": "B",
+      "meaning": "Bunched Trade",
+      "tapes": [
+        "C"
+      ],
+      "bar_type": "minute",
+      "open_close": true,
+      "high_low": true,
+      "volume": true,
+      "source_doc_id": "alpaca_faq"
+    },
+    {
+      "condition": "C",
+      "meaning": "Cash Sale",
+      "tapes": [
+        "A",
+        "B",
+        "C",
+        "O"
+      ],
+      "bar_type": "minute",
+      "open_close": false,
+      "high_low": false,
+      "volume": true,
+      "source_doc_id": "alpaca_faq"
+    },
+    {
+      "condition": "D",
+      "meaning": "Distribution",
+      "tapes": [
+        "C"
+      ],
+      "bar_type": "minute",
+      "open_close": true,
+      "high_low": true,
+      "volume": true,
+      "source_doc_id": "alpaca_faq"
+    },
+    {
+      "condition": "E",
+      "meaning": "Automatic Execution",
+      "tapes": [
+        "A",
+        "B"
+      ],
+      "bar_type": "minute",
+      "open_close": true,
+      "high_low": true,
+      "volume": true,
+      "source_doc_id": "alpaca_faq"
+    },
+    {
+      "condition": "F",
+      "meaning": "Intermarket Sweep",
+      "tapes": [
+        "A",
+        "B",
+        "C"
+      ],
+      "bar_type": "minute",
+      "open_close": true,
+      "high_low": true,
+      "volume": true,
+      "source_doc_id": "alpaca_faq"
+    },
+    {
+      "condition": "G",
+      "meaning": "Bunched Sold Trade",
+      "tapes": [
+        "C"
+      ],
+      "bar_type": "minute",
+      "open_close": false,
+      "high_low": false,
+      "volume": true,
+      "source_doc_id": "alpaca_faq"
+    },
+    {
+      "condition": "H",
+      "meaning": "Price Variation Trade",
+      "tapes": [
+        "A",
+        "B",
+        "C"
+      ],
+      "bar_type": "minute",
+      "open_close": false,
+      "high_low": false,
+      "volume": true,
+      "source_doc_id": "alpaca_faq"
+    },
+    {
+      "condition": "I",
+      "meaning": "Odd Lot Trade",
+      "tapes": [
+        "A",
+        "B",
+        "C",
+        "O"
+      ],
+      "bar_type": "minute",
+      "open_close": false,
+      "high_low": false,
+      "volume": true,
+      "source_doc_id": "alpaca_faq"
+    },
+    {
+      "condition": "K",
+      "meaning": "Rule 127 or Rule 155",
+      "tapes": [
+        "A",
+        "B",
+        "C"
+      ],
+      "bar_type": "minute",
+      "open_close": true,
+      "high_low": true,
+      "volume": true,
+      "source_doc_id": "alpaca_faq"
+    },
+    {
+      "condition": "L",
+      "meaning": "Sold Last",
+      "tapes": [
+        "A",
+        "B",
+        "C"
+      ],
+      "bar_type": "minute",
+      "open_close": true,
+      "high_low": true,
+      "volume": true,
+      "source_doc_id": "alpaca_faq"
+    },
+    {
+      "condition": "M",
+      "meaning": "Market Center Official Close",
+      "tapes": [
+        "A",
+        "B",
+        "C"
+      ],
+      "bar_type": "minute",
+      "open_close": false,
+      "high_low": false,
+      "volume": false,
+      "source_doc_id": "alpaca_faq"
+    },
+    {
+      "condition": "N",
+      "meaning": "Next Day",
+      "tapes": [
+        "A",
+        "B",
+        "C",
+        "O"
+      ],
+      "bar_type": "minute",
+      "open_close": false,
+      "high_low": false,
+      "volume": true,
+      "source_doc_id": "alpaca_faq"
+    },
+    {
+      "condition": "O",
+      "meaning": "Market Center Opening Trade",
+      "tapes": [
+        "A",
+        "B",
+        "C"
+      ],
+      "bar_type": "minute",
+      "open_close": true,
+      "high_low": true,
+      "volume": true,
+      "source_doc_id": "alpaca_faq"
+    },
+    {
+      "condition": "P",
+      "meaning": "Prior Reference Price",
+      "tapes": [
+        "A",
+        "B",
+        "C",
+        "O"
+      ],
+      "bar_type": "minute",
+      "open_close": false,
+      "high_low": false,
+      "volume": true,
+      "source_doc_id": "alpaca_faq"
+    },
+    {
+      "condition": "Q",
+      "meaning": "Market Center Official Open",
+      "tapes": [
+        "A",
+        "B",
+        "C"
+      ],
+      "bar_type": "minute",
+      "open_close": false,
+      "high_low": false,
+      "volume": false,
+      "source_doc_id": "alpaca_faq"
+    },
+    {
+      "condition": "R",
+      "meaning": "Seller",
+      "tapes": [
+        "A",
+        "B",
+        "C",
+        "O"
+      ],
+      "bar_type": "minute",
+      "open_close": false,
+      "high_low": false,
+      "volume": true,
+      "source_doc_id": "alpaca_faq"
+    },
+    {
+      "condition": "T",
+      "meaning": "Extended Hours Trade",
+      "tapes": [
+        "A",
+        "B",
+        "C",
+        "O"
+      ],
+      "bar_type": "minute",
+      "open_close": true,
+      "high_low": true,
+      "volume": true,
+      "source_doc_id": "alpaca_faq"
+    },
+    {
+      "condition": "U",
+      "meaning": "Extended Trading Hours",
+      "tapes": [
+        "A",
+        "B",
+        "C",
+        "O"
+      ],
+      "bar_type": "minute",
+      "open_close": false,
+      "high_low": false,
+      "volume": true,
+      "source_doc_id": "alpaca_faq"
+    },
+    {
+      "condition": "V",
+      "meaning": "Contingent Trade",
+      "tapes": [
+        "A",
+        "B",
+        "C"
+      ],
+      "bar_type": "minute",
+      "open_close": false,
+      "high_low": false,
+      "volume": true,
+      "source_doc_id": "alpaca_faq"
+    },
+    {
+      "condition": "W",
+      "meaning": "Average Price Trade",
+      "tapes": [
+        "C",
+        "O"
+      ],
+      "bar_type": "minute",
+      "open_close": false,
+      "high_low": false,
+      "volume": true,
+      "source_doc_id": "alpaca_faq"
+    },
+    {
+      "condition": "X",
+      "meaning": "Cross Trade",
+      "tapes": [
+        "A",
+        "B",
+        "C"
+      ],
+      "bar_type": "minute",
+      "open_close": true,
+      "high_low": true,
+      "volume": true,
+      "source_doc_id": "alpaca_faq"
+    },
+    {
+      "condition": "Y",
+      "meaning": "Yellow Flag Regular Trade",
+      "tapes": [
+        "C"
+      ],
+      "bar_type": "minute",
+      "open_close": true,
+      "high_low": true,
+      "volume": true,
+      "source_doc_id": "alpaca_faq"
+    },
+    {
+      "condition": "Z",
+      "meaning": "Sold Out Of Sequence",
+      "tapes": [
+        "A",
+        "B",
+        "C"
+      ],
+      "bar_type": "minute",
+      "open_close": false,
+      "high_low": false,
+      "volume": true,
+      "source_doc_id": "alpaca_faq"
+    },
+    {
+      "condition": "4",
+      "meaning": "Derivatively Priced",
+      "tapes": [
+        "A",
+        "B",
+        "C"
+      ],
+      "bar_type": "minute",
+      "open_close": false,
+      "high_low": false,
+      "volume": true,
+      "source_doc_id": "alpaca_faq"
+    },
+    {
+      "condition": "5",
+      "meaning": "Market Center Reopening Trade",
+      "tapes": [
+        "A",
+        "B",
+        "C"
+      ],
+      "bar_type": "minute",
+      "open_close": true,
+      "high_low": true,
+      "volume": true,
+      "source_doc_id": "alpaca_faq"
+    },
+    {
+      "condition": "6",
+      "meaning": "Market Center Closing Trade",
+      "tapes": [
+        "A",
+        "B",
+        "C"
+      ],
+      "bar_type": "minute",
+      "open_close": true,
+      "high_low": true,
+      "volume": true,
+      "source_doc_id": "alpaca_faq"
+    },
+    {
+      "condition": "7",
+      "meaning": "Qualified Contingent Trade",
+      "tapes": [
+        "A",
+        "B",
+        "C"
+      ],
+      "bar_type": "minute",
+      "open_close": false,
+      "high_low": false,
+      "volume": true,
+      "source_doc_id": "alpaca_faq"
+    },
+    {
+      "condition": "9",
+      "meaning": "Corrected Consolidated Close",
+      "tapes": [
+        "A",
+        "B",
+        "C"
+      ],
+      "bar_type": "minute",
+      "open_close": false,
+      "high_low": false,
+      "volume": false,
+      "source_doc_id": "alpaca_faq"
+    }
+  ],
+  "empty_condition_policy": {
+    "literal_single_space": "Documented Regular Sale on tapes A/B.",
+    "literal_at": "Documented Regular Sale on tapes C/O.",
+    "empty_array_or_missing_or_empty_string": "Not established equivalent to regular sale by the inspected documents; unresolved."
+  },
+  "valid_trade_update_policy": {
+    "missing": "valid",
+    "corrected": "valid_current_revision",
+    "incorrect": "exclude",
+    "canceled": "exclude",
+    "other": "unknown"
+  },
+  "halt_event_records_verified": 0,
+  "raw_document_bodies_public": false,
+  "limitations": [
+    "Current documentation is not archived proof that identical vendor rules applied on each historical date.",
+    "Current API data does not independently prove completeness, earlier availability, or original correction history.",
+    "Documentation conflicts are retained; no vendor support clarification was obtained.",
+    "No successful event-specific halt query is asserted by this documentation subtask."
+  ],
+  "generator_sha256": "44977037a5a18272413f67249948962536d03d369a3bc3bec4f1cbf7513e0772",
+  "fetch_code_sha256": "08d5a5bbf3a826a2f19e640deaa9b8947391de1978e9bad121d8ce2a70743d91"
+}

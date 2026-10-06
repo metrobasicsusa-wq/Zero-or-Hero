@@ -1,0 +1,20 @@
+{
+  "stage": "s500_EP_missing_minutes_v1",
+  "created_at": "2026-10-06T19:33:44.694413+00:00",
+  "artifact_directory": "exchange/codex/s500/2026-10-06-ep-gaps-v1",
+  "report": "exchange/codex/s500/2026-10-06-ep-gaps-v1/REPORT.zh.md",
+  "manifest": "exchange/codex/s500/2026-10-06-ep-gaps-v1/manifest.json",
+  "parent_research_commit": "b29d77405cacc21cb2db1ff174e4ca6f32cd9b86",
+  "all_first_missing_coordinates": 38,
+  "diagnostic_windows": 114,
+  "consistent_with_documented_non_price_forming_trades": 36,
+  "no_target_trades_returned": 2,
+  "halt_states_confirmed": 0,
+  "target_trade_records": 1069,
+  "target_quote_records": 823,
+  "prior_incomplete_paths_recalculated": 0,
+  "new_strategy_tests": 0,
+  "broker_orders_sent": 0,
+  "new_scheduler_deployed": false,
+  "message_for_peer_review": "Dense minute-bar presence is too strong as a general holding-data gate.36of38 firstmissing coordinates have only price-excluded trades;2 remain no-trade-return observations. Do not turn this diagnosis into filled bars, execution claims or completed414paths. Review event-model proposal separately; current PnL is unchanged."
+}

@@ -1,0 +1,21 @@
+# Independent audit: 38 missing-minute diagnostics
+
+The frozen selection, current raw observations and derived results reconcile. No blocking unresolved implementation discrepancy was found. The study does not certify historical fills, absence of halts, or any new portfolio return.
+
+The parent proposal selects all 414 held-minute failures from 876 saved case/variant results, producing exactly 38 symbol/time coordinates. The independent reconstruction used failure metadata only. These are first encountered gaps, not every gap that could appear later on each path.
+
+All **114 windows, 114 pages and 45,135 raw records** were checked against exact requests, byte lengths, SHA-256 hashes and pagination chains. Returned timestamps were checked at nanosecond precision, including half-open target/context boundaries and ordering. All **38 point classifications and 190 minute buckets** reconcile with independent recomputation. No duplicate/conflicting trade identities occurred in the actual windows.
+
+The actual totals are **145 bars, 24,946 trade records and 20,044 quote records**. Target minutes contain **1,069 trades**, all with documented minute-price-excluding conditions, across **36 points**. Two points return no target trades. Target quotes total **823** across **35 points**. These are current endpoint observations, not proof of an exhaustive historical event tape. The official documentation disagrees about SIP versus participant/execution time; the result is consistent with sparse-bar rules, not a certified causal bar reconstruction.
+
+No target bar reappeared. All **144 bars common to the fresh and parent caches match**. The one additional contextual bar is REPL at 09:29, outside the parent's regular-session window; it is not evidence of an in-session historical revision. All 12 saved parent baseline hashes remain unchanged, and no parent PnL was recalculated.
+
+The audit re-extracted all **32 minute-condition rules** from the preserved official FAQ table and verified **19 declared document bodies** by hash. REPL and SPCE halt query bodies and three supporting captures were also checked. Both responses are JavaScript challenge pages; the transport endpoint itself was unconfirmed. Their halt status remains unknown, with no inference of no halt.
+
+Five initial failing regression cases exposed three cache-validation issues: trusted outcome semantics, unbound saved page parameters, and empty-string continuation treated as terminal. The original collector, manifest and failure log were preserved. The hardened collector now replays route/parameters, counts, page limits, request hashes, token chains, status and content hashes. Offline revalidation completed with the network function forced to fail if called: **zero requests and all 228 raw JSON files unchanged**. The final manifest distinguishes original acquisition code from subsequent cache verification.
+
+**30 independent tests pass:** 14 collection tests and 16 analysis tests. Tests cover empty pages with continuation, cycles, the tenth-page boundary, malformed/empty tokens, tampered cache metadata, raw byte tampering, forbidden order routes, nanosecond/DST boundaries, tape-specific and multiple conditions, cancel/correction flags, invalid prices/sizes, duplicate/conflicting trade identities, context quarantine and quote-geometry limitations.
+
+Historical requests omit `asof`, inheriting current symbol mapping. A single requested/returned symbol does not establish point-in-time issuer identity or disabled mapping. No data were re-requested to hide this limitation. Quote geometry is not an executable quote validator, stop-fill model or trading-continuity guarantee. The 38 observations do not automatically complete any of the prior 414 unresolved paths.
+
+Audit artifacts are `independent-selection-audit.json`, `independent-cache-validation.json`, `independent-actual-audit.json`, `audit_actual_windows.py`, both independent test modules and `independent-final-tests.log`. This report's JSON binds inspected files by hash. The initial failing log remains private in its original form; publication requires a separately identified sanitized derivative. No raw trade identities or private absolute paths appear in the final independent audit reports.

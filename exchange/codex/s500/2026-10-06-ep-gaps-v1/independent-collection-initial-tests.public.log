@@ -1,0 +1,66 @@
+test_bar_page_cap_preserves_unknown (independent_collect_tests.CollectionAudit.test_bar_page_cap_preserves_unknown) ... ok
+test_cached_bytes_tamper_rejected (independent_collect_tests.CollectionAudit.test_cached_bytes_tamper_rejected) ... ok
+test_cached_outcome_count_not_trusted (independent_collect_tests.CollectionAudit.test_cached_outcome_count_not_trusted) ... FAIL
+test_cached_outcome_empty_pages_not_trusted (independent_collect_tests.CollectionAudit.test_cached_outcome_empty_pages_not_trusted) ... FAIL
+test_cached_outcome_wrong_route_not_trusted (independent_collect_tests.CollectionAudit.test_cached_outcome_wrong_route_not_trusted) ... FAIL
+test_empty_page_with_token_continues (independent_collect_tests.CollectionAudit.test_empty_page_with_token_continues) ... ok
+test_exact_raw_sip_request_and_ns_end (independent_collect_tests.CollectionAudit.test_exact_raw_sip_request_and_ns_end) ... ok
+test_malformed_or_empty_token_cannot_certify (independent_collect_tests.CollectionAudit.test_malformed_or_empty_token_cannot_certify) ... 
+  test_malformed_or_empty_token_cannot_certify (independent_collect_tests.CollectionAudit.test_malformed_or_empty_token_cannot_certify) (token='') ... FAIL
+test_order_routes_and_redirects_rejected (independent_collect_tests.CollectionAudit.test_order_routes_and_redirects_rejected) ... ok
+test_partial_page_actual_params_must_match_hash (independent_collect_tests.CollectionAudit.test_partial_page_actual_params_must_match_hash) ... FAIL
+test_repeated_token_cannot_certify (independent_collect_tests.CollectionAudit.test_repeated_token_cannot_certify) ... ok
+test_ten_pages_with_token_are_truncated (independent_collect_tests.CollectionAudit.test_ten_pages_with_token_are_truncated) ... ok
+test_terminal_tenth_page_can_complete (independent_collect_tests.CollectionAudit.test_terminal_tenth_page_can_complete) ... ok
+test_wrong_symbol_is_failed_and_raw_preserved (independent_collect_tests.CollectionAudit.test_wrong_symbol_is_failed_and_raw_preserved) ... ok
+
+======================================================================
+FAIL: test_cached_outcome_count_not_trusted (independent_collect_tests.CollectionAudit.test_cached_outcome_count_not_trusted)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "./independent_collect_tests.py", line 116, in test_cached_outcome_count_not_trusted
+    self.reject_bad_outcome(lambda value: value.update(records=999))
+  File "./independent_collect_tests.py", line 52, in reject_bad_outcome
+    self.assertFalse(result['pages_complete'], 'Unverified cache was accepted as complete')
+AssertionError: True is not false : Unverified cache was accepted as complete
+
+======================================================================
+FAIL: test_cached_outcome_empty_pages_not_trusted (independent_collect_tests.CollectionAudit.test_cached_outcome_empty_pages_not_trusted)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "./independent_collect_tests.py", line 122, in test_cached_outcome_empty_pages_not_trusted
+    self.reject_bad_outcome(lambda value: value.update(pages=[]))
+  File "./independent_collect_tests.py", line 52, in reject_bad_outcome
+    self.assertFalse(result['pages_complete'], 'Unverified cache was accepted as complete')
+AssertionError: True is not false : Unverified cache was accepted as complete
+
+======================================================================
+FAIL: test_cached_outcome_wrong_route_not_trusted (independent_collect_tests.CollectionAudit.test_cached_outcome_wrong_route_not_trusted)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "./independent_collect_tests.py", line 119, in test_cached_outcome_wrong_route_not_trusted
+    self.reject_bad_outcome(lambda value: value.update(route='/v2/stocks/OTHER/trades'))
+  File "./independent_collect_tests.py", line 52, in reject_bad_outcome
+    self.assertFalse(result['pages_complete'], 'Unverified cache was accepted as complete')
+AssertionError: True is not false : Unverified cache was accepted as complete
+
+======================================================================
+FAIL: test_malformed_or_empty_token_cannot_certify (independent_collect_tests.CollectionAudit.test_malformed_or_empty_token_cannot_certify) (token='')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "./independent_collect_tests.py", line 105, in test_malformed_or_empty_token_cannot_certify
+    self.assertFalse(result['pages_complete'])
+AssertionError: True is not false
+
+======================================================================
+FAIL: test_partial_page_actual_params_must_match_hash (independent_collect_tests.CollectionAudit.test_partial_page_actual_params_must_match_hash)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "./independent_collect_tests.py", line 133, in test_partial_page_actual_params_must_match_hash
+    self.assertFalse(result['pages_complete'])
+AssertionError: True is not false
+
+----------------------------------------------------------------------
+Ran 14 tests in 0.026s
+
+FAILED (failures=5)

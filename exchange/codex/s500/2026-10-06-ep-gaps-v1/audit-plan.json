@@ -1,0 +1,30 @@
+{
+  "created_at": "2026-10-06T19:18:11.460319+00:00",
+  "stage": "s500-ep-missing-observation-diagnostic-independent-audit",
+  "status": "selection_verified_waiting_frozen_design_and_code",
+  "selection_audit": "independent-selection-audit.json",
+  "rules_to_check": [
+    "Use exact integer nanoseconds and half-open target[m,m+60s) and context[m-120s,m+180s). Inclusive REST end must be last ns before context end; returned out-of-range observations are retained as violations and excluded from target statistics.",
+    "Bind every cache to exact route,symbol,feed,adjustment,sort,timeframe,start/end,limit,base_request hash,page-token chain and frozen design. Verify bytes and hash before reuse; do not treat a raw file as proof of terminal pagination.",
+    "Empty pages with next_page_token continue. Repeated tokens, missing/malformed token or route/payload shape errors fail closed. Ten pages with remaining token are explicitly truncated and cannot establish absence.",
+    "Per-minute trades and quotes are separated from neighboring minutes. Preserve ID/version conflicts; never silently collapse different raw states sharing an ID or same-timestamp observations.",
+    "Trade eligibility uses authoritative provider rules and the relevant tape with multi-condition behavior, separately for bar OHLC/volume. Observed excluded trade is still a trade; unknown conditions cannot prove no eligible trade.",
+    "A complete provider response is not complete market history. No returned eligible trade means only no such returned record within this bounded current archive, never proof of no trade, halt, no risk or zero return.",
+    "Quote positivity,condition and age are state diagnostics. No older-valid fallback after latest invalid quote; quotes alone do not prove fills or absence of halt. Same-t conflicting states have no certified ordering.",
+    "A newly returned bar is a later-version discrepancy and may be future-revised. No silent replacement, interpolation,zero-fill,forward-fill or concatenation with old-v1 gap.",
+    "Halt claims require authoritative symbol/time halt-and-resume evidence covering the exact target interval. Adjacent trading,blank records or issuer news alone are insufficient.",
+    "All38 points and all414 failure associations remain retained independently of news or PnL. This stage is post-outcome data diagnosis, not holdout strategy validation; resolving first gaps may expose later gaps.",
+    "Oldv1 source/result/classification hashes remain unchanged. Public outputs exclude fullraw feeds,raworder/activity identifiers,account identifiers and private absolute paths."
+  ],
+  "planned_tests": [
+    "Nanosecond inclusion at start and exclusion at minute/context end, offsets acrossEST/EDT.",
+    "Empty page with token,nexttoken loop,10page cap,request mutation,bodyhash tamper.",
+    "Targetversusneighbor classification separation;unknown/multiple trade conditions.",
+    "SameID exact duplicateversusconflicting revision;quote ties/latestinvalid if quote states used.",
+    "Returned bar repricing versus frozen source absence;zero observations do not create zeroOHLC or classifyhalt.",
+    "All38 results retained;oldv1 hashes unchanged."
+  ],
+  "network_calls_by_auditor": 0,
+  "implementation_mutations_by_auditor": 0,
+  "broker_orders_sent": 0
+}

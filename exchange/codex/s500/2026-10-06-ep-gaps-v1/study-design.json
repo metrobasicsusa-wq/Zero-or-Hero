@@ -1,0 +1,65 @@
+{
+  "id": "s500_EP_missing_minute_diagnostic_v1",
+  "registered_at": "2026-10-06T19:18:31.943477+00:00",
+  "parent_commit": "b29d77405cacc21cb2db1ff174e4ca6f32cd9b86",
+  "status": "frozen_before_new_window_requests",
+  "purpose": "Post-outcome data feasibility diagnostic; not strategy validation or a PnL rerun.",
+  "input_sha256": {
+    "next-input-diagnostic.json": "ef945f30deecff6782c36009619863989c5a8cdc448d586f335b609b3011ffcd",
+    "isolated-case-results.json": "626105c96cfee1cac9b84e6a15dffaa1a1b845a6afc2455836938cfbe1993b4d",
+    "holding-input-manifest.json": "e74fc4c0a845d65ab52e6f10f07481de97c57f1091db254216aa12b2bb589652",
+    "holding-market.json": "cef5ef478dd3b8fc9601281968922e33aa81749c14a7a35634c78ccaa0061705",
+    "ep_engine.py": "a52304e560e819ca3612fbbaeb5145cfddfb7d11181731783db7158402ca5c53"
+  },
+  "points_sha256": "086f468a9924a2f122777b85a99cf260ccd4b460757af086e937ebfdc69a1aeb",
+  "all_points": 38,
+  "window": "[target\u2212120s,target+180s), API end given inclusive end\u22121ns; target[minute,minute+60s). Preserve timestamps to integer nanoseconds.",
+  "streams": {
+    "bars": {
+      "feed": "sip",
+      "adjustment": "raw",
+      "timeframe": "1Min",
+      "max_pages": 1
+    },
+    "trades": {
+      "feed": "sip",
+      "max_pages": 10
+    },
+    "quotes": {
+      "feed": "sip",
+      "max_pages": 10
+    }
+  },
+  "request_rules": {
+    "sort": "asc",
+    "page_limit": 10000,
+    "concurrent_workers": 4,
+    "global_spacing_seconds": 0.45,
+    "max_retry_attempts": 5,
+    "empty_page_with_token": "continue",
+    "remaining_token_at_cap": "truncated not complete",
+    "symbol": "exact one symbol",
+    "out_of_window": "retain raw and quarantine, not silently discard",
+    "daily_frequency": "none; bounded task only"
+  },
+  "conditions": "Retrieve official trade and quote condition metadata for tapesA/B/C; tie to each observation tape, preserve combinations and unknowns. Apply documented distinct OHLC/volume eligibility only if source rule proven; condition presence alone is not bar reconstruction.",
+  "bar_comparison": "Compare old and new same-minute raw fields o/h/l/c/v/n/vw. Previously absent target that reappears is version discrepancy; do not overwrite or merge parent.",
+  "output_classes": [
+    "target_bar_reappeared_version_discrepancy",
+    "target_missing_with_observed_non_price_forming_trades_under_documented_rules",
+    "target_missing_provider_returned_no_trades",
+    "target_missing_with_potentially_price_forming_trades",
+    "target_missing_conditions_or_source_coverage_unresolved"
+  ],
+  "halt_rule": "At most2authoritative timestamped halt/resume source requests perpoint only when relevant archive is available. Absence of record/queryaccess is not proof nohalt. Quotes do not certify continuity or fills.",
+  "limits": [
+    "Raw endpoint completeness only means pagination completed, not historical archive completeness.",
+    "38are first failure coordinates; fixing them would not automatically settle414paths.",
+    "No inferred zero prices/volume/trades/fills from missingbars.",
+    "No carry-forward/newexecutionprice or liveorders.",
+    "No PnL recalculation here; no retrospective v1 revisions."
+  ],
+  "publication": "New immutable exchange/codex files only; source/hash/derivedcasecounts/code/allfailures. Rawfeeds/tradeIDs/fullarticlebodies private.",
+  "broker_orders_sent": 0,
+  "new_scheduler_deployed": false
+}

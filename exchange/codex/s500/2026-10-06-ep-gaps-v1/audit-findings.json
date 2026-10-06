@@ -1,0 +1,141 @@
+{
+  "audited_at": "2026-10-06T19:33:22.344800+00:00",
+  "status": "passed_with_explicit_source_and_interpretation_limits",
+  "blocking_unresolved_implementation_findings": [],
+  "selection": {
+    "all_parent_failure_records": 414,
+    "all_frozen_coordinates": 38,
+    "reconciled_independently": true,
+    "selected_by_profit_or_news": false,
+    "only_first_failure_per_path": true
+  },
+  "tests": {
+    "independent_collection_tests": 14,
+    "independent_analysis_tests": 16,
+    "total_passed": 30,
+    "failed": 0,
+    "initial_failed_regressions": 5,
+    "log": "independent-final-tests.log"
+  },
+  "actual_checks": {
+    "all_points": 38,
+    "all_windows": 114,
+    "all_pages": 114,
+    "raw_records_by_stream": {
+      "bars": 145,
+      "trades": 24946,
+      "quotes": 20044
+    },
+    "target_trade_records": 1069,
+    "target_quote_records": 823,
+    "all_38_source_classifications_and_190_minute_buckets_reconciled": true,
+    "target_trade_states": {
+      "documented_price_excluded": 1069
+    },
+    "classification_counts": {
+      "target_missing_price_excluded_trades_consistent_with_documented_rules": 36,
+      "target_missing_provider_returned_no_trades": 2
+    },
+    "current_docs_hash_verified": 19,
+    "minute_rule_rows_reextracted": 32,
+    "all_12_parent_baseline_hashes_unchanged": true,
+    "trade_identity_conflicts_observed": 0,
+    "new_context_bars": [
+      {
+        "point_id": "p28__REPL__20260601T1331Z",
+        "symbol": "REPL",
+        "relative_minute": -2,
+        "regular_session_offset": -1,
+        "reason": "outside_parent_regular_session_window"
+      }
+    ],
+    "halt_query_bodies_hash_verified": 2,
+    "halt_supporting_bodies_hash_verified": 3,
+    "halt_query_outcomes": "Both challenge pages; transport endpoint not verified; halt remains unknown."
+  },
+  "collector_change": {
+    "initial_code_preserved": "collect_windows_initial.py",
+    "initial_manifest_preserved": "input-manifest-initial.json",
+    "initial_failed_log_preserved": "independent-collection-initial-tests.log",
+    "later_validation_was_offline": true,
+    "validation_network_calls": 0,
+    "raw_json_files_unchanged": 228,
+    "final_manifest_distinguishes_initial_collection_and_cache_validation": true
+  },
+  "findings": [
+    {
+      "id": "cache_outcome_not_semantically_replayed",
+      "initial_status": "reproduced_by_independent_tests",
+      "final_status": "resolved",
+      "details": "Cachedoutcome count,route,empty pages were trusted despite incoherent semantics. Hardenedcollector now replays expectedroute/parameters,pagebudget,count,tokenchain,status/completeflag and savedbytes/hash; all114 actualwindows passed offline."
+    },
+    {
+      "id": "partial_page_parameters_not_bound",
+      "initial_status": "reproduced_by_independent_test",
+      "final_status": "resolved",
+      "details": "Saved actual requestparameters are now compared exactly to expected parameters as well as requesthash."
+    },
+    {
+      "id": "empty_continuation_token",
+      "initial_status": "reproduced_by_independent_test",
+      "final_status": "resolved",
+      "details": "Only null is terminal; non-null mustbe a nonempty string. Empty-page nonempty-token continues; cap with token stays truncated."
+    },
+    {
+      "id": "minute_clock_disagreement",
+      "final_status": "source_limit_retained",
+      "details": "Official FAQ SIP time and older official participant/executiontime descriptions conflict. All buckets are returned-t buckets, not a certified reconstruction of vendorbar creation."
+    },
+    {
+      "id": "symbol_mapping_default",
+      "final_status": "source_limit_retained",
+      "details": "Requests omit asof; exact one-symbol route and returned symbol do not prove disabled historical symbolmapping or point-in-time issueridentity."
+    },
+    {
+      "id": "no_record_is_not_no_market_event",
+      "final_status": "interpretation_guard_verified",
+      "details": "REPL andSPCE targetminutes return no trades/quotes; providersource exhaustion is not proof no trading,no halt,no risk,or zero return. Haltqueries yielded challengepages and remain unknown."
+    },
+    {
+      "id": "parent_v1_immutability",
+      "final_status": "verified",
+      "details": "All12 frozen parentfile hashes unchanged; no oldPnL recomputation,new bars,forwardfills,orders or automatedpath certification."
+    }
+  ],
+  "limitations": [
+    "Condition-based explanation is consistent with documented sparse bars but does not establish a full causal or point-in-time reconstruction.",
+    "All38 points are first encountered failures; resolving them does not resolve all414paths or certify yearlycomplete marketcoverage.",
+    "Quote geometry counts are not fresh validquote selection,stop execution,guaranteed capacity or nohalt proof.",
+    "Current corrections/history and current rule documentation cannot establish original clientreceipt or historical archival completeness.",
+    "The independent auditor implemented delegated cache hardening; actual result recomputation uses a separate script importing neither collector nor analyzer."
+  ],
+  "public_privacy_checks": {
+    "no_raw_trade_ids_in_independent_reports": true,
+    "no_private_absolute_paths_in_final_audit_reports": true,
+    "raw_bodies_not_copied_to_public_report": true,
+    "initial_failure_log_requires_sanitized_public_derivative": true
+  },
+  "artifacts_sha256": {
+    "study-design.json": "2fc79bc858ee359627383b89d440c9e4d3ee9f212173078573a5e08e55832fb3",
+    "points.json": "086f468a9924a2f122777b85a99cf260ccd4b460757af086e937ebfdc69a1aeb",
+    "collect_windows_initial.py": "1ed0eac6e27571f570b1037446a0977c3057a53725f68c960acfbb5fa2cbf803",
+    "collect_windows.py": "1ff83d03b7721aa3dc01627ea82ac0ee5c7e4eaddcabbdf010acadc2a9e8f268",
+    "input-manifest-initial.json": "7e578d629e32d8c7c8dcc3797fc13ece32b0fecade383ee6415973331ac6c722",
+    "input-manifest.json": "f206777ecdcf522492be1964751564d97478eb1d4da7298f54f1c5ecf74aa98a",
+    "analyze_windows.py": "991592c5ee426692e28bc1e20a737d4c089de16d793c40a0dcb069690cd9906a",
+    "source-rules.json": "5268f4225ad6527829e437129959e56a0d86b74d64d597fac445c26f81bb1610",
+    "halt-query-results.json": "7e9d55e15a421b16aa9f8872cfaa6e79f80ced5d094247bb7461101d7c1cc1b3",
+    "gap-diagnostics.json": "138e8a43cb07d39c9b0b4d085cd9b6de59c8623f0926594edd99343b02303c17",
+    "gap-summary.json": "245e9c0037180eedb8c00488f4e23139b30f8b1df8941eb18a8a084a7ad95e91",
+    "independent-selection-audit.json": "d7c8c2469eead05e20bbd9b90e8d55d39c4561bc8d7f2cdc35bfce12115c6b2d",
+    "independent-cache-validation.json": "cd5343ab2fcb27cff0ed11b83798ffc216c649cb5b2da3f744600f1c2015e5d6",
+    "independent-actual-audit.json": "69f5316a5908e51d5d2becf62cd331f040236fb25a690a327a9d66ae8463b3f7",
+    "independent_collect_tests.py": "8fc11b508ae323ee1ebe75af5a4eb127b1ccd1ebbc69248b35bc23906b4f54fd",
+    "independent_analysis_tests.py": "535a92de509cd4147ac556ba6c9c0d3f80f530661c8ddc66ac8458a828135607",
+    "audit_actual_windows.py": "05b1f49fb77aaf925386f94af5ce81407e5272b90989e6971e65cca917f003ea",
+    "independent-final-tests.log": "1c5017729d98659a47a371fbc0127a1fe8e122a482fa26004da725c059ba8968"
+  },
+  "network_calls_by_independent_auditor": 0,
+  "orders_sent": 0,
+  "new_pnl_tests": 0
+}

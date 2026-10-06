@@ -1,0 +1,30 @@
+{
+  "id": "s500-event-based-holding-v2-proposal",
+  "created_at": "2026-10-06T19:30:15.335240+00:00",
+  "status": "proposal_not_registered_or_executed",
+  "why": "Current evidence shows most first missing bars are consistent with non-price-forming trades; requiring one bar every held minute is not a faithful general data model.",
+  "prior_studies_seen": [
+    "all73x12 EP holding outcomes",
+    "all38 first missing-coordinate diagnostics"
+  ],
+  "no_new_edge_claim": true,
+  "development_sequence": [
+    "Freeze an explicit event model before a new historical outcome run, distinguishing signal price events, protective stop trigger, executable reference, missing sources and valuation freshness.",
+    "Implement and independently test valid-event progression without creating synthetic bars, zero volume, fictitious fills or profitable-price substitutions.",
+    "Keep original73 cases, all12 original cost/exit/budget variants, skipped cases, losses, unresolved exposure and censoring. Any additional family must be declared separately before its run.",
+    "Publish the full candidate registry and every result; retain current/nonPIT universe, asof mapping and source-time limits."
+  ],
+  "rules_requiring_new_registration": {
+    "bar_event_model": "If a new aggregate-bar stress model proceeds through absent bars under an explicit provider-series-completeness assumption, label that as a new conditional model. Do not claim absence proves no trades or broker stop execution.",
+    "execution_evidence": "Quote/trade-driven alternative must freeze eligible conditions, returned versus reception timestamp, quote age, size units, bid/ask side, spread bounds, fixed intent quantity, affordability, source outage and halt handling before outcomes.",
+    "no_favorable_gap_fill": "No carry-forward execution prices or selection of a favorable later tick. Missing required execution evidence keeps that action unresolved.",
+    "capital": "Initial500 whole shares, no borrowing, T+1 receivables, no exit-day re-entry, no restart injections; corporate action adjustments must be supported or explicit unresolved.",
+    "cohort_portfolio_diagnostics": "A separately labeled retrospective verified-news cohort could explore capital continuity, but it must explicitly acknowledge post-observation selection; it cannot replace unknown full-market paths or prove historical implementability. All original candidates remain retained."
+  },
+  "restarts": "Separate later protocol must freeze demonstrated inability-to-trade criterion and count every injection/residual/failed round; old40pct stop not governing user goal.",
+  "validation_requirement": "No historical revised variant is out-of-sample merely because its code is new. Use a genuinely unobserved chronological period or prospective observations for edge claims.",
+  "data_next": "First specify required observation streams and a bounded all-case acquisition design; the38point archive alone does not cover every future held gap or exit.",
+  "diagnostic_results_sha256": "138e8a43cb07d39c9b0b4d085cd9b6de59c8623f0926594edd99343b02303c17",
+  "broker_orders_sent": 0,
+  "new_scheduler_deployed": false
+}

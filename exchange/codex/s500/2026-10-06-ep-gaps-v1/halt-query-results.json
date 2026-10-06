@@ -1,0 +1,137 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-10-06T19:28:52.804981+00:00",
+  "scope": "Bounded event-specific halt checks for only the two no-trade/no-quote target minutes.",
+  "max_event_queries_per_symbol": 2,
+  "event_queries_per_symbol": {
+    "REPL": 1,
+    "SPCE": 1
+  },
+  "attempts": [
+    {
+      "symbol": "REPL",
+      "target_minute_et": "2026-06-01T09:31:00-04:00",
+      "url": "https://www.nasdaqtrader.com/RPCHandler.axd",
+      "method": "POST",
+      "query_parameters": {
+        "id": 1,
+        "method": "BL_TradeHalt.SearchTradeHaltsNEW",
+        "params": [
+          "REPL",
+          "",
+          "",
+          "",
+          "",
+          "",
+          ""
+        ]
+      },
+      "query_scope": "Exact symbol, other official search filters empty; vendor says last year.",
+      "retrieved_at": "2026-10-06T19:27:41.780112+00:00",
+      "authorization_headers_sent": false,
+      "tls_verification": true,
+      "method_parameter_source": "https://www.nasdaqtrader.com/Trader.aspx?id=TradingHaltSearch",
+      "transport_endpoint_confirmed_from_page": false,
+      "halt_at_target": null,
+      "absence_of_halt_established": false,
+      "event_query_attempt": 1,
+      "http_status": 200,
+      "final_url": "https://www.nasdaqtrader.com/RPCHandler.axd",
+      "content_type": "text/html",
+      "body_sha256": "d02032286070b4dd9d8fbd985a7bdca8af8edf52b89ff177db3bfcb2c8a9c43d",
+      "bytes": 212,
+      "result_status": "challenge_page_not_event_data",
+      "parsed_event_records": null,
+      "result_explanation": "HTTP 200 body is an Incapsula JavaScript challenge page, not a halt result table/JSON. No challenge bypass or retry attempted."
+    },
+    {
+      "symbol": "SPCE",
+      "target_minute_et": "2026-06-01T10:16:00-04:00",
+      "url": "https://www.nasdaqtrader.com/RPCHandler.axd",
+      "method": "POST",
+      "query_parameters": {
+        "id": 1,
+        "method": "BL_TradeHalt.SearchTradeHaltsNEW",
+        "params": [
+          "SPCE",
+          "",
+          "",
+          "",
+          "",
+          "",
+          ""
+        ]
+      },
+      "query_scope": "Exact symbol, other official search filters empty; vendor says last year.",
+      "retrieved_at": "2026-10-06T19:27:41.780986+00:00",
+      "authorization_headers_sent": false,
+      "tls_verification": true,
+      "method_parameter_source": "https://www.nasdaqtrader.com/Trader.aspx?id=TradingHaltSearch",
+      "transport_endpoint_confirmed_from_page": false,
+      "halt_at_target": null,
+      "absence_of_halt_established": false,
+      "event_query_attempt": 1,
+      "http_status": 200,
+      "final_url": "https://www.nasdaqtrader.com/RPCHandler.axd",
+      "content_type": "text/html",
+      "body_sha256": "d02032286070b4dd9d8fbd985a7bdca8af8edf52b89ff177db3bfcb2c8a9c43d",
+      "bytes": 212,
+      "result_status": "challenge_page_not_event_data",
+      "parsed_event_records": null,
+      "result_explanation": "HTTP 200 body is an Incapsula JavaScript challenge page, not a halt result table/JSON. No challenge bypass or retry attempted."
+    }
+  ],
+  "supporting_source_captures": [
+    {
+      "key": "nasdaq_halt_search",
+      "url": "https://www.nasdaqtrader.com/Trader.aspx?id=TradingHaltSearch",
+      "retrieved_at": "2026-10-06T19:18:56.600726+00:00",
+      "method": "GET",
+      "authorization_headers_sent": false,
+      "tls_verification": true,
+      "status": 200,
+      "final_url": "https://www.nasdaqtrader.com/Trader.aspx?id=TradingHaltSearch",
+      "content_type": "text/html; charset=utf-8",
+      "body_sha256": "431eb3281d7d4fb42bb00e6198150b4d430da1a7f7d9cfda40689b0e53ae4ad0",
+      "bytes": 88099
+    },
+    {
+      "key": "nasdaq_rpcclient",
+      "url": "https://www.nasdaqtrader.com/rpcclient.axd",
+      "retrieved_at": "2026-10-06T19:26:43.757075+00:00",
+      "method": "GET",
+      "authorization_headers_sent": false,
+      "tls_verification": true,
+      "status": 200,
+      "final_url": "https://www.nasdaqtrader.com/rpcclient.axd",
+      "content_type": "text/html; charset=utf-8",
+      "body_sha256": "896eb072a09d6e11b168b79088844057b18cf4c8ea674b928fa3c3f14b95cfe7",
+      "bytes": 21
+    },
+    {
+      "key": "nyse_halts",
+      "url": "https://www.nyse.com/trade-halt",
+      "retrieved_at": "2026-10-06T19:18:04.550792+00:00",
+      "method": "GET",
+      "authorization_headers_sent": false,
+      "tls_verification": true,
+      "status": 200,
+      "final_url": "https://www.nyse.com/trade/trading-halts",
+      "content_type": "text/html; charset=utf-8",
+      "body_sha256": "213374ef2f78345d8ee09e7e1aa5b8baaf51a880a28df2de676a2bd1b70baa0f",
+      "bytes": 77631
+    }
+  ],
+  "nyse_event_query_attempts": 0,
+  "nyse_status": "Dynamic historical component observed; no confirmed historical query endpoint or parameters in captured page. No guessed NYSE request.",
+  "source_method_status": "Nasdaq page supplied read-only SearchTradeHaltsNEW method and seven-argument ordering. Its linked rpcclient.axd returned Request is not valid; RPCHandler.axd transport route remained an unverified conventional candidate.",
+  "classification": {
+    "REPL": "unknown",
+    "SPCE": "unknown"
+  },
+  "halt_explanations_confirmed": 0,
+  "no_halt_claims": 0,
+  "raw_bodies_public": false,
+  "code_sha256": "f9f27c6f3257632188e5c62e2409207270aa1003db9e653c26067dad4c770b97",
+  "summarizer_sha256": "d3393f56ec17275c6b0cb200dec3457178e138f0d7728f460cdbb81fc2600861"
+}

@@ -1,0 +1,439 @@
+{
+  "audited_at": "2026-10-06T19:32:08.898856+00:00",
+  "all_points": 38,
+  "all_windows": 114,
+  "all_pages": 114,
+  "raw_records_by_stream": {
+    "bars": 145,
+    "trades": 24946,
+    "quotes": 20044
+  },
+  "target_trade_records": 1069,
+  "target_quote_records": 823,
+  "all_38_source_classifications_and_190_minute_buckets_reconciled": true,
+  "target_trade_states": {
+    "documented_price_excluded": 1069
+  },
+  "classification_counts": {
+    "target_missing_price_excluded_trades_consistent_with_documented_rules": 36,
+    "target_missing_provider_returned_no_trades": 2
+  },
+  "current_docs_hash_verified": 19,
+  "minute_rule_rows_reextracted": 32,
+  "all_12_parent_baseline_hashes_unchanged": true,
+  "trade_identity_conflicts_observed": 0,
+  "new_context_bars": [
+    {
+      "point_id": "p28__REPL__20260601T1331Z",
+      "symbol": "REPL",
+      "relative_minute": -2,
+      "regular_session_offset": -1,
+      "reason": "outside_parent_regular_session_window"
+    }
+  ],
+  "checks": [
+    {
+      "point_id": "p01__BIDU__20260106T1929Z",
+      "classification_verified": true,
+      "exact_request_and_page_chain_verified": true,
+      "all_returned_timestamps_in_window": true,
+      "all_trade_identities_unique_within_window": true,
+      "target_trades": 30,
+      "target_quotes": 4,
+      "prior_result_not_modified": true
+    },
+    {
+      "point_id": "p02__GLUE__20260108T1738Z",
+      "classification_verified": true,
+      "exact_request_and_page_chain_verified": true,
+      "all_returned_timestamps_in_window": true,
+      "all_trade_identities_unique_within_window": true,
+      "target_trades": 6,
+      "target_quotes": 5,
+      "prior_result_not_modified": true
+    },
+    {
+      "point_id": "p03__LIF__20260123T1619Z",
+      "classification_verified": true,
+      "exact_request_and_page_chain_verified": true,
+      "all_returned_timestamps_in_window": true,
+      "all_trade_identities_unique_within_window": true,
+      "target_trades": 34,
+      "target_quotes": 4,
+      "prior_result_not_modified": true
+    },
+    {
+      "point_id": "p04__INMD__20260126T1757Z",
+      "classification_verified": true,
+      "exact_request_and_page_chain_verified": true,
+      "all_returned_timestamps_in_window": true,
+      "all_trade_identities_unique_within_window": true,
+      "target_trades": 3,
+      "target_quotes": 2,
+      "prior_result_not_modified": true
+    },
+    {
+      "point_id": "p05__AQST__20260204T1658Z",
+      "classification_verified": true,
+      "exact_request_and_page_chain_verified": true,
+      "all_returned_timestamps_in_window": true,
+      "all_trade_identities_unique_within_window": true,
+      "target_trades": 25,
+      "target_quotes": 53,
+      "prior_result_not_modified": true
+    },
+    {
+      "point_id": "p06__VAL__20260210T1732Z",
+      "classification_verified": true,
+      "exact_request_and_page_chain_verified": true,
+      "all_returned_timestamps_in_window": true,
+      "all_trade_identities_unique_within_window": true,
+      "target_trades": 62,
+      "target_quotes": 26,
+      "prior_result_not_modified": true
+    },
+    {
+      "point_id": "p07__ICHR__20260210T1932Z",
+      "classification_verified": true,
+      "exact_request_and_page_chain_verified": true,
+      "all_returned_timestamps_in_window": true,
+      "all_trade_identities_unique_within_window": true,
+      "target_trades": 41,
+      "target_quotes": 10,
+      "prior_result_not_modified": true
+    },
+    {
+      "point_id": "p08__MSGS__20260218T1524Z",
+      "classification_verified": true,
+      "exact_request_and_page_chain_verified": true,
+      "all_returned_timestamps_in_window": true,
+      "all_trade_identities_unique_within_window": true,
+      "target_trades": 6,
+      "target_quotes": 4,
+      "prior_result_not_modified": true
+    },
+    {
+      "point_id": "p09__TNDM__20260224T1857Z",
+      "classification_verified": true,
+      "exact_request_and_page_chain_verified": true,
+      "all_returned_timestamps_in_window": true,
+      "all_trade_identities_unique_within_window": true,
+      "target_trades": 29,
+      "target_quotes": 1,
+      "prior_result_not_modified": true
+    },
+    {
+      "point_id": "p10__GCT__20260226T1739Z",
+      "classification_verified": true,
+      "exact_request_and_page_chain_verified": true,
+      "all_returned_timestamps_in_window": true,
+      "all_trade_identities_unique_within_window": true,
+      "target_trades": 10,
+      "target_quotes": 4,
+      "prior_result_not_modified": true
+    },
+    {
+      "point_id": "p11__DNTH__20260309T1455Z",
+      "classification_verified": true,
+      "exact_request_and_page_chain_verified": true,
+      "all_returned_timestamps_in_window": true,
+      "all_trade_identities_unique_within_window": true,
+      "target_trades": 18,
+      "target_quotes": 8,
+      "prior_result_not_modified": true
+    },
+    {
+      "point_id": "p12__SRPT__20260327T1807Z",
+      "classification_verified": true,
+      "exact_request_and_page_chain_verified": true,
+      "all_returned_timestamps_in_window": true,
+      "all_trade_identities_unique_within_window": true,
+      "target_trades": 33,
+      "target_quotes": 2,
+      "prior_result_not_modified": true
+    },
+    {
+      "point_id": "p13__STAA__20260409T1600Z",
+      "classification_verified": true,
+      "exact_request_and_page_chain_verified": true,
+      "all_returned_timestamps_in_window": true,
+      "all_trade_identities_unique_within_window": true,
+      "target_trades": 22,
+      "target_quotes": 11,
+      "prior_result_not_modified": true
+    },
+    {
+      "point_id": "p14__AEHR__20260413T1755Z",
+      "classification_verified": true,
+      "exact_request_and_page_chain_verified": true,
+      "all_returned_timestamps_in_window": true,
+      "all_trade_identities_unique_within_window": true,
+      "target_trades": 14,
+      "target_quotes": 25,
+      "prior_result_not_modified": true
+    },
+    {
+      "point_id": "p15__OGN__20260417T1556Z",
+      "classification_verified": true,
+      "exact_request_and_page_chain_verified": true,
+      "all_returned_timestamps_in_window": true,
+      "all_trade_identities_unique_within_window": true,
+      "target_trades": 16,
+      "target_quotes": 43,
+      "prior_result_not_modified": true
+    },
+    {
+      "point_id": "p16__NKTR__20260420T1616Z",
+      "classification_verified": true,
+      "exact_request_and_page_chain_verified": true,
+      "all_returned_timestamps_in_window": true,
+      "all_trade_identities_unique_within_window": true,
+      "target_trades": 30,
+      "target_quotes": 4,
+      "prior_result_not_modified": true
+    },
+    {
+      "point_id": "p17__MANE__20260427T1505Z",
+      "classification_verified": true,
+      "exact_request_and_page_chain_verified": true,
+      "all_returned_timestamps_in_window": true,
+      "all_trade_identities_unique_within_window": true,
+      "target_trades": 121,
+      "target_quotes": 16,
+      "prior_result_not_modified": true
+    },
+    {
+      "point_id": "p18__EVER__20260505T1715Z",
+      "classification_verified": true,
+      "exact_request_and_page_chain_verified": true,
+      "all_returned_timestamps_in_window": true,
+      "all_trade_identities_unique_within_window": true,
+      "target_trades": 25,
+      "target_quotes": 12,
+      "prior_result_not_modified": true
+    },
+    {
+      "point_id": "p19__OSS__20260507T1716Z",
+      "classification_verified": true,
+      "exact_request_and_page_chain_verified": true,
+      "all_returned_timestamps_in_window": true,
+      "all_trade_identities_unique_within_window": true,
+      "target_trades": 15,
+      "target_quotes": 92,
+      "prior_result_not_modified": true
+    },
+    {
+      "point_id": "p20__WYFI__20260511T1831Z",
+      "classification_verified": true,
+      "exact_request_and_page_chain_verified": true,
+      "all_returned_timestamps_in_window": true,
+      "all_trade_identities_unique_within_window": true,
+      "target_trades": 46,
+      "target_quotes": 28,
+      "prior_result_not_modified": true
+    },
+    {
+      "point_id": "p21__INOD__20260512T1446Z",
+      "classification_verified": true,
+      "exact_request_and_page_chain_verified": true,
+      "all_returned_timestamps_in_window": true,
+      "all_trade_identities_unique_within_window": true,
+      "target_trades": 35,
+      "target_quotes": 3,
+      "prior_result_not_modified": true
+    },
+    {
+      "point_id": "p22__AMBQ__20260512T1556Z",
+      "classification_verified": true,
+      "exact_request_and_page_chain_verified": true,
+      "all_returned_timestamps_in_window": true,
+      "all_trade_identities_unique_within_window": true,
+      "target_trades": 23,
+      "target_quotes": 28,
+      "prior_result_not_modified": true
+    },
+    {
+      "point_id": "p23__VELO__20260514T1557Z",
+      "classification_verified": true,
+      "exact_request_and_page_chain_verified": true,
+      "all_returned_timestamps_in_window": true,
+      "all_trade_identities_unique_within_window": true,
+      "target_trades": 25,
+      "target_quotes": 17,
+      "prior_result_not_modified": true
+    },
+    {
+      "point_id": "p24__HIMX__20260515T1712Z",
+      "classification_verified": true,
+      "exact_request_and_page_chain_verified": true,
+      "all_returned_timestamps_in_window": true,
+      "all_trade_identities_unique_within_window": true,
+      "target_trades": 15,
+      "target_quotes": 15,
+      "prior_result_not_modified": true
+    },
+    {
+      "point_id": "p25__MRAM__20260515T1712Z",
+      "classification_verified": true,
+      "exact_request_and_page_chain_verified": true,
+      "all_returned_timestamps_in_window": true,
+      "all_trade_identities_unique_within_window": true,
+      "target_trades": 36,
+      "target_quotes": 20,
+      "prior_result_not_modified": true
+    },
+    {
+      "point_id": "p26__WEN__20260515T1740Z",
+      "classification_verified": true,
+      "exact_request_and_page_chain_verified": true,
+      "all_returned_timestamps_in_window": true,
+      "all_trade_identities_unique_within_window": true,
+      "target_trades": 35,
+      "target_quotes": 3,
+      "prior_result_not_modified": true
+    },
+    {
+      "point_id": "p27__IMVT__20260521T1618Z",
+      "classification_verified": true,
+      "exact_request_and_page_chain_verified": true,
+      "all_returned_timestamps_in_window": true,
+      "all_trade_identities_unique_within_window": true,
+      "target_trades": 22,
+      "target_quotes": 22,
+      "prior_result_not_modified": true
+    },
+    {
+      "point_id": "p28__REPL__20260601T1331Z",
+      "classification_verified": true,
+      "exact_request_and_page_chain_verified": true,
+      "all_returned_timestamps_in_window": true,
+      "all_trade_identities_unique_within_window": true,
+      "target_trades": 0,
+      "target_quotes": 0,
+      "prior_result_not_modified": true
+    },
+    {
+      "point_id": "p29__SPCE__20260601T1416Z",
+      "classification_verified": true,
+      "exact_request_and_page_chain_verified": true,
+      "all_returned_timestamps_in_window": true,
+      "all_trade_identities_unique_within_window": true,
+      "target_trades": 0,
+      "target_quotes": 0,
+      "prior_result_not_modified": true
+    },
+    {
+      "point_id": "p30__OKTA__20260605T1347Z",
+      "classification_verified": true,
+      "exact_request_and_page_chain_verified": true,
+      "all_returned_timestamps_in_window": true,
+      "all_trade_identities_unique_within_window": true,
+      "target_trades": 49,
+      "target_quotes": 22,
+      "prior_result_not_modified": true
+    },
+    {
+      "point_id": "p31__QURE__20260618T1606Z",
+      "classification_verified": true,
+      "exact_request_and_page_chain_verified": true,
+      "all_returned_timestamps_in_window": true,
+      "all_trade_identities_unique_within_window": true,
+      "target_trades": 14,
+      "target_quotes": 8,
+      "prior_result_not_modified": true
+    },
+    {
+      "point_id": "p32__VOD__20260710T1545Z",
+      "classification_verified": true,
+      "exact_request_and_page_chain_verified": true,
+      "all_returned_timestamps_in_window": true,
+      "all_trade_identities_unique_within_window": true,
+      "target_trades": 31,
+      "target_quotes": 26,
+      "prior_result_not_modified": true
+    },
+    {
+      "point_id": "p33__QNST__20260807T1820Z",
+      "classification_verified": true,
+      "exact_request_and_page_chain_verified": true,
+      "all_returned_timestamps_in_window": true,
+      "all_trade_identities_unique_within_window": true,
+      "target_trades": 30,
+      "target_quotes": 158,
+      "prior_result_not_modified": true
+    },
+    {
+      "point_id": "p34__PYPL__20260814T1603Z",
+      "classification_verified": true,
+      "exact_request_and_page_chain_verified": true,
+      "all_returned_timestamps_in_window": true,
+      "all_trade_identities_unique_within_window": true,
+      "target_trades": 43,
+      "target_quotes": 57,
+      "prior_result_not_modified": true
+    },
+    {
+      "point_id": "p35__HTFL__20260818T1506Z",
+      "classification_verified": true,
+      "exact_request_and_page_chain_verified": true,
+      "all_returned_timestamps_in_window": true,
+      "all_trade_identities_unique_within_window": true,
+      "target_trades": 20,
+      "target_quotes": 0,
+      "prior_result_not_modified": true
+    },
+    {
+      "point_id": "p36__AMLX__20260819T1625Z",
+      "classification_verified": true,
+      "exact_request_and_page_chain_verified": true,
+      "all_returned_timestamps_in_window": true,
+      "all_trade_identities_unique_within_window": true,
+      "target_trades": 26,
+      "target_quotes": 46,
+      "prior_result_not_modified": true
+    },
+    {
+      "point_id": "p37__ANF__20260827T1637Z",
+      "classification_verified": true,
+      "exact_request_and_page_chain_verified": true,
+      "all_returned_timestamps_in_window": true,
+      "all_trade_identities_unique_within_window": true,
+      "target_trades": 45,
+      "target_quotes": 40,
+      "prior_result_not_modified": true
+    },
+    {
+      "point_id": "p38__KOD__20260929T1710Z",
+      "classification_verified": true,
+      "exact_request_and_page_chain_verified": true,
+      "all_returned_timestamps_in_window": true,
+      "all_trade_identities_unique_within_window": true,
+      "target_trades": 34,
+      "target_quotes": 4,
+      "prior_result_not_modified": true
+    }
+  ],
+  "asof_parameter_sent": false,
+  "symbol_mapping_disabled_proven": false,
+  "source_time_bucket_clock_conflict_retained": true,
+  "no_trade_return_is_not_market_absence": true,
+  "halt_status_certified": false,
+  "halt_query_bodies_hash_verified": 2,
+  "halt_supporting_bodies_hash_verified": 3,
+  "halt_query_outcomes": "Both challenge pages; transport endpoint not verified; halt remains unknown.",
+  "network_calls": 0,
+  "old_pnl_recalculated": false,
+  "input_sha256": {
+    "study-design.json": "2fc79bc858ee359627383b89d440c9e4d3ee9f212173078573a5e08e55832fb3",
+    "points.json": "086f468a9924a2f122777b85a99cf260ccd4b460757af086e937ebfdc69a1aeb",
+    "input-manifest.json": "f206777ecdcf522492be1964751564d97478eb1d4da7298f54f1c5ecf74aa98a",
+    "condition-metadata.json": "9798b78fecc6c7bd4fc3cc717e57a049bb40aada62774006c997fca9275e7519",
+    "source-rules.json": "5268f4225ad6527829e437129959e56a0d86b74d64d597fac445c26f81bb1610",
+    "collect_windows.py": "1ff83d03b7721aa3dc01627ea82ac0ee5c7e4eaddcabbdf010acadc2a9e8f268",
+    "analyze_windows.py": "991592c5ee426692e28bc1e20a737d4c089de16d793c40a0dcb069690cd9906a",
+    "gap-diagnostics.json": "138e8a43cb07d39c9b0b4d085cd9b6de59c8623f0926594edd99343b02303c17",
+    "gap-summary.json": "245e9c0037180eedb8c00488f4e23139b30f8b1df8941eb18a8a084a7ad95e91",
+    "halt-query-results.json": "7e9d55e15a421b16aa9f8872cfaa6e79f80ced5d094247bb7461101d7c1cc1b3",
+    "audit_actual_windows.py": "05b1f49fb77aaf925386f94af5ce81407e5272b90989e6971e65cca917f003ea"
+  }
+}
