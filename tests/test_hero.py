@@ -1497,7 +1497,7 @@ class ResearchEvents(unittest.TestCase):
         self.assertEqual(ev.reaction_day("2026-10-05T20:30:00Z", days), "2026-10-06")   # 16:30 ET -> next day
         self.assertEqual(ev.kind_of("Apple unveils iPhone at keynote"), "product")
         self.assertEqual(ev.half_bank([{"reaction_day": "a", "ret_tp5": 4.0}, {"reaction_day": "b", "ret_tp5": -1.0}], "ret_tp5"),
-                         {"final": 750, "best": 1500, "zeros": 0})
+                         {"final": 750, "best": 1500, "zeros": 0, "heroes": 0})
 
 
 class ZeroDTE(unittest.TestCase):

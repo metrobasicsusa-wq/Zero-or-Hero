@@ -156,15 +156,18 @@ def stats(xs: list[float]) -> dict:
             "x10": round(sum(x >= 9 for x in xs) / len(xs), 3)}
 
 
-def half_bank(trades: list[dict], key: str) -> dict:
-    """$500, half of it on each event in date order (the user's way); a round ends below $50."""
-    bank, rounds, best = 500.0, 0, 500.0
+def half_bank(trades: list[dict], key: str, target: float = 10_000.0) -> dict:
+    """$500, half of it on each event in date order (the user's way); a round ends below $50
+    (zero) or at $10,000 (hero), and a fresh $500 round starts."""
+    bank, zeros, heroes, best = 500.0, 0, 0, 500.0
     for t in sorted(trades, key=lambda t: t["reaction_day"]):
         bank += bank * 0.5 * max(t[key], -1.0)
-        best = max(best, bank)
+        best = max(best, min(bank, target))
         if bank < 50:
-            rounds, bank = rounds + 1, 500.0
-    return {"final": round(bank), "best": round(best), "zeros": rounds}
+            zeros, bank = zeros + 1, 500.0
+        elif bank >= target:
+            heroes, bank = heroes + 1, 500.0
+    return {"final": round(bank), "best": round(best), "zeros": zeros, "heroes": heroes}
 
 
 def run(client, root: Path) -> dict:
@@ -244,13 +247,13 @@ def markdown(rep: dict) -> str:
                 continue
             out.append(f"| {g} | {float(m):.0%} | {s['n']} | {s['mean']:+.0%} | {s['median']:+.0%} | {s['win']:.0%} | {s['x3']:.0%} | {s['x10']:.0%} |")
         out.append("")
-    out += ["## $500 每次押一半、5 倍止盈，按时间顺序玩所有事件（低于 $50 归零重来）", "",
-            "| 组别 | 价外 | 最后余额 | 最高到过 | 归零次数 |", "|---|---|---|---|---|"]
+    out += ["## $500 每次押一半、5 倍止盈，按时间顺序玩所有事件（低于 $50 归零、到 $10,000 成功，都重来）", "",
+            "| 组别 | 价外 | 最后余额 | 最高到过 | 成功次数 | 归零次数 |", "|---|---|---|---|---|---|"]
     for gk, row in rep["table"].items():
         g, m = gk.split("|")
         b = row.get("bank_tp5")
         if b:
-            out.append(f"| {g} | {float(m):.0%} | ${b['final']:,} | ${b['best']:,} | {b['zeros']} |")
+            out.append(f"| {g} | {float(m):.0%} | ${b['final']:,} | ${b['best']:,} | {b['heroes']} | {b['zeros']} |")
     big = sorted([e for e in rep["event_list"] if e.get("move") is not None], key=lambda e: -abs(e["move"]))[:15]
     out += ["", "## 股价反应最大的 15 个事件", "", "| 股票 | 反应日 | 类型 | 事先公布 | 当天涨跌 | 标题 |", "|---|---|---|---|---|---|"]
     for e in big:
