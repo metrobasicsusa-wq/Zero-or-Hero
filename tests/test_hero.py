@@ -1500,6 +1500,20 @@ class ResearchEvents(unittest.TestCase):
                          {"final": 750, "best": 1500, "zeros": 0, "heroes": 0})
 
 
+class ResearchFly(unittest.TestCase):
+    def test_butterfly_costs_and_exits(self):
+        from hero import research_fly as f
+        leg = lambda prices: f.filled({t: {"c": p} for t, p in prices.items()})
+        legs = [leg({"14:58": 1.5, "15:40": 1.2}), leg({"14:59": 1.0, "15:40": 0.4}), leg({"15:00": 0.6, "15:40": 0.05})]
+        r = f.trade(legs, "15:00", 100.0, 1.0, 100.2)
+        self.assertAlmostEqual(r["cost"], 0.225)                  # wings bought high, body sold low
+        self.assertEqual(r["15:30"], -1.0)                         # worth nothing after costs at 15:30
+        self.assertAlmostEqual(r["15:50"], 0.354 / 0.225 - 1, places=3)
+        self.assertEqual(r["tp3"], r["15:50"])                     # never reached 3x: out at 15:50
+        self.assertAlmostEqual(r["close"], 0.8 / 0.225 - 1, places=3)  # 1 - |100.2 - 100| at the close
+        self.assertIsNone(f.trade(legs, "14:00", 100.0, 1.0, 100.2))   # no leg traded near 14:00
+
+
 class ZeroDTE(unittest.TestCase):
     def setUp(self):
         self.tmp = tempfile.TemporaryDirectory()
