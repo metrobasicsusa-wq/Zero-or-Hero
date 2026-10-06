@@ -1,0 +1,230 @@
+{
+  "research_date": "2026-10-06",
+  "status": "source_research_only_not_strategy_backtest",
+  "sources": [
+    {
+      "id": "orb_stocks_in_play_2024",
+      "title": "A Profitable Day Trading Strategy For The U.S. Equity Market",
+      "authors": [
+        "Carlo Zarattini",
+        "Andrea Barbon",
+        "Andrew Aziz"
+      ],
+      "publication_date": "2024-02-16",
+      "revision_date_on_ssrn": "2025-04-29",
+      "source_type": "Original working paper and author-hosted full text",
+      "urls_actually_read": [
+        "https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4729284",
+        "https://www.abarbon.com/papers/a-profitable-day-trading-strategy-for-the-u-s-equity-market",
+        "https://concretumgroup.com/a-profitable-day-trading-strategy-for-the-u-s-equity-market/",
+        "https://concretumgroup.com/wp-content/uploads/2026/02/A-Profitable-Day-Trading-Strategy-For-The-U.S.-Equity-Market.pdf"
+      ],
+      "access_depth": "Full author-hosted PDF inspected, sections2.1 and4, printed pages9-17; SSRN metadata and authors pages verified. PDF header says first version2024-02-16; do not assume exact identity with SSRN revised version.",
+      "pdf_sha256": "9423012e9f0199e3f6925c500725815c236d7ddbdd7500d50d10bac2be745e91",
+      "short_quote": "Trade the stocks with the top 20 Relative Volume.",
+      "quote_location": "Author PDF section4, printed page15",
+      "evidence_summary": "Historical five-minute opening-range breakout improves when selecting unusually active stocks using volume measured only during the completed opening range. Study reports2016-2023 top20 stocks-in-play return1637% with commission; this is an author backtest claim, not observed client account growth.",
+      "backtest_not_live": true,
+      "sample": "More than7000 US stocks,2016-01-01 to2023-12-31; authors use CRSP stock universe including delisted stocks and IQFeed intraday raw bars.",
+      "paper_rules": {
+        "decision_time": "09:35 America/New_York after09:30-09:35 opening range completes",
+        "universe_filters": "Opening price>$5, mean previous14 daily volume>=1million shares, previous14-day ATR>$0.50.",
+        "relative_volume": "Current first5-minute volume / mean first5-minute volume of previous14 sessions; require>=1.0 and rank descending, choose top20. This is time-matched volume, NOT completed full-day volume.",
+        "direction_and_entry": "If first5-minute close>open, buy stop at first5-minute high; if close<open, sell stop at first5-minute low; doji skips. Orders only after range is complete.",
+        "exit": "Stop at10% of daily ATR from executed entry; otherwise exit16:00.",
+        "paper_capital_and_risk": "Initial$25000, long+short, maximum4x leverage; text sizes each position for1% loss of capital allocated to that position if stopped. Exact simultaneous portfolio risk budgeting needs reproduction.",
+        "news": "Stocks-in-play discussion motivates company news, but operational filter is opening relative volume; paper does not itself supply a verified event-timestamp news filter."
+      },
+      "costs_and_biases": [
+        "Explicit commission is$0.0035/share; no separate bid/ask spread, stop-gap slippage, borrow/locate fee stress was verified in the inspected methodological sections.",
+        "Relative-volume and time-frame alternatives were explored on the same historical period; no independent future client validation demonstrated.",
+        "Author claims survivorship-aware CRSP data; our current-directory universe is weaker and cannot inherit that property.",
+        "Relative volume formula in extracted PDF has an apparent repeated t-1 index under summation; prose clearly describes averaging previous14 opening ranges. Source implementation should be checked before claiming exact replication."
+      ],
+      "s500_constraints": [
+        "Cannot scale$25000 long-short/4x/top20 results to$500 cash whole-share account.",
+        "Our first test should be separately named long-only, no leverage, one affordable stock, with full cash/quote/settlement checks; changing portfolio means a new strategy variant.",
+        "No option return can be inferred from stock ORB performance."
+      ],
+      "codable_research_variant_not_run": [
+        "At09:35 calculate opening-range RV against same clock interval in prior14sessions; price/ATR/liquidity filters as source.",
+        "Separate long-only highest-RV affordable candidate; entry only after completed range breaks upward, avoid looking at later day high when selecting.",
+        "Use one-minute bars only as first approximation; if entry/stop order is ambiguous within one bar, record conservative execution or unresolved result, never assume favorable order.",
+        "Include full spread/slippage scenarios and end-of-day exit; test signal and event-news subset separately, with announcement known before09:35."
+      ],
+      "missing_inputs": [
+        "YTD per-symbol first5-minute and later intraday bars with at least14-session warmup",
+        "Historical exact same-interval volume, not full-day totals",
+        "Historical corporate identity/universe and split actions",
+        "Executable bid/ask, stop trigger timing and halt/auction evidence",
+        "Timestamped company news/earnings releases for any added event filter"
+      ],
+      "accessed_at_utc": "2026-10-06T15:45:21.422928+00:00",
+      "tested_by_us": false
+    },
+    {
+      "id": "market_intraday_momentum_2017",
+      "title": "Market Intraday Momentum",
+      "authors": [
+        "Lei Gao",
+        "Yufeng Han",
+        "Sophia Zhengzi Li",
+        "Guofu Zhou"
+      ],
+      "publication_date": "2017-06-19",
+      "revision_date_on_ssrn": "2017-06-20 (page header; version listing also displays later metadata)",
+      "source_type": "Original authors SSRN working-paper abstract",
+      "urls_actually_read": [
+        "https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2440866"
+      ],
+      "access_depth": "Original SSRN metadata and abstract read; full methodological cost tables not inspected.",
+      "short_quote": "the first half-hour return on the market since the previous day’s market close predicts the last half-hour return",
+      "quote_location": "SSRN abstract",
+      "evidence_summary": "SPY1993-2013 historical intraday evidence links previous close-to10:00 return with15:30-16:00 return. Reported predictability is stronger on high-volume, volatile and major macro-news days, and appears in10other ETFs.",
+      "backtest_not_live": true,
+      "sample": "S&P500 ETF high-frequency data1993-2013;10other actively traded domestic/international ETFs mentioned.",
+      "paper_rules": {
+        "predictor": "First-half-hour return measured from PREVIOUS CLOSE to10:00, includes overnight gap.",
+        "outcome": "Last-half-hour15:30-16:00 market return.",
+        "conditions": "Abstract says stronger for higher-volume/volatility/recession/macro-news days; numerical cutoffs not confirmed from full text."
+      },
+      "costs_and_biases": [
+        "Exact execution, net-cost assumptions and out-of-sample implementation not verified from abstract, so do not reproduce numerical profitability.",
+        "ETF-level relationship cannot automatically transfer to individual stocks or0DTE contracts.",
+        "1993-2013 market structure may not persist in2026; current research must account for altered spreads and competition."
+      ],
+      "s500_constraints": [
+        "SPY/QQQ whole-share affordability must be checked; do not substitute options or leveredETF without a separate model.",
+        "A long-only cash variant cannot be called a replication of symmetric long-short timing."
+      ],
+      "codable_research_variant_not_run": [
+        "Use completed10:00 return since prior close as a frozen predictor; observe eligible ETF15:30-16:00 return.",
+        "For first diagnostic, estimate conditional returns/sign agreement, then separately simulate long-only when predictor positive, with realistic15:30quotes and16:00exit.",
+        "Predefine high-volume relative to same-clock historical volume using only information before entry; choose a cutoff before looking at new outcomes."
+      ],
+      "missing_inputs": [
+        "Intraday10:00/15:30/16:00 prices and quotes",
+        "Historical ETF corporate-action adjustments",
+        "Prior-known macroeconomic release calendars",
+        "Full source-paper execution and cost details"
+      ],
+      "accessed_at_utc": "2026-10-06T15:45:21.422928+00:00",
+      "tested_by_us": false
+    },
+    {
+      "id": "pead_transaction_costs_2008",
+      "title": "Implications of Transaction Costs for the Post-Earnings-Announcement Drift",
+      "authors": [
+        "Jeffrey Ng",
+        "Tjomme O. Rusticus",
+        "Rodrigo S. Verdi"
+      ],
+      "publication_date": "2008-06",
+      "working_paper_date": "2007-10",
+      "source_type": "Original authors working-paper abstract plus university bibliographic record of journal article",
+      "urls_actually_read": [
+        "https://papers.ssrn.com/sol3/papers.cfm?abstract_id=899902",
+        "https://lbsresearch.london.edu/id/eprint/286/"
+      ],
+      "journal": "Journal of Accounting Research46(3),661-696",
+      "doi": "10.1111/j.1475-679X.2008.00290.x",
+      "access_depth": "Original SSRN abstract and LBS bibliographic record read. LBS explicitly has no full text; exact sample dates and numeric cost schedule were not independently verified.",
+      "short_quote": "profits of implementing the PEAD trading strategy are significantly reduced by transaction costs",
+      "quote_location": "SSRN abstract",
+      "evidence_summary": "Bigger apparent post-earnings drift is associated with higher trading costs, and implementing PEAD loses substantial profit to these costs. This is useful counter-evidence against chasing small illiquid stocks solely because their gross drift looks larger.",
+      "backtest_not_live": true,
+      "sample": "Empirical portfolio and regression study; exact sample dates not verified in accessible abstract.",
+      "paper_rules": {
+        "verified": "Examines earnings-surprise response, later drift and transaction-cost differences.",
+        "not_verified": "Exact SUE construction, portfolio cutoff, holding window and original cost levels cannot be claimed from abstract."
+      },
+      "costs_and_biases": [
+        "Apparent gross anomaly can reflect a return difficult to capture after spread/impact costs.",
+        "Do not import published net returns or thresholds without the full methods."
+      ],
+      "s500_constraints": [
+        "Small account does not remove wide percentage spreads; minimum fees and integer-share constraints may be material.",
+        "Long-only affordable variant omits short leg and differs from research portfolios."
+      ],
+      "codable_research_variant_not_run": [
+        "For any proposed earnings-continuation test, record announcement timestamp and as-of analyst consensus, then stratify results by pre-entry spread/liquidity.",
+        "Compare gross and fully costed returns on identical event selections; additionally retain continuous$500 sizing effects separately.",
+        "Treat these as our validation controls motivated by the paper, not as an exact source trading algorithm."
+      ],
+      "missing_inputs": [
+        "Point-in-time earnings releases/consensus before release",
+        "Announcement publication time and first eligible tradable entry",
+        "Spread/quote history and liquidity before signal",
+        "Full source methods for exact replication"
+      ],
+      "accessed_at_utc": "2026-10-06T15:45:21.422928+00:00",
+      "tested_by_us": false
+    },
+    {
+      "id": "pead_text_2022",
+      "title": "PEAD.txt: Post-Earnings-Announcement Drift Using Text",
+      "authors": [
+        "Vitaly Meursault",
+        "Pierre Jinghong Liang",
+        "Bryan R. Routledge",
+        "Madeline Marco Scanlon"
+      ],
+      "publication_date": "2021-02",
+      "revision_date": "2022-08 on cover; body dated2022-06-11",
+      "source_type": "Original Federal Reserve Bank of Philadelphia working paper21-07 full PDF",
+      "urls_actually_read": [
+        "https://www.philadelphiafed.org/-/media/frbp/assets/working-papers/2021/wp21-07.pdf"
+      ],
+      "doi": "10.21799/frbp.wp.2021.07",
+      "pdf_sha256": "3e6dbcdb5f5c012fc395bcb04b13db36e09fcc7ad856f41ec91b6af6a5097a1f",
+      "access_depth": "Full original PDF inspected, data/method and strategy sections, printed pages6-12.",
+      "short_quote": "using only information from the past eight quarters as the training set",
+      "quote_location": "PDF sectionI.B, printed page6",
+      "evidence_summary": "Earnings-call text surprise predicts subsequent abnormal returns beyond the headline EPS number. Paper fits regularized text model using earlier8quarters and generates predictions for the next quarter; textual surprise uses management presentation and Q&A separately.",
+      "backtest_not_live": true,
+      "sample": "Initial108704 observations2008Q1-2019Q4; final85160observations2010Q1-2019Q4 covering4701firms. CapitalIQ transcripts plusCRSP/Compustat/IBES.",
+      "paper_rules": {
+        "features": "log(1+term frequency),1000unigrams+1000bigrams for presentation and Q&A separately:4000features; vocabulary selected from training data.",
+        "training": "Regularized logistic model of call text vs one-day abnormal-return categories; rolling previous8quarters, next-quarter predictions; avoid mixing our observed2026 outcomes into training.",
+        "signal": "SUE.txt=log-odds(high abnormal return)-log-odds(low abnormal return). Quintile cutoffs use training-set scores.",
+        "portfolio": "Equal-weight long top estimated quintile/short bottom quintile; enter first close after earnings call, hold63trading days. Paper also examines32days.",
+        "result_context": "Reported text spread CAR2.87% over63days and daily factor alpha3.9bps for63-day portfolio are research statistics, not our net$500return."
+      },
+      "costs_and_biases": [
+        "No bid/ask/borrow/commission implementation was verified in inspected portfolio section; never call source alpha after-realistic-cost profit.",
+        "Paper has chronological out-of-sample model predictions internally, but that is neither live trading evidence nor unseen2026validation for our project.",
+        "Transcripts must be available before entry; event-day close entry can be impossible when transcript publication comes later.",
+        "Vendor coverage and long-short quintile construction may not carry to small cash portfolio."
+      ],
+      "s500_constraints": [
+        "Equal-weight long-short many names is not feasible to copy mechanically with$500and integer shares.",
+        "A long-only1name32/63day variant would tie up capital and needs its own validation.",
+        "Reading summaries with anLLM is not equivalent to fitting the paper’s rolling text model."
+      ],
+      "codable_research_variant_not_run": [
+        "First create event table with release/call/transcript publication timestamps, EPS/revenue surprises and explicit guidance changes.",
+        "For a faithful model, train only prior8quarters using then-available text, fix vocabulary/cutoffs, generate next-quarter scores, and delay entry until actual transcript availability.",
+        "As a simpler separately named hypothesis, classify explicit upward guidance plus revenue/EPS beat from timestamped primary releases and measure subsequent1/5/10/20session returns; these horizons are our proposal, not source-validated rules."
+      ],
+      "missing_inputs": [
+        "Historical transcripts with publication timestamps and sections",
+        "At least2years of earlier training data for full replication",
+        "Point-in-time earnings/consensus and matched benchmark data",
+        "Security identity/delisting returns and executable costs"
+      ],
+      "accessed_at_utc": "2026-10-06T15:45:21.422928+00:00",
+      "tested_by_us": false
+    }
+  ],
+  "priority": [
+    "ORB with same-time opening relative volume is the closest clearly specified new intraday hypothesis; unlike previous daily-volume models.",
+    "Timestamped earnings/guidance continuation is a second direction; cost study provides an explicit execution check, and text paper supports going beyond headline EPS.",
+    "Market late-day timing is a lower-priority distinct ETF control, not a0DTE shortcut."
+  ],
+  "source_access_limits": [
+    "SSRN directPDF link for ORB returned abstractHTML; full paper was instead read from the author’s public website.",
+    "Google returnedJS shell and Bing degraded to first-word results; DuckDuckGo was used only for discovery and claims were checked on original author/institution pages.",
+    "No complete articles or PDFs are included in this evidence package; full PDF research copies remain local temporary files.",
+    "No live trades, new backtests or communications were executed."
+  ]
+}

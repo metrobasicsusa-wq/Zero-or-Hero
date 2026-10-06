@@ -1,0 +1,115 @@
+{
+  "sources": [
+    {
+      "id": "economic_links_2008",
+      "title": "Economic Links and Predictable Returns",
+      "authors": [
+        "Lauren Cohen",
+        "Andrea Frazzini"
+      ],
+      "published": "2008-08",
+      "source_kind": "peer_reviewed_historical_portfolio_study_author_hosted_pdf",
+      "access": {
+        "id": "customer",
+        "url": "https://people.stern.nyu.edu/afrazzin/pdf/Economic%20Links%20and%20Predictable%20Returns%20-%20Cohen%20and%20Frazzini.pdf",
+        "final_url": "https://pages.stern.nyu.edu/~afrazzin/pdf/Economic%20Links%20and%20Predictable%20Returns%20-%20Cohen%20and%20Frazzini.pdf",
+        "status": 200,
+        "content_type": "application/pdf",
+        "sha256": "2c0bca1025e4b1391c3367088c63e33a8d09b475431892c6e9d8e1d0508a15c0",
+        "bytes": 549505,
+        "retrieved_at": "2026-10-06T15:41:52.443125+00:00"
+      },
+      "evidence_level": "original_paper_read_not_independently_replicated",
+      "observed_method": [
+        "1980–2004 customer-link data; portfolio tables evaluate1981–2004.",
+        "Supplier–customer relations only used after a six-month fiscal-year-end gap; last available disclosed links, not present-day supplier maps.",
+        "Rank suppliers by previous-month equally weighted customer-stock return; five portfolios, rebalance monthly; long highest and short lowest for the studied spread."
+      ],
+      "original_result_claim": "Authors report about1.55pct monthly abnormal return for a long-short customer-momentum strategy. It is historical factor-adjusted spread evidence, not a verified net return for a500-dollar long-only account.",
+      "support_locations": [
+        "Published journal pages1983(data timing),1985–1986(portfolio formation),1980(main summary)."
+      ],
+      "short_quote": "we impose a 6-month gap between fiscal year-end dates and stock returns",
+      "use_for_s500": "Test whether publicly identified customer or industry-leader shocks help screen related suppliers; useful to expand beyond a fixed storage watchlist.",
+      "new_hypothesis_not_original_rule": "A500-dollar long-only single-position event strategy would be a new adaptation, not replication of the monthly diversified long-short paper.",
+      "missing_inputs": [
+        "dated public customer relationships",
+        "identity and ticker changes",
+        "earnings/news release timestamps",
+        "dividend/corporate-action coverage and realistic costs"
+      ],
+      "priority": "later_than_event_opening_study"
+    },
+    {
+      "id": "industry_momentum_1999",
+      "title": "Do Industries Explain Momentum?",
+      "authors": [
+        "Tobias J. Moskowitz",
+        "Mark Grinblatt"
+      ],
+      "published": "1999-08-01",
+      "source_kind": "author_firm_research_summary_of_Journal_of_Finance_article",
+      "access": {
+        "id": "industry",
+        "url": "https://www.aqr.com/Insights/Research/Journal-Article/Do-Industries-Explain-Momentum",
+        "final_url": "https://www.aqr.com/Insights/Research/Journal-Article/Do-Industries-Explain-Momentum",
+        "status": 200,
+        "content_type": "text/html; charset=utf-8",
+        "sha256": "713b54884a05b22135a376236199d3e69c5bad94ec0fc1d61e2bb4f6aaa101b6",
+        "bytes": 69725,
+        "retrieved_at": "2026-10-06T15:41:52.335865+00:00"
+      },
+      "evidence_level": "original_research_summary_read_full_paper_not_read_in_this_stage",
+      "observed_method": [
+        "Summary focuses on6–12month momentum horizons and industry component persistence.",
+        "Industry momentum may account for much individual-stock momentum in the historical study."
+      ],
+      "use_for_s500": "Industry strength is a possible conditioning variable, not a reason to buy any same-industry stock after an unrelated surge.",
+      "new_hypothesis_not_original_rule": "Adding a20-day sector filter to a3-day event trade is a separately registered hypothesis, not the6–12month paper.",
+      "missing_inputs": [
+        "historically valid sector membership",
+        "longer warmup before2026",
+        "appropriate benchmarks and cost model"
+      ],
+      "priority": "secondary_filter"
+    },
+    {
+      "id": "quantconnect_sue_2019",
+      "title": "Standardized Unexpected Earnings",
+      "authors": [
+        "QuantConnect research tutorial"
+      ],
+      "published": "2019-09-10 page metadata; later2024 comment/update also visible",
+      "source_kind": "public_platform_tutorial_with_code_and_historical_backtest",
+      "access": {
+        "id": "sue",
+        "url": "https://www.quantconnect.com/research/15369/standardized-unexpected-earnings/",
+        "final_url": "https://www.quantconnect.com/research/15369/standardized-unexpected-earnings/",
+        "status": 200,
+        "content_type": "text/html; charset=UTF-8",
+        "sha256": "2d63b6f023fa507b13a3b53fe8d71506543e217fca97bb9dba196bc1fb37d440",
+        "bytes": 205808,
+        "retrieved_at": "2026-10-06T15:41:52.100621+00:00"
+      },
+      "evidence_level": "method_and_page_read_backtest_not_independently_run",
+      "observed_method": [
+        "Monthly top1000 by dollar volume with price>5 and fundamental availability.",
+        "Quarterly EPS difference versus four quarters before divided by standard deviation of prior seasonal EPS changes; tutorial uses36-month warmup and eight quarterly differences.",
+        "Long top5pct equal-weighted, monthly rebalance."
+      ],
+      "claim_quality_issue": "Page introduction cites Sharpe0.602 vsSPY0.43 for2009-12–2019-09; conclusion cites0.83 vs0.88. Version/backtest mismatch is unresolved, so no quantitative performance claim is adopted.",
+      "use_for_s500": "Provides an implementable earnings-surprise feature and a check against merely labelling a price jump as good news.",
+      "new_hypothesis_not_original_rule": "Choosing one affordable signal instead of a diversified top5pct basket materially changes the strategy. Use original as conceptual reference only.",
+      "missing_inputs": [
+        "point-in-time EPS releases and restatement history",
+        "at least36months prior fundamentals",
+        "code/backtest version reconciliation",
+        "whole-share allocation and account execution costs"
+      ],
+      "priority": "feature_reference_not_copied_strategy"
+    }
+  ],
+  "public_excerpt_policy": "Paraphrases and one short quotation; source bodies stored locally only.",
+  "all_sources_accessed": "2026-10-06",
+  "no_new_backtest_or_orders": true
+}

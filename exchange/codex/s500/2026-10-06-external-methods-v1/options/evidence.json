@@ -1,0 +1,212 @@
+{
+  "id": "s500-options-primary-source-review-20261006",
+  "assembled_at_utc": "2026-10-06T15:49:39.970252+00:00",
+  "purpose": "Primary-source inputs for falsifiable $500 PAPER research, not current trade instructions or a deployed strategy.",
+  "sources": [
+    {
+      "id": "O1",
+      "title": "0DTE Asset Pricing",
+      "url": "https://www.fma.org/assets/docs/Derivatives2025/Almeida.pdf",
+      "publication_date": "2025-05-23",
+      "publication_date_note": "Title page: this draft May 23, 2025; first draft January 20, 2024.",
+      "access": {
+        "http_status": 200,
+        "status": "downloaded_and_read",
+        "retrieved_at_utc": "2026-10-06T15:42:15.968204+00:00",
+        "content_sha256": "60e50d44152350e76a8cc5437d3bb110bbdf1e7c7c7402f70f457730aa90cb3c"
+      },
+      "evidence_level": "B: original author working paper; empirical results, not independently reproduced or established profitable for $500.",
+      "verified_findings": [
+        "Authors Caio Almeida, Gustavo Freire and Rodrigo Hizmeri study SPXW quotes from Cboe at 1-minute frequency. The options sample covers 2012-01-06 through 2025-03-18, with 1,815 dates; the number of available expiry weekdays changes through the sample.",
+        "The authors find bid-ask spreads widest near open and close and select 10:00–14:00 observations at 30-minute intervals for their main intraday analysis.",
+        "The stochastic-dominance-bound strategy buys an ATM delta-hedged option below its lower bound and writes it above its upper bound. The authors report profitable historical mispricing before 2022 but a largely stagnating strategy after daily 0DTE availability in 2022.",
+        "Table 6 after-cost reported Sharpe values for the short ATM delta-hedged call benchmark range from -0.042 to -0.010 across nine entry times; corresponding SSD values range 0.101 to 0.159 over the full historical sample.",
+        "Their transaction-cost experiment uses ask to buy and bid to sell rather than midpoint. This is more conservative than mid-price accounting but does not prove those quotes could execute or constitute the worst possible live fill."
+      ],
+      "limits": [
+        "This is a 2025 working-paper snapshot, not a 2026 forward result, verified personal account, or a $500 strategy.",
+        "The strategy uses option-writing and delta hedging; its positions, risk normalization and capital needs cannot be copied into a $500 long-option portfolio.",
+        "A profitable full-sample statistic is not proof the post-2022 or future effect survives. Do not translate the reported Sharpe into an annualized account return.",
+        "The project has not obtained the paper's full executable quote dataset or reproduced its pricing-bound estimator."
+      ],
+      "locators": [
+        "Title page",
+        "Section 3.1 data and sampling",
+        "Section 3.2 returns",
+        "Section 4.5/printed pp.33–35",
+        "Table 6 printed p.58",
+        "Figure 9"
+      ]
+    },
+    {
+      "id": "O2",
+      "title": "XSP Index Options — The Advantages of SPX Options in a Smaller Contract Size for Greater Flexibility",
+      "url": "https://cdn.cboe.com/resources/xsp/XSP_Options_Fact_Sheet.pdf",
+      "publication_date": null,
+      "publication_date_note": "No exact publication date printed; footer copyright 2026, reference WF-451400-KC.",
+      "access": {
+        "http_status": 200,
+        "status": "downloaded_and_read",
+        "retrieved_at_utc": "2026-10-06T15:43:26.548018+00:00",
+        "content_sha256": "68c1ff3128c178eaee12645c8a5f933b285d0860d412139ece70dce66643fcca"
+      },
+      "evidence_level": "A: exchange-issued contract mechanics; marketing claims are not return evidence.",
+      "verified_findings": [
+        "XSP is based on one tenth of SPX and has a $100 multiplier. One quoted premium point therefore costs $100 per standard XSP contract.",
+        "The comparison table distinguishes standard SPX AM settlement from SPXW PM settlement; XSP settles PM. All three are European-style and cash-settled.",
+        "SPY options are American-style and settle in ETF shares; their notional exposure is similar to XSP, not standard SPX.",
+        "For XSP, final settlement uses one tenth of the official S&P 500 closing value for the expiring series; cash is delivered on the next business day.",
+        "The sheet specifies a $0.01 premium tick ($1 per XSP contract), and expiring XSP weekly/end-of-month contracts stop trading at 15:00 Chicago time on the last trading day."
+      ],
+      "limits": [
+        "One tenth notional size does not prove a contract is affordable, fairly priced or sufficiently liquid; a fresh relevant bid/ask is still required.",
+        "Broker permissions, accepted products, exercise cutoffs and fees are not established by an exchange fact sheet.",
+        "Verify the exact series and calendar rather than treating every SPX contract as same-day PM-settled."
+      ],
+      "locators": [
+        "PDF page 1 comparison table",
+        "PDF page 2 multiplier, minimum intervals and final settlement"
+      ]
+    },
+    {
+      "id": "O3",
+      "title": "XSP: More Potential Benefits Than SPY",
+      "url": "https://cdn.cboe.com/resources/xsp/XSPvSPY-MorePotential-Digital-V13.pdf",
+      "publication_date": null,
+      "publication_date_note": "No exact publication date printed; footer copyright 2024 and v.15, although the URL filename contains V13.",
+      "access": {
+        "http_status": 200,
+        "status": "downloaded_and_read",
+        "retrieved_at_utc": "2026-10-06T15:43:26.607829+00:00",
+        "content_sha256": "134b53ce297bfd4a746d608415136262ec0c8b3e2e49040a8e567571f4c6390a"
+      },
+      "evidence_level": "A for contract mechanics; exchange marketing comparison, not a return study.",
+      "verified_findings": [
+        "The comparison confirms European cash settlement for XSP versus American physical-share settlement for SPY.",
+        "Its after-hours example shows why an out-of-the-money SPY short call at the close may still be exercised later and leave the writer short 100 ETF shares; XSP has no analogous residual-share position from this settlement.",
+        "XSP and SPY have similar notional size while XSP is one tenth of SPX."
+      ],
+      "limits": [
+        "The brochure's tax and global-hours statements are not used as personal tax advice or as definitive current trading hours.",
+        "Avoid interpreting removal of early assignment risk as removal of price, execution or total-premium-loss risk."
+      ],
+      "locators": [
+        "Single-page comparison table",
+        "Contra Assignment Implications of ETF Options example"
+      ]
+    },
+    {
+      "id": "O4",
+      "title": "Long Call",
+      "url": "https://www.optionseducation.org/strategies/all-strategies/long-call",
+      "publication_date": null,
+      "publication_date_note": "Page has no visible publication date; copyright 2026 is not a publication date.",
+      "access": {
+        "http_status": 200,
+        "status": "downloaded_and_read",
+        "retrieved_at_utc": "2026-10-06T15:42:15.874394+00:00",
+        "content_sha256": "16249c7bf4d02b4ed9d6e99abef2cbcc0c96cc64aba7a08bfb59b41758e0a923"
+      },
+      "evidence_level": "A: OCC/OIC educational payoff and exercise mechanics; no empirical trading edge.",
+      "verified_findings": [
+        "An unexercised purchased call can expire worthless; its option-position loss is the premium paid, with transaction costs additional.",
+        "Being right about direction after the option expires is insufficient; time decay and changes in implied volatility affect the premium before expiration.",
+        "An in-the-money call may be exercised by the broker at expiration, requiring funds for the underlying shares when the buyer had budgeted only for the premium."
+      ],
+      "limits": [
+        "The page contains an inconsistent introductory butterfly sentence; findings rely on its internally consistent Description, Max Loss, Time Decay and Expiration Risk sections.",
+        "Limited option-premium loss is not a guarantee that an early closing sale will execute. The model must independently represent quotes, trading interruptions and exercise handling.",
+        "Exercise can create an underlying position; the premium-only option payoff limit must not be applied blindly to subsequent stock exposure."
+      ],
+      "locators": [
+        "Description",
+        "Max Loss",
+        "Time Decay",
+        "Expiration Risk"
+      ]
+    },
+    {
+      "id": "O5",
+      "title": "Bull Call Spread (Debit Call Spread)",
+      "url": "https://www.optionseducation.org/strategies/all-strategies/bull-call-spread-debit-call-spread",
+      "publication_date": null,
+      "publication_date_note": "No visible publication date.",
+      "access": {
+        "http_status": 200,
+        "status": "downloaded_and_read",
+        "retrieved_at_utc": "2026-10-06T15:44:12.007502+00:00",
+        "content_sha256": "3c992ccda6747e1f9f1342447041588c3032553eddccff97f11450a47b05c269"
+      },
+      "evidence_level": "A: OCC/OIC educational payoff and assignment mechanics; no empirical trading edge.",
+      "verified_findings": [
+        "A bull call vertical buys the lower-strike call and sells the higher-strike call with the same expiry. It requires a net debit and caps upside.",
+        "For the ideal matched spread held through correctly handled expiration, maximum loss is net debit and maximum profit is strike width minus debit, before fees and multiplying by the contract multiplier.",
+        "American-style assignment and expiration can leave an unexpected long or short stock position, especially near the short strike. The source discusses closing early or preparing for either assignment outcome."
+      ],
+      "limits": [
+        "A debit spread is not automatically executable at the difference between stale leg midpoints; both leg timestamps and a realistic net execution price are required.",
+        "Early assignment and failed/asymmetric exercise handling make a simple bounded-payoff spreadsheet insufficient for SPY or single-stock option implementation.",
+        "The source uses a conventional Friday/Monday example; daily expirations require the actual trading and settlement calendar."
+      ],
+      "locators": [
+        "Description",
+        "Net Position example",
+        "Max Loss/Max Gain",
+        "Assignment Risk",
+        "Expiration Risk"
+      ]
+    }
+  ],
+  "verified_versus_hypothesis": {
+    "verified": "Contract multipliers, exercise/settlement distinctions and the explicitly reported results of one author working paper.",
+    "not_verified": "A profitable 2026 long-option/debit-spread rule, executable current/historical quotes, broker availability, or a $500-to-$10,000 advantage."
+  },
+  "budget_and_cost_model": [
+    "For a standard 100-multiplier contract, debit in dollars = option ask × 100 × integer quantity + actual fees. With account cash C and preregistered allocation fraction f, quantity=floor((C×f−fee reserve)/(100×ask)); if quantity<1, skip and retain the skipped candidate.",
+    "Research may compare f=0.10, 0.25, 0.50 and 1.00 as hypotheses, not approved live risk limits. Every path retains all premium losses and residual cash; no fractional contracts or hidden re-funding.",
+    "A purely hypothetical $0.50/$0.60 bid/ask purchase at $0.60 and immediate sale at $0.50 loses $10 per contract, 16.67% of the $60 premium before fees. This is arithmetic, not a fetched quote.",
+    "For a same-expiry call debit spread with width W and net debit d in premium points, ideal expiration maximum profit is 100×(W−d) and maximum loss 100×d, before costs and subject to correct handling of both legs.",
+    "Model brokerage, per-contract, exchange and exercise/assignment fees separately from premium spread. The stock-backtest 10/25 bp convention cannot simply be reused as an option spread model.",
+    "Ask-on-buy and bid-on-sell are reference assumptions, not guaranteed executions. Record quote ages/sizes, simultaneous leg quotes, no-bid cases, slippage and unfilled orders. Do not mark a stop or take-profit filled because a later option bar touched a theoretical value."
+  ],
+  "candidate_experiments": [
+    {
+      "id": "opt-long-event-v1-proposal",
+      "status": "hypothesis_only_not_backtested",
+      "idea": "Apply independently frozen event/trend or reversal signals to a long call/put and compare 0DTE with 1–5 DTE, using entry windows chosen before results and quote-based expiry/strike selection.",
+      "borrowed_from_sources": "O4 long-option payoff/timing; O1 quote/cost discipline and regime-split caution.",
+      "required_inputs": "Timestamped historical bid/ask/size for all candidate contracts, contract master/multiplier/exercise style, event publication times, actual settlement values/calendar and fee schedule.",
+      "must_not_claim": "A stock-price backtest or implied leverage is evidence of attainable option returns."
+    },
+    {
+      "id": "opt-debit-spread-v1-proposal",
+      "status": "hypothesis_only_not_backtested",
+      "idea": "For the same frozen directional signal, compare a one-contract long option against a same-expiry bounded debit spread, subject to the identical cash budget and full candidate retention.",
+      "borrowed_from_sources": "O5 vertical structure/capped upside; O2–O3 cash-settlement versus share-delivery differences.",
+      "required_inputs": "Synchronized two-leg quotes or historical complex-order book, realistic net debit/credit fills, expiry settlement and broker spread/assignment rules.",
+      "must_not_claim": "A cheaper debit or high theoretical probability makes the strategy superior; the short leg caps extreme upside."
+    },
+    {
+      "id": "opt-friction-time-controls-v1-proposal",
+      "status": "hypothesis_only_not_backtested",
+      "idea": "Stratify the above tests by entry time, option bid/ask width and predeclared event/non-event regime; retain post-2022 and 2026 performance separately.",
+      "borrowed_from_sources": "O1 documents different spread conditions through the day and loss of a historical mispricing effect after 2022.",
+      "required_inputs": "The same executable quote history; enough observations per stratum and correction/disclosure for all searched candidates.",
+      "must_not_claim": "The paper's 10:00–14:00 sample or old SSD estimator is an established profitable entry rule for this account."
+    }
+  ],
+  "explicit_non_claims": [
+    "No current prices or trade recommendations were produced, and no broker orders were sent.",
+    "A story about a 20× option winner is not an estimate of expected value or the probability of growing total account wealth from $500 to $10,000.",
+    "A credit seller's high win rate is not interchangeable with small-capital growth: average win, average/tail loss, margin, assignment and all failed rounds matter.",
+    "The original paper's short-option/delta-hedged strategy is not proposed as a $500 copy trade.",
+    "Long-option maximum premium risk does not promise a tradable exit or prevent stock exposure from exercise."
+  ],
+  "access_notes": [
+    "DuckDuckGo initially provided usable discovery results; later searches presented a CAPTCHA and were not bypassed. Google returned a JS-only search shell; Bing results were not used as evidence.",
+    "The OCC ODD landing page loaded and identified the June 2024 edition, but the linked PDF returned HTTP 403; its unread PDF content was not cited.",
+    "A guessed Cboe 0DTE article URL returned HTTP 200 with navigation only, so no article finding was attributed to it.",
+    "Cboe Trading_Strategies.pdf was downloaded but not selected: the bull-call prose and diagram disagree about the short-leg option type; O5 was used to verify the rule instead.",
+    "Only this evidence JSON and Markdown summary are intended for publication; downloaded papers, HTML and extracted full text remain local."
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "status": "method_review_completed_not_backtest_validation",
+  "scope": "18planned variants, no generated trading outcomes",
+  "sources": 18,
+  "variant_count": 18,
+  "corrections": [
+    "Entry minute included in stop checking",
+    "Gap through EP entry stop stops path pending quote evidence; no hindsight cancellation",
+    "ATR14 uses15priorcloses and explicit simple mean",
+    "11:00cutoff and final-minute scheduled open marked source adaptations",
+    "One entry per day, no exit-day reentry",
+    "Intraday bar timing example; MA signals exit following session open",
+    "Only pre-open catalysts for gap hypothesis"
+  ],
+  "limits": [
+    "Source claims not independently reproduced",
+    "Some papers inspected only at abstract/official-summary level, labeled per source",
+    "No test of execution or strategy profitability in this literature stage",
+    "No raw third-party articles/PDFs or credentials included in publication"
+  ]
+}

@@ -1,0 +1,224 @@
+{
+  "schema": "s500.public-trader-literature.v1",
+  "research_date": "2026-10-06",
+  "created_at": "2026-10-06T15:45:18.410277+00:00",
+  "scope": "six primary sources; publicly readable sources only; no login, credentials, purchases or messages",
+  "sources": [
+    {
+      "id": "Q1",
+      "title": "3 TIMELESS setups that have made me TENS OF MILLIONS!",
+      "url": "https://qullamaggie.com/my-3-timeless-setups-that-have-made-me-tens-of-millions/",
+      "publication_date": "2021-01-08; page also displays 2021-04-28",
+      "retrieved_at": "2026-10-06T15:40:40.913138+00:00",
+      "fetch_status": "HTTP 200",
+      "html_sha256": "2534476453ba9025fae6fe0f8aedd7cf1749311b137a4108c7e59d2b20fb3290",
+      "source_type": "trader_authored_method_self_reported_returns",
+      "summary_zh": "本人介绍突破、Episodic Pivot 和抛物线反转。突破先筛 1/3/6 个月涨幅前 1%–2%，再找 30%–100% 先行涨幅、2周至2月收敛整理、开盘区间突破。EP 要 10% 以上跳空和开盘大量、新闻或财报催化，优先此前 3–6 个月没有大涨的股票。",
+      "codable_rules_zh": [
+        "在信号产生前完成相对涨幅排名；高低点收敛、均线上行、整理长度须预先量化，不能看完后续涨幅才划旗形。",
+        "突破入场用已完成的 1/5 分钟或第一段开盘区间高点；初始止损用入场时已知的日内低点，不可用收盘后才知道的全日最低。",
+        "作者突破卖法：3–5日后卖 1/3–1/2，余仓等收盘跌破10日或20日均线再触发退出；测试须用随后可成交时点，不能拿已知收盘信号按同收盘价理想成交。",
+        "EP：开盘跳空 >=10%；开盘后的最初15–30分钟累计量与已知过去日均量比较，若在更早时刻入场，只能使用截至入场时已有成交量，不能倒用30分钟后才出现的量；明确事件与发布时间；均线跟踪退出。"
+      ],
+      "limitations_500_and_evidence_zh": [
+        "本人声称赚数千万；该方法文章没有完整逐笔现金账或可独立核算的审计包。",
+        "他本人并不主张单股隔夜全仓：文中通常持仓10%–20%，单股/ETF隔夜不超过30%，通常单笔风险0.25%–1%。这是来源规则，不自动覆盖用户的项目规则。",
+        "500美元账户只有少数整股时无法严格卖1/3或1/2，需冻结取整规则或记录不可执行。",
+        "卖空型抛物线策略需要借券和保证金，不应移植为本项目已可做的现金股票策略。"
+      ],
+      "required_data_zh": [
+        "至少126交易日信号前历史、拆股调整、退市与当时股票池",
+        "分钟成交量、开盘竞价/行情、点差及跳空止损成交",
+        "带原始发布时间的新闻/财报、当时可得预期与指引",
+        "公司行动、融资/额外注资与全部交易账"
+      ]
+    },
+    {
+      "id": "S1",
+      "title": "What are Episodic Pivots and how to find them",
+      "url": "https://stockbee.blogspot.com/2010/02/what-are-episodic-pivots-and-how-to.html",
+      "publication_date": "2010-02-12",
+      "retrieved_at": "2026-10-06T15:41:16.477767+00:00",
+      "fetch_status": "HTTP 200",
+      "html_sha256": "4e84b1b0db16f10fe129c9d0edb53fbad19614c8d1f97d0a9d089c59c45af72d",
+      "source_type": "trader_authored_method_no_independent_return_validation",
+      "summary_zh": "从大涨且放量扫描开始，查明惊喜是否代表可持续的业绩变化。原文主张区分分析师覆盖/无覆盖股票，看同比及环比业绩、营收、是否长期被忽略、催化性质。低流通盘是作者偏好；原文评论中作者说明仅买扫描结果中极少部分，并非纯机械方法。",
+      "codable_rules_zh": [
+        "原始 TC2000 扫描的百分比价格分支为当日上涨至少8%、价格高于1、相对100期均量至少3倍，另有绝对5美元上涨分支；原文另有绝对V阈值。",
+        "TC2000 历史 V 单位和 AVGV100 是否含当天必须先核对；公共数据不可直接照抄3000/10000等平台数值。",
+        "把催化类别、财报/营收加速度、长期沉寂分别记录为事前特征；缺失新闻不能默认满足催化。",
+        "仅日线量价筛选可作为 EP 的候选生成器，不得称作完整复制其可酌情选择的交易方法。"
+      ],
+      "limitations_500_and_evidence_zh": [
+        "原文没有给出可复核的完整500美元路径，也没有无歧义的机械入场、退出和仓位规范。",
+        "作者偏好流通盘低于2500万、尤其1000万，但历史时点流通盘不能拿今天字段倒填。",
+        "低价/小流通盘的跳空、停牌、点差、无法卖出风险不能用固定10bp抹平。",
+        "无分析师覆盖时，不能因为没有预期数据就把 earnings surprise 设为正。"
+      ],
+      "required_data_zh": [
+        "至少100交易日量价暖机",
+        "公告原文、SEC/公司IR的当时发布时间",
+        "当时可得季度营收与利润、分析师预期、历史流通盘",
+        "分钟或更细数据、停牌/复牌与点差"
+      ]
+    },
+    {
+      "id": "W1",
+      "title": "Momentum Day Trading Strategies for Beginners",
+      "url": "https://www.warriortrading.com/momentum-day-trading-strategy/",
+      "publication_date": "updated 2025-01-09",
+      "retrieved_at": "2026-10-06T15:42:39.764299+00:00",
+      "fetch_status": "HTTP 200",
+      "html_sha256": "a623a4352c98cb28f3ad56c3d767f30d0acce1c119aef968a634a9a3dfa11c2f",
+      "source_type": "commercial_educator_method_self_reported_returns",
+      "summary_zh": "日内动量方法先找流通盘较小、强日线、同一时刻相对成交量至少2倍、新闻催化或技术突破；等最初拉升后的短回撤/牛旗。偏好早盘9:30–11:30；页面规则含入场、回撤低点止损、2R部分止盈和余仓保本。",
+      "codable_rules_zh": [
+        "流通盘 <1亿，优选<2000万；相对成交量是相同日内时刻比较，不能用全日终值筛选早盘。",
+        "先冲高，再2–3根红K回撤，下一根突破此前短K高点；具体K周期、高点定义和下单延迟需预注册。",
+        "止损在回撤低点附近；作者举例20美分止损、40美分目标，但参数并非对任何股价都成立。",
+        "首次达2R卖一半，余仓止损抬到入场价；若尚未卖半仓，首根收跌K可作退出。所有同K内止损/止盈先后不明情况须悲观处理或用细数据。"
+      ],
+      "limitations_500_and_evidence_zh": [
+        "文章有赚钱宣传，但其本身不是独立审计或策略统计样本。",
+        "文中“每笔风险500美元、2500股”是教学算例，绝不可当成总本金500美元账户的仓位。",
+        "公司官网还销售课程/扫描器，费用若实际使用要计入总项目成本。",
+        "快速多次日内执行、买卖点差、整股与可用已结算现金对500美元尤其重要；本次不声称账户已满足全部规则。"
+      ],
+      "required_data_zh": [
+        "分钟K与可用实时点差、历史同分钟成交量基准",
+        "历史时点流通盘、新闻时间戳",
+        "停牌/开盘竞价/订单延迟、不能无限同日循环未结算资金的现金账"
+      ]
+    },
+    {
+      "id": "W2",
+      "title": "Ross Cameron's Verified Day Trading Earnings",
+      "url": "https://www.warriortrading.com/ross-camerons-verified-day-trading-earnings/",
+      "publication_date": "undated current page; claims audit period 2017-01-01 to 2025-12-31",
+      "retrieved_at": "2026-10-06T15:41:17.060992+00:00",
+      "fetch_status": "HTTP 200",
+      "html_sha256": "dba72dc3eb33c4540541c0727bf6c696f93a19c10e7613b35d6fb202f4cd91a8",
+      "source_type": "publisher_claims_independent_accountant_report_not_independently_verified_here",
+      "summary_zh": "官网当前页面标示2017年起始583.15美元，至2025年底总盈利18,810,638美元，页面使用独立会计师报告标题并链接逐年业绩。当前抓取可读内容未包含可下载且可逐项重算的完整会计师意见和交易现金账。",
+      "codable_rules_zh": [],
+      "limitations_500_and_evidence_zh": [
+        "这些是官网声称的业绩和审计描述；本次没有独立完成审计，不能标成我们验证的真实复利收益。",
+        "总盈利不等于单一账户无额外注资、无提款后的期末财富；需逐账户合并、转账去重、纳入费用与融资。",
+        "该网页明确说明结果并非典型、利润口径可能为毛或净、未追踪一般学员结果。"
+      ],
+      "required_data_zh": [
+        "完整审计意见及范围、全部账户现金流、费用融资与每笔交易原始记录"
+      ]
+    },
+    {
+      "id": "W3",
+      "title": "Verified Earnings 2017",
+      "url": "https://www.warriortrading.com/verified-earnings-2017/",
+      "publication_date": "undated current page describing 2017",
+      "retrieved_at": "2026-10-06T15:42:10.480975+00:00",
+      "fetch_status": "HTTP 200",
+      "html_sha256": "9504570bf3b3c1e3709d2fa1698f1a8845b4b266ebcfe4d7d5860a80da6abe88",
+      "source_type": "publisher_hosted_broker_statement_images_not_independently_reconciled",
+      "summary_zh": "官网2017页面列起始583.15美元、2月6日41,970.41美元、随后券商转账及部分银行/平台费用，并提供月度券商截图链接；还披露4月提款70,000美元与券商迁移。",
+      "codable_rules_zh": [],
+      "limitations_500_and_evidence_zh": [
+        "本次核对网页文字和截图链接，未读取/重建所有截图、逐笔成交或完整独立会计师意见。",
+        "存在公开券商截图材料，不能说完全没有记录；同样不能由网页标题直接宣布资金来源、借款和所有费用已验证。",
+        "其当年券商、结算/融资和执行条件未核实与当前Alpaca500美元模拟账户等价。"
+      ],
+      "required_data_zh": [
+        "全部截图原始记录、审计师身份意见范围、借贷/保证金与存取款汇总"
+      ]
+    },
+    {
+      "id": "F1",
+      "title": "Federal Trade Commission Cracks Down on Warrior Trading For Misleading Consumers With False Investment Promises",
+      "url": "https://www.ftc.gov/news-events/news/press-releases/2022/04/federal-trade-commission-cracks-down-warrior-trading-misleading-consumers-false-investment-promises",
+      "publication_date": "2022-04-19",
+      "retrieved_at": "2026-10-06T15:42:13.462780+00:00",
+      "fetch_status": "HTTP 200",
+      "html_sha256": "d84357465cca4e211fc7087f41d49d35ae87241e48e38e87318275bfa79c86a2",
+      "source_type": "official_regulator_enforcement_release",
+      "summary_zh": "FTC 官方通稿说明针对 Warrior Trading 和 Ross Cameron 宣传客户收益的执法和解：支付300万美元用于退款、禁止无依据收益宣传。通稿把大量学员亏损等描述归于投诉指控，并说明双方同意的法院命令及其程序阶段。",
+      "codable_rules_zh": [],
+      "limitations_500_and_evidence_zh": [
+        "这不是对 Ross 每笔个人收益真伪的逐项裁决，不能将其写成“FTC证明个人盈利是假”。",
+        "个人成功或官网审计宣传不能证明客户、自动策略或500美元项目会取得相同收益。",
+        "这是监管原始来源，性质不同于论坛传闻；必须同时保留官网材料与其证据范围。"
+      ],
+      "required_data_zh": []
+    }
+  ],
+  "discovery_failures": [
+    {
+      "url": "https://qullamaggie.com/3-timeless-setups-that-have-paid-tens-of-millions/",
+      "status": "HTTP 404",
+      "resolution": "correct original link found from homepage; Q1"
+    },
+    {
+      "url": "https://www.ftc.gov/news-events/news/press-releases/2022/04/ftc-charges-warrior-trading-deceptive-marketing",
+      "status": "HTTP 404",
+      "resolution": "correct F1 found through official refund page"
+    },
+    {
+      "url": "https://www.ftc.gov/news-events/news/press-releases/2022/04/warrior-trading-pay-3-million-reimburse-consumers-deceptive-money-making-claims",
+      "status": "HTTP 404"
+    },
+    {
+      "url": "https://www.ftc.gov/legal-library/browse/cases-proceedings/2023198-warrior-trading-inc",
+      "status": "HTTP 404",
+      "resolution": "correct link includes -ftc-v; not required for F1 release"
+    },
+    {
+      "url": "https://www.ftc.gov/search?search=Warrior%20Trading",
+      "status": "HTTP 404"
+    },
+    {
+      "url": "https://www.warriortrading.com/ross-camerons-verified-trading-profits/",
+      "status": "HTTP 404",
+      "resolution": "W2 found from official homepage"
+    },
+    {
+      "url": "https://www.warriortrading.com/momentum-day-trading-strategies/",
+      "status": "HTTP 404",
+      "resolution": "W1 singular strategy path found in official navigation"
+    },
+    {
+      "url": "https://www.google.com/search?q=site%3Aqullamaggie.com%203%20timeless%20setups",
+      "status": "HTTP 200 but JS/redirect interstitial; not used as evidence"
+    },
+    {
+      "url": "https://html.duckduckgo.com/html/?q=FTC%20Warrior%20Trading%20April%202022%203%20million",
+      "status": "human challenge; did not bypass"
+    },
+    {
+      "url": "https://www.bing.com/search?q=site%3Aftc.gov%20Warrior%20Trading%20pay%20%243%20million%202022",
+      "status": "irrelevant results; not relied on"
+    }
+  ],
+  "next_experiments": [
+    {
+      "priority": 1,
+      "id": "event-conditioned-ep",
+      "hypothesis": "EP的事件与开盘量筛选是否改善此前日线突破基线；不从后来涨幅选事件",
+      "data_gate": "时间戳新闻/财报、至少126日暖机、全市场分钟行情和成本；缺失财报预期时保留独立missing层",
+      "comparison": "只量价 vs 增加已核验事件；所有候选和失败保留，账户整股500美元、费用与结算约束一致",
+      "status": "protocol candidate; not backtested in this research"
+    },
+    {
+      "priority": 2,
+      "id": "consolidation-breakout-trailing",
+      "hypothesis": "事前强势股收敛整理突破、分批/均线退出，是否比固定1/3/5/10日退出更稳定",
+      "data_gate": "预注册收敛定义、暖机、开盘区间、完整stop/gap模型；不能事后画线",
+      "status": "protocol candidate; not backtested"
+    },
+    {
+      "priority": 3,
+      "id": "intraday-low-float-bull-flag",
+      "hypothesis": "新闻量能驱动的首个短回撤能否在现实点差/延迟后留下优势",
+      "data_gate": "历史流通盘与同分钟相对量、停牌和点差数据；若缺失只做数据可行性",
+      "status": "lower priority until data gates met"
+    }
+  ],
+  "critical_distinction": "All trader profit claims remain attributed to their publishers. No outside strategy was newly backtested here, and no PAPER or live orders were sent. The six primary sources supply hypotheses, not a 500-to-10000 guarantee."
+}
