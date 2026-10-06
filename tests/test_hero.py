@@ -1528,6 +1528,36 @@ class ResearchTails(unittest.TestCase):
         self.assertIsNone(t.outcome(bars, "2026-09-29", "2026-10-02", 110.0, 105.0))   # no trade on entry
 
 
+class ResearchSeller(unittest.TestCase):
+    def test_spread_take_stop_and_expiry(self):
+        from hero import research_seller as r
+        days = ["d0", "d1", "d2", "d3"]
+        short, long = {"d0": 2.0, "d1": 0.8, "d2": 5.0}, {"d0": 1.0, "d1": 0.4, "d2": 3.0}
+        # credit (2.0 - 0.06) - (1.0 + 0.03) = 0.91
+        held = r.spread_result(short, long, days, "d0", "d3", 100.0, 95.0, 101.0, managed=False)
+        self.assertEqual((held["credit"], held["pnl"], held["max_loss"], held["exit"]), (91.0, 91.0, 409.0, "d3"))
+        managed = r.spread_result(short, long, days, "d0", "d3", 100.0, 95.0, 101.0, managed=True)
+        self.assertEqual(managed["exit"], "d1")                  # cost to close 0.42 <= half the credit
+        lost = r.spread_result(short, long, days, "d0", "d3", 100.0, 95.0, 90.0, managed=False)
+        self.assertEqual(lost["pnl"], -409.0)                    # settled below both strikes: the full width
+
+    def test_butterfly_reaction_and_expiry(self):
+        from hero import research_seller as r
+        px = {"L": {"e": 6.0, "r": 5.0}, "M": {"e": 3.0, "r": 1.2}, "H": {"e": 1.0, "r": 0.1}}
+        out = r.fly_result(px, ("L", "M", "H"), (95.0, 100.0, 105.0), "e", "r", 100.5, 100.0)
+        cost = (6.0 + 0.3) + (1.0 + 0.05) - 2 * (3.0 - 0.15)
+        self.assertAlmostEqual(out["cost"], round(cost, 3))
+        self.assertAlmostEqual(out["ret_expiry"], round(5.0 / cost - 1, 3))   # pinned at the centre: worth the width
+
+    def test_account_curve(self):
+        from hero import research_seller as r
+        ts = [{"entry": "2024-03-01", "exit": "2024-03-08", "pnl": 100.0, "max_loss": 400.0},
+              {"entry": "2024-03-05", "exit": "2024-03-12", "pnl": -400.0, "max_loss": 400.0},  # overlaps: skipped
+              {"entry": "2024-04-01", "exit": "2024-04-08", "pnl": -400.0, "max_loss": 400.0}]
+        a = r.account(ts, 0.25, "2024-02-01", "2025-02-01")
+        self.assertEqual((a["final"], a["trades"]), (round(10_000 * 1.0625 * 0.75), 2))
+
+
 class ZeroDTE(unittest.TestCase):
     def setUp(self):
         self.tmp = tempfile.TemporaryDirectory()
