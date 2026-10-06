@@ -1,0 +1,759 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-10-06T20:47:56.411145+00:00",
+  "scope": "Independent official public-document review only; no account/order/market-quote requests or profit backtests.",
+  "sources": [
+    {
+      "source_id": "about_market_data",
+      "url": "https://docs.alpaca.markets/us/docs/about-market-data-api.md",
+      "retrieved_at": "2026-10-06T20:43:59.031664+00:00",
+      "authorization_headers_sent": false,
+      "tls_verification": true,
+      "request_method": "GET",
+      "http_status": 200,
+      "final_url": "https://docs.alpaca.markets/us/docs/about-market-data-api.md",
+      "content_type": "text/markdown; charset=utf-8",
+      "body_sha256": "ff3f8537b88c7e2640fc6f60ed0143a7441c9f503e23c1da8c889f04c9b9362f",
+      "bytes": 7924
+    },
+    {
+      "source_id": "alpaca_commissions",
+      "url": "https://alpaca.markets/support/commission-clearing-fees",
+      "retrieved_at": "2026-10-06T20:40:33.755496+00:00",
+      "authorization_headers_sent": false,
+      "tls_verification": true,
+      "request_method": "GET",
+      "http_status": 200,
+      "final_url": "https://alpaca.markets/support/commission-clearing-fees",
+      "content_type": "text/html; charset=utf-8",
+      "body_sha256": "3acb9a7f275e456dad47a4fb487ee39cb6dd6f1c4a26688163b1ab2bb77d42a8",
+      "bytes": 314011
+    },
+    {
+      "source_id": "alpaca_fee_schedule",
+      "url": "https://files.alpaca.markets/disclosures/library/BrokFeeSched.pdf",
+      "retrieved_at": "2026-10-06T20:41:12.360050+00:00",
+      "authorization_headers_sent": false,
+      "tls_verification": true,
+      "request_method": "GET",
+      "http_status": 200,
+      "final_url": "https://files.alpaca.markets/disclosures/library/BrokFeeSched.pdf",
+      "content_type": "application/pdf",
+      "body_sha256": "0700d871c54af72e1355d97376fffbe3f55848dda00649676e3c60eb0949cb7f",
+      "bytes": 146483
+    },
+    {
+      "source_id": "alpaca_llms",
+      "url": "https://docs.alpaca.markets/us/llms.txt",
+      "retrieved_at": "2026-10-06T20:39:00.099052+00:00",
+      "authorization_headers_sent": false,
+      "tls_verification": true,
+      "request_method": "GET",
+      "http_status": 200,
+      "final_url": "https://docs.alpaca.markets/us/llms.txt",
+      "content_type": "text/plain; charset=utf-8",
+      "body_sha256": "ca588a8e6cbd8cf9e423017f823ff1659799ac2da1f486277d42dc2f6b2e0a6e",
+      "bytes": 81096
+    },
+    {
+      "source_id": "expiration_liquidation",
+      "url": "https://alpaca.markets/support/why-was-my-long-option-position-liquidated-or-short-option-position-closed-out-by-alpaca-on-expiration",
+      "retrieved_at": "2026-10-06T20:41:12.988428+00:00",
+      "authorization_headers_sent": false,
+      "tls_verification": true,
+      "request_method": "GET",
+      "http_status": 200,
+      "final_url": "https://alpaca.markets/support/why-was-my-long-option-position-liquidated-or-short-option-position-closed-out-by-alpaca-on-expiration",
+      "content_type": "text/html; charset=utf-8",
+      "body_sha256": "2a0d0606c47bde62601405b740cad9bb21fc9b4c068e4680acd2adaa4d99bff0",
+      "bytes": 316381
+    },
+    {
+      "source_id": "historical_options",
+      "url": "https://docs.alpaca.markets/us/docs/historical-option-data.md",
+      "retrieved_at": "2026-10-06T20:39:00.100055+00:00",
+      "authorization_headers_sent": false,
+      "tls_verification": true,
+      "request_method": "GET",
+      "http_status": 200,
+      "final_url": "https://docs.alpaca.markets/us/docs/historical-option-data.md",
+      "content_type": "text/markdown; charset=utf-8",
+      "body_sha256": "a43aa53bf2575a3713bdbb9f21430411b24088a60c3c36b5d4159a533223b91b",
+      "bytes": 1961
+    },
+    {
+      "source_id": "long_option_expiration",
+      "url": "https://alpaca.markets/support/what-happens-when-my-long-call-or-put-option-position-expires",
+      "retrieved_at": "2026-10-06T20:41:12.975556+00:00",
+      "authorization_headers_sent": false,
+      "tls_verification": true,
+      "request_method": "GET",
+      "http_status": 200,
+      "final_url": "https://alpaca.markets/support/what-happens-when-my-long-call-or-put-option-position-expires",
+      "content_type": "text/html; charset=utf-8",
+      "body_sha256": "ee35e901b2baa364bcb513a4d4678cb493c5b349d2440546648eaeff29c36467",
+      "bytes": 315507
+    },
+    {
+      "source_id": "opra_document_library",
+      "url": "https://www.opraplan.com/document-library",
+      "retrieved_at": "2026-10-06T20:40:33.301413+00:00",
+      "authorization_headers_sent": false,
+      "tls_verification": true,
+      "request_method": "GET",
+      "http_status": 200,
+      "final_url": "https://www.opraplan.com/document-library",
+      "content_type": "text/html; charset=utf-8",
+      "body_sha256": "c65966883e57909b26e1072e6b17e8940542016a8c49263925d01d182b19fcae",
+      "bytes": 41722
+    },
+    {
+      "source_id": "opra_electronic_agreement",
+      "url": "https://cdn.opraplan.com/documents/OPRA_Electronic_Subscriber_Agreement.pdf",
+      "retrieved_at": "2026-10-06T20:43:59.032479+00:00",
+      "authorization_headers_sent": false,
+      "tls_verification": true,
+      "request_method": "GET",
+      "http_status": 200,
+      "final_url": "https://cdn.opraplan.com/documents/OPRA_Electronic_Subscriber_Agreement.pdf",
+      "content_type": "application/pdf",
+      "body_sha256": "81c1bb0886c84798bc17890a3888b7dbb2b7084aefda376dc8823e1b2ee0f14c",
+      "bytes": 36612
+    },
+    {
+      "source_id": "opra_output_spec",
+      "url": "https://cdn.opraplan.com/documents/OPRA_Pillar_Output_Specification.pdf",
+      "retrieved_at": "2026-10-06T20:41:12.359089+00:00",
+      "authorization_headers_sent": false,
+      "tls_verification": true,
+      "request_method": "GET",
+      "http_status": 200,
+      "final_url": "https://cdn.opraplan.com/documents/OPRA_Pillar_Output_Specification.pdf",
+      "content_type": "application/pdf",
+      "body_sha256": "f991f4fff611d937039bbfd1ad3418d86d9c79f8b215a14f670c9f2872abb2e6",
+      "bytes": 1124839
+    },
+    {
+      "source_id": "option_bars",
+      "url": "https://docs.alpaca.markets/us/reference/optionbars.md",
+      "retrieved_at": "2026-10-06T20:39:00.872476+00:00",
+      "authorization_headers_sent": false,
+      "tls_verification": true,
+      "request_method": "GET",
+      "http_status": 200,
+      "final_url": "https://docs.alpaca.markets/us/reference/optionbars.md",
+      "content_type": "text/markdown; charset=utf-8",
+      "body_sha256": "91ba9fbc7ca154339b1bf1c6ab15362430e331ed896cb6c34f6f53cd7ae097c5",
+      "bytes": 14792
+    },
+    {
+      "source_id": "option_commissions",
+      "url": "https://alpaca.markets/support/what-are-the-commission-fees-per-option-contract",
+      "retrieved_at": "2026-10-06T20:41:12.360665+00:00",
+      "authorization_headers_sent": false,
+      "tls_verification": true,
+      "request_method": "GET",
+      "http_status": 200,
+      "final_url": "https://alpaca.markets/support/what-are-the-commission-fees-per-option-contract",
+      "content_type": "text/html; charset=utf-8",
+      "body_sha256": "70afdce48e624cae55b11c48aa6e74f4224d561c5026a320a828b30253d63392",
+      "bytes": 314257
+    },
+    {
+      "source_id": "option_conditions",
+      "url": "https://docs.alpaca.markets/us/reference/optionmetaconditions.md",
+      "retrieved_at": "2026-10-06T20:39:01.544939+00:00",
+      "authorization_headers_sent": false,
+      "tls_verification": true,
+      "request_method": "GET",
+      "http_status": 200,
+      "final_url": "https://docs.alpaca.markets/us/reference/optionmetaconditions.md",
+      "content_type": "text/markdown; charset=utf-8",
+      "body_sha256": "e820ba876ac80479c5000b1c368bac24933f8d8c0807a42a9aa0543ca37dd080",
+      "bytes": 6182
+    },
+    {
+      "source_id": "option_contracts",
+      "url": "https://docs.alpaca.markets/us/reference/get-options-contracts.md",
+      "retrieved_at": "2026-10-06T20:39:00.653882+00:00",
+      "authorization_headers_sent": false,
+      "tls_verification": true,
+      "request_method": "GET",
+      "http_status": 200,
+      "final_url": "https://docs.alpaca.markets/us/reference/get-options-contracts.md",
+      "content_type": "text/markdown; charset=utf-8",
+      "body_sha256": "b0fadfb35f2ec2aa4d493e432ffa9430e29c355054826e8cb34ff1181becd0d0",
+      "bytes": 17507
+    },
+    {
+      "source_id": "option_dne",
+      "url": "https://docs.alpaca.markets/us/reference/optiondonotexercise.md",
+      "retrieved_at": "2026-10-06T20:39:01.822365+00:00",
+      "authorization_headers_sent": false,
+      "tls_verification": true,
+      "request_method": "GET",
+      "http_status": 200,
+      "final_url": "https://docs.alpaca.markets/us/reference/optiondonotexercise.md",
+      "content_type": "text/markdown; charset=utf-8",
+      "body_sha256": "66f84ec734d50fb7eb41a9e17fb7e0aafccbc65455d7b4ffcf9d9563a2e79793",
+      "bytes": 4712
+    },
+    {
+      "source_id": "option_fees",
+      "url": "https://alpaca.markets/support/what-are-the-fees-associated-with-options-trading",
+      "retrieved_at": "2026-10-06T20:41:12.586365+00:00",
+      "authorization_headers_sent": false,
+      "tls_verification": true,
+      "request_method": "GET",
+      "http_status": 200,
+      "final_url": "https://alpaca.markets/support/what-are-the-fees-associated-with-options-trading",
+      "content_type": "text/html; charset=utf-8",
+      "body_sha256": "978bc333df0450a12fb750d77634fc11df49a121b8e3352305e5973f3ee70b61",
+      "bytes": 315308
+    },
+    {
+      "source_id": "option_latest_quotes",
+      "url": "https://docs.alpaca.markets/us/reference/optionlatestquotes.md",
+      "retrieved_at": "2026-10-06T20:39:01.368978+00:00",
+      "authorization_headers_sent": false,
+      "tls_verification": true,
+      "request_method": "GET",
+      "http_status": 200,
+      "final_url": "https://docs.alpaca.markets/us/reference/optionlatestquotes.md",
+      "content_type": "text/markdown; charset=utf-8",
+      "body_sha256": "140046c772f6665e5a066c365ea3fd02d72b81ad41fbfea32ed65282c313e96d",
+      "bytes": 9723
+    },
+    {
+      "source_id": "option_single_contract",
+      "url": "https://docs.alpaca.markets/us/reference/get-option-contract-symbol_or_id.md",
+      "retrieved_at": "2026-10-06T20:39:00.701188+00:00",
+      "authorization_headers_sent": false,
+      "tls_verification": true,
+      "request_method": "GET",
+      "http_status": 200,
+      "final_url": "https://docs.alpaca.markets/us/reference/get-option-contract-symbol_or_id.md",
+      "content_type": "text/markdown; charset=utf-8",
+      "body_sha256": "529330c84ff301908435d9a0f30e0e7c1d9e40cd666ea2863fe44f75b7589609",
+      "bytes": 12199
+    },
+    {
+      "source_id": "option_trades",
+      "url": "https://docs.alpaca.markets/us/reference/optiontrades.md",
+      "retrieved_at": "2026-10-06T20:39:01.231331+00:00",
+      "authorization_headers_sent": false,
+      "tls_verification": true,
+      "request_method": "GET",
+      "http_status": 200,
+      "final_url": "https://docs.alpaca.markets/us/reference/optiontrades.md",
+      "content_type": "text/markdown; charset=utf-8",
+      "body_sha256": "48a5dcca1ae35fecc13262842d7da4c616e2e6d9482082b4459bd24e37e60e45",
+      "bytes": 13587
+    },
+    {
+      "source_id": "options_trading",
+      "url": "https://docs.alpaca.markets/us/docs/options-trading.md",
+      "retrieved_at": "2026-10-06T20:39:00.100704+00:00",
+      "authorization_headers_sent": false,
+      "tls_verification": true,
+      "request_method": "GET",
+      "http_status": 200,
+      "final_url": "https://docs.alpaca.markets/us/docs/options-trading.md",
+      "content_type": "text/markdown; charset=utf-8",
+      "body_sha256": "3dd9d19e5879aa55d9751b65e76908008e89b5c4a82fb5c51003435f159b9866",
+      "bytes": 8471
+    },
+    {
+      "source_id": "real_time_options",
+      "url": "https://docs.alpaca.markets/us/docs/real-time-option-data.md",
+      "retrieved_at": "2026-10-06T20:40:33.300809+00:00",
+      "authorization_headers_sent": false,
+      "tls_verification": true,
+      "request_method": "GET",
+      "http_status": 200,
+      "final_url": "https://docs.alpaca.markets/us/docs/real-time-option-data.md",
+      "content_type": "text/markdown; charset=utf-8",
+      "body_sha256": "2ba02c2b5f8fa6029e362994644b1749dc5ac90802772baf2c67599084ea80ca",
+      "bytes": 5629
+    },
+    {
+      "source_id": "regulatory_fees",
+      "url": "https://docs.alpaca.markets/us/docs/regulatory-fees.md",
+      "retrieved_at": "2026-10-06T20:40:33.300007+00:00",
+      "authorization_headers_sent": false,
+      "tls_verification": true,
+      "request_method": "GET",
+      "http_status": 200,
+      "final_url": "https://docs.alpaca.markets/us/docs/regulatory-fees.md",
+      "content_type": "text/markdown; charset=utf-8",
+      "body_sha256": "8dc1956f7107227cd2a7dd39e9439a16b753ba1c1864d0f0301df60297334c87",
+      "bytes": 2054
+    }
+  ],
+  "rules": [
+    {
+      "id": "historical_coverage_start",
+      "status": "officially_documented",
+      "summary": "The general historical options offering starts in February2024; this does not guarantee every contract/tick is present.",
+      "evidence": [
+        {
+          "source_id": "historical_options",
+          "url": "https://docs.alpaca.markets/us/docs/historical-option-data.md",
+          "body_sha256": "a43aa53bf2575a3713bdbb9f21430411b24088a60c3c36b5d4159a533223b91b",
+          "retrieved_at": "2026-10-06T20:39:00.100055+00:00",
+          "exact_quote_whitespace_normalized": "Currently we only offer historical option data since February 2024.",
+          "section": null
+        }
+      ]
+    },
+    {
+      "id": "expired_contract_discovery",
+      "status": "officially_documented_filters_not_historical_listing_proof",
+      "summary": "Contract search defaults to active contracts and expiry before upcoming weekend. Historical expiry investigations require explicit inactive status and exact/bounded expiry dates, not current-chain membership. Follow next_page_token to null; limit defaults100, max10000.",
+      "evidence": [
+        {
+          "source_id": "option_contracts",
+          "url": "https://docs.alpaca.markets/us/reference/get-options-contracts.md",
+          "body_sha256": "b0fadfb35f2ec2aa4d493e432ffa9430e29c355054826e8cb34ff1181becd0d0",
+          "retrieved_at": "2026-10-06T20:39:00.653882+00:00",
+          "exact_quote_whitespace_normalized": "By default only active contracts that expire before the upcoming weekend are returned.",
+          "section": null
+        },
+        {
+          "source_id": "option_contracts",
+          "url": "https://docs.alpaca.markets/us/reference/get-options-contracts.md",
+          "body_sha256": "b0fadfb35f2ec2aa4d493e432ffa9430e29c355054826e8cb34ff1181becd0d0",
+          "retrieved_at": "2026-10-06T20:39:00.653882+00:00",
+          "exact_quote_whitespace_normalized": "Filter contracts by status (active/inactive). By default only active contracts are returned.",
+          "section": null
+        },
+        {
+          "source_id": "option_contracts",
+          "url": "https://docs.alpaca.markets/us/reference/get-options-contracts.md",
+          "body_sha256": "b0fadfb35f2ec2aa4d493e432ffa9430e29c355054826e8cb34ff1181becd0d0",
+          "retrieved_at": "2026-10-06T20:39:00.653882+00:00",
+          "exact_quote_whitespace_normalized": "The number of contracts to limit per page (default=100, max=10000).",
+          "section": null
+        }
+      ],
+      "unknowns": [
+        "No contract listing/creation timestamp or historical asof filter is supplied by the inspected contract schema. Current status/tradable/open_interest/close_price fields are not proof of their values at an earlier decision time.",
+        "Finding an inactive expired contract does not prove a complete historical opportunity universe or contemporaneous availability."
+      ]
+    },
+    {
+      "id": "historical_routes_and_parameters",
+      "status": "officially_documented",
+      "summary": "Documented historical market routes are options/bars and options/trades. Both use symbols/start/end/limit/page_token/sort; bars also timeframe. Neither inspected historical OpenAPI path lists feed. Latest quotes has feed. Symbols are limited100 per request; start/end inclusive; page limit applies across symbols.",
+      "evidence": [
+        {
+          "source_id": "option_bars",
+          "url": "https://docs.alpaca.markets/us/reference/optionbars.md",
+          "body_sha256": "91ba9fbc7ca154339b1bf1c6ab15362430e331ed896cb6c34f6f53cd7ae097c5",
+          "retrieved_at": "2026-10-06T20:39:00.872476+00:00",
+          "exact_quote_whitespace_normalized": "A comma-separated list of contract symbols with a limit of 100.",
+          "section": null
+        },
+        {
+          "source_id": "option_bars",
+          "url": "https://docs.alpaca.markets/us/reference/optionbars.md",
+          "body_sha256": "91ba9fbc7ca154339b1bf1c6ab15362430e331ed896cb6c34f6f53cd7ae097c5",
+          "retrieved_at": "2026-10-06T20:39:00.872476+00:00",
+          "exact_quote_whitespace_normalized": "The inclusive start of the interval.",
+          "section": null
+        },
+        {
+          "source_id": "option_bars",
+          "url": "https://docs.alpaca.markets/us/reference/optionbars.md",
+          "body_sha256": "91ba9fbc7ca154339b1bf1c6ab15362430e331ed896cb6c34f6f53cd7ae097c5",
+          "retrieved_at": "2026-10-06T20:39:00.872476+00:00",
+          "exact_quote_whitespace_normalized": "The inclusive end of the interval.",
+          "section": null
+        },
+        {
+          "source_id": "option_bars",
+          "url": "https://docs.alpaca.markets/us/reference/optionbars.md",
+          "body_sha256": "91ba9fbc7ca154339b1bf1c6ab15362430e331ed896cb6c34f6f53cd7ae097c5",
+          "retrieved_at": "2026-10-06T20:39:00.872476+00:00",
+          "exact_quote_whitespace_normalized": "The limit applies to the total number of data points, not per symbol!",
+          "section": null
+        }
+      ],
+      "operational_implication": "Do not label an unrecognized feed=opra query as proof of provenance. Preserve request schema and returned metadata. Exhaust pagination, even after a short page."
+    },
+    {
+      "id": "historical_bid_ask_not_documented",
+      "status": "not_found_in_official_index_and_inspected_openapi",
+      "summary": "The current official index documents historical option bars/trades, latest quotes, snapshots and latest option chain; no historical option quotes route was found. This bounded documentation search does not claim every possible commercial source lacks history.",
+      "evidence": [
+        {
+          "source_id": "option_latest_quotes",
+          "url": "https://docs.alpaca.markets/us/reference/optionlatestquotes.md",
+          "body_sha256": "140046c772f6665e5a066c365ea3fd02d72b81ad41fbfea32ed65282c313e96d",
+          "retrieved_at": "2026-10-06T20:39:01.368978+00:00",
+          "exact_quote_whitespace_normalized": "The latest multi-quotes endpoint provides the latest bid and ask prices for each given contract symbol.",
+          "section": null
+        }
+      ],
+      "index_source_id": "alpaca_llms",
+      "operational_implication": "Latest quotes cannot establish historical bid/ask. Historical trade/bar prices cannot substitute for executable historical ask-entry and bid-exit evidence."
+    },
+    {
+      "id": "opra_vs_indicative",
+      "status": "officially_documented",
+      "summary": "Indicative is a modified derivative feed, not actual OPRA quotes; its trades are derivatives delayed15minutes. Official OPRA feed and indicative must be separated.",
+      "evidence": [
+        {
+          "source_id": "historical_options",
+          "url": "https://docs.alpaca.markets/us/docs/historical-option-data.md",
+          "body_sha256": "a43aa53bf2575a3713bdbb9f21430411b24088a60c3c36b5d4159a533223b91b",
+          "retrieved_at": "2026-10-06T20:39:00.100055+00:00",
+          "exact_quote_whitespace_normalized": "the quotes are not actual OPRA quotes, they’re just indicative derivatives.",
+          "section": null
+        },
+        {
+          "source_id": "historical_options",
+          "url": "https://docs.alpaca.markets/us/docs/historical-option-data.md",
+          "body_sha256": "a43aa53bf2575a3713bdbb9f21430411b24088a60c3c36b5d4159a533223b91b",
+          "retrieved_at": "2026-10-06T20:39:00.100055+00:00",
+          "exact_quote_whitespace_normalized": "The trades are also derivatives and they’re delayed by 15 minutes.",
+          "section": null
+        },
+        {
+          "source_id": "option_latest_quotes",
+          "url": "https://docs.alpaca.markets/us/reference/optionlatestquotes.md",
+          "body_sha256": "140046c772f6665e5a066c365ea3fd02d72b81ad41fbfea32ed65282c313e96d",
+          "retrieved_at": "2026-10-06T20:39:01.368978+00:00",
+          "exact_quote_whitespace_normalized": "`opra` is the official OPRA feed, `indicative` is a free indicative feed where trades are delayed and quotes are modified.",
+          "section": null
+        }
+      ],
+      "operational_implication": "Never silently fallback to indicative after an OPRA authorization failure, or report indicative as executable NBBO."
+    },
+    {
+      "id": "quote_units_and_conditions",
+      "status": "native_opra_official_vendor_mapping_not_explicit",
+      "summary": "Alpaca option quote schema labels as/bs as sizes and c as one string. Native OPRA specifies bid/offer size as contract counts and condition codes below. Do not apply stock quote units or stock condition arrays. The inspected Alpaca schema does not explicitly restate unit conversion or complete condition mapping.",
+      "evidence": [
+        {
+          "source_id": "opra_output_spec",
+          "url": "https://cdn.opraplan.com/documents/OPRA_Pillar_Output_Specification.pdf",
+          "body_sha256": "f991f4fff611d937039bbfd1ad3418d86d9c79f8b215a14f670c9f2872abb2e6",
+          "retrieved_at": "2026-10-06T20:41:12.359089+00:00",
+          "exact_quote_whitespace_normalized": "The Best Bid Size identifies the number of contracts being bought for an option at the Best Bid price.",
+          "section": "7.07"
+        },
+        {
+          "source_id": "opra_output_spec",
+          "url": "https://cdn.opraplan.com/documents/OPRA_Pillar_Output_Specification.pdf",
+          "body_sha256": "f991f4fff611d937039bbfd1ad3418d86d9c79f8b215a14f670c9f2872abb2e6",
+          "retrieved_at": "2026-10-06T20:41:12.359089+00:00",
+          "exact_quote_whitespace_normalized": "The Best Offer Size identifies the number of contracts for sale for an option at the Best Offer price.",
+          "section": "7.09"
+        },
+        {
+          "source_id": "option_latest_quotes",
+          "url": "https://docs.alpaca.markets/us/reference/optionlatestquotes.md",
+          "body_sha256": "140046c772f6665e5a066c365ea3fd02d72b81ad41fbfea32ed65282c313e96d",
+          "retrieved_at": "2026-10-06T20:39:01.368978+00:00",
+          "exact_quote_whitespace_normalized": "Quote condition.",
+          "section": null
+        }
+      ],
+      "operational_implication": "Retain raw as/bs/c and unit provenance; require documented/empirically verified vendor mapping before using size as a hard executable-capacity filter. Displayed size never guarantees fill."
+    },
+    {
+      "id": "multiplier_and_adjusted_deliverables",
+      "status": "officially_documented_current_metadata",
+      "summary": "Premium calculation uses multiplier; size describes underlying shares delivered and must not replace multiplier. Request show_deliverables=true. Nonstandard contracts can deliver several assets or cash, and delayed/unknown amounts exist.",
+      "evidence": [
+        {
+          "source_id": "option_contracts",
+          "url": "https://docs.alpaca.markets/us/reference/get-options-contracts.md",
+          "body_sha256": "b0fadfb35f2ec2aa4d493e432ffa9430e29c355054826e8cb34ff1181becd0d0",
+          "retrieved_at": "2026-10-06T20:39:00.653882+00:00",
+          "exact_quote_whitespace_normalized": "In standard contracts, the multiplier is always set to 100.",
+          "section": null
+        },
+        {
+          "source_id": "option_contracts",
+          "url": "https://docs.alpaca.markets/us/reference/get-options-contracts.md",
+          "body_sha256": "b0fadfb35f2ec2aa4d493e432ffa9430e29c355054826e8cb34ff1181becd0d0",
+          "retrieved_at": "2026-10-06T20:39:00.653882+00:00",
+          "exact_quote_whitespace_normalized": "This field should **not** be used as a multiplier, specially for non-standard contracts.",
+          "section": null
+        },
+        {
+          "source_id": "option_contracts",
+          "url": "https://docs.alpaca.markets/us/reference/get-options-contracts.md",
+          "body_sha256": "b0fadfb35f2ec2aa4d493e432ffa9430e29c355054826e8cb34ff1181becd0d0",
+          "retrieved_at": "2026-10-06T20:39:00.653882+00:00",
+          "exact_quote_whitespace_normalized": "This array is included in the list contracts response only if the query parameter show_deliverables=true is provided.",
+          "section": null
+        },
+        {
+          "source_id": "option_contracts",
+          "url": "https://docs.alpaca.markets/us/reference/get-options-contracts.md",
+          "body_sha256": "b0fadfb35f2ec2aa4d493e432ffa9430e29c355054826e8cb34ff1181becd0d0",
+          "retrieved_at": "2026-10-06T20:39:00.653882+00:00",
+          "exact_quote_whitespace_normalized": "This field can be null in case the deliverable settlement is delayed and the amount is yet to be determined.",
+          "section": null
+        }
+      ],
+      "operational_implication": "A present-day100multiplier/100size record is current contract metadata, not a dated historical deliverable version. Nonstandard, missing, ambiguous or changed deliverables require historical OCC/action evidence or exclusion as unknown."
+    },
+    {
+      "id": "whole_contract_budget",
+      "status": "officially_documented",
+      "summary": "Option orders require whole-number qty and no notional. A500budget feasibility check must include whole contracts × premium × actual multiplier plus all applicable costs. Fractional-contract simulations are not directly placeable orders.",
+      "evidence": [
+        {
+          "source_id": "options_trading",
+          "url": "https://docs.alpaca.markets/us/docs/options-trading.md",
+          "body_sha256": "3dd9d19e5879aa55d9751b65e76908008e89b5c4a82fb5c51003435f159b9866",
+          "retrieved_at": "2026-10-06T20:39:00.100704+00:00",
+          "exact_quote_whitespace_normalized": "Ensuring `qty` is a whole number",
+          "section": null
+        },
+        {
+          "source_id": "options_trading",
+          "url": "https://docs.alpaca.markets/us/docs/options-trading.md",
+          "body_sha256": "3dd9d19e5879aa55d9751b65e76908008e89b5c4a82fb5c51003435f159b9866",
+          "retrieved_at": "2026-10-06T20:39:00.100704+00:00",
+          "exact_quote_whitespace_normalized": "`Notional` must not be populated",
+          "section": null
+        }
+      ]
+    },
+    {
+      "id": "fees_current_version",
+      "status": "official_schedule_revised_2026_10_01_not_all_year_rates",
+      "summary": "Use the dated current brokerage schedule with scope distinctions: index-option commissions, professional/non-retail equity-option commissions, and regulatory pass-through fees. A broad support statement of no option commissions is not a universal zero-cost rule.",
+      "evidence": [
+        {
+          "source_id": "alpaca_fee_schedule",
+          "url": "https://files.alpaca.markets/disclosures/library/BrokFeeSched.pdf",
+          "body_sha256": "0700d871c54af72e1355d97376fffbe3f55848dda00649676e3c60eb0949cb7f",
+          "retrieved_at": "2026-10-06T20:41:12.360050+00:00",
+          "exact_quote_whitespace_normalized": "Revised on October 1, 2026",
+          "section": null
+        },
+        {
+          "source_id": "alpaca_fee_schedule",
+          "url": "https://files.alpaca.markets/disclosures/library/BrokFeeSched.pdf",
+          "body_sha256": "0700d871c54af72e1355d97376fffbe3f55848dda00649676e3c60eb0949cb7f",
+          "retrieved_at": "2026-10-06T20:41:12.360050+00:00",
+          "exact_quote_whitespace_normalized": "Each fee type is aggregated separately at the daily, per-account level.",
+          "section": null
+        },
+        {
+          "source_id": "alpaca_fee_schedule",
+          "url": "https://files.alpaca.markets/disclosures/library/BrokFeeSched.pdf",
+          "body_sha256": "0700d871c54af72e1355d97376fffbe3f55848dda00649676e3c60eb0949cb7f",
+          "retrieved_at": "2026-10-06T20:41:12.360050+00:00",
+          "exact_quote_whitespace_normalized": "After aggregation, each fee total is rounded up to the nearest cent ($0.01).",
+          "section": null
+        },
+        {
+          "source_id": "option_commissions",
+          "url": "https://alpaca.markets/support/what-are-the-commission-fees-per-option-contract",
+          "body_sha256": "70afdce48e624cae55b11c48aa6e74f4224d561c5026a320a828b30253d63392",
+          "retrieved_at": "2026-10-06T20:41:12.360665+00:00",
+          "exact_quote_whitespace_normalized": "Alpaca Trading API users will not encounter any commissions for options trading.",
+          "section": null
+        }
+      ],
+      "operational_implication": "Preserve fee version/date and account/category assumptions; historical early2026 fee applicability and PAPER cash booking are not verified by this document study."
+    },
+    {
+      "id": "physical_delivery_and_auto_exercise",
+      "status": "officially_documented",
+      "summary": "Standard equity contracts deliver underlying shares; a long call exercise requires strike × multiplier funding. ITM expiry can trigger automatic exercise. Small premium cost does not establish sufficient exercise funding.",
+      "evidence": [
+        {
+          "source_id": "option_contracts",
+          "url": "https://docs.alpaca.markets/us/reference/get-options-contracts.md",
+          "body_sha256": "b0fadfb35f2ec2aa4d493e432ffa9430e29c355054826e8cb34ff1181becd0d0",
+          "retrieved_at": "2026-10-06T20:39:00.653882+00:00",
+          "exact_quote_whitespace_normalized": "Similarly, when exercising a call contract, the total cost will be equal to the strike price times the multiplier.",
+          "section": null
+        },
+        {
+          "source_id": "options_trading",
+          "url": "https://docs.alpaca.markets/us/docs/options-trading.md",
+          "body_sha256": "3dd9d19e5879aa55d9751b65e76908008e89b5c4a82fb5c51003435f159b9866",
+          "retrieved_at": "2026-10-06T20:39:00.100704+00:00",
+          "exact_quote_whitespace_normalized": "In the event no instruction is provided on an ITM contract, the Alpaca system will exercise the contract as long as it is ITM by at least $0.01 USD.",
+          "section": null
+        },
+        {
+          "source_id": "options_trading",
+          "url": "https://docs.alpaca.markets/us/docs/options-trading.md",
+          "body_sha256": "3dd9d19e5879aa55d9751b65e76908008e89b5c4a82fb5c51003435f159b9866",
+          "retrieved_at": "2026-10-06T20:39:00.100704+00:00",
+          "exact_quote_whitespace_normalized": "In the event the account does not have sufficient buying power to exercise an ITM position, Alpaca will sell-out the position within 1 hour before expiry.",
+          "section": null
+        }
+      ],
+      "operational_implication": "Do not assume forced liquidation guarantees price, execution or a premium-only terminal account. Any future protocol needs explicit closing, failed-exit, exercise and residual-stock accounting, and contract-specific settlement scope."
+    },
+    {
+      "id": "dne_documentation_conflict",
+      "status": "official_documents_disagree_on_mechanism",
+      "summary": "The general options guide says contact support for DNE, while the current OpenAPI documents a do-not-exercise POST endpoint. Documentation is not evidence the account can use it or that it has been submitted.",
+      "evidence": [
+        {
+          "source_id": "options_trading",
+          "url": "https://docs.alpaca.markets/us/docs/options-trading.md",
+          "body_sha256": "3dd9d19e5879aa55d9751b65e76908008e89b5c4a82fb5c51003435f159b9866",
+          "retrieved_at": "2026-10-06T20:39:00.100704+00:00",
+          "exact_quote_whitespace_normalized": "To submit a Do-not-exercise (DNE) instruction, please contact our support team.",
+          "section": null
+        },
+        {
+          "source_id": "option_dne",
+          "url": "https://docs.alpaca.markets/us/reference/optiondonotexercise.md",
+          "body_sha256": "66f84ec734d50fb7eb41a9e17fb7e0aafccbc65455d7b4ffcf9d9563a2e79793",
+          "retrieved_at": "2026-10-06T20:39:01.822365+00:00",
+          "exact_quote_whitespace_normalized": "This endpoint enables users to submit a do-not-exercise (DNE) instruction for a held option contract, preventing automatic exercise at expiry.",
+          "section": null
+        }
+      ],
+      "operational_implication": "No position/exercise/DNE endpoint is invoked in this research. Do not treat an unverified future DNE instruction as existing protection."
+    },
+    {
+      "id": "opra_subscriber_agreement",
+      "status": "official_subscriber_terms_not_account_state_verification",
+      "summary": "OPRA electronic subscriber agreement requires the subscriber to accept terms; its nonprofessional addendum requires personal eligibility/use/professional-status representations. Subscription data coverage and agreement acceptance are distinct requirements.",
+      "evidence": [
+        {
+          "source_id": "opra_electronic_agreement",
+          "url": "https://cdn.opraplan.com/documents/OPRA_Electronic_Subscriber_Agreement.pdf",
+          "body_sha256": "81c1bb0886c84798bc17890a3888b7dbb2b7084aefda376dc8823e1b2ee0f14c",
+          "retrieved_at": "2026-10-06T20:43:59.032479+00:00",
+          "exact_quote_whitespace_normalized": "PLEASE INDICATE YOUR AGREEMENT TO BE BOUND BY ITS TERMS AND CONDITIONS BY CLICKING ON THE “I AGREE” BUTTON AT THE END.",
+          "section": null
+        },
+        {
+          "source_id": "opra_electronic_agreement",
+          "url": "https://cdn.opraplan.com/documents/OPRA_Electronic_Subscriber_Agreement.pdf",
+          "body_sha256": "81c1bb0886c84798bc17890a3888b7dbb2b7084aefda376dc8823e1b2ee0f14c",
+          "retrieved_at": "2026-10-06T20:43:59.032479+00:00",
+          "exact_quote_whitespace_normalized": "The purpose of this Addendum is to determine whether you are a “Nonprofessional” for OPRA’s purposes.",
+          "section": null
+        }
+      ],
+      "operational_implication": "An account-specific agreement-not-signed403 should be reported exactly, not reduced to a generic paid-plan error. The account owner must review/accept any agreement and make their own eligibility representations; this research does not sign, change a subscription, or retry around the restriction.",
+      "ui_limit": "No verified Alpaca dashboard click-path was obtained; use the owner-facing Alpaca account flow or official support rather than inventing UI instructions."
+    }
+  ],
+  "native_opra_quote_conditions": [
+    {
+      "code": " ",
+      "meaning": "Regular Trading"
+    },
+    {
+      "code": "F",
+      "meaning": "Non-Firm Quote"
+    },
+    {
+      "code": "I",
+      "meaning": "Indicative Value"
+    },
+    {
+      "code": "R",
+      "meaning": "Rotation"
+    },
+    {
+      "code": "T",
+      "meaning": "Trading Halted"
+    },
+    {
+      "code": "A",
+      "meaning": "Eligible for Automatic Execution"
+    },
+    {
+      "code": "B",
+      "meaning": "Bid contains Customer Trading Interest"
+    },
+    {
+      "code": "O",
+      "meaning": "Offer contains Customer Trading Interest"
+    },
+    {
+      "code": "C",
+      "meaning": "Both Bid and Offer contain Customer Trading Interest"
+    },
+    {
+      "code": "X",
+      "meaning": "Offer side not firm; bid side firm"
+    },
+    {
+      "code": "Y",
+      "meaning": "Bid side not firm; offer side firm"
+    }
+  ],
+  "quote_condition_source": {
+    "source_id": "opra_output_spec",
+    "version": "6.4b",
+    "document_date": "2026-08-25",
+    "section": "6.04 Equity and Index Quote Messages; page30"
+  },
+  "current_option_fee_schedule": {
+    "source_id": "alpaca_fee_schedule",
+    "revised_on": "2026-10-01",
+    "equity_etf_options_retail_commission": "Zero under stated normal self-directed retail scope; partner and non-retail exceptions remain.",
+    "index_options_commission_per_contract": "0.50 plus regulatory/exchange fees",
+    "professional_equity_option_commissions": "Tiered0.40/0.30/0.20/0.15/0.10 per contract, depending monthly volume; not assumed applicable here.",
+    "pass_through": [
+      {
+        "fee": "SEC",
+        "side": "sell",
+        "rate": "0.0000206 * trade_value"
+      },
+      {
+        "fee": "TAF",
+        "side": "sell",
+        "rate": "0 per contract in this current Alpaca schedule"
+      },
+      {
+        "fee": "CAT",
+        "side": "buy_and_sell",
+        "rate": "0.000003 per executed-equivalent share; standard option100 equivalents or applicable multiplier"
+      },
+      {
+        "fee": "ORF",
+        "side": "buy_and_sell",
+        "rate": "0.015 per contract"
+      },
+      {
+        "fee": "OCC",
+        "side": "buy_and_sell",
+        "rate": "0.025 per contract"
+      }
+    ],
+    "rounding": "Aggregate each fee type separately per account per day, then round each total up toUSD0.01.",
+    "historical_rate_versions_verified": false,
+    "actual_account_fee_booking_verified": false,
+    "cap_caveat": "Older regulatory guide mentions OCC up to2750contracts; current PDF excerpt does not specify that cap. Do not invent treatment beyond the supported small-account scope."
+  },
+  "multiplier_policy": {
+    "premium": "price * multiplier * whole_contracts",
+    "never_substitute_size_for_multiplier": true,
+    "deliverables_required_for_classification": true,
+    "historical_version_proven": false
+  },
+  "not_performed": {
+    "market_quote_requests": 0,
+    "broker_account_requests": 0,
+    "broker_orders": 0,
+    "exercise_or_DNE_actions": 0,
+    "agreement_acceptances": 0,
+    "subscription_changes": 0,
+    "profit_backtests": 0
+  },
+  "peer_review": "No new peer source consumed in this documentation subtask; earlier peer simulations are not an official evidence source.",
+  "raw_documents_public": false,
+  "fetch_code_sha256": "559b1119b2fa8a2d3f9e9316044f294036a7450bfcc160841b342806c57ef2f9",
+  "summary_code_sha256": "4811da71f6bcc15180c481b643dc5cd388fb49d6dac47ac48c0e8e3f4cab9ef6"
+}

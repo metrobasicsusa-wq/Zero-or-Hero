@@ -1,0 +1,26 @@
+{
+  "reviewed_at": "2026-10-06T21:07:40.943121+00:00",
+  "status": "pass",
+  "monthly_table_rows_independently_matched": 10,
+  "storage_table_rows_independently_matched": 16,
+  "clarifications_resolved": [
+    "Discovery cells400/40 are distinct from call/put result rows800/80.",
+    "Only the60 returned current quotes are stale;20 missing quotes remain unknown."
+  ],
+  "scope_checks": [
+    "CurrentOPRA403 unsigned agreement remains separate from historicalquote404/unsupported route evidence.",
+    "190calendar dates and only10 sampled sessions are explicit; no full-year strategy-performance claim.",
+    "All quoted budget counts are price proxies or indicative arithmetic, not executable quotes, fills, win rates or strategyreturns.",
+    "Current directory/metadata bias, fee hypotheses, assignment/exit and size/condition mapping gaps remain explicit.",
+    "First arithmetic run preceded summary fix; second binding is not represented as first preregistration.",
+    "Public arithmetic replay is distinguished from unavailable complete private-source reproduction."
+  ],
+  "sha256": {
+    "REPORT.zh-CN.md": "95458fb5dd478d37914607d44200a8c1ebcb36212ea792cf214cff597718c527",
+    "REPRODUCE.md": "df86f57391e6c31b2c5f979a375ffd558c5d6de27b56513da0ca98c45b977ac5",
+    "stage-decision.json": "683cb0274d8c9afd40824485e7b33f698c230043d8eb63218dd3d2c8ebbbef0c",
+    "replay_public.py": "1c282e557b204ad83564958429cccfa0064d2c9b1be3bd40e61e13a06471b37e",
+    "public-replay.log": "e3ceb1e6cf75337a515e881ec9b3c1a6fe1ff21456fba715618eb01113d82d40",
+    "run-summary.json": "f9e54806faf0f4ec3fef5a824a7064b1d0c3889986a1f8114276a0cbbfc7970c"
+  }
+}

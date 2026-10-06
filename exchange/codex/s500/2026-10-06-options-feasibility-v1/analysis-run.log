@@ -1,0 +1,80 @@
+{
+  "historical": {
+    "rows": 800,
+    "selection_statuses": {
+      "selected": 598,
+      "unknown_or_unavailable": 202
+    },
+    "contract_structures": {
+      "standard_equity_100_metadata_consistent": 598,
+      "deliverables_unknown": 202
+    },
+    "scenarios": [
+      {
+        "roundtrip_reserve_per_contract": "0",
+        "total_rows": 800,
+        "one_contract_reference_affordable": 298,
+        "one_contract_reference_unaffordable": 102,
+        "unknown_price_or_multiplier": 400,
+        "not_actual_quote_affordability": true
+      },
+      {
+        "roundtrip_reserve_per_contract": "0.10",
+        "total_rows": 800,
+        "one_contract_reference_affordable": 298,
+        "one_contract_reference_unaffordable": 102,
+        "unknown_price_or_multiplier": 400,
+        "not_actual_quote_affordability": true
+      },
+      {
+        "roundtrip_reserve_per_contract": "1",
+        "total_rows": 800,
+        "one_contract_reference_affordable": 298,
+        "one_contract_reference_unaffordable": 102,
+        "unknown_price_or_multiplier": 400,
+        "not_actual_quote_affordability": true
+      }
+    ],
+    "primary_quote_quality_passed": 0
+  },
+  "current_indicative": {
+    "rows": 80,
+    "selection_statuses": {
+      "selected": 60,
+      "unknown_or_unavailable": 20
+    },
+    "contract_structures": {
+      "standard_equity_100_metadata_consistent": 60,
+      "deliverables_unknown": 20
+    },
+    "scenarios": [
+      {
+        "roundtrip_reserve_per_contract": "0",
+        "total_rows": 80,
+        "one_contract_reference_affordable": 41,
+        "one_contract_reference_unaffordable": 19,
+        "unknown_price_or_multiplier": 20,
+        "not_actual_quote_affordability": true
+      },
+      {
+        "roundtrip_reserve_per_contract": "0.10",
+        "total_rows": 80,
+        "one_contract_reference_affordable": 41,
+        "one_contract_reference_unaffordable": 19,
+        "unknown_price_or_multiplier": 20,
+        "not_actual_quote_affordability": true
+      },
+      {
+        "roundtrip_reserve_per_contract": "1",
+        "total_rows": 80,
+        "one_contract_reference_affordable": 41,
+        "one_contract_reference_unaffordable": 19,
+        "unknown_price_or_multiplier": 20,
+        "not_actual_quote_affordability": true
+      }
+    ],
+    "primary_quote_quality_passed": 0
+  },
+  "historical_quote_rows_verified": 0,
+  "strategy_wealth_paths_run": 0
+}

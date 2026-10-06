@@ -1,0 +1,120 @@
+{
+  "reviewed_at": "2026-10-06T20:42:18.526731+00:00",
+  "status": "independent_recommendations_before_new_empirical_analytics_not_registered_strategy",
+  "user_scope": {
+    "initial_round_usd": 500,
+    "target_usd": 10000,
+    "accepts_total_loss": true,
+    "restarts_not_modelled_here": true,
+    "separate_main_account_untouched": true
+  },
+  "prior_observations": [
+    {
+      "date": "2026-10-05",
+      "operation": "option latest quotes opra/indicative",
+      "http_status": 401,
+      "interpretation": "These requests failed; not proof of current entitlement or absence of historical data."
+    },
+    {
+      "date": "2026-10-06",
+      "operation": "option snapshots",
+      "status_by_feed": {
+        "opra": 403,
+        "indicative": 200
+      },
+      "interpretation": "Indicative response is not an OPRA execution input; exact403 cause was not independently established."
+    },
+    {
+      "date": "2026-10-06",
+      "operation": "guessed historical options quotes route",
+      "status_by_feed": {
+        "opra": 404,
+        "indicative": 404
+      },
+      "interpretation": "A failed guessed route does not prove no historical quote archive exists."
+    }
+  ],
+  "own_repo_static_findings": [
+    "Execution library supports current contracts/latest quotes and contains an order-write path; do not import it as the research collector. Read-only dedicated market transport should allowlisted GET routes only.",
+    "Its datetime parser does not preserve nanosecond precision; reuse the independently audited integer-nanosecond point-quote pattern instead.",
+    "The100budget,1fee reserve,5second quote-age and10percent spread guard are disabled experimental execution parameters, not user-approved permanent limits or an actual fee schedule.",
+    "Current active/tradable checks and standard100 size restriction do not establish expired historical contract existence, point-in-time availability or adjusted deliverables.",
+    "No script, account API, scheduler or execution switch was run or changed by this review."
+  ],
+  "minimum_protocol": [
+    {
+      "id": "separate_evidence_layers",
+      "rule": "Track endpoint/product validity, auth/entitlement, historical contract discovery, historical quote retrieval and account feasibility separately. Record rawHTTP/transport/schema/empty/pagecap/error statuses; do not collapse to market absence."
+    },
+    {
+      "id": "bounded_stages",
+      "rule": "Freeze a small documentation-backed endpoint/metadata capability probe first; only if a valid historical quote path is demonstrated, freeze quote-cell selection and finite request/page budgets before reading point quotes. Unsupported routes or entitlement failures stop dependent analytics with all planned cells marked unavailable/not-tested, not zero."
+    },
+    {
+      "id": "year_calendar_and_sampling",
+      "rule": "Index every exchange session2026Jan2-Oct5, including early closes and DST. Monthly/stratified probing must mark unsampled days explicitly; it establishes only sampled-cell access, not whole-year completeness. Oct6/future dates are excluded unless separately frozen after completed-session check."
+    },
+    {
+      "id": "broad_universe",
+      "rule": "Use broad vendor underlying/contract inventory if supported, preserving active/inactive/expired status and default-filter semantics. If bounded sampling is needed, fix a deterministic sample from the broad declared directory and liquidity strata before option outcomes, plus separately-labelled liquid ETF/product controls. Do not use old8, stock1079, OR-ready or best-return subsets as the option strategy universe."
+    },
+    {
+      "id": "expired_listing_and_identity",
+      "rule": "Explicitly query historical expiration ranges and supported status values, follow all pages to terminalnull, preserve truncated/incomplete and conflicting versions. A currently returned expiredcontract or guessed OCC symbol is not evidence of complete historically discoverable chain. Retain underlying/currency/strike/type/expiry/exercise/settlement/deliverable/multiplier as evidence fields; providerUUIDs remainprivate."
+    },
+    {
+      "id": "causal_contract_sampling",
+      "rule": "For selected cells choose expiry/type/strike from catalog and a prior known underlying reference with deterministic tiebreaks, never current option volume/OI/delta, later highs, cheapest successful quote or hindsight affordability. Metadata-known-now selection is a capability sample, not an executable historical strategy."
+    },
+    {
+      "id": "point_quote_integrity",
+      "rule": "Use only latest RAW quote state t<=decision parsed in exact integer nanoseconds, full complete pagination, no future fill or valid-old fallback after invalid latest. Conflicting same-time states are ambiguous absent documented sequence. Record feed/source/exchange/condition and unknown states. Empty, invalid, withdrawn, crossed, stale or missing update semantics remain distinct."
+    },
+    {
+      "id": "age_and_units",
+      "rule": "Freeze age thresholds as diagnostics (e.g.1second primary and5second sensitivity) with quote source timestamp semantics disclosed; these are not client-receipt or latency proof. Option size units and conditions must be confirmed independently, not copied from equitySIP2025unit changes. Positive known size is displayed capacity only, never a guaranteed fill."
+    },
+    {
+      "id": "whole_contract_budget",
+      "rule": "Use Decimal and verified contract premium multiplier/deliverable, whole nonnegative integer quantities, ask-based entry cost, actual supported fees and explicit exit fee reserve within500 settledcash; optional250 comparisons must be predeclared. Quote-only premium fit with unknown fees is a lower-bound diagnostic, not fully affordable certification. A fixed1dollar reserve is only a labelled sensitivity unless sourced."
+    },
+    {
+      "id": "cost_and_exit",
+      "rule": "Report bid/ask spread, percentage of ask and conditional same-point buyask/sellbid debit separately from actualPnL. Missing exits are unknown; never replace with tradebarhigh, midpoint, theoretical price, zero or intrinsic value to claim achievable closing proceeds."
+    },
+    {
+      "id": "expiration_and_spreads",
+      "rule": "Before any strategy/wealth model, verify product-specific lasttrade/exercise/AMPM/cashversusphysical settlement and broker cutoff. Longpremium affordability does not finance100share delivery. Spreads require contemporaneouslegs, contractspecification/ratio/budget and assignment handling; no theoretical fractional or unfunded legs."
+    },
+    {
+      "id": "retained_evidence",
+      "rule": "Save all planned cells, observed failures and denominators, data/schema versions, exact requestchains, inputhashes and no-fill labels. Public derived metadata/hashes only, no raw feed corpus, account/order/activity identifiers or credentials. No wealth projection, restart injection or order in this feasibility stage."
+    }
+  ],
+  "suggested_pre_run_tests": [
+    "Same-t conflicting quote and future1ns exclusion",
+    "Newest invalid quote cannot fall back to older valid quote",
+    "Zero/crossed/invalid size or unconfirmed units cannot certify tradability",
+    "Pagination empty page withtoken continues; emptytoken invalid; cycle/cap remainsincomplete",
+    "Expired catalog defaults/status and duplicateversion handling",
+    "Adjusted/non100 deliverable staysunknown without verified premium multiplier",
+    "Fees push exact500 premium over budget; integer quantity and exit reserve counted",
+    "Sampling invariant to later option prices/returns andcurrentOI/delta",
+    "Unsampled or failedquote cells never convertedto noevent/nooption/zerooutcome"
+  ],
+  "sources_sha256": {
+    "earlier_latest_access": "95a40572588770e3aec4ca5069cdb34db99735468d021ba9bc6477f0b3f71044",
+    "later_snapshot_access": "46754312d7d78f04021fa5306fb648839260df23183ff95e4612a3b63a7a6efb",
+    "earlier_historical_path_probe": "67d62a880a5c2da26778b6784c2b5fad4ea9e0d0d5e71bd825fcb61503be53d5",
+    "prior_option_method_notes": "11c1c3ccec81989d5a3028f13e79fbd8c9ab93df0f3a2aa5856133492955ac27",
+    "own_execution_foundation": "f3426d8b2fb51a067b8ac839e2a865acbd2277890bf994d6f5ff294190d5ebb5",
+    "own_execution_documentation": "a0c218447fbb4c39aab3655edebde4e8fcf50c773d73a6e7ccc9dfc35607e8f8",
+    "latest_handoff": "57eeb05de97780e7e44c58aa8b8b550bbbd48761f0b7ed3df46ecf7a3cef3901",
+    "next_stage_proposal": "8531384ea7a8d992eb1db5e54d28ed817fb39beb548eef84da3b954a37f1f68c"
+  },
+  "network_calls": 0,
+  "new_quotes_requested": 0,
+  "new_returns_computed": 0,
+  "orders_sent": 0,
+  "old_files_modified": 0
+}

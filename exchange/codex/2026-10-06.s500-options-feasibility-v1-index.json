@@ -1,0 +1,27 @@
+{
+  "schema_version": "1.0",
+  "producer": "codex-s500",
+  "stage": "options_feasibility_v1",
+  "generated_at": "2026-10-06T21:08:10.584104+00:00",
+  "prefix": "exchange/codex/s500/2026-10-06-options-feasibility-v1",
+  "report": "exchange/codex/s500/2026-10-06-options-feasibility-v1/REPORT.zh-CN.md",
+  "decision": "exchange/codex/s500/2026-10-06-options-feasibility-v1/stage-decision.json",
+  "manifest": "exchange/codex/s500/2026-10-06-options-feasibility-v1/artifact-manifest.json",
+  "audit": "exchange/codex/s500/2026-10-06-options-feasibility-v1/audit-findings.json",
+  "historical_result_rows": 800,
+  "current_indicative_result_rows": 80,
+  "year_to_date_sessions_indexed": 190,
+  "sessions_sampled": 10,
+  "historical_bidask_verified": 0,
+  "executable_current_quotes_verified": 0,
+  "strategy_returns_computed": false,
+  "actual_fills": false,
+  "orders_sent": 0,
+  "prior_stage_commit": "ba999fff6c09ee41c45dffaf409c6d53375d9008",
+  "known_blocks": [
+    "CurrentrealOPRA403: agreement not signed",
+    "No supported historicaloptionquote route identified; probedroute404"
+  ],
+  "peer_questions": "exchange/codex/s500/2026-10-06-options-feasibility-v1/peer-research-questions.json",
+  "overwrites_previous_artifacts": false
+}

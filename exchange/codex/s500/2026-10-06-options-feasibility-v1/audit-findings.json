@@ -1,0 +1,105 @@
+{
+  "finalized_at": "2026-10-06T21:07:40.943668+00:00",
+  "status": "passed_with_explicit_data_and_execution_limits",
+  "blocking_implementation_findings": [],
+  "scope": "Offline independent protocol/sampling, all source acquisition and contract selection, pure analyzer tests, every actual budget row and published report. No network, broker account calls, orders, capital resets or strategy simulations by auditors.",
+  "validation": {
+    "pre_first_arithmetic_author_tests": 37,
+    "pre_first_arithmetic_independent_tests": 25,
+    "pre_first_arithmetic_total": 62,
+    "post_summary_fix_independent_regression_tests": 3,
+    "all_tests_passed": true,
+    "historical_rows": 800,
+    "current_indicative_rows": 80,
+    "fee_scenarios": 2640,
+    "monthly_groups": 10,
+    "all_880_original_and_corrected_rows_identical": true,
+    "source_tasks": 472,
+    "source_pages_and_http_attempts": 510,
+    "source_bytes": 107881146,
+    "returned_contract_metadata_rows": 149682,
+    "selected_contract_rows_independently_rebuilt": 880,
+    "original104daily_source_hashes_verified_in_sampling_audit": true,
+    "supplemental_SPY_prior_days": 11
+  },
+  "observed_results": {
+    "historical_reference_affordable_unaffordable_unknown_per_reserve": [
+      298,
+      102,
+      400
+    ],
+    "current_indicative_affordable_unaffordable_unknown_per_reserve": [
+      41,
+      19,
+      20
+    ],
+    "same_at_each_hypothetical_reserve": [
+      "0",
+      "0.10",
+      "1"
+    ],
+    "current_quotes_stale_over5s": 60,
+    "current_quotes_missing": 20,
+    "primary_executable_quotes_verified": 0,
+    "historical_bidask_rows_verified": 0,
+    "strategy_wealth_paths": 0,
+    "orders_sent": 0
+  },
+  "resolved_findings": [
+    {
+      "issue": "Contract identity, exact-time and primary-quote evidence boundary hardening",
+      "resolution": "Explicit symbol join and OCC metadata match, delayed/missing delivery blocked, exactnanoseconds/UTC offset validation, literalspace/A conditions only; synthetic casespass."
+    },
+    {
+      "issue": "Provider selfassertion could be labelled independent adjusted-deliverable proof",
+      "resolution": "Output independentverification staysFalse; separate providerassertion only. Oldcode and testbinding retained; corrected before actual arithmetic."
+    },
+    {
+      "issue": "Collector initially used wrong deliverable/count field names",
+      "resolution": "Documented fields corrected before any optionprice requests; oldcode/plans preserved; request/selection rules unchanged."
+    },
+    {
+      "issue": "Summary failed on actual missing counts None>0 after first complete arithmetic",
+      "resolution": "Only positive known eventcounts contribute. First code, binding and rowoutputs retained; all880 rows identical after rerun; unknown prices never become zero; three extra regression tests after incident."
+    },
+    {
+      "issue": "Report result-row/cell and stale/missing labels",
+      "resolution": "Finalreport and decision distinguish400/40 discoverycells vs800/80 rows, and60 stale vs20 missingcurrentquotes."
+    }
+  ],
+  "unresolved_evidence_limits": [
+    "Current optionable directory and contract metadata are not point-in-time historical membership or deliverable versions.",
+    "Only10 of190 sessions sampled;180 intentionally unsampled. HTTP/pagination completeness is only completeness of returned request scope.",
+    "Historical trades/minutebars do not establish historical bid/ask, historicalreceipt, fills, spreads, exitliquidity, or strategyperformance.",
+    "CurrentOPRA returned403 with exact unsigned-agreement reason; testedhistoricalquote path404 is distinct. Signing currentagreement doesnot establish historicalquotedata.",
+    "All currentindicative quotes are derived values from afterhours; 60 returnedquotes stale and20 missing. Provider size/condition mapping remainsunverified.",
+    "Fees0/.10/1 percontract roundtrip are researchhypotheses. Fullfee history, current/PAPERcharges, assignment, exercise, settlement and forcedexit readiness remainunverified.",
+    "Raw107.9MB sources and officialdocument caches are private; publicbudget replay works, complete public-source reproduction is not claimed."
+  ],
+  "publication_exclusions": [
+    "independent-option-initial-tests.log",
+    "independent-actual-audit-incomplete-summary.private.log",
+    "raw-option-inputs/",
+    "raw-probes/",
+    "raw-docs/"
+  ],
+  "artifact_sha256": {
+    "independent-protocol-review.json": "5871bbd337d7a380202604487ee6438cb773ba143b883d21d7c566527f474dc6",
+    "independent-sampling-review.json": "8b2323f3fc6e6f6cddc97d2d1ae2a57648cce9723d9822fcae5fbbb7111f3150",
+    "independent-supplement-review.json": "7b49a3e140289afc7ea4c319da1343c885c84dc6cb28f3f20b22f4c55e4f8e47",
+    "independent-source-audit.json": "2222da10e1bb3c4d125644faf2f27f06cf8496473e2b3d2ad52078dbb8d8770e",
+    "independent-source-audit.py": "e9d8b4e48c6df21dfd20ac5bb8b91c8e0310bfae629f0d43670f29a09e580fc4",
+    "independent-test-binding.json": "c214e88b46a3fe8cb38928f425ac8299b1437549c9879eed2904590e4ba2de22",
+    "independent_option_tests.py": "e57b7ad160385e03693ad0ae9fc266f0726e08eb22867ab40f262b172a1e3630",
+    "independent-option-tests.log": "3295c7e58c6eef86e08377566c54a68ab20f902470c5cf46c77a2c51926064a6",
+    "independent_summary_tests.py": "7aec000bf8288f47dc70870c259762a7c4eff1c71f2f8957dd5370d683c5ed9a",
+    "independent-summary-tests.log": "e97782fcd95ee0217243556b83c1a7443bcad5dbf80cf1c6915d3f95027c2042",
+    "independent-actual-audit.json": "a5c6770442f3ebd3213c87e4532faee0ff9f17897cac12522413e34683c8897d",
+    "independent_actual_audit.py": "e136eb8b17aba5999e48b7776264b9e07baadb4a6dbb1ab580b7abc7ac952517",
+    "independent-actual-audit.log": "a5c6770442f3ebd3213c87e4532faee0ff9f17897cac12522413e34683c8897d",
+    "independent-report-review.json": "1422856c1ed6d870b8c5db66be22dc5079d1fee2015a707f3386e9cbb58d37db",
+    "REPORT.zh-CN.md": "95458fb5dd478d37914607d44200a8c1ebcb36212ea792cf214cff597718c527",
+    "REPRODUCE.md": "df86f57391e6c31b2c5f979a375ffd558c5d6de27b56513da0ca98c45b977ac5",
+    "stage-decision.json": "683cb0274d8c9afd40824485e7b33f698c230043d8eb63218dd3d2c8ebbbef0c"
+  }
+}

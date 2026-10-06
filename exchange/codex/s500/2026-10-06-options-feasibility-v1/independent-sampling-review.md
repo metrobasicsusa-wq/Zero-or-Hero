@@ -1,0 +1,14 @@
+# Independent sampling review
+
+The main frozen sample passed independent offline reconstruction. SPY reference supplementation has not yet appeared and is not signed off by this report. No new quote, network request, order or strategy simulation was performed.
+
+- All 104 cached daily source files match their original pinned SHA256 values. The current directory contains 3,916 optionable symbols; 3,836 have the full twenty-session pre-2026 liquidity history. Independent median-dollar-volume ranking reproduces the top 24, and the registered hash reproduces the other eight. Adding the eight named storage interests and SPY/QQQ, then deduplicating, produces exactly the frozen forty symbols.
+- The ten historical sample days are the first trading session of each January–October month. Forty symbols × ten dates produces 400 contract-discovery cells. Forty October 6 current-discovery cells are separate. The full 190-session calendar retains 180 explicitly unsampled days. At most two call/put identifiers may be selected per cell; these cell counts are not numbers of quotes, fills or complete historical chains.
+- All 400 historical and forty current raw-prior-close reference rows match the cached sources. The only missing references are ten historical SPY rows and one current SPY row.
+- Raw capability-response hashes independently match. The tested historical quote route returned 404 with `Not Found`. Latest OPRA returned 403 with `OPRA agreement is not signed`. Latest indicative returned 200. These are distinct observations; indicative is modified/derived data and is not a real executable OPRA substitute. Historical bars/trades do not establish historical bid/ask or fills.
+
+The selection does not use future option returns or quote quality, but it remains conditional on a current directory and metadata fetched now. It is not a PIT chain, historical optionability census, broad strategy universe, full-YTD coverage or performance test. Closest strike to the previous raw daily close is the frozen capability proxy; it is not proof of ATM at 10:00 or of split/identity-adjusted moneyness.
+
+The SPY supplement must preserve the existing study, sample and current-reference files unchanged, bind their original hashes, and retain missing/ambiguous results. The required prior sessions are exactly: 2025-12-31; 2026-01-30; 2026-02-27; 2026-03-31; 2026-04-30; 2026-05-29; 2026-06-30; 2026-07-31; 2026-08-31; 2026-09-30; 2026-10-05. January's reference is in 2025 and must not disappear under a 2026-only request filter. Supplement-derived strike selection must remain independent of option prices, quote availability or returns, and must not retroactively overwrite the original missing-reference archive.
+
+See `independent-sampling-review.json` for the reconstructed groups, source facts, exact checks and input hashes. Final supplement sign-off remains pending its plan and returned source evidence.

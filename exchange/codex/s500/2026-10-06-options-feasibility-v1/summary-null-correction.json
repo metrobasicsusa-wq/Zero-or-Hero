@@ -1,0 +1,18 @@
+{
+  "recorded_at": "2026-10-06T21:02:34.418735+00:00",
+  "reason": "First execution completed all800/80 arithmetic rows then summary failed with TypeError comparing missing-selection bars_count=None to0. Explicitly count only non-null positive event counts. No selection, arithmetic, source or economic assumption changed.",
+  "first_real_arithmetic_already_run": true,
+  "initial_summary_completed": false,
+  "preserved_files": {
+    "run_feasibility.py": "a984c9089af00e6ed1fc339ae60f86ea90a7ab7b04010f7d20bf12d36f8721d5",
+    "pre-analysis-validation.json": "4576cb740efb32cfe67d7e4c206d931e4ccbfeda2fe58166d55b61e7d4a2a6da",
+    "historical-reference-results.json": "b238fb090f69c6ad069b32c9de37aa0cdb48578af6f91a99a92345710b014d47",
+    "current-indicative-results.json": "9d066147d6e95de369e8e6263454c01752b8c3a90fcb9549f72d14895f6838df",
+    "analysis-run.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "bind_analysis.py": "ce70d53ebee215cc0d7210650e199162fba97eac58772ddd84c70929a94bddd5"
+  },
+  "changed_code": "run_feasibility.py",
+  "new_code_sha256": "b25baa3318c173df2800070f60368f498505932e66c5f5cf2cd40a7e30ca9933",
+  "exception": "TypeError: > not supported between NoneType and int",
+  "corrected_run_pending": true
+}

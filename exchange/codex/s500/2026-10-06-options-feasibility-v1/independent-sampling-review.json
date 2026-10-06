@@ -1,0 +1,146 @@
+{
+  "status": "main_sampling_passed_supplement_pending",
+  "reviewed_at": "2026-10-06T20:52:23.706595+00:00",
+  "independent_reconstruction": {
+    "current_optionable_directory": 3916,
+    "complete_preperiod_rank_count": 3836,
+    "preperiod_sessions": [
+      "2025-12-03",
+      "2025-12-04",
+      "2025-12-05",
+      "2025-12-08",
+      "2025-12-09",
+      "2025-12-10",
+      "2025-12-11",
+      "2025-12-12",
+      "2025-12-15",
+      "2025-12-16",
+      "2025-12-17",
+      "2025-12-18",
+      "2025-12-19",
+      "2025-12-22",
+      "2025-12-23",
+      "2025-12-24",
+      "2025-12-26",
+      "2025-12-29",
+      "2025-12-30",
+      "2025-12-31"
+    ],
+    "top24": [
+      "TSLA",
+      "QQQ",
+      "NVDA",
+      "MSFT",
+      "AAPL",
+      "AVGO",
+      "GOOGL",
+      "META",
+      "AMZN",
+      "GOOG",
+      "PLTR",
+      "MU",
+      "AMD",
+      "ORCL",
+      "NFLX",
+      "TQQQ",
+      "TSM",
+      "MSTR",
+      "LLY",
+      "JPM",
+      "HOOD",
+      "WMT",
+      "INTC",
+      "APP"
+    ],
+    "hash8": [
+      "WOLF",
+      "ITW",
+      "BBUC",
+      "VEEV",
+      "LNG",
+      "EGHT",
+      "KGS",
+      "BLX"
+    ],
+    "storage_overlay": [
+      "MU",
+      "STX",
+      "WDC",
+      "SNDK",
+      "NTAP",
+      "RMBS",
+      "SIMO",
+      "P"
+    ],
+    "controls": [
+      "SPY",
+      "QQQ"
+    ],
+    "selected_underlying_count": 40,
+    "history_list_cells": 400,
+    "current_list_cells": 40,
+    "calendar_sessions": 190,
+    "sample_month_first_sessions": 10,
+    "unsampled_sessions": 180,
+    "max_selected_historical_call_put_contracts": 800,
+    "max_selected_current_call_put_contracts": 80,
+    "raw_daily_batches_sha_verified": 104,
+    "missing_original_history_references": 10,
+    "missing_original_current_references": 1,
+    "missing_reference_symbol": "SPY",
+    "expected_SPY_supplement_prior_sessions": [
+      "2025-12-31",
+      "2026-01-30",
+      "2026-02-27",
+      "2026-03-31",
+      "2026-04-30",
+      "2026-05-29",
+      "2026-06-30",
+      "2026-07-31",
+      "2026-08-31",
+      "2026-09-30",
+      "2026-10-05"
+    ]
+  },
+  "capability_source_facts": [
+    {
+      "path": "/v1beta1/options/quotes",
+      "feed": "opra",
+      "status": 404,
+      "message": "Not Found"
+    },
+    {
+      "path": "/v1beta1/options/quotes/latest",
+      "feed": "opra",
+      "status": 403,
+      "message": "OPRA agreement is not signed"
+    },
+    {
+      "path": "/v1beta1/options/quotes/latest",
+      "feed": "indicative",
+      "status": 200,
+      "message": null
+    }
+  ],
+  "interpretation_checks": [
+    "Historical metadata is retrieved now, not a PIT historical chain or historical optionability certification.",
+    "Preperiod liquidity and fixed hash avoid selecting on 2026 option prices or returns, but the current directory and metadata remain retrospective.",
+    "Nearest strike to prior-session raw close is a declared proxy, not proof of ATM at the 10:00 sampling instant or adjustment-consistent moneyness.",
+    "400 and 40 are discovery-cell denominators, not successful quotes, fills, contracts or whole-year coverage.",
+    "Indicative quotes remain non-executable; bars/trades provide only historical event/price-proxy availability and cannot establish historical bid/ask or fills.",
+    "Observed OPRA403 and hypothetical historical quote-route404 remain distinct source facts."
+  ],
+  "remaining_check": "Verify the immutable SPY prior-reference supplement after it appears; original 400/40 reference files must remain unchanged.",
+  "no_network_or_quote_requests_by_review": true,
+  "no_strategy_simulation_or_order": true,
+  "input_sha256": {
+    "study-design.json": "8b96476fda15df31c3e2a25b00fff6044e3bf11493f077bd0cce8567d7f5506c",
+    "sample-universe.json": "52ce7235c299221a00fc67218af6f86a59a484a6051fbec93c39cc8b24e45431",
+    "session-coverage-plan.json": "4fafa8410b14422af04ff2c0edbead671bf1943a38a7cd2ef1b0ee69a3ae6d50",
+    "current-underlying-references.json": "2e41edde191760f136cccac1fd2266fdefe715364ff3a82c1b2df668c0e9925b",
+    "prepare_study.py": "475bca9cf7d255d2077e712396c36a8cfe3f0e649a4d434adf1991c831d37ca1",
+    "capability-results.json": "9646f58b3be77a68093780f6f8358ded9d50ec8e9b23a32447f61781f64c1d39",
+    "corrected-probe-results.json": "ed326eaae9ca34d7561f88284a5dfc4e4e1bbe230c47f5cf3d6d95f2bee4305f",
+    "option_feasibility.py": "4f2fdb8c8a7d6667de4e93f07c373fb7367acb6b267b4354e5bf8d9489292138"
+  }
+}

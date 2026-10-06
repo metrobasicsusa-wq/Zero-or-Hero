@@ -1,0 +1,41 @@
+{
+  "checked_at": "2026-10-06T21:03:40.783329+00:00",
+  "status": "pass",
+  "historical_rows_checked": 800,
+  "current_indicative_rows_checked": 80,
+  "fee_scenarios_checked": 2640,
+  "monthly_groups_checked": 10,
+  "current_quote_age_counts": {
+    "stale_5s": 60,
+    "unknown": 20
+  },
+  "independent_of_production_analyzer": true,
+  "source_chain_audit_separate": "independent-source-audit.json",
+  "current_primary_quote_quality_passed": 0,
+  "historical_bid_ask_verified": 0,
+  "strategy_wealth_paths_or_orders": 0,
+  "summary_null_fix": {
+    "all_880_rows_identical_to_first_execution": true,
+    "missing_bar_count_rows_preserved": 202,
+    "first_arithmetic_preceded_second_binding": true,
+    "unknown_trade_count_not_imputed_as_zero_price": true
+  },
+  "sha256": {
+    "study-design.json": "8b96476fda15df31c3e2a25b00fff6044e3bf11493f077bd0cce8567d7f5506c",
+    "pre-analysis-validation.json": "f274f223208731caebd05c202fe4a1c24500a543182c525db29ccb33dd2c6493",
+    "selected-contracts.json": "0fc6b4bad0d8230e798f962eb619b0e821aee1d92c2a80c5ee731076793c0bd7",
+    "historical-option-events.json": "be44ca768a9cb6301ea586a618d63049bca63bf293a3abb72837e127efbd2502",
+    "current-indicative-quotes.json": "2b0534abdee8f8586c44827fdaec2f2bd2fb21e0220bd56192fb8eea935ac7c7",
+    "historical-reference-results.json": "24992787bc85b81beff581a1af901c14f8723276133e342ddf8b7eced6a0c64b",
+    "current-indicative-results.json": "6ad2427a772ebf666da710c78378d9a052df64225617f8b4115d1c87f6f521a4",
+    "run-summary.json": "f9e54806faf0f4ec3fef5a824a7064b1d0c3889986a1f8114276a0cbbfc7970c",
+    "option_feasibility.py": "a310b718d7a28069a226d4057473369cc4a1598ee363f32adb62218a12124d5c",
+    "run_feasibility.py": "b25baa3318c173df2800070f60368f498505932e66c5f5cf2cd40a7e30ca9933",
+    "summary-null-correction.json": "319c6ff1681c3f1947c8614b8bcfc0e07970f702294b65de246d0d63039d6830",
+    "independent_actual_audit.py": "e136eb8b17aba5999e48b7776264b9e07baadb4a6dbb1ab580b7abc7ac952517"
+  },
+  "limitations": [
+    "Checks source-bound outputs and exact arithmetic, not historical contract membership, actual OPRA quotes, fills or strategy performance.",
+    "Independent full-page source reconstruction is reported separately."
+  ]
+}
