@@ -1,0 +1,704 @@
+{
+  "schema": "s500.primary-imsr-lif-review.v1",
+  "created_at": "2026-10-06T17:54:28.527837+00:00",
+  "frozen_study_id": "s500-full-EP-news-and-gates-v1",
+  "frozen_registry_id": "EP-NEWS-500-v1",
+  "selection": "Two assigned rows from the already frozen first5 chronological market-pass + time-clean metadata queue. No selection by returns or later winners.",
+  "input_sha256": {
+    "primary-review-queue.json": "076e56ce80f5a2d809f638859a1ad6084130be4d632abfd39748801956eaa9cb",
+    "study-design.json": "78411173d674f6d0b5974a66e95d368bfe2502061ca92a55e9074583999c5952",
+    "original_registry.json": "d99bbc71c5360ed9db0484838e9ad144e41db1306c2549ce76c7ebcccf6eebc8",
+    "primary-review-material-private.json": "861198b93bc2a25481fca95183a4a129aa3977ac8583e90f6f3b8365c12c8d78"
+  },
+  "reviews": [
+    {
+      "candidate_id": "2026-01-06__IMSR",
+      "date": "2026-01-06",
+      "symbol": "IMSR",
+      "issuer": "Terrestrial Energy Inc.",
+      "news_status": "confirmed",
+      "pass_registered_news_gate": true,
+      "event_category": "contract/agreement: executed DOE Other Transaction Authority agreement for Project TETRA",
+      "frozen_category": "contract",
+      "rationale": "The first-party company release expressly announces execution of an OTA agreement with DOE, not merely intention to collaborate or prior program selection. The frozen contract category has no sales, revenue, procurement or award-value requirement; this is classified as an executed agreement catalyst without adding such requirements. It does not establish reactor operating approval, an NRC license, a procurement award, revenue or a quantified commercial order. Company-issued publication and declared modification at08:00EST are strictly after Jan5close and before Jan6open.",
+      "window": {
+        "strict_after_et": "2026-01-05T16:00:00-05:00",
+        "strict_before_et": "2026-01-06T09:30:00-05:00",
+        "strict_after_utc": "2026-01-05T21:00:00Z",
+        "strict_before_utc": "2026-01-06T14:30:00Z"
+      },
+      "announcement_time_utc": "2026-01-06T13:00:00Z",
+      "announcement_time_et": "2026-01-06T08:00:00-05:00",
+      "declared_modification_time_utc": "2026-01-06T13:00:00Z",
+      "in_window_confirmed": true,
+      "sources": [
+        {
+          "source_id": "imsr-wire-release",
+          "role": "issuer-issued original newswire release; source organization Terrestrial Energy Inc.",
+          "requested_url": "https://www.globenewswire.com/news-release/2026/01/06/3213578/0/en/terrestrial-energy-executes-doe-agreement-for-project-tetra-under-advanced-reactor-pilot-program.html",
+          "retrieved_at": "2026-10-06T17:52:55.656262+00:00",
+          "url": "https://www.globenewswire.com/news-release/2026/01/06/3213578/0/en/terrestrial-energy-executes-doe-agreement-for-project-tetra-under-advanced-reactor-pilot-program.html",
+          "status": 200,
+          "sha256": "da54cb42768538f17138bd91b0a461d878f620504bc0b133031d25111434245d",
+          "bytes": 59590,
+          "short_quotes": [
+            "today announced that it has executed an Other Transaction Authority (OTA) agreement with the U.S. Department of Energy (DOE) for Project TETRA",
+            "outside traditional federal contracting constraints"
+          ],
+          "title": "Terrestrial Energy Executes DOE Agreement for Project TETRA Under Advanced Reactor Pilot Program",
+          "displayed_publication_time": "January 06, 2026 08:00 ET",
+          "datePublished": "2026-01-06T13:00:00Z",
+          "dateModified": "2026-01-06T13:00:00Z",
+          "articleSection": "Business Contracts",
+          "classification_note": "Issuer-issued wire section corroborates the executed-agreement reading but is not independent legal proof."
+        },
+        {
+          "source_id": "imsr-tetra-release",
+          "role": "company official investor-relations announcement",
+          "requested_url": "https://ir.terrestrialenergy.com/news-releases/news-release-details/terrestrial-energy-executes-doe-agreement-project-tetra-under",
+          "retrieved_at": "2026-10-06T17:49:24.173155+00:00",
+          "url": "https://ir.terrestrialenergy.com/news-releases/news-release-details/terrestrial-energy-executes-doe-agreement-project-tetra-under",
+          "status": 200,
+          "sha256": "52a9786b769887829add49b9734c1ab81d387cda2d3196d34414e7133e7d3014",
+          "bytes": 44878,
+          "short_quotes": [
+            "today announced that it has executed an Other Transaction Authority (OTA) agreement with the U.S. Department of Energy (DOE) for Project TETRA"
+          ],
+          "title": "Terrestrial Energy Executes DOE Agreement for Project TETRA Under Advanced Reactor Pilot Program",
+          "datePublished": "2026-01-06T08:01:12-0500",
+          "dateModified": null,
+          "visible_dateline": "January 6, 2026",
+          "note": "IR timestamp is72seconds after issuer-issued wire. No dateModified found; IR is corroboration, not an immutable historical copy."
+        },
+        {
+          "source_id": "imsr-doe-ota",
+          "role": "DOE official background authority page; not an IMSR-specific agreement or event confirmation",
+          "requested_url": "https://www.energy.gov/management/other-transaction-authority",
+          "retrieved_at": "2026-10-06T17:50:26.247261+00:00",
+          "url": "https://www.energy.gov/management/other-transaction-authority",
+          "status": 200,
+          "sha256": "ebbcd99900029460b950f766a46b9ff7f0b401846f82dc53b95fb1a9adec6ed0",
+          "bytes": 113162
+        }
+      ],
+      "old_news_handling": "The press release separately mentions2025DOE program selections. Those older selections are not counted as the Jan6catalyst; the identified new event is the announced executed OTA. No Jan22TEFLA agreement is reused for this candidate.",
+      "classification_limits": [
+        "The signed OTA instrument itself was not obtained; legal enforceability and agreement financial/operational terms have not been independently audited. The event-presence gate rests on the issuer's explicit executed-agreement announcement, corroborated on its own IR site.",
+        "DOE authority background is not independent confirmation that this specific agreement was signed. An attempted generic DOE agreement template returned503 and is not used as event proof.",
+        "The agreement supports future DOE review/authorization; do not label this commercial reactor operating approval or a sales/revenue contract."
+      ],
+      "history_limits": [
+        "Current issuer-issued wire and IR pages are not archived captures from January6. Declared dateModified is source metadata, not a complete revision audit.",
+        "The timestamps are the earliest first-party publication evidence obtained in this bounded review, not global proof that no earlier statement existed.",
+        "No exact favorable return, earnings surprise, executable fill or causal price attribution is inferred."
+      ],
+      "strategy_returns_computed": false,
+      "broker_orders_sent": 0
+    },
+    {
+      "candidate_id": "2026-01-23__LIF",
+      "symbol": "LIF",
+      "issuer": "Life360, Inc.",
+      "review_type": "read-only official IR, issuer-issued GlobeNewswire release, and SEC 8-K evidence",
+      "news_status": "confirmed",
+      "event_category": "guidance",
+      "event_description": "Life360 supplied preliminary unaudited 2025 financial results, projecting full-year revenue of USD 486–489 million and adjusted EBITDA of USD 87–92 million; the company explicitly said these exceeded its prior guidance.",
+      "event_gate_scope": "Confirms a separately sourced guidance announcement exists within the frozen overnight window. This does not confirm tradability, a market surprise, causal price attribution, or positive investment returns.",
+      "window": {
+        "strict_after_utc": "2026-01-22T21:00:00Z",
+        "strict_before_utc": "2026-01-23T14:30:00Z",
+        "strict_after_et": "2026-01-22T16:00:00-05:00",
+        "strict_before_et": "2026-01-23T09:30:00-05:00"
+      },
+      "primary_release": {
+        "source": "Life360 issuer-issued GlobeNewswire release",
+        "url": "https://www.globenewswire.com/news-release/2026/01/22/3224286/0/en/life360-to-report-record-q4-2025-operational-performance.html",
+        "title": "Life360 To Report Record Q4 2025 Operational Performance",
+        "status": 200,
+        "retrieved_at_utc": "2026-10-06T17:50:56.527130+00:00",
+        "sha256": "37e3a45eb59ac37984dc9cad36fa72fc4b139a6d0062549a9a2c2ab5b3587384",
+        "displayed_time": "January 22, 2026 16:20 ET",
+        "datePublished": "2026-01-22T21:20:00Z",
+        "dateModified": "2026-01-22T21:20:00Z",
+        "timestamp_evidence_locations": [
+          "visible HTML time element",
+          "JSON-LD datePublished",
+          "JSON-LD dateModified",
+          "meta itemprop dateModified",
+          "OpenGraph published_time"
+        ],
+        "publication_and_declared_modification_in_window": true,
+        "source_identity_evidence": "Visible source organization Life360, Inc.; release body Source: Life360; page ticker metadata Nasdaq:LIF.",
+        "short_quotes": [
+          "Based on preliminary unaudited operating results, the Company now expects:",
+          "Full Year 2025 Revenue: $486-489 million, representing approximately 31-32% year-over-year growth.",
+          "These results exceed prior guidance and reflect strong performance across the business."
+        ]
+      },
+      "corroboration": [
+        {
+          "source": "Life360 official investor-relations release",
+          "url": "https://investors.life360.com/news-releases/news-release-details/life360-report-record-q4-2025-operational-performance",
+          "status": 200,
+          "retrieved_at_utc": "2026-10-06T17:50:21.623663+00:00",
+          "sha256": "68ede02f960a4312c0d2ebba49e95add7bb423df40e8940df977955f303c6baf",
+          "datePublished": "2026-01-22T16:21:22-0500",
+          "datePublished_normalized_utc": "2026-01-22T21:21:22Z",
+          "dateModified": null,
+          "visible_dateline": "January 22, 2026",
+          "note": "IR publication metadata is 82 seconds after the issuer-issued wire timestamp, not an unexplained revision timestamp. The retrieved IR HTML has no dateModified. The headline and guidance text corroborate the wire."
+        },
+        {
+          "source": "SEC accepted 8-K full submission",
+          "url": "https://www.sec.gov/Archives/edgar/data/1581760/000158176026000006/0001581760-26-000006.txt",
+          "status": 200,
+          "retrieved_at_utc": "2026-10-06T17:49:35.282128+00:00",
+          "sha256": "0aa29d3aa11c2fceb9d9d76e990cebece36c2b284f4b92eccc07ab70d3642c7e",
+          "short_quote": "<ACCEPTANCE-DATETIME>20260122163203",
+          "acceptance_interpreted_et": "2026-01-22T16:32:03-05:00",
+          "acceptance_interpreted_utc": "2026-01-22T21:32:03Z",
+          "exhibit_name": "life360globenewswirerele.htm",
+          "note": "Filing archive preserves EX-99.1 with the guidance text; acceptance is later than wire publication. SEC submissions JSON has a conflicting acceptance timestamp, retained separately below."
+        },
+        {
+          "source": "SEC 8-K index",
+          "url": "https://www.sec.gov/Archives/edgar/data/1581760/000158176026000006/0001581760-26-000006-index.html",
+          "status": 200,
+          "retrieved_at_utc": "2026-10-06T17:49:35.288321+00:00",
+          "sha256": "cc93d774f549e08b5428032d586ef154e34f2d5e026f9622855e3d2a64ac3dd8",
+          "displayed_accepted": "2026-01-22 16:32:03",
+          "note": "Matches the compact complete-submission acceptance header, with no timezone printed in the visible field."
+        },
+        {
+          "source": "SEC EX-99.1 primary exhibit",
+          "url": "https://www.sec.gov/Archives/edgar/data/1581760/000158176026000006/life360globenewswirerele.htm",
+          "status": 200,
+          "retrieved_at_utc": "2026-10-06T17:50:10.447948+00:00",
+          "sha256": "7b7bbf763bcf737af4ca427bebcfd84190bec8e74a660d681851888caef11589",
+          "visible_dateline": "22 January 2026",
+          "note": "Official archive confirms company-issued operational update and 486–489m revenue guidance. Exhibit itself supplies date but not exact first-publication time."
+        },
+        {
+          "source": "SEC current submissions metadata",
+          "url": "https://data.sec.gov/submissions/CIK0001581760.json",
+          "status": 200,
+          "retrieved_at_utc": "2026-10-06T17:49:08.026398+00:00",
+          "sha256": "806f6cd474c78d3fd1c22880e91b36223471bcb56b77f17a80508c854d4ada34",
+          "accession": "0001581760-26-000006",
+          "acceptanceDateTime": "2026-01-23T02:32:03.000Z",
+          "filingDate": "2026-01-22",
+          "note": "Conflicts by five hours with index/header interpreted as US Eastern. Do not silently select or correct either timestamp. Both alternatives are strictly inside the overnight gate; exact first release uses the independent company-issued wire field."
+        }
+      ],
+      "timing_findings": [
+        "Observed company-issued wire publication and last-modification fields are 16:20 ET, not the 16:30 ET initial aggregator clue.",
+        "IR publication metadata is 16:21:22 ET; both company publication timestamps are after prior close and before next open.",
+        "The first publication claim is limited to the earliest timestamp observed among these authoritative sources. No global proof excluding an earlier communication is available.",
+        "Current fetched pages are not preserved January snapshots or exhaustive edit histories; dateModified is declared source metadata, not independently audited immutability.",
+        "SEC filing index/header versus submissions metadata has a retained five-hour discrepancy; both remain inside the frozen window, so the discrepancy does not change this event-presence gate."
+      ],
+      "claims_not_verified": [
+        "The prior numeric guidance interval 474–485m was not independently retrieved in this bounded review. The primary announcement explicitly says the new forecast exceeds prior guidance; no exact old interval is needed for event-presence qualification.",
+        "No actual order, executable fill, return, causal attribution, or positive surprise has been established.",
+        "These release and filing identifiers are public document identifiers, not account/order/activity identifiers."
+      ],
+      "raw_evidence_directory_private": true,
+      "credentials_read": false,
+      "account_api_used": false,
+      "orders_sent": 0,
+      "external_writes": 0,
+      "all_source_attempts": [
+        {
+          "url": "https://www.globenewswire.com/news-release/2026/01/22/3224286/0/en/life360-to-report-record-q4-2025-operational-performance.html",
+          "status": 200,
+          "fetched_at_utc": "2026-10-06T17:50:56.527130+00:00",
+          "sha256": "37e3a45eb59ac37984dc9cad36fa72fc4b139a6d0062549a9a2c2ab5b3587384",
+          "bytes": 68062,
+          "error": null
+        },
+        {
+          "url": "https://www.globenewswire.com/RssFeed/organization/ZTFlNjNjMWItMDNmMS00YzFkLTliMDctNDRiYzY0MmVmNDlk",
+          "status": 400,
+          "fetched_at_utc": "2026-10-06T17:50:44.428948+00:00",
+          "sha256": "7c41b898c5da0cfa4aa049b65ef50248bce9a72d24bef4c723786431921b75aa",
+          "bytes": 11,
+          "error": "HTTP Error 400: Bad Request"
+        },
+        {
+          "url": "https://www.globenewswire.com/search/keyword/Life360%20To%20Report%20Record%20Q4%202025%20Operational%20Performance",
+          "status": 200,
+          "fetched_at_utc": "2026-10-06T17:50:44.443675+00:00",
+          "sha256": "087e618ad940d54de239d05bf9c21a333ca0adc5097b7f748293bb90374c7cb2",
+          "bytes": 49010,
+          "error": null
+        },
+        {
+          "url": "https://investors.life360.com/news-releases",
+          "status": 404,
+          "fetched_at_utc": "2026-10-06T17:48:53.452058+00:00",
+          "sha256": "c3610e156791a8f671896c715e34286eb086eddea246a8e30c369c74c2c83434",
+          "bytes": 296,
+          "error": "HTTP Error 404: Not Found"
+        },
+        {
+          "url": "https://investors.life360.com/investor-relations/overview/default.aspx",
+          "status": 404,
+          "fetched_at_utc": "2026-10-06T17:49:08.015203+00:00",
+          "sha256": "b1d7d2a73ddbc2856bd679c1ea2a0889ae89d62d5c43aad934825a6f2c2006fa",
+          "bytes": 323,
+          "error": "HTTP Error 404: Not Found"
+        },
+        {
+          "url": "https://investors.life360.com/news-releases/news-release-details/life360-report-record-q4-2025-operational-performance",
+          "status": 200,
+          "fetched_at_utc": "2026-10-06T17:50:21.623663+00:00",
+          "sha256": "68ede02f960a4312c0d2ebba49e95add7bb423df40e8940df977955f303c6baf",
+          "bytes": 60095,
+          "error": null
+        },
+        {
+          "url": "https://investors.life360.com/",
+          "status": 200,
+          "fetched_at_utc": "2026-10-06T17:49:08.012477+00:00",
+          "sha256": "bc3f312e133203ec05408c153edbdaacb3105efb9c4481223604a9739692326c",
+          "bytes": 59324,
+          "error": null
+        },
+        {
+          "url": "https://investors.life360.com/news-events/news-and-media",
+          "status": 200,
+          "fetched_at_utc": "2026-10-06T17:49:35.259828+00:00",
+          "sha256": "673303784b6fb3bf83518d8bc447bb5b8e484f670257e9db4331c66c35d50dcb",
+          "bytes": 60064,
+          "error": null
+        },
+        {
+          "url": "https://investors.life360.com/news-events/news-and-media?page=1",
+          "status": 200,
+          "fetched_at_utc": "2026-10-06T17:50:10.494010+00:00",
+          "sha256": "6cf627d696ce34f7bc122e013ac03640c731cc990cb23346ea492694bb659b1d",
+          "bytes": 59715,
+          "error": null
+        },
+        {
+          "url": "https://www.sec.gov/Archives/edgar/data/1581760/000158176026000006/life360globenewswirerele.htm",
+          "status": 200,
+          "fetched_at_utc": "2026-10-06T17:50:10.447948+00:00",
+          "sha256": "7b7bbf763bcf737af4ca427bebcfd84190bec8e74a660d681851888caef11589",
+          "bytes": 12431,
+          "error": null
+        },
+        {
+          "url": "https://www.sec.gov/Archives/edgar/data/1581760/000158176026000006/0001581760-26-000006.txt",
+          "status": 200,
+          "fetched_at_utc": "2026-10-06T17:49:35.282128+00:00",
+          "sha256": "0aa29d3aa11c2fceb9d9d76e990cebece36c2b284f4b92eccc07ab70d3642c7e",
+          "bytes": 1312291,
+          "error": null
+        },
+        {
+          "url": "https://www.sec.gov/Archives/edgar/data/1581760/000158176026000006/0001581760-26-000006-index.html",
+          "status": 200,
+          "fetched_at_utc": "2026-10-06T17:49:35.288321+00:00",
+          "sha256": "cc93d774f549e08b5428032d586ef154e34f2d5e026f9622855e3d2a64ac3dd8",
+          "bytes": 11426,
+          "error": null
+        },
+        {
+          "url": "https://data.sec.gov/submissions/CIK0001581760.json",
+          "status": 200,
+          "fetched_at_utc": "2026-10-06T17:49:08.026398+00:00",
+          "sha256": "806f6cd474c78d3fd1c22880e91b36223471bcb56b77f17a80508c854d4ada34",
+          "bytes": 86495,
+          "error": null
+        }
+      ],
+      "generated_at_utc": "2026-10-06T17:52:19.122616+00:00",
+      "pass_registered_news_gate": true,
+      "date": "2026-01-23",
+      "frozen_category": "guidance",
+      "rationale": "The company-issued original wire and official IR/SEC exhibit announce preliminary2025revenue guidance of486–489million and explicitly say it exceeds prior guidance. Wire publication and declared modification are Jan22at16:20EST, strictly after the16:00close and before Jan23at09:30. This is a new in-window guidance announcement; neither a later aggregator timestamp nor prior-day old news is used as first publication.",
+      "sources": [
+        {
+          "source": "Life360 issuer-issued GlobeNewswire release",
+          "url": "https://www.globenewswire.com/news-release/2026/01/22/3224286/0/en/life360-to-report-record-q4-2025-operational-performance.html",
+          "title": "Life360 To Report Record Q4 2025 Operational Performance",
+          "status": 200,
+          "retrieved_at_utc": "2026-10-06T17:50:56.527130+00:00",
+          "sha256": "37e3a45eb59ac37984dc9cad36fa72fc4b139a6d0062549a9a2c2ab5b3587384",
+          "displayed_time": "January 22, 2026 16:20 ET",
+          "datePublished": "2026-01-22T21:20:00Z",
+          "dateModified": "2026-01-22T21:20:00Z",
+          "timestamp_evidence_locations": [
+            "visible HTML time element",
+            "JSON-LD datePublished",
+            "JSON-LD dateModified",
+            "meta itemprop dateModified",
+            "OpenGraph published_time"
+          ],
+          "publication_and_declared_modification_in_window": true,
+          "source_identity_evidence": "Visible source organization Life360, Inc.; release body Source: Life360; page ticker metadata Nasdaq:LIF.",
+          "short_quotes": [
+            "Based on preliminary unaudited operating results, the Company now expects:",
+            "Full Year 2025 Revenue: $486-489 million, representing approximately 31-32% year-over-year growth.",
+            "These results exceed prior guidance and reflect strong performance across the business."
+          ]
+        },
+        {
+          "source": "Life360 official investor-relations release",
+          "url": "https://investors.life360.com/news-releases/news-release-details/life360-report-record-q4-2025-operational-performance",
+          "status": 200,
+          "retrieved_at_utc": "2026-10-06T17:50:21.623663+00:00",
+          "sha256": "68ede02f960a4312c0d2ebba49e95add7bb423df40e8940df977955f303c6baf",
+          "datePublished": "2026-01-22T16:21:22-0500",
+          "datePublished_normalized_utc": "2026-01-22T21:21:22Z",
+          "dateModified": null,
+          "visible_dateline": "January 22, 2026",
+          "note": "IR publication metadata is 82 seconds after the issuer-issued wire timestamp, not an unexplained revision timestamp. The retrieved IR HTML has no dateModified. The headline and guidance text corroborate the wire."
+        },
+        {
+          "source": "SEC accepted 8-K full submission",
+          "url": "https://www.sec.gov/Archives/edgar/data/1581760/000158176026000006/0001581760-26-000006.txt",
+          "status": 200,
+          "retrieved_at_utc": "2026-10-06T17:49:35.282128+00:00",
+          "sha256": "0aa29d3aa11c2fceb9d9d76e990cebece36c2b284f4b92eccc07ab70d3642c7e",
+          "short_quote": "<ACCEPTANCE-DATETIME>20260122163203",
+          "acceptance_interpreted_et": "2026-01-22T16:32:03-05:00",
+          "acceptance_interpreted_utc": "2026-01-22T21:32:03Z",
+          "exhibit_name": "life360globenewswirerele.htm",
+          "note": "Filing archive preserves EX-99.1 with the guidance text; acceptance is later than wire publication. SEC submissions JSON has a conflicting acceptance timestamp, retained separately below."
+        },
+        {
+          "source": "SEC 8-K index",
+          "url": "https://www.sec.gov/Archives/edgar/data/1581760/000158176026000006/0001581760-26-000006-index.html",
+          "status": 200,
+          "retrieved_at_utc": "2026-10-06T17:49:35.288321+00:00",
+          "sha256": "cc93d774f549e08b5428032d586ef154e34f2d5e026f9622855e3d2a64ac3dd8",
+          "displayed_accepted": "2026-01-22 16:32:03",
+          "note": "Matches the compact complete-submission acceptance header, with no timezone printed in the visible field."
+        },
+        {
+          "source": "SEC EX-99.1 primary exhibit",
+          "url": "https://www.sec.gov/Archives/edgar/data/1581760/000158176026000006/life360globenewswirerele.htm",
+          "status": 200,
+          "retrieved_at_utc": "2026-10-06T17:50:10.447948+00:00",
+          "sha256": "7b7bbf763bcf737af4ca427bebcfd84190bec8e74a660d681851888caef11589",
+          "visible_dateline": "22 January 2026",
+          "note": "Official archive confirms company-issued operational update and 486–489m revenue guidance. Exhibit itself supplies date but not exact first-publication time."
+        },
+        {
+          "source": "SEC current submissions metadata",
+          "url": "https://data.sec.gov/submissions/CIK0001581760.json",
+          "status": 200,
+          "retrieved_at_utc": "2026-10-06T17:49:08.026398+00:00",
+          "sha256": "806f6cd474c78d3fd1c22880e91b36223471bcb56b77f17a80508c854d4ada34",
+          "accession": "0001581760-26-000006",
+          "acceptanceDateTime": "2026-01-23T02:32:03.000Z",
+          "filingDate": "2026-01-22",
+          "note": "Conflicts by five hours with index/header interpreted as US Eastern. Do not silently select or correct either timestamp. Both alternatives are strictly inside the overnight gate; exact first release uses the independent company-issued wire field."
+        }
+      ],
+      "announcement_time_utc": "2026-01-22T21:20:00Z",
+      "announcement_time_et": "2026-01-22T16:20:00-05:00",
+      "declared_modification_time_utc": "2026-01-22T21:20:00Z",
+      "in_window_confirmed": true,
+      "strategy_returns_computed": false,
+      "broker_orders_sent": 0
+    }
+  ],
+  "source_attempts": [
+    {
+      "source_id": "imsr-bing",
+      "requested_url": "https://www.bing.com/search?q=Terrestrial+Energy+January+6+2026+Other+Transaction+Authority+Agreement+TETRA",
+      "retrieved_at": "2026-10-06T17:48:56.999443+00:00",
+      "url": "https://www.bing.com/search?q=Terrestrial+Energy+January+6+2026+Other+Transaction+Authority+Agreement+TETRA",
+      "status": 200,
+      "sha256": "74dc25ed99ee173eed0a714516917f4e1da7c784c3e2c98e44881bcfd2ddd5d3",
+      "bytes": 117809,
+      "evidence_role": "discovery_or_background_not_event_proof"
+    },
+    {
+      "source_id": "imsr-doe-ota",
+      "requested_url": "https://www.energy.gov/management/other-transaction-authority",
+      "retrieved_at": "2026-10-06T17:50:26.247261+00:00",
+      "url": "https://www.energy.gov/management/other-transaction-authority",
+      "status": 200,
+      "sha256": "ebbcd99900029460b950f766a46b9ff7f0b401846f82dc53b95fb1a9adec6ed0",
+      "bytes": 113162,
+      "evidence_role": "discovery_or_background_not_event_proof"
+    },
+    {
+      "source_id": "imsr-doe-ota-template",
+      "requested_url": "https://cms.doe.gov/sites/default/files/2023-09/OT%20articles%20Aug%202023.docx",
+      "retrieved_at": "2026-10-06T17:51:42.491772+00:00",
+      "status": 503,
+      "evidence_role": "discovery_or_background_not_event_proof"
+    },
+    {
+      "source_id": "imsr-doe-search",
+      "requested_url": "https://www.bing.com/search?q=site%3Aenergy.gov%20%22other%20transactions%22%20%22legally%22",
+      "retrieved_at": "2026-10-06T17:50:26.247871+00:00",
+      "url": "https://www.bing.com/search?q=site%3Aenergy.gov%20%22other%20transactions%22%20%22legally%22",
+      "status": 200,
+      "sha256": "e89f21825a506d3064bf11589bb804bd878ec44e64fc6465f6d4fc2899277054",
+      "bytes": 117792,
+      "evidence_role": "discovery_or_background_not_event_proof"
+    },
+    {
+      "source_id": "imsr-home",
+      "requested_url": "https://www.terrestrialenergy.com/",
+      "retrieved_at": "2026-10-06T17:48:36.955480+00:00",
+      "url": "https://www.terrestrialenergy.com/",
+      "status": 200,
+      "sha256": "1ce8ae861d6e96223de039223447664cf839f88201412a7f60eca8d3c23743bf",
+      "bytes": 6646,
+      "evidence_role": "discovery_or_background_not_event_proof"
+    },
+    {
+      "source_id": "imsr-ir-home",
+      "requested_url": "https://ir.terrestrialenergy.com/",
+      "retrieved_at": "2026-10-06T17:48:57.000887+00:00",
+      "url": "https://ir.terrestrialenergy.com/",
+      "status": 200,
+      "sha256": "85b8296b9f751cf38e6c338f9dfd1e816da97b9b870c9f2213cb1fabbddecdd6",
+      "bytes": 50869,
+      "evidence_role": "discovery_or_background_not_event_proof"
+    },
+    {
+      "source_id": "imsr-ir",
+      "requested_url": "https://ir.terrestrialenergy.com/news-events/press-releases",
+      "retrieved_at": "2026-10-06T17:48:36.958202+00:00",
+      "status": 404,
+      "evidence_role": "discovery_or_background_not_event_proof"
+    },
+    {
+      "source_id": "imsr-ir-news",
+      "requested_url": "https://ir.terrestrialenergy.com/news-events/news-releases",
+      "retrieved_at": "2026-10-06T17:49:10.400998+00:00",
+      "url": "https://ir.terrestrialenergy.com/news-events/news-releases",
+      "status": 200,
+      "sha256": "b43bb55666d043b6c08cbd31b8f32c7d4e7a1478ad9d2c0b47bfc090832403f8",
+      "bytes": 63394,
+      "evidence_role": "discovery_or_background_not_event_proof"
+    },
+    {
+      "source_id": "imsr-ir-news-p1",
+      "requested_url": "https://ir.terrestrialenergy.com/news-events/news-releases?page=1",
+      "retrieved_at": "2026-10-06T17:49:10.402065+00:00",
+      "url": "https://ir.terrestrialenergy.com/news-events/news-releases?page=1",
+      "status": 200,
+      "sha256": "4ca494a8235cf2bfadff886b57139bae52152bfe35310aea3111008668c4d99f",
+      "bytes": 63619,
+      "evidence_role": "discovery_or_background_not_event_proof"
+    },
+    {
+      "source_id": "imsr-ir-news-p2",
+      "requested_url": "https://ir.terrestrialenergy.com/news-events/news-releases?page=2",
+      "retrieved_at": "2026-10-06T17:49:10.402802+00:00",
+      "url": "https://ir.terrestrialenergy.com/news-events/news-releases?page=2",
+      "status": 200,
+      "sha256": "04503e155d271fce256e17ea57f7a13f92accc063dde9be91cafb95141539f69",
+      "bytes": 38555,
+      "evidence_role": "discovery_or_background_not_event_proof"
+    },
+    {
+      "source_id": "imsr-releases",
+      "requested_url": "https://www.terrestrialenergy.com/press-releases/",
+      "retrieved_at": "2026-10-06T17:48:57.001550+00:00",
+      "url": "https://www.terrestrialenergy.com/press-releases/",
+      "status": 200,
+      "sha256": "1ce8ae861d6e96223de039223447664cf839f88201412a7f60eca8d3c23743bf",
+      "bytes": 6646,
+      "evidence_role": "discovery_or_background_not_event_proof"
+    },
+    {
+      "source_id": "imsr-search",
+      "requested_url": "https://www.google.com/search?q=Terrestrial+Energy+January+6+2026+Other+Transaction+Authority+Agreement+TETRA",
+      "retrieved_at": "2026-10-06T17:48:36.956726+00:00",
+      "url": "https://www.google.com/search?q=Terrestrial+Energy+January+6+2026+Other+Transaction+Authority+Agreement+TETRA",
+      "status": 200,
+      "sha256": "f55d76562115c28e539c44713c7f2c39fb3051073ff2762bb68f95102ea8cf46",
+      "bytes": 91821,
+      "evidence_role": "discovery_or_background_not_event_proof"
+    },
+    {
+      "source_id": "imsr-sitemap",
+      "requested_url": "https://www.terrestrialenergy.com/sitemap.xml",
+      "retrieved_at": "2026-10-06T17:48:57.000300+00:00",
+      "url": "https://www.terrestrialenergy.com/sitemap.xml",
+      "status": 200,
+      "sha256": "a2dd4e5da2bfa20d51cea35506ad66b4cb1de38d50b100540009d50a7ee9c069",
+      "bytes": 849,
+      "evidence_role": "discovery_or_background_not_event_proof"
+    },
+    {
+      "source_id": "imsr-submissions",
+      "requested_url": "https://data.sec.gov/submissions/CIK0002019804.json",
+      "retrieved_at": "2026-10-06T17:50:26.246384+00:00",
+      "url": "https://data.sec.gov/submissions/CIK0002019804.json",
+      "status": 200,
+      "sha256": "cadcb7316957214a9985db18461c581b27420144116a60ba4d62c950ad6c570f",
+      "bytes": 30607,
+      "evidence_role": "discovery_or_background_not_event_proof"
+    },
+    {
+      "source_id": "imsr-tetra-release",
+      "requested_url": "https://ir.terrestrialenergy.com/news-releases/news-release-details/terrestrial-energy-executes-doe-agreement-project-tetra-under",
+      "retrieved_at": "2026-10-06T17:49:24.173155+00:00",
+      "url": "https://ir.terrestrialenergy.com/news-releases/news-release-details/terrestrial-energy-executes-doe-agreement-project-tetra-under",
+      "status": 200,
+      "sha256": "52a9786b769887829add49b9734c1ab81d387cda2d3196d34414e7133e7d3014",
+      "bytes": 44878,
+      "evidence_role": "primary_announcement"
+    },
+    {
+      "source_id": "imsr-wire-release",
+      "requested_url": "https://www.globenewswire.com/news-release/2026/01/06/3213578/0/en/terrestrial-energy-executes-doe-agreement-for-project-tetra-under-advanced-reactor-pilot-program.html",
+      "retrieved_at": "2026-10-06T17:52:55.656262+00:00",
+      "url": "https://www.globenewswire.com/news-release/2026/01/06/3213578/0/en/terrestrial-energy-executes-doe-agreement-for-project-tetra-under-advanced-reactor-pilot-program.html",
+      "status": 200,
+      "sha256": "da54cb42768538f17138bd91b0a461d878f620504bc0b133031d25111434245d",
+      "bytes": 59590,
+      "evidence_role": "primary_announcement"
+    },
+    {
+      "source_id": "imsr-wire-search",
+      "requested_url": "https://www.globenewswire.com/search/keyword/Terrestrial%20Energy%20Executes%20DOE%20Agreement%20for%20Project%20TETRA",
+      "retrieved_at": "2026-10-06T17:52:45.329559+00:00",
+      "url": "https://www.globenewswire.com/search/keyword/Terrestrial%20Energy%20Executes%20DOE%20Agreement%20for%20Project%20TETRA",
+      "status": 200,
+      "sha256": "03631ffc6c41efdc3062c0183b115c4f9228d04e9935dcdec75b1dcb6abf7fe7",
+      "bytes": 45005,
+      "evidence_role": "discovery_or_background_not_event_proof"
+    },
+    {
+      "url": "https://www.globenewswire.com/news-release/2026/01/22/3224286/0/en/life360-to-report-record-q4-2025-operational-performance.html",
+      "status": 200,
+      "fetched_at_utc": "2026-10-06T17:50:56.527130+00:00",
+      "sha256": "37e3a45eb59ac37984dc9cad36fa72fc4b139a6d0062549a9a2c2ab5b3587384",
+      "bytes": 68062,
+      "error": null
+    },
+    {
+      "url": "https://www.globenewswire.com/RssFeed/organization/ZTFlNjNjMWItMDNmMS00YzFkLTliMDctNDRiYzY0MmVmNDlk",
+      "status": 400,
+      "fetched_at_utc": "2026-10-06T17:50:44.428948+00:00",
+      "sha256": "7c41b898c5da0cfa4aa049b65ef50248bce9a72d24bef4c723786431921b75aa",
+      "bytes": 11,
+      "error": "HTTP Error 400: Bad Request"
+    },
+    {
+      "url": "https://www.globenewswire.com/search/keyword/Life360%20To%20Report%20Record%20Q4%202025%20Operational%20Performance",
+      "status": 200,
+      "fetched_at_utc": "2026-10-06T17:50:44.443675+00:00",
+      "sha256": "087e618ad940d54de239d05bf9c21a333ca0adc5097b7f748293bb90374c7cb2",
+      "bytes": 49010,
+      "error": null
+    },
+    {
+      "url": "https://investors.life360.com/news-releases",
+      "status": 404,
+      "fetched_at_utc": "2026-10-06T17:48:53.452058+00:00",
+      "sha256": "c3610e156791a8f671896c715e34286eb086eddea246a8e30c369c74c2c83434",
+      "bytes": 296,
+      "error": "HTTP Error 404: Not Found"
+    },
+    {
+      "url": "https://investors.life360.com/investor-relations/overview/default.aspx",
+      "status": 404,
+      "fetched_at_utc": "2026-10-06T17:49:08.015203+00:00",
+      "sha256": "b1d7d2a73ddbc2856bd679c1ea2a0889ae89d62d5c43aad934825a6f2c2006fa",
+      "bytes": 323,
+      "error": "HTTP Error 404: Not Found"
+    },
+    {
+      "url": "https://investors.life360.com/news-releases/news-release-details/life360-report-record-q4-2025-operational-performance",
+      "status": 200,
+      "fetched_at_utc": "2026-10-06T17:50:21.623663+00:00",
+      "sha256": "68ede02f960a4312c0d2ebba49e95add7bb423df40e8940df977955f303c6baf",
+      "bytes": 60095,
+      "error": null
+    },
+    {
+      "url": "https://investors.life360.com/",
+      "status": 200,
+      "fetched_at_utc": "2026-10-06T17:49:08.012477+00:00",
+      "sha256": "bc3f312e133203ec05408c153edbdaacb3105efb9c4481223604a9739692326c",
+      "bytes": 59324,
+      "error": null
+    },
+    {
+      "url": "https://investors.life360.com/news-events/news-and-media",
+      "status": 200,
+      "fetched_at_utc": "2026-10-06T17:49:35.259828+00:00",
+      "sha256": "673303784b6fb3bf83518d8bc447bb5b8e484f670257e9db4331c66c35d50dcb",
+      "bytes": 60064,
+      "error": null
+    },
+    {
+      "url": "https://investors.life360.com/news-events/news-and-media?page=1",
+      "status": 200,
+      "fetched_at_utc": "2026-10-06T17:50:10.494010+00:00",
+      "sha256": "6cf627d696ce34f7bc122e013ac03640c731cc990cb23346ea492694bb659b1d",
+      "bytes": 59715,
+      "error": null
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1581760/000158176026000006/life360globenewswirerele.htm",
+      "status": 200,
+      "fetched_at_utc": "2026-10-06T17:50:10.447948+00:00",
+      "sha256": "7b7bbf763bcf737af4ca427bebcfd84190bec8e74a660d681851888caef11589",
+      "bytes": 12431,
+      "error": null
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1581760/000158176026000006/0001581760-26-000006.txt",
+      "status": 200,
+      "fetched_at_utc": "2026-10-06T17:49:35.282128+00:00",
+      "sha256": "0aa29d3aa11c2fceb9d9d76e990cebece36c2b284f4b92eccc07ab70d3642c7e",
+      "bytes": 1312291,
+      "error": null
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1581760/000158176026000006/0001581760-26-000006-index.html",
+      "status": 200,
+      "fetched_at_utc": "2026-10-06T17:49:35.288321+00:00",
+      "sha256": "cc93d774f549e08b5428032d586ef154e34f2d5e026f9622855e3d2a64ac3dd8",
+      "bytes": 11426,
+      "error": null
+    },
+    {
+      "url": "https://data.sec.gov/submissions/CIK0001581760.json",
+      "status": 200,
+      "fetched_at_utc": "2026-10-06T17:49:08.026398+00:00",
+      "sha256": "806f6cd474c78d3fd1c22880e91b36223471bcb56b77f17a80508c854d4ada34",
+      "bytes": 86495,
+      "error": null
+    }
+  ],
+  "verification": {
+    "review_count": 2,
+    "strict_window_and_modification_checks_passed": 2,
+    "downloaded_attempt_hashes_verified": 28,
+    "all_attempts_retained": 30,
+    "first_party_time_source_count": 4,
+    "no_frozen_design_modified": true
+  },
+  "summary": {
+    "confirmed_primary_news": 2,
+    "pass_registered_news_gate": 2,
+    "ambiguous_primary_news": 0,
+    "missing_primary_news": 0
+  },
+  "limits": [
+    "This is event-presence review only. No portfolio return, strategy success, executable order or fill is established.",
+    "Current public pages and declared update timestamps are not immutable historical snapshots.",
+    "IMSR is an executed-agreement catalyst, not an operating-license approval or proven sales order.",
+    "LIF prior numeric range474–485million remains unverified from first-party sources in this review; only486–489million and the issuer statement that it exceeds prior guidance are verified.",
+    "LIF SEC submissions timestamp conflicts with index/header by5hours, preserved; both alternatives are inside the gate and exact first release is established separately by the issuer-issued wire."
+  ],
+  "raw_public_source_bodies_kept_private": true,
+  "broker_orders_sent": 0,
+  "strategy_returns_computed": false,
+  "external_writes": 0
+}

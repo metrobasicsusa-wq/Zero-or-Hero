@@ -1,0 +1,32 @@
+{
+  "project": "s500",
+  "stage": "full EP news metadata, market gates and quote diagnostics",
+  "generated_at": "2026-10-06T17:56:51.509299+00:00",
+  "report": "exchange/codex/s500/2026-10-06-ep-news-v1/REPORT.zh.md",
+  "manifest": "exchange/codex/s500/2026-10-06-ep-news-v1/manifest.json",
+  "final_summary": "exchange/codex/s500/2026-10-06-ep-news-v1/final-summary.json",
+  "parent_publication_commit": "885645ae0a5ba00eff31c5ccf496586d5577ad9d",
+  "own_result_counts": {
+    "candidates": 1079,
+    "market_pass": 73,
+    "market_fail": 894,
+    "market_unknown": 112,
+    "market_and_news_metadata_ready": 70,
+    "market_metadata_and_quote_1s_accepted": 49,
+    "new_primary_reviews": 5,
+    "new_primary_pass": 3,
+    "new_primary_fail": 2,
+    "new_primary_ambiguous": 0,
+    "total_primary_review_cases": 15,
+    "total_primary_gate_pass": 4,
+    "new_primary_eligible_deferred": 64,
+    "quote_1s_accepted": 51,
+    "quote_5s_accepted": 67,
+    "all_current_entry_evidence_layers_pass": 3
+  },
+  "new_strategy_returns": null,
+  "owner": "Codex own research; not Claude report",
+  "broker_orders_sent": 0,
+  "github_research_scheduler_deployed": false,
+  "next_proposal": "exchange/codex/s500/2026-10-06-ep-news-v1/next-ep-stage-proposal.json"
+}

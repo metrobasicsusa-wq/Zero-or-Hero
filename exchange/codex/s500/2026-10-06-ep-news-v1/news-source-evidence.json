@@ -1,0 +1,241 @@
+{
+  "schema_version": 1,
+  "study": "s500_news_20261006_official_source_semantics",
+  "prepared_at": "2026-10-06T17:33:35.708451+00:00",
+  "scope": "Public documentation/source GET only; no account, order, or credential access. No article dataset, event confirmation, strategy returns or trade activation is asserted.",
+  "sources": [
+    {
+      "source_id": "news-request-pinned",
+      "title": "Alpaca-py NewsRequest",
+      "official_publisher": "Alpaca",
+      "url": "https://raw.githubusercontent.com/alpacahq/alpaca-py/5049448ad218d8f89d3232c1d5bd891d032355b0/alpaca/data/requests.py",
+      "requested_url": "https://raw.githubusercontent.com/alpacahq/alpaca-py/5049448ad218d8f89d3232c1d5bd891d032355b0/alpaca/data/requests.py",
+      "retrieved_at": "2026-10-06T17:31:48.878985+00:00",
+      "http_status": 200,
+      "sha256": "b751946aef57ee02bea8a7886a71208faba06b6402b832942211bb8b6f7f41f8",
+      "bytes": 25332,
+      "repository_commit": "5049448ad218d8f89d3232c1d5bd891d032355b0",
+      "repository_commit_date": "2026-10-06T13:16:17Z",
+      "individual_page_publication_date": null,
+      "archived_repository": false,
+      "exact_excerpts": [
+        "The inclusive start of the interval.",
+        "The inclusive end of the interval.",
+        "Sort articles by updated date.",
+        "Boolean indicator to include content for news articles (if available)",
+        "Boolean indicator to exclude news articles that do not contain content"
+      ],
+      "interpretation": "The time window is inclusive but this request documentation does not identify whether server filtering uses created_at or updated_at. Parameter name is include_content, not content. Its per-page limit prose differs from the SDK helper implementation."
+    },
+    {
+      "source_id": "news-model-pinned",
+      "title": "Alpaca-py News and NewsSet models",
+      "official_publisher": "Alpaca",
+      "url": "https://raw.githubusercontent.com/alpacahq/alpaca-py/5049448ad218d8f89d3232c1d5bd891d032355b0/alpaca/data/models/news.py",
+      "requested_url": "https://raw.githubusercontent.com/alpacahq/alpaca-py/5049448ad218d8f89d3232c1d5bd891d032355b0/alpaca/data/models/news.py",
+      "retrieved_at": "2026-10-06T17:31:48.876969+00:00",
+      "http_status": 200,
+      "sha256": "4e62a46bc22fc725f136c3b53356de5533c3d4a37ec3a63716f3ec70efbfa19e",
+      "bytes": 2886,
+      "repository_commit": "5049448ad218d8f89d3232c1d5bd891d032355b0",
+      "repository_commit_date": "2026-10-06T13:16:17Z",
+      "individual_page_publication_date": null,
+      "archived_repository": false,
+      "exact_excerpts": [
+        "Date article was created (RFC 3339)",
+        "Date article was updated (RFC 3339)",
+        "List of related or mentioned symbols. May be empty for unsymbolized/global news, but the API always includes the key, so it is intentionally not defaulted here.",
+        "News article ID"
+      ],
+      "interpretation": "Actual id field is int despite docstring saying str. created_at and updated_at are required datetime fields. The documented article object has no revision ID or received_at; empty symbol lists are allowed. Metadata is not proof of the exact headline/summary visible at a historical instant."
+    },
+    {
+      "source_id": "news-client-pinned",
+      "title": "Alpaca-py historical NewsClient",
+      "official_publisher": "Alpaca",
+      "url": "https://raw.githubusercontent.com/alpacahq/alpaca-py/5049448ad218d8f89d3232c1d5bd891d032355b0/alpaca/data/historical/news.py",
+      "requested_url": "https://raw.githubusercontent.com/alpacahq/alpaca-py/5049448ad218d8f89d3232c1d5bd891d032355b0/alpaca/data/historical/news.py",
+      "retrieved_at": "2026-10-06T17:31:48.882737+00:00",
+      "http_status": 200,
+      "sha256": "b8ba51f837c0df36a8abc6031dd7bca70dabd47625946612f88aa09f87a4e650",
+      "bytes": 2317,
+      "repository_commit": "5049448ad218d8f89d3232c1d5bd891d032355b0",
+      "repository_commit_date": "2026-10-06T13:16:17Z",
+      "individual_page_publication_date": null,
+      "archived_repository": false,
+      "exact_excerpts": [
+        "page_limit=50,",
+        "page_size=50,"
+      ],
+      "interpretation": "NewsClient calls /v1beta1/news through _get_marketdata with a 50-item request page size and 50-item page cap. Read the helper to distinguish per-request size from cumulative limit."
+    },
+    {
+      "source_id": "sdk-rest",
+      "title": "Alpaca-py RESTClient pagination implementation",
+      "official_publisher": "Alpaca",
+      "url": "https://raw.githubusercontent.com/alpacahq/alpaca-py/5049448ad218d8f89d3232c1d5bd891d032355b0/alpaca/common/rest.py",
+      "requested_url": "https://raw.githubusercontent.com/alpacahq/alpaca-py/5049448ad218d8f89d3232c1d5bd891d032355b0/alpaca/common/rest.py",
+      "retrieved_at": "2026-10-06T17:31:12.104179+00:00",
+      "http_status": 200,
+      "sha256": "887753b055a4b8e8a07468b4702cfad1fa3aa66ac73427fe0c62971aa3b165c5",
+      "bytes": 16523,
+      "repository_commit": "5049448ad218d8f89d3232c1d5bd891d032355b0",
+      "repository_commit_date": "2026-10-06T13:16:17Z",
+      "individual_page_publication_date": null,
+      "archived_repository": false,
+      "exact_excerpts": [
+        "actual_limit = min(int(limit) - total_items, page_limit)",
+        "page_token = response.get(\"next_page_token\", None)",
+        "if page_token is None: break"
+      ],
+      "interpretation": "The SDK follows next_page_token, but when a nonzero explicit request limit is supplied, it stops once cumulative returned items reach that limit. With no explicit limit it continues pages. This is source-code behavior at the pinned revision, not a promise about every SDK release. Do not equate SDK limit=50 with complete pagination."
+    },
+    {
+      "source_id": "legacy-news-historical-pinned",
+      "title": "Alpaca official archived Historical News reference",
+      "official_publisher": "Alpaca",
+      "url": "https://raw.githubusercontent.com/alpacahq/alpaca-docs/2080c5e0efbbd812c48eef9209a7a9962de67d2a/content/api-references/market-data-api/news-data/historical.md",
+      "requested_url": "https://raw.githubusercontent.com/alpacahq/alpaca-docs/2080c5e0efbbd812c48eef9209a7a9962de67d2a/content/api-references/market-data-api/news-data/historical.md",
+      "retrieved_at": "2026-10-06T17:31:48.883940+00:00",
+      "http_status": 200,
+      "sha256": "b714168d893addf072e3dc65076f79ec9bf9532ca4d6bfb1b13db1fef4564dc8",
+      "bytes": 6204,
+      "repository_commit": "2080c5e0efbbd812c48eef9209a7a9962de67d2a",
+      "repository_commit_date": "2025-04-10T06:21:35Z",
+      "individual_page_publication_date": null,
+      "archived_repository": true,
+      "exact_excerpts": [
+        "(Default: 10, Max: 50) Limit of news items to be returned for given page",
+        "Sort articles by updated date.",
+        "Pagination token to continue to next page",
+        "Exclude news articles that do not contain content (just headline and summary)"
+      ],
+      "interpretation": "The raw REST reference describes a maximum 50 articles per page with next_page_token. It documents related/mentioned symbol tags and distinct creation/update dates. The legacy default start is 2015-01-01, unlike the current SDK docstring default start-of-current-day: set explicit boundaries and never rely on these conflicting defaults. The official repository is archived, so exact live defaults remain unverified."
+    },
+    {
+      "source_id": "legacy-openapi-pinned",
+      "title": "Alpaca official archived market-data OpenAPI",
+      "official_publisher": "Alpaca",
+      "url": "https://raw.githubusercontent.com/alpacahq/alpaca-docs/2080c5e0efbbd812c48eef9209a7a9962de67d2a/oas/data/openapi.yaml",
+      "requested_url": "https://raw.githubusercontent.com/alpacahq/alpaca-docs/2080c5e0efbbd812c48eef9209a7a9962de67d2a/oas/data/openapi.yaml",
+      "retrieved_at": "2026-10-06T17:31:48.883411+00:00",
+      "http_status": 200,
+      "sha256": "b94f6775b0d595f3284d64141738592d96b4768f382b9307ba0a59e569c54e75",
+      "bytes": 99631,
+      "repository_commit": "2080c5e0efbbd812c48eef9209a7a9962de67d2a",
+      "repository_commit_date": "2025-04-10T06:21:35Z",
+      "individual_page_publication_date": null,
+      "archived_repository": true,
+      "exact_excerpts": [
+        "Filter data equal to or after this time in RFC-3339 format. Fractions of a second are not accepted.",
+        "Filter data equal to or before this time in RFC-3339 format. Fractions of a second are not accepted.",
+        "News article ID"
+      ],
+      "interpretation": "The news route references generic inclusive start/end parameters; neither identifies the field being filtered. Generic limit schema in this archived OpenAPI says 10000 and conflicts with news-specific max50, so use the news-specific reference and current SDK page size. Query fractions are disallowed in this legacy schema, but this says nothing about guaranteed precision of response event timestamps. News schema has article ID and creation/update fields, with no documented revision/asof parameter."
+    }
+  ],
+  "failed_sources": [
+    {
+      "key": "current-news-reference",
+      "requested_url": "https://docs.alpaca.markets/reference/news-3",
+      "retrieved_at": "2026-10-06T17:28:30.578850+00:00",
+      "status": "HTTPError: HTTP Error 403: Forbidden"
+    }
+  ],
+  "claims_and_rules": [
+    {
+      "id": "window_filter_axis",
+      "status": "unresolved",
+      "finding": "Official sources call start/end inclusive, and explicitly call sort updated-date ordering, but do not explicitly identify the time field used for server start/end filtering. Sorting and filtering axes must not be assumed identical.",
+      "sources": [
+        "news-request-pinned",
+        "legacy-openapi-pinned"
+      ],
+      "analysis_rule": "Persist requested bounds and returned metadata; explicitly filter created_at in the chosen prior-close to open window locally. Do not label the result an exhaustive archive of all news originally available in that window."
+    },
+    {
+      "id": "cutoff_and_revisions",
+      "status": "metadata_screen_only",
+      "finding": "created_at is article creation time and updated_at is update time; neither is documented as client receipt time or exchange event time. No historical headline/summary version or point-in-time retrieval guarantee appears in the reviewed interfaces.",
+      "sources": [
+        "news-model-pinned",
+        "legacy-news-historical-pinned"
+      ],
+      "analysis_rule": "Require parseable timezone-aware created_at and updated_at, created within the frozen interval, updated_at >= created_at and updated_at <= decision cutoff. Missing, inconsistent, or later-updated metadata remains unresolved. Passing these checks means metadata-clean only, not proof that this exact title was public before the cutoff."
+    },
+    {
+      "id": "revision_coverage_bias",
+      "status": "logical_limitation",
+      "finding": "Rejecting later-updated articles can omit genuine preopen events. If server bounds use update time, the initial request can also omit articles created in the window but updated later. There is no basis to turn absence into no event.",
+      "sources": [
+        "news-request-pinned",
+        "news-model-pinned"
+      ],
+      "analysis_rule": "Report missing/unconfirmed event coverage. Primary company/SEC evidence with reliable publication timing is still required for event confirmation."
+    },
+    {
+      "id": "symbol_tags",
+      "status": "documented_scope_limited",
+      "finding": "Symbols are related or mentioned tickers; unsymbolized/global news may have an empty list. No reviewed source promises immutable historical tags, exact entity identity, or complete coverage of issuer events.",
+      "sources": [
+        "news-model-pinned",
+        "legacy-news-historical-pinned"
+      ],
+      "analysis_rule": "Use requested-symbol membership as a relevance index only; check legal issuer, event category and timing against original source. An article tagged to several tickers is not several independent events. Missing symbol tags remain explicit."
+    },
+    {
+      "id": "article_identity",
+      "status": "documented_article_id_only",
+      "finding": "id identifies a news article; the current typed field is integer. No documented guarantee makes it a revision ID, unique company event ID, or globally unique identifier across all providers. Same-time ordering/tie-break rules are not documented.",
+      "sources": [
+        "news-model-pinned",
+        "legacy-openapi-pinned"
+      ],
+      "analysis_rule": "Deduplicate exact payload matches conservatively by provider/article ID. Preserve conflicts, raw article hashes, observed updated_at, and request provenance. Never silently keep the last version of a conflicting same-ID object. Do not infer an event count from raw article count or use incidental page order as chronology."
+    },
+    {
+      "id": "pagination",
+      "status": "documented_rest_and_verified_sdk_implementation",
+      "finding": "News REST reference caps each page at 50; next_page_token drives continuation. The current SDK source uses an explicit limit as a cumulative total, despite request-class wording of per-page limit. No reviewed source guarantees a stable point-in-time snapshot across all pages while articles are revised.",
+      "sources": [
+        "legacy-news-historical-pinned",
+        "news-client-pinned",
+        "sdk-rest"
+      ],
+      "analysis_rule": "For direct HTTP, retain every page and follow tokens until documented terminal absence, with cycle detection and failure/truncation states. Never call a first page exhaustive. Empty pages with a continuation token are not terminal. Preserve conflicting duplicate IDs across pages rather than erasing evidence."
+    },
+    {
+      "id": "content_parameters",
+      "status": "documented",
+      "finding": "include_content controls whether article body is returned; exclude_contentless independently controls whether headline/summary-only articles are excluded.",
+      "sources": [
+        "news-request-pinned",
+        "legacy-news-historical-pinned"
+      ],
+      "analysis_rule": "Use include_content=false and exclude_contentless=false explicitly for the metadata stage. Do not request content=false, which is not the documented parameter. No body is evidence not reviewed, not evidence absent; fetching full current body later does not prove its historical version."
+    },
+    {
+      "id": "precision_and_nulls",
+      "status": "partly_documented",
+      "finding": "Response dates are RFC3339 datetime fields; response precision, clock latency, receive time, null updated_at semantics, and tie ordering are not guaranteed by reviewed sources. Legacy query bounds prohibit fractional seconds. Current typed model requires updated_at but cannot establish all server error behavior.",
+      "sources": [
+        "news-model-pinned",
+        "legacy-openapi-pinned"
+      ],
+      "analysis_rule": "Use explicit UTC query bounds at whole seconds; retain raw response timestamp strings and reject missing/unparseable/naive/inconsistent metadata from confirmation. Do not invent zero latency or substitute created_at for absent updated_at."
+    }
+  ],
+  "coverage_caveats": [
+    "Reviewed current official SDK source and archived official API reference, not an independently verified server implementation.",
+    "Current docs.alpaca.markets reference returned HTTP 403; no bypass attempted.",
+    "SDK repository commit date is provenance, not publication date of every individual source file.",
+    "Raw public docs remain private scratch evidence. This report contains hashes, brief necessary excerpts and original summaries only."
+  ],
+  "verification": {
+    "source_raw_sha256_matches": 6,
+    "exact_excerpt_presence_checks": 21,
+    "current_master_files_equal_pinned": true,
+    "public_artifact_includes_credentials": false,
+    "actual_api_articles_fetched_by_this_task": 0
+  }
+}

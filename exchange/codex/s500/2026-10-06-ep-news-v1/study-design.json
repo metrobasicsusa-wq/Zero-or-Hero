@@ -1,0 +1,57 @@
+{
+  "id": "s500-full-EP-news-and-gates-v1",
+  "registered_at": "2026-10-06T17:30:40.677692+00:00",
+  "frozen_before_new_batch_news_or_minute_data": true,
+  "parent_quote_commit": "885645ae0a5ba00eff31c5ccf496586d5577ad9d",
+  "parent_ORB_commit": "33f739cfdced198c618bcbe343b423b5c144c4da",
+  "period": [
+    "2026-01-02",
+    "2026-10-05"
+  ],
+  "candidate_count": 1079,
+  "candidate_selection": "All original stock-research-eligible broad-universe price/gap candidates, chronological date/symbol; no winner or news keyword selection for retrieval.",
+  "known_prior": "First10primarynewsreviews known; only ALTverifiednews, ALTgap/volume pass butno breakout. Prior12ORBcapitalpaths incomplete; no EPreturnpaths validated.",
+  "input_sha256": {
+    "candidates.json": "74c90d92ef78faeef3c3f0f0124d22b73c552e25cd3dac129db34724582c9067",
+    "bar-tasks.json": "299f1466d7bda7ce70f9cf59e6003fcc61b3e26d519feada0fdbaebd3e5b4543",
+    "registry.json": "d99bbc71c5360ed9db0484838e9ad144e41db1306c2549ce76c7ebcccf6eebc8",
+    "prior_news_reviews": "6075d2d6fdf225118b05ad814c068f647e8ecf8335665536129fe05cc8df12ad"
+  },
+  "news_fetch": {
+    "endpoint": "https://data.alpaca.markets/v1beta1/news",
+    "symbols": "one exact candidate symbol per window",
+    "window": "prior calendar regular close through current regular open; API bounds inclusive, analyzer stricter",
+    "limit": 50,
+    "max_pages_per_window": 40,
+    "include_content": false,
+    "sort": "asc",
+    "retry_budget": 5,
+    "rate_interval_seconds": 0.45,
+    "workers": 4,
+    "partial_failure": "Retain checkpoint and mark retrieval_incomplete; do not claim absence or coverage."
+  },
+  "article_rules": [
+    "Timestamp parsing uses exact integer nanoseconds and explicit timezone; never truncate a future submicrosecond article into the decision time.",
+    "Exact symbol must be in article symbols; created strictly after previousclose and strictly before open.",
+    "updated must be present, valid, >=created and strictly before open. Missing/malformed or later versions cannot certify contemporaneous metadata.",
+    "Group identical newsID records across all windows; identical payload duplicates collapse. Any conflicting payload versions under one ID are quarantined, never cherry-pick an earlier favorable headline.",
+    "Time-clean aggregator metadata is only evidence_ready_for_review, not independently verified catalyst or historical version archive.",
+    "No articles means no supplied news hit, not no market event. Keyword hints never establish earnings/guidance/contract/regulatory announcement proof."
+  ],
+  "market_rules": [
+    "Evaluate original first30volume and actualregularopening gap for every candidate irrespective news hit.",
+    "Require complete valid09:30..09:59 bars, exact-price gap>=10pct, first30volume>=prior20meanfullsessionvolume; never fill missing bars with zero.",
+    "First completed-minute close above first30high during10:00..10:59 with one full minute latency: m+2 entry reference. Missing preceding minute is unknown; future gap afterfirstsignal never changes it.",
+    "Entry at/below known OR30low is ambiguous gap-through exposure, not a favorable stop fill or retroactive cancellation.",
+    "No exits, PnL, dailyresetwealth, compounding, fundedrestarts, or10000target estimate in this stage."
+  ],
+  "primary_review_queue": "After full market gates, inspect earliest chronological signal candidates with time-clean aggregator evidence, excluding already-reviewed duplicates; initially first5cases with bounded primarysource attempts. Keep every deferred case.",
+  "publication": "All candidates, retrieval failures, article-derived time/ID/version flags, sourceURLs/hashes and gates; raw articles/headline corpus and full rawmarket files remain private. Do not publish rawfullfeed exports.",
+  "limitations": [
+    "Current universe, non-PIT classifications, priorcorporate-action identity ambiguity and defaultasofaliases remain.",
+    "Headline/news URL associations are not causal proof and current payload metadata is not a complete revision archive.",
+    "Market gates and quote availability do not establish executable trades."
+  ],
+  "broker_orders_sent": 0,
+  "new_scheduler_deployed": false
+}

@@ -1,0 +1,171 @@
+{
+  "id": "s500-next-EP-capital-path-proposal-v1",
+  "status": "DRAFT_NOT_REGISTERED_NOT_IMPLEMENTED_NOT_RUN",
+  "created_at": "2026-10-06T17:52:11.659818+00:00",
+  "scope": "Read-only review and proposed research design. No parameters changed in frozen registry, no API requests, no scheduler or trading activation.",
+  "source_sha256": {
+    "market-summary.json": "4d3123190b602744c5b462d804fb497fae748d57661d02052c216e54a978b56e",
+    "joined-candidates.json": "effd1bd81edb0b9a0cc32908521e7c59162b3eea177cd34d95f1cb12bc049c0b",
+    "primary-review-queue.json": "076e56ce80f5a2d809f638859a1ad6084130be4d632abfd39748801956eaa9cb",
+    "ep-quote-summary.json": "e704bcdaef387a229809a7238c42a081cd44cb459e2e2704f04e0273ff93cd73",
+    "ep-quote-results.json": "a228e899f32e24625ec8d841b1ab16dfd22931472c5395b08bea4eaa291159df",
+    "original_18_experiment_registry": "d99bbc71c5360ed9db0484838e9ad144e41db1306c2549ce76c7ebcccf6eebc8"
+  },
+  "observed_starting_point": {
+    "initial_stock_candidates": 1079,
+    "market_passes": 73,
+    "market_and_news_metadata_ready": 70,
+    "fresh_quote_1second_of_all73": 51,
+    "market_news_metadata_and_fresh_quote_intersection": 49,
+    "market_unknown": 112,
+    "market_news_metadata_primary_reviews_deferred": 64,
+    "known_market_pass_without_metadata_ready": 3,
+    "warning": "These counts are different sets. Metadata and fresh displayed quotes do not establish a primary catalyst, executable trade, or profit."
+  },
+  "preserve_original_EP12": {
+    "registry_id": "s500-external-methods-experiment-registry-v1",
+    "experiment_id": "EP-NEWS-500-v1",
+    "entry_and_universe": "Unchanged original gap/volume/event/OR30 breakout and one-full-minute latency rules; original current-universe and identity limitations remain.",
+    "exit_variants": [
+      "fixed10session scheduled last regular minute open, subject to stop",
+      "stop plus completed-close below MA10, next-session open exit, maximum63sessions"
+    ],
+    "capital_fractions": [
+      0.5,
+      1.0
+    ],
+    "cost_bps_each_side": [
+      25,
+      50,
+      100
+    ],
+    "path_count": 12,
+    "initial_cash": 500,
+    "restart": false,
+    "borrowing": false,
+    "one_position_max": true,
+    "one_entry_max_per_session": true,
+    "exit_day_reentry": false,
+    "no_old_40pct_stop": "The earlier 40% drawdown research setting does not govern this project and must not be inserted. These fixed hypotheses are not the user risk mandate for all future experiments."
+  },
+  "priority_work": [
+    {
+      "order": 1,
+      "work": "Resolve primary-source coverage before selecting funded signals",
+      "detail": "Review all64 deferred market+metadata cases chronologically, retaining each disposition. Recheck old ambiguous cases and the3 market passes with no aggregator hit using the same source protocol. Aggregator absence is not proof no event. Require allowed category, exact issuer identity, publication/revision evidence within prior-close/current-open window; retain uncertain history as unknown, not confirmed or zero PnL."
+    },
+    {
+      "order": 2,
+      "work": "Repair all112 unknown market gates and identity/action gaps",
+      "detail": "Fetch only required missing historical inputs in a later authorized implementation; do not fill missing minutes, zero news hits, stale quotes or corporate-action events with zeros. Keep all1079 candidate outcomes. Known market failures do not require a positive news judgment to remain failures, but unknown market gates can affect signal precedence."
+    },
+    {
+      "order": 3,
+      "work": "Build deterministic decision tape before funding simulation",
+      "detail": "At each historical decision time retain every known candidate, rejection, unknown status, signal time, relative-volume rank, affordability basis and deterministic selected intent. Never restrict to later winners or the currently reviewed/fresh subset."
+    },
+    {
+      "order": 4,
+      "work": "Collect holding/exit inputs and freeze implementation details before path returns",
+      "detail": "Full regular minute coverage from selected entry through modeled exit/censoring, prior daily MA warmup, calendars/settlement dates, splits/dividends/identity, and entry/exit quotation evidence. Required data are driven by precommitted rules rather than favorable realized exits."
+    },
+    {
+      "order": 5,
+      "work": "Run all12 original hypotheses and independent ledger audit",
+      "detail": "Keep all complete, failed and incomplete paths, before any separately labeled restart extension. No complete-year performance label if an unresolved candidate or held-price gap can change the path."
+    }
+  ],
+  "deterministic_selection": {
+    "sort": "Earliest completed qualifying signal; ties descending first30 volume / prior20 daily mean volume; then exact symbol lexicographic order, as original registry.",
+    "eligibility_asof": "News and identity facts must be public as of the original time. Later retrieval can verify those facts but cannot backdate a new release or current edited payload.",
+    "budget": "Only settled cash funds entry; fraction uses a frozen explicit settled-cash basis; whole shares only. Affordability is selected using last completed observed price and cost assumption, then checked at modeled execution.",
+    "no_runnerup": "Once first candidate/intent selected, later execution unaffordability does not permit substituting a later winner. Retain the skipped intent. Exact handling of already-unaffordable first signal must be fixed before results; no opportunistic switch.",
+    "unknown_precedence": "When flat, if an unresolved news/identity/minute case could have produced an earlier/tied winning signal, stop the strict path at that decision as incomplete. Do not silently remove it. When already holding, unrelated entry candidates do not invalidate the position, but required exit/valuation gaps do.",
+    "no_daily_reset": "Single chronological ledger; a trade available only because an earlier position was ignored is not admitted."
+  },
+  "execution_and_missingness": {
+    "original_bar_model": "Preserve original cost-stress EP12: reference entry open after explicit latency; stop at known OR30 low, active in entry minute. Later open below stop uses lower open minus cost. If entry open is at/below stop, retain ambiguous exposure and incomplete status. OHLC modeled events are not actual FILLs.",
+    "fixed_exit": "Known scheduled last regular minute open on frozen holding session count; exchange early closes honored. Do not decide after observing that minute close.",
+    "MA_exit": "Only completed close can signal MA exit; next regular session open executes reference; no same-close exit. Corporate actions must adjust comparable historical inputs using information known by then.",
+    "quote_layer": "Separate named quote-constrained audit/counterpart, never silently replace original12. Obtain as-of entry and every exit/stop-window evidence, distinguish event timestamps from receive times; latest invalid/tied state never falls back to older convenient state. 1s primary and5s sensitivity remain diagnostics, not a fee or fill model.",
+    "costs": "25/50/100bp each side remain original stress assumptions. Do not claim fees/spread coverage as verified. A future ask/bid execution model must separately freeze residual slippage/fees and avoid charging the full same spread twice.",
+    "stops_need_sequence": "Minute low proves only bar-model touch; quote at a single point cannot prove actual stop trigger, time priority, fill, or depth. Missing trigger-window evidence marks executable audit unknown. A halt, delisting or absent bid does not imply zero value or a favorable stop.",
+    "data_gaps": "Preserve last valid state plus unresolved exposure. Never fill missing bars with zero or treat missing quote as free liquidity. Do not extrapolate final balance after incomplete state.",
+    "terminal": "At Oct5 cutoff retain censored holdings and receivables. Show marked NAV, valuation source/time and spendable cash separately; do not assume final liquidation."
+  },
+  "capital_ledger": {
+    "required_events": [
+      "external contribution",
+      "internal round-residual transfer",
+      "entry debit and quantity",
+      "fees",
+      "exit proceeds as receivable",
+      "T+1 settlement credit using exchange settlement calendar",
+      "split share/price conversion",
+      "cash-in-lieu obligation if applicable",
+      "dividend entitlement and later payment",
+      "other corporate-action or identity ambiguity",
+      "daily mark with source time",
+      "round closure and retained residual",
+      "withdrawal"
+    ],
+    "invariants": [
+      "Cash and holdings cannot be created by rounding or a restart.",
+      "Entry debit including modeled costs cannot exceed settled cash or chosen budget.",
+      "Receivables count in economic NAV, not spendable cash before their recorded settlement.",
+      "Open shares, corporate-action obligations, closed-round residuals, injections and withdrawals must reconcile.",
+      "An incomplete exposure cannot be valued as zero merely to make the ledger balance."
+    ],
+    "economic_wealth": "Current active-round NAV + all retained closed-round assets/residuals + cumulative withdrawals, without double-counting internal transfers.",
+    "economic_profit": "Economic wealth minus cumulative external contributions.",
+    "target_reporting": "Report active round reaching10000 separately from aggregate wealth, net economic profit, round count and cumulative dollars contributed. Multiple500 injections cannot be presented as a single500-to10000 return."
+  },
+  "user_aligned_restart_extension": {
+    "status": "DRAFT_SEPARATE_NEW_VARIANT_NOT_A_CHANGE_TO_ORIGINAL_EP12",
+    "user_goal": "Each PAPER round starts at500; goal10000. User accepts full loss or demonstrated inability to trade ending the round, followed by preserved history/review and restart.",
+    "no_40pct_override": true,
+    "fresh_round": "Exactly500 new external contribution into the new round; close and preserve old round ledger first. Residual old cash/assets stay separately tracked, never erased or silently counted as newly earned money.",
+    "no_reset_due_to_data_gap": "Missing market/news/quote data, unpaid receivable, or inability to afford a single chosen expensive stock is not economic ruin and must not automatically inject500.",
+    "ruin": "Verified no remaining economic assets available to the strategy and no unresolved receivable/exposure; absence of quotes is not proof asset value zero.",
+    "cannot_trade_rule": "Before running this extension, freeze an operational, prospective rule demonstrating inability to place any permitted whole-share trade, including costs, using then-known inputs. Do not infer permanent inability from one day without a signal or one unaffordable pick. Until that rule is explicit, retain flat/blocked status and do not simulate discretionary recapitalization.",
+    "restart_timing": "Proposed earliest subsequent session after review and settlement reconciliation; freeze exact rule before extension results. A delayed/rejected restart is retained, not optimized from future outcomes.",
+    "growth_risk": "Any staged reduction of risk as capital grows is a separate future hypothesis. Do not invent validated thresholds or mutate these fixed12 paths after observing outcomes."
+  },
+  "implementation_details_to_freeze_before_run": [
+    "Whether fixed10/maximum63 session count includes entry session; recommend entry=session1 but not yet registered.",
+    "Exact MA10 definition and strict inequality; recommend split-comparable simple mean of10 completed session closes including decision close, close<MA10; not yet registered.",
+    "Tie between scheduled open exit, overnight gap stop and MA exit; one exposure can be sold only once, with no favorable hindsight priority.",
+    "Precise first-signal already-unaffordable handling consistent with original whole-share rule.",
+    "Modeled settlement calendar corrections, dividends/fees/currency and split-fraction cash-in-lieu handling.",
+    "Any quote-constrained strategy variant, residual slippage/fee model, and treatment of ambiguous displayed size.",
+    "Prospective cannot-trade/restart criterion, restart timing and complete cumulative funding ledger."
+  ],
+  "audit_and_publication": {
+    "tests": [
+      "Permutation-invariant simultaneous signal selection with stable tie breakers.",
+      "Future news/minute/quote perturbations cannot alter earlier intent.",
+      "Unknown earlier candidate blocks a complete path; unknown later irrelevant entry does not invent a trade.",
+      "Entry-minute stop, overnight gap, scheduled exit and missing held-minute preserve exposure without double sale.",
+      "No next-open affordability substitution and Decimal whole-share budget boundaries.",
+      "T+1 cash conservation, split/dividend receivables and no same-day recycling.",
+      "Restart conservation: all prior residuals and every500 contribution remain in aggregate wealth.",
+      "Censored terminal holdings and incomplete paths never become fabricated cash returns."
+    ],
+    "deliverables": [
+      "Draft later frozen as separately versioned design with source/code/data hashes.",
+      "All candidate statuses and decision tape, all12 base-path ledgers including incomplete paths.",
+      "All separately registered restart paths and round/funding/residual ledgers, if executable.",
+      "Independent recomputation and failure records; no winner-only selection.",
+      "Hashes/request manifests and source limitations; raw/private exports and credentials excluded."
+    ],
+    "publication_scope": "Only exchange/codex/s500/ new versioned files; preserve prior reports and supersedes links where correcting history.",
+    "limits": "The year has already been inspected and universe is not point-in-time. Any research outcome is exploratory, not proof of a live edge or10000 likelihood."
+  },
+  "actions_taken_for_this_proposal": {
+    "network_requests": 0,
+    "orders": 0,
+    "scheduler_changes": 0,
+    "strategy_parameter_changes": 0,
+    "research_paths_run": 0
+  }
+}

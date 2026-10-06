@@ -1,0 +1,90 @@
+{
+  "generated_at": "2026-10-06T17:56:15.191712+00:00",
+  "input_sha256": {
+    "joined-candidates.json": "effd1bd81edb0b9a0cc32908521e7c59162b3eea177cd34d95f1cb12bc049c0b",
+    "primary-review-queue.json": "076e56ce80f5a2d809f638859a1ad6084130be4d632abfd39748801956eaa9cb",
+    "primary-imsr-lif.json": "a44da459a68d6aaa17da7898a553950a937ffad95fd002a59ebcb960fb24be15",
+    "primary-glue-ibrx.json": "c30c161d572b8ab4bf444dd47fef0afa2ad6907b527cb39be81795653537badf",
+    "ep-quote-results.json": "a228e899f32e24625ec8d841b1ab16dfd22931472c5395b08bea4eaa291159df",
+    "finalize_evidence.py": "03814eb75d9f4f70c22aa3aa894f9d9116bd24f3018f93d567f341d109e791ae"
+  },
+  "counts": {
+    "candidates": 1079,
+    "market_pass": 73,
+    "market_fail": 894,
+    "market_unknown": 112,
+    "market_and_news_metadata_ready": 70,
+    "market_metadata_and_quote_1s_accepted": 49,
+    "new_primary_reviews": 5,
+    "new_primary_pass": 3,
+    "new_primary_fail": 2,
+    "new_primary_ambiguous": 0,
+    "total_primary_review_cases": 15,
+    "total_primary_gate_pass": 4,
+    "new_primary_eligible_deferred": 64,
+    "quote_1s_accepted": 51,
+    "quote_5s_accepted": 67,
+    "all_current_entry_evidence_layers_pass": 3
+  },
+  "candidate_readiness_sha256": "9ea089be503dea21ae458830301c189b99a4a3d0c06c2b6265e77f06f60e1e07",
+  "new_primary_reviews": [
+    {
+      "candidate_id": "2026-01-06__IMSR",
+      "news_status": "confirmed",
+      "pass_registered_news_gate": true,
+      "event_category": "contract/agreement: executed DOE Other Transaction Authority agreement for Project TETRA",
+      "rationale": "The first-party company release expressly announces execution of an OTA agreement with DOE, not merely intention to collaborate or prior program selection. The frozen contract category has no sales, revenue, procurement or award-value requirement; this is classified as an executed agreement catalyst without adding such requirements. It does not establish reactor operating approval, an NRC license, a procurement award, revenue or a quantified commercial order. Company-issued publication and declared modification at08:00EST are strictly after Jan5close and before Jan6open."
+    },
+    {
+      "candidate_id": "2026-01-07__GLUE",
+      "news_status": "confirmed_outside_registered_category",
+      "pass_registered_news_gate": false,
+      "event_category": "clinical_trial_results_outside_registered_categories",
+      "rationale": "\u516c\u544a\u662f MRT-8102 \u7684\u4e00\u671f\u4e34\u5e8a\u4e2d\u671f\u7ed3\u679c\u53ca\u540e\u7eed\u5f00\u53d1\u8ba1\u5212\uff0c\u4e0d\u662f\u51bb\u7ed3\u7684 earnings/guidance/contract/regulatory announcement\u3002\u63d0\u53ca\u65e2\u6709 Novartis \u5408\u4f5c\u4e0d\u6784\u6210\u65b0\u5408\u540c\uff1b\u4e34\u5e8a\u8fdb\u5ea6\u8ba1\u5212\u4e0d\u6309\u516c\u53f8\u8d22\u52a1 guidance \u5904\u7406\u3002\u516c\u544a\u65f6\u95f4\u6ee1\u8db3\u7a97\u53e3\uff0c\u4f46\u7c7b\u522b\u4e0d\u6ee1\u8db3\u3002"
+    },
+    {
+      "candidate_id": "2026-01-16__IBRX",
+      "news_status": "confirmed_outside_registered_category",
+      "pass_registered_news_gate": false,
+      "event_category": "clinical_results_and_enrollment_updates_outside_registered_categories",
+      "rationale": "\u76d8\u524d\u4e24\u9879\u516c\u544a\u5206\u522b\u4e3a CD19 CAR-NK \u4e34\u5e8a\u7ed3\u679c\u53ca QUILT-2.005 \u5165\u7ec4\u8fdb\u5c55\u3002\u540e\u8005\u63d0\u53ca\u7684 FDA \u4e2d\u671f\u5206\u6790\u8981\u6c42\u53d1\u751f\u5728 2023 \u5e74\uff0c\u76f8\u5173\u6570\u636e\u5df2\u4e8e 2024 \u5e74\u516c\u5f00\uff1b2026 \u5e74\u9884\u8ba1\u63d0\u4ea4 BLA/\u62df\u5bfb\u6c42\u6c9f\u901a\u662f\u516c\u53f8\u8ba1\u5212\uff0c\u4e0d\u80fd\u89c6\u4e3a\u5f53\u5929\u65b0\u53d1\u751f\u7684\u76d1\u7ba1\u884c\u52a8\u3002\u5206\u6790\u5e08\u76ee\u6807\u4ef7\u4e0d\u662f\u516c\u53f8 guidance\u3002\u90bb\u8fd1\u7684\u521d\u6b65\u6536\u5165\u516c\u544a\u53d1\u5e03\u4e8e 1 \u6708 15 \u65e5 08:31:50 ET\uff0c\u65e9\u4e8e\u672c\u5019\u9009\u7684\u524d\u6536\u76d8\u8fb9\u754c\uff0c\u4e0d\u80fd\u632a\u81f3 1 \u6708 16 \u65e5\u3002"
+    },
+    {
+      "candidate_id": "2026-01-20__IBRX",
+      "news_status": "confirmed_registered_regulatory_communication_with_version_limitations",
+      "pass_registered_news_gate": true,
+      "event_category": "regulatory announcement",
+      "rationale": "\u516c\u53f8\u76d8\u524d\u62ab\u9732\u5df2\u7ecf\u4e0e FDA \u4e3e\u884c Type B End-of-Phase \u4f1a\u8bae\uff0cFDA \u5728\u8ba8\u8bba\u540e\u5efa\u8bae\u8865\u5145\u4fe1\u606f\u4ee5\u8003\u8651\u6f5c\u5728\u7684 sBLA \u91cd\u65b0\u63d0\u4ea4\u3002\u8fd9\u662f\u5df2\u7ecf\u53d1\u751f\u7684\u76d1\u7ba1\u6c9f\u901a\u516c\u544a\uff0c\u7eb3\u5165\u539f\u51bb\u7ed3\u5bbd\u7c7b\u522b regulatory announcement\u3002\u5b83\u4e0d\u662f\u6279\u51c6\u3001\u4e0d\u662f\u5df2\u7ecf\u91cd\u65b0\u63d0\u4ea4\u3001\u4e5f\u4e0d\u662f FDA \u5df2\u53d7\u7406\uff1b\u672a\u6765 30 \u5929\u63d0\u4ea4\u8865\u5145\u4fe1\u606f\u4ecd\u5c5e\u8ba1\u5212\u3002\u6b64\u5206\u7c7b\u672a\u589e\u52a0\u4e34\u5e8a\u7ed3\u679c\u7c7b\u522b\uff0c\u672a\u6839\u636e\u6536\u76ca\u7b5b\u9009\u3002"
+    },
+    {
+      "candidate_id": "2026-01-23__LIF",
+      "news_status": "confirmed",
+      "pass_registered_news_gate": true,
+      "event_category": "guidance",
+      "rationale": "The company-issued original wire and official IR/SEC exhibit announce preliminary2025revenue guidance of486\u2013489million and explicitly say it exceeds prior guidance. Wire publication and declared modification are Jan22at16:20EST, strictly after the16:00close and before Jan23at09:30. This is a new in-window guidance announcement; neither a later aggregator timestamp nor prior-day old news is used as first publication."
+    }
+  ],
+  "entry_evidence_cases": [
+    "2026-01-06__IMSR",
+    "2026-01-20__IBRX",
+    "2026-01-23__LIF"
+  ],
+  "news_article_occurrences": 4711,
+  "news_distinct_observed_ids": 4117,
+  "raw_quote_count": 90337,
+  "candidate_period": [
+    "2026-01-02",
+    "2026-10-05"
+  ],
+  "complete_wealth_paths": 0,
+  "new_strategy_returns": null,
+  "broker_orders_sent": 0,
+  "new_scheduler_deployed": false,
+  "prior_primary_ALT_pass_but_no_market_entry_preserved": true,
+  "limits": [
+    "Current/non-PIT universe and historical identity bias remain.",
+    "Unseen news revisions and contemporaneous page observability remain unknown.",
+    "64 deferred primary reviews are not confirmed events or zero-return days.",
+    "Entry evidence is not execution, exit evidence, portfolio selection or a return result."
+  ]
+}

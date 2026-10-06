@@ -1,0 +1,446 @@
+{
+  "schema": "s500-first-party-news-review-v1",
+  "created_at": "2026-10-06T17:56:02.276952+00:00",
+  "input_sha256": {
+    "study-design.json": "78411173d674f6d0b5974a66e95d368bfe2502061ca92a55e9074583999c5952",
+    "primary-review-queue.json": "076e56ce80f5a2d809f638859a1ad6084130be4d632abfd39748801956eaa9cb",
+    "primary-review-material-private.json": "861198b93bc2a25481fca95183a4a129aa3977ac8583e90f6f3b8365c12c8d78",
+    "original_registry.json": "d99bbc71c5360ed9db0484838e9ad144e41db1306c2549ce76c7ebcccf6eebc8"
+  },
+  "frozen_category_rule": "earnings/guidance/contract/regulatory announcement",
+  "selection": "Three assigned cases of the frozen first-five chronological market-pass plus metadata-ready queue; no return-based selection.",
+  "reviews": [
+    {
+      "candidate_id": "2026-01-07__GLUE",
+      "date": "2026-01-07",
+      "symbol": "GLUE",
+      "news_status": "confirmed_outside_registered_category",
+      "pass_registered_news_gate": false,
+      "event_category": "clinical_trial_results_outside_registered_categories",
+      "rationale": "公告是 MRT-8102 的一期临床中期结果及后续开发计划，不是冻结的 earnings/guidance/contract/regulatory announcement。提及既有 Novartis 合作不构成新合同；临床进度计划不按公司财务 guidance 处理。公告时间满足窗口，但类别不满足。",
+      "news_window": {
+        "strict_after_previous_regular_close": "2026-01-06T16:00:00-05:00",
+        "strict_before_current_regular_open": "2026-01-07T09:30:00-05:00",
+        "timezone": "America/New_York"
+      },
+      "announcement_time": "2026-01-07T07:00:50-05:00",
+      "in_window_confirmed": true,
+      "sources": [
+        {
+          "source_key": "GLUE-release",
+          "url": "https://ir.monterosatx.com/news-releases/news-release-details/monte-rosa-therapeutics-announces-positive-interim-phase-1-data",
+          "retrieved_at": "2026-10-06T17:50:40.682525+00:00",
+          "request_index": 14,
+          "status": 200,
+          "final_url": "https://ir.monterosatx.com/news-releases/news-release-details/monte-rosa-therapeutics-announces-positive-interim-phase-1-data",
+          "bytes": 59507,
+          "sha256": "ffb3dadc10d281db463f2adb3e51cd02c24b637d6d4102c7ae4459f8b1f9acc7",
+          "role": "company_IR_announcement",
+          "date_published": "2026-01-07T07:00:50-05:00",
+          "timestamp_basis": "JSON-LD datePublished",
+          "date_modified": null
+        },
+        {
+          "source_key": "GLUE-8k",
+          "url": "https://www.sec.gov/Archives/edgar/data/1826457/000119312526005420/glue-20260107.htm",
+          "retrieved_at": "2026-10-06T17:49:11.177427+00:00",
+          "request_index": 8,
+          "status": 200,
+          "final_url": "https://www.sec.gov/Archives/edgar/data/1826457/000119312526005420/glue-20260107.htm",
+          "bytes": 80422,
+          "sha256": "24df38e88276f7e2adb78651c8d0861f032711b3e1292f9c0cc9dd08f7c4f27b",
+          "role": "SEC_8K",
+          "filing_acceptance": "2026-01-07T12:06:15.000Z"
+        },
+        {
+          "source_key": "GLUE-exhibit",
+          "url": "https://www.sec.gov/Archives/edgar/data/1826457/000119312526005420/glue-ex99_1.htm",
+          "retrieved_at": "2026-10-06T17:49:47.512739+00:00",
+          "request_index": 13,
+          "status": 200,
+          "final_url": "https://www.sec.gov/Archives/edgar/data/1826457/000119312526005420/glue-ex99_1.htm",
+          "bytes": 50987,
+          "sha256": "2a3609aa7e44435dcbe2700b2969689703e4291ef490a52bed5cec0210d29cdb",
+          "role": "SEC_8K_company_release_exhibit"
+        },
+        {
+          "source_key": "GLUE-submissions",
+          "url": "https://data.sec.gov/submissions/CIK0001826457.json",
+          "retrieved_at": "2026-10-06T17:48:34.602490+00:00",
+          "request_index": 1,
+          "status": 200,
+          "final_url": "https://data.sec.gov/submissions/CIK0001826457.json",
+          "bytes": 63918,
+          "sha256": "e0f36d0894b5c6d0b4147fc9485e6173c02330f86602092d95e98b091dbda081",
+          "role": "SEC_acceptance_timestamp_metadata",
+          "filing_acceptance": "2026-01-07T12:06:15.000Z"
+        }
+      ],
+      "timestamp_limitations": [
+        "IR 未列 dateModified；现抓页面不等于完整历史修订记录。SEC 接收时间支持这份临床公告盘前已经公开。"
+      ]
+    },
+    {
+      "candidate_id": "2026-01-16__IBRX",
+      "date": "2026-01-16",
+      "symbol": "IBRX",
+      "news_status": "confirmed_outside_registered_category",
+      "pass_registered_news_gate": false,
+      "event_category": "clinical_results_and_enrollment_updates_outside_registered_categories",
+      "rationale": "盘前两项公告分别为 CD19 CAR-NK 临床结果及 QUILT-2.005 入组进展。后者提及的 FDA 中期分析要求发生在 2023 年，相关数据已于 2024 年公开；2026 年预计提交 BLA/拟寻求沟通是公司计划，不能视为当天新发生的监管行动。分析师目标价不是公司 guidance。邻近的初步收入公告发布于 1 月 15 日 08:31:50 ET，早于本候选的前收盘边界，不能挪至 1 月 16 日。",
+      "news_window": {
+        "strict_after_previous_regular_close": "2026-01-15T16:00:00-05:00",
+        "strict_before_current_regular_open": "2026-01-16T09:30:00-05:00",
+        "timezone": "America/New_York"
+      },
+      "announcement_time": "2026-01-16T07:00:38-05:00",
+      "in_window_confirmed": true,
+      "sources": [
+        {
+          "source_key": "IBRX-Jan16-NK-IR",
+          "url": "https://ir.immunitybio.com/news-releases/news-release-details/immunitybio-announces-durable-complete-response-15-months",
+          "retrieved_at": "2026-10-06T17:51:38.376118+00:00",
+          "request_index": 18,
+          "status": 200,
+          "final_url": "https://ir.immunitybio.com/news-releases/news-release-details/immunitybio-announces-durable-complete-response-15-months",
+          "bytes": 52171,
+          "sha256": "532a84224628b572d14460776150c8c36db263f525d43fe2c1fea0ed05a30ee9",
+          "role": "company_IR_clinical_results",
+          "date_published": "2026-01-16T07:00:48-05:00",
+          "timestamp_basis": "JSON-LD datePublished",
+          "date_modified": null
+        },
+        {
+          "source_key": "IBRX-Jan16-enrollment-IR",
+          "url": "https://ir.immunitybio.com/news-releases/news-release-details/immunitybio-advances-first-line-bcg-naive-nmibc-program",
+          "retrieved_at": "2026-10-06T17:51:39.128065+00:00",
+          "request_index": 19,
+          "status": 200,
+          "final_url": "https://ir.immunitybio.com/news-releases/news-release-details/immunitybio-advances-first-line-bcg-naive-nmibc-program",
+          "bytes": 50009,
+          "sha256": "138c1604088ad190d77a82f53c0476e0f98ec9dbcf1fbb9cedf2e45c9f552758",
+          "role": "company_IR_enrollment_update",
+          "date_published": "2026-01-16T07:00:38-05:00",
+          "timestamp_basis": "JSON-LD datePublished",
+          "date_modified": null
+        },
+        {
+          "source_key": "IBRX-Jan15-revenue-IR",
+          "url": "https://ir.immunitybio.com/news-releases/news-release-details/immunitybio-reports-continued-execution-and-sales-momentum-113",
+          "retrieved_at": "2026-10-06T17:51:40.156236+00:00",
+          "request_index": 20,
+          "status": 200,
+          "final_url": "https://ir.immunitybio.com/news-releases/news-release-details/immunitybio-reports-continued-execution-and-sales-momentum-113",
+          "bytes": 48293,
+          "sha256": "2ddf0d3e52f78791b8d562ccfc8410e33c204d6e7747696faaffc3e763526c56",
+          "role": "nearby_financial_announcement_excluded_before_window",
+          "date_published": "2026-01-15T08:31:50-05:00",
+          "timestamp_basis": "JSON-LD datePublished"
+        },
+        {
+          "source_key": "IBRX-Jan16-NK",
+          "url": "https://immunitybio.com/immunitybio-announces-durable-complete-response-of-15-months-with-a-chemotherapy-free-cd19-car-nk-cell-therapy-in-waldenstrom-lymphoma/",
+          "retrieved_at": "2026-10-06T17:49:45.637326+00:00",
+          "request_index": 10,
+          "status": 200,
+          "final_url": "https://immunitybio.com/immunitybio-announces-durable-complete-response-of-15-months-with-a-chemotherapy-free-cd19-car-nk-cell-therapy-in-waldenstrom-lymphoma/",
+          "bytes": 89571,
+          "sha256": "e1c5888283b288fe74f4eb46975f76fcd933a903b7eb5c0690b9f4db6063fe6e",
+          "role": "later_company_mirror_not_contemporaneous_version_proof",
+          "date_published": "2026-01-16T14:55:28+00:00",
+          "date_modified": "2026-09-25T20:59:54+00:00"
+        },
+        {
+          "source_key": "IBRX-Jan16-enrollment",
+          "url": "https://immunitybio.com/immunitybio-advances-first-line-bcg-naive-nmibc-program-with-enrollment-exceeding-expectations-and-positive-interim-analysis-for-anktiva-plus-bcg/",
+          "retrieved_at": "2026-10-06T17:49:46.195528+00:00",
+          "request_index": 11,
+          "status": 200,
+          "final_url": "https://immunitybio.com/immunitybio-advances-first-line-bcg-naive-nmibc-program-with-enrollment-exceeding-expectations-and-positive-interim-analysis-for-anktiva-plus-bcg/",
+          "bytes": 86085,
+          "sha256": "f21142361ea0c80474b91bdfe53f4f6b5cee092c73c169f29fee0cb9fdff4a07",
+          "role": "later_company_mirror_not_contemporaneous_version_proof",
+          "date_published": "2026-01-16T14:41:43+00:00",
+          "date_modified": "2026-01-16T14:53:14+00:00"
+        }
+      ],
+      "timestamp_limitations": [
+        "IR 两项公告的元数据均为 07:00 ET；公司主站镜像发布/修订时间在开盘后，其中临床结果页面更在 9 月修订。镜像当前正文不能认证为 1 月 16 日盘前版本，未将这些较晚版本用于证明盘前新增事实。",
+        "IR 当前页面亦不是历史版本档案；类别结论仅限本次可核对公告，不证明没有其他新闻。"
+      ]
+    },
+    {
+      "candidate_id": "2026-01-20__IBRX",
+      "date": "2026-01-20",
+      "symbol": "IBRX",
+      "news_status": "confirmed_registered_regulatory_communication_with_version_limitations",
+      "pass_registered_news_gate": true,
+      "event_category": "regulatory announcement",
+      "rationale": "公司盘前披露已经与 FDA 举行 Type B End-of-Phase 会议，FDA 在讨论后建议补充信息以考虑潜在的 sBLA 重新提交。这是已经发生的监管沟通公告，纳入原冻结宽类别 regulatory announcement。它不是批准、不是已经重新提交、也不是 FDA 已受理；未来 30 天提交补充信息仍属计划。此分类未增加临床结果类别，未根据收益筛选。",
+      "news_window": {
+        "strict_after_previous_regular_close": "2026-01-16T16:00:00-05:00",
+        "strict_before_current_regular_open": "2026-01-20T09:30:00-05:00",
+        "timezone": "America/New_York"
+      },
+      "announcement_time": "2026-01-20T04:00:33-05:00",
+      "conservative_available_by": "2026-01-20T09:27:28-05:00",
+      "in_window_confirmed": true,
+      "conservative_available_by_basis": "公司主站已检索页面 dateModified=14:27:28Z；取比 IR datePublished 更晚的可见修订元数据，仍早于 09:30 ET。此值是页面元数据支持的时点，不是独立历史存档证明。",
+      "verified_event_facts": [
+        "公司称近期已经举行 FDA Type B End-of-Phase 会议。",
+        "公司称 FDA 建议补充信息，供考虑潜在 sBLA 重新提交。",
+        "补充资料拟在未来 30 天提交，公告不声称当日已提交、已受理或已获批。"
+      ],
+      "sources": [
+        {
+          "source_key": "IBRX-Jan20-IR",
+          "url": "https://ir.immunitybio.com/news-releases/news-release-details/immunitybio-advances-regulatory-discussions-fda-potential",
+          "retrieved_at": "2026-10-06T17:51:37.194385+00:00",
+          "request_index": 17,
+          "status": 200,
+          "final_url": "https://ir.immunitybio.com/news-releases/news-release-details/immunitybio-advances-regulatory-discussions-fda-potential",
+          "bytes": 52648,
+          "sha256": "545edde3ce08bea2461bf34f3d9d528da2990969f00f6e73d444a1edd8cb7966",
+          "role": "company_IR_first_party_announcement",
+          "date_published": "2026-01-20T04:00:33-05:00",
+          "timestamp_basis": "JSON-LD datePublished",
+          "date_modified": null
+        },
+        {
+          "source_key": "IBRX-Jan20",
+          "url": "https://immunitybio.com/immunitybio-advances-regulatory-discussions-with-fda-on-potential-resubmission-path-for-anktiva-in-bcg-unresponsive-papillary-bladder-cancer/",
+          "retrieved_at": "2026-10-06T17:49:45.130315+00:00",
+          "request_index": 9,
+          "status": 200,
+          "final_url": "https://immunitybio.com/immunitybio-advances-regulatory-discussions-with-fda-on-potential-resubmission-path-for-anktiva-in-bcg-unresponsive-papillary-bladder-cancer/",
+          "bytes": 87960,
+          "sha256": "7649ca8012eaa6d6a011b17fdf80f98219a29bc99a07c8061eecdbfb3dda6f85",
+          "role": "company_site_corroboration_with_later_before_open_revision",
+          "date_published": "2026-01-20T14:04:57+00:00",
+          "date_modified": "2026-01-20T14:27:28+00:00",
+          "timestamp_basis": "JSON-LD and OpenGraph publication/modified metadata"
+        }
+      ],
+      "timestamp_limitations": [
+        "以 1 月 16 日常规收盘为前一交易日边界；1 月 19 日休市，不能用不存在的当日收盘。",
+        "两家公司页面发布时间不同，保留为 IR 与主站镜像的不同发布时点。主站可见修订时间为开盘前 2 分 32 秒，但完整历史版本未归档核验。",
+        "监管沟通事实来自发行人第一方公告，未取得 FDA 独立会议纪要；不将发行人表述提升为 FDA 独立确认。"
+      ]
+    }
+  ],
+  "counts": {
+    "reviewed": 3,
+    "pass": 1,
+    "fail_registered_category": 2,
+    "unresolved": 0,
+    "source_requests": 20
+  },
+  "source_attempts": [
+    {
+      "source_key": "GLUE-submissions",
+      "url": "https://data.sec.gov/submissions/CIK0001826457.json",
+      "retrieved_at": "2026-10-06T17:48:34.602490+00:00",
+      "request_index": 1,
+      "status": 200,
+      "final_url": "https://data.sec.gov/submissions/CIK0001826457.json",
+      "bytes": 63918,
+      "sha256": "e0f36d0894b5c6d0b4147fc9485e6173c02330f86602092d95e98b091dbda081"
+    },
+    {
+      "source_key": "IBRX-submissions",
+      "url": "https://data.sec.gov/submissions/CIK0001326110.json",
+      "retrieved_at": "2026-10-06T17:48:35.149870+00:00",
+      "request_index": 2,
+      "status": 200,
+      "final_url": "https://data.sec.gov/submissions/CIK0001326110.json",
+      "bytes": 89617,
+      "sha256": "cf24fc40eaa0210e302d86ef5265a4d90e1a1da0c1fedf911d01abe1ce52b473"
+    },
+    {
+      "source_key": "GLUE-IR",
+      "url": "https://ir.monterosatx.com/news-releases",
+      "retrieved_at": "2026-10-06T17:48:35.646554+00:00",
+      "request_index": 3,
+      "status": 404,
+      "bytes": 38149,
+      "sha256": "f64fe54b280b7b45130da863bffbc9a299b912915cac7a8b4cce0d9680f89d96"
+    },
+    {
+      "source_key": "IBRX-IR",
+      "url": "https://ir.immunitybio.com/news-releases",
+      "retrieved_at": "2026-10-06T17:48:36.608713+00:00",
+      "request_index": 4,
+      "status": 404,
+      "bytes": 30442,
+      "sha256": "41c23435dff6af44f2af11915f8a1659f7b7fe28073980dcca9ddae32c415924"
+    },
+    {
+      "source_key": "GLUE-IR-correct",
+      "url": "https://ir.monterosatx.com/news-and-events/press-releases",
+      "retrieved_at": "2026-10-06T17:49:08.973631+00:00",
+      "request_index": 5,
+      "status": 200,
+      "final_url": "https://ir.monterosatx.com/news-and-events/press-releases",
+      "bytes": 55342,
+      "sha256": "ff3dfb96d16a7dddc919f9c093f1434e9a0c1824c9cff7f8e874984e328a3102"
+    },
+    {
+      "source_key": "IBRX-IR-correct",
+      "url": "https://ir.immunitybio.com/company/press-releases",
+      "retrieved_at": "2026-10-06T17:49:09.917769+00:00",
+      "request_index": 6,
+      "status": 200,
+      "final_url": "https://ir.immunitybio.com/company/press-releases",
+      "bytes": 46334,
+      "sha256": "18468920af5c6fce84e8d9bb1dc851de026848373769d8b7a48632878084e1f2"
+    },
+    {
+      "source_key": "IBRX-company-news",
+      "url": "https://immunitybio.com/news-and-events/",
+      "retrieved_at": "2026-10-06T17:49:10.536213+00:00",
+      "request_index": 7,
+      "status": 200,
+      "final_url": "https://immunitybio.com/news-and-events/",
+      "bytes": 258461,
+      "sha256": "1f92c9ce53851cc6218ff6341105c783a02a547ef25d6e3d139f837a9df44486"
+    },
+    {
+      "source_key": "GLUE-8k",
+      "url": "https://www.sec.gov/Archives/edgar/data/1826457/000119312526005420/glue-20260107.htm",
+      "retrieved_at": "2026-10-06T17:49:11.177427+00:00",
+      "request_index": 8,
+      "status": 200,
+      "final_url": "https://www.sec.gov/Archives/edgar/data/1826457/000119312526005420/glue-20260107.htm",
+      "bytes": 80422,
+      "sha256": "24df38e88276f7e2adb78651c8d0861f032711b3e1292f9c0cc9dd08f7c4f27b"
+    },
+    {
+      "source_key": "IBRX-Jan20",
+      "url": "https://immunitybio.com/immunitybio-advances-regulatory-discussions-with-fda-on-potential-resubmission-path-for-anktiva-in-bcg-unresponsive-papillary-bladder-cancer/",
+      "retrieved_at": "2026-10-06T17:49:45.130315+00:00",
+      "request_index": 9,
+      "status": 200,
+      "final_url": "https://immunitybio.com/immunitybio-advances-regulatory-discussions-with-fda-on-potential-resubmission-path-for-anktiva-in-bcg-unresponsive-papillary-bladder-cancer/",
+      "bytes": 87960,
+      "sha256": "7649ca8012eaa6d6a011b17fdf80f98219a29bc99a07c8061eecdbfb3dda6f85"
+    },
+    {
+      "source_key": "IBRX-Jan16-NK",
+      "url": "https://immunitybio.com/immunitybio-announces-durable-complete-response-of-15-months-with-a-chemotherapy-free-cd19-car-nk-cell-therapy-in-waldenstrom-lymphoma/",
+      "retrieved_at": "2026-10-06T17:49:45.637326+00:00",
+      "request_index": 10,
+      "status": 200,
+      "final_url": "https://immunitybio.com/immunitybio-announces-durable-complete-response-of-15-months-with-a-chemotherapy-free-cd19-car-nk-cell-therapy-in-waldenstrom-lymphoma/",
+      "bytes": 89571,
+      "sha256": "e1c5888283b288fe74f4eb46975f76fcd933a903b7eb5c0690b9f4db6063fe6e"
+    },
+    {
+      "source_key": "IBRX-Jan16-enrollment",
+      "url": "https://immunitybio.com/immunitybio-advances-first-line-bcg-naive-nmibc-program-with-enrollment-exceeding-expectations-and-positive-interim-analysis-for-anktiva-plus-bcg/",
+      "retrieved_at": "2026-10-06T17:49:46.195528+00:00",
+      "request_index": 11,
+      "status": 200,
+      "final_url": "https://immunitybio.com/immunitybio-advances-first-line-bcg-naive-nmibc-program-with-enrollment-exceeding-expectations-and-positive-interim-analysis-for-anktiva-plus-bcg/",
+      "bytes": 86085,
+      "sha256": "f21142361ea0c80474b91bdfe53f4f6b5cee092c73c169f29fee0cb9fdff4a07"
+    },
+    {
+      "source_key": "GLUE-IR-page2",
+      "url": "https://ir.monterosatx.com/news-and-events/press-releases?page=2",
+      "retrieved_at": "2026-10-06T17:49:46.584131+00:00",
+      "request_index": 12,
+      "status": 200,
+      "final_url": "https://ir.monterosatx.com/news-and-events/press-releases?page=2",
+      "bytes": 46189,
+      "sha256": "4d367f035879beefe4415bc93307cb47664c0a463f26d411bc76f698a6792bcc"
+    },
+    {
+      "source_key": "GLUE-exhibit",
+      "url": "https://www.sec.gov/Archives/edgar/data/1826457/000119312526005420/glue-ex99_1.htm",
+      "retrieved_at": "2026-10-06T17:49:47.512739+00:00",
+      "request_index": 13,
+      "status": 200,
+      "final_url": "https://www.sec.gov/Archives/edgar/data/1826457/000119312526005420/glue-ex99_1.htm",
+      "bytes": 50987,
+      "sha256": "2a3609aa7e44435dcbe2700b2969689703e4291ef490a52bed5cec0210d29cdb"
+    },
+    {
+      "source_key": "GLUE-release",
+      "url": "https://ir.monterosatx.com/news-releases/news-release-details/monte-rosa-therapeutics-announces-positive-interim-phase-1-data",
+      "retrieved_at": "2026-10-06T17:50:40.682525+00:00",
+      "request_index": 14,
+      "status": 200,
+      "final_url": "https://ir.monterosatx.com/news-releases/news-release-details/monte-rosa-therapeutics-announces-positive-interim-phase-1-data",
+      "bytes": 59507,
+      "sha256": "ffb3dadc10d281db463f2adb3e51cd02c24b637d6d4102c7ae4459f8b1f9acc7"
+    },
+    {
+      "source_key": "IBRX-IR-page2",
+      "url": "https://ir.immunitybio.com/company/press-releases?page=2",
+      "retrieved_at": "2026-10-06T17:50:41.693794+00:00",
+      "request_index": 15,
+      "status": 200,
+      "final_url": "https://ir.immunitybio.com/company/press-releases?page=2",
+      "bytes": 47007,
+      "sha256": "af2c483c665f8b16e895e721086ea82e20b20dbb12d6da51cbbd0f9873028a76"
+    },
+    {
+      "source_key": "IBRX-IR-page3",
+      "url": "https://ir.immunitybio.com/company/press-releases?page=3",
+      "retrieved_at": "2026-10-06T17:51:19.179603+00:00",
+      "request_index": 16,
+      "status": 200,
+      "final_url": "https://ir.immunitybio.com/company/press-releases?page=3",
+      "bytes": 45437,
+      "sha256": "379ded55de30c215b5f89488476b7e0cce9074ffefbf69f503e791f4ecd19e56"
+    },
+    {
+      "source_key": "IBRX-Jan20-IR",
+      "url": "https://ir.immunitybio.com/news-releases/news-release-details/immunitybio-advances-regulatory-discussions-fda-potential",
+      "retrieved_at": "2026-10-06T17:51:37.194385+00:00",
+      "request_index": 17,
+      "status": 200,
+      "final_url": "https://ir.immunitybio.com/news-releases/news-release-details/immunitybio-advances-regulatory-discussions-fda-potential",
+      "bytes": 52648,
+      "sha256": "545edde3ce08bea2461bf34f3d9d528da2990969f00f6e73d444a1edd8cb7966"
+    },
+    {
+      "source_key": "IBRX-Jan16-NK-IR",
+      "url": "https://ir.immunitybio.com/news-releases/news-release-details/immunitybio-announces-durable-complete-response-15-months",
+      "retrieved_at": "2026-10-06T17:51:38.376118+00:00",
+      "request_index": 18,
+      "status": 200,
+      "final_url": "https://ir.immunitybio.com/news-releases/news-release-details/immunitybio-announces-durable-complete-response-15-months",
+      "bytes": 52171,
+      "sha256": "532a84224628b572d14460776150c8c36db263f525d43fe2c1fea0ed05a30ee9"
+    },
+    {
+      "source_key": "IBRX-Jan16-enrollment-IR",
+      "url": "https://ir.immunitybio.com/news-releases/news-release-details/immunitybio-advances-first-line-bcg-naive-nmibc-program",
+      "retrieved_at": "2026-10-06T17:51:39.128065+00:00",
+      "request_index": 19,
+      "status": 200,
+      "final_url": "https://ir.immunitybio.com/news-releases/news-release-details/immunitybio-advances-first-line-bcg-naive-nmibc-program",
+      "bytes": 50009,
+      "sha256": "138c1604088ad190d77a82f53c0476e0f98ec9dbcf1fbb9cedf2e45c9f552758"
+    },
+    {
+      "source_key": "IBRX-Jan15-revenue-IR",
+      "url": "https://ir.immunitybio.com/news-releases/news-release-details/immunitybio-reports-continued-execution-and-sales-momentum-113",
+      "retrieved_at": "2026-10-06T17:51:40.156236+00:00",
+      "request_index": 20,
+      "status": 200,
+      "final_url": "https://ir.immunitybio.com/news-releases/news-release-details/immunitybio-reports-continued-execution-and-sales-momentum-113",
+      "bytes": 48293,
+      "sha256": "2ddf0d3e52f78791b8d562ccfc8410e33c204d6e7747696faaffc3e763526c56"
+    }
+  ],
+  "limitations": [
+    "Current retrieved first-party pages and their publication/update metadata are not a complete historical revision archive.",
+    "False means the reviewed contemporaneous announcements fail the frozen category; it does not prove all possible catalysts absent.",
+    "No issuer price targets, analyst price targets, clinical milestones, and regulatory approvals are conflated.",
+    "News-gate qualification is not an executable trade, a return estimate, or proof of economic advantage."
+  ],
+  "broker_orders_sent": 0,
+  "strategy_returns_computed": false
+}

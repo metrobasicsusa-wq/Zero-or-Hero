@@ -1,0 +1,140 @@
+{
+  "audited_at": "2026-10-06T17:45:58.487161+00:00",
+  "scope": "Independent news-source/time/identity/privacy audit plus frozen cohort and raw minute input integrity; no strategy or primary-catalyst validation",
+  "synthetic_tests": {
+    "module": "audit_news.py",
+    "total": 22,
+    "passed": 22,
+    "downloader": 6,
+    "news_analyzer": 16,
+    "network_calls": 0
+  },
+  "source_sha256": {
+    "study-design.json": "78411173d674f6d0b5974a66e95d368bfe2502061ca92a55e9074583999c5952",
+    "candidates.json": "74c90d92ef78faeef3c3f0f0124d22b73c552e25cd3dac129db34724582c9067",
+    "bar-tasks.json": "299f1466d7bda7ce70f9cf59e6003fcc61b3e26d519feada0fdbaebd3e5b4543",
+    "download_inputs.py": "6be7b33f75c4858913797ed50b8ecefcd50f67928ced1b1effa67557d663c588",
+    "news_analysis.py": "d78db389337b914585beaea3490977676fea8b819d9fd11190e3704309763f23",
+    "news-input-manifest.json": "e588b19a8d2d7155e34f997e53d30964289d973ceb230977fd3c0111a9dc06c5",
+    "bars-input-manifest.json": "8cbccb9c99dd70dc2d42931e8bec29a69bed617cddb7f9bae37bba2f495e9aae",
+    "news-enriched.json": "0c0b497fadb934ab2de4b080acb44d05b3738a0b197dc552c05535fefce9083d",
+    "news-summary.json": "d1dcbb6ddfb92b00c115013d756b2d00b170702b945d3305c9a00e58fb662c91",
+    "minute-market.json": "157568c79d7b9991ddd75a1492201f12b26267547caca317007b78fdf7f9ebf3",
+    "audit_news.py": "c083d1ff7e9cd50dc059d763c6cb0b23ef77c67362280a01bd367120748cb154",
+    "news-source-evidence.json": "dfb60d139e8babf08fc7f96212128fd3214321b8558e681c4556163bc0741baa",
+    "news-window-probe.json": "01c660cbfa0a8dbebade4b7fd979f564aaa1bfbe2477b0038cef3f6e621ec926",
+    "news-window-probe-interpretation.json": "1e68ca408aaf4fbb145d3cf9adb1b23d6e4945a860d7a3790a29f0ade64d1338"
+  },
+  "actual_news_audit": {
+    "frozen_cohort": {
+      "original_stock_candidates_preserved": 1079,
+      "unique_symbols": 723,
+      "candidate_dates": 179,
+      "bar_request_chunks": 179,
+      "candidate_windows_after_early_close": 0,
+      "candidate_windows_spanning_weekend_or_holiday": 188,
+      "all_source_hashes_verified": true,
+      "chronology_and_prior_session_bounds_verified": true,
+      "bar_tasks_cover_all_candidates_without_news_filter": true
+    },
+    "news_download": {
+      "stage": "news",
+      "request_tasks": 1079,
+      "completed_tasks": 1079,
+      "failed_tasks": 0,
+      "raw_pages_verified": 1079,
+      "raw_records_verified": 4711,
+      "raw_bytes_verified": 3735777,
+      "exact_minute_bar_timestamps_verified": 0,
+      "source_hashes_and_complete_request_chains_verified": true
+    },
+    "candidate_results_checked": 1079,
+    "raw_article_rows_checked": 4711,
+    "unique_payload_rows_within_windows_checked": 4711,
+    "global_news_ids_checked": 4117,
+    "conflicting_news_ids": 0,
+    "candidate_status_counts": {
+      "metadata_ready_for_review": 922,
+      "source_no_articles": 157
+    },
+    "ready_article_occurrences": 4707,
+    "quarantine_reason_occurrences": {
+      "created_not_strictly_after_previous_close": 2,
+      "created_not_strictly_before_open": 2,
+      "updated_not_strictly_before_open": 2
+    },
+    "no_raw_headline_summary_or_content_in_public_article_evidence": true,
+    "all_global_ids_timestamps_symbol_tags_duplicates_and_summary_counts_reconciled": true,
+    "independently_verified_catalysts_claimed": 0,
+    "strategy_returns_computed": false
+  },
+  "actual_minute_source_audit": {
+    "stage": "bars",
+    "request_tasks": 179,
+    "completed_tasks": 179,
+    "failed_tasks": 0,
+    "raw_pages_verified": 179,
+    "raw_records_verified": 99272,
+    "raw_bytes_verified": 10306290,
+    "exact_minute_bar_timestamps_verified": 99272,
+    "source_hashes_and_complete_request_chains_verified": true
+  },
+  "findings": [
+    {
+      "id": "latest_revision_not_historical_original",
+      "status": "source_limitation_retained",
+      "description": "No provider guarantee of historical revision snapshots. Missing/malformed/late or reversed updated timestamps quarantine metadata; any observed global ID payload conflict quarantines all versions. Passing flags only metadata_ready_for_review."
+    },
+    {
+      "id": "provider_window_filter_coverage",
+      "status": "source_limitation_retained",
+      "description": "SDK says sort by updated; created-vs-updated start/end filtering is not formally specified. A controlled single ALT article boundary probe supports updated filtering, but is not a complete contract guarantee. Missing historical created-time coverage cannot be ruled out;157 empty windows are source_missing, never no-event."
+    },
+    {
+      "id": "exact_nanosecond_boundaries",
+      "status": "passed",
+      "description": "Strict close<created<open and created<=updated<open. Independent future1ns, equality, unknown offset, bad dates/offsets and missing/late updated tests pass."
+    },
+    {
+      "id": "identity_and_symbol_matching",
+      "status": "passed_with_source_limitation",
+      "description": "Exact symbol tags required; same ID maps across windows; full payload differences quarantine all versions; identical duplicates preserve row indexes/counts. Symbols are provider-related/mentioned tags, not proof the article is the issuer catalyst."
+    },
+    {
+      "id": "empty_headline",
+      "status": "resolved_and_independently_tested",
+      "description": "Initial code accepted any string headline. Added nonempty strip requirement and regression test; blank/nonstring headline now quarantined. No actual cohort count changed."
+    },
+    {
+      "id": "raw_minute_timestamp_truncation",
+      "status": "actual_inputs_independently_verified",
+      "description": "Downloader assembler uses datetime microseconds; independent exact-nanosecond audit verified all99,272actual bars are exact whole minutes within their request windows and nonduplicated. Downstream market get_bar now also rejects nonzero nanosecond minute offsets."
+    },
+    {
+      "id": "public_raw_corpus_exclusion",
+      "status": "passed",
+      "description": "Public article evidence has timestamps, hashes, URLs and derived hints; no raw headline,summary orcontent fields. review-material-private.json and raw-news/raw-bars remain excluded from public package."
+    }
+  ],
+  "findings_history": [
+    {
+      "stage": "initial_21_tests",
+      "empty_headline": "nonempty check requested; no observed actual wrong eligibility"
+    },
+    {
+      "stage": "final_22_tests",
+      "empty_headline": "fixed and regression verified"
+    }
+  ],
+  "interpretation_limits": [
+    "922 metadata-ready candidates do not mean922 independently verified catalysts.",
+    "4711 article occurrences across1079windows share4117IDs and are not independent observations.",
+    "4 quarantined article rows can produce6 overlapping reason occurrences.",
+    "Partial retrieval never promotes candidate status to metadata_ready; ready rows within partial inputs are retained for inspection only.",
+    "Historical query results may omit later-revised premarket stories.",
+    "No primary-news category proof, causal surprise, executable fills, EP12returnpaths or continuous wealth demonstrated by this audit."
+  ],
+  "raw_news_or_market_export_included": false,
+  "strategy_returns_validated": false,
+  "orders_or_workflows_triggered_by_auditor": false
+}

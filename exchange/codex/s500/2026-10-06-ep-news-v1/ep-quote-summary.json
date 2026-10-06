@@ -1,0 +1,82 @@
+{
+  "age_variant_records": 146,
+  "all_pages_complete": true,
+  "all_points_retained": true,
+  "fetch_failures": [],
+  "generated_at": "2026-10-06T17:44:17.209956+00:00",
+  "groups": [
+    {
+      "accepted_points": 51,
+      "all_rejection_reason_counts": {
+        "stale_api_reported_timestamp": 22
+      },
+      "ask_at_or_below_known_stop": 0,
+      "bid_at_or_below_known_stop": 0,
+      "budget_only_unaffordable_250": 1,
+      "budget_only_unaffordable_500": 0,
+      "max_age_seconds": 1,
+      "reason_counts": {
+        "accepted_for_displayed_quote_diagnostic_only": 51,
+        "stale_api_reported_timestamp": 22
+      },
+      "spread_at_least_positive_risk_distance": 0,
+      "spread_bps_of_mid": {
+        "count": 51,
+        "max": 114.19570781649931,
+        "mean": 29.057322196039824,
+        "median": 20.408163265306122,
+        "min": 1.817355747387551
+      },
+      "spread_to_positive_ask_minus_or30_low": {
+        "count": 51,
+        "max": 0.17159763313609466,
+        "mean": 0.02769197376821574,
+        "median": 0.016293279022403257,
+        "min": 0.0033444816053511705
+      },
+      "total_points": 73
+    },
+    {
+      "accepted_points": 67,
+      "all_rejection_reason_counts": {
+        "stale_api_reported_timestamp": 6
+      },
+      "ask_at_or_below_known_stop": 0,
+      "bid_at_or_below_known_stop": 0,
+      "budget_only_unaffordable_250": 1,
+      "budget_only_unaffordable_500": 0,
+      "max_age_seconds": 5,
+      "reason_counts": {
+        "accepted_for_displayed_quote_diagnostic_only": 67,
+        "stale_api_reported_timestamp": 6
+      },
+      "spread_at_least_positive_risk_distance": 0,
+      "spread_bps_of_mid": {
+        "count": 67,
+        "max": 176.0821716801174,
+        "mean": 31.559330996721446,
+        "median": 21.69889590911992,
+        "min": 1.817355747387551
+      },
+      "spread_to_positive_ask_minus_or30_low": {
+        "count": 67,
+        "max": 0.17159763313609466,
+        "mean": 0.029596456861678014,
+        "median": 0.01818181818181818,
+        "min": 0.0033444816053511705
+      },
+      "total_points": 73
+    }
+  ],
+  "limitations": [
+    "Conditioned on known market-gate passes, not an unbiased market-wide quote sample.",
+    "News qualification and issuer identity are independent unresolved gates; no all73 trade list.",
+    "API/event timestamps do not prove historical receive latency or historical trader observability.",
+    "Displayed spread and notional arithmetic do not establish liquidity depth, fees, routing, fills or client permissions."
+  ],
+  "no_trade_return_wealth_or_capacity_claim": true,
+  "point_count": 73,
+  "point_results_sha256": "a228e899f32e24625ec8d841b1ab16dfd22931472c5395b08bea4eaa291159df",
+  "raw_quote_count": 90337,
+  "raw_response_bytes": 10373122
+}

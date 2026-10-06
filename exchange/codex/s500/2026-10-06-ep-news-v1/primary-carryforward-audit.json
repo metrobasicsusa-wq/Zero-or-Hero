@@ -1,0 +1,409 @@
+{
+  "schema": "s500.primary-first10-carryforward-independent-audit.v1",
+  "created_at": "2026-10-06T17:37:40.068042+00:00",
+  "scope": "Offline independent audit of previously published primary first10; no fresh adjudication, no new candidate or return claim.",
+  "source_files": {
+    "prior_ep-followup.json": "6075d2d6fdf225118b05ad814c068f647e8ecf8335665536129fe05cc8df12ad",
+    "prior_ep-event-audit.json": "5ad173e981456372689e8fa392edc2625405e94770353b8f86781ffbfce8add1",
+    "ep-candidate-inventory.json": "95df4912f57d78e29d5b1aa9c209bc77a09eb4924eaeea3e1d60b639eec89ae9"
+  },
+  "checks": [
+    {
+      "name": "chronological_first10",
+      "passed": true,
+      "detail": "Exactly first10 eligible initial candidates sorted date,symbol; no return rank involved."
+    },
+    {
+      "name": "carried_forward_unchanged_BIDU",
+      "passed": true,
+      "detail": {
+        "differing_prior_fields": [],
+        "provenance": "carried_forward_unchanged_from_prior_audit; no new adjudication"
+      }
+    },
+    {
+      "name": "carried_forward_unchanged_SLS",
+      "passed": true,
+      "detail": {
+        "differing_prior_fields": [],
+        "provenance": "carried_forward_unchanged_from_prior_audit; no new adjudication"
+      }
+    },
+    {
+      "name": "carried_forward_unchanged_SMX",
+      "passed": true,
+      "detail": {
+        "differing_prior_fields": [],
+        "provenance": "carried_forward_unchanged_from_prior_audit; no new adjudication"
+      }
+    },
+    {
+      "name": "status_counts",
+      "passed": true,
+      "detail": {
+        "ambiguous": 4,
+        "missing": 4,
+        "confirmed": 2
+      }
+    },
+    {
+      "name": "exact_frozen_news_pass",
+      "passed": true,
+      "detail": {
+        "passes": [
+          [
+            "2026-01-05",
+            "ALT"
+          ]
+        ],
+        "news_confirmed_not_same_as_gate_pass": [
+          "SIDU"
+        ]
+      }
+    },
+    {
+      "name": "remaining_coverage",
+      "passed": true,
+      "detail": {
+        "initial_stock_candidates": 1079,
+        "reviewed_total": 10,
+        "carried_forward_reviews": 3,
+        "new_reviews": 7,
+        "remaining_unreviewed": 1069,
+        "new_primary_request_attempts": 30,
+        "news_status_counts": {
+          "ambiguous": 4,
+          "missing": 4,
+          "confirmed": 2
+        },
+        "confirmed_registered_news_gate": 1,
+        "entire_EP_strategy_validated": false
+      }
+    },
+    {
+      "name": "no_returns_or_orders",
+      "passed": true,
+      "detail": "Audit concerns only provenance/category/publication timing, never execution or returns."
+    },
+    {
+      "name": "new_sources_with_hashes",
+      "passed": true,
+      "detail": {
+        "sources": 30,
+        "matching_hashed_raw": 29,
+        "no_raw_hash_failures_retained": 1
+      }
+    },
+    {
+      "name": "ALT_publication_times_in_raw",
+      "passed": true,
+      "detail": "The two recorded times exist; both are after prior Jan2close and before Jan5open. They differ by62seconds, preserved. Current source is not a contemporaneous capture."
+    },
+    {
+      "name": "SIDU_title_and_time_in_same_index_entry",
+      "passed": true,
+      "detail": "Company appointment index is precise but disallowed category; no article body or approved regulatory event inferred."
+    },
+    {
+      "name": "AEVA_date_and_category",
+      "passed": true,
+      "detail": "Jan5date and futureintegration collaboration do not establish a signedcontract or an afterclose release; unknown timezone kept."
+    },
+    {
+      "name": "ARWR_prior_day_approval_not_retimed",
+      "passed": true,
+      "detail": "Jan5approval cannot be assigned to Jan6preopen without firstpublication time; Jan6clinicalresult is separate and not automatically regulatory."
+    },
+    {
+      "name": "all_passes_have_time_and_category",
+      "passed": true,
+      "detail": "No missing or ambiguous row is promoted to a passing news gate."
+    }
+  ],
+  "passed": 14,
+  "failed": 0,
+  "reviewed_rows": [
+    {
+      "date": "2026-01-02",
+      "symbol": "BIDU",
+      "news_status": "ambiguous",
+      "event_category": "proposed subsidiary spin-off and separate stock-exchange listing",
+      "in_window_confirmed": false,
+      "pass_registered_news_gate": false,
+      "review_provenance": "carried_forward_unchanged_from_prior_audit; no new adjudication"
+    },
+    {
+      "date": "2026-01-02",
+      "symbol": "SLS",
+      "news_status": "missing",
+      "event_category": null,
+      "in_window_confirmed": false,
+      "pass_registered_news_gate": false,
+      "review_provenance": "carried_forward_unchanged_from_prior_audit; no new adjudication"
+    },
+    {
+      "date": "2026-01-02",
+      "symbol": "SMX",
+      "news_status": "ambiguous",
+      "event_category": "technology application / planned product-market expansion",
+      "in_window_confirmed": false,
+      "pass_registered_news_gate": false,
+      "review_provenance": "carried_forward_unchanged_from_prior_audit; no new adjudication"
+    },
+    {
+      "date": "2026-01-02",
+      "symbol": "SOC",
+      "news_status": "missing",
+      "event_category": null,
+      "in_window_confirmed": false,
+      "pass_registered_news_gate": false,
+      "review_provenance": "new bounded primary-source followup"
+    },
+    {
+      "date": "2026-01-05",
+      "symbol": "ALT",
+      "news_status": "confirmed",
+      "event_category": "regulatory announcement: FDA Breakthrough Therapy Designation for pemvidutide in MASH",
+      "in_window_confirmed": true,
+      "pass_registered_news_gate": true,
+      "review_provenance": "new bounded primary-source followup"
+    },
+    {
+      "date": "2026-01-05",
+      "symbol": "SIDU",
+      "news_status": "confirmed",
+      "event_category": "appointment of Kelle Wendling to board of directors",
+      "in_window_confirmed": true,
+      "pass_registered_news_gate": false,
+      "review_provenance": "new bounded primary-source followup"
+    },
+    {
+      "date": "2026-01-05",
+      "symbol": "SMR",
+      "news_status": "missing",
+      "event_category": null,
+      "in_window_confirmed": false,
+      "pass_registered_news_gate": false,
+      "review_provenance": "new bounded primary-source followup"
+    },
+    {
+      "date": "2026-01-06",
+      "symbol": "AEVA",
+      "news_status": "ambiguous",
+      "event_category": "NVIDIA DRIVE Hyperion sensor selection and future integration collaboration",
+      "in_window_confirmed": false,
+      "pass_registered_news_gate": false,
+      "review_provenance": "new bounded primary-source followup"
+    },
+    {
+      "date": "2026-01-06",
+      "symbol": "ARVN",
+      "news_status": "missing",
+      "event_category": null,
+      "in_window_confirmed": false,
+      "pass_registered_news_gate": false,
+      "review_provenance": "new bounded primary-source followup"
+    },
+    {
+      "date": "2026-01-06",
+      "symbol": "ARWR",
+      "news_status": "ambiguous",
+      "event_category": "Health Canada approval dated January5; separate January6 interim clinical results headline",
+      "in_window_confirmed": false,
+      "pass_registered_news_gate": false,
+      "review_provenance": "new bounded primary-source followup"
+    }
+  ],
+  "source_hash_audit": [
+    {
+      "source_key": "AEVA-IR",
+      "reported_status": 404,
+      "sha256_matches_local_raw": true,
+      "sha256": "841aeac424ddfc58eaa781b1e9504b0957e8d5e604649172058454bfbac0ee67"
+    },
+    {
+      "source_key": "AEVA-home",
+      "reported_status": 200,
+      "sha256_matches_local_raw": true,
+      "sha256": "f409d37c74691ebca2fee199b36f70cf7c65ff1313d420e3894fe028192c1a25"
+    },
+    {
+      "source_key": "AEVA-news",
+      "reported_status": 200,
+      "sha256_matches_local_raw": true,
+      "sha256": "7ae1aa0bae9c7edc8731704a9acecaa2a387bb4eeaa2de916016d63eb4e55516"
+    },
+    {
+      "source_key": "AEVA-nvidia",
+      "reported_status": 200,
+      "sha256_matches_local_raw": true,
+      "sha256": "c6563562b86eba586e5257aa4b39c87c9f738c9d09077422730bb24c83ca3098"
+    },
+    {
+      "source_key": "AEVA-submissions",
+      "reported_status": 200,
+      "sha256_matches_local_raw": true,
+      "sha256": "540d0a13c716317b8499721399d3b4cd168ed42043b9ec5c9108cd535990eaac"
+    },
+    {
+      "source_key": "ALT-IR-corrected",
+      "reported_status": 200,
+      "sha256_matches_local_raw": true,
+      "sha256": "d7eaac583ef113cff4c30b528ce2eb0a6e0d248c18de854ffd024a423f982222"
+    },
+    {
+      "source_key": "ALT-IR",
+      "reported_status": 404,
+      "sha256_matches_local_raw": true,
+      "sha256": "4a78b163bf331edceb8c2bd9a16c36a19ad29ef57264987efabf5ac72a5e25fe"
+    },
+    {
+      "source_key": "ALT-IR-page2",
+      "reported_status": 200,
+      "sha256_matches_local_raw": true,
+      "sha256": "0e107b93e8e1ee81100f7e0e8cd81bdd3e8b4b266ca3bc44241afd397c82c570"
+    },
+    {
+      "source_key": "ALT-release",
+      "reported_status": 200,
+      "sha256_matches_local_raw": true,
+      "sha256": "41856f5cf2cb9b0638d58f6045e06d1b49c0c8d9667a5187ec1454d039fa37ad"
+    },
+    {
+      "source_key": "ALT-submissions",
+      "reported_status": 200,
+      "sha256_matches_local_raw": true,
+      "sha256": "6667fb02e6dd5b59c244fc033433ccabecc4c480bb46012460256e5e44cc51f3"
+    },
+    {
+      "source_key": "ARVN-IR-corrected",
+      "reported_status": 200,
+      "sha256_matches_local_raw": true,
+      "sha256": "c5918dd9c04c49174d966648e2bc79772805f2438480cb365799e3c49d2c0922"
+    },
+    {
+      "source_key": "ARVN-IR",
+      "reported_status": 404,
+      "sha256_matches_local_raw": true,
+      "sha256": "2ccd56c3ab613ffef9490349f37264e7351e31a8c9f184513124a4d84b44e040"
+    },
+    {
+      "source_key": "ARVN-IR-page1",
+      "reported_status": 200,
+      "sha256_matches_local_raw": true,
+      "sha256": "a2f299e804993762cdd43425285f783ce72a5b4a1937fbafa0ccebec8482cc3a"
+    },
+    {
+      "source_key": "ARVN-submissions",
+      "reported_status": 200,
+      "sha256_matches_local_raw": true,
+      "sha256": "14b0a07fbef97c0262c7f7e7c18ba8bcdfc01fa6458f89e460417c1d60113fd1"
+    },
+    {
+      "source_key": "ARWR-IR-corrected",
+      "reported_status": 200,
+      "sha256_matches_local_raw": true,
+      "sha256": "9c6e8bc7205d4a2512473b6d28f6a0d809dbd62e705606c3bf0311b009d4e6ea"
+    },
+    {
+      "source_key": "ARWR-IR",
+      "reported_status": 404,
+      "sha256_matches_local_raw": true,
+      "sha256": "c1f5c6e9d851d0cdc2070398ef6586aefe0654fc891e9777332b127274664988"
+    },
+    {
+      "source_key": "ARWR-canada",
+      "reported_status": 200,
+      "sha256_matches_local_raw": true,
+      "sha256": "27b40826a2fe445e37092d55a7d0f63b97d254590c77b5f599fe88b154cd551c"
+    },
+    {
+      "source_key": "ARWR-submissions",
+      "reported_status": 200,
+      "sha256_matches_local_raw": true,
+      "sha256": "a4549b37aa9abfe4ddce4cdf9025a65b061f3bfe814b340e82b4cd99c915ebd0"
+    },
+    {
+      "source_key": "SIDU-IR",
+      "reported_status": 200,
+      "sha256_matches_local_raw": true,
+      "sha256": "8aa08b9e507e474dcd5544306d05e0a6736ee0cdf4a7f628978a283619bd57cf"
+    },
+    {
+      "source_key": "SIDU-IR-page3",
+      "reported_status": 200,
+      "sha256_matches_local_raw": true,
+      "sha256": "f8d8c2ca304d3b8e107c4f90fea8208af232c9bf4739548ed3c62c9cd10f62ba"
+    },
+    {
+      "source_key": "SIDU-submissions",
+      "reported_status": 200,
+      "sha256_matches_local_raw": true,
+      "sha256": "75d6751fc6c3d0c23f5002839e8fd4d24437a730288c81a7540a4d60b55c3bcf"
+    },
+    {
+      "source_key": "SMR-IR-corrected",
+      "reported_status": 200,
+      "sha256_matches_local_raw": true,
+      "sha256": "316468e3371c8522fea0d0131a763dfed3f184f6b6e79801356f92543aa60c3e"
+    },
+    {
+      "source_key": "SMR-IR",
+      "reported_status": 404,
+      "sha256_matches_local_raw": true,
+      "sha256": "b02cf62f403d186192c2fac08b541640043e406990641195ce73efabbe39bbc4"
+    },
+    {
+      "source_key": "SMR-IR-page2",
+      "reported_status": 200,
+      "sha256_matches_local_raw": true,
+      "sha256": "6c63e1fbf42d4050b88873d8ccd2723058b828a78c295ea8ce7470ffb9670b07"
+    },
+    {
+      "source_key": "SMR-submissions",
+      "reported_status": 200,
+      "sha256_matches_local_raw": true,
+      "sha256": "e988aac9086dbe972e046874973c7d08ee22759127caa9759d9aaba5c7a182df"
+    },
+    {
+      "source_key": "SOC-IR",
+      "reported_status": "URLError",
+      "sha256_matches_local_raw": null,
+      "reason": "No raw bytes reported for failed access; absence retained."
+    },
+    {
+      "source_key": "SOC-home",
+      "reported_status": 200,
+      "sha256_matches_local_raw": true,
+      "sha256": "24cdd6a389812591c25264a832b365bbd1b59a3b276ce5564adaca75048f69f9"
+    },
+    {
+      "source_key": "SOC-news",
+      "reported_status": 200,
+      "sha256_matches_local_raw": true,
+      "sha256": "ae736db1fcacacc884981fca6e9eae8b10e9b18dda97dd380f43906e041df689"
+    },
+    {
+      "source_key": "SOC-submissions",
+      "reported_status": 200,
+      "sha256_matches_local_raw": true,
+      "sha256": "ec0401b2eb49ffed61356b10a7e423f40d9a23790ac636422a562e79c5c039c4"
+    },
+    {
+      "source_key": "sec-tickers",
+      "reported_status": 200,
+      "sha256_matches_local_raw": true,
+      "sha256": "eb943bdc3d233f54644ba916f261651460a0b94f6fbf29dbf3c1788271b17bf9"
+    }
+  ],
+  "limits": [
+    "Matching existing evidence and conservative classification does not establish complete IR/SEC coverage.",
+    "Missing news remains unknown; failure to locate an event does not prove absence.",
+    "Primary pages are current downloads with stated timestamps, not archived captures proving all historical content.",
+    "All10 are prior reviews, not10 new reviews for this stage. Only7 were new during the prior followup;3 were earlier carryforwards.",
+    "News gate success does not establish volume, entry, quote availability, fills, exits or profits."
+  ],
+  "new_primary_http_requests": 0,
+  "strategy_returns_computed": false,
+  "broker_orders_sent": 0
+}

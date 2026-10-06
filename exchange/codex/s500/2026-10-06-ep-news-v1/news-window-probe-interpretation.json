@@ -1,0 +1,67 @@
+{
+  "schema": "s500.news-window-probe-interpretation.v1",
+  "created_at": "2026-10-06T17:36:22.300572+00:00",
+  "scope": "Separate post-registration diagnostic; does not rewrite study design or candidate selection. Interprets two existing root API calls without making further requests.",
+  "input": {
+    "file": "news-window-probe.json",
+    "sha256": "01c660cbfa0a8dbebade4b7fd979f564aaa1bfbe2477b0038cef3f6e621ec926",
+    "documentation_file": "news-source-evidence.json",
+    "documentation_sha256": "dfb60d139e8babf08fc7f96212128fd3214321b8558e681c4556163bc0741baa"
+  },
+  "observed_article_times": {
+    "created_at": "2026-01-05T12:33:44Z",
+    "updated_at": "2026-01-05T12:33:45Z"
+  },
+  "observations": [
+    {
+      "label": "created_only",
+      "request_start": "2026-01-05T12:33:43Z",
+      "request_end": "2026-01-05T12:33:44.999999999Z",
+      "rows": 0,
+      "page_complete": true,
+      "response_sha256": "1984fa41fb67d0ab76fcecb4e0541b105ef87be2d3a83810b85dd7997f0de511"
+    },
+    {
+      "label": "updated_only",
+      "request_start": "2026-01-05T12:33:45Z",
+      "request_end": "2026-01-05T12:33:46Z",
+      "rows": 1,
+      "page_complete": true,
+      "response_sha256": "1bfe7e364aae3eb99700fec19276c63eb7d5bd3a242b36f92492a50ee362c179"
+    }
+  ],
+  "interpretation": {
+    "supported": "For this one known ALT article, a window including creation but excluding update returned zero articles; a window including update but excluding creation returned that article. The observed behavior is consistent with start/end filtering on updated_at, and inconsistent with a simple created_at-only filter for this example.",
+    "not_established": [
+      "A contractual rule across all articles, sources, dates or API versions.",
+      "An immutable archive of the article headline/body/symbols as they existed at the original creation time.",
+      "Full coverage of all articles created in any candidate window.",
+      "The reason for every possible empty response."
+    ],
+    "coverage_consequence": "An article originally created before candidate open and revised after open may be excluded from a fixed preopen query. A local created_at check cannot recover articles the response omitted. Thus an empty response or metadata rejection remains missing/unconfirmed evidence, not proof of no historical catalyst.",
+    "fractional_bound_note": "The created-only response accepted the requested fractional-second end bound for this observation. This differs from the archived generic OpenAPI restriction, but does not establish general accepted precision or exact boundary normalization."
+  },
+  "retained_rules": [
+    "Keep the frozen fullcandidate query windows and report measured coverage rather than expanding/reselecting the sample silently.",
+    "Use created_at and updated_at checks as conservative metadata diagnostics, not proof of historical headline availability.",
+    "Primary issuer/SEC evidence and precise first-publication time are required for an event-confirmed classification."
+  ],
+  "independent_verification": [
+    {
+      "probe": "created_only",
+      "raw_sha256_matches_report": true,
+      "rows_match": true,
+      "terminal_token_is_null": true,
+      "retrieved_at": "2026-10-06T17:33:52.115833+00:00"
+    },
+    {
+      "probe": "updated_only",
+      "raw_sha256_matches_report": true,
+      "rows_match": true,
+      "terminal_token_is_null": true,
+      "retrieved_at": "2026-10-06T17:33:52.628456+00:00"
+    }
+  ],
+  "strategy_returns_computed": false,
+  "new_http_requests_by_this_interpreter": 0
+}

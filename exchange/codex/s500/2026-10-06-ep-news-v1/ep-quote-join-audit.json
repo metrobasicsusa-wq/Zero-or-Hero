@@ -1,0 +1,59 @@
+{
+  "audited_at": "2026-10-06T17:50:44.417506+00:00",
+  "independent_synthetic_tests": {
+    "count": 3,
+    "passed": 3
+  },
+  "actual": {
+    "quote_points": 73,
+    "age_records": 146,
+    "raw_pages": 73,
+    "raw_quotes": 90337,
+    "raw_bytes": 10373122,
+    "accepted_metric_records": 118,
+    "budget_rows_checked": 236,
+    "primary1s_accepted": 51,
+    "sensitivity5s_accepted": 67,
+    "all_raw_page_hash_size_chains_verified": true,
+    "frozen_all73market_pass_points_verified": true,
+    "OR30low_independently_recomputed_from_first30bars": true,
+    "joined_candidates_preserved": 1079,
+    "market_and_metadata_ready": 70,
+    "previous10excluded_from_new_queue": true,
+    "new_review_eligible": 69,
+    "selected_ids": [
+      "2026-01-06__IMSR",
+      "2026-01-07__GLUE",
+      "2026-01-16__IBRX",
+      "2026-01-20__IBRX",
+      "2026-01-23__LIF"
+    ],
+    "deferred_count": 64,
+    "full_quote_and_join_summary_reconciliation_passed": true,
+    "no_catalyst_execution_or_return_validation": true
+  },
+  "source_sha256": {
+    "ep_quote.py": "6cdc7e6a87ee113ad55935dfb70c3b181b75a4b0b42c106512a74609b453649d",
+    "test_ep_quote.py": "4183884edaea087944f80d6ff28779372434976c5fe41e47968b48005079b312",
+    "ep-quote-design.json": "6972b03e84ef8c389539fb4a75cd23b024f66cd1d2d8cb8e4c6b21244154a490",
+    "ep-quote-results.json": "a228e899f32e24625ec8d841b1ab16dfd22931472c5395b08bea4eaa291159df",
+    "ep-quote-summary.json": "e704bcdaef387a229809a7238c42a081cd44cb459e2e2704f04e0273ff93cd73",
+    "join_candidates.py": "0cfbb4653607092a66ff662fbe0d21bebb3c58b75c15453d48b27905ca589c0b",
+    "joined-candidates.json": "effd1bd81edb0b9a0cc32908521e7c59162b3eea177cd34d95f1cb12bc049c0b",
+    "primary-review-queue.json": "076e56ce80f5a2d809f638859a1ad6084130be4d632abfd39748801956eaa9cb",
+    "audit_ep_quote_join.py": "7c323d4046cd6ead0db91404d2bf9f77ee9e327fc6c9ee94843d286f536b3e00"
+  },
+  "findings": [],
+  "limitations": [
+    "Event/API quote time is not receive latency; raw sizes are not verified execution capacity.",
+    "Ask-OR30low is a different and wider risk denominator than prior ORB0.1ATR; lower spread ratios do not establish a better strategy.",
+    "250/500 budgets only restrict notional, not maximum loss.",
+    "70 joins are metadata plus market gates, not verified catalysts or executable trades.",
+    "First5 queue follows chronological candidate-days; repeat issuer dates remain distinct cases."
+  ],
+  "implementation_test_suite": {
+    "module": "test_ep_quote.py",
+    "count": 14,
+    "passed": 14
+  }
+}
