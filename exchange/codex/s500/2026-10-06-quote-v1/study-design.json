@@ -1,0 +1,49 @@
+{
+  "id": "s500-quote-feasibility-v1",
+  "registered_at": "2026-10-06T17:01:28.213059+00:00",
+  "parent_publication_commit": "33f739cfdced198c618bcbe343b423b5c144c4da",
+  "frozen_before_new_quote_fetch": true,
+  "research_type": "execution-cost feasibility and data availability; not an investment backtest or new wealth path",
+  "known_prior_results": "Original12 continuous ORB paths incomplete. Seventeen completed independent-day trades and2 held-gap days already observed; every19 selected entry is included, never only winners.",
+  "sample_sha256": "820608472cb3e90e4aa75c597e591c4100d1d5a3b05801e97970917c3649c95c",
+  "prior_input_sha256": {
+    "daily-diagnostics.json": "437df68d3de4c20d00afe381a485df9498547bea3f8b968529090a973f7bf944",
+    "ranked.json": "570636ea1e85cf40a2e8f1545cad0030bacc83fcaed74efff759bbe25292f345",
+    "bounded-coverage.json": "c481fa76136cef6d19df4ca059471870265c4ae1f8af8e7a1711e329590f6cb8",
+    "results.json": "74e855002e58e095654a742a70e7118c251c014872d6a0b0eeea5f19362334ce"
+  },
+  "sample_rules": [
+    "First10 chronological mathematically certified top20 days: all20 names including red/doji, unaffordable and missing-minute cases.",
+    "All unique selectedentry stock-days from prior six diagnostic variants, including both held-data failures.",
+    "Both first held-data failure timestamps separately sampled; these are known-failure diagnostics, not random observations."
+  ],
+  "quote_rules": {
+    "request": "SIP raw historical stockquotes, inclusive [decision-60s, decision], all pages up to50/window.",
+    "latest": "Use maximum event nanosecond timestamp <= decision. Never use future quote or fall back from invalid/withdrawn latestquote to older validquote.",
+    "ties": "Conflicting latest-timestamp quote state without certified order is ambiguous; exact-state duplicates may collapse.",
+    "validation": "Both sides strictly positive, ask>=bid, both displayed numeric sizes>0, conditions exactly [R] conservative regular-only; unsupported condition quarantined even if price looks plausible.",
+    "age_seconds": [
+      1,
+      5
+    ],
+    "primary_age_seconds": 1,
+    "size": "Keep source bs/as numeric values. Do not infer shares/roundlots or claim available execution quantity without verified unit evidence.",
+    "clock": "Event time availability does not prove client receive time; no live latency/fill claim.",
+    "fees": "No fees/slippage or improvement in displayed-side hypothetical crossing metric; not net achievable profit."
+  },
+  "metrics": [
+    "Valid latestquote availability at1second and5second age thresholds, all invalid/missing/stale/tie reasons retained.",
+    "Displayed absolute/relative spread and spread/(0.1*priorATR14).",
+    "For budget250and500, floor(budget/ask) shares is budget-only, not displayed size capacity or a guaranteed fill; hypothetical samequote crossing cost=qty*(ask-bid).",
+    "Signed ask-minus-original-minute-entry reference comparison, with explicit timestamp comparability limit.",
+    "No trade exit, PnL, equity compounding, round restarts or10000target estimate generated."
+  ],
+  "limitations": [
+    "Current/asof symbol mapping and possible alias duplicates remain unresolved.",
+    "Chronological first10 certified days and prior selected19 entries are conditionally selected from a source-incomplete universe; do not extrapolate population prevalence.",
+    "Quoted positive size and regular conditions do not certify routing, firm executable depth or order acceptance.",
+    "Costs observed on prior selected signals cannot retroactively fix or validate the failed strategy."
+  ],
+  "broker_orders_sent": 0,
+  "new_scheduler_deployed": false
+}

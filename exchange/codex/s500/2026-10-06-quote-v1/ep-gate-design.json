@@ -1,0 +1,15 @@
+{
+  "id": "s500-ep-chronological-case-gates-v1",
+  "recorded_at": "2026-10-06T17:06:52.093328+00:00",
+  "rule_source_registry_sha256": "d99bbc71c5360ed9db0484838e9ad144e41db1306c2549ce76c7ebcccf6eebc8",
+  "selection": "Chronological next7unreviewed candidates; inspect all confirmednews-gate passes irrespective laterreturn. ALTfirstconfirmed; first30volume alreadyobserved beforethis diagnostic.",
+  "purpose": "Verify registeredopening-volume and causalbreakoutgates and quote budget; no fullEPportfolio or performance estimate.",
+  "known_prior": "ALTJan5regularopen4.095 priorclose3.51 gap16.67%; first30volume7120536 prior20dailymean4851779.65; these knownbeforepost10signalinspection.",
+  "gates": [
+    "First30 exactregularminute bars09:30..09:59 complete, totalvolume>=prior20adjustedmean; ORhigh/lowknownat10:00.",
+    "Firstcompleted1mincloseaboveOR30high, barstart10:00..10:59; completes<=11:00 thenonefullminute latency referencebaratstart+2.",
+    "Missingcandidate signalminute beforefirstsignal yieldsunknown notnoentry. EntryopenbeloworequalORlow preservesambiguousgapthroughexposure.",
+    "No othermissingnews candidate is treated asnoevent; this is an isolated verifiedcandidate opportunity, not a broaduniversewinnerchoice.",
+    "No exitPnL, continuouswealth or10000estimate inthis diagnostic."
+  ]
+}

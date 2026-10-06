@@ -1,0 +1,31 @@
+test_age1s_boundary_and_one_ns_stale (audit_quote.AnalyzerAudit.test_age1s_boundary_and_one_ns_stale) ... ok
+test_age5s_boundary_and_nested_eligibility (audit_quote.AnalyzerAudit.test_age5s_boundary_and_nested_eligibility) ... ok
+test_budget_decimal_exact_boundary_and_below_one_share (audit_quote.AnalyzerAudit.test_budget_decimal_exact_boundary_and_below_one_share) ... ok
+test_condition_exact_and_tape_map_verified (audit_quote.AnalyzerAudit.test_condition_exact_and_tape_map_verified) ... ok
+test_duplicate_same_state_different_time_format_collapses (audit_quote.AnalyzerAudit.test_duplicate_same_state_different_time_format_collapses) ... ok
+test_empty_and_outside60s_remain_no_observation (audit_quote.AnalyzerAudit.test_empty_and_outside60s_remain_no_observation) ... ok
+test_entry_reference_signed_and_not_synchronized (audit_quote.AnalyzerAudit.test_entry_reference_signed_and_not_synchronized) ... ok
+test_evaluation_and_metrics_do_not_modify_inputs (audit_quote.AnalyzerAudit.test_evaluation_and_metrics_do_not_modify_inputs) ... ok
+test_exact_decision_allowed_future1ns_not_allowed (audit_quote.AnalyzerAudit.test_exact_decision_allowed_future1ns_not_allowed) ... ok
+test_invalid_or_nonfinite_and_bool_numeric_rejected (audit_quote.AnalyzerAudit.test_invalid_or_nonfinite_and_bool_numeric_rejected) ... ok
+test_latest_invalid_never_fallback_older_valid (audit_quote.AnalyzerAudit.test_latest_invalid_never_fallback_older_valid) ... ok
+test_latest_selection_order_independent_across_pages (audit_quote.AnalyzerAudit.test_latest_selection_order_independent_across_pages) ... ok
+test_latest_timestamp_conflict_even_only_size_blocks (audit_quote.AnalyzerAudit.test_latest_timestamp_conflict_even_only_size_blocks) ... ok
+test_locked_quote_allowed_crossed_rejected (audit_quote.AnalyzerAudit.test_locked_quote_allowed_crossed_rejected) ... ok
+test_main_rejects_frozen_design_tampering_before_loading_quotes (audit_quote.AnalyzerAudit.test_main_rejects_frozen_design_tampering_before_loading_quotes) ... ok
+test_main_rejects_point_cache_manifest_binding_mismatch (audit_quote.AnalyzerAudit.test_main_rejects_point_cache_manifest_binding_mismatch) ... ok
+test_malformed_timestamp_blocks_certification (audit_quote.AnalyzerAudit.test_malformed_timestamp_blocks_certification) ... ok
+test_nanosecond_timestamp_timezone_and_boundary (audit_quote.AnalyzerAudit.test_nanosecond_timestamp_timezone_and_boundary) ... ok
+test_spread_to_stop_and_crossing_cost_not_profit (audit_quote.AnalyzerAudit.test_spread_to_stop_and_crossing_cost_not_profit) ... ok
+test_cache_parameters_cannot_change (audit_quote.DownloaderAudit.test_cache_parameters_cannot_change) ... ok
+test_complete_cache_hash_tampering_rejected (audit_quote.DownloaderAudit.test_complete_cache_hash_tampering_rejected) ... ok
+test_cycle_and_wrong_symbol_and_schema_rejected (audit_quote.DownloaderAudit.test_cycle_and_wrong_symbol_and_schema_rejected) ... ok
+test_only_fixed_read_market_routes (audit_quote.DownloaderAudit.test_only_fixed_read_market_routes) ... ok
+test_page_cap_retains_partial_failure (audit_quote.DownloaderAudit.test_page_cap_retains_partial_failure) ... ok
+test_partial_resume_uses_bound_page_token (audit_quote.DownloaderAudit.test_partial_resume_uses_bound_page_token) ... ok
+test_resume_chain_mismatch_rejected (audit_quote.DownloaderAudit.test_resume_chain_mismatch_rejected) ... ok
+
+----------------------------------------------------------------------
+Ran 26 tests in 0.030s
+
+OK

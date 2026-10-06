@@ -1,0 +1,810 @@
+{
+  "schema": "s500.ep-first10-primary-news-followup.v1",
+  "created_at": "2026-10-06T17:06:23.911766+00:00",
+  "sampling": "Exactly the first10 stock-eligible rows ascending date then symbol from the existing inventory: three prior reviews carried unchanged, next seven reviewed. No selection by future return.",
+  "registered_method": "EP-NEWS-500-v1",
+  "frozen_news_category_exact": "earnings/guidance/contract/regulatory announcement",
+  "category_interpretation": "An actual FDA designation is a regulatory announcement but is not marketing approval. A planned listing, product collaboration, board appointment, or clinical result is not automatically a qualifying approval or signed contract. No rule was selected using strategy returns.",
+  "time_policy": "Publication must be after the previous regular-session close and before 09:30 ET. Preserve timezone and first-publication ambiguities; do not reuse old news as a fresh event.",
+  "coverage": {
+    "initial_stock_candidates": 1079,
+    "reviewed_total": 10,
+    "carried_forward_reviews": 3,
+    "new_reviews": 7,
+    "remaining_unreviewed": 1069,
+    "new_primary_request_attempts": 30,
+    "news_status_counts": {
+      "ambiguous": 4,
+      "missing": 4,
+      "confirmed": 2
+    },
+    "confirmed_registered_news_gate": 1,
+    "entire_EP_strategy_validated": false
+  },
+  "candidate_reviews": [
+    {
+      "date": "2026-01-02",
+      "symbol": "BIDU",
+      "initial_news_status": "missing",
+      "news_status": "ambiguous",
+      "event_found": true,
+      "event_category": "proposed subsidiary spin-off and separate stock-exchange listing",
+      "qualifying_category_status": "outside frozen earnings/guidance/contract/regulatory-decision categories unless a separately preregistered interpretation says otherwise; proposed listing application is not regulatory approval",
+      "summary_zh": "公司原始公告宣布昆仑芯拟分拆及香港单独上市，提及已递交保密上市申请，审批及是否完成均未确定。并非业绩预告或已获监管批准。",
+      "source_keys": [
+        "BIDU-submissions",
+        "BIDU_IR",
+        "BIDU_6K",
+        "BIDU_index",
+        "BIDU_headers",
+        "BIDU_exhibit",
+        "BIDU_release",
+        "BIDU_release_retry"
+      ],
+      "timestamp_evidence": {
+        "ir_list_date": "2026-01-01",
+        "sec_exhibit_dateline": "BEIJING, Jan. 1, 2026",
+        "sec_submissions_acceptanceDateTime": "2026-01-02T16:02:27.000Z",
+        "sec_full_submission_ACCEPTANCE_DATETIME": "20260102060227",
+        "sec_directory_last_modified": "2026-01-02 06:02:27",
+        "conflict": "Submissions UTC field is11:02:27ET, after09:30; full submission header and directory display06:02:27, normally interpreted asEDGAR Eastern time and before09:30. Do not choose the favorable timestamp without independent reconciliation."
+      },
+      "in_window_confirmed": false,
+      "pass_registered_news_gate": false,
+      "reason": "Exact original IR release time unavailable; source timestamp conflict plus event category does not meet a frozen inclusion rule. Preserve ambiguity.",
+      "chronological_candidate_number": 1,
+      "review_provenance": "carried_forward_unchanged_from_prior_audit; no new adjudication"
+    },
+    {
+      "date": "2026-01-02",
+      "symbol": "SLS",
+      "initial_news_status": "missing",
+      "news_status": "missing",
+      "event_found": false,
+      "event_category": null,
+      "qualifying_category_status": "unknown",
+      "summary_zh": "SEC当前recent列表未见2025-12-30至2026-01-02申报，公开IR尝试返回403/404。未找到能核实的窗口内原始公告；不推断当天没有催化。",
+      "source_keys": [
+        "SLS-submissions",
+        "SLS_IR",
+        "SLS_home",
+        "SLS_company"
+      ],
+      "timestamp_evidence": {},
+      "in_window_confirmed": false,
+      "pass_registered_news_gate": false,
+      "reason": "Incomplete source availability; negative search is not proof of absent event.",
+      "chronological_candidate_number": 2,
+      "review_provenance": "carried_forward_unchanged_from_prior_audit; no new adjudication"
+    },
+    {
+      "date": "2026-01-02",
+      "symbol": "SMX",
+      "initial_news_status": "missing",
+      "news_status": "ambiguous",
+      "event_found": true,
+      "event_category": "technology application / planned product-market expansion",
+      "qualifying_category_status": "not an announced signed contract, earnings/guidance or regulatory decision",
+      "summary_zh": "原始6-K附件公告把材料追踪技术扩展到乳胶与橡胶手套市场，并提及下一季度计划协作；并未明确公告本次注册所要求的已签合同、财报/业绩指引或监管决定。",
+      "source_keys": [
+        "SMX-submissions",
+        "SMX_6K",
+        "SMX_exhibit",
+        "SMX_headers",
+        "SMX_IR"
+      ],
+      "timestamp_evidence": {
+        "sec_submissions_acceptanceDateTime": "2025-12-31T21:05:08.000Z",
+        "sec_full_submission_ACCEPTANCE_DATETIME": "20251231160508",
+        "sec_filing_time_consistent_et": "2025-12-31T16:05:08-05:00",
+        "press_release_dateline": "December31,2025; no exact first-publication time in examined exhibit",
+        "publication_caveat": "SEC dissemination time is within the window, but the date-only earlier press release may have been public before previous close. SEC re-filing is not proof of a new after-close catalyst."
+      },
+      "in_window_confirmed": false,
+      "pass_registered_news_gate": false,
+      "reason": "First-publication time ambiguous and product-plan event outside frozen inclusion categories.",
+      "chronological_candidate_number": 3,
+      "review_provenance": "carried_forward_unchanged_from_prior_audit; no new adjudication"
+    },
+    {
+      "symbol": "SOC",
+      "news_status": "missing",
+      "event_found": false,
+      "event_category": null,
+      "qualifying_category_status": "unknown",
+      "in_window_confirmed": false,
+      "pass_registered_news_gate": false,
+      "source_keys": [
+        "SOC-submissions",
+        "SOC-IR",
+        "SOC-home",
+        "SOC-news"
+      ],
+      "timestamp_evidence": {},
+      "summary_zh": "SEC recent 记录未见目标窗内公司公告；最近检查到的 8-K 为 12月29日，早于目标窗口。公司新闻页返回动态页面，未获取具体历史公告。不能据此断言没有催化。",
+      "reason": "No qualifying primary announcement verified within the bounded search. Dynamic IR archive was not fully extracted.",
+      "date": "2026-01-02",
+      "chronological_candidate_number": 4,
+      "initial_news_status": "missing",
+      "review_provenance": "new bounded primary-source followup",
+      "news_window": {
+        "after_previous_session_close_et": "2025-12-31T16:00:00-05:00",
+        "before_candidate_open_et": "2026-01-02T09:30:00-05:00"
+      },
+      "regular_open_verification": "not_evaluated_in_this_news_audit",
+      "first30minute_volume_gate": "not_evaluated_in_this_news_audit",
+      "strategy_return": "not_computed"
+    },
+    {
+      "symbol": "ALT",
+      "news_status": "confirmed",
+      "event_found": true,
+      "event_category": "regulatory announcement: FDA Breakthrough Therapy Designation for pemvidutide in MASH",
+      "qualifying_category_status": "passes exact original regulatory announcement category; designation is not marketing approval",
+      "in_window_confirmed": true,
+      "pass_registered_news_gate": true,
+      "source_keys": [
+        "ALT-submissions",
+        "ALT-IR",
+        "ALT-IR-corrected",
+        "ALT-IR-page2",
+        "ALT-release"
+      ],
+      "timestamp_evidence": {
+        "visible_release_time": "2026-01-05T07:30:00-05:00",
+        "json_ld_datePublished": "2026-01-05T07:31:02-0500",
+        "conservative_available_by": "2026-01-05T07:31:02-05:00",
+        "discrepancy": "Visible release time and structured publication time differ by 62 seconds. Both are within the frozen window.",
+        "archival_limit": "Current first-party release is evidence of its stated publication time, not an independently archived capture from that morning."
+      },
+      "summary_zh": "公司原始公告明确 FDA 已给予 pemvidutide 治疗 MASH 的突破性疗法资格，并说明这是加快开发与审评的监管资格，不是批准上市。可见 07:30 EST 与结构化 07:31:02 EST 两时间均早于当日开盘。",
+      "reason": "A first-party, precisely timed announcement reports an actual regulatory authority designation. Passes the original regulatory announcement news gate only; volume/execution and profitability remain unevaluated here.",
+      "date": "2026-01-05",
+      "chronological_candidate_number": 5,
+      "initial_news_status": "missing",
+      "review_provenance": "new bounded primary-source followup",
+      "news_window": {
+        "after_previous_session_close_et": "2026-01-02T16:00:00-05:00",
+        "before_candidate_open_et": "2026-01-05T09:30:00-05:00"
+      },
+      "regular_open_verification": "not_evaluated_in_this_news_audit",
+      "first30minute_volume_gate": "not_evaluated_in_this_news_audit",
+      "strategy_return": "not_computed"
+    },
+    {
+      "symbol": "SIDU",
+      "news_status": "confirmed",
+      "event_found": true,
+      "event_category": "appointment of Kelle Wendling to board of directors",
+      "qualifying_category_status": "outside earnings, guidance, contract and regulatory announcement categories",
+      "in_window_confirmed": true,
+      "pass_registered_news_gate": false,
+      "source_keys": [
+        "SIDU-submissions",
+        "SIDU-IR",
+        "SIDU-IR-page3"
+      ],
+      "timestamp_evidence": {
+        "ir_list_release_time": "2026-01-05T08:30:00-05:00",
+        "evidence_scope": "Exact time and appointment headline from first-party release index; article body not requested."
+      },
+      "summary_zh": "公司新闻索引显示 1月5日 08:30 EST 的董事任命，时间在窗口内，但不属于冻结催化类别；同页 SHIELD 合同公告为 12月22日，不能移作 1月5日新催化。",
+      "reason": "Verified current first-party index entry has a disallowed event category. This is not proof that no other qualifying event existed.",
+      "date": "2026-01-05",
+      "chronological_candidate_number": 6,
+      "initial_news_status": "missing",
+      "review_provenance": "new bounded primary-source followup",
+      "news_window": {
+        "after_previous_session_close_et": "2026-01-02T16:00:00-05:00",
+        "before_candidate_open_et": "2026-01-05T09:30:00-05:00"
+      },
+      "regular_open_verification": "not_evaluated_in_this_news_audit",
+      "first30minute_volume_gate": "not_evaluated_in_this_news_audit",
+      "strategy_return": "not_computed"
+    },
+    {
+      "symbol": "SMR",
+      "news_status": "missing",
+      "event_found": false,
+      "event_category": null,
+      "qualifying_category_status": "unknown",
+      "in_window_confirmed": false,
+      "pass_registered_news_gate": false,
+      "source_keys": [
+        "SMR-submissions",
+        "SMR-IR",
+        "SMR-IR-corrected",
+        "SMR-IR-page2"
+      ],
+      "timestamp_evidence": {},
+      "summary_zh": "公司当前新闻索引在 2025年11月 与 2026年1月12日 之间未列出目标 1月5日公告；SEC 近窗记录为 Form 4，未核实符合类别的原始催化。搜索缺失不等于当天无消息。",
+      "reason": "No qualifying in-window primary announcement found in examined current IR pages and SEC recent submissions. Archive completeness is not guaranteed.",
+      "date": "2026-01-05",
+      "chronological_candidate_number": 7,
+      "initial_news_status": "missing",
+      "review_provenance": "new bounded primary-source followup",
+      "news_window": {
+        "after_previous_session_close_et": "2026-01-02T16:00:00-05:00",
+        "before_candidate_open_et": "2026-01-05T09:30:00-05:00"
+      },
+      "regular_open_verification": "not_evaluated_in_this_news_audit",
+      "first30minute_volume_gate": "not_evaluated_in_this_news_audit",
+      "strategy_return": "not_computed"
+    },
+    {
+      "symbol": "AEVA",
+      "news_status": "ambiguous",
+      "event_found": true,
+      "event_category": "NVIDIA DRIVE Hyperion sensor selection and future integration collaboration",
+      "qualifying_category_status": "contract qualification unresolved; selection/collaboration is not assumed to be a signed purchase contract",
+      "in_window_confirmed": false,
+      "pass_registered_news_gate": false,
+      "source_keys": [
+        "AEVA-submissions",
+        "AEVA-IR",
+        "AEVA-home",
+        "AEVA-news",
+        "AEVA-nvidia"
+      ],
+      "timestamp_evidence": {
+        "release_visible_date": "2026-01-05",
+        "news_index_embedded_date": "2026-01-05 14:56:54",
+        "embedded_timezone": null,
+        "ambiguity": "Without the timezone, 14:56:54 could precede the 16:00 ET close or fall after it. Do not silently assume Pacific time."
+      },
+      "summary_zh": "原始公告称 Aeva 激光雷达获 NVIDIA DRIVE Hyperion 参考平台选用并计划集成，目标 2028年量产。未证明本次公告为已签采购合同。列表含 14:56:54，但没有时区，无法确认是否在 1月5日收盘后发布。",
+      "reason": "Both the precise pre-open event window and contract-category interpretation remain unresolved. No favorable timezone or binding order is inferred.",
+      "date": "2026-01-06",
+      "chronological_candidate_number": 8,
+      "initial_news_status": "missing",
+      "review_provenance": "new bounded primary-source followup",
+      "news_window": {
+        "after_previous_session_close_et": "2026-01-05T16:00:00-05:00",
+        "before_candidate_open_et": "2026-01-06T09:30:00-05:00"
+      },
+      "regular_open_verification": "not_evaluated_in_this_news_audit",
+      "first30minute_volume_gate": "not_evaluated_in_this_news_audit",
+      "strategy_return": "not_computed"
+    },
+    {
+      "symbol": "ARVN",
+      "news_status": "missing",
+      "event_found": false,
+      "event_category": null,
+      "qualifying_category_status": "unknown",
+      "in_window_confirmed": false,
+      "pass_registered_news_gate": false,
+      "source_keys": [
+        "ARVN-submissions",
+        "ARVN-IR",
+        "ARVN-IR-corrected",
+        "ARVN-IR-page1"
+      ],
+      "timestamp_evidence": {},
+      "summary_zh": "已查 SEC recent 近窗记录和公司当前新闻索引两页，未获取目标 1月6日盘前原始催化。公司索引所见最早日期为 2月12日，不代表 1月公告不存在。",
+      "reason": "No qualifying primary announcement verified. The examined current IR archive does not establish exhaustive January coverage.",
+      "date": "2026-01-06",
+      "chronological_candidate_number": 9,
+      "initial_news_status": "missing",
+      "review_provenance": "new bounded primary-source followup",
+      "news_window": {
+        "after_previous_session_close_et": "2026-01-05T16:00:00-05:00",
+        "before_candidate_open_et": "2026-01-06T09:30:00-05:00"
+      },
+      "regular_open_verification": "not_evaluated_in_this_news_audit",
+      "first30minute_volume_gate": "not_evaluated_in_this_news_audit",
+      "strategy_return": "not_computed"
+    },
+    {
+      "symbol": "ARWR",
+      "news_status": "ambiguous",
+      "event_found": true,
+      "event_category": "Health Canada approval dated January5; separate January6 interim clinical results headline",
+      "qualifying_category_status": "Health Canada approval is regulatory; interim clinical readout is not automatically a regulatory decision",
+      "in_window_confirmed": false,
+      "pass_registered_news_gate": false,
+      "source_keys": [
+        "ARWR-submissions",
+        "ARWR-IR",
+        "ARWR-IR-corrected",
+        "ARWR-canada"
+      ],
+      "timestamp_evidence": {
+        "canada_approval_release_dateline": "2026-01-05; no exact time exposed in examined first-party release",
+        "clinical_data_listing_date": "2026-01-06; exact release time and full article were not fetched",
+        "approval_source_release_url": "https://www.businesswire.com/news/home/20260105004282/en/",
+        "approval_source_release_access_status": "linked by company; not fetched within request budget"
+      },
+      "summary_zh": "公司原始公告确认加拿大已批准 REDEMPLO，但页面仅有 1月5日日期，无法确定是否在当日 16:00 后才首次公开。1月6日另列中期临床结果，不能把临床数据冒充监管决定或把旧批准移至新窗口。",
+      "reason": "Regulatory event exists, but its publication time relative to the prior close is unresolved. Separate clinical data do not by themselves satisfy the frozen category.",
+      "date": "2026-01-06",
+      "chronological_candidate_number": 10,
+      "initial_news_status": "missing",
+      "review_provenance": "new bounded primary-source followup",
+      "news_window": {
+        "after_previous_session_close_et": "2026-01-05T16:00:00-05:00",
+        "before_candidate_open_et": "2026-01-06T09:30:00-05:00"
+      },
+      "regular_open_verification": "not_evaluated_in_this_news_audit",
+      "first30minute_volume_gate": "not_evaluated_in_this_news_audit",
+      "strategy_return": "not_computed"
+    }
+  ],
+  "confirmed_news_gate_candidates": [
+    {
+      "date": "2026-01-05",
+      "symbol": "ALT",
+      "conservative_available_by": "2026-01-05T07:31:02-05:00",
+      "news_only": true
+    }
+  ],
+  "sources": [
+    {
+      "source_key": "AEVA-IR",
+      "url": "https://investors.aeva.com/news",
+      "retrieved_at": "2026-10-06T17:00:49.322765+00:00",
+      "request_index": 13,
+      "status": 404,
+      "bytes": 287,
+      "sha256": "841aeac424ddfc58eaa781b1e9504b0957e8d5e604649172058454bfbac0ee67",
+      "evidence_type": "access_attempt_not_event_evidence"
+    },
+    {
+      "source_key": "AEVA-home",
+      "url": "https://www.aeva.com/",
+      "retrieved_at": "2026-10-06T17:01:26.755626+00:00",
+      "request_index": 20,
+      "status": 200,
+      "final_url": "https://www.aeva.com/",
+      "bytes": 121681,
+      "sha256": "f409d37c74691ebca2fee199b36f70cf7c65ff1313d420e3894fe028192c1a25",
+      "evidence_type": "official_SEC_or_company_primary_source"
+    },
+    {
+      "source_key": "AEVA-news",
+      "url": "https://www.aeva.com/news/",
+      "retrieved_at": "2026-10-06T17:02:07.124708+00:00",
+      "request_index": 27,
+      "status": 200,
+      "final_url": "https://www.aeva.com/news/",
+      "bytes": 144155,
+      "sha256": "7ae1aa0bae9c7edc8731704a9acecaa2a387bb4eeaa2de916016d63eb4e55516",
+      "evidence_type": "official_SEC_or_company_primary_source"
+    },
+    {
+      "source_key": "AEVA-nvidia",
+      "url": "https://www.aeva.com/press/aeva-and-nvidia-to-integrate-4d-lidar-as-reference-sensor-within-the-nvidia-drive-hyperion-platform-ecosystem/",
+      "retrieved_at": "2026-10-06T17:03:11.447887+00:00",
+      "request_index": 30,
+      "status": 200,
+      "final_url": "https://www.aeva.com/press/aeva-and-nvidia-to-integrate-4d-lidar-as-reference-sensor-within-the-nvidia-drive-hyperion-platform-ecosystem/",
+      "bytes": 56166,
+      "sha256": "c6563562b86eba586e5257aa4b39c87c9f738c9d09077422730bb24c83ca3098",
+      "evidence_type": "official_SEC_or_company_primary_source"
+    },
+    {
+      "source_key": "AEVA-submissions",
+      "url": "https://data.sec.gov/submissions/CIK0001789029.json",
+      "retrieved_at": "2026-10-06T17:00:17.738756+00:00",
+      "request_index": 6,
+      "status": 200,
+      "final_url": "https://data.sec.gov/submissions/CIK0001789029.json",
+      "bytes": 67425,
+      "sha256": "540d0a13c716317b8499721399d3b4cd168ed42043b9ec5c9108cd535990eaac",
+      "evidence_type": "official_SEC_or_company_primary_source"
+    },
+    {
+      "source_key": "ALT-IR-corrected",
+      "url": "https://ir.altimmune.com/investors/press-releases",
+      "retrieved_at": "2026-10-06T17:01:23.250750+00:00",
+      "request_index": 16,
+      "status": 200,
+      "final_url": "https://ir.altimmune.com/investors/press-releases",
+      "bytes": 82708,
+      "sha256": "d7eaac583ef113cff4c30b528ce2eb0a6e0d248c18de854ffd024a423f982222",
+      "evidence_type": "official_SEC_or_company_primary_source"
+    },
+    {
+      "source_key": "ALT-IR",
+      "url": "https://ir.altimmune.com/news-releases",
+      "retrieved_at": "2026-10-06T17:00:46.499181+00:00",
+      "request_index": 10,
+      "status": 404,
+      "bytes": 61034,
+      "sha256": "4a78b163bf331edceb8c2bd9a16c36a19ad29ef57264987efabf5ac72a5e25fe",
+      "evidence_type": "access_attempt_not_event_evidence"
+    },
+    {
+      "source_key": "ALT-IR-page2",
+      "url": "https://ir.altimmune.com/investors/press-releases?page=2",
+      "retrieved_at": "2026-10-06T17:02:04.054496+00:00",
+      "request_index": 23,
+      "status": 200,
+      "final_url": "https://ir.altimmune.com/investors/press-releases?page=2",
+      "bytes": 69014,
+      "sha256": "0e107b93e8e1ee81100f7e0e8cd81bdd3e8b4b266ca3bc44241afd397c82c570",
+      "evidence_type": "official_SEC_or_company_primary_source"
+    },
+    {
+      "source_key": "ALT-release",
+      "url": "https://ir.altimmune.com/news-releases/news-release-details/altimmune-receives-fda-breakthrough-therapy-designation",
+      "retrieved_at": "2026-10-06T17:03:10.046688+00:00",
+      "request_index": 28,
+      "status": 200,
+      "final_url": "https://ir.altimmune.com/news-releases/news-release-details/altimmune-receives-fda-breakthrough-therapy-designation",
+      "bytes": 74835,
+      "sha256": "41856f5cf2cb9b0638d58f6045e06d1b49c0c8d9667a5187ec1454d039fa37ad",
+      "evidence_type": "official_SEC_or_company_primary_source"
+    },
+    {
+      "source_key": "ALT-submissions",
+      "url": "https://data.sec.gov/submissions/CIK0001326190.json",
+      "retrieved_at": "2026-10-06T17:00:16.480453+00:00",
+      "request_index": 3,
+      "status": 200,
+      "final_url": "https://data.sec.gov/submissions/CIK0001326190.json",
+      "bytes": 164319,
+      "sha256": "6667fb02e6dd5b59c244fc033433ccabecc4c480bb46012460256e5e44cc51f3",
+      "evidence_type": "official_SEC_or_company_primary_source"
+    },
+    {
+      "source_key": "ARVN-IR-corrected",
+      "url": "https://ir.arvinas.com/press-releases",
+      "retrieved_at": "2026-10-06T17:01:24.808579+00:00",
+      "request_index": 18,
+      "status": 200,
+      "final_url": "https://ir.arvinas.com/press-releases",
+      "bytes": 100640,
+      "sha256": "c5918dd9c04c49174d966648e2bc79772805f2438480cb365799e3c49d2c0922",
+      "evidence_type": "official_SEC_or_company_primary_source"
+    },
+    {
+      "source_key": "ARVN-IR",
+      "url": "https://ir.arvinas.com/news-releases",
+      "retrieved_at": "2026-10-06T17:00:50.029262+00:00",
+      "request_index": 14,
+      "status": 404,
+      "bytes": 78905,
+      "sha256": "2ccd56c3ab613ffef9490349f37264e7351e31a8c9f184513124a4d84b44e040",
+      "evidence_type": "access_attempt_not_event_evidence"
+    },
+    {
+      "source_key": "ARVN-IR-page1",
+      "url": "https://ir.arvinas.com/press-releases?page=1",
+      "retrieved_at": "2026-10-06T17:02:05.140821+00:00",
+      "request_index": 24,
+      "status": 200,
+      "final_url": "https://ir.arvinas.com/press-releases?page=1",
+      "bytes": 100817,
+      "sha256": "a2f299e804993762cdd43425285f783ce72a5b4a1937fbafa0ccebec8482cc3a",
+      "evidence_type": "official_SEC_or_company_primary_source"
+    },
+    {
+      "source_key": "ARVN-submissions",
+      "url": "https://data.sec.gov/submissions/CIK0001655759.json",
+      "retrieved_at": "2026-10-06T17:00:18.185977+00:00",
+      "request_index": 7,
+      "status": 200,
+      "final_url": "https://data.sec.gov/submissions/CIK0001655759.json",
+      "bytes": 97082,
+      "sha256": "14b0a07fbef97c0262c7f7e7c18ba8bcdfc01fa6458f89e460417c1d60113fd1",
+      "evidence_type": "official_SEC_or_company_primary_source"
+    },
+    {
+      "source_key": "ARWR-IR-corrected",
+      "url": "https://arrowheadpharma.com/newsroom/",
+      "retrieved_at": "2026-10-06T17:01:25.688536+00:00",
+      "request_index": 19,
+      "status": 200,
+      "final_url": "https://arrowheadpharma.com/en-us/newsroom",
+      "bytes": 639725,
+      "sha256": "9c6e8bc7205d4a2512473b6d28f6a0d809dbd62e705606c3bf0311b009d4e6ea",
+      "evidence_type": "official_SEC_or_company_primary_source"
+    },
+    {
+      "source_key": "ARWR-IR",
+      "url": "https://ir.arrowheadpharma.com/news-releases",
+      "retrieved_at": "2026-10-06T17:00:51.086572+00:00",
+      "request_index": 15,
+      "status": 404,
+      "bytes": 50790,
+      "sha256": "c1f5c6e9d851d0cdc2070398ef6586aefe0654fc891e9777332b127274664988",
+      "evidence_type": "access_attempt_not_event_evidence"
+    },
+    {
+      "source_key": "ARWR-canada",
+      "url": "https://arrowheadpharma.com/en-us/newsroom/arrowhead-pharmaceuticals-announces-health-canada-approval",
+      "retrieved_at": "2026-10-06T17:03:10.727022+00:00",
+      "request_index": 29,
+      "status": 200,
+      "final_url": "https://arrowheadpharma.com/en-us/newsroom/arrowhead-pharmaceuticals-announces-health-canada-approval",
+      "bytes": 184378,
+      "sha256": "27b40826a2fe445e37092d55a7d0f63b97d254590c77b5f599fe88b154cd551c",
+      "evidence_type": "official_SEC_or_company_primary_source"
+    },
+    {
+      "source_key": "ARWR-submissions",
+      "url": "https://data.sec.gov/submissions/CIK0000879407.json",
+      "retrieved_at": "2026-10-06T17:00:18.786384+00:00",
+      "request_index": 8,
+      "status": 200,
+      "final_url": "https://data.sec.gov/submissions/CIK0000879407.json",
+      "bytes": 163183,
+      "sha256": "a4549b37aa9abfe4ddce4cdf9025a65b061f3bfe814b340e82b4cd99c915ebd0",
+      "evidence_type": "official_SEC_or_company_primary_source"
+    },
+    {
+      "source_key": "SIDU-IR",
+      "url": "https://investors.sidusspace.com/news-events/press-releases",
+      "retrieved_at": "2026-10-06T17:00:47.398371+00:00",
+      "request_index": 11,
+      "status": 200,
+      "final_url": "https://investors.sidusspace.com/news-events/press-releases",
+      "bytes": 36630,
+      "sha256": "8aa08b9e507e474dcd5544306d05e0a6736ee0cdf4a7f628978a283619bd57cf",
+      "evidence_type": "official_SEC_or_company_primary_source"
+    },
+    {
+      "source_key": "SIDU-IR-page3",
+      "url": "https://investors.sidusspace.com/news-events/press-releases?page=3",
+      "retrieved_at": "2026-10-06T17:01:29.306288+00:00",
+      "request_index": 22,
+      "status": 200,
+      "final_url": "https://investors.sidusspace.com/news-events/press-releases?page=3",
+      "bytes": 36739,
+      "sha256": "f8d8c2ca304d3b8e107c4f90fea8208af232c9bf4739548ed3c62c9cd10f62ba",
+      "evidence_type": "official_SEC_or_company_primary_source"
+    },
+    {
+      "source_key": "SIDU-submissions",
+      "url": "https://data.sec.gov/submissions/CIK0001879726.json",
+      "retrieved_at": "2026-10-06T17:00:16.921173+00:00",
+      "request_index": 4,
+      "status": 200,
+      "final_url": "https://data.sec.gov/submissions/CIK0001879726.json",
+      "bytes": 46078,
+      "sha256": "75d6751fc6c3d0c23f5002839e8fd4d24437a730288c81a7540a4d60b55c3bcf",
+      "evidence_type": "official_SEC_or_company_primary_source"
+    },
+    {
+      "source_key": "SMR-IR-corrected",
+      "url": "https://www.nuscalepower.com/press-releases",
+      "retrieved_at": "2026-10-06T17:01:24.237392+00:00",
+      "request_index": 17,
+      "status": 200,
+      "final_url": "https://www.nuscalepower.com/press-releases",
+      "bytes": 82980,
+      "sha256": "316468e3371c8522fea0d0131a763dfed3f184f6b6e79801356f92543aa60c3e",
+      "evidence_type": "official_SEC_or_company_primary_source"
+    },
+    {
+      "source_key": "SMR-IR",
+      "url": "https://www.nuscalepower.com/en/news/press-releases",
+      "retrieved_at": "2026-10-06T17:00:48.043288+00:00",
+      "request_index": 12,
+      "status": 404,
+      "bytes": 42037,
+      "sha256": "b02cf62f403d186192c2fac08b541640043e406990641195ce73efabbe39bbc4",
+      "evidence_type": "access_attempt_not_event_evidence"
+    },
+    {
+      "source_key": "SMR-IR-page2",
+      "url": "https://www.nuscalepower.com/press-releases/page/2",
+      "retrieved_at": "2026-10-06T17:02:06.056428+00:00",
+      "request_index": 25,
+      "status": 200,
+      "final_url": "https://www.nuscalepower.com/press-releases/page/2",
+      "bytes": 83143,
+      "sha256": "6c63e1fbf42d4050b88873d8ccd2723058b828a78c295ea8ce7470ffb9670b07",
+      "evidence_type": "official_SEC_or_company_primary_source"
+    },
+    {
+      "source_key": "SMR-submissions",
+      "url": "https://data.sec.gov/submissions/CIK0001822966.json",
+      "retrieved_at": "2026-10-06T17:00:17.423976+00:00",
+      "request_index": 5,
+      "status": 200,
+      "final_url": "https://data.sec.gov/submissions/CIK0001822966.json",
+      "bytes": 129058,
+      "sha256": "e988aac9086dbe972e046874973c7d08ee22759127caa9759d9aaba5c7a182df",
+      "evidence_type": "official_SEC_or_company_primary_source"
+    },
+    {
+      "source_key": "SOC-IR",
+      "url": "https://ir.sableoffshore.com/news/press-releases",
+      "retrieved_at": "2026-10-06T17:00:46.238479+00:00",
+      "request_index": 9,
+      "status": "URLError",
+      "evidence_type": "access_attempt_not_event_evidence"
+    },
+    {
+      "source_key": "SOC-home",
+      "url": "https://www.sableoffshore.com/",
+      "retrieved_at": "2026-10-06T17:01:27.853363+00:00",
+      "request_index": 21,
+      "status": 200,
+      "final_url": "https://www.sableoffshore.com/overview/default.aspx",
+      "bytes": 58906,
+      "sha256": "24cdd6a389812591c25264a832b365bbd1b59a3b276ce5564adaca75048f69f9",
+      "evidence_type": "official_SEC_or_company_primary_source"
+    },
+    {
+      "source_key": "SOC-news",
+      "url": "https://sableoffshore.com/news/default.aspx",
+      "retrieved_at": "2026-10-06T17:02:06.578285+00:00",
+      "request_index": 26,
+      "status": 200,
+      "final_url": "https://sableoffshore.com/news/default.aspx",
+      "bytes": 47398,
+      "sha256": "ae736db1fcacacc884981fca6e9eae8b10e9b18dda97dd380f43906e041df689",
+      "evidence_type": "official_SEC_or_company_primary_source"
+    },
+    {
+      "source_key": "SOC-submissions",
+      "url": "https://data.sec.gov/submissions/CIK0001831481.json",
+      "retrieved_at": "2026-10-06T17:00:15.919014+00:00",
+      "request_index": 2,
+      "status": 200,
+      "final_url": "https://data.sec.gov/submissions/CIK0001831481.json",
+      "bytes": 62404,
+      "sha256": "ec0401b2eb49ffed61356b10a7e423f40d9a23790ac636422a562e79c5c039c4",
+      "evidence_type": "official_SEC_or_company_primary_source"
+    },
+    {
+      "source_key": "sec-tickers",
+      "url": "https://www.sec.gov/files/company_tickers.json",
+      "retrieved_at": "2026-10-06T17:00:15.255625+00:00",
+      "request_index": 1,
+      "status": 200,
+      "final_url": "https://www.sec.gov/files/company_tickers.json",
+      "bytes": 798727,
+      "sha256": "eb943bdc3d233f54644ba916f261651460a0b94f6fbf29dbf3c1788271b17bf9",
+      "evidence_type": "official_SEC_or_company_primary_source"
+    }
+  ],
+  "carried_forward_sources": [
+    {
+      "url": "https://data.sec.gov/submissions/CIK0001329099.json",
+      "status": 200,
+      "retrieved_at": "2026-10-06T16:25:14.264198+00:00",
+      "sha256": "8560b1fc0826f228680dc82d4341fb34af86621be0242511bdbf9ec72c421d36",
+      "source_key": "BIDU-submissions",
+      "entity_name": "Baidu, Inc."
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1329099/000119312526000097/d63607d6k.htm",
+      "final_url": "https://www.sec.gov/Archives/edgar/data/1329099/000119312526000097/d63607d6k.htm",
+      "status": 200,
+      "retrieved_at": "2026-10-06T16:25:35.421255+00:00",
+      "sha256": "248d35498b6803054b10d289a7a25afc1bce962c91390bc2d37f3db4ff4940d6",
+      "source_key": "BIDU_6K"
+    },
+    {
+      "url": "https://ir.baidu.com/news-releases",
+      "final_url": "https://ir.baidu.com/news-releases",
+      "status": 200,
+      "retrieved_at": "2026-10-06T16:25:35.667054+00:00",
+      "sha256": "f07d54da4728d36e754f4fed8d2c0037fe2596715d6ed102ed9c902e2ee39469",
+      "source_key": "BIDU_IR"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1329099/000119312526000097/d63607dex991.htm",
+      "final_url": "https://www.sec.gov/Archives/edgar/data/1329099/000119312526000097/d63607dex991.htm",
+      "status": 200,
+      "retrieved_at": "2026-10-06T16:27:15.902980+00:00",
+      "sha256": "894efc30e303698c7557383f4f3936da063b19142a25cdca28d976f3fcb41987",
+      "source_key": "BIDU_exhibit"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1329099/000119312526000097/0001193125-26-000097.txt",
+      "final_url": "https://www.sec.gov/Archives/edgar/data/1329099/000119312526000097/0001193125-26-000097.txt",
+      "status": 200,
+      "retrieved_at": "2026-10-06T16:27:16.080984+00:00",
+      "sha256": "334b8b5b6ac0ce60157d96e1cfe36ec5bad8640f9ead0291a0628ce601c53c68",
+      "source_key": "BIDU_headers"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1329099/000119312526000097/index.json",
+      "final_url": "https://www.sec.gov/Archives/edgar/data/1329099/000119312526000097/index.json",
+      "status": 200,
+      "retrieved_at": "2026-10-06T16:26:31.737322+00:00",
+      "sha256": "699c50a7f05c4599c08507596212cbd8361e2799d1747208cf149b51f1a23f0b",
+      "source_key": "BIDU_index"
+    },
+    {
+      "url": "https://ir.baidu.com/news-releases/news-release-details/baidu-announces-proposed-spin-and-separate-listing-kunlunxin",
+      "status": "HTTPError: HTTP Error 503: Service Unavailable",
+      "retrieved_at": "2026-10-06T16:26:08.929670+00:00",
+      "source_key": "BIDU_release"
+    },
+    {
+      "url": "https://ir.baidu.com/news-releases/news-release-details/baidu-announces-proposed-spin-and-separate-listing-kunlunxin",
+      "status": "HTTPError: HTTP Error 503: Service Unavailable",
+      "retrieved_at": "2026-10-06T16:26:33.449198+00:00",
+      "source_key": "BIDU_release_retry"
+    },
+    {
+      "url": "https://data.sec.gov/submissions/CIK0001390478.json",
+      "status": 200,
+      "retrieved_at": "2026-10-06T16:25:14.258788+00:00",
+      "sha256": "70ca59ec711b5b6c8675a033fce8efc22863fe99deb5942d03a8ff788aa52fb1",
+      "source_key": "SLS-submissions",
+      "entity_name": "SELLAS Life Sciences Group, Inc."
+    },
+    {
+      "url": "https://ir.sellaslifesciences.com/news-and-events/press-releases",
+      "status": "HTTPError: HTTP Error 404: Not Found",
+      "retrieved_at": "2026-10-06T16:25:36.805742+00:00",
+      "source_key": "SLS_IR"
+    },
+    {
+      "url": "https://sellaslifesciences.com/news-and-events/press-releases/",
+      "status": "HTTPError: HTTP Error 403: Forbidden",
+      "retrieved_at": "2026-10-06T16:26:06.334926+00:00",
+      "source_key": "SLS_company"
+    },
+    {
+      "url": "https://ir.sellaslifesciences.com/",
+      "status": "HTTPError: HTTP Error 403: Forbidden",
+      "retrieved_at": "2026-10-06T16:26:06.496873+00:00",
+      "source_key": "SLS_home"
+    },
+    {
+      "url": "https://data.sec.gov/submissions/CIK0001940674.json",
+      "status": 200,
+      "retrieved_at": "2026-10-06T16:25:14.239058+00:00",
+      "sha256": "22e57d72d749ab912ab5948a222cc18a9a1285ceca2f7d82ce64f42c2f25e1e7",
+      "source_key": "SMX-submissions",
+      "entity_name": "SMX (Security Matters) Public Ltd Co"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1940674/000149315225029787/form6-k.htm",
+      "final_url": "https://www.sec.gov/Archives/edgar/data/1940674/000149315225029787/form6-k.htm",
+      "status": 200,
+      "retrieved_at": "2026-10-06T16:25:35.125307+00:00",
+      "sha256": "f49d9fcaed5118dd851d61c0d9f83faa68eb5a4950357547b5a99cce00b21aac",
+      "source_key": "SMX_6K"
+    },
+    {
+      "url": "https://smx.tech/investors/",
+      "final_url": "https://smx.tech/investors/",
+      "status": 200,
+      "retrieved_at": "2026-10-06T16:25:35.335765+00:00",
+      "sha256": "3e2f48edae06635528885bc2a7f25c115d585856a00a4e898a9c812c99aebca4",
+      "source_key": "SMX_IR"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1940674/000149315225029787/ex99-1.htm",
+      "final_url": "https://www.sec.gov/Archives/edgar/data/1940674/000149315225029787/ex99-1.htm",
+      "status": 200,
+      "retrieved_at": "2026-10-06T16:26:31.950964+00:00",
+      "sha256": "8dc51049794d6e06e1c3db4f217f6857bc8562dec40f894369efd072362c6137",
+      "source_key": "SMX_exhibit"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1940674/000149315225029787/0001493152-25-029787.txt",
+      "final_url": "https://www.sec.gov/Archives/edgar/data/1940674/000149315225029787/0001493152-25-029787.txt",
+      "status": 200,
+      "retrieved_at": "2026-10-06T16:27:16.096790+00:00",
+      "sha256": "3d6c83074e43a8931d5485653e14eacaf19561f74d921a551f7a7d63bbd2eb5e",
+      "source_key": "SMX_headers"
+    }
+  ],
+  "input_sha256": {
+    "ep-candidate-inventory.json": "95df4912f57d78e29d5b1aa9c209bc77a09eb4924eaeea3e1d60b639eec89ae9",
+    "ep-event-audit.json": "5ad173e981456372689e8fa392edc2625405e94770353b8f86781ffbfce8add1",
+    "registry.json": "d99bbc71c5360ed9db0484838e9ad144e41db1306c2549ce76c7ebcccf6eebc8",
+    "ep_followup.py": "cc63021b456d8a1cf39bee6f74ab7d7252ac26ea19136b28776f1893f572e0f4"
+  },
+  "limitations": [
+    "Only 10 of 1079 price-gap stock candidates have been reviewed; 1069 remain unreviewed.",
+    "One news-gate pass is not a trading signal: regular opening gap, volume gate, quotes, settlement and exits still require validation.",
+    "Current primary websites and SEC recent lists are not a complete archived point-in-time news database.",
+    "No event absence is inferred from an incomplete archive, failed request or no matching filing.",
+    "No positive surprise, causal price attribution or profitable trade is inferred from an event or opening gap.",
+    "Full source bodies remain local in raw-ep; public report contains short original summaries, URLs, timestamps and hashes only.",
+    "Underlying candidate instrument identity and current-universe selection limitations remain inherited from the original inventory."
+  ],
+  "broker_orders_sent": 0,
+  "strategy_returns_computed": false
+}

@@ -1,0 +1,100 @@
+{
+  "audited_at": "2026-10-06T17:10:30.246872+00:00",
+  "status": "independent_checks_passed_with_research_limitations",
+  "source_sha256": {
+    "study-design.json": "bd8dca7a181dbb9058966db1fb54ba236d2ef40287429cfa9b5f64af3d1925a4",
+    "sample.json": "820608472cb3e90e4aa75c597e591c4100d1d5a3b05801e97970917c3649c95c",
+    "quote-input-manifest.json": "75e0e30db0faa98df51cfc60949e28128e36aa14eac62f1d514400810e0db388",
+    "quote-condition-metadata.json": "18f29d4119eedf71c92fd52a45876f9e6e1ae0636ad5bad566cafd85fb1907e2",
+    "prepare_study.py": "153224c6732345815cbdec6d26e3f376f7252415e2746dafba5fd821d712a6dc",
+    "quote_data.py": "7202f73362243f635cb99b5a24bd47d8136416c19eb535b97092ac79c55bb27f",
+    "analyze_quotes.py": "b81d896174d16e1b307dad6f095dc8a1aa82e3d16b1f26d2395aa3d9ce36536a",
+    "quote-results.json": "3238c6a727a795e133360f4f51b89711f410624bf073979b7b8c3c61d0fdc1a3",
+    "quote-summary.json": "ddaddd6a5cab25fe7cf77c7a487ac4ff1b7c8a2ab1465f0ed1c671d4dfc37bd5",
+    "audit_quote.py": "3e5799c75e358156259db26d6b92e276ac4fa134dbab1c0eff37aa04f784e507",
+    "actual-input-audit.json": "48c03f047696fa166a5373f0a028075754a3acf980c61a787ecf50c726d8be10",
+    "sourceevidence.json": "6e01531f9849b4fbe0279227c45a837ee159a624744da07dc1b81c04d23428ef"
+  },
+  "synthetic_tests": {
+    "module": "audit_quote.py",
+    "tests": 26,
+    "passed": 26,
+    "downloader_tests": 7,
+    "analyzer_tests": 19,
+    "network_calls": 0
+  },
+  "actual_input_and_result_checks": {
+    "frozen_sample": {
+      "sample_windows": 221,
+      "all_first10_top20_points": 200,
+      "all_unique_entry_points": 19,
+      "all_held_failure_points": 2,
+      "sample_and_prior_inputs_hash_verified": true,
+      "complete_and_failed_entry_samples_retained": true
+    },
+    "raw_pages_verified": 223,
+    "raw_response_bytes_verified": 13554797,
+    "raw_quotes_verified": 117608,
+    "point_age_records_checked": 442,
+    "accepted_record_metrics_checked": 368,
+    "budget_rows_checked": 736,
+    "summary_groups_checked": 8,
+    "latest_ambiguous_points": 0,
+    "future_rows_quarantined": 0,
+    "primary_1s_accepted": 167,
+    "sensitivity_5s_accepted": 201,
+    "all_page_chains_and_frozen_design_binding_verified": true,
+    "wealth_or_fill_claims_detected": false
+  },
+  "findings": [
+    {
+      "id": "design_and_point_cache_binding",
+      "status": "resolved_and_independently_tested",
+      "description": "Initial analyzer checked sample hash but not frozen design hash or exact cached point manifest. Root added design.sample binding, manifest.design binding, exact complete.json equality and route/window parameters. Two independent tampering tests reject before quote loads; actual221windows also verified."
+    },
+    {
+      "id": "nanosecond_and_latest_state_causality",
+      "status": "passed",
+      "description": "Exact event nanosecond comparisons reject future1ns, preserve1s/5s boundary, latest invalid does not fall back, conflicting latest full states are ambiguous. Actual sample had no ambiguous latest tie and no future-returned row; synthetic cases cover both."
+    },
+    {
+      "id": "displayed_size_units",
+      "status": "unresolved_source_limitation_explicitly_retained",
+      "description": "Official UTP upstream actual-share changes do not prove Alpaca API transformations; raw size retained without lot/share multiplication or execution capacity pass."
+    },
+    {
+      "id": "timestamp_and_tradability",
+      "status": "unresolved_source_limitation_explicitly_retained",
+      "description": "API t semantic mapping and client receive timing are not fully verified. R is a regular quote state, not halt clearance, automatic firm depth or guaranteed order execution."
+    },
+    {
+      "id": "conditional_samples",
+      "status": "research_limitation",
+      "description": "First10 chronological certified ranking days,19 prior selected entries and2 known held failures are conditionally selected; overlapping1s/5s records and parameter-shared entries are not independent forward evidence."
+    }
+  ],
+  "findings_history": [
+    {
+      "stage": "initial_read_before_hardening",
+      "tests_passed": 24,
+      "design_and_point_cache_binding": "hardening_requested; no actual corrupt input observed"
+    },
+    {
+      "stage": "final_after_hardening",
+      "tests_passed": 26,
+      "design_and_point_cache_binding": "resolved and actual input hash chains verified"
+    }
+  ],
+  "key_results_verified": {
+    "primary_1s_accepted_of221": 167,
+    "sensitivity_5s_accepted_of221": 201,
+    "selected_entry_1s_accepted_of19": 13,
+    "selected_entry_1s_spread_at_least_0_1ATR_of13": 9,
+    "selected_entry_5s_accepted_of19": 17,
+    "selected_entry_5s_spread_at_least_0_1ATR_of17": 12
+  },
+  "not_a_wealth_or_execution_result": true,
+  "previous_12_incomplete_ORB_paths_unchanged": true,
+  "new_EP_case_excluded_from_this221point_audit": true,
+  "raw_quote_pages_not_for_publication": true
+}

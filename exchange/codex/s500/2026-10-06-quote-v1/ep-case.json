@@ -1,0 +1,451 @@
+{
+  "schema": "s500.ep-isolated-candidate-gates.v1",
+  "created_at": "2026-10-06T17:10:50.940825+00:00",
+  "date": "2026-01-05",
+  "symbol": "ALT",
+  "research_type": "isolated candidate causal gate and entry-reference diagnostic, not a portfolio winner or return estimate",
+  "frozen_design_id": "s500-ep-chronological-case-gates-v1",
+  "frozen_design_recorded_at": "2026-10-06T17:06:52.093328+00:00",
+  "source_hashes": {
+    "ep-gate-design.json": "d98a7f6e7e7cb45de67362e3a94654e782b83113d8113d7b9cb1ea7291ccd8b2",
+    "registry.json": "d99bbc71c5360ed9db0484838e9ad144e41db1306c2549ce76c7ebcccf6eebc8",
+    "ep-candidate-inventory.json": "95df4912f57d78e29d5b1aa9c209bc77a09eb4924eaeea3e1d60b639eec89ae9",
+    "ep-followup.json": "6075d2d6fdf225118b05ad814c068f647e8ecf8335665536129fe05cc8df12ad",
+    "prepare.json": "c02084ab2960ddd63db9f20343c460451d9a34e4802b2a0e2e4003ed33acc73a",
+    "market_data.py": "917d764417a7dda5a3665a790a0813f408ba79ce5d6ef44dbf0555ec0825bccd",
+    "ep_case.py": "3a17082508aaf7e0b6869b355a50082b4c942c28f0fa46fd823e4b8ce23bb7b5",
+    "full_session_complete.json": "8bda18288d4096d99191bec71f0965f39ecf8057296f8ba5946d779fec8362f5"
+  },
+  "market_source": {
+    "url": "https://data.alpaca.markets/v2/stocks/bars",
+    "parameters": {
+      "symbols": "ALT",
+      "timeframe": "1Min",
+      "start": "2026-01-05T14:30:00+00:00",
+      "end": "2026-01-05T21:00:00+00:00",
+      "limit": 10000,
+      "adjustment": "raw",
+      "feed": "sip",
+      "sort": "asc"
+    },
+    "request_sha256": "49660dc07bd02bd95f3773536852c192ff0b03252570a343f0e086d50695b4de",
+    "pages": [
+      {
+        "name": "page-0000.json",
+        "sha256": "582484fadc04beb96b4298d423c0bc5e885321bd67cada97534bf7510e764d9d",
+        "bytes": 39016,
+        "bar_count": 391,
+        "retrieved_at": "2026-10-06T17:06:52.315628+00:00",
+        "next_page_token_is_null": true
+      }
+    ]
+  },
+  "news_gate": {
+    "pass": true,
+    "event_category": "regulatory announcement: FDA Breakthrough Therapy Designation for pemvidutide in MASH",
+    "timestamp_evidence": {
+      "visible_release_time": "2026-01-05T07:30:00-05:00",
+      "json_ld_datePublished": "2026-01-05T07:31:02-0500",
+      "conservative_available_by": "2026-01-05T07:31:02-05:00",
+      "discrepancy": "Visible release time and structured publication time differ by 62 seconds. Both are within the frozen window.",
+      "archival_limit": "Current first-party release is evidence of its stated publication time, not an independently archived capture from that morning."
+    },
+    "source_keys": [
+      "ALT-submissions",
+      "ALT-IR",
+      "ALT-IR-corrected",
+      "ALT-IR-page2",
+      "ALT-release"
+    ],
+    "news_window": {
+      "after_previous_session_close_et": "2026-01-02T16:00:00-05:00",
+      "before_candidate_open_et": "2026-01-05T09:30:00-05:00"
+    },
+    "classification": "regulatory announcement; FDA designation, not marketing approval"
+  },
+  "coverage": {
+    "regular_minutes_expected": 390,
+    "api_bars_received": 391,
+    "regular_minutes_present": 390,
+    "regular_valid_ohlcv_minutes": 390,
+    "missing_or_invalid_regular_offsets": [],
+    "outside_regular_session_bars": [
+      {
+        "timestamp": "2026-01-05T21:00:00Z",
+        "offset": 390,
+        "reason": "outside_regular_session_excluded"
+      }
+    ],
+    "duplicate_offsets": [],
+    "first30_expected": 30,
+    "first30_valid": 30,
+    "full_session_coverage_role": "audit only; future bar values are not used in the earlier gate or signal"
+  },
+  "status": "no_breakout_before_11",
+  "quote_point": null,
+  "strategy_returns_computed": false,
+  "broker_orders_sent": 0,
+  "opening30": {
+    "available_at": "2026-01-05T10:00:00-05:00",
+    "regular_open": 4.095,
+    "daily_open_reference": 4.095,
+    "regular_open_matches_daily_reference": true,
+    "prior_close_adjusted": 3.51,
+    "applied_splits": [],
+    "gap_fraction": 0.16666666666666674,
+    "gap_gate_pass": true,
+    "bar_count": 30,
+    "volume": 7120536,
+    "prior20_mean_adjusted_full_session_volume": 4851779.65,
+    "volume_ratio": 1.4676132293023652,
+    "volume_gate_pass": true,
+    "or_high": 4.53,
+    "or_low": 4.05,
+    "or_open": 4.095,
+    "or_close": 4.349,
+    "opening_bar_source_timestamps": [
+      "2026-01-05T14:30:00Z",
+      "2026-01-05T14:31:00Z",
+      "2026-01-05T14:32:00Z",
+      "2026-01-05T14:33:00Z",
+      "2026-01-05T14:34:00Z",
+      "2026-01-05T14:35:00Z",
+      "2026-01-05T14:36:00Z",
+      "2026-01-05T14:37:00Z",
+      "2026-01-05T14:38:00Z",
+      "2026-01-05T14:39:00Z",
+      "2026-01-05T14:40:00Z",
+      "2026-01-05T14:41:00Z",
+      "2026-01-05T14:42:00Z",
+      "2026-01-05T14:43:00Z",
+      "2026-01-05T14:44:00Z",
+      "2026-01-05T14:45:00Z",
+      "2026-01-05T14:46:00Z",
+      "2026-01-05T14:47:00Z",
+      "2026-01-05T14:48:00Z",
+      "2026-01-05T14:49:00Z",
+      "2026-01-05T14:50:00Z",
+      "2026-01-05T14:51:00Z",
+      "2026-01-05T14:52:00Z",
+      "2026-01-05T14:53:00Z",
+      "2026-01-05T14:54:00Z",
+      "2026-01-05T14:55:00Z",
+      "2026-01-05T14:56:00Z",
+      "2026-01-05T14:57:00Z",
+      "2026-01-05T14:58:00Z",
+      "2026-01-05T14:59:00Z"
+    ]
+  },
+  "signal_scan": {
+    "status": "no_breakout_before_11",
+    "observed_bars": [
+      {
+        "minute_offset": 30,
+        "close": 4.315,
+        "above_or30_high": false
+      },
+      {
+        "minute_offset": 31,
+        "close": 4.3151,
+        "above_or30_high": false
+      },
+      {
+        "minute_offset": 32,
+        "close": 4.305,
+        "above_or30_high": false
+      },
+      {
+        "minute_offset": 33,
+        "close": 4.345,
+        "above_or30_high": false
+      },
+      {
+        "minute_offset": 34,
+        "close": 4.325,
+        "above_or30_high": false
+      },
+      {
+        "minute_offset": 35,
+        "close": 4.31,
+        "above_or30_high": false
+      },
+      {
+        "minute_offset": 36,
+        "close": 4.2875,
+        "above_or30_high": false
+      },
+      {
+        "minute_offset": 37,
+        "close": 4.2036,
+        "above_or30_high": false
+      },
+      {
+        "minute_offset": 38,
+        "close": 4.2199,
+        "above_or30_high": false
+      },
+      {
+        "minute_offset": 39,
+        "close": 4.225,
+        "above_or30_high": false
+      },
+      {
+        "minute_offset": 40,
+        "close": 4.235,
+        "above_or30_high": false
+      },
+      {
+        "minute_offset": 41,
+        "close": 4.225,
+        "above_or30_high": false
+      },
+      {
+        "minute_offset": 42,
+        "close": 4.245,
+        "above_or30_high": false
+      },
+      {
+        "minute_offset": 43,
+        "close": 4.2255,
+        "above_or30_high": false
+      },
+      {
+        "minute_offset": 44,
+        "close": 4.22,
+        "above_or30_high": false
+      },
+      {
+        "minute_offset": 45,
+        "close": 4.2268,
+        "above_or30_high": false
+      },
+      {
+        "minute_offset": 46,
+        "close": 4.2499,
+        "above_or30_high": false
+      },
+      {
+        "minute_offset": 47,
+        "close": 4.265,
+        "above_or30_high": false
+      },
+      {
+        "minute_offset": 48,
+        "close": 4.225,
+        "above_or30_high": false
+      },
+      {
+        "minute_offset": 49,
+        "close": 4.1998,
+        "above_or30_high": false
+      },
+      {
+        "minute_offset": 50,
+        "close": 4.205,
+        "above_or30_high": false
+      },
+      {
+        "minute_offset": 51,
+        "close": 4.24,
+        "above_or30_high": false
+      },
+      {
+        "minute_offset": 52,
+        "close": 4.24,
+        "above_or30_high": false
+      },
+      {
+        "minute_offset": 53,
+        "close": 4.185,
+        "above_or30_high": false
+      },
+      {
+        "minute_offset": 54,
+        "close": 4.2,
+        "above_or30_high": false
+      },
+      {
+        "minute_offset": 55,
+        "close": 4.18,
+        "above_or30_high": false
+      },
+      {
+        "minute_offset": 56,
+        "close": 4.185,
+        "above_or30_high": false
+      },
+      {
+        "minute_offset": 57,
+        "close": 4.195,
+        "above_or30_high": false
+      },
+      {
+        "minute_offset": 58,
+        "close": 4.1942,
+        "above_or30_high": false
+      },
+      {
+        "minute_offset": 59,
+        "close": 4.185,
+        "above_or30_high": false
+      },
+      {
+        "minute_offset": 60,
+        "close": 4.11,
+        "above_or30_high": false
+      },
+      {
+        "minute_offset": 61,
+        "close": 4.119,
+        "above_or30_high": false
+      },
+      {
+        "minute_offset": 62,
+        "close": 4.09,
+        "above_or30_high": false
+      },
+      {
+        "minute_offset": 63,
+        "close": 4.075,
+        "above_or30_high": false
+      },
+      {
+        "minute_offset": 64,
+        "close": 4.0699,
+        "above_or30_high": false
+      },
+      {
+        "minute_offset": 65,
+        "close": 4.09,
+        "above_or30_high": false
+      },
+      {
+        "minute_offset": 66,
+        "close": 4.075,
+        "above_or30_high": false
+      },
+      {
+        "minute_offset": 67,
+        "close": 4.08,
+        "above_or30_high": false
+      },
+      {
+        "minute_offset": 68,
+        "close": 4.0907,
+        "above_or30_high": false
+      },
+      {
+        "minute_offset": 69,
+        "close": 4.105,
+        "above_or30_high": false
+      },
+      {
+        "minute_offset": 70,
+        "close": 4.1215,
+        "above_or30_high": false
+      },
+      {
+        "minute_offset": 71,
+        "close": 4.1409,
+        "above_or30_high": false
+      },
+      {
+        "minute_offset": 72,
+        "close": 4.145,
+        "above_or30_high": false
+      },
+      {
+        "minute_offset": 73,
+        "close": 4.1793,
+        "above_or30_high": false
+      },
+      {
+        "minute_offset": 74,
+        "close": 4.175,
+        "above_or30_high": false
+      },
+      {
+        "minute_offset": 75,
+        "close": 4.145,
+        "above_or30_high": false
+      },
+      {
+        "minute_offset": 76,
+        "close": 4.15,
+        "above_or30_high": false
+      },
+      {
+        "minute_offset": 77,
+        "close": 4.15,
+        "above_or30_high": false
+      },
+      {
+        "minute_offset": 78,
+        "close": 4.105,
+        "above_or30_high": false
+      },
+      {
+        "minute_offset": 79,
+        "close": 4.1013,
+        "above_or30_high": false
+      },
+      {
+        "minute_offset": 80,
+        "close": 4.095,
+        "above_or30_high": false
+      },
+      {
+        "minute_offset": 81,
+        "close": 4.0914,
+        "above_or30_high": false
+      },
+      {
+        "minute_offset": 82,
+        "close": 4.095,
+        "above_or30_high": false
+      },
+      {
+        "minute_offset": 83,
+        "close": 4.074,
+        "above_or30_high": false
+      },
+      {
+        "minute_offset": 84,
+        "close": 4.09,
+        "above_or30_high": false
+      },
+      {
+        "minute_offset": 85,
+        "close": 4.1,
+        "above_or30_high": false
+      },
+      {
+        "minute_offset": 86,
+        "close": 4.075,
+        "above_or30_high": false
+      },
+      {
+        "minute_offset": 87,
+        "close": 4.095,
+        "above_or30_high": false
+      },
+      {
+        "minute_offset": 88,
+        "close": 4.089,
+        "above_or30_high": false
+      },
+      {
+        "minute_offset": 89,
+        "close": 4.1074,
+        "above_or30_high": false
+      }
+    ]
+  },
+  "limitations": [
+    "One verified candidate is not a broad-universe winner: 1069 news candidates remain unreviewed, and unknown news is not false.",
+    "This diagnostic was frozen after ALT first30 volume was known; it is not untouched validation.",
+    "All input bars are historical SIP source observations, not a guarantee of tradable quotes, depth or fills.",
+    "Any market quote must be timestamped no later than the planned entry reference; do not select a later favorable quote.",
+    "No exits, PnL, cumulative wealth, compounding or target achievement are computed."
+  ]
+}
