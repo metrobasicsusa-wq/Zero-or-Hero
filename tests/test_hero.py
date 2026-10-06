@@ -1514,6 +1514,20 @@ class ResearchFly(unittest.TestCase):
         self.assertIsNone(f.trade(legs, "14:00", 100.0, 1.0, 100.2))   # no leg traded near 14:00
 
 
+class ResearchTails(unittest.TestCase):
+    def test_weeks_expiries_and_multiples(self):
+        from hero import research_tails as t
+        self.assertEqual(t.week_entries(["2026-09-28", "2026-09-29", "2026-10-05", "2026-10-06"]), ["2026-09-28", "2026-10-05"])
+        exps = ["2026-10-02", "2026-10-09", "2026-10-23", "2026-10-30", "2026-11-20"]
+        self.assertEqual(t.pick_expiry(exps, "2026-09-28", "weekly"), "2026-10-02")
+        self.assertEqual(t.pick_expiry(exps, "2026-09-28", "monthly"), "2026-10-23")   # 25 days: nearest to 28
+        bars = {"2026-09-28": {"c": 0.10, "h": 0.10}, "2026-09-30": {"c": 1.0, "h": 2.6}, "2026-10-02": {"c": 0.0, "h": 0.0}}
+        o = t.outcome(bars, "2026-09-28", "2026-10-02", 110.0, 105.0)
+        self.assertEqual(o["best"], round(2.6 * 0.9 / 0.11, 2))     # 21x at the best day's high
+        self.assertEqual((o["ret_expiry"], o["ret_take20"]), (-1.0, 19.0))
+        self.assertIsNone(t.outcome(bars, "2026-09-29", "2026-10-02", 110.0, 105.0))   # no trade on entry
+
+
 class ZeroDTE(unittest.TestCase):
     def setUp(self):
         self.tmp = tempfile.TemporaryDirectory()
