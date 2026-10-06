@@ -8,7 +8,7 @@ on:
       study:
         description: "Which study to run"
         type: choice
-        options: [short, universe, s500, earnings, lottery, flow, 0dte, events, fly, tails, seller, net, gap]
+        options: [short, universe, s500, earnings, lottery, flow, 0dte, events, fly, tails, seller, net, gap, ironfly]
         default: short
 
 # Its own queue: a long study must never hold up the trading runs (which share hero-journal).

@@ -1592,6 +1592,20 @@ class ResearchGap(unittest.TestCase):
         self.assertEqual(g.game([{"day": "a", "trail": 39.0}], "trail"), {"heroes": 1, "zeros": 0, "best": 10_000})
 
 
+class ResearchIronFly(unittest.TestCase):
+    def test_credit_reaction_buyback_and_expiry(self):
+        from hero import research_ironfly as r
+        legs = {"sc": "SC", "sp": "SP", "lc": "LC", "lp": "LP"}
+        px = {"SC": {"e": 5.0, "r": 1.0}, "SP": {"e": 5.0, "r": 1.2}, "LC": {"e": 1.0, "r": 0.1}, "LP": {"e": 1.0, "r": 0.1}}
+        out = r.ironfly(px, legs, 100.0, 10.0, "e", "r", 100.5, 103.0)
+        credit = 2 * (5.0 - 0.25) - 2 * (1.0 + 0.05)              # 7.40
+        self.assertAlmostEqual(out["credit"], round(credit, 3))
+        self.assertAlmostEqual(out["max_loss"], round(10 - credit, 3))
+        buyback = (1.0 + 0.05) + (1.2 + 0.06) - 2 * max(0.1 - 0.02, 0)
+        self.assertAlmostEqual(out["ret_react"], round((credit - buyback) / (10 - credit), 3))
+        self.assertAlmostEqual(out["ret_expiry"], round((credit - 3.0) / (10 - credit), 3))   # settled 3 from the body
+
+
 class ZeroDTE(unittest.TestCase):
     def setUp(self):
         self.tmp = tempfile.TemporaryDirectory()
