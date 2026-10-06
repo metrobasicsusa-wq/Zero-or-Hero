@@ -158,6 +158,11 @@ footer { color: var(--muted); font-size: 12px; margin-top: 24px; }
     <div id="zdte"></div>
   </section>
 
+  <section class="card" id="net-card" hidden>
+    <h2>撒网演练（模拟，只在高波动周出手）</h2>
+    <div id="net"></div>
+  </section>
+
   <section class="card">
     <h2>当前持仓</h2>
     <div id="positions"></div>
@@ -411,6 +416,27 @@ function renderZdte() {
       : empty("还没有末日交易"));
 }
 
+function renderNet() {
+  const b = DATA.net, p = DATA.config.net_shadow;
+  if (!b || !p || !p.enabled) return;
+  $("net-card").hidden = false;
+  const invested = b.open.reduce((a, t) => a + t.paid, 0);
+  const sig = b.last_signal;
+  const items = [
+    ["模拟现金 / 持仓成本", `${usd(b.cash, 2)} / ${usd(invested, 2)}`],
+    ["第几轮 · 成功 / 归零", `第 ${b.round} 轮 · ${b.heroes} / ${b.zeros}`],
+    ["最近一次检查", sig ? `${sig.week}（截至 ${sig.as_of}）：` + (sig.fired.length ? sig.fired.map((f) => f === "rebound" ? "暴跌后反弹" : "高波动").join("、") + "，出手" : "市场不够疯狂，没出手") : "还没检查过"],
+    ["规则", `每周第一个交易日 10:00 后看 SPY；有信号就买动态池里最波动的 ${p.net} 只、约 4 周后到期、价外 ${Math.round(p.otm * 100)}% 的看涨，用一半资金平分；${p.take} 倍止盈，否则拿到期`],
+  ];
+  const row = (t, open) => [esc(t.opened), `<b>${esc(optionLabel(t.symbol) || t.symbol)}</b>`, usd(t.price, 2), usd(t.paid, 2),
+    open ? '<span class="chip">持有中</span>' : `<span class="chip">${esc(t.exit)}</span>`,
+    open ? "—" : usd(t.proceeds, 2), open ? "—" : `<span class="${tone(t.ret)}">${pct(t.ret, 0)}</span>`];
+  const rows = b.open.map((t) => row(t, true)).concat(b.history.slice().reverse().slice(0, 30).map((t) => row(t, false)));
+  $("net").innerHTML = `<dl class="params">${items.map(([k, v]) => `<dt>${k}</dt><dd>${esc(v)}</dd>`).join("")}</dl>` +
+    (rows.length ? table([["买入日"], ["合约"], ["买价", 1], ["花费", 1], ["状态"], ["收回", 1], ["收益", 1]], rows)
+      : empty("还没出过手：等市场进入高波动或暴跌后反弹"));
+}
+
 function renderEvents() {
   const es = DATA.events;
   if (DATA.rehearsal) $("events-note").textContent = "· 演练中：以下都是模拟，没有真下单";
@@ -418,6 +444,7 @@ function renderEvents() {
   const kind = (e) => e.kind === "close" ? "平仓" : e.kind === "halt" ? "暂停开仓" : e.kind === "option_skip" ? "未买期权"
     : e.kind === "zdte_result" ? "末日结果" : e.kind === "zdte_skip" ? "末日跳过"
     : e.kind === "zdte_switch" ? "翻倍切换" : e.kind === "zdte_attempt_end" ? "本轮归零"
+    : e.kind === "net_buy" ? "撒网买入" : e.kind === "net_result" ? "撒网结果" : e.kind === "net_skip" ? "撒网跳过" : e.kind === "net_round" ? "撒网换轮"
     : e.kind === "lottery_pick" ? "本周彩票" : e.kind === "lottery_skip" ? "彩票跳过" : e.kind === "lottery_result" ? "彩票结果"
     : e.kind === "circuit" ? "市场熔断" : e.kind === "news_alert" ? "新闻警报"
     : e.kind === "stock_drop_alert" ? "急跌警报" : e.kind === "buy_blocked" ? "暂停买入"
@@ -534,6 +561,7 @@ new ResizeObserver(() => { const w = $("chart").clientWidth; if (w !== lastW) { 
 renderPositions();
 renderOrders();
 renderZdte();
+renderNet();
 renderEvents();
 renderParams();
 renderEvolution();

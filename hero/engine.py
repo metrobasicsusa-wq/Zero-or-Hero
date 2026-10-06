@@ -13,6 +13,7 @@ from hero import earnings as earn
 from hero import lottery as lot
 from hero import zero_dte as zd
 from hero import macro
+from hero import net as netlib
 from hero import stops as stoplib
 from hero.alpaca import AlpacaError
 from hero.journal import Journal, execution_key
@@ -128,6 +129,11 @@ class Engine:
         self.rank_closes = {s: xs for s, xs in closes.items() if s in ranked_pool}
         self.macro_closes = closes_from_bars({s: bars.get(s, []) for s in macro.SYMBOLS.values()})
         self._intraday(stocks, today)
+        if self.cfg.get("net_shadow", {}).get("enabled"):
+            try:  # a simulation: it must never get in the way of the real decisions below
+                self._net_shadow(closes, today)
+            except Exception as e:
+                self.j.event("alert_error", source="net_shadow", error=str(e)[:200])
 
         # Zero-or-hero phase 1: while it runs, the account does nothing but the daily 0DTE trade.
         zp = zd.settings(self.cfg) if self.cfg.get("zero_dte", {}).get("enabled") else None
@@ -334,6 +340,91 @@ class Engine:
         if t.get("filled") or t.get("exit_sent"):
             return book.close(t.get("exit_bid", bid) * 100 * t["qty"], "收盘前平仓（按买价估算，以成交为准）", now)
         return book.close(t["paid"], "买单没有成交，已撤单", now)
+
+    def _net_shadow(self, closes: dict, today: date) -> None:
+        """Simulated net of cheap calls in wild weeks; see hero.net. Never sends an order."""
+        from hero import research_net as rn
+        from hero.research_universe import ETFS
+        p = netlib.settings(self.cfg)
+        book = netlib.Book(self.j.root / "net.json", float(p["start_capital"]))
+        now, day = zd.hhmm(self.now), today.isoformat()
+        # 1. open tickets: the take when the bid reaches it; expiry at intrinsic value.
+        if book.d["open"]:
+            snaps = self.c.option_snapshots([t["symbol"] for t in book.d["open"]])
+            for t in list(book.d["open"]):
+                q = (snaps.get(t["symbol"]) or {}).get("latestQuote") or {}
+                bid = float(q.get("bp") or 0)
+                take = p["take"] * t["price"]
+                if bid >= take:
+                    done = book.close(t, take, f"{p['take']:g} 倍止盈", day)
+                elif day > t["expiry"]:
+                    bars = self.c.daily_bars([t["underlying"]], t["expiry"], adjustment="raw").get(t["underlying"], [])
+                    settle = next((float(b["c"]) for b in bars if b["t"][:10] == t["expiry"]), None)
+                    if settle is None:
+                        continue
+                    done = book.close(t, max(settle - t["strike"], 0.0), f"到期（收盘 ${settle:,.2f}）", day)
+                else:
+                    continue
+                self.j.event("net_result", dry_run=True, symbol=t["symbol"], ret=done["ret"],
+                             why=f"撒网演练：{t['symbol']} {done['exit']}，花 ${t['paid']:,.2f}、收回 ${done['proceeds']:,.2f}"
+                                 f"（{done['ret']:+.0%}），模拟余额 ${book.d['cash']:,.2f}")
+            msg = book.round_check(p)
+            if msg:
+                self.j.event("net_round", dry_run=True, why=msg)
+        # 2. once a week, after the entry time: is the market wild? if so, cast the net.
+        wk = netlib.week_key(today)
+        if book.d["checked"] != wk and now >= p["entry"]:
+            book.d["checked"] = wk
+            spy_bars = self.c.daily_bars(["SPY"], (today - timedelta(days=560)).isoformat(), adjustment="raw").get("SPY", [])
+            spy = {b["t"][:10]: float(b["c"]) for b in spy_bars if b["t"][:10] < day}  # completed days only
+            last = max(spy) if spy else None
+            sig = rn.signals(spy, [last]) if last else {}
+            fired = [k for k in ("rebound", "wild") if sig.get(k)]
+            book.d["last_signal"] = {"week": wk, "as_of": last, "fired": fired}
+            if not fired:
+                self.j.event("net_skip", dry_run=True, why=f"撒网演练：{wk} 市场不够疯狂（截至 {last}），这周不出手")
+            else:
+                pool = [s for s in self.cfg["universe"] if s not in ETFS and len(closes.get(s, [])) >= 64]
+                ranked = sorted(((netlib.vol(closes[s][-64:]), s) for s in pool), reverse=True)[:p["net"]]
+                names = [s for _, s in ranked]
+                spots = {s: float((v.get("latestTrade") or {}).get("p") or 0) for s, v in self.c.stock_snapshots(names).items()}
+                picks = []
+                for s in names:
+                    spot = spots.get(s)
+                    if not spot:
+                        continue
+                    cs = self.c.option_contracts(s, status="active", type="call",
+                                                 expiration_date_gte=(today + timedelta(days=p["min_days"])).isoformat(),
+                                                 expiration_date_lte=(today + timedelta(days=p["max_days"])).isoformat(),
+                                                 strike_price_gte=f"{spot * (1 + p['otm']):.2f}",
+                                                 strike_price_lte=f"{spot * (1 + p['otm'] + 0.2):.2f}")
+                    if not cs:
+                        continue
+                    exp = min({c["expiration_date"] for c in cs}, key=lambda x: abs((date.fromisoformat(x) - today).days - 28))
+                    c = min((c for c in cs if c["expiration_date"] == exp), key=lambda c: float(c["strike_price"]))
+                    picks.append((s, spot, c))
+                asks = self.c.option_snapshots([c["symbol"] for _, _, c in picks]) if picks else {}
+                picks = [(s, spot, c, float(((asks.get(c["symbol"]) or {}).get("latestQuote") or {}).get("ap") or 0))
+                         for s, spot, c in picks]
+                picks = [x for x in picks if x[3] > 0 and x[2]["symbol"] not in {t["symbol"] for t in book.d["open"]}]
+                if picks:
+                    each = p["fraction"] * book.d["cash"] / len(picks)
+                    for s, spot, c, ask in picks:
+                        qty = round(each / (ask * 100), 4)  # fractional: the simulation spreads $500 over the net
+                        t = {"symbol": c["symbol"], "underlying": s, "strike": float(c["strike_price"]),
+                             "expiry": c["expiration_date"], "price": ask, "qty": qty, "paid": round(ask * 100 * qty, 2),
+                             "opened": day, "spot": spot, "signal": fired}
+                        book.d["open"].append(t)
+                        book.d["cash"] = round(book.d["cash"] - t["paid"], 2)
+                    self.j.event("net_buy", dry_run=True, why=(
+                        f"撒网演练：{wk} 信号 {'、'.join('暴跌后反弹' if f == 'rebound' else '高波动' for f in fired)}，"
+                        f"买 {len(picks)} 只最波动股票约 4 周后到期、价外 {p['otm']:.0%} 的看涨："
+                        + "、".join(f"{s} ${float(c['strike_price']):g}@{ask:.2f}" for s, _, c, ask in picks)
+                        + f"；共 ${sum(round(a * 100 * round(each / (a * 100), 4), 2) for *_, a in picks):,.2f}，"
+                        f"模拟余额 ${book.d['cash']:,.2f}"))
+                else:
+                    self.j.event("net_skip", dry_run=True, why=f"撒网演练：{wk} 有信号但找不到合适的期权报价")
+        book.save()
 
     def _lottery(self, ledger: "lot.Ledger", closes: dict, today: date) -> None:
         """One small earnings call a week until a 10x hit, a doubled pot or an empty budget."""

@@ -1719,6 +1719,56 @@ class ZeroDTELive(unittest.TestCase):
         self.assertEqual(c.orders, [])                                 # no second trade the same day
 
 
+class NetShadow(unittest.TestCase):
+    """The simulated net: casts only in a wild week, never sends an order, books the 20x take."""
+
+    def setUp(self):
+        self.tmp = tempfile.TemporaryDirectory()
+        spy = [100.0] * 388 + [96.0, 92.0, 89.0, 88.0, 90.0, 91.0, 92.0, 92.5, 93.0, 93.0, 93.0, 93.0]  # -12%, then +5.7%
+        self.closes = {"SPY": spy, "UP1": series(0.002, seed=1), "UP2": series(0.001, seed=2), "DOWN": series(-0.001, seed=3)}
+        self.conf = {**cfg(options={"enabled": False}), "live_from": "2000-01-01", "launch_approved": False,
+                     "attempt": {"number": 1, "start_capital": 500, "end_loss": 0.9},
+                     "net_shadow": {"enabled": True, "net": 15, "otm": 0.2, "take": 20, "fraction": 0.5, "start_capital": 500}}
+
+    def tearDown(self):
+        self.tmp.cleanup()
+
+    def cycle(self, hh, mm, bid, ask=0.50):
+        from datetime import datetime
+        closes = self.closes
+
+        class Broker(FakeClient):
+            def daily_bars(self, symbols, start, adjustment="all"):
+                return {s: bars(closes[s]) for s in symbols if s in closes}
+
+            def option_contracts(self, und, **kw):
+                return [{"symbol": f"{und}261030C00{int(float(kw['strike_price_gte']) + 1):03d}000",
+                         "strike_price": str(int(float(kw["strike_price_gte"]) + 1)), "expiration_date": "2026-10-30"}]
+
+            def option_snapshots(self, symbols):
+                return {s: {"latestQuote": {"bp": bid, "ap": ask}} for s in symbols}
+        c = Broker(self.closes, equity=500, last_equity=500)
+        c.snaps = {s: {"latestTrade": {"p": closes[s][-1]}, "dailyBar": {"o": closes[s][-1]}} for s in closes}
+        Engine(c, self.conf, Journal(Path(self.tmp.name))).run(today=TODAY, now=datetime(2026, 10, 1, hh, mm))
+        book = json.loads((Path(self.tmp.name) / "net.json").read_text())
+        log = [json.loads(l) for l in (Path(self.tmp.name) / "trades.jsonl").read_text().splitlines()]
+        return c, book, log
+
+    def test_wild_week_casts_the_net_and_books_the_take(self):
+        c, book, log = self.cycle(9, 45, bid=0.4)
+        self.assertEqual(book["open"], [])                      # before 10:00: nothing yet
+        c, book, log = self.cycle(10, 5, bid=0.4)
+        self.assertEqual(book["last_signal"]["fired"][0], "rebound")
+        self.assertEqual(sorted(t["underlying"] for t in book["open"]), ["DOWN", "UP1", "UP2"])
+        self.assertAlmostEqual(book["cash"], 250.0, places=1)   # half of $500 spread over the net
+        self.assertEqual(c.orders, [])                          # a simulation: no orders, ever
+        self.assertTrue(all(e["dry_run"] for e in log if e["kind"].startswith("net_")))
+        c, book, log = self.cycle(10, 15, bid=10.5)             # bid reaches 20 x $0.50
+        self.assertEqual(book["open"], [])
+        self.assertAlmostEqual(book["cash"], 250.0 + 20 * 250.0, delta=1)
+        self.assertEqual(len([e for e in log if e["kind"] == "net_buy"]), 1)   # once a week
+
+
 class Safety(unittest.TestCase):
     def test_refuses_live_endpoint(self):
         with self.assertRaises(AlpacaError):

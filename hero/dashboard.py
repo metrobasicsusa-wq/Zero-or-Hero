@@ -13,7 +13,8 @@ TEMPLATE = Path(__file__).with_name("dashboard.html")
 EVENT_KINDS = {"order", "close", "halt", "option_skip", "attempt_end", "attempt_end_confirmed", "earnings_watch",
                "circuit", "news_alert", "stock_drop_alert", "buy_blocked",
                "lottery_pick", "lottery_skip", "lottery_result",
-               "zdte_skip", "zdte_result", "zdte_switch", "zdte_attempt_end"}
+               "zdte_skip", "zdte_result", "zdte_switch", "zdte_attempt_end",
+               "net_skip", "net_buy", "net_result", "net_round"}
 MAX_EVENTS = 200
 REPO_BLOB = "https://github.com/metrobasicsusa-wq/Zero-or-Hero/blob/claude/cloud-paper-trading-ivwxqk"
 
@@ -36,7 +37,8 @@ def collect(journal: Path, cfg: dict) -> dict:
             if e["kind"] == "targets" and e.get("macro") is not None:
                 gauges = {"ts": e.get("ts"), "gauges": e["macro"], "risk_off": e.get("macro_risk_off"),
                           "applied": e.get("macro_applied")}  # market data: rehearsal readings count too
-            if e.get("dry_run") and not (show_sim and e["kind"] in EVENT_KINDS):
+            # simulated events show in a rehearsal; the net shadow book is always a simulation
+            if e.get("dry_run") and not ((show_sim and e["kind"] in EVENT_KINDS) or e["kind"].startswith("net_")):
                 continue
             if e["kind"] == "targets":
                 targets = e
@@ -56,10 +58,11 @@ def collect(journal: Path, cfg: dict) -> dict:
     mkt = json.loads(mkt_path.read_text()) if mkt_path.exists() else None
     brief_dir = journal.resolve().parent / "macro" / "briefings"
     briefs = sorted(brief_dir.glob("20*.md")) if brief_dir.exists() else []
-    zdte_path = journal / "zdte.json"
+    zdte_path, net_path = journal / "zdte.json", journal / "net.json"
     return {
         "rehearsal": show_sim,
         "zdte": json.loads(zdte_path.read_text()) if zdte_path.exists() else None,
+        "net": json.loads(net_path.read_text()) if net_path.exists() else None,
         "generated": datetime.now(timezone.utc).isoformat(timespec="seconds"),
         "equity": equity,
         "snapshot": json.loads(snap_path.read_text()) if snap_path.exists() else None,
