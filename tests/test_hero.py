@@ -1815,6 +1815,23 @@ class ExchangePage(unittest.TestCase):
             self.assertIn("&lt;script&gt;", page)
 
 
+class MacroHourly(unittest.TestCase):
+    def test_gauges_recorded_once_an_hour(self):
+        from datetime import datetime
+        closes = {"SPY": series(0.001, seed=5), "UP1": series(0.002, seed=1), "UP2": series(0.001, seed=2),
+                  "DOWN": series(-0.001, seed=3), "TLT": series(-0.003, seed=4), "USO": series(0.0, seed=6),
+                  "VIXY": series(0.0, seed=7), "UUP": series(0.002, seed=8)}
+        with tempfile.TemporaryDirectory() as d:
+            for hh, mm in ((10, 5), (10, 45), (11, 5)):
+                Engine(FakeClient(closes), cfg(), Journal(Path(d)), dry_run=True).run(
+                    today=TODAY, now=datetime(2026, 10, 1, hh, mm))
+            log = [json.loads(l) for l in (Path(d) / "trades.jsonl").read_text().splitlines()]
+            ms = [e for e in log if e["kind"] == "macro"]
+            self.assertEqual(len(ms), 2)                       # 10:05 and 11:05, not 10:45
+            self.assertEqual(set(ms[0]["macro"]), {"rates", "oil", "fear", "dollar"})
+            self.assertIsNotNone(dashboard.collect(Path(d), cfg())["macro"])
+
+
 class Safety(unittest.TestCase):
     def test_refuses_live_endpoint(self):
         with self.assertRaises(AlpacaError):

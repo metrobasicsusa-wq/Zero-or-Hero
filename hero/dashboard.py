@@ -34,7 +34,7 @@ def collect(journal: Path, cfg: dict) -> dict:
     if trades_path.exists():
         for line in open(trades_path):
             e = json.loads(line)
-            if e["kind"] == "targets" and e.get("macro") is not None:
+            if e["kind"] in ("targets", "macro") and e.get("macro") is not None:  # hourly readings and the daily one
                 gauges = {"ts": e.get("ts"), "gauges": e["macro"], "risk_off": e.get("macro_risk_off"),
                           "applied": e.get("macro_applied")}  # market data: rehearsal readings count too
             # simulated events show in a rehearsal; the net shadow book is always a simulation

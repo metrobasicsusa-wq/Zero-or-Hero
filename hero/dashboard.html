@@ -482,7 +482,7 @@ function renderReview() {
 
 function renderMacro() {
   const m = DATA.macro;
-  if (!m) { $("macro").innerHTML = empty("下一次调仓时开始记录") + renderMarket(); return; }
+  if (!m) { $("macro").innerHTML = empty("交易时段每小时记录一次") + renderMarket(); return; }
   const rows = Object.values(m.gauges).map((g) =>
     [g.flag ? `<span class="chip" style="color:var(--down)">警报</span>` : `<span class="chip">正常</span>`, esc(g.text)]);
   const mode = DATA.config.stocks.macro_scale < 1

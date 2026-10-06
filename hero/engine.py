@@ -128,6 +128,7 @@ class Engine:
         ranked_pool = set(self.cfg["universe"]) | {self.cfg["regime_symbol"]}
         self.rank_closes = {s: xs for s, xs in closes.items() if s in ranked_pool}
         self.macro_closes = closes_from_bars({s: bars.get(s, []) for s in macro.SYMBOLS.values()})
+        self._macro_hourly()
         self._intraday(stocks, today)
         if self.cfg.get("net_shadow", {}).get("enabled"):
             try:  # a simulation: it must never get in the way of the real decisions below
@@ -340,6 +341,21 @@ class Engine:
         if t.get("filled") or t.get("exit_sent"):
             return book.close(t.get("exit_bid", bid) * 100 * t["qty"], "收盘前平仓（按买价估算，以成交为准）", now)
         return book.close(t["paid"], "买单没有成交，已撤单", now)
+
+    def _macro_hourly(self) -> None:
+        """Record the macro gauges once an hour in market hours (the last daily bar is today's,
+        so they move intraday). Record only: whether they cut exposure is still decided at the
+        daily rebalance by stocks.macro_scale."""
+        mark = self.j.root / "macro_hour.txt"
+        hour = self.now.strftime("%Y-%m-%d %H")
+        if mark.exists() and mark.read_text().strip() == hour:
+            return
+        g = macro.gauges(self.macro_closes or {})
+        if not g:
+            return
+        cut = self.cfg["stocks"].get("macro_scale", 1.0) < 1.0 and macro.risk_off(g)
+        self.j.event("macro", macro=g, macro_risk_off=macro.risk_off(g), macro_applied=cut, why=macro.summary(g))
+        mark.write_text(hour + "\n")
 
     def _net_shadow(self, closes: dict, today: date) -> None:
         """Simulated net of cheap calls in wild weeks; see hero.net. Never sends an order."""
