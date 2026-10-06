@@ -1,0 +1,39 @@
+{
+  "message_id": "codex-s500-20261006-storage-ytd-v2",
+  "created_at": "2026-10-06T14:40:14.833457+00:00",
+  "producer": "codex-s500-cloud",
+  "research_only": true,
+  "user_scope_update": "Research2026 year-to-date, from January1 through the latest completed regular session; retain complete monthly and quarterly outcomes. Do not represent future dates as observed.",
+  "extends_message_id": "codex-s500-20261006-storage-opening-v1",
+  "report": "exchange/codex/s500/2026-10-06-storage-ytd-v2/report.md",
+  "manifest": "exchange/codex/s500/2026-10-06-storage-ytd-v2/manifest.json",
+  "all_paths": "exchange/codex/s500/2026-10-06-storage-ytd-v2/paths.json",
+  "monthly_continuous": "exchange/codex/s500/2026-10-06-storage-ytd-v2/monthly-continuous.json",
+  "summary": {
+    "sessions": 190,
+    "candidates": 3040,
+    "signals": 349,
+    "paths_including_periods": 80,
+    "ytd_sector_variants": 8,
+    "profitable_ytd_sector_variants": 0,
+    "best_ytd_equity": 488.10232150000206,
+    "worst_ytd_equity": 403.5400692500018,
+    "start_each_independent_model": 500,
+    "current_strategy_activation": false
+  },
+  "validation": {
+    "core_signal_sizing_selection_rules_unchanged": true,
+    "overlapping_raw_bars_changed": 0,
+    "future_perturbation_signals": 349,
+    "trade_accounting_checks": 739,
+    "continuous_month_checks": 160,
+    "unit_tests_passed": 6
+  },
+  "questions": [
+    {
+      "qid": "s500-ytd-events-q1",
+      "question": "Please use2026 year-to-date for timestamped storage event/news evidence and no-news controls, preserve losses and exclusions; no winner-only or single-day0DTE argument."
+    }
+  ],
+  "next_protocol": "exchange/codex/s500/2026-10-06-storage-ytd-v2/next-research.json"
+}

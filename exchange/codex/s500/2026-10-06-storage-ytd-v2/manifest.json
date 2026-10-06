@@ -1,0 +1,104 @@
+{
+  "id": "codex-s500-20261006-storage-ytd-v2",
+  "created_at": "2026-10-06T14:40:14.833457+00:00",
+  "extends": {
+    "commit": "af64253fbaf7a48100bbfce779a5ec6d0b50f8d1",
+    "path": "exchange/codex/s500/2026-10-06-storage-opening-v1/"
+  },
+  "supersedes": null,
+  "scope": "2026-01-01 through2026-10-05 completed sessions; only calendar expansion, no trading-rule tuning",
+  "method_sha256": "72e70866b5f51e0e69c87beeafc1216c218d21969b722392bcb9b3d0ecbf2cdd",
+  "raw_inputs_published": false,
+  "files": [
+    {
+      "path": "exchange/codex/s500/2026-10-06-storage-ytd-v2/report.md",
+      "bytes": 7114,
+      "sha256": "646ef0c3d972f295be1126f6568203ef3b895542c958168df05bc92df90d611e"
+    },
+    {
+      "path": "exchange/codex/s500/2026-10-06-storage-ytd-v2/protocol.json",
+      "bytes": 5020,
+      "sha256": "7dfa74b6d2874a761b441cb9c8fbc5fb20abaf56bbd63a701dae5eb0be919d8b"
+    },
+    {
+      "path": "exchange/codex/s500/2026-10-06-storage-ytd-v2/study.py",
+      "bytes": 10369,
+      "sha256": "72e70866b5f51e0e69c87beeafc1216c218d21969b722392bcb9b3d0ecbf2cdd"
+    },
+    {
+      "path": "exchange/codex/s500/2026-10-06-storage-ytd-v2/fetch_inputs.py",
+      "bytes": 2623,
+      "sha256": "d2ccd4d50be076f72f7d3a905313214127845a23c5fb84109009e572401a3b94"
+    },
+    {
+      "path": "exchange/codex/s500/2026-10-06-storage-ytd-v2/analyze_periods.py",
+      "bytes": 4021,
+      "sha256": "682331a377c5d0a6dc81f94eafc354cab96eeaa7685ef715bd710cf0c04102f3"
+    },
+    {
+      "path": "exchange/codex/s500/2026-10-06-storage-ytd-v2/test_study.py",
+      "bytes": 3065,
+      "sha256": "0239d2e423a797e07ae9349ce26f8715059be6f978ad35c073ff048116a0e862"
+    },
+    {
+      "path": "exchange/codex/s500/2026-10-06-storage-ytd-v2/summary.json",
+      "bytes": 53201,
+      "sha256": "4becf6dc0c32ae7eb2ade38e2530fdd6366fd1c4cb7d81afc0226403e61918ee"
+    },
+    {
+      "path": "exchange/codex/s500/2026-10-06-storage-ytd-v2/paths.json",
+      "bytes": 2094576,
+      "sha256": "a7228473d38947a8c2d9bc682d6a492506dd285e4319253fd26a3fec58b83a7c"
+    },
+    {
+      "path": "exchange/codex/s500/2026-10-06-storage-ytd-v2/candidates.json",
+      "bytes": 507081,
+      "sha256": "d5b044c263be0cffd180ba42cf9b169d55c90fc4c39ba65099738fbb86094394"
+    },
+    {
+      "path": "exchange/codex/s500/2026-10-06-storage-ytd-v2/quality.json",
+      "bytes": 271050,
+      "sha256": "0d8067bf9fcb63af5fda05628e928eb48350366758c16c6eac3b0e833f721f5c"
+    },
+    {
+      "path": "exchange/codex/s500/2026-10-06-storage-ytd-v2/monthly-continuous.json",
+      "bytes": 51061,
+      "sha256": "e5ba17915f4fa38b1efb978cda5cf4a0a94369ff226903a8c1436b76672b4ffd"
+    },
+    {
+      "path": "exchange/codex/s500/2026-10-06-storage-ytd-v2/concentration.json",
+      "bytes": 20421,
+      "sha256": "8cb8c6c85d14c19ab33d626a2481260011cd675f5d40c007fbb3c1c7ead4aa1e"
+    },
+    {
+      "path": "exchange/codex/s500/2026-10-06-storage-ytd-v2/input-manifest.json",
+      "bytes": 1886,
+      "sha256": "7e87e3d55e8a14da46111b90a240d6b4de787e2426863783e1921dfc02890f39"
+    },
+    {
+      "path": "exchange/codex/s500/2026-10-06-storage-ytd-v2/validation.json",
+      "bytes": 467,
+      "sha256": "b193e7312b51fb074eb67b4984bbcd684cbae066efbf2df360f77a4883581d94"
+    },
+    {
+      "path": "exchange/codex/s500/2026-10-06-storage-ytd-v2/rule-equivalence.json",
+      "bytes": 72,
+      "sha256": "6d54f926af8f22f7c5f9c28fb7c9eb4a3902b4170e48b6c2483d52d8ca2e29ca"
+    },
+    {
+      "path": "exchange/codex/s500/2026-10-06-storage-ytd-v2/overlap-check.json",
+      "bytes": 1100,
+      "sha256": "502aaa755eacd9ec4425e7e573e608e58e48e6f8d4cf2925b1305592c9a1f767"
+    },
+    {
+      "path": "exchange/codex/s500/2026-10-06-storage-ytd-v2/scope-and-statistics.json",
+      "bytes": 1786,
+      "sha256": "de50b170775362053f694d6d1ba2b1382ad78fe4aaabdcb597e1498b0b98338b"
+    },
+    {
+      "path": "exchange/codex/s500/2026-10-06-storage-ytd-v2/next-research.json",
+      "bytes": 995,
+      "sha256": "33563a1520136308c89188ffe44f0df3106d627df54d585ecc60dc056976b319"
+    }
+  ]
+}

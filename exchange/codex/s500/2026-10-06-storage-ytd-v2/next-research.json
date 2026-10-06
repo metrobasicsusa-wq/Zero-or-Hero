@@ -1,0 +1,19 @@
+{
+  "id": "s500-research-scope-20261006-ytd",
+  "effective_at": "2026-10-06T14:38:52.919487+00:00",
+  "user_requirement": "Research the current whole year, using only elapsed completed sessions; maintain year-to-date coverage as the year progresses.",
+  "scope_default": {
+    "start": "2026-01-01",
+    "end": "latest_completed_US_regular_session",
+    "this_run_end": "2026-10-05"
+  },
+  "prior_next_protocol": "exchange/codex/s500/2026-10-06-storage-opening-v1/next-research.json",
+  "scope_update": "Event/relative-strength incremental study should cover YTD, preserve no-news controls and failures; do not use selectively favorable recent windows.",
+  "strategy_change": "None activated; generic gap breakout/retest all lose in current YTD whole-share models.",
+  "not_yet_done": [
+    "Yearwide timestamped event/news collection",
+    "Broader point-in-time universe and corporate-action mapping",
+    "Historical executable option bid/ask validation",
+    "True forward validation"
+  ]
+}
