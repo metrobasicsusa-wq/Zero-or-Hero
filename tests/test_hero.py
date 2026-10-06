@@ -1558,6 +1558,28 @@ class ResearchSeller(unittest.TestCase):
         self.assertEqual((a["final"], a["trades"]), (round(10_000 * 1.0625 * 0.75), 2))
 
 
+class ResearchNet(unittest.TestCase):
+    def test_ticket_needs_a_real_move_and_game_rounds(self):
+        from hero import research_net as n
+        stock = {"d0": 100.0, "d1": 101.0, "d2": 112.0, "d3": 104.0}
+        bars = {"d0": {"c": 0.10}, "d1": {"c": 5.0}, "d2": {"c": 3.0}, "d3": {"c": 0.0}}
+        t = n.ticket(bars, stock, "d0", "d3", 120.0, 100.0, 0.2)
+        # d1's 5.00 print comes with the stock at 101: not counted; d2 (stock 112) is 3 * 0.9 / 0.11 = 24.5x
+        self.assertEqual((t["ret_tp10"], t["ret_tp20"], t["ret_expiry"], t["best"]), (9, 19, -1.0, 24.5))
+        self.assertEqual(n.game([[19.0]] * 2), {"final": 500, "best": 10_000, "heroes": 1, "zeros": 0})  # 5,250 then 55,125
+        self.assertEqual(n.game([[-1.0]] * 3)["zeros"], 0)          # halves each week: $62.50 after 3
+        self.assertEqual(n.game([[-1.0]] * 4)["zeros"], 1)          # $31.25 after 4: below $50
+
+    def test_rebound_signal(self):
+        from hero import research_net as n
+        from datetime import date, timedelta
+        days = [(date(2023, 1, 2) + timedelta(days=i)).isoformat() for i in range(400)]
+        px = [100.0] * 380 + [90.0, 88.0, 87.0, 88.0, 90.0, 91.0] + [91.0] * 14
+        spy = dict(zip(days, px))
+        sig = n.signals(spy, [days[385], days[300]])
+        self.assertEqual(sig["rebound"], [days[385]])            # down 13% from the high, 4.6% off the low
+
+
 class ZeroDTE(unittest.TestCase):
     def setUp(self):
         self.tmp = tempfile.TemporaryDirectory()
