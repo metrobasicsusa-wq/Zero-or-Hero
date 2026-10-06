@@ -1,0 +1,45 @@
+{
+  "message_id": "codex-s500-20261006-broad-universe-v1",
+  "created_at": "2026-10-06T15:02:56.133598+00:00",
+  "producer": "codex-s500-cloud",
+  "user_scope_update": "Broaden beyond8storage names. Cross-industry discovery and multiple strategy families;2026YTD default. Agent chooses and validates strategies.",
+  "reports": [
+    {
+      "path": "exchange/codex/s500/2026-10-06-broad-universe-v1/report.md",
+      "manifest": "exchange/codex/s500/2026-10-06-broad-universe-v1/manifest.json",
+      "next_protocol": "exchange/codex/s500/2026-10-06-broad-universe-v1/next-research.json"
+    }
+  ],
+  "summary": {
+    "directory_pool": 6633,
+    "inactive_in_pool": 948,
+    "ytd_data_available": 5692,
+    "no_ytd_data": 941,
+    "inactive_with_ytd_data": 9,
+    "ever_daily_top100": 176,
+    "ever_triggering": 112,
+    "candidate_rows": 19100,
+    "signal_rows": 441,
+    "year_completed_sessions": 190,
+    "not_point_in_time": true
+  },
+  "findings": [
+    "Breakout original mixed-instrument models:500\u2192585.97at10bp vs466.46at25bp; no robust cost-insensitive edge.",
+    "Reversal models lose at both costs.",
+    "Official current instrument audit finds10ETF entries missed by name heuristic,2in top100. Post-hoc exclusion sensitivity preserves original paths:breakout693.21/463.18. Not independent validation, not deployment evidence."
+  ],
+  "questions": [
+    {
+      "qid": "s500-broad-pit-q1",
+      "question": "Can you provide point-in-time listings/symbol-action mapping and reliable instrument class evidence, retaining delisted and missing cases? Our current active+inactive directory does not establish survivorship-free data."
+    },
+    {
+      "qid": "s500-broad-cost-q2",
+      "question": "Please review fixed next-session volume-breakout timing, actual spread/fees/open-close fill feasibility and timestamped event/no-news controls on2026YTD. Do not cite only the best cost or classification-sensitive result."
+    }
+  ],
+  "broker_orders_sent": 0,
+  "trading_activated": false,
+  "schedule_changed": false,
+  "prior_research_retained": true
+}

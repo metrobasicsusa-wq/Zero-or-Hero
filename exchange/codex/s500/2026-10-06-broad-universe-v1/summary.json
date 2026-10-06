@@ -1,0 +1,105 @@
+{
+  "id": "s500-broad-ytd-discovery-v1",
+  "sessions": 190,
+  "directory_symbols": 6633,
+  "status_counts": {
+    "active": 5685,
+    "inactive": 948
+  },
+  "symbols_with_ytd_data": 5692,
+  "symbols_no_ytd_data": 941,
+  "inactive_with_ytd_data": 9,
+  "symbols_ever_in_top100": 176,
+  "symbols_ever_triggering": 112,
+  "top100_candidate_rows": 19100,
+  "signal_rows": 441,
+  "missing_or_invalid_bar_count": 0,
+  "total_daily_bars": 1264806,
+  "paths": [
+    {
+      "id": "breakout20-10bp",
+      "rule": "breakout20",
+      "cost_bps_each_side": 10,
+      "start_equity": 500,
+      "ending_equity": 585.9688720000061,
+      "last_observed_equity": 585.9688720000061,
+      "incomplete": null,
+      "total_contributions": 500,
+      "net_profit": 85.96887200000606,
+      "trade_count": 127,
+      "win_count": 65,
+      "unaffordable_days": 0,
+      "daily_close_max_drawdown": 0.2044061995230756,
+      "first_target_dates": {
+        "1000": null,
+        "2000": null,
+        "10000": null
+      }
+    },
+    {
+      "id": "breakout20-25bp",
+      "rule": "breakout20",
+      "cost_bps_each_side": 25,
+      "start_equity": 500,
+      "ending_equity": 466.45980500000513,
+      "last_observed_equity": 466.45980500000513,
+      "incomplete": null,
+      "total_contributions": 500,
+      "net_profit": -33.54019499999487,
+      "trade_count": 125,
+      "win_count": 57,
+      "unaffordable_days": 2,
+      "daily_close_max_drawdown": 0.17008714857287233,
+      "first_target_dates": {
+        "1000": null,
+        "2000": null,
+        "10000": null
+      }
+    },
+    {
+      "id": "reversal-10bp",
+      "rule": "reversal",
+      "cost_bps_each_side": 10,
+      "start_equity": 500,
+      "ending_equity": 398.8995050000012,
+      "last_observed_equity": 398.8995050000012,
+      "incomplete": null,
+      "total_contributions": 500,
+      "net_profit": -101.10049499999877,
+      "trade_count": 31,
+      "win_count": 8,
+      "unaffordable_days": 1,
+      "daily_close_max_drawdown": 0.20220098999999758,
+      "first_target_dates": {
+        "1000": null,
+        "2000": null,
+        "10000": null
+      }
+    },
+    {
+      "id": "reversal-25bp",
+      "rule": "reversal",
+      "cost_bps_each_side": 25,
+      "start_equity": 500,
+      "ending_equity": 389.9596000000015,
+      "last_observed_equity": 389.9596000000015,
+      "incomplete": null,
+      "total_contributions": 500,
+      "net_profit": -110.0403999999985,
+      "trade_count": 30,
+      "win_count": 7,
+      "unaffordable_days": 2,
+      "daily_close_max_drawdown": 0.22008079999999697,
+      "first_target_dates": {
+        "1000": null,
+        "2000": null,
+        "10000": null
+      }
+    }
+  ],
+  "future_perturbation_checks": 440,
+  "accounting_checks": 313,
+  "not_point_in_time_universe": true,
+  "not_options_returns": true,
+  "broker_orders_sent": 0
+}

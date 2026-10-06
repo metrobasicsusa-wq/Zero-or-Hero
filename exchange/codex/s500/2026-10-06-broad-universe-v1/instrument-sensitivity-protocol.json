@@ -1,0 +1,10 @@
+{
+  "id": "s500-broad-instrument-audit-v1",
+  "frozen_at": "2026-10-06T14:57:42.686723+00:00",
+  "status": "post_hoc_data_classification_sensitivity_not_new_strategy_evidence",
+  "reason": "Official current directories identify10ETF entries missed by name heuristic;2ETF symbols enter top100 and one ETF trade enters2paths.",
+  "method": "Exclude current-directory ETF=Y only from frozen original top100 each day; do not fill ranks from outside original top100. Preserve original ranks and signal rules. Recompute four capital paths from500.",
+  "bias": "Performed after original outcomes inspected; data-quality sensitivity, not unseen selection or proof of improved edge. Current classifications not guaranteed point-in-time.",
+  "original_results_retained": true,
+  "no_activation": true
+}

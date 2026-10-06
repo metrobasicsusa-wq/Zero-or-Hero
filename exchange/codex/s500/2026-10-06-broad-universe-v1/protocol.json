@@ -1,0 +1,55 @@
+{
+  "id": "s500-broad-ytd-discovery-v1",
+  "frozen_at": "2026-10-06T14:49:52.388928+00:00",
+  "status": "frozen_before_daily_price_download",
+  "user_scope": "Broad cross-industry discovery; storage eight are a subgroup, not the universe. Cover2026 through latest completed session.",
+  "universe_method": "All available active and inactive Alpaca us_equity directory entries onNASDAQ/NYSE/AMEX; exclude unsupported symbols and explicit fund/derivative name matches. First duplicate retains active because active read first. Publish exclusions; this is a heuristic, not a certified common-stock or point-in-time master.",
+  "universe_count": 6633,
+  "universe_sha256": "beb07623123f6628e783a33809b67c2fdf40faf89d1f266c79bdf4b0e5f2882a",
+  "input": {
+    "feed": "sip",
+    "timeframe": "1Day",
+    "adjustment": "raw",
+    "start": "2025-11-01T00:00:00Z",
+    "end": "2026-10-06T00:00:00Z"
+  },
+  "evaluation_start": "2026-01-01",
+  "evaluation_end": "2026-10-05",
+  "screen": {
+    "history_days": 20,
+    "minimum_median_prior20_dollar_volume": 20000000,
+    "price_range_prior_close": [
+      5,
+      500
+    ],
+    "top_liquidity_candidates_per_day": 100,
+    "ranking": "prior20 median(close*volume) descending; symbol ascending for ties; no current/future return sorting",
+    "stock_costs_bps_each_side": [
+      10,
+      25
+    ],
+    "funding": "500 continuous, integer shares, no leverage or extra contributions"
+  },
+  "signal_rules": {
+    "breakout20": "Completed daily close > highest high of previous20 sessions AND today volume >=1.5*median prior20 volume; candidate ranked prior liquidity; buy next session open and exit at that session close.",
+    "reversal": "Completed daily return <=-5%, today volume >=1.5*median prior20 volume AND close above today midpoint(high+low)/2; rank prior liquidity; buy next session open and exit that session close."
+  },
+  "latency": "Signal after prior close, entry next open; data acquisition latency and market-on-close execution not independently verified. No same-close decision execution.",
+  "portfolio": "At most first highest-prior-liquidity signal per day in top100. If next open costs more than cash for one share, keep cash; no retrospective runner-up. No stop/target intrabar inference. Never use future availability to re-rank. Missing selected next-session input marks path incomplete and stops capital ledger.",
+  "corporate_action_policy": "Exclude signal days with absolute close-to-previous-close change >20%, retaining reason; heuristic cannot identify all splits/dividends and also loses real events.",
+  "outputs": [
+    "Full directory counts and exclusions",
+    "Per-symbol coverage and missing-history counts",
+    "Daily top100 candidates with signals and known-then rank inputs; losing signals retained",
+    "Four model paths:two rules bytwo costs; monthly continuous ledgers",
+    "Current Oct5-derived candidates for next-session research only, not orders or opportunity promises"
+  ],
+  "limitations": [
+    "Current active/inactive directory cannot reconstruct all historical listing membership, status dates, symbol reuse or delisted tickers.",
+    "Name heuristics do not prove instrument classification or industry coverage; no official sector classification available.",
+    "Daily history source may omit delisted data; never call this complete point-in-time US market.",
+    "Fixed top100 and thresholds are research hypotheses. Data studied throughOct5 are exploratory, not untouched validation.",
+    "Cheap share prices or a quote do not establish affordable option contracts; no option returns modeled."
+  ],
+  "next_step": "Audit broad results and then select multiple event/strategy families for preregistered forward validation; no strategy auto-activation."
+}
