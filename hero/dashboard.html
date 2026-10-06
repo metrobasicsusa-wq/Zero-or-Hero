@@ -100,7 +100,18 @@ tr:last-child td { border-bottom: 0; }
 /* A card beside a taller one: its scrolling text fills the height the row gives it. */
 .card.fill { display: flex; flex-direction: column; }
 .card.fill > div { flex: 1; display: flex; flex-direction: column; min-height: 0; }
-.card.fill pre { flex: 1 1 0; min-height: 320px; max-height: none; }
+.card.fill pre, .card.fill .md { flex: 1 1 0; min-height: 320px; max-height: none; }
+/* Rendered markdown (the AI briefing): headings, lists and links instead of raw text. */
+.md { overflow: auto; font-size: 13px; line-height: 1.6; color: var(--ink); padding-right: 4px; }
+.md h3 { font-size: 14px; margin: 14px 0 4px; }
+.md h3:first-child { margin-top: 0; }
+.md p { margin: 2px 0; }
+.md ul, .md ol { margin: 2px 0 2px 18px; padding: 0; }
+.md li { margin: 1px 0; }
+.md li li { color: var(--ink-2); }
+.md code { font: 12px ui-monospace, SFMono-Regular, Menlo, monospace; background: var(--chip); padding: 0 4px; border-radius: 4px; }
+.md a { text-decoration: none; font-size: 12px; }
+.md a:hover { text-decoration: underline; }
 a { color: var(--series-1); }
 .params { display: grid; grid-template-columns: auto 1fr; gap: 4px 16px; font-size: 13px; }
 .params dt { color: var(--ink-2); }
@@ -466,11 +477,47 @@ function renderMarket() {
       table([["标的"], ["情绪"], ["篇数", 1], ["最相关标题"]], news) : "");
 }
 
+// Small markdown renderer for the briefing: escapes first, then headings, nested lists,
+// bold, inline code and links (shown by site name, not as long raw URLs).
+function mdInline(t) {
+  const site = (u) => { try { return new URL(u).hostname.replace(/^www\./, "").split(".").slice(-2, -1)[0] || "链接"; } catch { return "链接"; } };
+  return esc(t)
+    .replace(/\*\*(.+?)\*\*/g, "<b>$1</b>")
+    .replace(/`([^`]+)`/g, "<code>$1</code>")
+    .replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g, (_, txt, u) => `<a href="${u}" target="_blank" rel="noopener">${txt}</a>`)
+    .replace(/(^|[\s（(])(https?:\/\/[^\s<)）]+)/g, (_, pre, u) => `${pre}<a href="${u}" target="_blank" rel="noopener">[${site(u)}]</a>`);
+}
+
+function mdRender(text) {
+  const out = [], stack = [];   // stack of open list tags with their indent
+  const close = (indent) => { while (stack.length && stack[stack.length - 1][1] >= indent) out.push(`</li></${stack.pop()[0]}>`); };
+  for (const raw of text.split("\n")) {
+    const line = raw.replace(/\s+$/, "");
+    if (!line.trim()) continue;
+    const h = line.match(/^#{1,3}\s+(.*)/);
+    const li = line.match(/^(\s*)([-*]|\d+\.)\s+(.*)/);
+    if (h) { close(-1); out.push(`<h3>${mdInline(h[1])}</h3>`); continue; }
+    if (li) {
+      const indent = li[1].length, tag = /\d/.test(li[2]) ? "ol" : "ul";
+      const top = stack[stack.length - 1];
+      if (!top || indent > top[1]) { out.push(`<${tag}><li>`); stack.push([tag, indent]); }
+      else { close(indent + 1); out.push(`</li><li>`); }
+      out.push(mdInline(li[3]));
+      continue;
+    }
+    close(-1);
+    out.push(`<p>${mdInline(line)}</p>`);
+  }
+  close(-1);
+  return out.join("");
+}
+
 function renderBriefing() {
   const b = DATA.briefing;
   if (!b) { $("briefing").innerHTML = empty("每个交易日 9:00（美东）生成"); return; }
+  const body = b.text.replace(/^#\s+盘前宏观简报.*\n/, "");   // the card already says what it is
   $("briefing").innerHTML = `<div class="meta" style="margin-bottom:8px">${esc(b.date)} · ` +
-    `<a href="${esc(b.url)}" target="_blank" rel="noopener">查看全文</a></div><pre>${esc(b.text)}</pre>`;
+    `<a href="${esc(b.url)}" target="_blank" rel="noopener">查看全文</a></div><div class="md">${mdRender(body)}</div>`;
 }
 
 function renderEvolution() {
