@@ -125,9 +125,9 @@ class Alpaca:
             params["page_token"] = token
 
     # --- market data ---
-    def daily_bars(self, symbols: list[str], start: str, adjustment: str = "all") -> dict[str, list[dict]]:
+    def daily_bars(self, symbols: list[str], start: str, adjustment: str = "all", feed: str = "iex") -> dict[str, list[dict]]:
         params = {"symbols": ",".join(symbols), "timeframe": "1Day", "start": start,
-                  "adjustment": adjustment, "feed": "iex", "limit": 10000}
+                  "adjustment": adjustment, "feed": feed, "limit": 10000}
         out: dict[str, list[dict]] = {}
         while True:
             page = self._d("/v2/stocks/bars", params)
@@ -141,10 +141,12 @@ class Alpaca:
     def assets(self) -> list[dict]:
         return self._t("GET", "/v2/assets", params={"status": "active", "asset_class": "us_equity"})
 
-    def stock_bars(self, symbols: list[str], start: str, end: str, timeframe: str = "1Min") -> dict[str, list[dict]]:
-        """Intraday stock bars (IEX), raw prices, for a date range."""
+    def stock_bars(self, symbols: list[str], start: str, end: str, timeframe: str = "1Min",
+                   feed: str = "iex") -> dict[str, list[dict]]:
+        """Intraday stock bars, raw prices, for a date range. feed "iex" (one exchange, always allowed) or
+        "sip" (all exchanges, the real tape; the free plan only serves it more than 15 minutes back)."""
         params = {"symbols": ",".join(symbols), "timeframe": timeframe, "start": start, "end": end,
-                  "adjustment": "raw", "feed": "iex", "limit": 10000}
+                  "adjustment": "raw", "feed": feed, "limit": 10000}
         out: dict[str, list[dict]] = {}
         while True:
             page = self._d("/v2/stocks/bars", params) or {}

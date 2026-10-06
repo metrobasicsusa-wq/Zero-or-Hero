@@ -1,7 +1,7 @@
 """Observation: how the chip stocks and the Magnificent 7 traded on one day (default: the latest).
 
 For each name in research_gap.FOCUS (plus SPY, QQQ): the gap from the prior close, the path through
-the day (vs the prior close, on IEX 1-minute bars), the low and high with their times, open-to-close,
+the day (vs the prior close, on all-exchange SIP 1-minute bars, IEX if refused), the low and high with their times, open-to-close,
 whether it got back above the prior close, and what was known before the open (63-day trend and
 volatility, how its own last gap-downs did from open to close). For every 2%+ gap-down, claude-b's
 call trade (research_gap.simulate: nearest expiry within 4 days, 1/2/3% above the 9:45 price).
@@ -72,7 +72,10 @@ def calls(client, s: str, d: str, sm: dict[str, dict]) -> list[dict]:
 def run(client, day: str | None = None) -> dict:
     syms = sorted((FOCUS - {"GOOG"}) | {"SPY", "QQQ"})
     first = (date.today() - timedelta(days=420)).isoformat()
-    bars = client.daily_bars(syms, first, adjustment="raw")
+    try:  # official all-exchange closes, so the gap is measured against the real prior close
+        bars = client.daily_bars(syms, first, adjustment="raw", feed="sip")
+    except Exception:
+        bars = client.daily_bars(syms, first, adjustment="raw")
     spy_days = sorted(b["t"][:10] for b in bars.get("SPY", []))
     if day is None:
         day = spy_days[-1] if spy_days else date.today().isoformat()
@@ -85,12 +88,15 @@ def run(client, day: str | None = None) -> dict:
         xs = [h[2] for h in hist] + [None]
         opens = {h[0]: h[1] for h in hist}
         prev = hist[-1][2]
-        sm = z.et_minutes(client.stock_bars([s], f"{day}T13:00:00Z", f"{day}T21:00:00Z").get(s, []))
+        try:  # the full tape (all exchanges); IEX alone is thin in the first minutes
+            sm, feed = z.et_minutes(client.stock_bars([s], f"{day}T13:00:00Z", f"{day}T21:00:00Z", feed="sip").get(s, [])), "sip"
+        except Exception:
+            sm, feed = z.et_minutes(client.stock_bars([s], f"{day}T13:00:00Z", f"{day}T21:00:00Z").get(s, [])), "iex"
         p = path(sm, prev)
         if not p:
             continue
         row = {"symbol": s, "group": "Mag 7" if s in MAG7 else "半导体" if s in SEMIS else "大盘",
-               "prev_close": prev, **p, **features(xs, opens, dates, len(dates) - 1)}
+               "prev_close": prev, "feed": feed, **p, **features(xs, opens, dates, len(dates) - 1)}
         if p["gap"] <= -GAP:
             try:
                 row["calls"] = calls(client, s, day, sm)
@@ -107,7 +113,8 @@ def pct(x) -> str:
 def markdown(rep: dict) -> str:
     rows = sorted(rep["rows"], key=lambda r: r["gap"])
     out = [f"# {rep['day']} 半导体 / Mag 7 盘中走势", "",
-           "相对昨收的涨跌（IEX 1 分钟线）。「收复」= 盘中回到昨收的时间。盘前已知：63 日涨幅 / 63 日波动 / 过去一年自己最近几次低开 2%+ 当天开盘到收盘的平均。", "",
+           f"相对昨收的涨跌（1 分钟线，行情源：{'、'.join(sorted({r.get('feed', 'iex') for r in rep['rows']})) or '—'}；sip = 全部交易所，iex = 单一交易所）。"
+           "「收复」= 盘中回到昨收的时间。盘前已知：63 日涨幅 / 63 日波动 / 过去一年自己最近几次低开 2%+ 当天开盘到收盘的平均。", "",
            "| 股票 | 组 | 开盘缺口 | 最低（时间） | 最高（时间） | 收盘 | 开→收 | 低→收 | 收复 | 63日涨幅 | 63日波动 | 以往低开当天（次数） |",
            "|---|---|---|---|---|---|---|---|---|---|---|---|"]
     for r in rows:
