@@ -178,6 +178,18 @@ class Alpaca:
                                          "sort": "desc", "include_content": "false"})
         return (page or {}).get("news", [])
 
+    def news_range(self, symbols: list[str], start: str, end: str):
+        """Every headline for the symbols between start and end (oldest first), page by page."""
+        params = {"symbols": ",".join(symbols), "start": start, "end": end, "limit": 50, "sort": "asc",
+                  "include_content": "false"}
+        while True:
+            page = self._d("/v1beta1/news", params) or {}
+            yield from page.get("news") or []
+            token = page.get("next_page_token")
+            if not token:
+                return
+            params["page_token"] = token
+
     def option_snapshots(self, symbols: list[str]) -> dict[str, dict]:
         out: dict[str, dict] = {}
         for i in range(0, len(symbols), 100):

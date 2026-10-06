@@ -1480,6 +1480,26 @@ class Research0DTE(unittest.TestCase):
         self.assertEqual(z.at_or_after({"10:03": {}}, "10:00")[0], "10:03")
 
 
+class ResearchEvents(unittest.TestCase):
+    def test_events_from_headlines(self):
+        from hero import research_events as ev
+        days = ["2026-08-20", "2026-08-21", "2026-10-05", "2026-10-06", "2026-10-07"]
+        items = [
+            {"symbols": ["MRVL"], "created_at": "2026-08-20T12:00:00Z", "headline": "Marvell to host investor day on October 6"},
+            {"symbols": ["MRVL"], "created_at": "2026-10-06T15:00:00Z", "headline": "Marvell stock rallies following investor day targets"},
+            {"symbols": ["MRVL"], "created_at": "2026-10-06T21:00:00Z", "headline": "Marvell investor day recap"},
+            {"symbols": ["MRVL", "A", "B", "C"], "created_at": "2026-10-06T15:00:00Z", "headline": "Investor day roundup"},
+            {"symbols": ["MRVL"], "created_at": "2026-10-05T15:00:00Z", "headline": "Why Marvell stock is tanking today"},
+        ]
+        es = ev.find_events(items, "MRVL", days)
+        self.assertEqual(len(es), 1)
+        self.assertEqual((es[0]["reaction_day"], es[0]["kind"], es[0]["pre_announced"]), ("2026-10-06", "investor", True))
+        self.assertEqual(ev.reaction_day("2026-10-05T20:30:00Z", days), "2026-10-06")   # 16:30 ET -> next day
+        self.assertEqual(ev.kind_of("Apple unveils iPhone at keynote"), "product")
+        self.assertEqual(ev.half_bank([{"reaction_day": "a", "ret_tp5": 4.0}, {"reaction_day": "b", "ret_tp5": -1.0}], "ret_tp5"),
+                         {"final": 750, "best": 1500, "zeros": 0})
+
+
 class ZeroDTE(unittest.TestCase):
     def setUp(self):
         self.tmp = tempfile.TemporaryDirectory()
