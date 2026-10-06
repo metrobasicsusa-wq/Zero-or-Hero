@@ -11,7 +11,10 @@ so no "today's winners" tilt), since 2024-02:
           above the 9:45 price, bought at the 9:45-9:50 minute close + 10% (at least a cent);
   exits:  claude-b's trail (once worth 2x, sell when 40% below the best minute close), a 3x
           limit, or sold at 15:50; values are minute closes less 10% (at least a cent);
-  "market day": SPY itself gapped 0.7%+ that morning (a macro day), reported apart.
+  "market day": SPY itself gapped 0.7%+ that morning (a macro day), reported apart;
+  "AMD-like" (the user's idea, decided before the open): the 63-day trend and volatility both in
+          the top quarter of all gap-down events, and/or the stock's own last 3-6 gap-downs within a
+          year rose from the open to the close on average.
 Then the $500 game: half of the account on each event in date order, a round ends below $50 or at
 $10,000. Record only. Run: python -m hero.research_gap
 """
@@ -19,6 +22,7 @@ $10,000. Record only. Run: python -m hero.research_gap
 from __future__ import annotations
 
 import json
+import math
 import random
 import statistics
 import sys
@@ -33,7 +37,7 @@ START = "2024-02-01"
 POOL = 100
 OTM = (0.01, 0.02, 0.03)
 GAP = 0.02
-SAMPLES = {"gap_down": 1500, "gap_up": 600, "ordinary": 800}  # caps keep a run inside the time limit
+SAMPLES = {"gap_down": 3000, "gap_up": 400, "ordinary": 400}  # caps keep a run inside the time limit
 EXITS = ("trail", "tp3", "close")
 
 
@@ -61,6 +65,27 @@ def simulate(minutes: dict[str, dict], entry: str = "09:45") -> dict | None:
             break
     if out["trail"] is None:
         out["trail"] = out["close"]
+    return out
+
+
+def features(xs: list, opens: dict[str, float], dates: list[str], t: int) -> dict:
+    """What was known before the open: 63-day trend and volatility, and how the stock's own last
+    gap-downs (2%+, within a year) did from the open to the close that day."""
+    out = {"mom63": None, "vol63": None, "prior_n": 0, "prior_rebound": None}
+    if t >= 64 and xs[t - 1] and xs[t - 64]:
+        out["mom63"] = round(xs[t - 1] / xs[t - 64] - 1, 3)
+        rets = [math.log(b / a) for a, b in zip(xs[t - 64: t - 1], xs[t - 63: t]) if a and b]
+        if len(rets) > 20:
+            m = sum(rets) / len(rets)
+            out["vol63"] = round(math.sqrt(sum((r - m) ** 2 for r in rets) / len(rets) * 252), 3)
+    moves = []
+    for u in range(max(1, t - 250), t):
+        o, prev, c = opens.get(dates[u]), xs[u - 1], xs[u]
+        if o and prev and c and o / prev - 1 <= -GAP:
+            moves.append(c / o - 1)
+    if moves:
+        last = moves[-6:]
+        out["prior_n"], out["prior_rebound"] = len(last), round(sum(last) / len(last), 4)
     return out
 
 
@@ -113,14 +138,14 @@ def run(client) -> dict:
             g = o / prev - 1
             kind = "gap_down" if g <= -GAP else "gap_up" if g >= GAP else "ordinary" if abs(g) < 0.005 else None
             if kind:
-                cand[kind].append((d, s, round(g, 4)))
+                cand[kind].append((d, s, round(g, 4), features(closes[s], opens.get(s, {}), dates, t)))
     rng = random.Random(7)
     for k, n in SAMPLES.items():
         if len(cand[k]) > n:
             cand[k] = sorted(rng.sample(cand[k], n))
     rows = []
     for kind, evs in cand.items():
-        for d, s, g in evs:
+        for d, s, g, feat in evs:
             try:
                 sm = z.et_minutes(client.stock_bars([s], f"{d}T13:00:00Z", f"{d}T21:00:00Z").get(s, []))
             except Exception:
@@ -160,14 +185,30 @@ def run(client) -> dict:
                 r = simulate(z.et_minutes(ob.get(by_k[k], [])))
                 if r:
                     rows.append({"kind": kind, "day": d, "symbol": s, "gap": g, "otm": m, "same_day": exp == d,
-                                 "market_day": abs(spy_gap.get(d, 0.0)) >= 0.007, **r})
+                                 "market_day": abs(spy_gap.get(d, 0.0)) >= 0.007, **feat, **r})
     return {"generated": date.today().isoformat(), "start": START, "pool": POOL,
             "candidates": {k: len(v) for k, v in cand.items()}, "rows": rows}
 
 
+def cut(rows: list[dict], key: str, q: float) -> float:
+    xs = sorted(r[key] for r in rows if r["kind"] == "gap_down" and r.get(key) is not None)
+    return xs[int(q * (len(xs) - 1))] if xs else float("inf")
+
+
 def table(rows: list[dict]) -> dict:
     out = {}
+    hi_mom, hi_vol = cut(rows, "mom63", 0.75), cut(rows, "vol63", 0.75)
+    strong = lambda r: (r.get("mom63") or -9) >= hi_mom
+    wild = lambda r: (r.get("vol63") or 0) >= hi_vol
+    bouncer = lambda r: r.get("prior_n", 0) >= 3 and (r.get("prior_rebound") or -1) > 0
+    gd = lambda r: r["kind"] == "gap_down"
     groups = {
+        "低开 + 63 天涨幅前 25%": lambda r: gd(r) and strong(r),
+        "低开 + 波动前 25%": lambda r: gd(r) and wild(r),
+        "低开 + 强势且高波动（像 AMD）": lambda r: gd(r) and strong(r) and wild(r),
+        "低开 + 过去低开常当天收复": lambda r: gd(r) and bouncer(r),
+        "低开 + 像 AMD 且常收复": lambda r: gd(r) and strong(r) and wild(r) and bouncer(r),
+        "低开 + 像 AMD，2026 年以来": lambda r: gd(r) and strong(r) and wild(r) and r["day"] >= "2026-01-01",
         "低开 2%+（全部）": lambda r: r["kind"] == "gap_down",
         "低开 2%+，当天到期": lambda r: r["kind"] == "gap_down" and r["same_day"],
         "低开 2%+，非宏观日": lambda r: r["kind"] == "gap_down" and not r["market_day"],
@@ -194,6 +235,7 @@ def table(rows: list[dict]) -> dict:
                 row["symbols_5plus"] = len(ok)
                 row["symbols_positive"] = sum(statistics.mean(v) > 0 for v in ok.values())
             out[f"{g}|{m}"] = row
+    out["_cuts"] = {"mom63_top25": hi_mom, "vol63_top25": hi_vol}
     return out
 
 
@@ -207,10 +249,15 @@ def markdown(rep: dict, t: dict) -> str:
            + " | $500 半仓（回撤卖）：成功 / 归零 |",
            "|---|---|---|---|---|---|" + "---|" * len(EXITS) + "---|"]
     for key, r in t.items():
+        if key.startswith("_"):
+            continue
         g, m = key.split("|")
         cells = " | ".join(f"{r[k]['mean']:+.0%} / {r[k]['median']:+.0%} / {r[k]['win']:.0%}" for k in EXITS)
         out.append(f"| {g} | {float(m):.0%} | {r['n']} | {r['symbols']} | ${r['cost']:.2f} | {r['x2']:.0%} | {cells} | "
                    f"{r['game_trail']['heroes']} / {r['game_trail']['zeros']} |")
+    c = t.get("_cuts", {})
+    out += ["", f"「像 AMD」= 低开前 63 天涨幅和波动率都在所有低开事件的前 25%（涨幅 ≥ {c.get('mom63_top25', 0):+.0%}、"
+            f"年化波动 ≥ {c.get('vol63_top25', 0):.0%}）；「常收复」= 过去一年最近 3～6 次低开当天从开盘到收盘平均是涨的。都只用开盘前已知的数据。"]
     gd = [(k, r) for k, r in t.items() if k.startswith("低开 2%+（全部）")]
     out += ["", "## 按股票（低开全部，回撤卖，至少 5 笔的股票）", ""]
     for k, r in gd:
