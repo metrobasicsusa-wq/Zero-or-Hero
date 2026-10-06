@@ -45,6 +45,7 @@ SEMIS = {"NVDA", "AMD", "AVGO", "MU", "INTC", "QCOM", "TSM", "ARM", "MRVL", "AMA
 FOCUS = MAG7 | SEMIS
 SAMPLES = {"gap_down": 3000, "gap_up": 400, "ordinary": 400}  # caps keep a run inside the time limit
 EXITS = ("trail", "tp3", "close")
+FEED = "sip"  # the all-exchange tape: IEX alone is thin around the open, where this trade lives
 
 
 def simulate(minutes: dict[str, dict], entry: str = "09:45") -> dict | None:
@@ -115,7 +116,7 @@ def run(client) -> dict:
     syms = sorted(set(stocks) | {"SPY"})
     bars: dict[str, list[dict]] = {}
     for i in range(0, len(syms), 200):
-        bars.update(client.daily_bars(syms[i:i + 200], first))
+        bars.update(client.daily_bars(syms[i:i + 200], first, feed=FEED))
     dates, closes, dvol = ru.align(bars, "SPY")
     have = {s: k for s, k in stocks.items() if s in bars}
     for s in have:
@@ -156,7 +157,7 @@ def run(client) -> dict:
     for kind, evs in cand.items():
         for d, s, g, feat in evs:
             try:
-                sm = z.et_minutes(client.stock_bars([s], f"{d}T13:00:00Z", f"{d}T21:00:00Z").get(s, []))
+                sm = z.et_minutes(client.stock_bars([s], f"{d}T13:00:00Z", f"{d}T21:00:00Z", feed=FEED).get(s, []))
             except Exception:
                 continue
             spot_bar = z.at_or_before(sm, "09:45")
@@ -195,7 +196,7 @@ def run(client) -> dict:
                 if r:
                     rows.append({"kind": kind, "day": d, "symbol": s, "gap": g, "otm": m, "same_day": exp == d,
                                  "market_day": abs(spy_gap.get(d, 0.0)) >= 0.007, **feat, **r})
-    return {"generated": date.today().isoformat(), "start": START, "pool": POOL,
+    return {"generated": date.today().isoformat(), "start": START, "pool": POOL, "feed": FEED,
             "candidates": {k: len(v) for k, v in cand.items()}, "rows": rows}
 
 
@@ -259,7 +260,7 @@ def markdown(rep: dict, t: dict) -> str:
     out = [f"# 低开买反弹（claude-b 的 rebound_scanner）独立复核 {rep['generated']}", "",
            f"自 {rep['start']}，当时的股票池（每月按之前 63 天成交额排前 {rep['pool']} 的上市公司）。候选：{rep['candidates']}（对照组随机抽样）。"
            "9:45 买最近到期（4 天内，标出当天到期的）、比现价高 1% / 2% / 3% 的看涨，买入多付 10%、卖出少拿 10%，用分钟收盘价。"
-           "「宏观日」= SPY 自己当天高开或低开 0.7% 以上。玩法：$500，每个事件押一半，低于 $50 归零、到 $10,000 成功。只研究，不改交易。", "",
+           f"股票行情：{rep.get('feed', 'iex')}（sip = 全部交易所合并，iex = 单一交易所）。「宏观日」= SPY 自己当天高开或低开 0.7% 以上。玩法：$500，每个事件押一半，低于 $50 归零、到 $10,000 成功。只研究，不改交易。", "",
            "| 组别 | 价外 | 笔数 | 股票数 | 成本中位数 | 到过 2 倍 | " + " | ".join(f"{names[k]}：平均 / 中位数 / 胜率" for k in EXITS)
            + " | $500 半仓（回撤卖）：成功 / 归零 |",
            "|---|---|---|---|---|---|" + "---|" * len(EXITS) + "---|"]
@@ -288,8 +289,9 @@ def main() -> None:
     rep = run(Alpaca())
     t = table(rep["rows"])
     rep["table"] = t
-    (root / "research" / f"{rep['generated']}-gap.json").write_text(json.dumps(rep, ensure_ascii=False) + "\n")
-    (root / "research" / f"{rep['generated']}-gap.md").write_text(markdown(rep, t))
+    name = f"{rep['generated']}-gap" + ("-sip" if FEED == "sip" else "")
+    (root / "research" / f"{name}.json").write_text(json.dumps(rep, ensure_ascii=False) + "\n")
+    (root / "research" / f"{name}.md").write_text(markdown(rep, t))
     print(markdown(rep, t))
 
 

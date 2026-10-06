@@ -79,7 +79,7 @@ def run(client, day: str | None = None) -> dict:
     spy_days = sorted(b["t"][:10] for b in bars.get("SPY", []))
     if day is None:
         day = spy_days[-1] if spy_days else date.today().isoformat()
-    rows = []
+    rows, sip_error = [], None
     for s in syms:
         hist = sorted((b["t"][:10], float(b["o"]), float(b["c"])) for b in bars.get(s, []) if b["t"][:10] < day)
         if len(hist) < 2:
@@ -88,9 +88,12 @@ def run(client, day: str | None = None) -> dict:
         xs = [h[2] for h in hist] + [None]
         opens = {h[0]: h[1] for h in hist}
         prev = hist[-1][2]
-        try:  # the full tape (all exchanges); IEX alone is thin in the first minutes
-            sm, feed = z.et_minutes(client.stock_bars([s], f"{day}T13:00:00Z", f"{day}T21:00:00Z", feed="sip").get(s, [])), "sip"
-        except Exception:
+        # The full tape (all exchanges); IEX alone is thin in the first minutes. The free plan serves SIP
+        # only more than 15 minutes back, so stop at the close (20:00 UTC in summer time).
+        try:
+            sm, feed = z.et_minutes(client.stock_bars([s], f"{day}T13:00:00Z", f"{day}T20:01:00Z", feed="sip").get(s, [])), "sip"
+        except Exception as e:
+            sip_error = str(e)[:160]
             sm, feed = z.et_minutes(client.stock_bars([s], f"{day}T13:00:00Z", f"{day}T21:00:00Z").get(s, [])), "iex"
         p = path(sm, prev)
         if not p:
@@ -103,7 +106,7 @@ def run(client, day: str | None = None) -> dict:
             except Exception as e:
                 row["calls_error"] = str(e)[:120]
         rows.append(row)
-    return {"generated": date.today().isoformat(), "day": day, "rows": rows}
+    return {"generated": date.today().isoformat(), "day": day, "rows": rows, "sip_error": sip_error}
 
 
 def pct(x) -> str:
