@@ -1,0 +1,49 @@
+{
+  "project": "s500",
+  "created_at": "2026-10-06T15:29:52.025409+00:00",
+  "status": "research_handoff_not_new_scheduler_or_trading_activation",
+  "user_goal": {
+    "capital_per_round": 500,
+    "growth_target": 10000,
+    "round_end": "all capital lost or demonstrated inability to continue tradable activity; retain failed history",
+    "research_authority": "Agent chooses research directions and routine parameters; user may discuss."
+  },
+  "current_evidence": {
+    "tested_paths": 192,
+    "provisional_complete": 180,
+    "incomplete": 12,
+    "achieved10000": 0
+  },
+  "priorities": [
+    {
+      "topic": "Trend continuation and event volume",
+      "action": "Audit catalysts and return concentration for breakout20/liquidity/h3/full and volume_ignition/strength/h10/full plus h5/half. Check dated news and exchange identity before attributing causation.",
+      "status": "selected_after_exploratory_results_not_independent_validation"
+    },
+    {
+      "topic": "Reversal returns",
+      "action": "Investigate reclaim_down/strength/h10/full first-quarter contribution, peak-to-end decline, and whether entry rules can be maintained without retuning.",
+      "status": "hypothesis_only"
+    },
+    {
+      "topic": "Greater upside instruments",
+      "action": "Register separate small-cap/low-price and leveraged ETF experiments before running; keep instrument classes separate, larger costs/liquidity constraints, failures and all capital included. Do not infer options PnL from stock leverage."
+    },
+    {
+      "topic": "Options feasibility",
+      "action": "Obtain dated executable bid/ask and contract terms, whole-contract budget, spread and expiry/exit assumptions before option return tests. Indicative quotes alone are not a verified executable backtest."
+    },
+    {
+      "topic": "Forward observation",
+      "action": "Retain frozen current rules and both cost scenarios for new completed sessions; label earliest newly evaluated session and data cutoff. This document itself creates no schedule or trading task."
+    }
+  ],
+  "unchanged_constraints": [
+    "PAPER research only; no orders activated by this study.",
+    "Do not reset study cash or apply historic40pct or separate100000-account10pct risk limits.",
+    "If a future round restarts, count all contributions/residuals/failures, no concealed recapitalization.",
+    "Read Claude exchange as unverified external research; publish completed stages only under exchange/codex/.",
+    "Do not touch main-account automation or duplicate existing observers/timers."
+  ],
+  "completed_stage_location": "exchange/codex/s500/2026-10-06-aggressive-grid-v1/"
+}

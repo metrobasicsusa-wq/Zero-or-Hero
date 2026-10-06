@@ -1,0 +1,28 @@
+{
+  "retrieved_on": "2026-10-06",
+  "sources": [
+    {
+      "url": "https://paper-api.alpaca.markets/v2/assets?asset_class=us_equity&status=active",
+      "sanitized_local_sha256": "d517f84ebab21ac85a977637f7b5cd050db0d42eec51888db24830f949d47124",
+      "raw_asset_directory_published": false
+    },
+    {
+      "url": "https://paper-api.alpaca.markets/v2/assets?asset_class=us_equity&status=inactive",
+      "sanitized_local_sha256": "f87bbe97f2da6af33ae8af77437ef867db9526892e485d9969358aa8f1001dc2",
+      "raw_asset_directory_published": false
+    },
+    {
+      "url": "https://www.nasdaqtrader.com/dynamic/SymDir/nasdaqlisted.txt",
+      "sha256": "d2671309fc2748e8711a110ae5fcf57c3bf2d484e6d53687b2d9017b31cda93d",
+      "scope": "current listed instrument flags, not point-in-time history"
+    },
+    {
+      "url": "https://www.nasdaqtrader.com/dynamic/SymDir/otherlisted.txt",
+      "sha256": "178fd98e078aa173f121c9ad5c01e8e172a177376522dd28fd9c425ab7de6ccc",
+      "scope": "current listed instrument flags, not point-in-time history"
+    }
+  ],
+  "daily_price_source": "https://data.alpaca.markets/v2/stocks/bars",
+  "calendar_source": "https://paper-api.alpaca.markets/v2/calendar",
+  "credentials_published": false
+}

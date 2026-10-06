@@ -1,0 +1,3182 @@
+{
+  "id": "s500-prior-independent-diagnostics-2026-10-06",
+  "input_sources": [
+    {
+      "name": "paths.json",
+      "sha256": "a34f74f7886db686a1a40632e56fcb761b56474db8d7a24f3c714bfae32d27cf"
+    },
+    {
+      "name": "instrument-sensitivity.json",
+      "sha256": "49cdb2cfaeabf7e231984615c39821ce89be2948215d7d31dd6cb47a74345a00"
+    },
+    {
+      "name": "protocol.json",
+      "sha256": "b2dee64b7520b70b295f039bd4955cedd37312a201fcaed771c7216189e946a3"
+    }
+  ],
+  "method": {
+    "scope": "Independent accounting/concentration inspection of prior saved paths only; no new prices, no orders, no new strategy selection.",
+    "capital": "Every path starts once at USD500, all subsequent daily/monthly results inherit preceding cash; no restarts or contributions.",
+    "concentration_counterfactual": "Subtracting a winning trade or symbol contribution is arithmetic attribution with all later saved quantities unchanged. It is NOT a rerun with that trade removed and is NOT an executable alternate wealth path.",
+    "monthly": "Jan-Sep2026 are nine complete months; Oct1-Oct5 is partial and excluded from positive/negative full-month counts.",
+    "dependence": "All paths share the same historical window, universe, signals and execution model. Cost scenarios and classification sensitivity are not independent trials; identical reversal paths repeat exactly.",
+    "result_status": "Exploratory retrospective sensitivity on already studied data, never forward validation."
+  },
+  "paths": [
+    {
+      "version": "original",
+      "path_id": "breakout20-10bp",
+      "cost_bps_each_side": 10,
+      "start_equity": 500,
+      "ending_equity": 585.9688720000061,
+      "net_pnl": 85.96887200000606,
+      "total_contributions": 500,
+      "sessions": 190,
+      "model_trade_count": 127,
+      "winning_trades": 65,
+      "gross_winning_pnl": 734.5050700000037,
+      "gross_losing_pnl_absolute": 648.5361979999974,
+      "profit_factor": 1.1325583248323274,
+      "median_trade_pnl": 0.14578000000005886,
+      "full_month_count": 9,
+      "positive_full_months": 6,
+      "negative_full_months": 3,
+      "zero_full_months": 0,
+      "partial_month_count": 1,
+      "monthly_continuous": [
+        {
+          "month": "2026-01",
+          "partial_month": false,
+          "starting_equity": 500.0,
+          "ending_equity": 480.21359000000064,
+          "pnl": -19.786409999999293,
+          "return_fraction": -0.03957281999999873,
+          "model_trades": 19,
+          "new_contributions": 0
+        },
+        {
+          "month": "2026-02",
+          "partial_month": false,
+          "starting_equity": 480.21359000000064,
+          "ending_equity": 485.20647500000086,
+          "pnl": 4.9928850000002925,
+          "return_fraction": 0.010397217204952902,
+          "model_trades": 10,
+          "new_contributions": 0
+        },
+        {
+          "month": "2026-03",
+          "partial_month": false,
+          "starting_equity": 485.20647500000086,
+          "ending_equity": 475.00786200000135,
+          "pnl": -10.198612999999561,
+          "return_fraction": -0.021019119746906734,
+          "model_trades": 13,
+          "new_contributions": 0
+        },
+        {
+          "month": "2026-04",
+          "partial_month": false,
+          "starting_equity": 475.00786200000135,
+          "ending_equity": 518.2653420000022,
+          "pnl": 43.25748000000114,
+          "return_fraction": 0.09106687164685434,
+          "model_trades": 17,
+          "new_contributions": 0
+        },
+        {
+          "month": "2026-05",
+          "partial_month": false,
+          "starting_equity": 518.2653420000022,
+          "ending_equity": 543.7784120000032,
+          "pnl": 25.5130700000009,
+          "return_fraction": 0.04922781427279177,
+          "model_trades": 20,
+          "new_contributions": 0
+        },
+        {
+          "month": "2026-06",
+          "partial_month": false,
+          "starting_equity": 543.7784120000032,
+          "ending_equity": 544.4418220000042,
+          "pnl": 0.6634100000008978,
+          "return_fraction": 0.0012200006204017289,
+          "model_trades": 13,
+          "new_contributions": 0
+        },
+        {
+          "month": "2026-07",
+          "partial_month": false,
+          "starting_equity": 544.4418220000042,
+          "ending_equity": 543.7873620000048,
+          "pnl": -0.6544599999994851,
+          "return_fraction": -0.0012020751778312189,
+          "model_trades": 8,
+          "new_contributions": 0
+        },
+        {
+          "month": "2026-08",
+          "partial_month": false,
+          "starting_equity": 543.7873620000048,
+          "ending_equity": 556.0321820000054,
+          "pnl": 12.244820000000686,
+          "return_fraction": 0.02251766196802585,
+          "model_trades": 15,
+          "new_contributions": 0
+        },
+        {
+          "month": "2026-09",
+          "partial_month": false,
+          "starting_equity": 556.0321820000054,
+          "ending_equity": 575.703937000006,
+          "pnl": 19.671755000000573,
+          "return_fraction": 0.03537880654541037,
+          "model_trades": 10,
+          "new_contributions": 0
+        },
+        {
+          "month": "2026-10",
+          "partial_month": true,
+          "starting_equity": 575.703937000006,
+          "ending_equity": 585.9688720000061,
+          "pnl": 10.264935000000065,
+          "return_fraction": 0.01783023241684023,
+          "model_trades": 2,
+          "new_contributions": 0
+        }
+      ],
+      "concentration": [
+        {
+          "top_n": 1,
+          "top_positive_trade_pnl": 42.30020000000003,
+          "fraction_of_gross_trade_profit": 0.05759007218289156,
+          "net_pnl_less_these_winning_trade_contributions": 43.668672000006026,
+          "top_positive_symbol_net_pnl": 46.72395000000017,
+          "fraction_of_positive_symbol_net_pnl": 0.08979935921888511,
+          "net_pnl_less_these_symbol_contributions": 39.244922000005886
+        },
+        {
+          "top_n": 3,
+          "top_positive_trade_pnl": 115.10697000000015,
+          "fraction_of_gross_trade_profit": 0.1567136493693632,
+          "net_pnl_less_these_winning_trade_contributions": -29.138097999994088,
+          "top_positive_symbol_net_pnl": 134.84078500000055,
+          "fraction_of_positive_symbol_net_pnl": 0.25915223540756854,
+          "net_pnl_less_these_symbol_contributions": -48.87191299999449
+        },
+        {
+          "top_n": 5,
+          "top_positive_trade_pnl": 185.5432050000002,
+          "fraction_of_gross_trade_profit": 0.2526098356271377,
+          "net_pnl_less_these_winning_trade_contributions": -99.57433299999414,
+          "top_positive_symbol_net_pnl": 208.7314400000011,
+          "fraction_of_positive_symbol_net_pnl": 0.4011636336575824,
+          "net_pnl_less_these_symbol_contributions": -122.76256799999504
+        },
+        {
+          "top_n": 10,
+          "top_positive_trade_pnl": 332.4744800000004,
+          "fraction_of_gross_trade_profit": 0.4526510347981652,
+          "net_pnl_less_these_winning_trade_contributions": -246.50560799999437,
+          "top_positive_symbol_net_pnl": 357.67717500000157,
+          "fraction_of_positive_symbol_net_pnl": 0.6874243535108024,
+          "net_pnl_less_these_symbol_contributions": -271.7083029999955
+        }
+      ],
+      "top_five_winning_trades": [
+        {
+          "date": "2026-05-29",
+          "symbol": "HOOD",
+          "pnl": 42.30020000000003,
+          "qty": 5,
+          "cash_before": 501.4782120000031
+        },
+        {
+          "date": "2026-01-21",
+          "symbol": "SNDK",
+          "pnl": 37.27566000000007,
+          "qty": 1,
+          "cash_before": 483.8135000000003
+        },
+        {
+          "date": "2026-05-20",
+          "symbol": "ALAB",
+          "pnl": 35.53111000000004,
+          "qty": 1,
+          "cash_before": 485.8067820000029
+        },
+        {
+          "date": "2026-10-05",
+          "symbol": "SPCX",
+          "pnl": 35.32477500000007,
+          "qty": 3,
+          "cash_before": 550.644097000006
+        },
+        {
+          "date": "2026-01-09",
+          "symbol": "BE",
+          "pnl": 35.11145999999998,
+          "qty": 3,
+          "cash_before": 468.34170000000023
+        }
+      ],
+      "symbol_pnl_all": [
+        {
+          "symbol": "ARM",
+          "net_pnl": 46.72395000000017
+        },
+        {
+          "symbol": "MRVL",
+          "net_pnl": 45.81663500000033
+        },
+        {
+          "symbol": "HOOD",
+          "net_pnl": 42.30020000000003
+        },
+        {
+          "symbol": "SNDK",
+          "net_pnl": 37.27566000000007
+        },
+        {
+          "symbol": "INTC",
+          "net_pnl": 36.614995000000505
+        },
+        {
+          "symbol": "ALAB",
+          "net_pnl": 35.53111000000004
+        },
+        {
+          "symbol": "BE",
+          "net_pnl": 35.11145999999998
+        },
+        {
+          "symbol": "SPCX",
+          "net_pnl": 27.089655000000107
+        },
+        {
+          "symbol": "CRWD",
+          "net_pnl": 25.9524600000002
+        },
+        {
+          "symbol": "XOM",
+          "net_pnl": 25.261050000000125
+        },
+        {
+          "symbol": "NFLX",
+          "net_pnl": 15.669700000000049
+        },
+        {
+          "symbol": "MSFT",
+          "net_pnl": 13.720430000000363
+        },
+        {
+          "symbol": "PLTR",
+          "net_pnl": 12.853920000000159
+        },
+        {
+          "symbol": "DELL",
+          "net_pnl": 11.776460000000043
+        },
+        {
+          "symbol": "COP",
+          "net_pnl": 9.927540000000036
+        },
+        {
+          "symbol": "GLW",
+          "net_pnl": 9.56140000000022
+        },
+        {
+          "symbol": "STX",
+          "net_pnl": 9.406620000000032
+        },
+        {
+          "symbol": "CSCO",
+          "net_pnl": 9.07492000000002
+        },
+        {
+          "symbol": "WMT",
+          "net_pnl": 8.927000000000021
+        },
+        {
+          "symbol": "V",
+          "net_pnl": 8.905360000000087
+        },
+        {
+          "symbol": "AMAT",
+          "net_pnl": 7.41987000000006
+        },
+        {
+          "symbol": "LRCX",
+          "net_pnl": 6.693800000000067
+        },
+        {
+          "symbol": "OXY",
+          "net_pnl": 6.367270000000055
+        },
+        {
+          "symbol": "AAOI",
+          "net_pnl": 5.827410000000043
+        },
+        {
+          "symbol": "AMZN",
+          "net_pnl": 5.664810000000159
+        },
+        {
+          "symbol": "CRM",
+          "net_pnl": 5.276140000000112
+        },
+        {
+          "symbol": "AAL",
+          "net_pnl": 4.652795000000243
+        },
+        {
+          "symbol": "KO",
+          "net_pnl": 3.3179100000001256
+        },
+        {
+          "symbol": "GOOGL",
+          "net_pnl": 3.2926800000000185
+        },
+        {
+          "symbol": "VZ",
+          "net_pnl": 1.9212300000000724
+        },
+        {
+          "symbol": "CVX",
+          "net_pnl": 1.339420000000132
+        },
+        {
+          "symbol": "TXN",
+          "net_pnl": 1.0411000000000286
+        },
+        {
+          "symbol": "ADI",
+          "net_pnl": -0.3602700000000141
+        },
+        {
+          "symbol": "ANET",
+          "net_pnl": -0.9494599999999309
+        },
+        {
+          "symbol": "AAPL",
+          "net_pnl": -1.802284999999813
+        },
+        {
+          "symbol": "ORCL",
+          "net_pnl": -2.0097899999998106
+        },
+        {
+          "symbol": "NOW",
+          "net_pnl": -2.6022799999999506
+        },
+        {
+          "symbol": "ABT",
+          "net_pnl": -2.6083999999998753
+        },
+        {
+          "symbol": "SKHY",
+          "net_pnl": -3.015459999999962
+        },
+        {
+          "symbol": "NBIS",
+          "net_pnl": -3.916949999999815
+        },
+        {
+          "symbol": "VRT",
+          "net_pnl": -4.3903700000000185
+        },
+        {
+          "symbol": "UNH",
+          "net_pnl": -5.62074999999993
+        },
+        {
+          "symbol": "MRK",
+          "net_pnl": -6.269309999999962
+        },
+        {
+          "symbol": "SNOW",
+          "net_pnl": -6.534049999999922
+        },
+        {
+          "symbol": "APH",
+          "net_pnl": -6.799079999999975
+        },
+        {
+          "symbol": "MSTR",
+          "net_pnl": -6.968389999999715
+        },
+        {
+          "symbol": "T",
+          "net_pnl": -7.732829999999947
+        },
+        {
+          "symbol": "TSM",
+          "net_pnl": -8.246559999999931
+        },
+        {
+          "symbol": "IBM",
+          "net_pnl": -8.730479999999943
+        },
+        {
+          "symbol": "BABA",
+          "net_pnl": -9.99118999999996
+        },
+        {
+          "symbol": "WDC",
+          "net_pnl": -12.417859999999905
+        },
+        {
+          "symbol": "MU",
+          "net_pnl": -13.881179999999858
+        },
+        {
+          "symbol": "AVGO",
+          "net_pnl": -16.51900499999988
+        },
+        {
+          "symbol": "NVDA",
+          "net_pnl": -20.509819999999934
+        },
+        {
+          "symbol": "SQQQ",
+          "net_pnl": -22.16118000000006
+        },
+        {
+          "symbol": "ACN",
+          "net_pnl": -25.05984000000001
+        },
+        {
+          "symbol": "CRWV",
+          "net_pnl": -25.32927999999987
+        },
+        {
+          "symbol": "APP",
+          "net_pnl": -26.48261999999994
+        },
+        {
+          "symbol": "TSLA",
+          "net_pnl": -27.40349999999995
+        },
+        {
+          "symbol": "QCOM",
+          "net_pnl": -39.94029999999992
+        },
+        {
+          "symbol": "IREN",
+          "net_pnl": -46.80072999999998
+        },
+        {
+          "symbol": "AMD",
+          "net_pnl": -69.29286799999971
+        }
+      ],
+      "max_daily_close_drawdown": 0.2044061995230756,
+      "accounting_chain_passed": true
+    },
+    {
+      "version": "original",
+      "path_id": "breakout20-25bp",
+      "cost_bps_each_side": 25,
+      "start_equity": 500,
+      "ending_equity": 466.45980500000513,
+      "net_pnl": -33.54019499999487,
+      "total_contributions": 500,
+      "sessions": 190,
+      "model_trade_count": 125,
+      "winning_trades": 57,
+      "gross_winning_pnl": 597.6886750000025,
+      "gross_losing_pnl_absolute": 631.2288699999972,
+      "profit_factor": 0.9468652392277387,
+      "median_trade_pnl": -0.5573499999999285,
+      "full_month_count": 9,
+      "positive_full_months": 3,
+      "negative_full_months": 6,
+      "zero_full_months": 0,
+      "partial_month_count": 1,
+      "monthly_continuous": [
+        {
+          "month": "2026-01",
+          "partial_month": false,
+          "starting_equity": 500.0,
+          "ending_equity": 463.7341125000005,
+          "pnl": -36.26588749999954,
+          "return_fraction": -0.07253177499999897,
+          "model_trades": 19,
+          "new_contributions": 0
+        },
+        {
+          "month": "2026-02",
+          "partial_month": false,
+          "starting_equity": 463.7341125000005,
+          "ending_equity": 456.79882500000093,
+          "pnl": -6.935287499999546,
+          "return_fraction": -0.014955310194049054,
+          "model_trades": 10,
+          "new_contributions": 0
+        },
+        {
+          "month": "2026-03",
+          "partial_month": false,
+          "starting_equity": 456.79882500000093,
+          "ending_equity": 432.73861750000157,
+          "pnl": -24.060207499999358,
+          "return_fraction": -0.05267134279515562,
+          "model_trades": 13,
+          "new_contributions": 0
+        },
+        {
+          "month": "2026-04",
+          "partial_month": false,
+          "starting_equity": 432.73861750000157,
+          "ending_equity": 461.3181925000025,
+          "pnl": 28.57957500000095,
+          "return_fraction": 0.06604350488779942,
+          "model_trades": 17,
+          "new_contributions": 0
+        },
+        {
+          "month": "2026-05",
+          "partial_month": false,
+          "starting_equity": 461.3181925000025,
+          "ending_equity": 505.2212300000031,
+          "pnl": 43.90303750000068,
+          "return_fraction": 0.09516866712339844,
+          "model_trades": 19,
+          "new_contributions": 0
+        },
+        {
+          "month": "2026-06",
+          "partial_month": false,
+          "starting_equity": 505.2212300000031,
+          "ending_equity": 505.24634250000383,
+          "pnl": 0.025112500000636473,
+          "return_fraction": 4.970594763142877e-05,
+          "model_trades": 12,
+          "new_contributions": 0
+        },
+        {
+          "month": "2026-07",
+          "partial_month": false,
+          "starting_equity": 505.24634250000383,
+          "ending_equity": 497.83134250000427,
+          "pnl": -7.4149999999995515,
+          "return_fraction": -0.014676009257799882,
+          "model_trades": 8,
+          "new_contributions": 0
+        },
+        {
+          "month": "2026-08",
+          "partial_month": false,
+          "starting_equity": 497.83134250000427,
+          "ending_equity": 476.9918300000047,
+          "pnl": -20.83951249999948,
+          "return_fraction": -0.04186058755430688,
+          "model_trades": 15,
+          "new_contributions": 0
+        },
+        {
+          "month": "2026-09",
+          "partial_month": false,
+          "starting_equity": 476.9918300000047,
+          "ending_equity": 470.18978000000504,
+          "pnl": -6.802049999999625,
+          "return_fraction": -0.014260307141947481,
+          "model_trades": 10,
+          "new_contributions": 0
+        },
+        {
+          "month": "2026-10",
+          "partial_month": true,
+          "starting_equity": 470.18978000000504,
+          "ending_equity": 466.45980500000513,
+          "pnl": -3.729974999999911,
+          "return_fraction": -0.00793291381195027,
+          "model_trades": 2,
+          "new_contributions": 0
+        }
+      ],
+      "concentration": [
+        {
+          "top_n": 1,
+          "top_positive_trade_pnl": 40.950500000000076,
+          "fraction_of_gross_trade_profit": 0.06851476648775369,
+          "net_pnl_less_these_winning_trade_contributions": -74.49069499999494,
+          "top_positive_symbol_net_pnl": 43.9848750000001,
+          "fraction_of_positive_symbol_net_pnl": 0.1111123145400635,
+          "net_pnl_less_these_symbol_contributions": -77.52506999999497
+        },
+        {
+          "top_n": 3,
+          "top_positive_trade_pnl": 111.50242500000012,
+          "fraction_of_gross_trade_profit": 0.18655602768447913,
+          "net_pnl_less_these_winning_trade_contributions": -145.042619999995,
+          "top_positive_symbol_net_pnl": 122.39763750000056,
+          "fraction_of_positive_symbol_net_pnl": 0.309194576473406,
+          "net_pnl_less_these_symbol_contributions": -155.9378324999954
+        },
+        {
+          "top_n": 5,
+          "top_positive_trade_pnl": 177.44262500000016,
+          "fraction_of_gross_trade_profit": 0.2968813571714395,
+          "net_pnl_less_these_winning_trade_contributions": -210.98281999999503,
+          "top_positive_symbol_net_pnl": 192.94956250000058,
+          "fraction_of_positive_symbol_net_pnl": 0.48741919759616587,
+          "net_pnl_less_these_symbol_contributions": -226.48975749999545
+        },
+        {
+          "top_n": 10,
+          "top_positive_trade_pnl": 301.8435500000005,
+          "fraction_of_gross_trade_profit": 0.5050180179505648,
+          "net_pnl_less_these_winning_trade_contributions": -335.3837449999954,
+          "top_positive_symbol_net_pnl": 291.8039500000013,
+          "fraction_of_positive_symbol_net_pnl": 0.737140034533076,
+          "net_pnl_less_these_symbol_contributions": -325.34414499999616
+        }
+      ],
+      "top_five_winning_trades": [
+        {
+          "date": "2026-05-29",
+          "symbol": "HOOD",
+          "pnl": 40.950500000000076,
+          "qty": 5,
+          "cash_before": 464.270730000003
+        },
+        {
+          "date": "2026-01-21",
+          "symbol": "SNDK",
+          "pnl": 35.82915000000003,
+          "qty": 1,
+          "cash_before": 470.36375000000027
+        },
+        {
+          "date": "2026-05-20",
+          "symbol": "ALAB",
+          "pnl": 34.72277500000001,
+          "qty": 1,
+          "cash_before": 455.287155000003
+        },
+        {
+          "date": "2026-01-09",
+          "symbol": "BE",
+          "pnl": 33.95865000000002,
+          "qty": 3,
+          "cash_before": 463.5742500000001
+        },
+        {
+          "date": "2026-06-04",
+          "symbol": "MRVL",
+          "pnl": 31.981550000000027,
+          "qty": 1,
+          "cash_before": 490.7973550000032
+        }
+      ],
+      "symbol_pnl_all": [
+        {
+          "symbol": "ARM",
+          "net_pnl": 43.9848750000001
+        },
+        {
+          "symbol": "HOOD",
+          "net_pnl": 40.950500000000076
+        },
+        {
+          "symbol": "MRVL",
+          "net_pnl": 37.46226250000038
+        },
+        {
+          "symbol": "SNDK",
+          "net_pnl": 35.82915000000003
+        },
+        {
+          "symbol": "ALAB",
+          "net_pnl": 34.72277500000001
+        },
+        {
+          "symbol": "BE",
+          "net_pnl": 33.95865000000002
+        },
+        {
+          "symbol": "INTC",
+          "net_pnl": 21.431200000000437
+        },
+        {
+          "symbol": "XOM",
+          "net_pnl": 18.87713750000009
+        },
+        {
+          "symbol": "SPCX",
+          "net_pnl": 13.041825000000074
+        },
+        {
+          "symbol": "CRWD",
+          "net_pnl": 11.54557500000007
+        },
+        {
+          "symbol": "DELL",
+          "net_pnl": 10.691149999999993
+        },
+        {
+          "symbol": "NFLX",
+          "net_pnl": 10.219400000000121
+        },
+        {
+          "symbol": "COP",
+          "net_pnl": 8.798850000000058
+        },
+        {
+          "symbol": "STX",
+          "net_pnl": 8.306550000000016
+        },
+        {
+          "symbol": "CSCO",
+          "net_pnl": 7.867300000000057
+        },
+        {
+          "symbol": "V",
+          "net_pnl": 7.83340000000004
+        },
+        {
+          "symbol": "WMT",
+          "net_pnl": 7.497500000000002
+        },
+        {
+          "symbol": "PLTR",
+          "net_pnl": 6.483200000000011
+        },
+        {
+          "symbol": "AMAT",
+          "net_pnl": 6.354675000000043
+        },
+        {
+          "symbol": "LRCX",
+          "net_pnl": 5.604500000000087
+        },
+        {
+          "symbol": "MSFT",
+          "net_pnl": 5.246075000000303
+        },
+        {
+          "symbol": "OXY",
+          "net_pnl": 5.1031750000001
+        },
+        {
+          "symbol": "AAOI",
+          "net_pnl": 4.443525000000022
+        },
+        {
+          "symbol": "GLW",
+          "net_pnl": 2.52330000000012
+        },
+        {
+          "symbol": "GOOGL",
+          "net_pnl": 2.1417000000000144
+        },
+        {
+          "symbol": "CRM",
+          "net_pnl": 1.8701750000000743
+        },
+        {
+          "symbol": "AMZN",
+          "net_pnl": 1.3070250000001806
+        },
+        {
+          "symbol": "AAL",
+          "net_pnl": 1.3012625000002114
+        },
+        {
+          "symbol": "KO",
+          "net_pnl": 0.46287500000005366
+        },
+        {
+          "symbol": "TXN",
+          "net_pnl": -0.3072499999999536
+        },
+        {
+          "symbol": "VZ",
+          "net_pnl": -0.731924999999805
+        },
+        {
+          "symbol": "CVX",
+          "net_pnl": -0.8814499999998588
+        },
+        {
+          "symbol": "ADI",
+          "net_pnl": -1.395674999999983
+        },
+        {
+          "symbol": "ANET",
+          "net_pnl": -2.103649999999959
+        },
+        {
+          "symbol": "ABT",
+          "net_pnl": -3.296799999999962
+        },
+        {
+          "symbol": "ORCL",
+          "net_pnl": -3.379649999999856
+        },
+        {
+          "symbol": "NOW",
+          "net_pnl": -3.9256999999999493
+        },
+        {
+          "symbol": "SKHY",
+          "net_pnl": -4.148649999999918
+        },
+        {
+          "symbol": "VRT",
+          "net_pnl": -5.200924999999984
+        },
+        {
+          "symbol": "APH",
+          "net_pnl": -5.571799999999939
+        },
+        {
+          "symbol": "AAPL",
+          "net_pnl": -6.45976249999984
+        },
+        {
+          "symbol": "SNOW",
+          "net_pnl": -7.560124999999914
+        },
+        {
+          "symbol": "MRK",
+          "net_pnl": -7.6182749999998975
+        },
+        {
+          "symbol": "UNH",
+          "net_pnl": -7.946874999999864
+        },
+        {
+          "symbol": "T",
+          "net_pnl": -8.516024999999942
+        },
+        {
+          "symbol": "IBM",
+          "net_pnl": -10.246199999999988
+        },
+        {
+          "symbol": "TSM",
+          "net_pnl": -10.266399999999976
+        },
+        {
+          "symbol": "NBIS",
+          "net_pnl": -10.4967749999999
+        },
+        {
+          "symbol": "BABA",
+          "net_pnl": -12.452974999999924
+        },
+        {
+          "symbol": "WDC",
+          "net_pnl": -14.18464999999992
+        },
+        {
+          "symbol": "MU",
+          "net_pnl": -17.122949999999946
+        },
+        {
+          "symbol": "QCOM",
+          "net_pnl": -20.630374999999958
+        },
+        {
+          "symbol": "MSTR",
+          "net_pnl": -21.192562499999795
+        },
+        {
+          "symbol": "NVDA",
+          "net_pnl": -21.84454999999997
+        },
+        {
+          "symbol": "SQQQ",
+          "net_pnl": -23.45294999999996
+        },
+        {
+          "symbol": "ACN",
+          "net_pnl": -26.28959999999995
+        },
+        {
+          "symbol": "CRWV",
+          "net_pnl": -28.0431999999999
+        },
+        {
+          "symbol": "TSLA",
+          "net_pnl": -30.618749999999977
+        },
+        {
+          "symbol": "IREN",
+          "net_pnl": -48.20674999999993
+        },
+        {
+          "symbol": "AMD",
+          "net_pnl": -65.30655749999983
+        }
+      ],
+      "max_daily_close_drawdown": 0.17008714857287233,
+      "accounting_chain_passed": true
+    },
+    {
+      "version": "original",
+      "path_id": "reversal-10bp",
+      "cost_bps_each_side": 10,
+      "start_equity": 500,
+      "ending_equity": 398.8995050000012,
+      "net_pnl": -101.10049499999877,
+      "total_contributions": 500,
+      "sessions": 190,
+      "model_trade_count": 31,
+      "winning_trades": 8,
+      "gross_winning_pnl": 103.22108500000039,
+      "gross_losing_pnl_absolute": 204.32157999999913,
+      "profit_factor": 0.5051893441701107,
+      "median_trade_pnl": -3.58693999999997,
+      "full_month_count": 9,
+      "positive_full_months": 1,
+      "negative_full_months": 7,
+      "zero_full_months": 1,
+      "partial_month_count": 1,
+      "monthly_continuous": [
+        {
+          "month": "2026-01",
+          "partial_month": false,
+          "starting_equity": 500.0,
+          "ending_equity": 482.9385200000001,
+          "pnl": -17.061479999999904,
+          "return_fraction": -0.03412295999999981,
+          "model_trades": 2,
+          "new_contributions": 0
+        },
+        {
+          "month": "2026-02",
+          "partial_month": false,
+          "starting_equity": 482.9385200000001,
+          "ending_equity": 444.4108300000003,
+          "pnl": -38.52768999999972,
+          "return_fraction": -0.0797776288377241,
+          "model_trades": 5,
+          "new_contributions": 0
+        },
+        {
+          "month": "2026-03",
+          "partial_month": false,
+          "starting_equity": 444.4108300000003,
+          "ending_equity": 456.8160500000004,
+          "pnl": 12.40522000000012,
+          "return_fraction": 0.027913856194728748,
+          "model_trades": 4,
+          "new_contributions": 0
+        },
+        {
+          "month": "2026-04",
+          "partial_month": false,
+          "starting_equity": 456.8160500000004,
+          "ending_equity": 432.4993300000006,
+          "pnl": -24.31671999999982,
+          "return_fraction": -0.053230879256540575,
+          "model_trades": 4,
+          "new_contributions": 0
+        },
+        {
+          "month": "2026-05",
+          "partial_month": false,
+          "starting_equity": 432.4993300000006,
+          "ending_equity": 432.4993300000006,
+          "pnl": 0,
+          "return_fraction": 0.0,
+          "model_trades": 0,
+          "new_contributions": 0
+        },
+        {
+          "month": "2026-06",
+          "partial_month": false,
+          "starting_equity": 432.4993300000006,
+          "ending_equity": 425.32624500000094,
+          "pnl": -7.173084999999659,
+          "return_fraction": -0.016585193322726455,
+          "model_trades": 7,
+          "new_contributions": 0
+        },
+        {
+          "month": "2026-07",
+          "partial_month": false,
+          "starting_equity": 425.32624500000094,
+          "ending_equity": 415.18226500000105,
+          "pnl": -10.1439799999999,
+          "return_fraction": -0.023849880225472297,
+          "model_trades": 4,
+          "new_contributions": 0
+        },
+        {
+          "month": "2026-08",
+          "partial_month": false,
+          "starting_equity": 415.18226500000105,
+          "ending_equity": 410.44978500000116,
+          "pnl": -4.73247999999991,
+          "return_fraction": -0.011398560099863286,
+          "model_trades": 3,
+          "new_contributions": 0
+        },
+        {
+          "month": "2026-09",
+          "partial_month": false,
+          "starting_equity": 410.44978500000116,
+          "ending_equity": 398.8995050000012,
+          "pnl": -11.550279999999944,
+          "return_fraction": -0.02814054342847294,
+          "model_trades": 2,
+          "new_contributions": 0
+        },
+        {
+          "month": "2026-10",
+          "partial_month": true,
+          "starting_equity": 398.8995050000012,
+          "ending_equity": 398.8995050000012,
+          "pnl": 0,
+          "return_fraction": 0.0,
+          "model_trades": 0,
+          "new_contributions": 0
+        }
+      ],
+      "concentration": [
+        {
+          "top_n": 1,
+          "top_positive_trade_pnl": 30.23662500000004,
+          "fraction_of_gross_trade_profit": 0.2929307030632349,
+          "net_pnl_less_these_winning_trade_contributions": -131.3371199999988,
+          "top_positive_symbol_net_pnl": 30.23662500000004,
+          "fraction_of_positive_symbol_net_pnl": 0.3172579411868849,
+          "net_pnl_less_these_symbol_contributions": -131.3371199999988
+        },
+        {
+          "top_n": 3,
+          "top_positive_trade_pnl": 74.31178500000019,
+          "fraction_of_gross_trade_profit": 0.7199283460351139,
+          "net_pnl_less_these_winning_trade_contributions": -175.41227999999896,
+          "top_positive_symbol_net_pnl": 70.1316150000003,
+          "fraction_of_positive_symbol_net_pnl": 0.7358563261280424,
+          "net_pnl_less_these_symbol_contributions": -171.23210999999907
+        },
+        {
+          "top_n": 5,
+          "top_positive_trade_pnl": 96.02348500000028,
+          "fraction_of_gross_trade_profit": 0.9302700606179437,
+          "net_pnl_less_these_winning_trade_contributions": -197.12397999999905,
+          "top_positive_symbol_net_pnl": 91.84331500000036,
+          "fraction_of_positive_symbol_net_pnl": 0.963666448509998,
+          "net_pnl_less_these_symbol_contributions": -192.94380999999913
+        },
+        {
+          "top_n": 10,
+          "top_positive_trade_pnl": 103.22108500000039,
+          "fraction_of_gross_trade_profit": 1.0,
+          "net_pnl_less_these_winning_trade_contributions": -204.32157999999916,
+          "top_positive_symbol_net_pnl": 95.30612500000043,
+          "fraction_of_positive_symbol_net_pnl": 1.0,
+          "net_pnl_less_these_symbol_contributions": -196.4066199999992
+        }
+      ],
+      "top_five_winning_trades": [
+        {
+          "date": "2026-03-02",
+          "symbol": "SOFI",
+          "pnl": 30.23662500000004,
+          "qty": 25,
+          "cash_before": 444.4108300000003
+        },
+        {
+          "date": "2026-07-01",
+          "symbol": "MSTR",
+          "pnl": 22.055660000000046,
+          "qty": 4,
+          "cash_before": 425.32624500000094
+        },
+        {
+          "date": "2026-06-24",
+          "symbol": "GLW",
+          "pnl": 22.019500000000107,
+          "qty": 2,
+          "cash_before": 403.30674500000083
+        },
+        {
+          "date": "2026-02-23",
+          "symbol": "CRWV",
+          "pnl": 13.207200000000057,
+          "qty": 4,
+          "cash_before": 431.20363000000026
+        },
+        {
+          "date": "2026-08-06",
+          "symbol": "UBER",
+          "pnl": 8.504500000000021,
+          "qty": 5,
+          "cash_before": 408.4092650000011
+        }
+      ],
+      "symbol_pnl_all": [
+        {
+          "symbol": "SOFI",
+          "net_pnl": 30.23662500000004
+        },
+        {
+          "symbol": "MSTR",
+          "net_pnl": 25.37654000000009
+        },
+        {
+          "symbol": "GLW",
+          "net_pnl": 14.518450000000158
+        },
+        {
+          "symbol": "CRWV",
+          "net_pnl": 13.207200000000057
+        },
+        {
+          "symbol": "UBER",
+          "net_pnl": 8.504500000000021
+        },
+        {
+          "symbol": "IBM",
+          "net_pnl": 2.875440000000026
+        },
+        {
+          "symbol": "QCOM",
+          "net_pnl": 0.5873700000000497
+        },
+        {
+          "symbol": "CRWD",
+          "net_pnl": -0.26962999999994963
+        },
+        {
+          "symbol": "ADBE",
+          "net_pnl": -0.9332399999999552
+        },
+        {
+          "symbol": "AMZN",
+          "net_pnl": -1.3353799999999296
+        },
+        {
+          "symbol": "ORCL",
+          "net_pnl": -2.4982799999999656
+        },
+        {
+          "symbol": "FCX",
+          "net_pnl": -2.662649999999971
+        },
+        {
+          "symbol": "PANW",
+          "net_pnl": -3.58693999999997
+        },
+        {
+          "symbol": "CBRS",
+          "net_pnl": -6.463979999999964
+        },
+        {
+          "symbol": "AAPL",
+          "net_pnl": -6.772999999999968
+        },
+        {
+          "symbol": "NEM",
+          "net_pnl": -6.902399999999986
+        },
+        {
+          "symbol": "COF",
+          "net_pnl": -7.312019999999961
+        },
+        {
+          "symbol": "MSFT",
+          "net_pnl": -9.749459999999942
+        },
+        {
+          "symbol": "VRT",
+          "net_pnl": -10.370859999999908
+        },
+        {
+          "symbol": "BABA",
+          "net_pnl": -10.659374999999983
+        },
+        {
+          "symbol": "NFLX",
+          "net_pnl": -15.113370000000003
+        },
+        {
+          "symbol": "BE",
+          "net_pnl": -19.593099999999993
+        },
+        {
+          "symbol": "ASTS",
+          "net_pnl": -22.114659999999844
+        },
+        {
+          "symbol": "AVGO",
+          "net_pnl": -22.668334999999956
+        },
+        {
+          "symbol": "HOOD",
+          "net_pnl": -47.39993999999993
+        }
+      ],
+      "max_daily_close_drawdown": 0.20220098999999758,
+      "accounting_chain_passed": true
+    },
+    {
+      "version": "original",
+      "path_id": "reversal-25bp",
+      "cost_bps_each_side": 25,
+      "start_equity": 500,
+      "ending_equity": 389.9596000000015,
+      "net_pnl": -110.0403999999985,
+      "total_contributions": 500,
+      "sessions": 190,
+      "model_trade_count": 30,
+      "winning_trades": 7,
+      "gross_winning_pnl": 95.01178750000048,
+      "gross_losing_pnl_absolute": 205.0521874999991,
+      "profit_factor": 0.4633541766044359,
+      "median_trade_pnl": -4.114487499999925,
+      "full_month_count": 9,
+      "positive_full_months": 2,
+      "negative_full_months": 6,
+      "zero_full_months": 1,
+      "partial_month_count": 1,
+      "monthly_continuous": [
+        {
+          "month": "2026-01",
+          "partial_month": false,
+          "starting_equity": 500.0,
+          "ending_equity": 480.2363000000001,
+          "pnl": -19.763699999999915,
+          "return_fraction": -0.03952739999999988,
+          "model_trades": 2,
+          "new_contributions": 0
+        },
+        {
+          "month": "2026-02",
+          "partial_month": false,
+          "starting_equity": 480.2363000000001,
+          "ending_equity": 435.89207500000043,
+          "pnl": -44.34422499999971,
+          "return_fraction": -0.09233834468572999,
+          "model_trades": 5,
+          "new_contributions": 0
+        },
+        {
+          "month": "2026-03",
+          "partial_month": false,
+          "starting_equity": 435.89207500000043,
+          "ending_equity": 443.62512500000065,
+          "pnl": 7.733050000000187,
+          "return_fraction": 0.017740744655658558,
+          "model_trades": 4,
+          "new_contributions": 0
+        },
+        {
+          "month": "2026-04",
+          "partial_month": false,
+          "starting_equity": 443.62512500000065,
+          "ending_equity": 415.3233250000008,
+          "pnl": -28.301799999999844,
+          "return_fraction": -0.06379665714379856,
+          "model_trades": 4,
+          "new_contributions": 0
+        },
+        {
+          "month": "2026-05",
+          "partial_month": false,
+          "starting_equity": 415.3233250000008,
+          "ending_equity": 415.3233250000008,
+          "pnl": 0,
+          "return_fraction": 0.0,
+          "model_trades": 0,
+          "new_contributions": 0
+        },
+        {
+          "month": "2026-06",
+          "partial_month": false,
+          "starting_equity": 415.3233250000008,
+          "ending_equity": 425.0364500000011,
+          "pnl": 9.71312500000029,
+          "return_fraction": 0.023386899832799513,
+          "model_trades": 6,
+          "new_contributions": 0
+        },
+        {
+          "month": "2026-07",
+          "partial_month": false,
+          "starting_equity": 425.0364500000011,
+          "ending_equity": 410.6565000000012,
+          "pnl": -14.379949999999909,
+          "return_fraction": -0.03383227485548557,
+          "model_trades": 4,
+          "new_contributions": 0
+        },
+        {
+          "month": "2026-08",
+          "partial_month": false,
+          "starting_equity": 410.6565000000012,
+          "ending_equity": 403.29530000000136,
+          "pnl": -7.361199999999826,
+          "return_fraction": -0.01792544377113181,
+          "model_trades": 3,
+          "new_contributions": 0
+        },
+        {
+          "month": "2026-09",
+          "partial_month": false,
+          "starting_equity": 403.29530000000136,
+          "ending_equity": 389.9596000000015,
+          "pnl": -13.335699999999889,
+          "return_fraction": -0.033066837129021365,
+          "model_trades": 2,
+          "new_contributions": 0
+        },
+        {
+          "month": "2026-10",
+          "partial_month": true,
+          "starting_equity": 389.9596000000015,
+          "ending_equity": 389.9596000000015,
+          "pnl": 0,
+          "return_fraction": 0.0,
+          "model_trades": 0,
+          "new_contributions": 0
+        }
+      ],
+      "concentration": [
+        {
+          "top_n": 1,
+          "top_positive_trade_pnl": 28.904062500000105,
+          "fraction_of_gross_trade_profit": 0.3042155427293688,
+          "net_pnl_less_these_winning_trade_contributions": -138.9444624999986,
+          "top_positive_symbol_net_pnl": 28.904062500000105,
+          "fraction_of_positive_symbol_net_pnl": 0.33895362191842116,
+          "net_pnl_less_these_symbol_contributions": -138.9444624999986
+        },
+        {
+          "top_n": 3,
+          "top_positive_trade_pnl": 70.69196250000032,
+          "fraction_of_gross_trade_profit": 0.7440336021464701,
+          "net_pnl_less_these_winning_trade_contributions": -180.73236249999883,
+          "top_positive_symbol_net_pnl": 64.24653750000034,
+          "fraction_of_positive_symbol_net_pnl": 0.7534095451579758,
+          "net_pnl_less_these_symbol_contributions": -174.28693749999883
+        },
+        {
+          "top_n": 5,
+          "top_positive_trade_pnl": 90.29121250000047,
+          "fraction_of_gross_trade_profit": 0.9503159015927367,
+          "net_pnl_less_these_winning_trade_contributions": -200.33161249999898,
+          "top_positive_symbol_net_pnl": 83.8457875000005,
+          "fraction_of_positive_symbol_net_pnl": 0.9832470212700152,
+          "net_pnl_less_these_symbol_contributions": -193.88618749999898
+        },
+        {
+          "top_n": 10,
+          "top_positive_trade_pnl": 95.01178750000048,
+          "fraction_of_gross_trade_profit": 1.0,
+          "net_pnl_less_these_winning_trade_contributions": -205.05218749999898,
+          "top_positive_symbol_net_pnl": 85.27438750000049,
+          "fraction_of_positive_symbol_net_pnl": 1.0,
+          "net_pnl_less_these_symbol_contributions": -195.314787499999
+        }
+      ],
+      "top_five_winning_trades": [
+        {
+          "date": "2026-03-02",
+          "symbol": "SOFI",
+          "pnl": 28.904062500000105,
+          "qty": 25,
+          "cash_before": 435.89207500000043
+        },
+        {
+          "date": "2026-07-01",
+          "symbol": "MSTR",
+          "pnl": 20.96915000000007,
+          "qty": 4,
+          "cash_before": 425.0364500000011
+        },
+        {
+          "date": "2026-06-24",
+          "symbol": "GLW",
+          "pnl": 20.818750000000136,
+          "qty": 2,
+          "cash_before": 404.21770000000095
+        },
+        {
+          "date": "2026-02-23",
+          "symbol": "CRWV",
+          "pnl": 12.13800000000009,
+          "qty": 4,
+          "cash_before": 423.75407500000034
+        },
+        {
+          "date": "2026-08-06",
+          "symbol": "UBER",
+          "pnl": 7.461250000000064,
+          "qty": 5,
+          "cash_before": 402.9640000000013
+        }
+      ],
+      "symbol_pnl_all": [
+        {
+          "symbol": "SOFI",
+          "net_pnl": 28.904062500000105
+        },
+        {
+          "symbol": "MSTR",
+          "net_pnl": 23.15135000000008
+        },
+        {
+          "symbol": "GLW",
+          "net_pnl": 12.191125000000156
+        },
+        {
+          "symbol": "CRWV",
+          "net_pnl": 12.13800000000009
+        },
+        {
+          "symbol": "UBER",
+          "net_pnl": 7.461250000000064
+        },
+        {
+          "symbol": "IBM",
+          "net_pnl": 1.4285999999999888
+        },
+        {
+          "symbol": "QCOM",
+          "net_pnl": -0.6465749999999559
+        },
+        {
+          "symbol": "CRWD",
+          "net_pnl": -1.409074999999973
+        },
+        {
+          "symbol": "ADBE",
+          "net_pnl": -1.5530999999999722
+        },
+        {
+          "symbol": "AMZN",
+          "net_pnl": -2.588449999999966
+        },
+        {
+          "symbol": "ORCL",
+          "net_pnl": -3.605699999999956
+        },
+        {
+          "symbol": "FCX",
+          "net_pnl": -3.731624999999923
+        },
+        {
+          "symbol": "PANW",
+          "net_pnl": -4.497349999999926
+        },
+        {
+          "symbol": "CBRS",
+          "net_pnl": -7.129950000000008
+        },
+        {
+          "symbol": "AAPL",
+          "net_pnl": -7.692499999999882
+        },
+        {
+          "symbol": "NEM",
+          "net_pnl": -7.985999999999976
+        },
+        {
+          "symbol": "COF",
+          "net_pnl": -8.710049999999967
+        },
+        {
+          "symbol": "MSFT",
+          "net_pnl": -11.053649999999948
+        },
+        {
+          "symbol": "BABA",
+          "net_pnl": -11.77593749999997
+        },
+        {
+          "symbol": "VRT",
+          "net_pnl": -12.007149999999967
+        },
+        {
+          "symbol": "NFLX",
+          "net_pnl": -17.48842499999995
+        },
+        {
+          "symbol": "BE",
+          "net_pnl": -20.392749999999978
+        },
+        {
+          "symbol": "ASTS",
+          "net_pnl": -24.29664999999983
+        },
+        {
+          "symbol": "HOOD",
+          "net_pnl": -48.74984999999995
+        }
+      ],
+      "max_daily_close_drawdown": 0.22008079999999697,
+      "accounting_chain_passed": true
+    },
+    {
+      "version": "classification_sensitivity",
+      "path_id": "breakout20-10bp",
+      "cost_bps_each_side": 10,
+      "start_equity": 500,
+      "ending_equity": 693.2106070000069,
+      "net_pnl": 193.21060700000692,
+      "total_contributions": 500,
+      "sessions": 190,
+      "model_trade_count": 126,
+      "winning_trades": 65,
+      "gross_winning_pnl": 904.4763900000041,
+      "gross_losing_pnl_absolute": 711.2657829999971,
+      "profit_factor": 1.271643331674241,
+      "median_trade_pnl": 0.3581900000000928,
+      "full_month_count": 9,
+      "positive_full_months": 6,
+      "negative_full_months": 3,
+      "zero_full_months": 0,
+      "partial_month_count": 1,
+      "monthly_continuous": [
+        {
+          "month": "2026-01",
+          "partial_month": false,
+          "starting_equity": 500.0,
+          "ending_equity": 480.21359000000064,
+          "pnl": -19.786409999999293,
+          "return_fraction": -0.03957281999999873,
+          "model_trades": 19,
+          "new_contributions": 0
+        },
+        {
+          "month": "2026-02",
+          "partial_month": false,
+          "starting_equity": 480.21359000000064,
+          "ending_equity": 507.11948500000096,
+          "pnl": 26.905895000000356,
+          "return_fraction": 0.05602901617174205,
+          "model_trades": 9,
+          "new_contributions": 0
+        },
+        {
+          "month": "2026-03",
+          "partial_month": false,
+          "starting_equity": 507.11948500000096,
+          "ending_equity": 501.1396620000013,
+          "pnl": -5.979822999999541,
+          "return_fraction": -0.011791743714993808,
+          "model_trades": 13,
+          "new_contributions": 0
+        },
+        {
+          "month": "2026-04",
+          "partial_month": false,
+          "starting_equity": 501.1396620000013,
+          "ending_equity": 553.0394320000025,
+          "pnl": 51.89977000000121,
+          "return_fraction": 0.1035634852625198,
+          "model_trades": 17,
+          "new_contributions": 0
+        },
+        {
+          "month": "2026-05",
+          "partial_month": false,
+          "starting_equity": 553.0394320000025,
+          "ending_equity": 641.0577520000038,
+          "pnl": 88.01832000000118,
+          "return_fraction": 0.15915378706667127,
+          "model_trades": 20,
+          "new_contributions": 0
+        },
+        {
+          "month": "2026-06",
+          "partial_month": false,
+          "starting_equity": 641.0577520000038,
+          "ending_equity": 662.519052000005,
+          "pnl": 21.461300000001067,
+          "return_fraction": 0.03347795098498563,
+          "model_trades": 13,
+          "new_contributions": 0
+        },
+        {
+          "month": "2026-07",
+          "partial_month": false,
+          "starting_equity": 662.519052000005,
+          "ending_equity": 658.2948670000055,
+          "pnl": -4.224184999999409,
+          "return_fraction": -0.006375944944145395,
+          "model_trades": 8,
+          "new_contributions": 0
+        },
+        {
+          "month": "2026-08",
+          "partial_month": false,
+          "starting_equity": 658.2948670000055,
+          "ending_equity": 663.3683870000061,
+          "pnl": 5.073520000000812,
+          "return_fraction": 0.007707062980943036,
+          "model_trades": 15,
+          "new_contributions": 0
+        },
+        {
+          "month": "2026-09",
+          "partial_month": false,
+          "starting_equity": 663.3683870000061,
+          "ending_equity": 683.7006670000069,
+          "pnl": 20.332280000000665,
+          "return_fraction": 0.030650058698079796,
+          "model_trades": 10,
+          "new_contributions": 0
+        },
+        {
+          "month": "2026-10",
+          "partial_month": true,
+          "starting_equity": 683.7006670000069,
+          "ending_equity": 693.2106070000069,
+          "pnl": 9.509940000000086,
+          "return_fraction": 0.013909508150296901,
+          "model_trades": 2,
+          "new_contributions": 0
+        }
+      ],
+      "concentration": [
+        {
+          "top_n": 1,
+          "top_positive_trade_pnl": 71.06222000000008,
+          "fraction_of_gross_trade_profit": 0.07856724706766503,
+          "net_pnl_less_these_winning_trade_contributions": 122.14838700000684,
+          "top_positive_symbol_net_pnl": 93.44790000000035,
+          "fraction_of_positive_symbol_net_pnl": 0.14350982833289483,
+          "net_pnl_less_these_symbol_contributions": 99.76270700000657
+        },
+        {
+          "top_n": 3,
+          "top_positive_trade_pnl": 198.36321000000027,
+          "fraction_of_gross_trade_profit": 0.2193127561903516,
+          "net_pnl_less_these_winning_trade_contributions": -5.1526029999933485,
+          "top_positive_symbol_net_pnl": 225.82068500000082,
+          "fraction_of_positive_symbol_net_pnl": 0.34679738911593216,
+          "net_pnl_less_these_symbol_contributions": -32.610077999993905
+        },
+        {
+          "top_n": 5,
+          "top_positive_trade_pnl": 296.2231500000004,
+          "fraction_of_gross_trade_profit": 0.32750788552921656,
+          "net_pnl_less_these_winning_trade_contributions": -103.01254299999346,
+          "top_positive_symbol_net_pnl": 323.56971500000145,
+          "fraction_of_positive_symbol_net_pnl": 0.4969125497028156,
+          "net_pnl_less_these_symbol_contributions": -130.35910799999454
+        },
+        {
+          "top_n": 10,
+          "top_positive_trade_pnl": 468.9185900000006,
+          "fraction_of_gross_trade_profit": 0.5184420457896071,
+          "net_pnl_less_these_winning_trade_contributions": -275.7079829999937,
+          "top_positive_symbol_net_pnl": 483.28988500000196,
+          "fraction_of_positive_symbol_net_pnl": 0.7421980422393067,
+          "net_pnl_less_these_symbol_contributions": -290.07927799999504
+        }
+      ],
+      "top_five_winning_trades": [
+        {
+          "date": "2026-05-20",
+          "symbol": "ALAB",
+          "pnl": 71.06222000000008,
+          "qty": 2,
+          "cash_before": 517.4245420000034
+        },
+        {
+          "date": "2026-06-04",
+          "symbol": "MRVL",
+          "pnl": 65.76124000000004,
+          "qty": 2,
+          "cash_before": 612.8351970000041
+        },
+        {
+          "date": "2026-05-21",
+          "symbol": "ARM",
+          "pnl": 61.53975000000014,
+          "qty": 2,
+          "cash_before": 588.4867620000034
+        },
+        {
+          "date": "2026-05-29",
+          "symbol": "HOOD",
+          "pnl": 50.76024000000004,
+          "qty": 6,
+          "cash_before": 590.2975120000037
+        },
+        {
+          "date": "2026-10-05",
+          "symbol": "SPCX",
+          "pnl": 47.0997000000001,
+          "qty": 4,
+          "cash_before": 646.1109070000068
+        }
+      ],
+      "symbol_pnl_all": [
+        {
+          "symbol": "ARM",
+          "net_pnl": 93.44790000000035
+        },
+        {
+          "symbol": "ALAB",
+          "net_pnl": 71.06222000000008
+        },
+        {
+          "symbol": "MRVL",
+          "net_pnl": 61.310565000000395
+        },
+        {
+          "symbol": "HOOD",
+          "net_pnl": 50.76024000000004
+        },
+        {
+          "symbol": "INTC",
+          "net_pnl": 46.98879000000059
+        },
+        {
+          "symbol": "SNDK",
+          "net_pnl": 37.27566000000007
+        },
+        {
+          "symbol": "SPCX",
+          "net_pnl": 36.11954000000014
+        },
+        {
+          "symbol": "BE",
+          "net_pnl": 35.11145999999998
+        },
+        {
+          "symbol": "CRWD",
+          "net_pnl": 25.9524600000002
+        },
+        {
+          "symbol": "XOM",
+          "net_pnl": 25.261050000000125
+        },
+        {
+          "symbol": "NFLX",
+          "net_pnl": 15.669700000000049
+        },
+        {
+          "symbol": "MSFT",
+          "net_pnl": 13.720430000000363
+        },
+        {
+          "symbol": "COP",
+          "net_pnl": 13.236720000000048
+        },
+        {
+          "symbol": "PLTR",
+          "net_pnl": 12.853920000000159
+        },
+        {
+          "symbol": "DELL",
+          "net_pnl": 11.776460000000043
+        },
+        {
+          "symbol": "STX",
+          "net_pnl": 9.406620000000032
+        },
+        {
+          "symbol": "CSCO",
+          "net_pnl": 9.07492000000002
+        },
+        {
+          "symbol": "WMT",
+          "net_pnl": 8.927000000000021
+        },
+        {
+          "symbol": "V",
+          "net_pnl": 8.905360000000087
+        },
+        {
+          "symbol": "AAOI",
+          "net_pnl": 7.769880000000057
+        },
+        {
+          "symbol": "AMAT",
+          "net_pnl": 7.41987000000006
+        },
+        {
+          "symbol": "OXY",
+          "net_pnl": 7.276880000000062
+        },
+        {
+          "symbol": "GLW",
+          "net_pnl": 6.974405000000274
+        },
+        {
+          "symbol": "LRCX",
+          "net_pnl": 6.693800000000067
+        },
+        {
+          "symbol": "AAL",
+          "net_pnl": 5.712010000000298
+        },
+        {
+          "symbol": "AMZN",
+          "net_pnl": 5.664810000000159
+        },
+        {
+          "symbol": "CRM",
+          "net_pnl": 5.276140000000112
+        },
+        {
+          "symbol": "KO",
+          "net_pnl": 4.165210000000158
+        },
+        {
+          "symbol": "GOOGL",
+          "net_pnl": 3.2926800000000185
+        },
+        {
+          "symbol": "VZ",
+          "net_pnl": 1.6730600000000777
+        },
+        {
+          "symbol": "CVX",
+          "net_pnl": 1.339420000000132
+        },
+        {
+          "symbol": "TXN",
+          "net_pnl": 1.0411000000000286
+        },
+        {
+          "symbol": "MSTR",
+          "net_pnl": -0.16325999999969554
+        },
+        {
+          "symbol": "ADI",
+          "net_pnl": -0.3602700000000141
+        },
+        {
+          "symbol": "ANET",
+          "net_pnl": -1.4241899999998964
+        },
+        {
+          "symbol": "AAPL",
+          "net_pnl": -1.802284999999813
+        },
+        {
+          "symbol": "ORCL",
+          "net_pnl": -2.0097899999998106
+        },
+        {
+          "symbol": "ABT",
+          "net_pnl": -3.1300799999998503
+        },
+        {
+          "symbol": "NOW",
+          "net_pnl": -3.2528499999999383
+        },
+        {
+          "symbol": "VRT",
+          "net_pnl": -4.3903700000000185
+        },
+        {
+          "symbol": "SKHY",
+          "net_pnl": -4.523189999999943
+        },
+        {
+          "symbol": "UNH",
+          "net_pnl": -5.62074999999993
+        },
+        {
+          "symbol": "APH",
+          "net_pnl": -6.799079999999975
+        },
+        {
+          "symbol": "TSM",
+          "net_pnl": -8.246559999999931
+        },
+        {
+          "symbol": "MRK",
+          "net_pnl": -8.359079999999949
+        },
+        {
+          "symbol": "IBM",
+          "net_pnl": -8.730479999999943
+        },
+        {
+          "symbol": "T",
+          "net_pnl": -9.413879999999935
+        },
+        {
+          "symbol": "SNOW",
+          "net_pnl": -9.801074999999884
+        },
+        {
+          "symbol": "BABA",
+          "net_pnl": -11.212154999999953
+        },
+        {
+          "symbol": "WDC",
+          "net_pnl": -12.417859999999905
+        },
+        {
+          "symbol": "MU",
+          "net_pnl": -13.881179999999858
+        },
+        {
+          "symbol": "NBIS",
+          "net_pnl": -16.01183999999978
+        },
+        {
+          "symbol": "AVGO",
+          "net_pnl": -16.51900499999988
+        },
+        {
+          "symbol": "CRWV",
+          "net_pnl": -23.306424999999848
+        },
+        {
+          "symbol": "APP",
+          "net_pnl": -26.48261999999994
+        },
+        {
+          "symbol": "TSLA",
+          "net_pnl": -27.40349999999995
+        },
+        {
+          "symbol": "NVDA",
+          "net_pnl": -30.7647299999999
+        },
+        {
+          "symbol": "ACN",
+          "net_pnl": -37.58976000000001
+        },
+        {
+          "symbol": "QCOM",
+          "net_pnl": -39.94029999999992
+        },
+        {
+          "symbol": "IREN",
+          "net_pnl": -55.10023999999998
+        },
+        {
+          "symbol": "AMD",
+          "net_pnl": -69.29286799999971
+        }
+      ],
+      "max_daily_close_drawdown": 0.1956600086692747,
+      "accounting_chain_passed": true
+    },
+    {
+      "version": "classification_sensitivity",
+      "path_id": "breakout20-25bp",
+      "cost_bps_each_side": 25,
+      "start_equity": 500,
+      "ending_equity": 463.1763050000056,
+      "net_pnl": -36.823694999994416,
+      "total_contributions": 500,
+      "sessions": 190,
+      "model_trade_count": 124,
+      "winning_trades": 57,
+      "gross_winning_pnl": 602.0603500000026,
+      "gross_losing_pnl_absolute": 638.8840449999972,
+      "profit_factor": 0.9423624751812439,
+      "median_trade_pnl": -0.4407249999999294,
+      "full_month_count": 9,
+      "positive_full_months": 4,
+      "negative_full_months": 5,
+      "zero_full_months": 0,
+      "partial_month_count": 1,
+      "monthly_continuous": [
+        {
+          "month": "2026-01",
+          "partial_month": false,
+          "starting_equity": 500.0,
+          "ending_equity": 463.7341125000005,
+          "pnl": -36.26588749999954,
+          "return_fraction": -0.07253177499999897,
+          "model_trades": 19,
+          "new_contributions": 0
+        },
+        {
+          "month": "2026-02",
+          "partial_month": false,
+          "starting_equity": 463.7341125000005,
+          "ending_equity": 480.25177500000086,
+          "pnl": 16.517662500000412,
+          "return_fraction": 0.035618821334823414,
+          "model_trades": 9,
+          "new_contributions": 0
+        },
+        {
+          "month": "2026-03",
+          "partial_month": false,
+          "starting_equity": 480.25177500000086,
+          "ending_equity": 454.14474250000154,
+          "pnl": -26.107032499999328,
+          "return_fraction": -0.05436113692656164,
+          "model_trades": 13,
+          "new_contributions": 0
+        },
+        {
+          "month": "2026-04",
+          "partial_month": false,
+          "starting_equity": 454.14474250000154,
+          "ending_equity": 478.6650675000028,
+          "pnl": 24.520325000001073,
+          "return_fraction": 0.05399231281423722,
+          "model_trades": 17,
+          "new_contributions": 0
+        },
+        {
+          "month": "2026-05",
+          "partial_month": false,
+          "starting_equity": 478.6650675000028,
+          "ending_equity": 501.93773000000357,
+          "pnl": 23.27266250000072,
+          "return_fraction": 0.048619930887270346,
+          "model_trades": 19,
+          "new_contributions": 0
+        },
+        {
+          "month": "2026-06",
+          "partial_month": false,
+          "starting_equity": 501.93773000000357,
+          "ending_equity": 501.9628425000043,
+          "pnl": 0.025112500000636473,
+          "return_fraction": 5.00311064495218e-05,
+          "model_trades": 12,
+          "new_contributions": 0
+        },
+        {
+          "month": "2026-07",
+          "partial_month": false,
+          "starting_equity": 501.9628425000043,
+          "ending_equity": 494.5478425000047,
+          "pnl": -7.4149999999995515,
+          "return_fraction": -0.014772009742931358,
+          "model_trades": 8,
+          "new_contributions": 0
+        },
+        {
+          "month": "2026-08",
+          "partial_month": false,
+          "starting_equity": 494.5478425000047,
+          "ending_equity": 473.70833000000516,
+          "pnl": -20.83951249999948,
+          "return_fraction": -0.04213851665928425,
+          "model_trades": 15,
+          "new_contributions": 0
+        },
+        {
+          "month": "2026-09",
+          "partial_month": false,
+          "starting_equity": 473.70833000000516,
+          "ending_equity": 466.9062800000055,
+          "pnl": -6.802049999999625,
+          "return_fraction": -0.01435915218125805,
+          "model_trades": 10,
+          "new_contributions": 0
+        },
+        {
+          "month": "2026-10",
+          "partial_month": true,
+          "starting_equity": 466.9062800000055,
+          "ending_equity": 463.1763050000056,
+          "pnl": -3.729974999999911,
+          "return_fraction": -0.007988701715470281,
+          "model_trades": 2,
+          "new_contributions": 0
+        }
+      ],
+      "concentration": [
+        {
+          "top_n": 1,
+          "top_positive_trade_pnl": 40.950500000000076,
+          "fraction_of_gross_trade_profit": 0.06801726770414278,
+          "net_pnl_less_these_winning_trade_contributions": -77.77419499999449,
+          "top_positive_symbol_net_pnl": 43.9848750000001,
+          "fraction_of_positive_symbol_net_pnl": 0.11062511889608917,
+          "net_pnl_less_these_symbol_contributions": -80.80856999999452
+        },
+        {
+          "top_n": 3,
+          "top_positive_trade_pnl": 111.50242500000012,
+          "fraction_of_gross_trade_profit": 0.18520140879564587,
+          "net_pnl_less_these_winning_trade_contributions": -148.32611999999455,
+          "top_positive_symbol_net_pnl": 123.07446250000059,
+          "fraction_of_positive_symbol_net_pnl": 0.3095411103733909,
+          "net_pnl_less_these_symbol_contributions": -159.89815749999502
+        },
+        {
+          "top_n": 5,
+          "top_positive_trade_pnl": 177.44262500000016,
+          "fraction_of_gross_trade_profit": 0.29472564502877396,
+          "net_pnl_less_these_winning_trade_contributions": -214.26631999999458,
+          "top_positive_symbol_net_pnl": 193.62638750000065,
+          "fraction_of_positive_symbol_net_pnl": 0.4869842676285372,
+          "net_pnl_less_these_symbol_contributions": -230.45008249999506
+        },
+        {
+          "top_n": 10,
+          "top_positive_trade_pnl": 301.8435500000005,
+          "fraction_of_gross_trade_profit": 0.50135098582725,
+          "net_pnl_less_these_winning_trade_contributions": -338.6672449999949,
+          "top_positive_symbol_net_pnl": 292.11425000000145,
+          "fraction_of_positive_symbol_net_pnl": 0.7346883135962533,
+          "net_pnl_less_these_symbol_contributions": -328.93794499999586
+        }
+      ],
+      "top_five_winning_trades": [
+        {
+          "date": "2026-05-29",
+          "symbol": "HOOD",
+          "pnl": 40.950500000000076,
+          "qty": 5,
+          "cash_before": 460.9872300000035
+        },
+        {
+          "date": "2026-01-21",
+          "symbol": "SNDK",
+          "pnl": 35.82915000000003,
+          "qty": 1,
+          "cash_before": 470.36375000000027
+        },
+        {
+          "date": "2026-05-20",
+          "symbol": "ALAB",
+          "pnl": 34.72277500000001,
+          "qty": 1,
+          "cash_before": 452.00365500000333
+        },
+        {
+          "date": "2026-01-09",
+          "symbol": "BE",
+          "pnl": 33.95865000000002,
+          "qty": 3,
+          "cash_before": 463.5742500000001
+        },
+        {
+          "date": "2026-06-04",
+          "symbol": "MRVL",
+          "pnl": 31.981550000000027,
+          "qty": 1,
+          "cash_before": 487.5138550000037
+        }
+      ],
+      "symbol_pnl_all": [
+        {
+          "symbol": "ARM",
+          "net_pnl": 43.9848750000001
+        },
+        {
+          "symbol": "HOOD",
+          "net_pnl": 40.950500000000076
+        },
+        {
+          "symbol": "MRVL",
+          "net_pnl": 38.139087500000414
+        },
+        {
+          "symbol": "SNDK",
+          "net_pnl": 35.82915000000003
+        },
+        {
+          "symbol": "ALAB",
+          "net_pnl": 34.72277500000001
+        },
+        {
+          "symbol": "BE",
+          "net_pnl": 33.95865000000002
+        },
+        {
+          "symbol": "INTC",
+          "net_pnl": 19.83600000000046
+        },
+        {
+          "symbol": "XOM",
+          "net_pnl": 18.87713750000009
+        },
+        {
+          "symbol": "SPCX",
+          "net_pnl": 13.041825000000074
+        },
+        {
+          "symbol": "NFLX",
+          "net_pnl": 12.774250000000151
+        },
+        {
+          "symbol": "CRWD",
+          "net_pnl": 11.54557500000007
+        },
+        {
+          "symbol": "DELL",
+          "net_pnl": 10.691149999999993
+        },
+        {
+          "symbol": "COP",
+          "net_pnl": 8.798850000000058
+        },
+        {
+          "symbol": "STX",
+          "net_pnl": 8.306550000000016
+        },
+        {
+          "symbol": "CSCO",
+          "net_pnl": 7.867300000000057
+        },
+        {
+          "symbol": "V",
+          "net_pnl": 7.83340000000004
+        },
+        {
+          "symbol": "WMT",
+          "net_pnl": 7.497500000000002
+        },
+        {
+          "symbol": "PLTR",
+          "net_pnl": 6.483200000000011
+        },
+        {
+          "symbol": "AMAT",
+          "net_pnl": 6.354675000000043
+        },
+        {
+          "symbol": "LRCX",
+          "net_pnl": 5.604500000000087
+        },
+        {
+          "symbol": "MSFT",
+          "net_pnl": 5.246075000000303
+        },
+        {
+          "symbol": "OXY",
+          "net_pnl": 5.1031750000001
+        },
+        {
+          "symbol": "AAOI",
+          "net_pnl": 4.443525000000022
+        },
+        {
+          "symbol": "GLW",
+          "net_pnl": 2.52330000000012
+        },
+        {
+          "symbol": "GOOGL",
+          "net_pnl": 2.1417000000000144
+        },
+        {
+          "symbol": "CRM",
+          "net_pnl": 1.8701750000000743
+        },
+        {
+          "symbol": "AMZN",
+          "net_pnl": 1.3070250000001806
+        },
+        {
+          "symbol": "AAL",
+          "net_pnl": 1.3012625000002114
+        },
+        {
+          "symbol": "KO",
+          "net_pnl": 0.5697750000000497
+        },
+        {
+          "symbol": "TXN",
+          "net_pnl": -0.3072499999999536
+        },
+        {
+          "symbol": "VZ",
+          "net_pnl": -0.731924999999805
+        },
+        {
+          "symbol": "CVX",
+          "net_pnl": -0.8814499999998588
+        },
+        {
+          "symbol": "ADI",
+          "net_pnl": -1.395674999999983
+        },
+        {
+          "symbol": "ANET",
+          "net_pnl": -2.103649999999959
+        },
+        {
+          "symbol": "ORCL",
+          "net_pnl": -2.3465499999998087
+        },
+        {
+          "symbol": "ABT",
+          "net_pnl": -3.296799999999962
+        },
+        {
+          "symbol": "NOW",
+          "net_pnl": -3.9256999999999493
+        },
+        {
+          "symbol": "SKHY",
+          "net_pnl": -4.148649999999918
+        },
+        {
+          "symbol": "VRT",
+          "net_pnl": -5.200924999999984
+        },
+        {
+          "symbol": "APH",
+          "net_pnl": -5.571799999999939
+        },
+        {
+          "symbol": "AAPL",
+          "net_pnl": -6.45976249999984
+        },
+        {
+          "symbol": "SNOW",
+          "net_pnl": -7.560124999999914
+        },
+        {
+          "symbol": "MRK",
+          "net_pnl": -7.6182749999998975
+        },
+        {
+          "symbol": "UNH",
+          "net_pnl": -7.946874999999864
+        },
+        {
+          "symbol": "T",
+          "net_pnl": -8.516024999999942
+        },
+        {
+          "symbol": "IBM",
+          "net_pnl": -10.246199999999988
+        },
+        {
+          "symbol": "TSM",
+          "net_pnl": -10.266399999999976
+        },
+        {
+          "symbol": "BABA",
+          "net_pnl": -12.452974999999924
+        },
+        {
+          "symbol": "WDC",
+          "net_pnl": -14.18464999999992
+        },
+        {
+          "symbol": "NBIS",
+          "net_pnl": -15.0984499999999
+        },
+        {
+          "symbol": "MU",
+          "net_pnl": -17.122949999999946
+        },
+        {
+          "symbol": "NVDA",
+          "net_pnl": -21.84454999999997
+        },
+        {
+          "symbol": "MSTR",
+          "net_pnl": -25.473437499999775
+        },
+        {
+          "symbol": "ACN",
+          "net_pnl": -26.28959999999995
+        },
+        {
+          "symbol": "CRWV",
+          "net_pnl": -28.0431999999999
+        },
+        {
+          "symbol": "TSLA",
+          "net_pnl": -30.618749999999977
+        },
+        {
+          "symbol": "QCOM",
+          "net_pnl": -41.260749999999916
+        },
+        {
+          "symbol": "IREN",
+          "net_pnl": -48.20674999999993
+        },
+        {
+          "symbol": "AMD",
+          "net_pnl": -65.30655749999983
+        }
+      ],
+      "max_daily_close_drawdown": 0.19868337749401221,
+      "accounting_chain_passed": true
+    },
+    {
+      "version": "classification_sensitivity",
+      "path_id": "reversal-10bp",
+      "cost_bps_each_side": 10,
+      "start_equity": 500,
+      "ending_equity": 398.8995050000012,
+      "net_pnl": -101.10049499999877,
+      "total_contributions": 500,
+      "sessions": 190,
+      "model_trade_count": 31,
+      "winning_trades": 8,
+      "gross_winning_pnl": 103.22108500000039,
+      "gross_losing_pnl_absolute": 204.32157999999913,
+      "profit_factor": 0.5051893441701107,
+      "median_trade_pnl": -3.58693999999997,
+      "full_month_count": 9,
+      "positive_full_months": 1,
+      "negative_full_months": 7,
+      "zero_full_months": 1,
+      "partial_month_count": 1,
+      "monthly_continuous": [
+        {
+          "month": "2026-01",
+          "partial_month": false,
+          "starting_equity": 500.0,
+          "ending_equity": 482.9385200000001,
+          "pnl": -17.061479999999904,
+          "return_fraction": -0.03412295999999981,
+          "model_trades": 2,
+          "new_contributions": 0
+        },
+        {
+          "month": "2026-02",
+          "partial_month": false,
+          "starting_equity": 482.9385200000001,
+          "ending_equity": 444.4108300000003,
+          "pnl": -38.52768999999972,
+          "return_fraction": -0.0797776288377241,
+          "model_trades": 5,
+          "new_contributions": 0
+        },
+        {
+          "month": "2026-03",
+          "partial_month": false,
+          "starting_equity": 444.4108300000003,
+          "ending_equity": 456.8160500000004,
+          "pnl": 12.40522000000012,
+          "return_fraction": 0.027913856194728748,
+          "model_trades": 4,
+          "new_contributions": 0
+        },
+        {
+          "month": "2026-04",
+          "partial_month": false,
+          "starting_equity": 456.8160500000004,
+          "ending_equity": 432.4993300000006,
+          "pnl": -24.31671999999982,
+          "return_fraction": -0.053230879256540575,
+          "model_trades": 4,
+          "new_contributions": 0
+        },
+        {
+          "month": "2026-05",
+          "partial_month": false,
+          "starting_equity": 432.4993300000006,
+          "ending_equity": 432.4993300000006,
+          "pnl": 0,
+          "return_fraction": 0.0,
+          "model_trades": 0,
+          "new_contributions": 0
+        },
+        {
+          "month": "2026-06",
+          "partial_month": false,
+          "starting_equity": 432.4993300000006,
+          "ending_equity": 425.32624500000094,
+          "pnl": -7.173084999999659,
+          "return_fraction": -0.016585193322726455,
+          "model_trades": 7,
+          "new_contributions": 0
+        },
+        {
+          "month": "2026-07",
+          "partial_month": false,
+          "starting_equity": 425.32624500000094,
+          "ending_equity": 415.18226500000105,
+          "pnl": -10.1439799999999,
+          "return_fraction": -0.023849880225472297,
+          "model_trades": 4,
+          "new_contributions": 0
+        },
+        {
+          "month": "2026-08",
+          "partial_month": false,
+          "starting_equity": 415.18226500000105,
+          "ending_equity": 410.44978500000116,
+          "pnl": -4.73247999999991,
+          "return_fraction": -0.011398560099863286,
+          "model_trades": 3,
+          "new_contributions": 0
+        },
+        {
+          "month": "2026-09",
+          "partial_month": false,
+          "starting_equity": 410.44978500000116,
+          "ending_equity": 398.8995050000012,
+          "pnl": -11.550279999999944,
+          "return_fraction": -0.02814054342847294,
+          "model_trades": 2,
+          "new_contributions": 0
+        },
+        {
+          "month": "2026-10",
+          "partial_month": true,
+          "starting_equity": 398.8995050000012,
+          "ending_equity": 398.8995050000012,
+          "pnl": 0,
+          "return_fraction": 0.0,
+          "model_trades": 0,
+          "new_contributions": 0
+        }
+      ],
+      "concentration": [
+        {
+          "top_n": 1,
+          "top_positive_trade_pnl": 30.23662500000004,
+          "fraction_of_gross_trade_profit": 0.2929307030632349,
+          "net_pnl_less_these_winning_trade_contributions": -131.3371199999988,
+          "top_positive_symbol_net_pnl": 30.23662500000004,
+          "fraction_of_positive_symbol_net_pnl": 0.3172579411868849,
+          "net_pnl_less_these_symbol_contributions": -131.3371199999988
+        },
+        {
+          "top_n": 3,
+          "top_positive_trade_pnl": 74.31178500000019,
+          "fraction_of_gross_trade_profit": 0.7199283460351139,
+          "net_pnl_less_these_winning_trade_contributions": -175.41227999999896,
+          "top_positive_symbol_net_pnl": 70.1316150000003,
+          "fraction_of_positive_symbol_net_pnl": 0.7358563261280424,
+          "net_pnl_less_these_symbol_contributions": -171.23210999999907
+        },
+        {
+          "top_n": 5,
+          "top_positive_trade_pnl": 96.02348500000028,
+          "fraction_of_gross_trade_profit": 0.9302700606179437,
+          "net_pnl_less_these_winning_trade_contributions": -197.12397999999905,
+          "top_positive_symbol_net_pnl": 91.84331500000036,
+          "fraction_of_positive_symbol_net_pnl": 0.963666448509998,
+          "net_pnl_less_these_symbol_contributions": -192.94380999999913
+        },
+        {
+          "top_n": 10,
+          "top_positive_trade_pnl": 103.22108500000039,
+          "fraction_of_gross_trade_profit": 1.0,
+          "net_pnl_less_these_winning_trade_contributions": -204.32157999999916,
+          "top_positive_symbol_net_pnl": 95.30612500000043,
+          "fraction_of_positive_symbol_net_pnl": 1.0,
+          "net_pnl_less_these_symbol_contributions": -196.4066199999992
+        }
+      ],
+      "top_five_winning_trades": [
+        {
+          "date": "2026-03-02",
+          "symbol": "SOFI",
+          "pnl": 30.23662500000004,
+          "qty": 25,
+          "cash_before": 444.4108300000003
+        },
+        {
+          "date": "2026-07-01",
+          "symbol": "MSTR",
+          "pnl": 22.055660000000046,
+          "qty": 4,
+          "cash_before": 425.32624500000094
+        },
+        {
+          "date": "2026-06-24",
+          "symbol": "GLW",
+          "pnl": 22.019500000000107,
+          "qty": 2,
+          "cash_before": 403.30674500000083
+        },
+        {
+          "date": "2026-02-23",
+          "symbol": "CRWV",
+          "pnl": 13.207200000000057,
+          "qty": 4,
+          "cash_before": 431.20363000000026
+        },
+        {
+          "date": "2026-08-06",
+          "symbol": "UBER",
+          "pnl": 8.504500000000021,
+          "qty": 5,
+          "cash_before": 408.4092650000011
+        }
+      ],
+      "symbol_pnl_all": [
+        {
+          "symbol": "SOFI",
+          "net_pnl": 30.23662500000004
+        },
+        {
+          "symbol": "MSTR",
+          "net_pnl": 25.37654000000009
+        },
+        {
+          "symbol": "GLW",
+          "net_pnl": 14.518450000000158
+        },
+        {
+          "symbol": "CRWV",
+          "net_pnl": 13.207200000000057
+        },
+        {
+          "symbol": "UBER",
+          "net_pnl": 8.504500000000021
+        },
+        {
+          "symbol": "IBM",
+          "net_pnl": 2.875440000000026
+        },
+        {
+          "symbol": "QCOM",
+          "net_pnl": 0.5873700000000497
+        },
+        {
+          "symbol": "CRWD",
+          "net_pnl": -0.26962999999994963
+        },
+        {
+          "symbol": "ADBE",
+          "net_pnl": -0.9332399999999552
+        },
+        {
+          "symbol": "AMZN",
+          "net_pnl": -1.3353799999999296
+        },
+        {
+          "symbol": "ORCL",
+          "net_pnl": -2.4982799999999656
+        },
+        {
+          "symbol": "FCX",
+          "net_pnl": -2.662649999999971
+        },
+        {
+          "symbol": "PANW",
+          "net_pnl": -3.58693999999997
+        },
+        {
+          "symbol": "CBRS",
+          "net_pnl": -6.463979999999964
+        },
+        {
+          "symbol": "AAPL",
+          "net_pnl": -6.772999999999968
+        },
+        {
+          "symbol": "NEM",
+          "net_pnl": -6.902399999999986
+        },
+        {
+          "symbol": "COF",
+          "net_pnl": -7.312019999999961
+        },
+        {
+          "symbol": "MSFT",
+          "net_pnl": -9.749459999999942
+        },
+        {
+          "symbol": "VRT",
+          "net_pnl": -10.370859999999908
+        },
+        {
+          "symbol": "BABA",
+          "net_pnl": -10.659374999999983
+        },
+        {
+          "symbol": "NFLX",
+          "net_pnl": -15.113370000000003
+        },
+        {
+          "symbol": "BE",
+          "net_pnl": -19.593099999999993
+        },
+        {
+          "symbol": "ASTS",
+          "net_pnl": -22.114659999999844
+        },
+        {
+          "symbol": "AVGO",
+          "net_pnl": -22.668334999999956
+        },
+        {
+          "symbol": "HOOD",
+          "net_pnl": -47.39993999999993
+        }
+      ],
+      "max_daily_close_drawdown": 0.20220098999999758,
+      "accounting_chain_passed": true
+    },
+    {
+      "version": "classification_sensitivity",
+      "path_id": "reversal-25bp",
+      "cost_bps_each_side": 25,
+      "start_equity": 500,
+      "ending_equity": 389.9596000000015,
+      "net_pnl": -110.0403999999985,
+      "total_contributions": 500,
+      "sessions": 190,
+      "model_trade_count": 30,
+      "winning_trades": 7,
+      "gross_winning_pnl": 95.01178750000048,
+      "gross_losing_pnl_absolute": 205.0521874999991,
+      "profit_factor": 0.4633541766044359,
+      "median_trade_pnl": -4.114487499999925,
+      "full_month_count": 9,
+      "positive_full_months": 2,
+      "negative_full_months": 6,
+      "zero_full_months": 1,
+      "partial_month_count": 1,
+      "monthly_continuous": [
+        {
+          "month": "2026-01",
+          "partial_month": false,
+          "starting_equity": 500.0,
+          "ending_equity": 480.2363000000001,
+          "pnl": -19.763699999999915,
+          "return_fraction": -0.03952739999999988,
+          "model_trades": 2,
+          "new_contributions": 0
+        },
+        {
+          "month": "2026-02",
+          "partial_month": false,
+          "starting_equity": 480.2363000000001,
+          "ending_equity": 435.89207500000043,
+          "pnl": -44.34422499999971,
+          "return_fraction": -0.09233834468572999,
+          "model_trades": 5,
+          "new_contributions": 0
+        },
+        {
+          "month": "2026-03",
+          "partial_month": false,
+          "starting_equity": 435.89207500000043,
+          "ending_equity": 443.62512500000065,
+          "pnl": 7.733050000000187,
+          "return_fraction": 0.017740744655658558,
+          "model_trades": 4,
+          "new_contributions": 0
+        },
+        {
+          "month": "2026-04",
+          "partial_month": false,
+          "starting_equity": 443.62512500000065,
+          "ending_equity": 415.3233250000008,
+          "pnl": -28.301799999999844,
+          "return_fraction": -0.06379665714379856,
+          "model_trades": 4,
+          "new_contributions": 0
+        },
+        {
+          "month": "2026-05",
+          "partial_month": false,
+          "starting_equity": 415.3233250000008,
+          "ending_equity": 415.3233250000008,
+          "pnl": 0,
+          "return_fraction": 0.0,
+          "model_trades": 0,
+          "new_contributions": 0
+        },
+        {
+          "month": "2026-06",
+          "partial_month": false,
+          "starting_equity": 415.3233250000008,
+          "ending_equity": 425.0364500000011,
+          "pnl": 9.71312500000029,
+          "return_fraction": 0.023386899832799513,
+          "model_trades": 6,
+          "new_contributions": 0
+        },
+        {
+          "month": "2026-07",
+          "partial_month": false,
+          "starting_equity": 425.0364500000011,
+          "ending_equity": 410.6565000000012,
+          "pnl": -14.379949999999909,
+          "return_fraction": -0.03383227485548557,
+          "model_trades": 4,
+          "new_contributions": 0
+        },
+        {
+          "month": "2026-08",
+          "partial_month": false,
+          "starting_equity": 410.6565000000012,
+          "ending_equity": 403.29530000000136,
+          "pnl": -7.361199999999826,
+          "return_fraction": -0.01792544377113181,
+          "model_trades": 3,
+          "new_contributions": 0
+        },
+        {
+          "month": "2026-09",
+          "partial_month": false,
+          "starting_equity": 403.29530000000136,
+          "ending_equity": 389.9596000000015,
+          "pnl": -13.335699999999889,
+          "return_fraction": -0.033066837129021365,
+          "model_trades": 2,
+          "new_contributions": 0
+        },
+        {
+          "month": "2026-10",
+          "partial_month": true,
+          "starting_equity": 389.9596000000015,
+          "ending_equity": 389.9596000000015,
+          "pnl": 0,
+          "return_fraction": 0.0,
+          "model_trades": 0,
+          "new_contributions": 0
+        }
+      ],
+      "concentration": [
+        {
+          "top_n": 1,
+          "top_positive_trade_pnl": 28.904062500000105,
+          "fraction_of_gross_trade_profit": 0.3042155427293688,
+          "net_pnl_less_these_winning_trade_contributions": -138.9444624999986,
+          "top_positive_symbol_net_pnl": 28.904062500000105,
+          "fraction_of_positive_symbol_net_pnl": 0.33895362191842116,
+          "net_pnl_less_these_symbol_contributions": -138.9444624999986
+        },
+        {
+          "top_n": 3,
+          "top_positive_trade_pnl": 70.69196250000032,
+          "fraction_of_gross_trade_profit": 0.7440336021464701,
+          "net_pnl_less_these_winning_trade_contributions": -180.73236249999883,
+          "top_positive_symbol_net_pnl": 64.24653750000034,
+          "fraction_of_positive_symbol_net_pnl": 0.7534095451579758,
+          "net_pnl_less_these_symbol_contributions": -174.28693749999883
+        },
+        {
+          "top_n": 5,
+          "top_positive_trade_pnl": 90.29121250000047,
+          "fraction_of_gross_trade_profit": 0.9503159015927367,
+          "net_pnl_less_these_winning_trade_contributions": -200.33161249999898,
+          "top_positive_symbol_net_pnl": 83.8457875000005,
+          "fraction_of_positive_symbol_net_pnl": 0.9832470212700152,
+          "net_pnl_less_these_symbol_contributions": -193.88618749999898
+        },
+        {
+          "top_n": 10,
+          "top_positive_trade_pnl": 95.01178750000048,
+          "fraction_of_gross_trade_profit": 1.0,
+          "net_pnl_less_these_winning_trade_contributions": -205.05218749999898,
+          "top_positive_symbol_net_pnl": 85.27438750000049,
+          "fraction_of_positive_symbol_net_pnl": 1.0,
+          "net_pnl_less_these_symbol_contributions": -195.314787499999
+        }
+      ],
+      "top_five_winning_trades": [
+        {
+          "date": "2026-03-02",
+          "symbol": "SOFI",
+          "pnl": 28.904062500000105,
+          "qty": 25,
+          "cash_before": 435.89207500000043
+        },
+        {
+          "date": "2026-07-01",
+          "symbol": "MSTR",
+          "pnl": 20.96915000000007,
+          "qty": 4,
+          "cash_before": 425.0364500000011
+        },
+        {
+          "date": "2026-06-24",
+          "symbol": "GLW",
+          "pnl": 20.818750000000136,
+          "qty": 2,
+          "cash_before": 404.21770000000095
+        },
+        {
+          "date": "2026-02-23",
+          "symbol": "CRWV",
+          "pnl": 12.13800000000009,
+          "qty": 4,
+          "cash_before": 423.75407500000034
+        },
+        {
+          "date": "2026-08-06",
+          "symbol": "UBER",
+          "pnl": 7.461250000000064,
+          "qty": 5,
+          "cash_before": 402.9640000000013
+        }
+      ],
+      "symbol_pnl_all": [
+        {
+          "symbol": "SOFI",
+          "net_pnl": 28.904062500000105
+        },
+        {
+          "symbol": "MSTR",
+          "net_pnl": 23.15135000000008
+        },
+        {
+          "symbol": "GLW",
+          "net_pnl": 12.191125000000156
+        },
+        {
+          "symbol": "CRWV",
+          "net_pnl": 12.13800000000009
+        },
+        {
+          "symbol": "UBER",
+          "net_pnl": 7.461250000000064
+        },
+        {
+          "symbol": "IBM",
+          "net_pnl": 1.4285999999999888
+        },
+        {
+          "symbol": "QCOM",
+          "net_pnl": -0.6465749999999559
+        },
+        {
+          "symbol": "CRWD",
+          "net_pnl": -1.409074999999973
+        },
+        {
+          "symbol": "ADBE",
+          "net_pnl": -1.5530999999999722
+        },
+        {
+          "symbol": "AMZN",
+          "net_pnl": -2.588449999999966
+        },
+        {
+          "symbol": "ORCL",
+          "net_pnl": -3.605699999999956
+        },
+        {
+          "symbol": "FCX",
+          "net_pnl": -3.731624999999923
+        },
+        {
+          "symbol": "PANW",
+          "net_pnl": -4.497349999999926
+        },
+        {
+          "symbol": "CBRS",
+          "net_pnl": -7.129950000000008
+        },
+        {
+          "symbol": "AAPL",
+          "net_pnl": -7.692499999999882
+        },
+        {
+          "symbol": "NEM",
+          "net_pnl": -7.985999999999976
+        },
+        {
+          "symbol": "COF",
+          "net_pnl": -8.710049999999967
+        },
+        {
+          "symbol": "MSFT",
+          "net_pnl": -11.053649999999948
+        },
+        {
+          "symbol": "BABA",
+          "net_pnl": -11.77593749999997
+        },
+        {
+          "symbol": "VRT",
+          "net_pnl": -12.007149999999967
+        },
+        {
+          "symbol": "NFLX",
+          "net_pnl": -17.48842499999995
+        },
+        {
+          "symbol": "BE",
+          "net_pnl": -20.392749999999978
+        },
+        {
+          "symbol": "ASTS",
+          "net_pnl": -24.29664999999983
+        },
+        {
+          "symbol": "HOOD",
+          "net_pnl": -48.74984999999995
+        }
+      ],
+      "max_daily_close_drawdown": 0.22008079999999697,
+      "accounting_chain_passed": true
+    }
+  ],
+  "cost_sensitivity": [
+    {
+      "version": "original",
+      "rule": "breakout20",
+      "low_cost_end": 585.9688720000061,
+      "high_cost_end": 466.45980500000513,
+      "terminal_equity_difference": 119.50906700000093,
+      "difference_as_fraction_of_500_initial": 0.23901813400000185,
+      "profit_sign_changes": true,
+      "different_status_sessions": 2,
+      "different_symbol_sessions": 0,
+      "different_quantity_sessions": 35,
+      "same_executed_symbol_sessions": 125,
+      "same_executed_symbol_and_quantity_sessions": 92
+    },
+    {
+      "version": "original",
+      "rule": "reversal",
+      "low_cost_end": 398.8995050000012,
+      "high_cost_end": 389.9596000000015,
+      "terminal_equity_difference": 8.939904999999726,
+      "difference_as_fraction_of_500_initial": 0.01787980999999945,
+      "profit_sign_changes": false,
+      "different_status_sessions": 1,
+      "different_symbol_sessions": 0,
+      "different_quantity_sessions": 1,
+      "same_executed_symbol_sessions": 30,
+      "same_executed_symbol_and_quantity_sessions": 30
+    },
+    {
+      "version": "classification_sensitivity",
+      "rule": "breakout20",
+      "low_cost_end": 693.2106070000069,
+      "high_cost_end": 463.1763050000056,
+      "terminal_equity_difference": 230.03430200000133,
+      "difference_as_fraction_of_500_initial": 0.46006860400000266,
+      "profit_sign_changes": true,
+      "different_status_sessions": 2,
+      "different_symbol_sessions": 0,
+      "different_quantity_sessions": 60,
+      "same_executed_symbol_sessions": 124,
+      "same_executed_symbol_and_quantity_sessions": 66
+    },
+    {
+      "version": "classification_sensitivity",
+      "rule": "reversal",
+      "low_cost_end": 398.8995050000012,
+      "high_cost_end": 389.9596000000015,
+      "terminal_equity_difference": 8.939904999999726,
+      "difference_as_fraction_of_500_initial": 0.01787980999999945,
+      "profit_sign_changes": false,
+      "different_status_sessions": 1,
+      "different_symbol_sessions": 0,
+      "different_quantity_sessions": 1,
+      "same_executed_symbol_sessions": 30,
+      "same_executed_symbol_and_quantity_sessions": 30
+    }
+  ],
+  "cross_classification_overlap": [
+    {
+      "path_id": "breakout20-10bp",
+      "full_path_identical": false,
+      "same_executed_symbol_date_count": 126,
+      "original_trade_count": 127,
+      "classification_trade_count": 126,
+      "same_signal_pick_symbol_sessions": 189
+    },
+    {
+      "path_id": "breakout20-25bp",
+      "full_path_identical": false,
+      "same_executed_symbol_date_count": 124,
+      "original_trade_count": 125,
+      "classification_trade_count": 124,
+      "same_signal_pick_symbol_sessions": 189
+    },
+    {
+      "path_id": "reversal-10bp",
+      "full_path_identical": true,
+      "same_executed_symbol_date_count": 31,
+      "original_trade_count": 31,
+      "classification_trade_count": 31,
+      "same_signal_pick_symbol_sessions": 190
+    },
+    {
+      "path_id": "reversal-25bp",
+      "full_path_identical": true,
+      "same_executed_symbol_date_count": 30,
+      "original_trade_count": 30,
+      "classification_trade_count": 30,
+      "same_signal_pick_symbol_sessions": 190
+    }
+  ],
+  "accounting_checks": [
+    {
+      "version": "original",
+      "path_id": "breakout20-10bp",
+      "continuous_sessions": 190,
+      "initial_capital": 500,
+      "no_monthly_reset": true,
+      "no_new_contributions": true,
+      "reconciles_terminal_equity": true
+    },
+    {
+      "version": "original",
+      "path_id": "breakout20-25bp",
+      "continuous_sessions": 190,
+      "initial_capital": 500,
+      "no_monthly_reset": true,
+      "no_new_contributions": true,
+      "reconciles_terminal_equity": true
+    },
+    {
+      "version": "original",
+      "path_id": "reversal-10bp",
+      "continuous_sessions": 190,
+      "initial_capital": 500,
+      "no_monthly_reset": true,
+      "no_new_contributions": true,
+      "reconciles_terminal_equity": true
+    },
+    {
+      "version": "original",
+      "path_id": "reversal-25bp",
+      "continuous_sessions": 190,
+      "initial_capital": 500,
+      "no_monthly_reset": true,
+      "no_new_contributions": true,
+      "reconciles_terminal_equity": true
+    },
+    {
+      "version": "classification_sensitivity",
+      "path_id": "breakout20-10bp",
+      "continuous_sessions": 190,
+      "initial_capital": 500,
+      "no_monthly_reset": true,
+      "no_new_contributions": true,
+      "reconciles_terminal_equity": true
+    },
+    {
+      "version": "classification_sensitivity",
+      "path_id": "breakout20-25bp",
+      "continuous_sessions": 190,
+      "initial_capital": 500,
+      "no_monthly_reset": true,
+      "no_new_contributions": true,
+      "reconciles_terminal_equity": true
+    },
+    {
+      "version": "classification_sensitivity",
+      "path_id": "reversal-10bp",
+      "continuous_sessions": 190,
+      "initial_capital": 500,
+      "no_monthly_reset": true,
+      "no_new_contributions": true,
+      "reconciles_terminal_equity": true
+    },
+    {
+      "version": "classification_sensitivity",
+      "path_id": "reversal-25bp",
+      "continuous_sessions": 190,
+      "initial_capital": 500,
+      "no_monthly_reset": true,
+      "no_new_contributions": true,
+      "reconciles_terminal_equity": true
+    }
+  ],
+  "interpretation": {
+    "more_research_warranted": true,
+    "deployment_warranted": false,
+    "concentration": "At most one position already deploys available cash subject to integer shares. Increasing concentration requires changing symbol ranking/holding horizon or leverage, not simply reducing a diversified portfolio. Higher concentration is not supported by these fragile returns alone.",
+    "holding_horizon": "Multi-day holds can test whether one-day liquidation loses trend continuation and can reduce turnover. Predeclare horizons and signal-ranking variants; use exact entry/exit cash accounting, mark daily equity including open positions, prevent impossible overlapping full-capital trades, and test adverse gaps and end-of-window residual positions.",
+    "cost": "10bp to25bp scenarios change later integer quantities and skipped days, so terminal differences are not pure fee subtraction. Breakout gains fail the higher-cost scenario.",
+    "selection": "Preserve all models including losers. Compare predeclared families; oldJan-Oct data can support exploratory chronological diagnostics but cannot become untouched or forward evidence after model development. Future observations after freezing rules are required for forward verification.",
+    "limits": [
+      "Current directory is not a historical point-in-time universe; survivorship and missing inactive-symbol history remain.",
+      "Daily OHLC next-open/same-day-close model does not establish actual fillability, cash settlement eligibility, or intraday extrema of equity.",
+      "Equity returns cannot validate option profits, especially without historical contract bid/ask, IV, spread, multiplier and expiry."
+    ]
+  }
+}

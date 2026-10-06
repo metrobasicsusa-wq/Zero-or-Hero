@@ -1,0 +1,16 @@
+{
+  "id": "s500-aggressive-grid-v1-amendment-1",
+  "created_at": "2026-10-06T15:17:41.761277+00:00",
+  "timing": "before new grid outcomes, after source schema inspection",
+  "supersedes_fields": [
+    "corporate_actions USD source assumption",
+    "warmup action range"
+  ],
+  "changes": [
+    "Warmup split requests extend to 2025-11-01 for prior20 features; evaluated period unchanged.",
+    "API cash_dividend responses omit currency; no normal subtype enum exists. A provisional USD ordinary-dividend assumption applies only to absent sub_type, foreign=false, special=false, absent due-bill fields, unique semantic row and valid ex/payable dates with finite nonnegative cash_rate. This is a model assumption, not verified source currency.",
+    "Any held foreign/special/explicit subtype/due-bill/semantic-duplicate or invalid action stops path as incomplete. Split plus dividend on same ex-date also stops rather than assuming entitlement convention.",
+    "Source start/end filters appear tied to process_date rather than ex_date, so missing delayed/future-processed ex-date events remain possible. All paths are provisional estimates, not certified total-return accounting."
+  ],
+  "result_selection": "No outcome has been inspected for this new matrix."
+}

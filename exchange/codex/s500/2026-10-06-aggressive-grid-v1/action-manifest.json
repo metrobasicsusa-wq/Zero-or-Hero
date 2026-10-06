@@ -1,0 +1,590 @@
+{
+  "source": "https://data.alpaca.markets/v1/corporate-actions",
+  "requests": [
+    {
+      "start": "2026-01-01",
+      "end": "2026-10-05",
+      "types": "forward_split,reverse_split,cash_dividend",
+      "limit": 1000
+    },
+    {
+      "start": "2025-11-01",
+      "end": "2025-12-31",
+      "types": "forward_split,reverse_split",
+      "limit": 1000
+    }
+  ],
+  "started_at": "2026-10-06T15:17:36.954727+00:00",
+  "finished_at": "2026-10-06T15:17:39.482452+00:00",
+  "pagination_complete": true,
+  "pages": [
+    {
+      "name": "page-0001.json",
+      "request_group": "evaluation_process_dates",
+      "bytes": 235124,
+      "sha256": "545d515634948b44f279b102ba145ef8e5eb18c9b8ce81ab34e6205a1545a24b",
+      "counts": {
+        "cash_dividends": 973,
+        "reverse_splits": 27
+      },
+      "has_next_page": true
+    },
+    {
+      "name": "page-0002.json",
+      "request_group": "evaluation_process_dates",
+      "bytes": 235012,
+      "sha256": "3ad8cdb25eccb18c39440331025f3a1c8f14115da0c0c3216259539bfd94c513",
+      "counts": {
+        "cash_dividends": 968,
+        "forward_splits": 3,
+        "reverse_splits": 29
+      },
+      "has_next_page": true
+    },
+    {
+      "name": "page-0003.json",
+      "request_group": "evaluation_process_dates",
+      "bytes": 234939,
+      "sha256": "29232d74fcb4bc7350ec263654c141378bb2c498e5e3c75113020112660f70a8",
+      "counts": {
+        "cash_dividends": 969,
+        "forward_splits": 1,
+        "reverse_splits": 30
+      },
+      "has_next_page": true
+    },
+    {
+      "name": "page-0004.json",
+      "request_group": "evaluation_process_dates",
+      "bytes": 234854,
+      "sha256": "dd1d365be514289fa42432ed301cd94577b4fe60781f8e18cb79ef7117746f5e",
+      "counts": {
+        "cash_dividends": 977,
+        "forward_splits": 8,
+        "reverse_splits": 15
+      },
+      "has_next_page": true
+    },
+    {
+      "name": "page-0005.json",
+      "request_group": "evaluation_process_dates",
+      "bytes": 235279,
+      "sha256": "e971a5d1073557736dfc2e0554479f60300db506bc44cdfd51021cbc90101bec",
+      "counts": {
+        "cash_dividends": 978,
+        "forward_splits": 3,
+        "reverse_splits": 19
+      },
+      "has_next_page": true
+    },
+    {
+      "name": "page-0006.json",
+      "request_group": "evaluation_process_dates",
+      "bytes": 234824,
+      "sha256": "963681815a934ed5d090037c10836a51f49623ebdce0cc8c5045c9b138b09e3f",
+      "counts": {
+        "cash_dividends": 966,
+        "forward_splits": 5,
+        "reverse_splits": 29
+      },
+      "has_next_page": true
+    },
+    {
+      "name": "page-0007.json",
+      "request_group": "evaluation_process_dates",
+      "bytes": 234993,
+      "sha256": "ed6208fabc0095e9d00970b56f4c2b8e100e3ed11156269aa32fbf7a510f8cb4",
+      "counts": {
+        "cash_dividends": 975,
+        "forward_splits": 1,
+        "reverse_splits": 24
+      },
+      "has_next_page": true
+    },
+    {
+      "name": "page-0008.json",
+      "request_group": "evaluation_process_dates",
+      "bytes": 234797,
+      "sha256": "6e2b979db71c683c93d00f713563ab32aefa698f7bf52e8868524733d766453c",
+      "counts": {
+        "cash_dividends": 971,
+        "forward_splits": 5,
+        "reverse_splits": 24
+      },
+      "has_next_page": true
+    },
+    {
+      "name": "page-0009.json",
+      "request_group": "evaluation_process_dates",
+      "bytes": 234767,
+      "sha256": "156bb3f85cad6618d40b0adcbed47ee53ec01c671576a44d62e52a96eaf99c51",
+      "counts": {
+        "cash_dividends": 973,
+        "forward_splits": 2,
+        "reverse_splits": 25
+      },
+      "has_next_page": true
+    },
+    {
+      "name": "page-0010.json",
+      "request_group": "evaluation_process_dates",
+      "bytes": 234390,
+      "sha256": "08e110c92823a0686448b88406250b21e1b5ec3cc163f61945ed6eb6806f0ad2",
+      "counts": {
+        "cash_dividends": 982,
+        "forward_splits": 3,
+        "reverse_splits": 15
+      },
+      "has_next_page": true
+    },
+    {
+      "name": "page-0011.json",
+      "request_group": "evaluation_process_dates",
+      "bytes": 234483,
+      "sha256": "89218a1faafa2ca264e06de464092f405f62524d9d6f39a19302a62dcccf9800",
+      "counts": {
+        "cash_dividends": 980,
+        "reverse_splits": 20
+      },
+      "has_next_page": true
+    },
+    {
+      "name": "page-0012.json",
+      "request_group": "evaluation_process_dates",
+      "bytes": 234194,
+      "sha256": "57796fec7db8e03df1e695af9a0682b30442a44331b75f2f064ec737ce77c048",
+      "counts": {
+        "cash_dividends": 988,
+        "forward_splits": 1,
+        "reverse_splits": 11
+      },
+      "has_next_page": true
+    },
+    {
+      "name": "page-0013.json",
+      "request_group": "evaluation_process_dates",
+      "bytes": 234163,
+      "sha256": "96f6618ce7062909ecfaa3b779253b43322f9e9c29f177d0bd25f0a59c848fb7",
+      "counts": {
+        "cash_dividends": 983,
+        "forward_splits": 2,
+        "reverse_splits": 15
+      },
+      "has_next_page": true
+    },
+    {
+      "name": "page-0014.json",
+      "request_group": "evaluation_process_dates",
+      "bytes": 234006,
+      "sha256": "ada3e7bbd89520862452f5ba5e4d1b8ba1253601f967b7a4527a008f359232f5",
+      "counts": {
+        "cash_dividends": 980,
+        "forward_splits": 4,
+        "reverse_splits": 16
+      },
+      "has_next_page": true
+    },
+    {
+      "name": "page-0015.json",
+      "request_group": "evaluation_process_dates",
+      "bytes": 234463,
+      "sha256": "8ed6b0c2b5c584b534c19cd7d4ee202fddba3f1fc6f7d1fcb12db2e4c4dbc280",
+      "counts": {
+        "cash_dividends": 979,
+        "forward_splits": 1,
+        "reverse_splits": 20
+      },
+      "has_next_page": true
+    },
+    {
+      "name": "page-0016.json",
+      "request_group": "evaluation_process_dates",
+      "bytes": 235049,
+      "sha256": "313e8d5a608b35c532012648d92ac638df1e3a5d4026b942fb5282db429253e0",
+      "counts": {
+        "cash_dividends": 971,
+        "forward_splits": 1,
+        "reverse_splits": 28
+      },
+      "has_next_page": true
+    },
+    {
+      "name": "page-0017.json",
+      "request_group": "evaluation_process_dates",
+      "bytes": 234825,
+      "sha256": "dfbdc4f3d02fb00122dacb25ab0410f2180a2bd9efc4692aa0f88a1828180a49",
+      "counts": {
+        "cash_dividends": 975,
+        "forward_splits": 2,
+        "reverse_splits": 23
+      },
+      "has_next_page": true
+    },
+    {
+      "name": "page-0018.json",
+      "request_group": "evaluation_process_dates",
+      "bytes": 235175,
+      "sha256": "d3b0f17b79763c31f5551e30c6c10c3cb78fb72778b90b56da540e100817d739",
+      "counts": {
+        "cash_dividends": 991,
+        "forward_splits": 3,
+        "reverse_splits": 6
+      },
+      "has_next_page": true
+    },
+    {
+      "name": "page-0019.json",
+      "request_group": "evaluation_process_dates",
+      "bytes": 234965,
+      "sha256": "6b6dbf34f8e265c869fafbe0369647d4a90992253df4e6d5de6b171e4706a0bd",
+      "counts": {
+        "cash_dividends": 971,
+        "forward_splits": 1,
+        "reverse_splits": 28
+      },
+      "has_next_page": true
+    },
+    {
+      "name": "page-0020.json",
+      "request_group": "evaluation_process_dates",
+      "bytes": 235064,
+      "sha256": "e71508098b5dce564f4c66f059962ad8f392a7fead66a3ef434e6c57f7e0bb86",
+      "counts": {
+        "cash_dividends": 980,
+        "forward_splits": 4,
+        "reverse_splits": 16
+      },
+      "has_next_page": true
+    },
+    {
+      "name": "page-0021.json",
+      "request_group": "evaluation_process_dates",
+      "bytes": 234740,
+      "sha256": "e1a4e1ac9a5696d3c3f93afcdb92ac0076d616b2d8c1a79b5c19fe3ea114b4dd",
+      "counts": {
+        "cash_dividends": 964,
+        "forward_splits": 7,
+        "reverse_splits": 29
+      },
+      "has_next_page": true
+    },
+    {
+      "name": "page-0022.json",
+      "request_group": "evaluation_process_dates",
+      "bytes": 234641,
+      "sha256": "6e96d69178991dcc7036592eb3f4cb7d696bd9279ed93fd296ae684e0936a3a2",
+      "counts": {
+        "cash_dividends": 968,
+        "forward_splits": 6,
+        "reverse_splits": 26
+      },
+      "has_next_page": true
+    },
+    {
+      "name": "page-0023.json",
+      "request_group": "evaluation_process_dates",
+      "bytes": 234399,
+      "sha256": "8cd39a0bb5fd5d3c340dd4f8d275b5f06a9788823e9532b00f6b05067a390ee0",
+      "counts": {
+        "cash_dividends": 984,
+        "forward_splits": 4,
+        "reverse_splits": 12
+      },
+      "has_next_page": true
+    },
+    {
+      "name": "page-0024.json",
+      "request_group": "evaluation_process_dates",
+      "bytes": 234399,
+      "sha256": "7c6bd286960ef4b378df0bc2e3f8f0a7f358d2d63881e90b98c30ccb0bb3f3c7",
+      "counts": {
+        "cash_dividends": 976,
+        "forward_splits": 3,
+        "reverse_splits": 21
+      },
+      "has_next_page": true
+    },
+    {
+      "name": "page-0025.json",
+      "request_group": "evaluation_process_dates",
+      "bytes": 234769,
+      "sha256": "7d659d890676835cc97b9233d5ea69b2fd4133ec3ff38d9e667795f42bd14f93",
+      "counts": {
+        "cash_dividends": 965,
+        "forward_splits": 5,
+        "reverse_splits": 30
+      },
+      "has_next_page": true
+    },
+    {
+      "name": "page-0026.json",
+      "request_group": "evaluation_process_dates",
+      "bytes": 234063,
+      "sha256": "c3a6923c113d367cea131c0441c7e07a1a68353f2ee98d56a89959ab024ffbfd",
+      "counts": {
+        "cash_dividends": 957,
+        "forward_splits": 8,
+        "reverse_splits": 35
+      },
+      "has_next_page": true
+    },
+    {
+      "name": "page-0027.json",
+      "request_group": "evaluation_process_dates",
+      "bytes": 234514,
+      "sha256": "230aa9fc3abf72ce38e854ab9f567ed690e7e11a1202f02d2df0f381ba7d55d2",
+      "counts": {
+        "cash_dividends": 970,
+        "forward_splits": 2,
+        "reverse_splits": 28
+      },
+      "has_next_page": true
+    },
+    {
+      "name": "page-0028.json",
+      "request_group": "evaluation_process_dates",
+      "bytes": 234321,
+      "sha256": "a7272a0d0c6141a8ab7dea1b98aacd10c1030fd571bdf4dd4d449df56e9fa364",
+      "counts": {
+        "cash_dividends": 986,
+        "forward_splits": 1,
+        "reverse_splits": 13
+      },
+      "has_next_page": true
+    },
+    {
+      "name": "page-0029.json",
+      "request_group": "evaluation_process_dates",
+      "bytes": 235006,
+      "sha256": "0cf5e7d9981fd91fd05a6cc5a47edaa412154c3b15fdefaa70c60835500546fe",
+      "counts": {
+        "cash_dividends": 976,
+        "forward_splits": 2,
+        "reverse_splits": 22
+      },
+      "has_next_page": true
+    },
+    {
+      "name": "page-0030.json",
+      "request_group": "evaluation_process_dates",
+      "bytes": 234438,
+      "sha256": "81eeac655cfefe8465ccd1de8b54f276907d1c40dd0112f190c3a1c68b8858a4",
+      "counts": {
+        "cash_dividends": 983,
+        "forward_splits": 1,
+        "reverse_splits": 16
+      },
+      "has_next_page": true
+    },
+    {
+      "name": "page-0031.json",
+      "request_group": "evaluation_process_dates",
+      "bytes": 234812,
+      "sha256": "b362b77217905577a08e73469fe70f49fe46684b661df8e624d4fc43cf9f5f99",
+      "counts": {
+        "cash_dividends": 969,
+        "forward_splits": 3,
+        "reverse_splits": 28
+      },
+      "has_next_page": true
+    },
+    {
+      "name": "page-0032.json",
+      "request_group": "evaluation_process_dates",
+      "bytes": 236910,
+      "sha256": "bb79757c780d150ea6db8787f8ad52a3f46b2b941b53bd806f755d48721b97a7",
+      "counts": {
+        "cash_dividends": 984,
+        "forward_splits": 2,
+        "reverse_splits": 14
+      },
+      "has_next_page": true
+    },
+    {
+      "name": "page-0033.json",
+      "request_group": "evaluation_process_dates",
+      "bytes": 234989,
+      "sha256": "765c9945850d86e040e7afddccc15b4741531ce7cff0557cbf0f8da3e6667c97",
+      "counts": {
+        "cash_dividends": 957,
+        "forward_splits": 10,
+        "reverse_splits": 33
+      },
+      "has_next_page": true
+    },
+    {
+      "name": "page-0034.json",
+      "request_group": "evaluation_process_dates",
+      "bytes": 235454,
+      "sha256": "5b741e4f1fd32e031a2d04af1bc1ee13c1b842112b81e3bd6e363e1f227462d2",
+      "counts": {
+        "cash_dividends": 979,
+        "forward_splits": 4,
+        "reverse_splits": 17
+      },
+      "has_next_page": true
+    },
+    {
+      "name": "page-0035.json",
+      "request_group": "evaluation_process_dates",
+      "bytes": 235188,
+      "sha256": "5528793e0791788fd94d49a7a2daba3b505d8b95b0433d611f090c5cd9e7cfe1",
+      "counts": {
+        "cash_dividends": 978,
+        "forward_splits": 3,
+        "reverse_splits": 19
+      },
+      "has_next_page": true
+    },
+    {
+      "name": "page-0036.json",
+      "request_group": "evaluation_process_dates",
+      "bytes": 235092,
+      "sha256": "00e14ee485e9220a3feeb146f04814bd6322ecc623ebbc2f4a26701f8fe8c74a",
+      "counts": {
+        "cash_dividends": 979,
+        "forward_splits": 2,
+        "reverse_splits": 19
+      },
+      "has_next_page": true
+    },
+    {
+      "name": "page-0037.json",
+      "request_group": "evaluation_process_dates",
+      "bytes": 234749,
+      "sha256": "eae39ce86c90bd978eb7bc5988227e4ac64629390dea441c8cb02853e94c3d1b",
+      "counts": {
+        "cash_dividends": 979,
+        "forward_splits": 2,
+        "reverse_splits": 19
+      },
+      "has_next_page": true
+    },
+    {
+      "name": "page-0038.json",
+      "request_group": "evaluation_process_dates",
+      "bytes": 234713,
+      "sha256": "b7f619b1eebec182d26c82d9dba946982b28366d8446d1d78f70f803c565dcda",
+      "counts": {
+        "cash_dividends": 976,
+        "forward_splits": 3,
+        "reverse_splits": 21
+      },
+      "has_next_page": true
+    },
+    {
+      "name": "page-0039.json",
+      "request_group": "evaluation_process_dates",
+      "bytes": 234750,
+      "sha256": "19a142cce0e3a804e03166fef40a83a0dffd25b3839e04f5d6b44e726c74c360",
+      "counts": {
+        "cash_dividends": 956,
+        "forward_splits": 6,
+        "reverse_splits": 38
+      },
+      "has_next_page": true
+    },
+    {
+      "name": "page-0040.json",
+      "request_group": "evaluation_process_dates",
+      "bytes": 234893,
+      "sha256": "c8a74d19569995822c1784a0c735155e36020162d43d2df0dddeefebb37dc14c",
+      "counts": {
+        "cash_dividends": 982,
+        "forward_splits": 1,
+        "reverse_splits": 17
+      },
+      "has_next_page": true
+    },
+    {
+      "name": "page-0041.json",
+      "request_group": "evaluation_process_dates",
+      "bytes": 226876,
+      "sha256": "0e2c8b09b19d4acb5bf2f5cbf69eba290e2d11f60e52b60559cb89a575747228",
+      "counts": {
+        "cash_dividends": 930,
+        "forward_splits": 2,
+        "reverse_splits": 32
+      },
+      "has_next_page": false
+    },
+    {
+      "name": "warmup-page-0001.json",
+      "request_group": "warmup_process_dates",
+      "bytes": 52809,
+      "sha256": "7970a39c6d7ec25d63ce66afa13b28536f07f2fb4f60a24826fdc2e25addf129",
+      "counts": {
+        "forward_splits": 29,
+        "reverse_splits": 188
+      },
+      "has_next_page": false
+    }
+  ],
+  "source_row_count": 41181,
+  "fields_by_source_type": {
+    "cash_dividends": {
+      "cusip": 39928,
+      "ex_date": 39928,
+      "foreign": 39928,
+      "id": 39928,
+      "payable_date": 39928,
+      "process_date": 39928,
+      "rate": 39928,
+      "record_date": 39928,
+      "special": 39928,
+      "symbol": 39928,
+      "due_bill_off_date": 47,
+      "due_bill_on_date": 33,
+      "sub_type": 189
+    },
+    "reverse_splits": {
+      "ex_date": 1097,
+      "id": 1097,
+      "new_cusip": 1097,
+      "new_rate": 1097,
+      "new_symbol": 196,
+      "old_cusip": 1097,
+      "old_rate": 1097,
+      "payable_date": 1097,
+      "process_date": 1097,
+      "record_date": 1095,
+      "symbol": 1097
+    },
+    "forward_splits": {
+      "cusip": 156,
+      "due_bill_redemption_date": 82,
+      "ex_date": 156,
+      "id": 156,
+      "new_rate": 156,
+      "old_rate": 156,
+      "payable_date": 149,
+      "process_date": 156,
+      "record_date": 149,
+      "symbol": 156
+    }
+  },
+  "counts": {
+    "cash_dividend": 39928,
+    "reverse_split": 1097,
+    "forward_split": 156
+  },
+  "quality": {
+    "cusip_shaped_symbol_redacted": 19,
+    "ex_date_outside_requested_range_or_missing": 1778,
+    "special_cash_dividend_rows": 299,
+    "foreign_cash_dividend_rows": 6012,
+    "cash_dividend_due_bill_rows": 47,
+    "ticker_format_only_not_identity_proof": 41162,
+    "rows_in_research_universe": 7274,
+    "different_new_symbol_rows": 194
+  },
+  "duplicate_raw_id_count": 0,
+  "duplicate_raw_id_extra_rows": 0,
+  "semantic_duplicate_group_count": 5,
+  "semantic_duplicate_extra_rows": 5,
+  "derived_file": {
+    "name": "company-actions.json",
+    "bytes": 24828106,
+    "sha256": "e971f2a831a507395913c97c8e48e005912a6f0f60c5f398bb38c09a1f3a59ef"
+  }
+}

@@ -1,0 +1,75 @@
+{
+  "id": "s500-aggressive-grid-v1",
+  "frozen_at": "2026-10-06T15:12:51.450180+00:00",
+  "status": "frozen_before_new_grid_results_existing_market_inputs_previously_seen",
+  "parent_input_commit": "80ea1787f1a70340c44c6c673df0b65b37f19940",
+  "user_authorization": "Explore boldly in backtests; no change to trading activation. Agent owns parameter selection and must preserve all failures.",
+  "scope": {
+    "start": "2026-01-01",
+    "end": "2026-10-05",
+    "sessions_expected": 190,
+    "source_universe": 6633,
+    "price_inputs": "same cached SIP raw daily dataset, no new outcome window claimed"
+  },
+  "universe": "Exclude current official ETF=Y or test_issue=Y classifications before this experiment. Unknown classifications retained and flagged. Current directories remain non-point-in-time.",
+  "screen": {
+    "prior_sessions_required": 20,
+    "min_prior_close": 2,
+    "max_price": null,
+    "minimum_prior20_median_dollar_volume": 10000000,
+    "pool_top_liquidity": 500
+  },
+  "signals": {
+    "breakout20": "close>prior20 adjusted high; relative_volume>=1.5",
+    "momentum20": "20-session split-adjusted close return>=10%; close>=prior20 mean adjusted closes",
+    "trend_pullback": "20-session return>=10%; -8%<=today return<=-2%; close>=prior20 mean adjusted closes",
+    "reclaim_down": "-15%<=today return<=-5%; relative_volume>=1.5; close>today(high+low)/2",
+    "acceleration3": "3-session adjusted close return>=10%; today close>previous adjusted high; relative_volume>=1.5",
+    "volume_ignition": "today adjusted return>=5%; relative_volume>=2"
+  },
+  "ranking": [
+    "prior_liquidity",
+    "signal_strength"
+  ],
+  "strength": {
+    "breakout20": "close/prior20_high-1",
+    "momentum20": "20-session return",
+    "trend_pullback": "negative of today return (larger qualifying pullback first)",
+    "reclaim_down": "negative of today return",
+    "acceleration3": "3-session return",
+    "volume_ignition": "today_return*relative_volume"
+  },
+  "holding_sessions": [
+    1,
+    3,
+    5,
+    10
+  ],
+  "capital_fractions": [
+    0.5,
+    1.0
+  ],
+  "cost_bps_each_side": [
+    10,
+    25
+  ],
+  "path_count": 192,
+  "execution": "Signals use completed prior session only; choose first ranked signal affordable at prior close using the portfolio cash budget. If actual next open becomes unaffordable, skip without choosing runner-up. Integer shares sized using opening print is an idealized market-order sizing assumption, not verified live implementability.",
+  "portfolio": "One position max. No re-entry on an exit day. At most one entry per session. Fixed holding period counts entry session as day1, exits closing print of Nth session. No intrabar stops/targets. No borrowing or capital injections.",
+  "marking": "Daily liquidation-equivalent equity=cash+unpaid dividend receivables+shares*close*(1-exit_cost). Planned exits at close include cost; final open positions are marked/censored, not invented liquidations.",
+  "corporate_actions": "Apply unambiguous ticker splits on ex-date, adjust historical signal-window prices/volumes for splits effective by decision date; adjust held shares before trading. Noninteger post-split shares or unresolved symbol changes halt affected paths as unverified instead of inventing cash-in-lieu. Credit USD cash-dividend receivable on ex-date for prior-close holdings, move to cash on payable date; invalid/missing dates/currency flags must be preserved. Use actual supplied actions, never derive trade profit from raw split jumps.",
+  "missing": "Missing selected entry/held mark/exit stops path with incomplete status; do not drop missing losing positions. Ambiguous actions on held symbols stop path. Large absolute adjusted close change>25% flags path/model risk but does not silently remove winner or loser.",
+  "analysis": [
+    "All192paths and failures, continuous monthly marks, quarters, all closed trades and censored holdings",
+    "Largest daily liquidation drawdowns, first1000/2000/10000dates",
+    "Compare paired costs, holding horizons, ranking and allocation; do not promote maximum in-sample outcome",
+    "All data already seen/exploratory. Quarter or month slices cannot be called unseen validation."
+  ],
+  "funding": "Each separate hypothetical path starts500 once. No restart in this matrix; no aggregate profit from summing separate hypothetical accounts. Historical40% stop and separate main-account10% stop do not apply.",
+  "limitations": [
+    "Current universe, unknown instrument classes and corporate-action completeness are not certified point-in-time.",
+    "No option returns because executable historical bid/ask missing.",
+    "Daily open/close cost model does not verify quote liquidity, order fills, fees, PDT or settlement.",
+    "Multiple192candidate search exaggerates apparent best performance; preserve all candidates."
+  ]
+}

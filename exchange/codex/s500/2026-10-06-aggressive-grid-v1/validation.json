@@ -1,0 +1,18 @@
+{
+  "created_at": "2026-10-06T15:30:30.777231+00:00",
+  "test_command": "python -m unittest discover -s . -p test_*.py -v",
+  "exit_code": 0,
+  "tests_passed": 31,
+  "independent_source_reconstruction": "independent-audit.json",
+  "diagnostic_funding_checks": {
+    "daily_funding_identity": 34600,
+    "trade_accounting": 12644,
+    "no_overlap_or_exit_day_reentry": 12557,
+    "whole_path_funding": 180
+  },
+  "source_input_hashes": "features-diagnostics.json, parent-input-manifest.json, action-manifest.json",
+  "all_paths_preserved": 192,
+  "complete": 180,
+  "incomplete": 12,
+  "no_actual_fills": true
+}

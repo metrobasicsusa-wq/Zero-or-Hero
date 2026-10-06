@@ -1,0 +1,265 @@
+{
+  "status": "passed_independent_source_reconstruction",
+  "model_orders_are_not_actual_fills": true,
+  "checks": {
+    "independently_rebuilt_daily_cash_and_raw_marks": 34600,
+    "raw_open_entry_reconstructions": 12749,
+    "prior_signal_and_affordability_selection_checks": 12749,
+    "raw_close_exit_reconstructions": 12644,
+    "provisional_completed_paths_reconstructed": 180,
+    "raw_action_dividend_reconstructions": 57,
+    "incomplete_paths_verified_against_source_action": 12
+  },
+  "raw_source_files_hash_checked": 104,
+  "source_symbols_used": 364,
+  "source_bars_used": 5523,
+  "synthetic_tests": {
+    "engine": 20,
+    "features": 11,
+    "total_passed": 31
+  },
+  "all_registered_paths_retained": 192,
+  "completed_provisional": 180,
+  "incomplete_paths": [
+    {
+      "id": "momentum20__signal_strength__h5__a0.5__c10",
+      "event": {
+        "date": "2026-02-20",
+        "symbol": "AZN",
+        "reason": "unsupported_dividend",
+        "count": 1
+      },
+      "last_mark_date": "2026-02-19",
+      "remaining_qty": 1,
+      "source_foreign_dividend_verified": true
+    },
+    {
+      "id": "momentum20__signal_strength__h5__a0.5__c25",
+      "event": {
+        "date": "2026-02-20",
+        "symbol": "AZN",
+        "reason": "unsupported_dividend",
+        "count": 1
+      },
+      "last_mark_date": "2026-02-19",
+      "remaining_qty": 1,
+      "source_foreign_dividend_verified": true
+    },
+    {
+      "id": "momentum20__signal_strength__h5__a1__c10",
+      "event": {
+        "date": "2026-02-20",
+        "symbol": "AZN",
+        "reason": "unsupported_dividend",
+        "count": 1
+      },
+      "last_mark_date": "2026-02-19",
+      "remaining_qty": 3,
+      "source_foreign_dividend_verified": true
+    },
+    {
+      "id": "momentum20__signal_strength__h5__a1__c25",
+      "event": {
+        "date": "2026-02-20",
+        "symbol": "AZN",
+        "reason": "unsupported_dividend",
+        "count": 1
+      },
+      "last_mark_date": "2026-02-19",
+      "remaining_qty": 2,
+      "source_foreign_dividend_verified": true
+    },
+    {
+      "id": "momentum20__signal_strength__h10__a0.5__c10",
+      "event": {
+        "date": "2026-02-20",
+        "symbol": "AZN",
+        "reason": "unsupported_dividend",
+        "count": 1
+      },
+      "last_mark_date": "2026-02-19",
+      "remaining_qty": 1,
+      "source_foreign_dividend_verified": true
+    },
+    {
+      "id": "momentum20__signal_strength__h10__a0.5__c25",
+      "event": {
+        "date": "2026-02-20",
+        "symbol": "AZN",
+        "reason": "unsupported_dividend",
+        "count": 1
+      },
+      "last_mark_date": "2026-02-19",
+      "remaining_qty": 1,
+      "source_foreign_dividend_verified": true
+    },
+    {
+      "id": "momentum20__signal_strength__h10__a1__c10",
+      "event": {
+        "date": "2026-02-20",
+        "symbol": "AZN",
+        "reason": "unsupported_dividend",
+        "count": 1
+      },
+      "last_mark_date": "2026-02-19",
+      "remaining_qty": 1,
+      "source_foreign_dividend_verified": true
+    },
+    {
+      "id": "momentum20__signal_strength__h10__a1__c25",
+      "event": {
+        "date": "2026-02-20",
+        "symbol": "AZN",
+        "reason": "unsupported_dividend",
+        "count": 1
+      },
+      "last_mark_date": "2026-02-19",
+      "remaining_qty": 1,
+      "source_foreign_dividend_verified": true
+    },
+    {
+      "id": "trend_pullback__signal_strength__h3__a0.5__c10",
+      "event": {
+        "date": "2026-03-02",
+        "symbol": "LYB",
+        "reason": "unsupported_dividend",
+        "count": 1
+      },
+      "last_mark_date": "2026-02-27",
+      "remaining_qty": 3,
+      "source_foreign_dividend_verified": true
+    },
+    {
+      "id": "trend_pullback__signal_strength__h3__a0.5__c25",
+      "event": {
+        "date": "2026-03-02",
+        "symbol": "LYB",
+        "reason": "unsupported_dividend",
+        "count": 1
+      },
+      "last_mark_date": "2026-02-27",
+      "remaining_qty": 3,
+      "source_foreign_dividend_verified": true
+    },
+    {
+      "id": "acceleration3__signal_strength__h10__a1__c10",
+      "event": {
+        "date": "2026-02-13",
+        "symbol": "CCL",
+        "reason": "unsupported_dividend",
+        "count": 1
+      },
+      "last_mark_date": "2026-02-12",
+      "remaining_qty": 18,
+      "source_foreign_dividend_verified": true
+    },
+    {
+      "id": "acceleration3__signal_strength__h10__a1__c25",
+      "event": {
+        "date": "2026-02-13",
+        "symbol": "CCL",
+        "reason": "unsupported_dividend",
+        "count": 1
+      },
+      "last_mark_date": "2026-02-12",
+      "remaining_qty": 18,
+      "source_foreign_dividend_verified": true
+    }
+  ],
+  "dividend_source_samples": [
+    {
+      "path": "breakout20__prior_liquidity__h3__a1__c10",
+      "symbol": "AMAT",
+      "ex_date": "2026-02-19",
+      "cash_rate_assumed_usd": 0.46,
+      "quantity": 1,
+      "entitlement": 0.46,
+      "payable_date": "2026-03-12"
+    },
+    {
+      "path": "breakout20__prior_liquidity__h3__a1__c25",
+      "symbol": "AMAT",
+      "ex_date": "2026-02-19",
+      "cash_rate_assumed_usd": 0.46,
+      "quantity": 1,
+      "entitlement": 0.46,
+      "payable_date": "2026-03-12"
+    },
+    {
+      "path": "breakout20__prior_liquidity__h5__a1__c10",
+      "symbol": "VRT",
+      "ex_date": "2026-03-17",
+      "cash_rate_assumed_usd": 0.0625,
+      "quantity": 2,
+      "entitlement": 0.125,
+      "payable_date": "2026-03-26"
+    },
+    {
+      "path": "breakout20__prior_liquidity__h5__a1__c10",
+      "symbol": "LRCX",
+      "ex_date": "2026-06-17",
+      "cash_rate_assumed_usd": 0.26,
+      "quantity": 2,
+      "entitlement": 0.52,
+      "payable_date": "2026-07-08"
+    },
+    {
+      "path": "breakout20__prior_liquidity__h5__a1__c25",
+      "symbol": "VRT",
+      "ex_date": "2026-03-17",
+      "cash_rate_assumed_usd": 0.0625,
+      "quantity": 2,
+      "entitlement": 0.125,
+      "payable_date": "2026-03-26"
+    },
+    {
+      "path": "breakout20__prior_liquidity__h5__a1__c25",
+      "symbol": "LRCX",
+      "ex_date": "2026-06-17",
+      "cash_rate_assumed_usd": 0.26,
+      "quantity": 2,
+      "entitlement": 0.52,
+      "payable_date": "2026-07-08"
+    },
+    {
+      "path": "breakout20__prior_liquidity__h10__a0.5__c10",
+      "symbol": "NVDA",
+      "ex_date": "2026-09-10",
+      "cash_rate_assumed_usd": 0.25,
+      "quantity": 1,
+      "entitlement": 0.25,
+      "payable_date": "2026-10-01"
+    },
+    {
+      "path": "breakout20__prior_liquidity__h10__a0.5__c25",
+      "symbol": "NVDA",
+      "ex_date": "2026-09-10",
+      "cash_rate_assumed_usd": 0.25,
+      "quantity": 1,
+      "entitlement": 0.25,
+      "payable_date": "2026-10-01"
+    }
+  ],
+  "highest_ending_equity": 955.2450850000013,
+  "lowest_ending_equity": 105.89840350000142,
+  "milestone_counts": {
+    "1000": 7,
+    "2000": 0,
+    "10000": 0
+  },
+  "limitations": [
+    "Reconstructs the stated model against the same cached market/actions, not independent market vendor truth.",
+    "Corporate-action process/ex-date coverage, missing currency, directory selection and executable-fill limits remain.",
+    "All paths are exploratory; excluding incomplete paths from performance rankings is not evidence those paths were unprofitable or safe."
+  ],
+  "artifact_sha256": {
+    "engine.py": "e82a58d9393bafb77282c336b838521d39ff598cfc0cd1f83c8554817ee4a06e",
+    "features.py": "05248fe291f9d86cafdce00bfc72f5bde29a50e99f94f3a6db18161f19083d4f",
+    "protocol.json": "6967e0049d94d639764b08f9cb1cae8406e9d9a43bb3997b29eb7210e14bf373",
+    "protocol-amendment.json": "2bb55006336a8298824ee4dbc76847f72f15743e64124e57543ccebef95b9539",
+    "company-actions.json": "e971f2a831a507395913c97c8e48e005912a6f0f60c5f398bb38c09a1f3a59ef",
+    "paths.json": "81917749e16c44036117f35f4045d0964e7b5b5dd85fea9fab1d618a85a2eeec",
+    "test_engine_review.py": "4ad2f6e0b61b0c4c76616bdc0d452688c4c9640f644ac772a7c08d3d08a5ad68",
+    "test_features.py": "0a5c430345c39db85f2e9b10413a4a8357f68b7aff2d1e827a70a35ca346f0c9"
+  }
+}

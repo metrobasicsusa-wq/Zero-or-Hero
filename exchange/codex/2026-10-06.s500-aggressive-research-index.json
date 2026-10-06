@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "project": "s500",
+  "date": "2026-10-06",
+  "stage": "aggressive-grid-v1",
+  "status": "research_completed_no_trading_activated",
+  "directory": "exchange/codex/s500/2026-10-06-aggressive-grid-v1",
+  "report": "exchange/codex/s500/2026-10-06-aggressive-grid-v1/report.md",
+  "manifest": "exchange/codex/s500/2026-10-06-aggressive-grid-v1/manifest.json",
+  "summary": "exchange/codex/s500/2026-10-06-aggressive-grid-v1/summary.json",
+  "method": [
+    "192 combinations",
+    "2026-01-02 to 2026-10-05",
+    "6633 starting symbols; daily top500;746 distinct admitted",
+    "500 initial dollars once per hypothetical path; no new funding"
+  ],
+  "result": "180 provisional complete;12 unsupported-dividend interruptions;75 profitable;best955.245085;7 touched1000,0 touched2000 or10000;cash-dividend USD assumption and data completeness unresolved",
+  "next": "exchange/codex/s500/2026-10-06-aggressive-grid-v1/next-research.json",
+  "parent_index": "exchange/codex/2026-10-06.s500-broad-research-index.json",
+  "independence": "Current historical period already seen;192 models dependent; not out-of-sample.",
+  "cloud_task_handoff": "Read this root index and next-research; do not modify separate100000 main-account automation or duplicate timers."
+}
