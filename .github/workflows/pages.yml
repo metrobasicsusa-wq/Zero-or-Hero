@@ -32,6 +32,7 @@ jobs:
       - run: |
           python -m hero dashboard
           python -m hero --config config/s500.json --journal journal-s500 dashboard --out site/s500.html
+          python -m hero.exchange_page --out site/exchange.html
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:

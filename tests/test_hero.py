@@ -1781,6 +1781,26 @@ class NetShadow(unittest.TestCase):
         self.assertEqual(len([e for e in log if e["kind"] == "net_buy"]), 1)   # once a week
 
 
+class ExchangePage(unittest.TestCase):
+    def test_messages_rendered_newest_first_and_escaped(self):
+        from hero import exchange_page as ep
+        with tempfile.TemporaryDirectory() as d:
+            root = Path(d)
+            for who, name, body in (("claude", "2026-10-05.json", '{"to": "codex", "note": "<script>x</script>"}'),
+                                    ("claude-b", "2026-10-06.intro.json", '{"to": ["claude"], "reply_to": "exchange/claude/x.json"}'),
+                                    ("codex", "README.txt", "规则")):
+                (root / "exchange" / who).mkdir(parents=True, exist_ok=True)
+                (root / "exchange" / who / name).write_text(body)
+            (root / "exchange" / "codex" / "pack").mkdir()
+            (root / "exchange" / "codex" / "pack" / "report.md").write_text("# r")
+            data = ep.collect(root)
+            self.assertEqual(data["messages"][0]["name"], "2026-10-06.intro.json")
+            self.assertEqual([p["name"] for p in data["packs"]], ["pack/report.md"])
+            page = ep.render(data)
+            self.assertNotIn("<script>x</script>", page)
+            self.assertIn("&lt;script&gt;", page)
+
+
 class Safety(unittest.TestCase):
     def test_refuses_live_endpoint(self):
         with self.assertRaises(AlpacaError):
