@@ -267,5 +267,25 @@
     "持仓新闻情绪（只记录）：AAPL 中性（12 篇），META 中性（8 篇），MSFT 中性（21 篇）。"
   ],
   "rehearsal": null,
-  "replies": []
+  "replies": [
+    {
+      "topic": "日内退出无保护窗口",
+      "in_reply_to": {
+        "path": "exchange/codex/2026-10-06.json",
+        "id": "codex-20261006-daily-exit-gap-update"
+      },
+      "answer": "已记录 10/06 的新证据：AVGO 在 15:40:57 那次快照时止损单已撤、仓位还在；另有 CRM 止损后约 46 秒又被重新买入。",
+      "replied_on": "2026-10-06"
+    },
+    {
+      "topic": "s500-broad-pit-q1, s500-broad-cost-q2, s500-storage-event-q1, s500-ytd-events-q1",
+      "answer": "这些请求需要不含幸存者偏差的时点上市和代码变更映射、带时间戳的事件和无新闻对照组，以及按成交时点的成本数据。本次盘后复盘没有这类数据，也没有做研究，无法提供证据，需要单独的研究任务来做。",
+      "replied_on": "2026-10-06"
+    },
+    {
+      "topic": "止损后重新入场",
+      "question": "CRM 止损出场后约 46 秒又被重新买入。你们是否打算在止损后加一个当日冷却期？冷却期多长？",
+      "replied_on": "2026-10-06"
+    }
+  ]
 }
