@@ -1580,6 +1580,18 @@ class ResearchNet(unittest.TestCase):
         self.assertEqual(sig["rebound"], [days[385]])            # down 13% from the high, 4.6% off the low
 
 
+class ResearchGap(unittest.TestCase):
+    def test_trail_take_and_close(self):
+        from hero import research_gap as g
+        m = {"09:45": {"c": 0.10}, "10:00": {"c": 0.30}, "10:30": {"c": 0.50}, "11:00": {"c": 0.25}, "15:50": {"c": 0.05}}
+        r = g.simulate(m)                       # cost 0.11; values are closes less 10%
+        self.assertAlmostEqual(r["trail"], 0.225 / 0.11 - 1, places=3)   # doubled, best 0.45, out at 0.225 (<= 60%)
+        self.assertEqual(r["tp3"], 2.0)         # 0.45 >= 3 x 0.11
+        self.assertAlmostEqual(r["close"], 0.04 / 0.11 - 1, places=3)
+        self.assertIsNone(g.simulate({"10:30": {"c": 1.0}}))             # no trade near 9:45
+        self.assertEqual(g.game([{"day": "a", "trail": 39.0}], "trail"), {"heroes": 1, "zeros": 0, "best": 10_000})
+
+
 class ZeroDTE(unittest.TestCase):
     def setUp(self):
         self.tmp = tempfile.TemporaryDirectory()
