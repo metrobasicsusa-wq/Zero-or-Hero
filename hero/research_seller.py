@@ -25,11 +25,13 @@ from __future__ import annotations
 import json
 import statistics
 import sys
+from collections import Counter
 import time
 from datetime import date, timedelta
 from pathlib import Path
 
 START = "2024-02-01"
+SKIPS: Counter = Counter()  # why candidate trades were dropped, reported with the results
 CAPITAL = 10_000.0
 SPREAD_OTM = (0.015, 0.03, 0.05)
 SPREAD_WIDTH = (5, 10)
@@ -120,9 +122,11 @@ def run_spreads(client, spy: dict[str, float]) -> list[dict]:
                            expiration_date_lte=(e + timedelta(days=dte + 4)).isoformat(),
                            strike_price_gte=f"{spot * 0.9:.2f}", strike_price_lte=f"{spot * 0.99:.2f}")
             if not cs:
+                SKIPS[f"spread {kind}: no contracts"] += 1
                 continue
             exp = min({c["expiration_date"] for c in cs}, key=lambda x: abs((date.fromisoformat(x) - e).days - dte))
             if exp > days[-1]:
+                SKIPS[f"spread {kind}: not expired yet"] += 1
                 continue
             strikes = {float(c["strike_price"]): c["symbol"] for c in cs if c["expiration_date"] == exp}
             plan = []
@@ -135,6 +139,7 @@ def run_spreads(client, spy: dict[str, float]) -> list[dict]:
                     if ks - w in strikes:
                         plan.append((otm, w, ks, ks - w))
             if not plan:
+                SKIPS[f"spread {kind}: no strike pair ({'under 10 strikes' if len(strikes) < 10 else 'width not listed'})"] += 1
                 continue
             px = closes_of(client, sorted({strikes[k] for p in plan for k in p[2:]}), entry, exp)
             settle = spy.get(exp) or last_on_or_before(spy, exp)
@@ -142,6 +147,8 @@ def run_spreads(client, spy: dict[str, float]) -> list[dict]:
                 for managed in (False, True):
                     r = spread_result(px.get(strikes[ks], {}), px.get(strikes[kl], {}), days, entry, exp, ks, kl,
                                       settle, managed)
+                    if not r:
+                        SKIPS[f"spread {kind}: no entry price or credit too small"] += 1
                     if r:
                         rows.append({"kind": kind, "otm": otm, "width": w, "managed": managed, **r})
     return rows
@@ -198,7 +205,8 @@ def pick_option(client, und: str, kind: str, day: str, spot: float, otm: float, 
     exp = min({c["expiration_date"] for c in cs}, key=lambda x: abs((date.fromisoformat(x) - e).days - 30))
     by_k = {float(c["strike_price"]): c["symbol"] for c in cs if c["expiration_date"] == exp}
     k = max(by_k) if kind == "put" else min(by_k)
-    px = closes_of(client, [by_k[k]], day, day).get(by_k[k], {}).get(day)
+    nxt = (date.fromisoformat(day) + timedelta(days=4)).isoformat()  # an end equal to the start can return nothing
+    px = closes_of(client, [by_k[k]], day, nxt).get(by_k[k], {}).get(day)
     if not px:
         return None
     return {"expiry": exp, "strike": k, "premium": max(px - slip(px, single), 0.0)}
@@ -221,6 +229,7 @@ def run_wheel(client, closes: dict[str, dict[str, float]], picker, capital: floa
             o = pick_option(client, sym, "put", day, spot, 0.05, single)
             n = int(cash // (o["strike"] * 100)) if o else 0
             if not o or n < 1 or o["expiry"] > end:
+                SKIPS["wheel: " + ("no put to sell" if not o else "cash too small" if n < 1 else "expiry after the data")] += 1
                 day = next((d for d in spy_days if d > (date.fromisoformat(day) + timedelta(days=7)).isoformat()), end)
                 continue
             cash += o["premium"] * 100 * n
@@ -234,7 +243,13 @@ def run_wheel(client, closes: dict[str, dict[str, float]], picker, capital: floa
         else:
             spot = last_on_or_before(closes[sym], day)
             o = pick_option(client, sym, "call", day, spot, 0.05, single)
-            if not o or o["expiry"] > end:
+            if not o:
+                SKIPS["wheel: no call to sell, retry next week"] += 1
+                day = next((d for d in spy_days if d > (date.fromisoformat(day) + timedelta(days=7)).isoformat()), end)
+                mark = cash + shares * last_on_or_before(closes[sym], day)
+                curve.append((day, mark))
+                continue
+            if o["expiry"] > end:
                 break
             cash += o["premium"] * shares
             settle = last_on_or_before(closes[sym], o["expiry"])
@@ -412,7 +427,7 @@ def run(client, root: Path) -> dict:
                                 "win": round(sum(x > 0 for x in xs) / len(xs), 3)}
             row["acct_react_5pct"] = fly_account(ts, "ret_react", 0.05, START, end)
             fly_table[f"{g}|{j}"] = row
-    return {"generated": date.today().isoformat(), "start": START, "end": end, "capital": CAPITAL,
+    return {"generated": date.today().isoformat(), "start": START, "end": end, "capital": CAPITAL, "skips": dict(SKIPS),
             "spreads": spread_table, "wheels": wheels, "flies": fly_table,
             "spy_buy_hold": round(spy[end] / spy[next(d for d in sorted(spy) if d >= START)] - 1, 3)}
 
@@ -447,6 +462,8 @@ def markdown(rep: dict) -> str:
         out.append(f"| {g} | {'窄（0.5 倍 / 3%）' if j == '0' else '宽（1 倍 / 6%）'} | {r['n']} | {r['cost_to_max']:.0%} | "
                    f"{rr.get('mean', 0):+.0%} / {rr.get('median', 0):+.0%} / {rr.get('win', 0):.0%} | "
                    f"{re_.get('mean', 0):+.0%} / {re_.get('win', 0):.0%} | {a['cagr']:+.0%} / {a['max_dd']:.0%} |")
+    if rep.get("skips"):
+        out += ["", "## 被跳过的候选交易（诊断用）", ""] + [f"- {k}：{v}" for k, v in sorted(rep["skips"].items())]
     return "\n".join(out) + "\n"
 
 

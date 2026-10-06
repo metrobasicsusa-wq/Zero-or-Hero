@@ -88,34 +88,80 @@ def ticket(bars: dict[str, dict], stock: dict[str, float], entry: str, expiry: s
     return out
 
 
-def run(client, root: Path) -> dict:
-    from hero import universe
-    pool = universe.load(root / "data" / "universe.json")["stocks"][:POOL]
-    first = "2023-01-01"
-    end = (date.today() - timedelta(days=1)).isoformat()
-    raw: dict[str, dict[str, float]] = {}
-    for i in range(0, len(pool), 50):
-        for s, bs in client.daily_bars(pool[i:i + 50], first, adjustment="raw").items():
-            raw[s] = {b["t"][:10]: float(b["c"]) for b in bs}
-    spy = {b["t"][:10]: float(b["c"]) for b in client.daily_bars(["SPY"], first, adjustment="raw").get("SPY", [])}
-    entries = [d for d in week_entries(sorted(spy)) if START <= d <= end]
-    sig = signals(spy, entries)
-    weeks = sorted({d for v in sig.values() for d in v})
-    tickets: dict[str, list[dict]] = {}
+def pit_nets(client, weeks: list[str], first: str) -> dict[str, list[str]]:
+    """The net for each week from that month's pool as it stood then: the top 100 listed operating
+    companies by 63-day dollar volume before the month began (research_universe's rule), then the
+    15 most volatile of them. Removes the "today's winners" tilt; companies delisted since are
+    still missing, since only today's listings can be queried."""
+    from hero import research_universe as ru
+    stocks = ru.candidates(client)
+    syms = sorted(set(stocks) | {"SPY"})
+    bars: dict[str, list[dict]] = {}
+    for i in range(0, len(syms), 200):
+        bars.update(client.daily_bars(syms[i:i + 200], first))
+    dates, closes, dvol = ru.align(bars, "SPY")
+    have = {s: k for s, k in stocks.items() if s in bars}
+    for s in have:
+        closes.setdefault(s, [None] * len(dates))
+        dvol.setdefault(s, [0.0] * len(dates))
+    firsts = {s: next((i for i, x in enumerate(closes[s]) if x is not None), None) for s in have}
+    start = next(i for i, d in enumerate(dates) if d >= START)
+    pools = ru.monthly_pools(dates, closes, dvol, firsts, have, POOL, start)
+    keys = sorted(pools)
+    idx = {d: i for i, d in enumerate(dates)}
+    nets = {}
     for d in weeks:
-        e = date.fromisoformat(d)
-        if (date.fromisoformat(end) - e).days < 36:
-            continue  # its options have not expired yet
+        t = idx.get(d)
+        if t is None:
+            continue
+        pool = pools[max(k for k in keys if k <= t)]
+        ranked = [(vol([x for x in closes[s][t - 63: t + 1] if x]), s) for s in pool if closes[s][t]]
+        nets[d] = [s for _, s in sorted(ranked, reverse=True)[:NET]]
+    return nets
+
+
+def today_nets(raw: dict[str, dict[str, float]], pool: list[str], weeks: list[str]) -> dict[str, list[str]]:
+    nets = {}
+    for d in weeks:
         ranked = []
         for s in pool:
             c = raw.get(s, {})
             ds = [x for x in sorted(c) if x <= d]
             if len(ds) >= 64 and ds[-1] == d:
                 ranked.append((vol([c[x] for x in ds[-64:]]), s))
-        net = [s for _, s in sorted(ranked, reverse=True)[:NET]]
+        nets[d] = [s for _, s in sorted(ranked, reverse=True)[:NET]]
+    return nets
+
+
+def run(client, root: Path, pit: bool = True) -> dict:
+    first = "2023-01-01"
+    end = (date.today() - timedelta(days=1)).isoformat()
+    spy = {b["t"][:10]: float(b["c"]) for b in client.daily_bars(["SPY"], first, adjustment="raw").get("SPY", [])}
+    entries = [d for d in week_entries(sorted(spy)) if START <= d <= end]
+    sig = signals(spy, entries)
+    weeks = [d for d in sorted({d for v in sig.values() for d in v}) if (date.fromisoformat(end) - date.fromisoformat(d)).days >= 36]
+    raw: dict[str, dict[str, float]] = {}
+    if pit:
+        nets = pit_nets(client, weeks, first)
+    else:
+        from hero import universe
+        pool = universe.load(root / "data" / "universe.json")["stocks"][:POOL]
+        for i in range(0, len(pool), 50):
+            for s, bs in client.daily_bars(pool[i:i + 50], first, adjustment="raw").items():
+                raw[s] = {b["t"][:10]: float(b["c"]) for b in bs}
+        nets = today_nets(raw, pool, weeks)
+    need = sorted({s for n in nets.values() for s in n} - set(raw))
+    for i in range(0, len(need), 50):  # raw prices: option strikes are quoted on them
+        for s, bs in client.daily_bars(need[i:i + 50], first, adjustment="raw").items():
+            raw[s] = {b["t"][:10]: float(b["c"]) for b in bs}
+    tickets: dict[str, list[dict]] = {}
+    for d in weeks:
+        e = date.fromisoformat(d)
         rows = []
-        for s in net:
-            spot = raw[s][d]
+        for s in nets.get(d, []):
+            spot = raw.get(s, {}).get(d)
+            if not spot:
+                continue
             cs = []
             for status in ("inactive", "active"):
                 try:
@@ -149,7 +195,8 @@ def run(client, root: Path) -> dict:
                 if t:
                     rows.append({"symbol": s, "otm": m, **t})
         tickets[d] = rows
-    return {"generated": date.today().isoformat(), "start": START, "net": NET, "signals": sig, "tickets": tickets}
+    return {"generated": date.today().isoformat(), "start": START, "net": NET, "pit": pit, "signals": sig,
+            "nets": nets, "tickets": tickets}
 
 
 def game(weeks: list[list[float]]) -> dict:
@@ -192,8 +239,10 @@ def markdown(rep: dict, s: dict) -> str:
     names = {"rebound": "暴跌后反弹（SPY 10 天内跌破 63 日高点 8%，已从低点反弹 3%）",
              "wild": "高波动（SPY 20 日波动率在过去一年前 20%）", "control": "对照：每 4 周一次，不看行情"}
     keys = {"ret_tp10": "10 倍止盈（否则拿到期）", "ret_tp20": "20 倍止盈（否则拿到期）", "ret_expiry": "拿到期"}
-    out = [f"# 高波动时期撒网买彩票 {rep['generated']}", "",
-           f"自 {rep['start']}。信号周：在动态池（今天的名单，偏向今天的赢家）里挑过去 63 天波动最大的 {rep['net']} 只，"
+    out = [f"# 高波动时期撒网买彩票{'（当时的股票池）' if rep.get('pit') else ''} {rep['generated']}", "",
+           f"自 {rep['start']}。信号周：在" + ("当时的股票池（每月按之前 63 天成交额排前 100 的上市公司，不用今天的名单；已退市的公司仍缺）"
+                                                 if rep.get("pit") else "动态池（今天的名单，偏向今天的赢家）") +
+           f"里挑过去 63 天波动最大的 {rep['net']} 只，"
            "每只买一张约 4 周后到期、价外 20% 或 30% 的看涨期权，各押同样的钱。用每日收盘价判断止盈（单笔异常的最高价不算），"
            "而且当天股价至少要涨到行权价的一半路程。买入多付 10%、卖出少拿 10%。"
            "玩法：$500，每个信号周把一半资金平分到这一网，低于 $50 归零、到 $10,000 成功，都重来。只研究，不改交易。", "",
@@ -214,11 +263,12 @@ def markdown(rep: dict, s: dict) -> str:
 def main() -> None:
     from hero.alpaca import Alpaca
     root = Path(__file__).resolve().parent.parent
-    rep = run(Alpaca(), root)
+    rep = run(Alpaca(), root, pit=True)
     s = summarize(rep)
     rep["summary"] = s
-    (root / "research" / f"{rep['generated']}-net.json").write_text(json.dumps(rep, ensure_ascii=False) + "\n")
-    (root / "research" / f"{rep['generated']}-net.md").write_text(markdown(rep, s))
+    tag = "net-pit" if rep["pit"] else "net"
+    (root / "research" / f"{rep['generated']}-{tag}.json").write_text(json.dumps(rep, ensure_ascii=False) + "\n")
+    (root / "research" / f"{rep['generated']}-{tag}.md").write_text(markdown(rep, s))
     print(markdown(rep, s))
 
 
