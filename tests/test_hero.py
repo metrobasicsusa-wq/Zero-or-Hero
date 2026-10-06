@@ -1592,6 +1592,22 @@ class ResearchGap(unittest.TestCase):
         self.assertEqual(g.game([{"day": "a", "trail": 39.0}], "trail"), {"heroes": 1, "zeros": 0, "best": 10_000})
 
 
+class ResearchFlush(unittest.TestCase):
+    def test_flush_and_confirm_entry(self):
+        from hero import research_flush as f
+        bar = lambda o, l, c: {"o": o, "l": l, "c": c}
+        sm = {"09:30": bar(100, 99.5, 99.6), "09:33": bar(99.6, 98.2, 98.4), "09:36": bar(98.4, 96.8, 97.0),
+              "09:40": bar(97.0, 96.9, 97.5), "09:45": bar(97.5, 97.4, 97.9), "10:00": bar(98, 97.9, 98.5)}
+        r = f.flush(sm, 0.02)
+        self.assertEqual(r["hit"], "09:36")                     # 96.8 is 3.2% under the 100 open
+        self.assertAlmostEqual(r["drop"], 0.032)
+        self.assertEqual(r["entries"], {"10:00": "10:00", "confirm": "09:46"})  # 97.9 >= 96.8 x 1.01, buy the next minute
+        self.assertEqual(f.flush(sm, 0.02)["low_at"], "09:36")
+        self.assertIsNone(f.flush(sm, 0.04))                    # never 4% down
+        self.assertAlmostEqual(f.first_drop(sm), 0.032)
+        self.assertEqual(f.next_minute("09:59"), "10:00")
+
+
 class ResearchIronFly(unittest.TestCase):
     def test_credit_reaction_buyback_and_expiry(self):
         from hero import research_ironfly as r
