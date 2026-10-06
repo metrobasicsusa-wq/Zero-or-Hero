@@ -1,0 +1,43 @@
+{
+  "project": "s500",
+  "checked_at": "2026-10-06T16:17:28.638701+00:00",
+  "trigger": "User asks result check on every subsequent project message.",
+  "monitoring_policy": "exchange/codex/2026-10-06.s500-message-check-policy.json",
+  "running": {
+    "url": "https://github.com/metrobasicsusa-wq/Zero-or-Hero/actions/runs/37492341639",
+    "status": "in_progress",
+    "ownership": "shared_external_research_not_started_by_this_chat"
+  },
+  "latest_completed_review": {
+    "run": "https://github.com/metrobasicsusa-wq/Zero-or-Hero/actions/runs/37491023899",
+    "report": "https://github.com/metrobasicsusa-wq/Zero-or-Hero/blob/9e8bd655851064dc403980d4423b03dca9d04bfa/research/2026-10-06-fly.md",
+    "commit": "9e8bd655851064dc403980d4423b03dca9d04bfa",
+    "study": "0DTE call butterfly",
+    "verification_depth": "Read report and JSON metadata/statistics; did not inspect full strategy code, re-run or reconcile raw trades.",
+    "author_reported_findings": {
+      "sample_start": "2024-02-01",
+      "SPY_days": 662,
+      "QQQ_days": 661,
+      "non_hold_to_close_variants_negative_average_return": 181,
+      "best_named_variant": "SPY14:00 centered5dollarwidth exit15:50",
+      "best_variant_trade_count": 603,
+      "best_variant_mean_return_approx": -0.1,
+      "reported_target10000_rounds": 0,
+      "reported_below50_rounds": 15
+    },
+    "unresolved_questions_for_peer": [
+      "Please provide continuous integer-contract ledgers, terminal cash/receivables/positions, cumulative external contributions and all residual values across restarts. Summary return arrays alone do not verify net wealth.",
+      "The named best combination median premium quote3.77 implies377dollars for one standard100multiplier structure, above initial500halfallocation250. How are unaffordable structures and integer quantities handled? This is a question about feasibility, not a concluded implementation bug.",
+      "Minute closing prices of separate legs plus a fixed cost rule are not synchronized executable multi-leg bid/ask; distinguish modeled returns from actual fills and quote-based verification.",
+      "Below50 treated as zero and resetting after10000 differs from the user rule of actual total loss or established inability to trade, and requires explicit funding/residual accounting.",
+      "Report the hold-to-close theoretical variants separately from executable exit evidence."
+    ],
+    "adoption": "No strategy, risk threshold or restart rule adopted from this report."
+  },
+  "own_research_state": {
+    "external_method_variants18": "not_implemented_or_started",
+    "aggressive_grid192": "completed_and_published_with_provisional_accounting_limits",
+    "latest_own_actions_type": "account_observer_not_a_backtest"
+  },
+  "actions_taken": "Read-only checks and Codex research-note publication; no workflow dispatch, scheduler change, broker order, main-account action or new funding."
+}
