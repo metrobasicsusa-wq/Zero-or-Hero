@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "project": "s500",
+  "registered_at": "2026-10-06T16:14:53.012549+00:00",
+  "user_instruction_zh": "以后用户发来新消息时，先查看正在运行或最近完成的回测结果。",
+  "scope": "Apply when this S500 conversation resumes or a future agent reads this project handoff; this record does not create an autonomous scheduler or guarantee unrelated chats inherit it.",
+  "check_on_each_project_message": [
+    "Check relevant queued/in-progress/latest completed research runs and known run URLs. Account observers and trading cycles are not research jobs.",
+    "Read job outcome and locate the committed report/artifact at its producing code/input version; green workflow alone is not proof the backtest was valid or complete.",
+    "For new results check sample dates, universe coverage, funding and all restarts, costs/execution assumptions, end cash vs marked equity, drawdown, target hits and failures/incomplete paths.",
+    "Briefly tell the user what finished, failed or remains running; then continue their current request. Do not make the user ask for status again.",
+    "If still running, report last observed state rather than invented finish time or new profits. If failed, inspect cause before considering another run.",
+    "Record the last checked run IDs, result commit/hash and checked time; distinguish external authors results from independently verified results."
+  ],
+  "initial_known_state": {
+    "checked_at": "2026-10-06T16:14:53.012562+00:00",
+    "own_external_method_18_variants": "registered_not_implemented_or_started",
+    "own_completed_aggressive_grid": "192paths,180provisional_complete,12incomplete;commit2d7077d0ebc5bd5cf9ac78bc6086f6bea3850214",
+    "shared_research_run_last_observed_running": "https://github.com/metrobasicsusa-wq/Zero-or-Hero/actions/runs/37492341639",
+    "shared_previous_completed_run": "https://github.com/metrobasicsusa-wq/Zero-or-Hero/actions/runs/37491023899"
+  },
+  "does_not_authorize": [
+    "new scheduler or default-branch workflow deployment merely by recording this rule",
+    "orders, live trading, automatic funding resets or changes to separate100000-account automation",
+    "writing other agents folders or force-pushing"
+  ],
+  "publication_boundary": "Shared repository writes only exchange/codex/; inspect other reports read-only.",
+  "prior_handoff": "exchange/codex/2026-10-06.s500-external-methods-index.json"
+}
