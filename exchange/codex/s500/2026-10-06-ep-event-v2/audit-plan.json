@@ -1,0 +1,53 @@
+{
+  "created_at": "2026-10-06T19:40:13.018549+00:00",
+  "scope": "Independent audit of post-outcome event-model sensitivity and retrospective cohort capital paths, not order execution.",
+  "status": "waiting_new_frozen_protocol_and_implementation",
+  "parent_baseline_sha256": {
+    "paths-v1": {
+      "study-design.json": "ff1c441ab20f0f6816a862d912e0afaac037b1ba8621eb862e9718ff0aa138cf",
+      "holding-input-design.json": "cd34191b84e72a2b0c9c1dd62c89669495b2d5bad963a0d3c674f57b3cab7a49",
+      "holding-input-manifest.json": "e74fc4c0a845d65ab52e6f10f07481de97c57f1091db254216aa12b2bb589652",
+      "holding-market.json": "cef5ef478dd3b8fc9601281968922e33aa81749c14a7a35634c78ccaa0061705",
+      "daily-market-private.json": "e1da176eac497a2c84d81e70ef8587a7ae8048c0c84d813c1a6dd8f2a23c8c2c",
+      "corporate-events.json": "c8763b89989056ce3a384b7573ab4d23cc6372a4db492fe4db1d6a14e2a41348",
+      "all-new-primary-reviews.json": "46d8faf70b716fca31cd6c6cd05f49ea616f209f6727a89b72d5415d19fa3cdb",
+      "primary-classification-lock.json": "fbb7f75c1a1fdb062ae7361ac91f405bff973a57d25945d3f90beaa3ef5ad781",
+      "repaired-market-gates.json": "cd750a5a3b8995460da91340367b48f6b47b14f4ff952d1f76600af992c2fd37",
+      "portfolio-coverage.json": "8ae3737c43235097a8007c0c92f393790bd572f0f2a1b558d347ef70afec5f65",
+      "isolated-case-results.json": "626105c96cfee1cac9b84e6a15dffaa1a1b845a6afc2455836938cfbe1993b4d",
+      "portfolio-results.json": "57d4d0c5e464b1a33e990ddf15cbd67747e21a9b5783782a766ce89ffb156798",
+      "run-summary.json": "0024c0b5abe0b2bdac17b2ed71b4f714dc8664d44e97bd6031a161126900e289"
+    },
+    "gaps-v1": {
+      "study-design.json": "2fc79bc858ee359627383b89d440c9e4d3ee9f212173078573a5e08e55832fb3",
+      "points.json": "086f468a9924a2f122777b85a99cf260ccd4b460757af086e937ebfdc69a1aeb",
+      "gap-diagnostics.json": "138e8a43cb07d39c9b0b4d085cd9b6de59c8623f0926594edd99343b02303c17",
+      "gap-summary.json": "245e9c0037180eedb8c00488f4e23139b30f8b1df8941eb18a8a084a7ad95e91",
+      "input-manifest.json": "f206777ecdcf522492be1964751564d97478eb1d4da7298f54f1c5ecf74aa98a",
+      "source-rules.json": "5268f4225ad6527829e437129959e56a0d86b74d64d597fac445c26f81bb1610",
+      "halt-query-results.json": "7e9d55e15a421b16aa9f8872cfaa6e79f80ced5d094247bb7461101d7c1cc1b3",
+      "next-stage-proposal.json": "fe1f51c3156089d888ffdea52d4cf357f2bac9f010abd7726735ca009258b6a7"
+    }
+  },
+  "required_rules": [
+    "Permit the36 classifiedcoordinates only byexact symbol/time and only as heldbar-eventabsence sensitivity; never executionreference substitution.",
+    "Keep both no-trade/no-quote unknownpoints outside certified36 set.",
+    "Broad provider-complete eventseries is an explicitconditional model and requires complete requested sessioncoverage; absentunrequested data is not noevent.",
+    "Exact entry,scheduledfixed10/max63exit andMAnextopen stillrequired; never nextavailableprice substitution.",
+    "All unsupportedheldcorporateactions checked before skippingbars or wholeemptydays.",
+    "Retain actual last-observedmark timestamp and staleness; conditionalheldmark doesnot certify full drawdown or current liquidation.",
+    "Preserve fullmarket and original1079cohort unknown guards separately from retrospective32news/73market cohortdiagnostics.",
+    "Whole shares,intentquantityfixedbeforeentry,exactcosts,T+1receivables,no sameexitdayreentry,no extra injection/restarts.",
+    "Every original73case\u00d712variant\u00d72datamode retained including noentry,incomplete,censored andlosses.",
+    "No forwardvalidation or independentmodel-evidenceclaim; newprotocol alreadyseen prioroutcomes.",
+    "Originalv1 outputs,sources andclassifications stayimmutable."
+  ],
+  "planned_audits": [
+    "Synthetic eventskip boundary,requiredexitminute,firstunknown/corporateaction,cashsettlement and stale marks.",
+    "All actual outputs independent sourceprice anddecimalcash reconciliation.",
+    "Summary/cohort join/candidateordering/hash/causalclock checks.",
+    "Parentbaselinehashes unchanged andpublicno rawprivateidentifiers."
+  ],
+  "network_calls": 0,
+  "orders_sent": 0
+}

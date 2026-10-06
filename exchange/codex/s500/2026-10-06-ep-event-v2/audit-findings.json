@@ -1,0 +1,130 @@
+{
+  "audited_at": "2026-10-06T19:58:22.882218+00:00",
+  "status": "passed_with_explicit_conditional_model_and_retrospective_selection_limits",
+  "blocking_unresolved_implementation_or_reconciliation_findings": [],
+  "tests": {
+    "implementation_passed": 32,
+    "independent_passed": 20,
+    "total_passed": 52,
+    "failed": 0,
+    "pre_run_validation_order_verified": true,
+    "independent_log": "independent-final-tests.log"
+  },
+  "registered_and_actual_results": {
+    "isolated": 1752,
+    "portfolios": 96,
+    "total": 1848,
+    "all_cash_ledgers_reconciled": true,
+    "all_gap_and_freshness_checks_passed": true,
+    "all_48_group_summaries_and_96_portfolio_summaries_recomputed": true,
+    "all_1079_original_candidate_rows_rejoined": true,
+    "all_retrospective_daily_membership_rankings_checked": true
+  },
+  "source_coverage_checks": {
+    "symbol_sessions": 3823,
+    "raw_pages": 246,
+    "bars": 1353239,
+    "unreturned_minute_slots": 137731,
+    "raw_page_chains_and_assembly_verified": true
+  },
+  "ledger_totals": {
+    "trades_checked": 3620,
+    "buys_checked": 2064,
+    "sales_checked": 1556,
+    "daily_snapshots_checked": 13026,
+    "ma_decisions_checked": 4716
+  },
+  "extension_totals": {
+    "skipped_minutes_checked": 104827,
+    "gap_spans_checked": 81325,
+    "stale_snapshots_checked": 420,
+    "eligible_snapshots_checked": 12558,
+    "excluded_snapshots_checked": 468
+  },
+  "isolated_statuses": {
+    "evidence_gated": {
+      "incomplete": 396,
+      "complete": 446,
+      "censored_open_position": 34
+    },
+    "provider_event_series_assumption": {
+      "complete": 834,
+      "censored_open_position": 42
+    }
+  },
+  "scope_outcomes": {
+    "original_full_and_original_candidate_guards_incomplete": 48,
+    "evidence_mode_retrospective_cohorts_incomplete": 24,
+    "provider_market73_censored_open_position_profit_null": 12,
+    "provider_news32_closed_conditional_paths": 12,
+    "provider_news32_conditional_ending_equity_range": [
+      "273.007718",
+      "392.30761550"
+    ]
+  },
+  "unchanged_history": {
+    "all21_parent_baseline_hashes_unchanged": true,
+    "all428_v1_complete_cases_cash_and_original_trade_fields_identical_in_both_modes": true,
+    "news_labels_changed": false,
+    "old_results_overwritten": false
+  },
+  "pre_run_findings_resolved": [
+    {
+      "id": "nanosecond_evidence_and_input_time_truncation",
+      "finding": "Datetime parsing alone could discard submicrosecond nonzero fractions.",
+      "resolution": "Nonzero fractional-minute text rejected before conversion in preparer and evidence parser; independent regression passes.",
+      "fixed_before_first_v2_outcomes": true
+    },
+    {
+      "id": "session_with_only_nonregular_keys",
+      "finding": "A nonempty map with no regular held-range keys could evade empty-session handling.",
+      "resolution": "Check regular held-range keys, not raw dict truthiness; wholeemptyday remainsunresolved atclose or exactdeadline. Independentregression passes.",
+      "fixed_before_first_v2_outcomes": true
+    },
+    {
+      "id": "legacy_conditional_flag",
+      "finding": "Baseengine isolatedcase flag defaultcould conflict with new permanent modelconditional scope.",
+      "resolution": "Allv2 conditional_on_input_coverage true, separate markfreshness and terminalcertification scopes remainexplicit.",
+      "fixed_before_first_v2_outcomes": true
+    }
+  ],
+  "unresolved_research_limits": [
+    "The provider mode assumes an exhaustive aggregate price-event series. Verification of3823 requested symbol-sessions and137731 unreturned grid slots cannot prove that market/archive assumption.",
+    "The36-point whitelist is post-outcome evidence under returned-time/clock and revision limits. The2no-trade/no-quote points are not whitelisted.",
+    "A conditionally fresh mark and modeled intrabar stop are not guaranteed broker execution, capacity or clientreceipt proof.",
+    "Retrospective73/32membership is evidence-availability selection; all original1079unknown guards remain separate and unresolved.",
+    "1752isolatedcase results reuse73events across24mode/parametercombinations and eachbeginhypothetical500; they are not one funded account or independent observations.",
+    "Twelve market73provider paths stillholdpositions andprofitnull; fresh conditionalmarkedwealth is not realizedendingcash.",
+    "Onlyfresh observed daily liquidation snapshots enter observedDD/milestones. They exclude stale/unresolved andallintradayunobserved risk; milestoneisnotcashgoal.",
+    "Current/asof symbolmapping, originaldailyopen/universe screening, corporate-action coverage, sourceclock disagreement and currenthistoryrevisions remain.",
+    "Datafailure, budgetskip or censoring do not establishcapitalzero, inabilitytotrade, orrestart authorization. No newinjections orrestart experiment occurred."
+  ],
+  "independent_audit_scope": "Cash/source ledger checker is adapted from the published v1 checker solely to permit the explicit stale censored terminal null; v2 source/gap/cohort/summary recomputation imports neither simulation engine.",
+  "artifacts_sha256": {
+    "study-design.json": "dbe5548a3c3b3d2433ab932a0990f0c9cfb550692b305399590ddc32f5f93902",
+    "gap-evidence.json": "b891ecc2f587c52f18229794927ea110f6087a79130b80f92ac1f6f1fc69ce0e",
+    "retrospective-cohorts.json": "ede658242ec65f14353d83f0403bbdfc11b2d3cc32754b064f373c17a81a2465",
+    "ep_engine.py": "a52304e560e819ca3612fbbaeb5145cfddfb7d11181731783db7158402ca5c53",
+    "ep_event_engine.py": "9aaf86645e593bb15bff098acbc55133666782c8d1690bf67f389031760b0024",
+    "prepare_event_inputs.py": "cc832f85d3782a5739369fb82402a5bfcc4374c890f6711cf266723089a3b5fc",
+    "verified-symbol-sessions.json": "48c5bd0b9ddce89f758eb3df6603e9c03c5907824d1e1191809df1de7e2fa5a9",
+    "source-verification.json": "1e22d3e1f4677ceb976db48a0d691c09d7117f8f439a733a5e977ad8e01bf28a",
+    "run_event_paths.py": "1b982e524ddd0bb4f8a028ae3332f96410a8e9ba94d0c5311a48ded50558c9bd",
+    "pre-run-validation.json": "67b3e908ad53d5d4c70e1005e9de6537e2630fbae34b8ffee97fc800681bae5e",
+    "isolated-event-results.json": "f9e4feb61fccb6db8a41fa07b2193aaf0cd7a117054133b8dc624ff4f733e794",
+    "portfolio-event-results.json": "231fbf87174bed7ed2e617d75c01b58a598f17fe744807f0d7ca51c6cbb63386",
+    "run-summary.json": "6209dac53c2408b99a895a5823513e933f5411f31fb3c161fb7b8786d4e7c897",
+    "all-candidate-registry.json": "9e922b8c661f0c81a8263bf5dec7859e3c4b68eb35c7dda25f4b5a402ef1bbbf",
+    "v1-v2-transitions.json": "45f24f36a778a183ad1b6b0f865c17ecf98632303b914120a1b58190c68f57ac",
+    "independent-registration-audit.json": "a3c94e5f866e0bdb779d59916a7ac7e203faa5940f6907e25798d0410e0af005",
+    "independent-ledger-audit.json": "afc3805cd6a1145f7cb6f4eda32da44a5f5e81a90166081c8a791bbdd35ec947",
+    "independent-extension-audit.json": "85fb40f6d0a4c6da3a1771d7a7ac90d423e3a7c73351ed7a53a5158116b8f55f",
+    "independent_event_tests.py": "0f77f75bea6d19cb9397e3dfa25a8952aff31bbafadcb572d1ff67d03d5f7eab",
+    "audit_event_outputs.py": "4144f3b71cf7fa1a01c467d36e9459a3b6b34cc63691729b568f7d0fa6007169",
+    "audit_event_extensions.py": "04e91b334a5c60fd5a5c22aecf923c9c4ac7789f1544cd2cfa293e651249b92c",
+    "independent-final-tests.log": "d0cd8b9f9cb3c99f26b0b8fc66f2cec33919f1928e1c7a6fbfbddf2e42416386"
+  },
+  "new_network_calls_by_auditor": 0,
+  "new_actual_outcome_simulations_by_auditor": 0,
+  "orders_sent": 0
+}

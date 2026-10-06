@@ -1,0 +1,27 @@
+{
+  "stage": "s500_EP_event_holding_v2",
+  "created_at": "2026-10-06T20:00:33.657554+00:00",
+  "artifact_directory": "exchange/codex/s500/2026-10-06-ep-event-v2",
+  "report": "exchange/codex/s500/2026-10-06-ep-event-v2/REPORT.zh.md",
+  "manifest": "exchange/codex/s500/2026-10-06-ep-event-v2/manifest.json",
+  "parent_gap_commit": "a441547e6d977fc2fcfbaebac7743a25235754b8",
+  "parent_holding_commit": "b29d77405cacc21cb2db1ff174e4ca6f32cd9b86",
+  "registered_results": 1848,
+  "isolated_cases_variants_modes": 1752,
+  "portfolio_results": 96,
+  "original_full_scope_and_precedence_paths_incomplete": 48,
+  "evidence_gated_retrospective_portfolios_incomplete": 24,
+  "provider_market73_portfolios_censored": 12,
+  "provider_news32_portfolios_closed": 12,
+  "conditional_news32_terminal_cash_range_usd": [
+    "273.007718",
+    "392.30761550"
+  ],
+  "all_news32_conditional_financed_models_lose_money": true,
+  "tests_passed_before_outcomes": 52,
+  "all_prior428_complete_case_cash_and_trades_unchanged_each_mode": true,
+  "new_broker_orders": 0,
+  "new_capital_contributions": 0,
+  "new_scheduler": false,
+  "message_for_peer_review": "Allregistered event sensitivity outputs and ledger audits retained. CurrentEPparameterfamily remains a losingbaseline for500-to10000. Retrospective32closedaccounts are conditional models;73cohort has open positions. Do notreplacefullmarketunknowns with these cohorts or callOHLC-stressedprices actualFILL. Nextproposal tests causally earlierentry fromall1079, not onlylaterOR30-selected73."
+}

@@ -1,0 +1,94 @@
+{
+  "id": "s500_EP_event_holding_v2",
+  "registered_at": "2026-10-06T19:41:45.296859+00:00",
+  "status": "frozen_before_v2_outcomes",
+  "period": [
+    "2026-01-02",
+    "2026-10-05"
+  ],
+  "parent_gap_commit": "a441547e6d977fc2fcfbaebac7743a25235754b8",
+  "parent_paths_commit": "b29d77405cacc21cb2db1ff174e4ca6f32cd9b86",
+  "outcomes_already_seen": "All prior EP v1 outcomes and38firstgap diagnostics; this version is exploratory, not independent/out-of-sample.",
+  "modes": {
+    "evidence_gated": "Only36exactsymbol+UTCminute classified no-price-event points may advance held time; others missing remainincomplete. Source clock/version assumptions not proven.",
+    "provider_event_series_assumption": "Held absent minute may advance ONLY if symbol-session fixed fullregularwindow request verified complete; explicitly assumes returned aggregate price-event series completeness. Does not establish no real trades or guarantee stops. No newly fabricated bars/prices."
+  },
+  "gap_evidence_schema": "dict rows list [{symbol,time timezoneawareISO UTC,point_id,classification}]. Onlyregistered36rows; no unknownREPL/SPCE pass.",
+  "verified_symbol_sessions_schema": "dict days -> date -> symbol -> {request_complete:true,regular_window_covered:true,request_ids:[...],bars_returned:int}. Rootverifiedrawmanifest; engine must require both true beforeprovider-mode skip.",
+  "variant_grid": {
+    "exit_mode": [
+      "fixed10",
+      "ma10_max63"
+    ],
+    "fraction": [
+      0.5,
+      1.0
+    ],
+    "cost_bps_each_side": [
+      25,
+      50,
+      100
+    ]
+  },
+  "registered_outputs": {
+    "isolated_original73_each_mode_all12": 1752,
+    "full_universe_strict_all1079_each_mode_all12": 24,
+    "original_cohort_guard_all1079_each_mode_all12": 24,
+    "retrospective_market73_each_mode_all12": 24,
+    "retrospective_verified_news32_each_mode_all12": 24,
+    "total": 1848
+  },
+  "hold_rules": {
+    "shared_account": "Reuse frozen Decimalwhole-share500initialcash,signal-close-fixedquantity,nextminute latency,budgetskip/noresize/T+1/noexitdayreentry,noinjections. OriginalOR30stop/fixed10/MA10max63 remain.",
+    "bar_absence": "Only holdingeventprogression usesabsencepolicy; no zero/forwardfilled executionprices, no dedup removingerrors, no intraday favorable substitute.",
+    "exact_execution_minutes": "Entry m+2, MA09:30nextsession andfixed10/max63 lastregularminute requireexactvalidopen; absence/invalid stop as unresolved evenatallowedgap. No deferred scheduledexit.",
+    "protective_stop": "Existing OHLCstressmodel: stop active fromentryminute, subsequentavailableopen belowstop usesloweropen; intrabar low touch usespresetstop pluscost. Mark intrabar recordedtime as intervalstart, notknownexecutiontimestamp. This is not brokerorder/fill certification.",
+    "corporate_actions": "Unchanged allunsupported relevantevents fail beforeheldprogression; no gap bypass.",
+    "empty_session": "If anexactexecutionreference isrequired it fails atthatminute; otherwise entireheldsession withoutvalidpricebar fails atsessionclose. Never inferhalt orzeroreturn.",
+    "malformed_bar": "Alwaysfailure, nevertreatedaslegitimateabsence.",
+    "ma": "Originalcompletedvendor10dailycloses,nextopenassumption/sourceavailability caveats unchanged.",
+    "valuation": "Preservetrue lastmarktimestamp andage. End-of-dayheldmarkfreshonlyif lastregularminute closeobserved. Stalelastobservedmark displayed separately, equity_certified false and excludedfromdailyDD/milestones. Entiredayzeroevent remainsincomplete. Censoredterminalstale ending_equity/profitnull.",
+    "conditional_flag": "Allnewoutputsidentifiedbydatamode/assumptions, nofullyverifiedfilllabel. Earlierconditionalgapsremainconditional evenafterfreshmark.",
+    "gap_evidence_log": "Recordgapspans/count/provenance, sourcecoverage andstale valuation evidence withoutduplicatingfullrawfeeds."
+  },
+  "portfolio_rules": {
+    "strict": "Original1079coverage/unknownnews precedence guards remain. Outside-categoryobservedstoryneverprovesabsence.",
+    "retrospective": "Onlyfrozen73or32membership iseligible; do notchangeunderlyingnewsevidence. Earliestconfirmed signal, then descendingopeningvolumeratio, then symbol. Oneintentperflatday;skipunaffordablewithnoalternate;hold/exitdaynoentry. Originalcandidate registry retainedseparately with reasons/scope.",
+    "interpretation": "Retrospectivecohortportfolio is conditional financed diagnostic;cannotreplacefullmarketunknownpaths orbeclaimedimplementable then."
+  },
+  "tests": "Newgap/execution/stale/empty/actionedgecases plus independentcash/source/selection audit and regression equality ofoldgapfreecompletes. Tests beforefirstv2realrun.",
+  "network": "No newmarketrequests neededfor thisaggregatebarstress experiment. Noquoteexecutionclaim; futurequoteeventmodel mustbefrozen separately.",
+  "restarts": "Notrun;latercriterionandallfunding required. Noold40pctstopoverride.",
+  "user_goal": {
+    "initial_round_usd": 500,
+    "target_usd": 10000,
+    "accept_total_loss": true
+  },
+  "publication": "Onlynewexchange/codexpaths, allvariants/failures/sourcehash/code, no rawfullfeeds or privateIDs.",
+  "broker_orders_sent": 0,
+  "new_scheduler_deployed": false,
+  "input_sha256": {
+    "paths/study-design.json": "ff1c441ab20f0f6816a862d912e0afaac037b1ba8621eb862e9718ff0aa138cf",
+    "paths/ep_engine.py": "a52304e560e819ca3612fbbaeb5145cfddfb7d11181731783db7158402ca5c53",
+    "paths/holding-input-design.json": "cd34191b84e72a2b0c9c1dd62c89669495b2d5bad963a0d3c674f57b3cab7a49",
+    "paths/holding-input-manifest.json": "e74fc4c0a845d65ab52e6f10f07481de97c57f1091db254216aa12b2bb589652",
+    "paths/holding-market.json": "cef5ef478dd3b8fc9601281968922e33aa81749c14a7a35634c78ccaa0061705",
+    "paths/daily-market-private.json": "e1da176eac497a2c84d81e70ef8587a7ae8048c0c84d813c1a6dd8f2a23c8c2c",
+    "paths/corporate-events.json": "c8763b89989056ce3a384b7573ab4d23cc6372a4db492fe4db1d6a14e2a41348",
+    "paths/repaired-market-gates.json": "cd750a5a3b8995460da91340367b48f6b47b14f4ff952d1f76600af992c2fd37",
+    "paths/portfolio-coverage.json": "8ae3737c43235097a8007c0c92f393790bd572f0f2a1b558d347ef70afec5f65",
+    "paths/all-new-primary-reviews.json": "46d8faf70b716fca31cd6c6cd05f49ea616f209f6727a89b72d5415d19fa3cdb",
+    "paths/isolated-case-results.json": "626105c96cfee1cac9b84e6a15dffaa1a1b845a6afc2455836938cfbe1993b4d",
+    "paths/portfolio-results.json": "57d4d0c5e464b1a33e990ddf15cbd67747e21a9b5783782a766ce89ffb156798",
+    "gaps/gap-diagnostics.json": "138e8a43cb07d39c9b0b4d085cd9b6de59c8623f0926594edd99343b02303c17",
+    "gaps/source-rules.json": "5268f4225ad6527829e437129959e56a0d86b74d64d597fac445c26f81bb1610",
+    "gaps/next-stage-proposal.json": "fe1f51c3156089d888ffdea52d4cf357f2bac9f010abd7726735ca009258b6a7",
+    "news/market-gates.json": "9b275cc1a280a4ba8fc9248c7cf13f342cb2f9b7ce1ee06fa99ea7b21fd20867",
+    "news/candidate-readiness.json": "9ea089be503dea21ae458830301c189b99a4a3d0c06c2b6265e77f06f60e1e07"
+  },
+  "new_input_sha256": {
+    "gap-evidence.json": "b891ecc2f587c52f18229794927ea110f6087a79130b80f92ac1f6f1fc69ce0e",
+    "retrospective-cohorts.json": "ede658242ec65f14353d83f0403bbdfc11b2d3cc32754b064f373c17a81a2465",
+    "ep_engine.py": "a52304e560e819ca3612fbbaeb5145cfddfb7d11181731783db7158402ca5c53"
+  }
+}
