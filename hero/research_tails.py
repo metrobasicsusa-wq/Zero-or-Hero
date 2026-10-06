@@ -9,7 +9,8 @@ today's winners), every week since 2024-02:
     "monthly": the expiry nearest 4 weeks out (21-35 days);
   strikes 10% / 20% / 30% / 50% above the price.
 For each: the cost (10% over the close, at least a cent), the best value it ever reached before
-expiry (the daily high, 10% under it: did it ever reach 5x / 10x / 20x / 50x?), its value at
+expiry (the daily high, 10% under it: did it ever reach 5x / 10x / 20x / 50x? and, as a check on
+lone high prints, the same by daily closes), its value at
 expiry, and the return of "a resting 20x limit, else held to expiry". Then what the 20x winners
 had in common: which stocks, whether an earnings report fell inside the holding window, and the
 stock's momentum going in. Record only. Run: python -m hero.research_tails
@@ -60,9 +61,10 @@ def outcome(bars: dict[str, dict], entry: str, expiry: str, strike: float, settl
     cost = entry_cost(float(bars[entry]["c"]))
     later = [b for d, b in bars.items() if entry < d <= expiry]
     peak = max((exit_value(float(b["h"])) for b in later), default=0.0)
+    peak_close = max((exit_value(float(b["c"])) for b in later), default=0.0)  # a lone high print can mislead
     exp_val = max(settle - strike, 0.0) if settle is not None else 0.0
     best = peak / cost
-    return {"cost": round(cost, 3), "best": round(best, 2), "ret_expiry": round(exp_val / cost - 1, 3),
+    return {"cost": round(cost, 3), "best": round(best, 2), "best_close": round(peak_close / cost, 2), "ret_expiry": round(exp_val / cost - 1, 3),
             "ret_take20": 19.0 if best >= 20 else round(exp_val / cost - 1, 3)}
 
 
@@ -170,6 +172,7 @@ def summarize(rows: list[dict]) -> dict:
             groups[f"{kind}|{m}"] = {
                 "n": n, "cost_median": round(statistics.median(r["cost"] for r in sub), 3),
                 **{f"x{x}": round(sum(r["best"] >= x for r in sub) / n, 4) for x in MULTS},
+                "x20_close": round(sum(r["best_close"] >= 20 for r in sub) / n, 4),
                 "mean_expiry": round(statistics.mean(r["ret_expiry"] for r in sub), 3),
                 "mean_take20": round(statistics.mean(r["ret_take20"] for r in sub), 3),
                 "hits20": len(hits),
@@ -209,13 +212,13 @@ def markdown(rep: dict, s: dict) -> str:
            "每只股票买一张价外 10% / 20% / 30% / 50% 的看涨期权（本周到期，或约 4 周后到期）；买入多付 10%。"
            "「最高到过」= 到期前任何一天的最高价（少拿 10%）相对成本的倍数；「20 倍挂单」= 到 20 倍就卖，否则拿到期。只研究，不改交易。", "",
            "## 多少张能到 5 / 10 / 20 / 50 倍", "",
-           "| 到期 | 价外 | 张数 | 成本中位数 | ≥5 倍 | ≥10 倍 | ≥20 倍 | ≥50 倍 | 拿到期平均每 $1 | 20 倍挂单平均每 $1 | 20 倍单里有财报的比例 | 全部里有财报的比例 |",
-           "|---|---|---|---|---|---|---|---|---|---|---|---|"]
+           "| 到期 | 价外 | 张数 | 成本中位数 | ≥5 倍 | ≥10 倍 | ≥20 倍 | ≥50 倍 | ≥20 倍（按收盘价） | 拿到期平均每 $1 | 20 倍挂单平均每 $1 | 20 倍单里有财报的比例 | 全部里有财报的比例 |",
+           "|---|---|---|---|---|---|---|---|---|---|---|---|---|"]
     for key, g in s["groups"].items():
         kind, m = key.split("|")
         eh = f"{g['earn_share_hits']:.0%}" if g["earn_share_hits"] is not None else "—"
         out.append(f"| {kind_name[kind]} | {float(m):.0%} | {g['n']:,} | ${g['cost_median']:.2f} | {g['x5']:.1%} | {g['x10']:.1%} | "
-                   f"{g['x20']:.2%} | {g['x50']:.2%} | {g['mean_expiry']:+.0%} | {g['mean_take20']:+.0%} | {eh} | {g['earn_share_all']:.0%} |")
+                   f"{g['x20']:.2%} | {g['x50']:.2%} | {g['x20_close']:.2%} | {g['mean_expiry']:+.0%} | {g['mean_take20']:+.0%} | {eh} | {g['earn_share_all']:.0%} |")
     out += ["", f"## 20 倍以上一共 {s['hits']} 张：集中在哪些股票", "",
             "| 股票 | 20 倍以上的张数 |", "|---|---|"] + [f"| {k} | {v} |" for k, v in s["by_symbol"]]
     c = s["momentum_cuts"]
@@ -225,9 +228,9 @@ def markdown(rep: dict, s: dict) -> str:
         rate = f"{v['rate']:.2%}" if v["rate"] is not None else "—"
         out.append(f"| {'最弱' if i == '1' else '最强' if i == '4' else '第 ' + i} | {v['trades']:,} | {v['hits20']} | {rate} |")
     out += ["", "## 按买入月份", "", "| 月份 | 20 倍以上的张数 |", "|---|---|"] + [f"| {k} | {v} |" for k, v in s["by_month"]]
-    out += ["", "## 最大的 25 张", "", "| 股票 | 买入 | 到期 | 价外 | 成本 | 最高倍数 | 期间股价最多涨 | 期间有财报 |", "|---|---|---|---|---|---|---|---|"]
+    out += ["", "## 最大的 25 张", "", "| 股票 | 买入 | 到期 | 价外 | 成本 | 最高倍数 | 按收盘价最高 | 期间股价最多涨 | 期间有财报 |", "|---|---|---|---|---|---|---|---|---|"]
     for r in s["top"]:
-        out.append(f"| {r['symbol']} | {r['entry']} | {r['expiry']} | {r['otm']:.0%} | ${r['cost']:.2f} | {r['best']:.0f} 倍 | "
+        out.append(f"| {r['symbol']} | {r['entry']} | {r['expiry']} | {r['otm']:.0%} | ${r['cost']:.2f} | {r['best']:.0f} 倍 | {r['best_close']:.0f} 倍 | "
                    f"{r['stock_peak']:+.0%} | {'是' if r['earnings'] else '否'} |")
     return "\n".join(out) + "\n"
 
