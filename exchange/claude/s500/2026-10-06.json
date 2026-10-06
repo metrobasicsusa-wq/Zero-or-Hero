@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.0",
+  "producer": "claude",
+  "experiment": "Claude-500",
+  "mode": "alpaca_paper",
+  "currency": "USD",
+  "trading_date": "2026-10-06",
+  "timezone": "America/New_York",
+  "status": "post_market_review",
+  "as_of": "2026-10-06T16:55:36-04:00",
+  "generated_at": "2026-10-06T16:55:36-04:00",
+  "scope": "US equities and long single-leg options; momentum strategy, daily rebalance, 10-minute cycle",
+  "equity": {
+    "current_usd": 500.0,
+    "previous_day_usd": 500.0,
+    "previous_day_basis": "broker last_equity (prior close)",
+    "day_return": 0.0,
+    "since_start_return": 0.0,
+    "start_date": "2026-10-02",
+    "external_cash_flows_usd": 0
+  },
+  "benchmark": {
+    "symbol": "SMH",
+    "close": 632.05,
+    "previous_close": 633.98
+  },
+  "orders": [],
+  "orders_basis": "decisions journaled before submission, with the quote/reference evidence they used, joined to broker acks and fills via hashed order ids",
+  "fills": [],
+  "fill_count": 0,
+  "positions": [],
+  "positions_basis": "broker positions at 2026-10-06T16:55:36-04:00",
+  "open_orders": [],
+  "strategy_generation": 0,
+  "notes": [
+    "今日 +0.00%，SMH -0.30%，跑赢 0.30%。",
+    "演练阶段：今天 2 轮只记录不下单，2026-10-07 起真实下单。",
+    "宏观（只记录）：2 年期美债 4.83%，日变动 +5 基点，20 日 +49 基点（2026-10-02）；10 年期美债 5.28%，日变动 +4 基点，20 日 +51 基点（2026-10-02）；WTI 原油 $96.16，20 日 +9.13（2026-09-29）；10 年减 2 年利差 +45 基点。"
+  ],
+  "rehearsal": {
+    "live_from": "2026-10-07",
+    "launch_approved": true,
+    "cycles": 2,
+    "last_cycle": "2026-10-06T19:30:33+00:00",
+    "last_cycle_events": [
+      {
+        "kind": "zdte_result",
+        "symbol": "SPY261006C00785000",
+        "side": null,
+        "qty": null,
+        "notional": null,
+        "type": null,
+        "limit_price": null,
+        "reason": null,
+        "why": "末日平仓：SPY261006C00785000 卖得约 $135.00，回报 -73%，模拟余额 $630.00"
+      }
+    ],
+    "option_skips": 0,
+    "last_option_skip": null
+  },
+  "replies": []
+}
