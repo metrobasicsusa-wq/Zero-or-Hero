@@ -3,6 +3,15 @@
  "start": "2024-02-01",
  "end": "2026-10-06",
  "capital": 10000.0,
+ "skips": {
+  "spread weekly: no entry price or credit too small": 580,
+  "spread weekly: not expired yet": 1,
+  "spread monthly: no entry price or credit too small": 346,
+  "spread monthly: not expired yet": 2,
+  "wheel: no put to sell": 39,
+  "wheel: no call to sell, retry next week": 32,
+  "wheel: expiry after the data": 3
+ },
  "spreads": {
   "weekly|0.015|5|False": {
    "n": 128,
@@ -1231,27 +1240,27 @@
  },
  "wheels": {
   "动量股（价格低于现金 / 100）": {
-   "final": 14284,
-   "cagr": 0.142,
+   "final": 20725,
+   "cagr": 0.313,
    "max_dd": -0.25,
    "worst_months": [
     [
      "2025-12",
-     -0.25
+     -0.214
+    ],
+    [
+     "2026-08",
+     -0.067
     ],
     [
      "2024-08",
      -0.032
-    ],
-    [
-     "2024-07",
-     -0.002
     ]
    ],
-   "trades": 18,
+   "trades": 29,
    "m2024_08": -0.032,
    "m2025_04": 0.019,
-   "cycles": 18,
+   "cycles": 24,
    "log": [
     [
      "2024-02-20",
@@ -1378,31 +1387,73 @@
      "put assigned",
      57.0,
      5.65
+    ],
+    [
+     "2025-12-31",
+     "IREN",
+     "called away",
+     40.0,
+     2.66
+    ],
+    [
+     "2026-03-06",
+     "BE",
+     "put expired",
+     128.0,
+     12.4
+    ],
+    [
+     "2026-04-06",
+     "NOK",
+     "put expired",
+     8.0,
+     0.21
+    ],
+    [
+     "2026-05-11",
+     "INTC",
+     "put expired",
+     122.0,
+     10.73
+    ],
+    [
+     "2026-07-01",
+     "INTC",
+     "put assigned",
+     120.0,
+     9.55
+    ],
+    [
+     "2026-08-11",
+     "INTC",
+     "call expired",
+     103.0,
+     5.42
     ]
    ]
   },
   "SPY（账户放大到 $100,000 才做得了）": {
-   "final": 100742,
-   "cagr": 0.003,
-   "max_dd": -0.006,
+   "final": 118362,
+   "cagr": 0.065,
+   "max_dd": -0.054,
    "worst_months": [
     [
-     "2025-03",
-     -0.006
+     "2026-03",
+     -0.053
     ],
     [
-     "2024-02",
-     0.0
+     "2025-04",
+     -0.031
     ],
     [
-     "2024-07",
-     0.001
+     "2025-11",
+     -0.013
     ]
    ],
-   "trades": 8,
+   "trades": 43,
    "m2024_08": 0.0,
-   "m2025_04": 0.0,
-   "cycles": 8,
+   "m2025_04": -0.031,
+   "cycles": 16,
    "log": [
     [
      "2024-02-01",
@@ -1459,6 +1510,62 @@
      "put assigned",
      582.0,
      1.85
+    ],
+    [
+     "2025-04-09",
+     "SPY",
+     "call expired",
+     571.0,
+     4.9
+    ],
+    [
+     "2025-07-09",
+     "SPY",
+     "call expired",
+     660.0,
+     0.45
+    ],
+    [
+     "2025-11-19",
+     "SPY",
+     "call expired",
+     696.0,
+     2.05
+    ],
+    [
+     "2026-01-07",
+     "SPY",
+     "call expired",
+     725.0,
+     0.49
+    ],
+    [
+     "2026-02-25",
+     "SPY",
+     "call expired",
+     728.0,
+     0.47
+    ],
+    [
+     "2026-04-15",
+     "SPY",
+     "called away",
+     735.0,
+     1.09
+    ],
+    [
+     "2026-06-03",
+     "SPY",
+     "put expired",
+     716.0,
+     2.73
+    ],
+    [
+     "2026-07-22",
+     "SPY",
+     "put expired",
+     710.0,
+     3.06
     ]
    ]
   }
@@ -1681,5 +1788,5 @@
    }
   }
  },
- "spy_buy_hold": 0.593
+ "spy_buy_hold": 0.595
 }
