@@ -1,0 +1,363 @@
+{
+  "schema_version": 1,
+  "created_at": "2026-10-06T16:37:44.268887+00:00",
+  "scope": "five sequential read-only historical 1Min SIP requests, six symbol/date cases; no broker routes or orders",
+  "http_market_requests": 5,
+  "requests_terminal_page_verified": true,
+  "sources": [
+    {
+      "url": "https://docs.alpaca.markets/docs/market-data-faq",
+      "final_url": "https://docs.alpaca.markets/us/docs/market-data-faq",
+      "status": 200,
+      "accessed_at": "2026-10-06T16:35:56.781429+00:00",
+      "sha256": "7ee2c76be7375675337cb21f53d05a0612c9095fac8ff31116c74be189816ce8",
+      "bytes": 634805,
+      "id": "faq",
+      "local_metadata": "raw-gap-probes/docs/faq-meta.json"
+    },
+    {
+      "url": "https://docs.alpaca.markets/reference/stockbars",
+      "final_url": "https://docs.alpaca.markets/us/reference/stockbars",
+      "status": 200,
+      "accessed_at": "2026-10-06T16:35:57.337459+00:00",
+      "sha256": "194ca30e46648ed684ab45ab177836b258a171a0f753006b283b52dd0943f574",
+      "bytes": 988353,
+      "id": "stock-bars",
+      "local_metadata": "raw-gap-probes/docs/stock-bars-meta.json"
+    },
+    {
+      "url": "https://docs.alpaca.markets/docs/stock-pricing-data",
+      "status": 404,
+      "accessed_at": "2026-10-06T16:35:58.314893+00:00",
+      "id": "stock-pricing",
+      "local_metadata": "raw-gap-probes/docs/stock-pricing-meta.json"
+    }
+  ],
+  "documentation_findings": [
+    {
+      "source": "faq",
+      "title": "Market Data FAQ \u2014 How are bars aggregated?",
+      "evidence_level": "official_primary_documentation",
+      "publication_date": null,
+      "summary": "Minute bars use the left edge of the SIP trade minute. Trade conditions determine price and volume updates. Bars are emitted only when all OHLCV fields are nonzero. No trades and odd-lot-only trades can both yield no bar. Five-minute bars aggregate returned minute bars; aggregation does not reconsider original trades.",
+      "short_quote": "if there's only a single I trade (which only updates the volume, but none of the prices), then no bar is generated."
+    },
+    {
+      "source": "stock-bars",
+      "title": "Historical bars API reference",
+      "evidence_level": "official_primary_documentation",
+      "publication_date": null,
+      "summary": "Explicit sip means all US exchanges; raw disables price/volume corporate-action adjustments, not ticker mapping. The asof default is current day and may map prior symbols; asof=- disables mapping. Start/end are inclusive. Pagination token must be checked even on a short page."
+    },
+    {
+      "source": "faq",
+      "summary": "The FAQ also identifies OTC subscription, inactive status and halts as reasons a queried symbol may lack data. No such individual reason was verified for these six cases."
+    }
+  ],
+  "cases": [
+    {
+      "date": "2025-12-24",
+      "symbol": "CHRN",
+      "request_parameters": {
+        "symbols": "CHRN,OMER",
+        "timeframe": "1Min",
+        "start": "2025-12-24T14:29:00+00:00",
+        "end": "2025-12-24T14:40:00+00:00",
+        "limit": 10000,
+        "adjustment": "raw",
+        "feed": "sip",
+        "sort": "asc"
+      },
+      "request_sha256": "79a0482bd878578684b88744ad33dc440a5431c678fdd21e0a2cda8f4823a233",
+      "request_pages": [
+        {
+          "name": "page-0000.json",
+          "sha256": "29283d1cc6f2e997ede048abbf5d0d2ee6e532992f4f65a60e5ae71a73e3ef71",
+          "bytes": 292,
+          "bar_count": 0,
+          "path": "raw-gap-probes/2025-12-24/page-0000.json"
+        }
+      ],
+      "api_bars_exact": [],
+      "first_five_bars": [],
+      "first_five_present_offsets": [],
+      "response_next_page_token": null,
+      "comparison_to_original_5min": [
+        {
+          "path": "raw-openings/2025-12-24/batch-0200/page-0000.json",
+          "sha256": "fee69ec6d0653c56758232fab54d62c50b1868327b33960f15330ff1ed1de511",
+          "parameters": {
+            "symbols": "CART,CAT,CAVA,CB,CBRE,CBRL,CBSH,CC,CCEP,CCHH,CCI,CCJ,CCK,CCL,CCOI,CDE,CDNS,CDP,CDW,CE,CEG,CELH,CENX,CETX,CF,CFG,CG,CGAU,CGEM,CGNX,CGON,CHA,CHD,CHKP,CHRN,CHRW,CHTR,CHWY,CHYM,CI,CIEN,CIFR,CIVI,CL,CLF,CLS,CLSK,CLX,CLYM,CM,CMC,CMCSA,CMCT,CME,CMG,CMS,CNC,CNI,CNK,CNM,CNP,CNQ,CNX,CNXC,COF,COGT,COHR,COIN,COLB,COMP,COO,COP,COR,CORT,CORZ,COST,CP,CPB,CPNG,CPRI,CPRT,CPT,CRBG,CRC,CRCL,CRDO,CRH,CRI,CRK,CRM,CRMD,CRML,CROX,CRSP,CRWD,CRWV,CSCO,CSGP,CSIQ,CSTM,CSX,CTAS,CTRE,CTRI,CTSH,CTVA,CUBE,CUZ,CVBF,CVE,CVI,CVNA,CVS,CVX,CWEN,CWH,CWK,CWST,CYTK,CZR,D,DAL,DAN,DAR,DASH,DB,DBI,DBX,DD,DDOG,DE,DECK,DELL,DEO,DFDV,DFLI,DFTX,DG,DGNX,DHI,DHR,DINO,DIS,DJT,DK,DKNG,DKS,DLR,DLTR,DNA,DNLI,DOCN,DOCS,DOCU,DOV,DOW,DPRO,DRI,DRS,DT,DTE,DUK,DUOL,DVN,DXCM,DXYZ,DYN,EAT,EBAY,ECHO,ECL,ED,EFX,EGO,EHC,EIX,EL,ELAN,ELF,ELME,ELS,ELV,ELVN,EMN,EMR,ENB,ENPH,ENR,ENTG,ENVX,EOG,EOSE,EPRT,EQH,EQNR,EQT,EQX,ERAS,ERO,ES",
+            "timeframe": "5Min",
+            "start": "2025-12-24T14:30:00+00:00",
+            "end": "2025-12-24T14:35:00+00:00",
+            "limit": 10000,
+            "adjustment": "raw",
+            "feed": "sip",
+            "sort": "asc"
+          },
+          "bars_for_symbol": []
+        }
+      ],
+      "conclusion": "confirmed_no_returned_bar_in_opening_window; underlying_cause_not_established; zero_volume_not_proven"
+    },
+    {
+      "date": "2025-12-24",
+      "symbol": "OMER",
+      "request_parameters": {
+        "symbols": "CHRN,OMER",
+        "timeframe": "1Min",
+        "start": "2025-12-24T14:29:00+00:00",
+        "end": "2025-12-24T14:40:00+00:00",
+        "limit": 10000,
+        "adjustment": "raw",
+        "feed": "sip",
+        "sort": "asc"
+      },
+      "request_sha256": "79a0482bd878578684b88744ad33dc440a5431c678fdd21e0a2cda8f4823a233",
+      "request_pages": [
+        {
+          "name": "page-0000.json",
+          "sha256": "29283d1cc6f2e997ede048abbf5d0d2ee6e532992f4f65a60e5ae71a73e3ef71",
+          "bytes": 292,
+          "bar_count": 0,
+          "path": "raw-gap-probes/2025-12-24/page-0000.json"
+        }
+      ],
+      "api_bars_exact": [],
+      "first_five_bars": [],
+      "first_five_present_offsets": [],
+      "response_next_page_token": null,
+      "comparison_to_original_5min": [
+        {
+          "path": "raw-openings/2025-12-24/batch-0800/page-0000.json",
+          "sha256": "2675ce4720b5210a3d2c71f9748c1cb3c31d582be80ffd339adbacbaa0836167",
+          "parameters": {
+            "symbols": "OC,OCG,OCUL,ODFL,OGE,OHI,OKE,OKLO,OKTA,OLLI,OLMA,OLN,OM,OMC,OMER,ON,ONB,ONDS,ONON,OPCH,OPTX,OR,ORCL,ORI,ORIC,ORLY,OSCR,OSS,OTIS,OUST,OVV,OWL,OXY,OZK,P,PAAS,PACS,PANW,PARR,PATH,PAVS,PAYX,PBA,PBF,PCAR,PCSA,PCT,PCVX,PDD,PDYN,PEG,PEGA,PENG,PENN,PEP,PFG,PFGC,PG,PGNY,PGR,PGY,PHAT,PHM,PHR,PINS,PL,PLAB,PLAY,PLCE,PLD,PLNT,PLTR,PM,PNC,PNFP,PNR,PNW,POET,PONY,POR,POWI,PPG,PPLI,PPTA,PRCT,PRIM,PRKS,PRMB,PRU,PSA,PSN,PSNL,PSX,PTCT,PUMP,PYPL,Q,QBTS,QCLS,QCOM,QFIN,QGEN,QS,QSR,QUBT,QURE,QXO,RADX,RAL,RARE,RBA,RBLX,RBRK,RCAT,RCL,RCUS,RDDT,RDN,RDNT,RDW,REAL,REG,RELX,REPL,REXR,REZI,RF,RGC,RGLD,RGTI,RH,RHI,RILY,RIO,RIOT,RIVN,RJF,RKLB,RKT,RMBS,RNG,ROIV,ROKU,ROL,ROLR,ROP,ROST,RPM,RPRX,RRC,RSG,RSI,RTB,RTX,RUN,RVLV,RVMD,RVTY,RXO,RYAAY,RYAN,RYN,RYTM,RZLT,SA,SAIL,SAP,SARO,SBET,SBH,SBLK,SBS,SBSW,SBUX,SCCO,SCHW,SDEV,SDOT,SE,SEDG,SEI,SERV,SEZL,SFM,SGI,SGML,SGRY,SHAK,SHEL,SHLS,SHOP,SHW,SIDU,SIRI,SJM,SKT,SLB,SLDE,SLG,SLM",
+            "timeframe": "5Min",
+            "start": "2025-12-24T14:30:00+00:00",
+            "end": "2025-12-24T14:35:00+00:00",
+            "limit": 10000,
+            "adjustment": "raw",
+            "feed": "sip",
+            "sort": "asc"
+          },
+          "bars_for_symbol": []
+        }
+      ],
+      "conclusion": "confirmed_no_returned_bar_in_opening_window; underlying_cause_not_established; zero_volume_not_proven"
+    },
+    {
+      "date": "2025-12-11",
+      "symbol": "LONA",
+      "request_parameters": {
+        "symbols": "LONA",
+        "timeframe": "1Min",
+        "start": "2025-12-11T14:29:00+00:00",
+        "end": "2025-12-11T14:40:00+00:00",
+        "limit": 10000,
+        "adjustment": "raw",
+        "feed": "sip",
+        "sort": "asc"
+      },
+      "request_sha256": "b2850cc820fcb9328cdd0d81a2f9cf01e0538d1e98eec42720e402743867584e",
+      "request_pages": [
+        {
+          "name": "page-0000.json",
+          "sha256": "360348c09f6e63773ab4b2e2dc4222de0a0f4f9d51b8fd080dd5ecbe026b92be",
+          "bytes": 292,
+          "bar_count": 0,
+          "path": "raw-gap-probes/2025-12-11/page-0000.json"
+        }
+      ],
+      "api_bars_exact": [],
+      "first_five_bars": [],
+      "first_five_present_offsets": [],
+      "response_next_page_token": null,
+      "comparison_to_original_5min": [
+        {
+          "path": "raw-openings/2025-12-11/batch-0400/page-0000.json",
+          "sha256": "48561ffd708866bad648379e5f17303f16937d5ddcd2e825eb5ed24af3bf1fab",
+          "parameters": {
+            "symbols": "FROG,FRPT,FSLR,FTI,FTNT,FTRE,FTV,FULC,FUN,FWDI,FWONK,FWRG,G,GAP,GD,GDDY,GDS,GE,GEHC,GEMI,GEO,GEV,GFI,GFL,GFS,GGAL,GH,GILD,GIS,GLNG,GLPI,GLSI,GLUE,GLW,GLXY,GM,GMAB,GME,GMED,GNRC,GOOG,GOOGL,GPCR,GPGI,GPN,GRMN,GRPN,GS,GSIT,GSK,GTLB,GVH,GWRE,HAL,HALO,HAPN,HAS,HBM,HCA,HD,HDB,HELE,HELP,HIG,HIMS,HL,HLF,HLT,HMY,HOG,HON,HOOD,HP,HPE,HPP,HPQ,HRB,HSAI,HSBC,HSIC,HSY,HTHT,HUM,HUT,HWM,HXL,HYMC,IAC,IAG,IBKR,IBM,ICE,IE,IFF,ILMN,IMAX,IMMX,IMNM,IMSR,IMVT,INBS,INCY,INDV,INFQ,INFY,INSM,INSP,INTC,INTU,INV,IONQ,IONS,IOT,IP,IQV,IR,IRDM,IREN,IRM,ISRG,IT,ITW,IVZ,JANX,JBL,JCI,JEF,JMIA,JNJ,JOBY,JPM,JZXN,KBH,KBR,KD,KDK,KEYS,KGC,KGS,KKR,KLAR,KMB,KMX,KNTK,KNX,KO,KOD,KPLT,KR,KRC,KRMN,KSS,KTOS,KURA,KVYO,KYTX,LAUR,LBRT,LCID,LEGN,LEN,LENZ,LEVI,LGN,LHAI,LIN,LINE,LITE,LKQ,LLY,LMND,LMT,LNC,LNG,LNT,LNTH,LONA,LOW,LPTH,LRCX,LRN,LSCC,LTBR,LTH,LULU,LUNR,LUV,LVS,LW,LXEO,LYB,LYFT,LYV,M,MA,MAA,MAR,MARA,MAS,MCD",
+            "timeframe": "5Min",
+            "start": "2025-12-11T14:30:00+00:00",
+            "end": "2025-12-11T14:35:00+00:00",
+            "limit": 10000,
+            "adjustment": "raw",
+            "feed": "sip",
+            "sort": "asc"
+          },
+          "bars_for_symbol": []
+        }
+      ],
+      "conclusion": "confirmed_no_returned_bar_in_opening_window; underlying_cause_not_established; zero_volume_not_proven"
+    },
+    {
+      "date": "2025-12-15",
+      "symbol": "LONA",
+      "request_parameters": {
+        "symbols": "LONA",
+        "timeframe": "1Min",
+        "start": "2025-12-15T14:29:00+00:00",
+        "end": "2025-12-15T14:40:00+00:00",
+        "limit": 10000,
+        "adjustment": "raw",
+        "feed": "sip",
+        "sort": "asc"
+      },
+      "request_sha256": "7f4ac538b3d9084e3e64f30af50baab8fcf38d148302d0a1cf7fe85c6f42c7c1",
+      "request_pages": [
+        {
+          "name": "page-0000.json",
+          "sha256": "e73b91d55651f01f6f6f6677f47464ace40c1d7fc182bd85201f042578a4f003",
+          "bytes": 292,
+          "bar_count": 0,
+          "path": "raw-gap-probes/2025-12-15/page-0000.json"
+        }
+      ],
+      "api_bars_exact": [],
+      "first_five_bars": [],
+      "first_five_present_offsets": [],
+      "response_next_page_token": null,
+      "comparison_to_original_5min": [
+        {
+          "path": "raw-openings/2025-12-15/batch-0400/page-0000.json",
+          "sha256": "3d582eebfd62a352ce6915083d2bdc78e051e316887aec4324ce1b1524ac1158",
+          "parameters": {
+            "symbols": "FLNC,FLR,FLS,FLUT,FLY,FMC,FND,FNF,FOUR,FOX,FOXA,FRMI,FRMM,FRO,FROG,FRPT,FSLR,FTAI,FTI,FTNT,FTRE,FTV,FULC,FUN,FUTU,FWDI,FWONK,FWRG,G,GAP,GD,GDDY,GDS,GE,GEHC,GEMI,GEN,GEO,GEV,GFI,GFL,GFS,GGAL,GH,GILD,GIS,GLNG,GLOB,GLPI,GLSI,GLUE,GLW,GLXY,GM,GMAB,GME,GMED,GNRC,GOOG,GOOGL,GPCR,GPGI,GPN,GRMN,GRPN,GS,GSIT,GSK,GTLB,GVH,GWRE,GXO,HAL,HALO,HAPN,HAS,HBM,HCA,HCSG,HD,HDB,HELE,HELP,HIG,HIMS,HL,HLF,HLT,HMY,HOG,HON,HOOD,HP,HPE,HPP,HPQ,HRB,HSAI,HSBC,HSIC,HSY,HTHT,HUM,HUT,HWM,HXL,HYMC,IAC,IAG,IBKR,IBM,ICE,IE,IFF,ILMN,IMAX,IMMX,IMNM,IMSR,IMVT,INBS,INCY,INDV,INFQ,INFY,INSM,INSP,INTC,INTU,INV,IONQ,IONS,IOT,IP,IQV,IR,IRDM,IREN,IRM,ISRG,IT,ITW,IVZ,JANX,JBL,JCI,JD,JEF,JMIA,JNJ,JOBY,JPM,JZXN,KBH,KBR,KD,KDK,KEYS,KGC,KGS,KKR,KLAR,KMB,KMX,KNTK,KNX,KO,KOD,KPLT,KR,KRC,KRMN,KSS,KTOS,KURA,KVYO,KYTX,LAUR,LBRT,LCID,LEGN,LEN,LENZ,LEVI,LGN,LHAI,LI,LIN,LINE,LITE,LKQ,LLY,LMND,LMT,LNC,LNG,LNT,LNTH,LONA,LOW",
+            "timeframe": "5Min",
+            "start": "2025-12-15T14:30:00+00:00",
+            "end": "2025-12-15T14:35:00+00:00",
+            "limit": 10000,
+            "adjustment": "raw",
+            "feed": "sip",
+            "sort": "asc"
+          },
+          "bars_for_symbol": []
+        }
+      ],
+      "conclusion": "confirmed_no_returned_bar_in_opening_window; underlying_cause_not_established; zero_volume_not_proven"
+    },
+    {
+      "date": "2025-12-16",
+      "symbol": "LONA",
+      "request_parameters": {
+        "symbols": "LONA",
+        "timeframe": "1Min",
+        "start": "2025-12-16T14:29:00+00:00",
+        "end": "2025-12-16T14:40:00+00:00",
+        "limit": 10000,
+        "adjustment": "raw",
+        "feed": "sip",
+        "sort": "asc"
+      },
+      "request_sha256": "3804646025a3ce8be08a6058e9830be333a43f458fa781ea4bd731e43ec35072",
+      "request_pages": [
+        {
+          "name": "page-0000.json",
+          "sha256": "f34e9272e56a77196129b7998ed46ee66910baaeed50a1dfe38ae8855d3e1cf3",
+          "bytes": 389,
+          "bar_count": 1,
+          "path": "raw-gap-probes/2025-12-16/page-0000.json"
+        }
+      ],
+      "api_bars_exact": [
+        {
+          "c": 3.85,
+          "h": 3.85,
+          "l": 3.85,
+          "n": 1,
+          "o": 3.85,
+          "t": "2025-12-16T14:39:00Z",
+          "v": 150,
+          "vw": 3.85
+        }
+      ],
+      "first_five_bars": [],
+      "first_five_present_offsets": [],
+      "response_next_page_token": null,
+      "comparison_to_original_5min": [
+        {
+          "path": "raw-openings/2025-12-16/batch-0600/page-0000.json",
+          "sha256": "bbfae4df0625fa99c44058a82fd7fac83317fb0bac49cb91d6d6b00aaca01324",
+          "parameters": {
+            "symbols": "LITE,LKQ,LLY,LMND,LMT,LNC,LNG,LNT,LNTH,LONA,LOW,LPTH,LQDA,LRCX,LRN,LSCC,LTBR,LTH,LULU,LUNR,LUV,LVS,LW,LXEO,LYB,LYFT,LYV,M,MA,MAA,MAR,MARA,MAS,MCD,MCHP,MDB,MDLZ,MDT,MENS,MET,META,METC,MGA,MGM,MGNI,MGY,MHK,MIAX,MIR,MKC,MLTX,MLYS,MMM,MMYT,MNDY,MNST,MNTS,MO,MOD,MOH,MOS,MP,MPC,MPLX,MRK,MRNA,MRP,MRSH,MRVL,MS,MSFT,MSI,MSTR,MT,MTCH,MTDR,MTN,MU,MUR,MUX,MXL,NAVN,NBIS,NBIX,NCLH,NCNO,NDAQ,NE,NEE,NEM,NET,NFLX,NI,NIQ,NKE,NKTR,NMAX,NNE,NNN,NOG,NOV,NOW,NRG,NRGV,NRIX,NSC,NSP,NTAP,NTNX,NTR,NTRA,NTSK,NUAI,NUE,NVCR,NVDA,NVO,NVS,NVST,NVT,NVTS,NWS,NX,NXE,NXPI,NXT,NYT,O,OC,OCG,OCUL,ODFL,OGE,OHI,OKE,OKLO,OKTA,OLLI,OLMA,OLN,OMC,OMER,ON,ONDS,ONON,OPCH,OR,ORCL,ORI,ORLY,OSCR,OTIS,OUST,OVV,OWL,OXY,P,PAAS,PACS,PANW,PARR,PATH,PAVS,PAYX,PBA,PBF,PCAR,PCSA,PCT,PCVX,PDD,PEG,PEGA,PEP,PFG,PFGC,PG,PGNY,PGR,PGY,PHAT,PHM,PHR,PINS,PL,PLAB,PLAY,PLCE,PLD,PLNT,PLTR,PM,PNC,PNFP,PNR,PNW,POET,PONY,POR,POWI",
+            "timeframe": "5Min",
+            "start": "2025-12-16T14:30:00+00:00",
+            "end": "2025-12-16T14:35:00+00:00",
+            "limit": 10000,
+            "adjustment": "raw",
+            "feed": "sip",
+            "sort": "asc"
+          },
+          "bars_for_symbol": [
+            {
+              "c": 3.85,
+              "h": 3.85,
+              "l": 3.85,
+              "n": 1,
+              "o": 3.85,
+              "t": "2025-12-16T14:35:00Z",
+              "v": 150,
+              "vw": 3.85
+            }
+          ]
+        }
+      ],
+      "conclusion": "confirmed_no_returned_bar_in_opening_window; underlying_cause_not_established; zero_volume_not_proven"
+    },
+    {
+      "date": "2025-12-12",
+      "symbol": "RADX",
+      "request_parameters": {
+        "symbols": "RADX",
+        "timeframe": "1Min",
+        "start": "2025-12-12T14:29:00+00:00",
+        "end": "2025-12-12T14:40:00+00:00",
+        "limit": 10000,
+        "adjustment": "raw",
+        "feed": "sip",
+        "sort": "asc"
+      },
+      "request_sha256": "2844ec5e92d95bf59c2916e49c0a525e06fd10ee20a72be47f35f265e41a8309",
+      "request_pages": [
+        {
+          "name": "page-0000.json",
+          "sha256": "5bce1a656b6f3ffbcd61774fffa6e0f0e99b4b8c1011b614db9f621d7a1ab4f2",
+          "bytes": 292,
+          "bar_count": 0,
+          "path": "raw-gap-probes/2025-12-12/page-0000.json"
+        }
+      ],
+      "api_bars_exact": [],
+      "first_five_bars": [],
+      "first_five_present_offsets": [],
+      "response_next_page_token": null,
+      "comparison_to_original_5min": [
+        {
+          "path": "raw-openings/2025-12-12/batch-0600/page-0000.json",
+          "sha256": "25ee8689591293f746e4f64d580b3d07106ff6d22ef2c35a9ed4d30c721b8df6",
+          "parameters": {
+            "symbols": "LXEO,LYB,LYFT,LYV,M,MA,MAA,MAR,MARA,MAS,MCD,MCHP,MDB,MDLZ,MDT,MENS,MET,META,METC,MGA,MGM,MGNI,MHK,MIAX,MIR,MKC,MLTX,MLYS,MMM,MMYT,MNDY,MNST,MNTS,MO,MOD,MOH,MOS,MP,MPC,MPLX,MRK,MRNA,MRP,MRSH,MRVL,MS,MSFT,MSI,MSTR,MT,MTCH,MTDR,MTN,MU,MUR,MUX,MXL,NAVN,NBIS,NCLH,NCNO,NDAQ,NE,NEE,NEM,NET,NFLX,NI,NKE,NKTR,NMAX,NNE,NNN,NOG,NOW,NRG,NRGV,NRIX,NSC,NSP,NTAP,NTNX,NTR,NTRA,NTSK,NUAI,NUE,NVDA,NVO,NVS,NVT,NVTS,NX,NXE,NXPI,NXT,NYT,O,OC,OCG,OCUL,ODFL,OGE,OHI,OKE,OKLO,OKTA,OLLI,OLMA,OLN,OMC,OMER,ON,ONDS,ONON,OPCH,OR,ORCL,ORI,ORLY,OSCR,OTIS,OUST,OVV,OWL,OXY,P,PAAS,PACS,PANW,PARR,PATH,PAVS,PAYX,PBA,PBF,PCAR,PCSA,PCT,PCVX,PDD,PEG,PEGA,PEP,PFG,PFGC,PG,PGNY,PGR,PGY,PHAT,PHM,PHR,PINS,PL,PLAB,PLAY,PLCE,PLD,PLNT,PLTR,PM,PNC,PNFP,PNW,POET,PONY,POR,POWI,PPG,PPLI,PPTA,PRCT,PRIM,PRU,PSA,PSN,PSX,PTCT,PYPL,Q,QBTS,QCLS,QCOM,QFIN,QGEN,QS,QSR,QUBT,QURE,QXO,RADX,RAL,RARE,RBLX,RBRK,RCAT,RCL,RCUS,RDDT",
+            "timeframe": "5Min",
+            "start": "2025-12-12T14:30:00+00:00",
+            "end": "2025-12-12T14:35:00+00:00",
+            "limit": 10000,
+            "adjustment": "raw",
+            "feed": "sip",
+            "sort": "asc"
+          },
+          "bars_for_symbol": []
+        }
+      ],
+      "conclusion": "confirmed_no_returned_bar_in_opening_window; underlying_cause_not_established; zero_volume_not_proven"
+    }
+  ],
+  "interpretation": "The API reproducibly omits the first five minute bars for all six cases. Documentation shows that absence is not equivalent to zero actual volume. Responses alone cannot distinguish no trades, price-ineligible trades, a halt/status/mapping condition, or a source coverage failure. Original and probe bar endpoints share a source and are not independent ground truth. No raw trades/quotes/halts or historical ticker identity were queried.",
+  "research_action": "Do not impute first-five volume as zero, forward-fill OHLC, silently drop a candidate from the ranking, or pick a replacement winner. Strict protocol retains incomplete. A separately frozen operational skip-session sensitivity may stay in cash when the gap is observable before any fill, while retaining the full aborted decision.",
+  "api_route": "https://data.alpaca.markets/v2/stocks/bars",
+  "credential_values_stored": false,
+  "market_data_py_sha256": "917d764417a7dda5a3665a790a0813f408ba79ce5d6ef44dbf0555ec0825bccd",
+  "raw_storage_note": "Page JSON preserves exact decoded API bar values plus timestamp/request hashes; it is not a byte-for-byte capture of HTTP transfer encoding. Full docs retained locally for verification only."
+}

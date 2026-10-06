@@ -1,0 +1,161 @@
+{
+  "audited_at": "2026-10-06T16:44:40.984121+00:00",
+  "synthetic_tests": {
+    "module": "test_audit.py",
+    "count": 15,
+    "passed": 15,
+    "network_calls": 0
+  },
+  "source_sha256": {
+    "market_data.py": "917d764417a7dda5a3665a790a0813f408ba79ce5d6ef44dbf0555ec0825bccd",
+    "download_inputs.py": "82675021b1d9796add7d4be326be098c63329979407902d121c5e89471a62edb",
+    "engine.py": "cc2bacd7d762b341c8317a9c4680f5439ff4960da76ece9e3aaba2b6cf80d514",
+    "features.py": "3b689118fe86bbbdbe0f6d77bdb18310b7a49e864b42e6ae7c57dce3f677ee02",
+    "prepare.json": "c02084ab2960ddd63db9f20343c460451d9a34e4802b2a0e2e4003ed33acc73a",
+    "test_audit.py": "614d497eb59db612c379a9a2254884f863a4c74a3681afd892118ed8ef5cee50",
+    "coverage_bounds.py": "e356e57c24819e4cd4d46d4905ec16e25854b6fedf28623e6102339f240685e6",
+    "test_coverage_bounds.py": "f78b2f63670f671d09d1dcb9fca08f789e5887e5f6b12af1276693d0213e2ab1",
+    "run_research.py": "2882db0e86ce884813a022971975c12f4a0a2682c88d21e7768d71618dc41c36",
+    "bounded-coverage.json": "c481fa76136cef6d19df4ca059471870265c4ae1f8af8e7a1711e329590f6cb8"
+  },
+  "raw_daily_inputs": {
+    "status": "passed",
+    "manifest_sha256": "9458787dac84f6b0ea7d2344bf0b23caf817a4cbe3d451ce5cbc8d3fe16ed287",
+    "files_checked": 105,
+    "daily_batches_checked": 104,
+    "bytes_checked": 130058002,
+    "mismatches": [],
+    "note": "Independent actual-file byte size and SHA256 verification; prepare_daily itself hashes the manifest but does not validate referenced raw files."
+  },
+  "independent_opening_reaggregation": [
+    {
+      "date": "2026-03-06",
+      "symbol": "SPY",
+      "first5minute_OHLCV_reaggregation_passed": true
+    },
+    {
+      "date": "2026-03-06",
+      "symbol": "MU",
+      "first5minute_OHLCV_reaggregation_passed": true
+    },
+    {
+      "date": "2026-03-06",
+      "symbol": "NVDA",
+      "first5minute_OHLCV_reaggregation_passed": true
+    },
+    {
+      "date": "2026-03-09",
+      "symbol": "SPY",
+      "first5minute_OHLCV_reaggregation_passed": true
+    },
+    {
+      "date": "2026-03-09",
+      "symbol": "MU",
+      "first5minute_OHLCV_reaggregation_passed": true
+    },
+    {
+      "date": "2026-03-09",
+      "symbol": "NVDA",
+      "first5minute_OHLCV_reaggregation_passed": true
+    },
+    {
+      "date": "2026-07-02",
+      "symbol": "SPY",
+      "first5minute_OHLCV_reaggregation_passed": true
+    },
+    {
+      "date": "2026-07-02",
+      "symbol": "MU",
+      "first5minute_OHLCV_reaggregation_passed": true
+    },
+    {
+      "date": "2026-07-02",
+      "symbol": "NVDA",
+      "first5minute_OHLCV_reaggregation_passed": true
+    }
+  ],
+  "findings": [
+    {
+      "id": "resume_page_request_binding",
+      "severity": "resolved",
+      "status": "patch_independently_tested",
+      "description": "Each new partial page now binds exact request incl page token via SHA256; cached nonzero legacy page is rejected. Independent tests prove changed prior next-page token rejects resumption; 15 audit tests pass. Active first5 downloader initially used prior module but its <=200-symbol chunks have single pages."
+    },
+    {
+      "id": "ranking_coverage_required",
+      "severity": "caller_gate_required",
+      "status": "driver_gate_implemented",
+      "description": "run_research.py explicitly requires full matching190day coverage/ranked date sets, supplies coverage, retains original6 strict runs and separate6 gap-guarded sensitivities. Engine API alone still permits omitted metadata; driver gate is required."
+    },
+    {
+      "id": "prepare_manifest_not_raw_verification",
+      "severity": "verified_for_this_run",
+      "status": "independent_check_passed",
+      "description": "prepare_daily hashes manifest itself only; independent audit verified every referenced104daily batch andcalendar bytes/hash."
+    },
+    {
+      "id": "early_close_extra_bar",
+      "severity": "low",
+      "status": "engine_bounds_protect_current_run",
+      "description": "download_inputs normalizes intraday offsets<390 even on early-close days; engine uses actual calendar closing offset and ignores later bars. Prefer normalization to calendar close for clarity."
+    }
+  ],
+  "not_a_profitability_result": true,
+  "bounds_tests": {
+    "module": "test_coverage_bounds.py",
+    "count": 13,
+    "passed": 13,
+    "network_calls": 0
+  },
+  "bounded_ranking": {
+    "evaluation_days": 190,
+    "strict_complete_days": 0,
+    "certified_top20_days": 62,
+    "source_complete_days": 0,
+    "original_gaps_preserved": 1484,
+    "certified_excluded_gaps": 1273,
+    "unresolved_gaps": 211,
+    "proof_reason_counts": {
+      "RV_upper_bound_below1": 1001,
+      "RV_upper_bound_sortkey_after_known20th": 272,
+      "could_enter_top20": 62,
+      "missing_or_invalid_current_opening": 149
+    }
+  },
+  "findings_history": [
+    {
+      "audited_at": "2026-10-06T16:34:40.783506+00:00",
+      "synthetic_tests_count": 13,
+      "findings": [
+        {
+          "id": "resume_page_request_binding",
+          "status": "open",
+          "description": "Initial audit observed base request digest and page number only; recommended binding exact page token request. Normal recovery passed; no corrupted actual cache observed."
+        },
+        {
+          "id": "ranking_coverage_required",
+          "status": "open",
+          "description": "Initial engine API permitted missing coverage metadata. Required driver gate had not yet been confirmed."
+        }
+      ],
+      "superseded_by_current_status": true
+    },
+    {
+      "audited_at": "2026-10-06T16:44:40.984121+00:00",
+      "synthetic_tests_count": 15,
+      "bounds_tests_count": 13,
+      "description": "Current audit confirms page-chain guard and driver date/coverage gate, preserves original open findings as history. Added reverse-split bound test after initial12boundtests."
+    }
+  ],
+  "actual_results_review": {
+    "results_sha256": "74e855002e58e095654a742a70e7118c251c014872d6a0b0eeea5f19362334ce",
+    "paths": 12,
+    "complete_paths": 0,
+    "final_equity_all_null": true,
+    "original6_stop": "2026-01-02 incomplete_ranking_inputs",
+    "guarded6_stop": "2026-01-06 09:49 missing_or_invalid_held_minute PRCT",
+    "no_annual_return_claim": true,
+    "last_observed_equity_not_terminal_wealth": true,
+    "independent_day_reset_diagnostics_are_not_cumulative_wealth": true
+  }
+}

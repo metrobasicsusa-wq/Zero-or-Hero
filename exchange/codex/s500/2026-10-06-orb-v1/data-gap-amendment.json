@@ -1,0 +1,21 @@
+{
+  "id": "s500-orb-v1-data-gap-sensitivity",
+  "registered_at": "2026-10-06T16:36:41.950013+00:00",
+  "status": "frozen_before_any_ORB_path_performance_result",
+  "parent_registry_sha256": "d99bbc71c5360ed9db0484838e9ad144e41db1306c2549ce76c7ebcccf6eebc8",
+  "trigger": "Initial48 fullydownloaded ranking days all show missing first5 input; no ORB profit results produced.",
+  "original_strict_six": "Preserved unchanged: unresolved ranking or decision gap stops continuous path; final equity unknown.",
+  "supplemental_six": "Same6 allocation/cost combinations, with observed pre-entry data gaps causing no trading for that entire session; cash and unsettled receivables still accounted.",
+  "guardrails": [
+    "No missing volume zero imputation. If unknown nonnegative prior volume cannot possibly enter top20 even at maximum possible RV, a mathematical bound may certify same ranking; retain proof.",
+    "Missing current opening, unknown prior gap capable of displacing top20, missing active candidate decision bar, or missing selected entry open: skip session only when identified before any entry; no runnerup.",
+    "Once any entry is executed in the model, missing held data stops the path incomplete. Never skip losing or unknown holding intervals.",
+    "No skipped date depends on future return, high, low, close, or later data availability. Data availability at the time of historical decision is itself unverified; this is a retrospectively data-censored fail-closed model, not evidence of live historical availability.",
+    "Alloriginal strict outcomes, all guardedsensitivities, skipped dates and reasons, candidates and costs published.",
+    "Guarded coverage results do not establish unconstrained fulluniverse strategy profitability or validate missing market data."
+  ],
+  "additional_paths": 6,
+  "total_ORB_paths_including_original": 12,
+  "funding": "500 initial each; no leverage/restart/reinjection",
+  "broker_orders_sent": 0
+}

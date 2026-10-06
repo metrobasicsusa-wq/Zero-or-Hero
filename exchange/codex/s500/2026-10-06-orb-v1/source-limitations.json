@@ -1,0 +1,28 @@
+{
+  "generated_at": "2026-10-06T16:39:13.534106+00:00",
+  "daily_input_manifest": {
+    "registry": "d99bbc71c5360ed9db0484838e9ad144e41db1306c2549ce76c7ebcccf6eebc8",
+    "universe": "beb07623123f6628e783a33809b67c2fdf40faf89d1f266c79bdf4b0e5f2882a",
+    "classification": "1b899b2e11e9977421fa9b2f1ee518df2d28268a380e56dbc22e03e8db286786",
+    "calendar": "c9b72d602ddf935f234b6946aa6c0530713c3d4035bdb482f21ed64d912b6d6d",
+    "company_actions": "e971f2a831a507395913c97c8e48e005912a6f0f60c5f398bb38c09a1f3a59ef",
+    "daily_input_manifest": "9458787dac84f6b0ea7d2344bf0b23caf817a4cbe3d451ce5cbc8d3fe16ed287"
+  },
+  "source": "Alpaca historical SIP RAW stock bars",
+  "request_defaults": [
+    "Stockbars asof omitted so provider defaults historical name-mapping to retrieval date; raw only disables price adjustment.",
+    "Current active/inactive directory and current ETF classifications are not historical point-in-time."
+  ],
+  "coverage_policy": "Absent bars mean no published OHLCV bar; may reflect no eligible trade, only odd-lot/excluded price updates, provider/identity/halt issues. Absence never proves zero actual volume.",
+  "unresolved": [
+    "Security identity/aliases cannot be certified unique historically from symbol/name metadata; all strategy evidence is provisional.",
+    "Unknown current instrument classifications retained and labeled; source directory name filters and classification are not exhaustive stock-type validation.",
+    "A mathematical upper bound using missing nonnegative historical published-bar volume can certify a top20 only within this supplied directory/input model; it does not cure source misidentification or survivorship.",
+    "Historical SIP prints do not verify executable spread, liquidity, halt behavior or order acceptance.",
+    "Minute OHLC stop model and exact-open quantity sizing remain idealized; no live/replay execution enabled."
+  ],
+  "provider_documentation": [
+    "https://docs.alpaca.markets/us/docs/market-data-faq",
+    "https://docs.alpaca.markets/us/reference/stockbars"
+  ]
+}

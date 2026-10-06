@@ -1,0 +1,706 @@
+{
+  "created_at": "2026-10-06T16:42:28.070379+00:00",
+  "study": "ORB2026-YTD-v1",
+  "period": [
+    "2026-01-02",
+    "2026-10-05"
+  ],
+  "evaluation_sessions": 190,
+  "original_paths": 6,
+  "gap_guarded_sensitivity_paths": 6,
+  "source_sha256": {
+    "registry.json": "d99bbc71c5360ed9db0484838e9ad144e41db1306c2549ce76c7ebcccf6eebc8",
+    "implementation-amendment.json": "8e98d6d30b2b621908bbf8ce86c4fd90a566afccf32ad3b096d2ce19ef89ca97",
+    "data-gap-amendment.json": "dc5dd5378baf27811b4b7421270b113d4fbf0d5994aeb1d86552af42cd9eb90f",
+    "prepare.json": "c02084ab2960ddd63db9f20343c460451d9a34e4802b2a0e2e4003ed33acc73a",
+    "ranked.json": "570636ea1e85cf40a2e8f1545cad0030bacc83fcaed74efff759bbe25292f345",
+    "ranking-diagnostics.json": "4fdff47e2fef777ed27b494de8934640613a8472e23d77172c3c1d68bfd90023",
+    "bounded-coverage.json": "c481fa76136cef6d19df4ca059471870265c4ae1f8af8e7a1711e329590f6cb8",
+    "opening-market.json": "237da7e253c6531ba09a5c4e4d30f71c4d8e4a98001a7373d8251c920b17ac37",
+    "minute-market.json": "7e3e313766ced4b4f070864f6765e1d9f73c1d0ff9d76e53f27443ac775ee81a",
+    "engine.py": "cc2bacd7d762b341c8317a9c4680f5439ff4960da76ece9e3aaba2b6cf80d514",
+    "features.py": "3b689118fe86bbbdbe0f6d77bdb18310b7a49e864b42e6ae7c57dce3f677ee02",
+    "coverage_bounds.py": "e356e57c24819e4cd4d46d4905ec16e25854b6fedf28623e6102339f240685e6",
+    "market_data.py": "917d764417a7dda5a3665a790a0813f408ba79ce5d6ef44dbf0555ec0825bccd",
+    "download_inputs.py": "82675021b1d9796add7d4be326be098c63329979407902d121c5e89471a62edb",
+    "run_research.py": "2882db0e86ce884813a022971975c12f4a0a2682c88d21e7768d71618dc41c36"
+  },
+  "paths": [
+    {
+      "id": "original_strict__ORB-RV-500-v1__a0.5__c25",
+      "research_mode": "original_strict",
+      "parameters": {
+        "capital_fraction": 0.5,
+        "cost_bps_each_side": 25,
+        "pre_entry_gap_policy": "stop"
+      },
+      "status": "incomplete",
+      "incomplete": {
+        "date": "2026-01-02",
+        "time": "2026-01-02T09:35:00-05:00",
+        "reason": "incomplete_ranking_inputs",
+        "ranking_missing": [
+          {
+            "date": "2026-01-02",
+            "symbol": "CHRN",
+            "reason": "missing_or_invalid_prior_openings",
+            "missing_dates": [
+              "2025-12-24"
+            ]
+          },
+          {
+            "date": "2026-01-02",
+            "symbol": "LONA",
+            "reason": "missing_or_invalid_prior_openings",
+            "missing_dates": [
+              "2025-12-11",
+              "2025-12-15",
+              "2025-12-16"
+            ]
+          },
+          {
+            "date": "2026-01-02",
+            "symbol": "OMER",
+            "reason": "missing_or_invalid_prior_openings",
+            "missing_dates": [
+              "2025-12-24"
+            ]
+          },
+          {
+            "date": "2026-01-02",
+            "symbol": "RADX",
+            "reason": "missing_or_invalid_prior_openings",
+            "missing_dates": [
+              "2025-12-12"
+            ]
+          }
+        ]
+      },
+      "initial_funding": 500,
+      "additional_funding": 0,
+      "restart_count": 0,
+      "final_equity": null,
+      "settled_cash": 500.0,
+      "unsettled_cash": 0,
+      "last_observed_equity": 500.0,
+      "max_daily_liquidation_drawdown": 0.0,
+      "max_observed_minute_liquidation_drawdown": 0.0,
+      "milestones": {
+        "1000": null,
+        "2000": null,
+        "10000": null
+      },
+      "sessions_accounted": 1,
+      "trades": 0,
+      "profitable_trades": 0,
+      "losing_trades": 0,
+      "modeled_pnl": 0,
+      "exit_reasons": {},
+      "skipped_data_sessions": 0
+    },
+    {
+      "id": "original_strict__ORB-RV-500-v1__a0.5__c50",
+      "research_mode": "original_strict",
+      "parameters": {
+        "capital_fraction": 0.5,
+        "cost_bps_each_side": 50,
+        "pre_entry_gap_policy": "stop"
+      },
+      "status": "incomplete",
+      "incomplete": {
+        "date": "2026-01-02",
+        "time": "2026-01-02T09:35:00-05:00",
+        "reason": "incomplete_ranking_inputs",
+        "ranking_missing": [
+          {
+            "date": "2026-01-02",
+            "symbol": "CHRN",
+            "reason": "missing_or_invalid_prior_openings",
+            "missing_dates": [
+              "2025-12-24"
+            ]
+          },
+          {
+            "date": "2026-01-02",
+            "symbol": "LONA",
+            "reason": "missing_or_invalid_prior_openings",
+            "missing_dates": [
+              "2025-12-11",
+              "2025-12-15",
+              "2025-12-16"
+            ]
+          },
+          {
+            "date": "2026-01-02",
+            "symbol": "OMER",
+            "reason": "missing_or_invalid_prior_openings",
+            "missing_dates": [
+              "2025-12-24"
+            ]
+          },
+          {
+            "date": "2026-01-02",
+            "symbol": "RADX",
+            "reason": "missing_or_invalid_prior_openings",
+            "missing_dates": [
+              "2025-12-12"
+            ]
+          }
+        ]
+      },
+      "initial_funding": 500,
+      "additional_funding": 0,
+      "restart_count": 0,
+      "final_equity": null,
+      "settled_cash": 500.0,
+      "unsettled_cash": 0,
+      "last_observed_equity": 500.0,
+      "max_daily_liquidation_drawdown": 0.0,
+      "max_observed_minute_liquidation_drawdown": 0.0,
+      "milestones": {
+        "1000": null,
+        "2000": null,
+        "10000": null
+      },
+      "sessions_accounted": 1,
+      "trades": 0,
+      "profitable_trades": 0,
+      "losing_trades": 0,
+      "modeled_pnl": 0,
+      "exit_reasons": {},
+      "skipped_data_sessions": 0
+    },
+    {
+      "id": "original_strict__ORB-RV-500-v1__a0.5__c100",
+      "research_mode": "original_strict",
+      "parameters": {
+        "capital_fraction": 0.5,
+        "cost_bps_each_side": 100,
+        "pre_entry_gap_policy": "stop"
+      },
+      "status": "incomplete",
+      "incomplete": {
+        "date": "2026-01-02",
+        "time": "2026-01-02T09:35:00-05:00",
+        "reason": "incomplete_ranking_inputs",
+        "ranking_missing": [
+          {
+            "date": "2026-01-02",
+            "symbol": "CHRN",
+            "reason": "missing_or_invalid_prior_openings",
+            "missing_dates": [
+              "2025-12-24"
+            ]
+          },
+          {
+            "date": "2026-01-02",
+            "symbol": "LONA",
+            "reason": "missing_or_invalid_prior_openings",
+            "missing_dates": [
+              "2025-12-11",
+              "2025-12-15",
+              "2025-12-16"
+            ]
+          },
+          {
+            "date": "2026-01-02",
+            "symbol": "OMER",
+            "reason": "missing_or_invalid_prior_openings",
+            "missing_dates": [
+              "2025-12-24"
+            ]
+          },
+          {
+            "date": "2026-01-02",
+            "symbol": "RADX",
+            "reason": "missing_or_invalid_prior_openings",
+            "missing_dates": [
+              "2025-12-12"
+            ]
+          }
+        ]
+      },
+      "initial_funding": 500,
+      "additional_funding": 0,
+      "restart_count": 0,
+      "final_equity": null,
+      "settled_cash": 500.0,
+      "unsettled_cash": 0,
+      "last_observed_equity": 500.0,
+      "max_daily_liquidation_drawdown": 0.0,
+      "max_observed_minute_liquidation_drawdown": 0.0,
+      "milestones": {
+        "1000": null,
+        "2000": null,
+        "10000": null
+      },
+      "sessions_accounted": 1,
+      "trades": 0,
+      "profitable_trades": 0,
+      "losing_trades": 0,
+      "modeled_pnl": 0,
+      "exit_reasons": {},
+      "skipped_data_sessions": 0
+    },
+    {
+      "id": "original_strict__ORB-RV-500-v1__a1__c25",
+      "research_mode": "original_strict",
+      "parameters": {
+        "capital_fraction": 1.0,
+        "cost_bps_each_side": 25,
+        "pre_entry_gap_policy": "stop"
+      },
+      "status": "incomplete",
+      "incomplete": {
+        "date": "2026-01-02",
+        "time": "2026-01-02T09:35:00-05:00",
+        "reason": "incomplete_ranking_inputs",
+        "ranking_missing": [
+          {
+            "date": "2026-01-02",
+            "symbol": "CHRN",
+            "reason": "missing_or_invalid_prior_openings",
+            "missing_dates": [
+              "2025-12-24"
+            ]
+          },
+          {
+            "date": "2026-01-02",
+            "symbol": "LONA",
+            "reason": "missing_or_invalid_prior_openings",
+            "missing_dates": [
+              "2025-12-11",
+              "2025-12-15",
+              "2025-12-16"
+            ]
+          },
+          {
+            "date": "2026-01-02",
+            "symbol": "OMER",
+            "reason": "missing_or_invalid_prior_openings",
+            "missing_dates": [
+              "2025-12-24"
+            ]
+          },
+          {
+            "date": "2026-01-02",
+            "symbol": "RADX",
+            "reason": "missing_or_invalid_prior_openings",
+            "missing_dates": [
+              "2025-12-12"
+            ]
+          }
+        ]
+      },
+      "initial_funding": 500,
+      "additional_funding": 0,
+      "restart_count": 0,
+      "final_equity": null,
+      "settled_cash": 500.0,
+      "unsettled_cash": 0,
+      "last_observed_equity": 500.0,
+      "max_daily_liquidation_drawdown": 0.0,
+      "max_observed_minute_liquidation_drawdown": 0.0,
+      "milestones": {
+        "1000": null,
+        "2000": null,
+        "10000": null
+      },
+      "sessions_accounted": 1,
+      "trades": 0,
+      "profitable_trades": 0,
+      "losing_trades": 0,
+      "modeled_pnl": 0,
+      "exit_reasons": {},
+      "skipped_data_sessions": 0
+    },
+    {
+      "id": "original_strict__ORB-RV-500-v1__a1__c50",
+      "research_mode": "original_strict",
+      "parameters": {
+        "capital_fraction": 1.0,
+        "cost_bps_each_side": 50,
+        "pre_entry_gap_policy": "stop"
+      },
+      "status": "incomplete",
+      "incomplete": {
+        "date": "2026-01-02",
+        "time": "2026-01-02T09:35:00-05:00",
+        "reason": "incomplete_ranking_inputs",
+        "ranking_missing": [
+          {
+            "date": "2026-01-02",
+            "symbol": "CHRN",
+            "reason": "missing_or_invalid_prior_openings",
+            "missing_dates": [
+              "2025-12-24"
+            ]
+          },
+          {
+            "date": "2026-01-02",
+            "symbol": "LONA",
+            "reason": "missing_or_invalid_prior_openings",
+            "missing_dates": [
+              "2025-12-11",
+              "2025-12-15",
+              "2025-12-16"
+            ]
+          },
+          {
+            "date": "2026-01-02",
+            "symbol": "OMER",
+            "reason": "missing_or_invalid_prior_openings",
+            "missing_dates": [
+              "2025-12-24"
+            ]
+          },
+          {
+            "date": "2026-01-02",
+            "symbol": "RADX",
+            "reason": "missing_or_invalid_prior_openings",
+            "missing_dates": [
+              "2025-12-12"
+            ]
+          }
+        ]
+      },
+      "initial_funding": 500,
+      "additional_funding": 0,
+      "restart_count": 0,
+      "final_equity": null,
+      "settled_cash": 500.0,
+      "unsettled_cash": 0,
+      "last_observed_equity": 500.0,
+      "max_daily_liquidation_drawdown": 0.0,
+      "max_observed_minute_liquidation_drawdown": 0.0,
+      "milestones": {
+        "1000": null,
+        "2000": null,
+        "10000": null
+      },
+      "sessions_accounted": 1,
+      "trades": 0,
+      "profitable_trades": 0,
+      "losing_trades": 0,
+      "modeled_pnl": 0,
+      "exit_reasons": {},
+      "skipped_data_sessions": 0
+    },
+    {
+      "id": "original_strict__ORB-RV-500-v1__a1__c100",
+      "research_mode": "original_strict",
+      "parameters": {
+        "capital_fraction": 1.0,
+        "cost_bps_each_side": 100,
+        "pre_entry_gap_policy": "stop"
+      },
+      "status": "incomplete",
+      "incomplete": {
+        "date": "2026-01-02",
+        "time": "2026-01-02T09:35:00-05:00",
+        "reason": "incomplete_ranking_inputs",
+        "ranking_missing": [
+          {
+            "date": "2026-01-02",
+            "symbol": "CHRN",
+            "reason": "missing_or_invalid_prior_openings",
+            "missing_dates": [
+              "2025-12-24"
+            ]
+          },
+          {
+            "date": "2026-01-02",
+            "symbol": "LONA",
+            "reason": "missing_or_invalid_prior_openings",
+            "missing_dates": [
+              "2025-12-11",
+              "2025-12-15",
+              "2025-12-16"
+            ]
+          },
+          {
+            "date": "2026-01-02",
+            "symbol": "OMER",
+            "reason": "missing_or_invalid_prior_openings",
+            "missing_dates": [
+              "2025-12-24"
+            ]
+          },
+          {
+            "date": "2026-01-02",
+            "symbol": "RADX",
+            "reason": "missing_or_invalid_prior_openings",
+            "missing_dates": [
+              "2025-12-12"
+            ]
+          }
+        ]
+      },
+      "initial_funding": 500,
+      "additional_funding": 0,
+      "restart_count": 0,
+      "final_equity": null,
+      "settled_cash": 500.0,
+      "unsettled_cash": 0,
+      "last_observed_equity": 500.0,
+      "max_daily_liquidation_drawdown": 0.0,
+      "max_observed_minute_liquidation_drawdown": 0.0,
+      "milestones": {
+        "1000": null,
+        "2000": null,
+        "10000": null
+      },
+      "sessions_accounted": 1,
+      "trades": 0,
+      "profitable_trades": 0,
+      "losing_trades": 0,
+      "modeled_pnl": 0,
+      "exit_reasons": {},
+      "skipped_data_sessions": 0
+    },
+    {
+      "id": "gap_guarded_sensitivity__ORB-RV-500-v1__a0.5__c25__guarded-skip-session",
+      "research_mode": "gap_guarded_sensitivity",
+      "parameters": {
+        "capital_fraction": 0.5,
+        "cost_bps_each_side": 25,
+        "pre_entry_gap_policy": "skip_session"
+      },
+      "status": "incomplete",
+      "incomplete": {
+        "date": "2026-01-06",
+        "time": "2026-01-06T09:49:00-05:00",
+        "symbol": "PRCT",
+        "minute_offset": 19,
+        "reason": "missing_or_invalid_held_minute"
+      },
+      "initial_funding": 500,
+      "additional_funding": 0,
+      "restart_count": 0,
+      "final_equity": null,
+      "settled_cash": 260.544439875,
+      "unsettled_cash": 0,
+      "last_observed_equity": 497.670139875,
+      "max_daily_liquidation_drawdown": 0.0034053202499999546,
+      "max_observed_minute_liquidation_drawdown": 0.007519433656131835,
+      "milestones": {
+        "1000": null,
+        "2000": null,
+        "10000": null
+      },
+      "sessions_accounted": 3,
+      "trades": 1,
+      "profitable_trades": 0,
+      "losing_trades": 1,
+      "modeled_pnl": -1.7026601249999658,
+      "exit_reasons": {
+        "stop_touch_in_minute": 1
+      },
+      "skipped_data_sessions": 1
+    },
+    {
+      "id": "gap_guarded_sensitivity__ORB-RV-500-v1__a0.5__c50__guarded-skip-session",
+      "research_mode": "gap_guarded_sensitivity",
+      "parameters": {
+        "capital_fraction": 0.5,
+        "cost_bps_each_side": 50,
+        "pre_entry_gap_policy": "skip_session"
+      },
+      "status": "incomplete",
+      "incomplete": {
+        "date": "2026-01-06",
+        "time": "2026-01-06T09:49:00-05:00",
+        "symbol": "PRCT",
+        "minute_offset": 19,
+        "reason": "missing_or_invalid_held_minute"
+      },
+      "initial_funding": 500,
+      "additional_funding": 0,
+      "restart_count": 0,
+      "final_equity": null,
+      "settled_cash": 258.86482975,
+      "unsettled_cash": 0,
+      "last_observed_equity": 495.39622975,
+      "max_daily_liquidation_drawdown": 0.005578740499999957,
+      "max_observed_minute_liquidation_drawdown": 0.011436340499999975,
+      "milestones": {
+        "1000": null,
+        "2000": null,
+        "10000": null
+      },
+      "sessions_accounted": 3,
+      "trades": 1,
+      "profitable_trades": 0,
+      "losing_trades": 1,
+      "modeled_pnl": -2.7893702499999904,
+      "exit_reasons": {
+        "stop_touch_in_minute": 1
+      },
+      "skipped_data_sessions": 1
+    },
+    {
+      "id": "gap_guarded_sensitivity__ORB-RV-500-v1__a0.5__c100__guarded-skip-session",
+      "research_mode": "gap_guarded_sensitivity",
+      "parameters": {
+        "capital_fraction": 0.5,
+        "cost_bps_each_side": 100,
+        "pre_entry_gap_policy": "skip_session"
+      },
+      "status": "incomplete",
+      "incomplete": {
+        "date": "2026-01-06",
+        "time": "2026-01-06T09:49:00-05:00",
+        "symbol": "PRCT",
+        "minute_offset": 19,
+        "reason": "missing_or_invalid_held_minute"
+      },
+      "initial_funding": 500,
+      "additional_funding": 0,
+      "restart_count": 0,
+      "final_equity": null,
+      "settled_cash": 255.5056095,
+      "unsettled_cash": 0,
+      "last_observed_equity": 490.8484095,
+      "max_daily_liquidation_drawdown": 0.009925580999999961,
+      "max_observed_minute_liquidation_drawdown": 0.02052078100000021,
+      "milestones": {
+        "1000": null,
+        "2000": null,
+        "10000": null
+      },
+      "sessions_accounted": 3,
+      "trades": 1,
+      "profitable_trades": 0,
+      "losing_trades": 1,
+      "modeled_pnl": -4.962790500000011,
+      "exit_reasons": {
+        "stop_touch_in_minute": 1
+      },
+      "skipped_data_sessions": 1
+    },
+    {
+      "id": "gap_guarded_sensitivity__ORB-RV-500-v1__a1__c25__guarded-skip-session",
+      "research_mode": "gap_guarded_sensitivity",
+      "parameters": {
+        "capital_fraction": 1.0,
+        "cost_bps_each_side": 25,
+        "pre_entry_gap_policy": "skip_session"
+      },
+      "status": "incomplete",
+      "incomplete": {
+        "date": "2026-01-06",
+        "time": "2026-01-06T09:49:00-05:00",
+        "symbol": "PRCT",
+        "minute_offset": 19,
+        "reason": "missing_or_invalid_held_minute"
+      },
+      "initial_funding": 500,
+      "additional_funding": 0,
+      "restart_count": 0,
+      "final_equity": null,
+      "settled_cash": 20.748347724999974,
+      "unsettled_cash": 0,
+      "last_observed_equity": 494.999747725,
+      "max_daily_liquidation_drawdown": 0.0074917045500000334,
+      "max_observed_minute_liquidation_drawdown": 0.01500594436081859,
+      "milestones": {
+        "1000": null,
+        "2000": null,
+        "10000": null
+      },
+      "sessions_accounted": 3,
+      "trades": 1,
+      "profitable_trades": 0,
+      "losing_trades": 1,
+      "modeled_pnl": -3.7458522750000043,
+      "exit_reasons": {
+        "stop_touch_in_minute": 1
+      },
+      "skipped_data_sessions": 1
+    },
+    {
+      "id": "gap_guarded_sensitivity__ORB-RV-500-v1__a1__c50__guarded-skip-session",
+      "research_mode": "gap_guarded_sensitivity",
+      "parameters": {
+        "capital_fraction": 1.0,
+        "cost_bps_each_side": 50,
+        "pre_entry_gap_policy": "skip_session"
+      },
+      "status": "incomplete",
+      "incomplete": {
+        "date": "2026-01-06",
+        "time": "2026-01-06T09:49:00-05:00",
+        "symbol": "PRCT",
+        "minute_offset": 19,
+        "reason": "missing_or_invalid_held_minute"
+      },
+      "initial_funding": 500,
+      "additional_funding": 0,
+      "restart_count": 0,
+      "final_equity": null,
+      "settled_cash": 17.171785450000016,
+      "unsettled_cash": 0,
+      "last_observed_equity": 490.23458545,
+      "max_daily_liquidation_drawdown": 0.01227322909999995,
+      "max_observed_minute_liquidation_drawdown": 0.023988429100000097,
+      "milestones": {
+        "1000": null,
+        "2000": null,
+        "10000": null
+      },
+      "sessions_accounted": 3,
+      "trades": 1,
+      "profitable_trades": 0,
+      "losing_trades": 1,
+      "modeled_pnl": -6.13661454999999,
+      "exit_reasons": {
+        "stop_touch_in_minute": 1
+      },
+      "skipped_data_sessions": 1
+    },
+    {
+      "id": "gap_guarded_sensitivity__ORB-RV-500-v1__a1__c100__guarded-skip-session",
+      "research_mode": "gap_guarded_sensitivity",
+      "parameters": {
+        "capital_fraction": 1.0,
+        "cost_bps_each_side": 100,
+        "pre_entry_gap_policy": "skip_session"
+      },
+      "status": "incomplete",
+      "incomplete": {
+        "date": "2026-01-06",
+        "time": "2026-01-06T09:49:00-05:00",
+        "symbol": "PRCT",
+        "minute_offset": 19,
+        "reason": "missing_or_invalid_held_minute"
+      },
+      "initial_funding": 500,
+      "additional_funding": 0,
+      "restart_count": 0,
+      "final_equity": null,
+      "settled_cash": 10.01866089999993,
+      "unsettled_cash": 0,
+      "last_observed_equity": 480.7042608999999,
+      "max_daily_liquidation_drawdown": 0.021836278200000003,
+      "max_observed_minute_liquidation_drawdown": 0.04302667820000028,
+      "milestones": {
+        "1000": null,
+        "2000": null,
+        "10000": null
+      },
+      "sessions_accounted": 3,
+      "trades": 1,
+      "profitable_trades": 0,
+      "losing_trades": 1,
+      "modeled_pnl": -10.918139100000019,
+      "exit_reasons": {
+        "stop_touch_in_minute": 1
+      },
+      "skipped_data_sessions": 1
+    }
+  ],
+  "ownership": "Codex original implementation and simulations; published ORB article provides method inspiration only.",
+  "no_complete_year_claim": "2026 year-to-date only; future sessions not evaluated.",
+  "broker_orders_sent": 0,
+  "github_research_workflow_deployed": false
+}

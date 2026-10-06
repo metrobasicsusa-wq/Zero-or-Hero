@@ -1,0 +1,26 @@
+{
+  "id": "s500-orb6-implementation-v1",
+  "registered_at": "2026-10-06T16:24:42.492638+00:00",
+  "parent_registry_sha256": "d99bbc71c5360ed9db0484838e9ad144e41db1306c2549ce76c7ebcccf6eebc8",
+  "parent_public_commit": "1af6a6d741b1d6b1b561f1bfd3aa29f50d7801fe",
+  "evaluation": [
+    "2026-01-02",
+    "2026-10-05"
+  ],
+  "expected_paths": 6,
+  "status": "frozen_before_ORB_path_results",
+  "clarifications": [
+    "Each symbol contributes its first completed1minute breakout only. Signals whose completed close plus buycost is unaffordable consume that symbol first signal; continue observing other symbols. Once an affordable symbol is selected, next-open unaffordability skips the whole day, not replacement.",
+    "Signal bar start offsets5..89 from09:30 are inclusive; execution offset=m+2. Preselection signal-data gaps whose priority cannot be ruled out stop path incomplete rather than replace with later winner.",
+    "Cash-only research model settles sales on the calendar provided settlement_date; proceeds retained as receivable until then, not instantly recycled. No claims that actual account mode/permissions have been verified.",
+    "Daily liquidation drawdown and optional observed-minute-close drawdown must be named separately; milestones default completed-day equity, not future highs.",
+    "Missing ranking data is a coverage failure requiring diagnosis before a complete whole-year claim; all exclusions and incomplete paths preserved.",
+    "First5minute5Min aggregation is verified against1Min samples, then eligible selected intraday data will be cross-checked; absent bars are not silently filled with zero."
+  ],
+  "execution_limits": [
+    "SIP historical OHLCV and presetcosts are modeled fills, not executable bid/ask or guaranteed stop fills.",
+    "Current directory/survivorship and known corporate-action coverage limits remain.",
+    "No performance may be attributed to original leveraged author portfolio.",
+    "GitHub scheduling is not enabled by this research. Work executes in this existing cloud workspace with resumable input files."
+  ]
+}

@@ -1,0 +1,113 @@
+{
+  "id": "s500-external-methods-experiment-registry-v1",
+  "registered_at": "2026-10-06T15:50:10.732626+00:00",
+  "status": "design_registered_not_run_not_scheduled_no_orders",
+  "historical_scope": "2026-01-02 through2026-10-05; prior warmup required. Same previously inspected year, not unseen validation.",
+  "source_to_implementation": "These are explicit500-dollar adaptations of external ideas, not replications of source authors portfolios or returns.",
+  "funding": {
+    "initial": 500,
+    "additional": 0,
+    "borrowing": false,
+    "restart": false,
+    "one_position_max": true,
+    "capital_fraction_variants": [
+      0.5,
+      1.0
+    ],
+    "cash_availability": "Only cash available under an explicit settlement ledger may fund another position; do not assume unlimited same-day recycling.",
+    "no_existing_risk_rule_change": true,
+    "exit_day_reentry": false,
+    "max_entries_per_session": 1
+  },
+  "shared_execution": {
+    "directions": [
+      "long_only"
+    ],
+    "shares": "whole integers; affordability chosen on last completed observed price; if next modeled execution becomes unaffordable, skip with no runner-up",
+    "cost_bps_each_side": [
+      25,
+      50,
+      100
+    ],
+    "cost_status": "stress scenarios, not verified executable spread estimates; use actual quotes when available and disclose other fees",
+    "bar_time": "America/New_York; bars are labeled by start time. Intraday entry signals consume completed one-minute bars, then wait one whole minute: bar09:35–09:36 completes at09:36, execution reference is09:37 open. Daily-close MA exits instead use next-session open as explicitly specified.",
+    "stops": "Predeclared stop-market model active in the entry minute, not from the next minute only. Include entry-minute low after an opening entry. For later bars opening below stop, sale reference is the lower open minus costs; otherwise a stop touch uses stop minus costs. These OHLC assumptions do not prove executable fills, halts or gap liquidity. If EP entry open is already at/below its predeclared stop, stop the path as incomplete_gap_through_entry_stop, retain order/exposure ambiguity and require finer quotes; never credit an exit at a favorable stop above entry or assume a retroactive cancellation.",
+    "corporate_actions": "Use improved split, dividend, symbol identity, receivable and missing-event accounting; preserve existing unresolved source currency/coverage flags",
+    "close_and_terminal": "Use exchange calendar including early closes; mark open positions and keep censored final holdings rather than pretending sold.",
+    "scheduled_exits": "Precommitted time exits use the last regular-session minute open (e.g.15:59 or12:59 for13:00 early close), with instructions known before that time; not a decision made after seeing its eventual close. Fixed10session EP exit uses this same schedule."
+  },
+  "experiments": [
+    {
+      "id": "ORB-RV-500-v1",
+      "source": "Zarattini/Barbon/Aziz ORB Stocks-in-Play; source academic evidence",
+      "priority": 1,
+      "rule": "From broad cached asset universe, exclude currently verified ETFs/test issues; initial research pool remains non-PIT and must be labelled. Require opening price>5, previous14sessions average daily volume>=1000000, ATR14>0.50. At09:35 compute first5minutevolume/mean(previous14sessions first5minutevolume), require>=1. Rank top20 by this ratio. Long signals only if first5minute close>open. After09:35, first completed1minute close above initial5minute high forms signal until11:00; choose earliest signal, ties higherRV then symbol. One position/one entry per day. Initial stop entryprice-0.1*priorATR14; exit at the precommitted last regular-session minute open if not stopped.",
+      "atr_definition": "Mean of prior14 true ranges, each max(high-low,abs(high-previousclose),abs(low-previousclose)) after point-of-decision split adjustments. Requires at least15 prior daily closes to compute14 true ranges. Simple mean smoothing is our fixed convention, not claimed verified identical to authors implementation.",
+      "variants": 6,
+      "source_differences": [
+        "500 initial vs source25000; no4x leverage; no shorting; one name vs up to20; current-universe limitation",
+        "close-confirmed breakout plus explicit latency instead of assumed perfect stop-entry fill",
+        "explicit25/50/100bp cost scenarios and cash availability; do not inherit source1637pct claim",
+        "11:00 last signal cutoff is our new restriction",
+        "Simple-mean ATR is explicitly fixed; exact equality to source smoothing not verified",
+        "Precommitted final-minute opening exit differs from authors16:00 exit"
+      ],
+      "missing_inputs": [
+        "full broad-universe first5minute histories for14-session warmup",
+        "full one-minute entry/exit bars for eligible candidates",
+        "spread, halt/opening auction evidence and split/ticker history",
+        "settlement and fees model"
+      ]
+    },
+    {
+      "id": "EP-NEWS-500-v1",
+      "source": "Stockbee/Qullamaggie episodic pivot methods; source traders evidence",
+      "priority": 2,
+      "rule": "Use broad universe with prior20median dollar volume>=10000000 and priorclose>=2. Split-adjusted regular opening gap>=10pct. Require a separately verified earnings/guidance/contract/regulatory announcement timestamp between prior regular close and09:30 regular open. At10:00 require first30minute regular-session volume>=mean(previous20full-session volumes). Form opening30minute high/low. Until11:00, a completed1minute close above opening30minute high triggers; use shared latency. Choose earliest signal, ties first30minute relative volume then symbol; no substitute after next-open unaffordability. Initial stop is known opening30minute low, never the eventual full-day low.",
+      "news_policy": "Store every qualifying price/volume candidate with news_status confirmed/missing/ambiguous, including failures. Require event existence only; do not impute positive EPS surprise or raised guidance from price itself. Source publication and revision timestamps must precede decision.",
+      "exit_variants": [
+        "fixed10session precommitted last-minute opening exit, subject to protective stop",
+        "stop plus10day moving-average close break signaled after completed close, exit next session open; maximum63sessions; no partial-profit rule because whole-share rounding changes source method"
+      ],
+      "variants": 12,
+      "source_differences": [
+        "30minute confirmation is deliberately later than authors possible1minute or5minute entries; do not backfill early entry using later volume",
+        "source discretionary news assessment replaced by explicit auditable event presence, not claimed equivalent",
+        "50/100pct hypothetical allocations differ from source traders generally lower single-stock weights",
+        "fixed/MA exits are defined research variants; no assumption of complete author replication",
+        "Only catalysts published before regular open qualify for this version; later news stays in candidate log but does not explain an earlier opening gap"
+      ],
+      "missing_inputs": [
+        "primary IR/SEC or verified archived announcement timestamps across full2026 sample",
+        "prior20daily volumes and minute regular-session data",
+        "historically reliable instrument identities and actionable quotes",
+        "more warmup for moving averages and splits"
+      ]
+    }
+  ],
+  "planned_paths": 18,
+  "deferred": [
+    {
+      "method": "customer/supplier and industry signal propagation",
+      "reason": "requires dated public relationship maps; do not use present-day supply-chain identities in past periods"
+    },
+    {
+      "method": "0DTE long calls/puts and debit spreads",
+      "reason": "requires historical synchronized executable bid/ask, whole contract budget and fees/settlement; no stock-move multiplication as option return"
+    },
+    {
+      "method": "trader tight-consolidation or small-float bull flags",
+      "reason": "needs frozen geometric definitions, point-in-time float and sufficiently fine execution data; avoid posthoc chart drawing"
+    }
+  ],
+  "analysis_required": [
+    "all18paths including stopped/incomplete; no only-winner publication",
+    "continuous cash, settlements, all closed/open modeled positions and funding",
+    "gross vs multiple-cost scenarios; no declaring net advantage from paperheadline",
+    "monthly/quarter diagnostics marked exploratory and drawdown/ruin/milestone counts",
+    "candidate/event coverage missingness and all rejected/failed candidates",
+    "compare with frozen parent192paths without claiming independent observations"
+  ],
+  "activation": "Research registration alone does not activate scheduling or paper/live trading.",
+  "reviewed_at": "2026-10-06T15:53:31.094668+00:00"
+}

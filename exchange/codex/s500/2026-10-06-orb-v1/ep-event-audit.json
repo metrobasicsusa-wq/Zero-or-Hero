@@ -1,0 +1,224 @@
+{
+  "schema": "s500.ep-news-chronological-audit.v1",
+  "created_at": "2026-10-06T16:28:29.672967+00:00",
+  "sampling": "first3 stock-eligible candidates ascending date,symbol from frozen price-gap inventory; no return selection",
+  "status": "no qualifying catalysts confirmed in the three reviewed samples; no EP strategy returns",
+  "news_window": {
+    "previous_session_close_et": "2025-12-31T16:00:00-05:00",
+    "candidate_session_open_et": "2026-01-02T09:30:00-05:00"
+  },
+  "candidate_reviews": [
+    {
+      "date": "2026-01-02",
+      "symbol": "BIDU",
+      "initial_news_status": "missing",
+      "news_status": "ambiguous",
+      "event_found": true,
+      "event_category": "proposed subsidiary spin-off and separate stock-exchange listing",
+      "qualifying_category_status": "outside frozen earnings/guidance/contract/regulatory-decision categories unless a separately preregistered interpretation says otherwise; proposed listing application is not regulatory approval",
+      "summary_zh": "公司原始公告宣布昆仑芯拟分拆及香港单独上市，提及已递交保密上市申请，审批及是否完成均未确定。并非业绩预告或已获监管批准。",
+      "source_keys": [
+        "BIDU-submissions",
+        "BIDU_IR",
+        "BIDU_6K",
+        "BIDU_index",
+        "BIDU_headers",
+        "BIDU_exhibit",
+        "BIDU_release",
+        "BIDU_release_retry"
+      ],
+      "timestamp_evidence": {
+        "ir_list_date": "2026-01-01",
+        "sec_exhibit_dateline": "BEIJING, Jan. 1, 2026",
+        "sec_submissions_acceptanceDateTime": "2026-01-02T16:02:27.000Z",
+        "sec_full_submission_ACCEPTANCE_DATETIME": "20260102060227",
+        "sec_directory_last_modified": "2026-01-02 06:02:27",
+        "conflict": "Submissions UTC field is11:02:27ET, after09:30; full submission header and directory display06:02:27, normally interpreted asEDGAR Eastern time and before09:30. Do not choose the favorable timestamp without independent reconciliation."
+      },
+      "in_window_confirmed": false,
+      "pass_registered_news_gate": false,
+      "reason": "Exact original IR release time unavailable; source timestamp conflict plus event category does not meet a frozen inclusion rule. Preserve ambiguity."
+    },
+    {
+      "date": "2026-01-02",
+      "symbol": "SLS",
+      "initial_news_status": "missing",
+      "news_status": "missing",
+      "event_found": false,
+      "event_category": null,
+      "qualifying_category_status": "unknown",
+      "summary_zh": "SEC当前recent列表未见2025-12-30至2026-01-02申报，公开IR尝试返回403/404。未找到能核实的窗口内原始公告；不推断当天没有催化。",
+      "source_keys": [
+        "SLS-submissions",
+        "SLS_IR",
+        "SLS_home",
+        "SLS_company"
+      ],
+      "timestamp_evidence": {},
+      "in_window_confirmed": false,
+      "pass_registered_news_gate": false,
+      "reason": "Incomplete source availability; negative search is not proof of absent event."
+    },
+    {
+      "date": "2026-01-02",
+      "symbol": "SMX",
+      "initial_news_status": "missing",
+      "news_status": "ambiguous",
+      "event_found": true,
+      "event_category": "technology application / planned product-market expansion",
+      "qualifying_category_status": "not an announced signed contract, earnings/guidance or regulatory decision",
+      "summary_zh": "原始6-K附件公告把材料追踪技术扩展到乳胶与橡胶手套市场，并提及下一季度计划协作；并未明确公告本次注册所要求的已签合同、财报/业绩指引或监管决定。",
+      "source_keys": [
+        "SMX-submissions",
+        "SMX_6K",
+        "SMX_exhibit",
+        "SMX_headers",
+        "SMX_IR"
+      ],
+      "timestamp_evidence": {
+        "sec_submissions_acceptanceDateTime": "2025-12-31T21:05:08.000Z",
+        "sec_full_submission_ACCEPTANCE_DATETIME": "20251231160508",
+        "sec_filing_time_consistent_et": "2025-12-31T16:05:08-05:00",
+        "press_release_dateline": "December31,2025; no exact first-publication time in examined exhibit",
+        "publication_caveat": "SEC dissemination time is within the window, but the date-only earlier press release may have been public before previous close. SEC re-filing is not proof of a new after-close catalyst."
+      },
+      "in_window_confirmed": false,
+      "pass_registered_news_gate": false,
+      "reason": "First-publication time ambiguous and product-plan event outside frozen inclusion categories."
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://data.sec.gov/submissions/CIK0001329099.json",
+      "status": 200,
+      "retrieved_at": "2026-10-06T16:25:14.264198+00:00",
+      "sha256": "8560b1fc0826f228680dc82d4341fb34af86621be0242511bdbf9ec72c421d36",
+      "source_key": "BIDU-submissions",
+      "entity_name": "Baidu, Inc."
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1329099/000119312526000097/d63607d6k.htm",
+      "final_url": "https://www.sec.gov/Archives/edgar/data/1329099/000119312526000097/d63607d6k.htm",
+      "status": 200,
+      "retrieved_at": "2026-10-06T16:25:35.421255+00:00",
+      "sha256": "248d35498b6803054b10d289a7a25afc1bce962c91390bc2d37f3db4ff4940d6",
+      "source_key": "BIDU_6K"
+    },
+    {
+      "url": "https://ir.baidu.com/news-releases",
+      "final_url": "https://ir.baidu.com/news-releases",
+      "status": 200,
+      "retrieved_at": "2026-10-06T16:25:35.667054+00:00",
+      "sha256": "f07d54da4728d36e754f4fed8d2c0037fe2596715d6ed102ed9c902e2ee39469",
+      "source_key": "BIDU_IR"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1329099/000119312526000097/d63607dex991.htm",
+      "final_url": "https://www.sec.gov/Archives/edgar/data/1329099/000119312526000097/d63607dex991.htm",
+      "status": 200,
+      "retrieved_at": "2026-10-06T16:27:15.902980+00:00",
+      "sha256": "894efc30e303698c7557383f4f3936da063b19142a25cdca28d976f3fcb41987",
+      "source_key": "BIDU_exhibit"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1329099/000119312526000097/0001193125-26-000097.txt",
+      "final_url": "https://www.sec.gov/Archives/edgar/data/1329099/000119312526000097/0001193125-26-000097.txt",
+      "status": 200,
+      "retrieved_at": "2026-10-06T16:27:16.080984+00:00",
+      "sha256": "334b8b5b6ac0ce60157d96e1cfe36ec5bad8640f9ead0291a0628ce601c53c68",
+      "source_key": "BIDU_headers"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1329099/000119312526000097/index.json",
+      "final_url": "https://www.sec.gov/Archives/edgar/data/1329099/000119312526000097/index.json",
+      "status": 200,
+      "retrieved_at": "2026-10-06T16:26:31.737322+00:00",
+      "sha256": "699c50a7f05c4599c08507596212cbd8361e2799d1747208cf149b51f1a23f0b",
+      "source_key": "BIDU_index"
+    },
+    {
+      "url": "https://ir.baidu.com/news-releases/news-release-details/baidu-announces-proposed-spin-and-separate-listing-kunlunxin",
+      "status": "HTTPError: HTTP Error 503: Service Unavailable",
+      "retrieved_at": "2026-10-06T16:26:08.929670+00:00",
+      "source_key": "BIDU_release"
+    },
+    {
+      "url": "https://ir.baidu.com/news-releases/news-release-details/baidu-announces-proposed-spin-and-separate-listing-kunlunxin",
+      "status": "HTTPError: HTTP Error 503: Service Unavailable",
+      "retrieved_at": "2026-10-06T16:26:33.449198+00:00",
+      "source_key": "BIDU_release_retry"
+    },
+    {
+      "url": "https://data.sec.gov/submissions/CIK0001390478.json",
+      "status": 200,
+      "retrieved_at": "2026-10-06T16:25:14.258788+00:00",
+      "sha256": "70ca59ec711b5b6c8675a033fce8efc22863fe99deb5942d03a8ff788aa52fb1",
+      "source_key": "SLS-submissions",
+      "entity_name": "SELLAS Life Sciences Group, Inc."
+    },
+    {
+      "url": "https://ir.sellaslifesciences.com/news-and-events/press-releases",
+      "status": "HTTPError: HTTP Error 404: Not Found",
+      "retrieved_at": "2026-10-06T16:25:36.805742+00:00",
+      "source_key": "SLS_IR"
+    },
+    {
+      "url": "https://sellaslifesciences.com/news-and-events/press-releases/",
+      "status": "HTTPError: HTTP Error 403: Forbidden",
+      "retrieved_at": "2026-10-06T16:26:06.334926+00:00",
+      "source_key": "SLS_company"
+    },
+    {
+      "url": "https://ir.sellaslifesciences.com/",
+      "status": "HTTPError: HTTP Error 403: Forbidden",
+      "retrieved_at": "2026-10-06T16:26:06.496873+00:00",
+      "source_key": "SLS_home"
+    },
+    {
+      "url": "https://data.sec.gov/submissions/CIK0001940674.json",
+      "status": 200,
+      "retrieved_at": "2026-10-06T16:25:14.239058+00:00",
+      "sha256": "22e57d72d749ab912ab5948a222cc18a9a1285ceca2f7d82ce64f42c2f25e1e7",
+      "source_key": "SMX-submissions",
+      "entity_name": "SMX (Security Matters) Public Ltd Co"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1940674/000149315225029787/form6-k.htm",
+      "final_url": "https://www.sec.gov/Archives/edgar/data/1940674/000149315225029787/form6-k.htm",
+      "status": 200,
+      "retrieved_at": "2026-10-06T16:25:35.125307+00:00",
+      "sha256": "f49d9fcaed5118dd851d61c0d9f83faa68eb5a4950357547b5a99cce00b21aac",
+      "source_key": "SMX_6K"
+    },
+    {
+      "url": "https://smx.tech/investors/",
+      "final_url": "https://smx.tech/investors/",
+      "status": 200,
+      "retrieved_at": "2026-10-06T16:25:35.335765+00:00",
+      "sha256": "3e2f48edae06635528885bc2a7f25c115d585856a00a4e898a9c812c99aebca4",
+      "source_key": "SMX_IR"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1940674/000149315225029787/ex99-1.htm",
+      "final_url": "https://www.sec.gov/Archives/edgar/data/1940674/000149315225029787/ex99-1.htm",
+      "status": 200,
+      "retrieved_at": "2026-10-06T16:26:31.950964+00:00",
+      "sha256": "8dc51049794d6e06e1c3db4f217f6857bc8562dec40f894369efd072362c6137",
+      "source_key": "SMX_exhibit"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1940674/000149315225029787/0001493152-25-029787.txt",
+      "final_url": "https://www.sec.gov/Archives/edgar/data/1940674/000149315225029787/0001493152-25-029787.txt",
+      "status": 200,
+      "retrieved_at": "2026-10-06T16:27:16.096790+00:00",
+      "sha256": "3d6c83074e43a8931d5485653e14eacaf19561f74d921a551f7a7d63bbd2eb5e",
+      "source_key": "SMX_headers"
+    }
+  ],
+  "limitations": [
+    "SEC current submissions and present IR pages are not an archived point-in-time event database.",
+    "Only these chronological3 samples were searched; no inference about remaining1076 stock candidates.",
+    "No analyst-surprise sign, trade decision, future return or realized fill is inferred from a gap or announcement.",
+    "Raw full pages, SEC full-submission bodies and snapshots stay local; this audit publishes short original summaries, source URLs, timestamps and hashes only."
+  ]
+}

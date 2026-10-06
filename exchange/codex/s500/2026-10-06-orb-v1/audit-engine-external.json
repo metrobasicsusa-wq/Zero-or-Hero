@@ -1,0 +1,2079 @@
+{
+  "schema": "s500.external-engine-audit.v1",
+  "audited_at": "2026-10-06T16:43:39.251320+00:00",
+  "scope": "offline independent adversarial and ledger audit; no network or orders",
+  "code_sha256": {
+    "engine.py": "cc2bacd7d762b341c8317a9c4680f5439ff4960da76ece9e3aaba2b6cf80d514",
+    "features.py": "3b689118fe86bbbdbe0f6d77bdb18310b7a49e864b42e6ae7c57dce3f677ee02",
+    "audit_engine_external.py": "181b9e0fc28addf2edc571cf571eba9e6f4e32d538fbeb4aa967156fab942a54"
+  },
+  "checks": [
+    {
+      "name": "first5_volume_mismatch_must_block_selection",
+      "passed": true,
+      "details": {
+        "date": "2026-01-02",
+        "time": "2026-01-02T09:35:00-05:00",
+        "symbol": "A",
+        "reason": "opening_volume_bar_mismatch",
+        "minute_sum": 1400.0,
+        "ranked_opening_volume": 500.0
+      }
+    },
+    {
+      "name": "RV_must_agree_with_actual_volume_over_prior_mean",
+      "passed": true,
+      "details": {
+        "date": "2026-01-02",
+        "time": "2026-01-02T09:35:00-05:00",
+        "symbol": "B",
+        "reason": "relative_volume_feature_mismatch"
+      }
+    },
+    {
+      "name": "first5_price_mismatch_blocks_selection",
+      "passed": true,
+      "details": {
+        "date": "2026-01-02",
+        "time": "2026-01-02T09:35:00-05:00",
+        "symbol": "A",
+        "reason": "opening_feature_bar_mismatch"
+      }
+    },
+    {
+      "name": "fully_settled_cash_only_delayed_next_session",
+      "passed": true,
+      "details": {
+        "entries": 2,
+        "funding_reconciliation": "passed",
+        "unsettled_sale_principal_not_reused": true
+      }
+    },
+    {
+      "name": "half_allocation_uses_remaining_settled_cash",
+      "passed": true,
+      "details": {
+        "leftover_settled_cash_may_trade": true,
+        "unsettled_proceeds_not_reused": true
+      }
+    },
+    {
+      "name": "scheduled_exit_precedes_final_minute_extremes",
+      "passed": true,
+      "details": {
+        "future_final_minute_HLCV_cannot_affect_scheduled_open_exit": true
+      }
+    },
+    {
+      "name": "later_outcomes_cannot_reorder_signal_or_entry",
+      "passed": true,
+      "details": {
+        "entry_and_rank_unchanged": true
+      }
+    },
+    {
+      "name": "held_gap_keeps_unknown_final_and_last_known_mark",
+      "passed": true,
+      "details": {
+        "terminal_unknown_not_fabricated": true,
+        "cash_debit_and_open_position_retained": true
+      }
+    },
+    {
+      "name": "scheduled_exit_missing_does_not_invent_sale",
+      "passed": true,
+      "details": {
+        "date": "2026-01-02",
+        "time": "2026-01-02T15:59:00-05:00",
+        "symbol": "A",
+        "minute_offset": 389,
+        "reason": "missing_scheduled_exit_open"
+      }
+    },
+    {
+      "name": "unselected_future_gap_does_not_change_trade",
+      "passed": true,
+      "details": {
+        "unselected_future_gap_no_lookahead": true
+      }
+    },
+    {
+      "name": "competing_preselection_gap_does_not_choose_observed_winner",
+      "passed": true,
+      "details": {
+        "date": "2026-01-02",
+        "time": "2026-01-02T09:36:00-05:00",
+        "minute_offset": 5,
+        "reason": "unresolved_preselection_signal_gap",
+        "symbols": [
+          "B"
+        ]
+      }
+    },
+    {
+      "name": "guarded_preopen_ranking_gap_cancels_whole_session",
+      "passed": true,
+      "details": {
+        "whole_session_cancelled_before_fill": true,
+        "next_day_allowed": true
+      }
+    },
+    {
+      "name": "guarded_missing_selected_open_no_replacement",
+      "passed": true,
+      "details": {
+        "no_runner_up_on_entry_gap": true,
+        "pending_intent_cancelled_in_log": true
+      }
+    },
+    {
+      "name": "guarded_valid_open_but_unknown_entry_candle_stays_incomplete",
+      "passed": true,
+      "details": {
+        "known_entry_open_is_filled_before_missing_held_fields": true,
+        "no_retroactive_skip": true
+      }
+    },
+    {
+      "name": "guarded_held_gap_never_discards_unknown_outcome",
+      "passed": true,
+      "details": {
+        "held_data_gap_never_skip": true
+      }
+    },
+    {
+      "name": "guarded_future_gap_after_exit_no_hindsight_cancel",
+      "passed": true,
+      "details": {
+        "data_missing_after_closed_trade_cannot_cancel_it": true
+      }
+    },
+    {
+      "name": "guarded_unselected_future_gap_no_hindsight_skip",
+      "passed": true,
+      "details": {
+        "unselected_later_gap_no_skip": true
+      }
+    },
+    {
+      "name": "guarded_current_signal_gap_skips_at_observation_time",
+      "passed": true,
+      "details": {
+        "observable_competitor_gap_cancels_session": true
+      }
+    },
+    {
+      "name": "guarded_invalid_settlement_remains_incomplete",
+      "passed": true,
+      "details": {
+        "invalid_cash_calendar_not_censored_as_market_gap": true
+      }
+    },
+    {
+      "name": "independent_entry_exit_settlement_bank_ledger",
+      "passed": true,
+      "details": {
+        "seed": 20261006,
+        "synthetic_paths_reconciled": 144,
+        "not_profitability_evidence": true
+      }
+    },
+    {
+      "name": "real_probe_first5_OHLCV_aggregation",
+      "passed": true,
+      "details": {
+        "sample_symbol_days": 9
+      }
+    }
+  ],
+  "passed": 21,
+  "failed": 0,
+  "known_reproducible_findings": [
+    {
+      "id": "opening_volume_and_rv_not_crosschecked",
+      "initial_engine_sha256": "ffc2025680bf6690a45290f9d88d9a61af1487c05fa9558b3c20259e0eb95fb3",
+      "evidence": "initial inspection: engine comparesfirst5 OHLC only, permitting volume/RV mismatch to change ranking while claiming provisional_complete. First two checks are permanent regressions.",
+      "severity": "must_correct_before_trust_in_production_rankings",
+      "initial_failures": [
+        {
+          "check": "first5_volume_mismatch_must_block_selection",
+          "mutant": "multiply first1minute volume by10, preserve all first5 OHLC",
+          "observed_status": "provisional_complete",
+          "observed_selected_symbol": "A",
+          "expected": "incomplete before selection"
+        },
+        {
+          "check": "RV_must_agree_with_actual_volume_over_prior_mean",
+          "mutant": "change B rv from2.5 to100, keep opening_volume and mean unchanged",
+          "observed_status": "provisional_complete",
+          "observed_selected_symbol": "B",
+          "expected": "incomplete before selection"
+        }
+      ],
+      "fix_description": "Engine now requires both volume metadata fields if either is present, validates positive finite values, compares first5 minute summed volume to opening_volume, and validates rv equals opening_volume/mean_opening_volume14. Production driver requires both fields for every ranked row; omission remains explicitly diagnosed for synthetic fixtures only.",
+      "current_status": "fixed_on_current_checks"
+    }
+  ],
+  "real_aggregation_probe": [
+    {
+      "date": "2026-03-06",
+      "symbol": "SPY",
+      "passed": true,
+      "errors": {}
+    },
+    {
+      "date": "2026-03-06",
+      "symbol": "MU",
+      "passed": true,
+      "errors": {}
+    },
+    {
+      "date": "2026-03-06",
+      "symbol": "NVDA",
+      "passed": true,
+      "errors": {}
+    },
+    {
+      "date": "2026-03-09",
+      "symbol": "MU",
+      "passed": true,
+      "errors": {}
+    },
+    {
+      "date": "2026-03-09",
+      "symbol": "NVDA",
+      "passed": true,
+      "errors": {}
+    },
+    {
+      "date": "2026-03-09",
+      "symbol": "SPY",
+      "passed": true,
+      "errors": {}
+    },
+    {
+      "date": "2026-07-02",
+      "symbol": "MU",
+      "passed": true,
+      "errors": {}
+    },
+    {
+      "date": "2026-07-02",
+      "symbol": "NVDA",
+      "passed": true,
+      "errors": {}
+    },
+    {
+      "date": "2026-07-02",
+      "symbol": "SPY",
+      "passed": true,
+      "errors": {}
+    }
+  ],
+  "real_production_aggregation": {
+    "status": "checked_available_production_rows",
+    "candidate_count": 3800,
+    "mismatches": [
+      {
+        "date": "2026-01-02",
+        "symbol": "VERX",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-01-02",
+        "symbol": "RH",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-01-07",
+        "symbol": "FERG",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-01-07",
+        "symbol": "GLNG",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-01-07",
+        "symbol": "FWRG",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-01-09",
+        "symbol": "FNF",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-01-12",
+        "symbol": "LXEO",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-01-13",
+        "symbol": "DK",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-01-14",
+        "symbol": "Q",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-01-15",
+        "symbol": "NET",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-01-15",
+        "symbol": "LPX",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-01-15",
+        "symbol": "ESI",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-01-16",
+        "symbol": "SPG",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-01-16",
+        "symbol": "STT",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-01-21",
+        "symbol": "NIQ",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-01-22",
+        "symbol": "Z",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-01-26",
+        "symbol": "FAF",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-01-26",
+        "symbol": "ATO",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-01-27",
+        "symbol": "SN",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-01-28",
+        "symbol": "FRPT",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-01-28",
+        "symbol": "AOS",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-01-29",
+        "symbol": "HXL",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-01-29",
+        "symbol": "FIBK",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-02-02",
+        "symbol": "RBA",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-02-02",
+        "symbol": "WMG",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-02-02",
+        "symbol": "DAN",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-02-03",
+        "symbol": "DVA",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-02-04",
+        "symbol": "ZWS",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-02-05",
+        "symbol": "XPO",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-02-05",
+        "symbol": "ELF",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-02-05",
+        "symbol": "GGG",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-02-06",
+        "symbol": "ST",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-02-06",
+        "symbol": "PTC",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-02-09",
+        "symbol": "KD",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-02-09",
+        "symbol": "PNW",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-02-09",
+        "symbol": "IMVT",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-02-12",
+        "symbol": "CBRE",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-02-20",
+        "symbol": "FA",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-02-20",
+        "symbol": "EVER",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-02-23",
+        "symbol": "KT",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-02-23",
+        "symbol": "PKG",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-02-24",
+        "symbol": "CTRI",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-02-25",
+        "symbol": "TREX",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-02-25",
+        "symbol": "SGRY",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-02-26",
+        "symbol": "OUT",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-03-02",
+        "symbol": "LNG",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-03-03",
+        "symbol": "DK",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-03-05",
+        "symbol": "VSXY",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-03-06",
+        "symbol": "CTRI",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-03-10",
+        "symbol": "BFAM",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-03-10",
+        "symbol": "RCUS",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-03-12",
+        "symbol": "MCO",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-03-13",
+        "symbol": "EPRT",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-03-16",
+        "symbol": "SMA",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-03-16",
+        "symbol": "SMPL",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-03-16",
+        "symbol": "TXT",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-03-19",
+        "symbol": "NIQ",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-03-20",
+        "symbol": "VTR",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-03-20",
+        "symbol": "PLD",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-03-20",
+        "symbol": "WELL",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-03-20",
+        "symbol": "BALL",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-03-20",
+        "symbol": "GBCI",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-03-20",
+        "symbol": "REG",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-03-20",
+        "symbol": "PFS",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-03-20",
+        "symbol": "NAVN",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-03-20",
+        "symbol": "EXR",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-03-20",
+        "symbol": "AKR",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-03-23",
+        "symbol": "BEPC",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-03-23",
+        "symbol": "COCO",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-03-24",
+        "symbol": "ALH",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-03-24",
+        "symbol": "KRC",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-03-24",
+        "symbol": "GFL",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-03-24",
+        "symbol": "XPRO",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-03-25",
+        "symbol": "NBIX",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-03-26",
+        "symbol": "ALH",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-03-26",
+        "symbol": "ATEN",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-03-27",
+        "symbol": "IEX",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-03-31",
+        "symbol": "CTRI",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-03-31",
+        "symbol": "NIQ",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-03-31",
+        "symbol": "SLDE",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-03-31",
+        "symbol": "WAY",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-03-31",
+        "symbol": "SNDR",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-04-02",
+        "symbol": "W",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-04-02",
+        "symbol": "DRS",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-04-07",
+        "symbol": "AUGO",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-04-08",
+        "symbol": "AS",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-04-08",
+        "symbol": "OPLN",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-04-09",
+        "symbol": "CRI",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-04-10",
+        "symbol": "BL",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-04-13",
+        "symbol": "ERAS",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-04-14",
+        "symbol": "AHR",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-04-14",
+        "symbol": "TRVI",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-04-14",
+        "symbol": "SOBO",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-04-15",
+        "symbol": "ST",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-04-17",
+        "symbol": "REG",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-04-17",
+        "symbol": "EXR",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-04-20",
+        "symbol": "PFGC",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-04-22",
+        "symbol": "WRB",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-04-23",
+        "symbol": "SEIC",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-04-23",
+        "symbol": "PAR",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-04-23",
+        "symbol": "GGG",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-04-24",
+        "symbol": "RAL",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-04-27",
+        "symbol": "RBA",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-04-29",
+        "symbol": "BF.B",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-04-30",
+        "symbol": "HESM",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-04-30",
+        "symbol": "CUZ",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-05-01",
+        "symbol": "INGM",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-05-01",
+        "symbol": "LAZ",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-05-01",
+        "symbol": "ATMU",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-05-04",
+        "symbol": "GLBE",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-05-05",
+        "symbol": "RBA",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-05-05",
+        "symbol": "PWP",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-05-12",
+        "symbol": "ACM",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-05-13",
+        "symbol": "KRMN",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-05-14",
+        "symbol": "ARX",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-05-15",
+        "symbol": "NSC",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-05-15",
+        "symbol": "NTRS",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-05-22",
+        "symbol": "TDS",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-05-26",
+        "symbol": "HAPN",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-05-27",
+        "symbol": "VRRM",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-06-01",
+        "symbol": "MASK",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-06-01",
+        "symbol": "IAC",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-06-02",
+        "symbol": "DOX",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-06-04",
+        "symbol": "ADPT",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-06-05",
+        "symbol": "WCN",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-06-05",
+        "symbol": "RBA",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-06-08",
+        "symbol": "CPT",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-06-09",
+        "symbol": "UTI",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-06-09",
+        "symbol": "BXP",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-06-10",
+        "symbol": "LAZ",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-06-10",
+        "symbol": "EXPD",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-06-10",
+        "symbol": "C",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-06-11",
+        "symbol": "XENE",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-06-11",
+        "symbol": "HTFL",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-06-12",
+        "symbol": "OMER",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-06-12",
+        "symbol": "SON",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-06-15",
+        "symbol": "CUPR",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-06-16",
+        "symbol": "CCK",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-06-16",
+        "symbol": "ENOV",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-06-17",
+        "symbol": "CXT",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-06-17",
+        "symbol": "RLI",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-06-18",
+        "symbol": "IRM",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-06-18",
+        "symbol": "GBCI",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-06-18",
+        "symbol": "LYV",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-06-18",
+        "symbol": "UCB",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-06-18",
+        "symbol": "FR",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-06-18",
+        "symbol": "EXR",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-06-18",
+        "symbol": "ELS",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-06-18",
+        "symbol": "SBAC",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-06-18",
+        "symbol": "HOMB",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-06-22",
+        "symbol": "FWONK",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-06-22",
+        "symbol": "Q",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-06-23",
+        "symbol": "EPC",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-06-23",
+        "symbol": "VGNT",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-06-23",
+        "symbol": "EVC",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-06-24",
+        "symbol": "VERA",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-06-25",
+        "symbol": "RVTY",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-06-26",
+        "symbol": "SDOT",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-06-26",
+        "symbol": "JAN",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-06-26",
+        "symbol": "HAE",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-06-26",
+        "symbol": "ARXS",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-06-26",
+        "symbol": "SGRY",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-06-29",
+        "symbol": "ULS",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-06-29",
+        "symbol": "JAN",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-06-30",
+        "symbol": "NHP",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-07-01",
+        "symbol": "FA",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-07-02",
+        "symbol": "TRNO",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-07-02",
+        "symbol": "STNG",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-07-06",
+        "symbol": "CBC",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-07-06",
+        "symbol": "BXDC",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-07-07",
+        "symbol": "SGHC",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-07-10",
+        "symbol": "UGI",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-07-10",
+        "symbol": "BKU",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-07-13",
+        "symbol": "MQ",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-07-13",
+        "symbol": "ZBIO",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-07-13",
+        "symbol": "EWTX",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-07-13",
+        "symbol": "TVTX",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-07-13",
+        "symbol": "SLM",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-07-14",
+        "symbol": "INGM",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-07-14",
+        "symbol": "HAWK",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-07-15",
+        "symbol": "LION",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-07-15",
+        "symbol": "MTB",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-07-16",
+        "symbol": "HUM",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-07-16",
+        "symbol": "PGNY",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-07-17",
+        "symbol": "GMED",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-07-17",
+        "symbol": "TRGP",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-07-17",
+        "symbol": "WEC",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-07-20",
+        "symbol": "SGMT",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-07-20",
+        "symbol": "NET",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-07-21",
+        "symbol": "CALX",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-07-21",
+        "symbol": "PTCT",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-07-22",
+        "symbol": "RRC",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-07-23",
+        "symbol": "TDS",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-07-24",
+        "symbol": "GPN",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-07-24",
+        "symbol": "MTG",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-07-27",
+        "symbol": "EDBL",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-07-27",
+        "symbol": "NIQ",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-07-28",
+        "symbol": "DFNS",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-07-30",
+        "symbol": "RAL",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-07-31",
+        "symbol": "EROC",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-07-31",
+        "symbol": "PRM",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-08-03",
+        "symbol": "UCB",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-08-04",
+        "symbol": "BBNX",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-08-04",
+        "symbol": "WLK",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-08-07",
+        "symbol": "DOCS",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-08-10",
+        "symbol": "OMF",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-08-11",
+        "symbol": "SVV",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-08-12",
+        "symbol": "EYE",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-08-13",
+        "symbol": "MIR",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-08-13",
+        "symbol": "VIRT",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-08-17",
+        "symbol": "AXGN",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-08-18",
+        "symbol": "SUI",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-08-20",
+        "symbol": "GGG",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-08-21",
+        "symbol": "NTRS",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-08-21",
+        "symbol": "NSC",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-08-21",
+        "symbol": "PNW",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-08-21",
+        "symbol": "AIG",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-08-24",
+        "symbol": "BHF",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-08-24",
+        "symbol": "SBH",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-08-31",
+        "symbol": "JAZZ",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-09-01",
+        "symbol": "GMRS",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-09-01",
+        "symbol": "MIR",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-09-02",
+        "symbol": "ADIG",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-09-03",
+        "symbol": "INDV",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-09-03",
+        "symbol": "PTC",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-09-03",
+        "symbol": "SGRY",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-09-04",
+        "symbol": "BXP",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-09-08",
+        "symbol": "DPC",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-09-08",
+        "symbol": "SEI",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-09-14",
+        "symbol": "PCVX",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-09-14",
+        "symbol": "RBA",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-09-15",
+        "symbol": "SF",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-09-15",
+        "symbol": "UNM",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-09-16",
+        "symbol": "EC",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-09-18",
+        "symbol": "ELS",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-09-18",
+        "symbol": "SUI",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-09-18",
+        "symbol": "FOX",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-09-18",
+        "symbol": "VNO",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-09-18",
+        "symbol": "LYV",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-09-18",
+        "symbol": "DTE",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-09-18",
+        "symbol": "CUBE",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-09-18",
+        "symbol": "STAG",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-09-18",
+        "symbol": "ES",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-09-18",
+        "symbol": "PCAR",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-09-18",
+        "symbol": "APD",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-09-22",
+        "symbol": "GRML",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-09-22",
+        "symbol": "BWA",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-09-23",
+        "symbol": "JAGX",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-09-23",
+        "symbol": "WTRG",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-09-23",
+        "symbol": "ACHC",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-09-24",
+        "symbol": "NIQ",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-09-25",
+        "symbol": "JAGX",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-09-25",
+        "symbol": "CLYM",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-09-28",
+        "symbol": "JAN",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-09-28",
+        "symbol": "CMC",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-09-29",
+        "symbol": "LCLN",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-09-29",
+        "symbol": "DPC",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-09-29",
+        "symbol": "JAN",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-09-29",
+        "symbol": "MAIR",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-09-29",
+        "symbol": "MWH",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-09-29",
+        "symbol": "CRVS",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-09-30",
+        "symbol": "GMRS",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-09-30",
+        "symbol": "MGTX",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-09-30",
+        "symbol": "LCLN",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-09-30",
+        "symbol": "PAY",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-09-30",
+        "symbol": "DPC",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-10-01",
+        "symbol": "FTV",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-10-01",
+        "symbol": "PAR",
+        "reason": "missing_first5"
+      },
+      {
+        "date": "2026-10-02",
+        "symbol": "MHK",
+        "reason": "missing_first5"
+      }
+    ],
+    "missing_first5_count": 269,
+    "OHLCV_or_RV_mismatch_count": 0,
+    "matched_first5_OHLCV_RV_count": 3531,
+    "input_sha256": {
+      "ranked.json": "570636ea1e85cf40a2e8f1545cad0030bacc83fcaed74efff759bbe25292f345",
+      "minute-market.json": "7e3e313766ced4b4f070864f6765e1d9f73c1d0ff9d76e53f27443ac775ee81a"
+    }
+  },
+  "actual_path_ledgers": {
+    "status": "checked",
+    "count": 12,
+    "ledger_passed": 12,
+    "complete_paths": 0,
+    "incomplete_paths": 12,
+    "paths": [
+      {
+        "id": "gap_guarded_sensitivity__ORB-RV-500-v1__a0.5__c100__guarded-skip-session",
+        "file": "paths/gap_guarded_sensitivity__ORB-RV-500-v1__a0.5__c100__guarded-skip-session.json",
+        "status": "incomplete",
+        "sessions_accounted": 3,
+        "entries": 2,
+        "closed_trades": 1,
+        "final_equity": null,
+        "incomplete": {
+          "date": "2026-01-06",
+          "time": "2026-01-06T09:49:00-05:00",
+          "symbol": "PRCT",
+          "minute_offset": 19,
+          "reason": "missing_or_invalid_held_minute"
+        },
+        "aborted_sessions": 1,
+        "sha256": "60a2337f5584a3a41f9355933e83a74f82143e2b85878688fdc990c759fdcb0c",
+        "ledger_passed": true
+      },
+      {
+        "id": "gap_guarded_sensitivity__ORB-RV-500-v1__a0.5__c25__guarded-skip-session",
+        "file": "paths/gap_guarded_sensitivity__ORB-RV-500-v1__a0.5__c25__guarded-skip-session.json",
+        "status": "incomplete",
+        "sessions_accounted": 3,
+        "entries": 2,
+        "closed_trades": 1,
+        "final_equity": null,
+        "incomplete": {
+          "date": "2026-01-06",
+          "time": "2026-01-06T09:49:00-05:00",
+          "symbol": "PRCT",
+          "minute_offset": 19,
+          "reason": "missing_or_invalid_held_minute"
+        },
+        "aborted_sessions": 1,
+        "sha256": "7e7e1a099ad56f040fb3e42412010459ce577e5ca487759ad52fcdf125afbe36",
+        "ledger_passed": true
+      },
+      {
+        "id": "gap_guarded_sensitivity__ORB-RV-500-v1__a0.5__c50__guarded-skip-session",
+        "file": "paths/gap_guarded_sensitivity__ORB-RV-500-v1__a0.5__c50__guarded-skip-session.json",
+        "status": "incomplete",
+        "sessions_accounted": 3,
+        "entries": 2,
+        "closed_trades": 1,
+        "final_equity": null,
+        "incomplete": {
+          "date": "2026-01-06",
+          "time": "2026-01-06T09:49:00-05:00",
+          "symbol": "PRCT",
+          "minute_offset": 19,
+          "reason": "missing_or_invalid_held_minute"
+        },
+        "aborted_sessions": 1,
+        "sha256": "0c2e3fd981f0295b16a0b724691bb6cf87300e34216316a0625dd531a1a8eb82",
+        "ledger_passed": true
+      },
+      {
+        "id": "gap_guarded_sensitivity__ORB-RV-500-v1__a1__c100__guarded-skip-session",
+        "file": "paths/gap_guarded_sensitivity__ORB-RV-500-v1__a1__c100__guarded-skip-session.json",
+        "status": "incomplete",
+        "sessions_accounted": 3,
+        "entries": 2,
+        "closed_trades": 1,
+        "final_equity": null,
+        "incomplete": {
+          "date": "2026-01-06",
+          "time": "2026-01-06T09:49:00-05:00",
+          "symbol": "PRCT",
+          "minute_offset": 19,
+          "reason": "missing_or_invalid_held_minute"
+        },
+        "aborted_sessions": 1,
+        "sha256": "9d83cc25605f6b97beff4a06f492f9714f9a4c15f352fce3f0c737bb0091dd7f",
+        "ledger_passed": true
+      },
+      {
+        "id": "gap_guarded_sensitivity__ORB-RV-500-v1__a1__c25__guarded-skip-session",
+        "file": "paths/gap_guarded_sensitivity__ORB-RV-500-v1__a1__c25__guarded-skip-session.json",
+        "status": "incomplete",
+        "sessions_accounted": 3,
+        "entries": 2,
+        "closed_trades": 1,
+        "final_equity": null,
+        "incomplete": {
+          "date": "2026-01-06",
+          "time": "2026-01-06T09:49:00-05:00",
+          "symbol": "PRCT",
+          "minute_offset": 19,
+          "reason": "missing_or_invalid_held_minute"
+        },
+        "aborted_sessions": 1,
+        "sha256": "df63649f46b4a95a1de23796df1d0a939af055b70711e11819c7d484f218603e",
+        "ledger_passed": true
+      },
+      {
+        "id": "gap_guarded_sensitivity__ORB-RV-500-v1__a1__c50__guarded-skip-session",
+        "file": "paths/gap_guarded_sensitivity__ORB-RV-500-v1__a1__c50__guarded-skip-session.json",
+        "status": "incomplete",
+        "sessions_accounted": 3,
+        "entries": 2,
+        "closed_trades": 1,
+        "final_equity": null,
+        "incomplete": {
+          "date": "2026-01-06",
+          "time": "2026-01-06T09:49:00-05:00",
+          "symbol": "PRCT",
+          "minute_offset": 19,
+          "reason": "missing_or_invalid_held_minute"
+        },
+        "aborted_sessions": 1,
+        "sha256": "2c7862c2c4660024f956e0133fd44199867eaaf5bff7096238ce321179ace04e",
+        "ledger_passed": true
+      },
+      {
+        "id": "original_strict__ORB-RV-500-v1__a0.5__c100",
+        "file": "paths/original_strict__ORB-RV-500-v1__a0.5__c100.json",
+        "status": "incomplete",
+        "sessions_accounted": 1,
+        "entries": 0,
+        "closed_trades": 0,
+        "final_equity": null,
+        "incomplete": {
+          "date": "2026-01-02",
+          "time": "2026-01-02T09:35:00-05:00",
+          "reason": "incomplete_ranking_inputs",
+          "ranking_missing": [
+            {
+              "date": "2026-01-02",
+              "symbol": "CHRN",
+              "reason": "missing_or_invalid_prior_openings",
+              "missing_dates": [
+                "2025-12-24"
+              ]
+            },
+            {
+              "date": "2026-01-02",
+              "symbol": "LONA",
+              "reason": "missing_or_invalid_prior_openings",
+              "missing_dates": [
+                "2025-12-11",
+                "2025-12-15",
+                "2025-12-16"
+              ]
+            },
+            {
+              "date": "2026-01-02",
+              "symbol": "OMER",
+              "reason": "missing_or_invalid_prior_openings",
+              "missing_dates": [
+                "2025-12-24"
+              ]
+            },
+            {
+              "date": "2026-01-02",
+              "symbol": "RADX",
+              "reason": "missing_or_invalid_prior_openings",
+              "missing_dates": [
+                "2025-12-12"
+              ]
+            }
+          ]
+        },
+        "aborted_sessions": 0,
+        "sha256": "2213f7b5588319042a60ed632a7ae19600525a262d21f1803602f9d734743347",
+        "ledger_passed": true
+      },
+      {
+        "id": "original_strict__ORB-RV-500-v1__a0.5__c25",
+        "file": "paths/original_strict__ORB-RV-500-v1__a0.5__c25.json",
+        "status": "incomplete",
+        "sessions_accounted": 1,
+        "entries": 0,
+        "closed_trades": 0,
+        "final_equity": null,
+        "incomplete": {
+          "date": "2026-01-02",
+          "time": "2026-01-02T09:35:00-05:00",
+          "reason": "incomplete_ranking_inputs",
+          "ranking_missing": [
+            {
+              "date": "2026-01-02",
+              "symbol": "CHRN",
+              "reason": "missing_or_invalid_prior_openings",
+              "missing_dates": [
+                "2025-12-24"
+              ]
+            },
+            {
+              "date": "2026-01-02",
+              "symbol": "LONA",
+              "reason": "missing_or_invalid_prior_openings",
+              "missing_dates": [
+                "2025-12-11",
+                "2025-12-15",
+                "2025-12-16"
+              ]
+            },
+            {
+              "date": "2026-01-02",
+              "symbol": "OMER",
+              "reason": "missing_or_invalid_prior_openings",
+              "missing_dates": [
+                "2025-12-24"
+              ]
+            },
+            {
+              "date": "2026-01-02",
+              "symbol": "RADX",
+              "reason": "missing_or_invalid_prior_openings",
+              "missing_dates": [
+                "2025-12-12"
+              ]
+            }
+          ]
+        },
+        "aborted_sessions": 0,
+        "sha256": "455717479606c3dc97193b6675164524914056d6ab081e915cdaf5efbd133532",
+        "ledger_passed": true
+      },
+      {
+        "id": "original_strict__ORB-RV-500-v1__a0.5__c50",
+        "file": "paths/original_strict__ORB-RV-500-v1__a0.5__c50.json",
+        "status": "incomplete",
+        "sessions_accounted": 1,
+        "entries": 0,
+        "closed_trades": 0,
+        "final_equity": null,
+        "incomplete": {
+          "date": "2026-01-02",
+          "time": "2026-01-02T09:35:00-05:00",
+          "reason": "incomplete_ranking_inputs",
+          "ranking_missing": [
+            {
+              "date": "2026-01-02",
+              "symbol": "CHRN",
+              "reason": "missing_or_invalid_prior_openings",
+              "missing_dates": [
+                "2025-12-24"
+              ]
+            },
+            {
+              "date": "2026-01-02",
+              "symbol": "LONA",
+              "reason": "missing_or_invalid_prior_openings",
+              "missing_dates": [
+                "2025-12-11",
+                "2025-12-15",
+                "2025-12-16"
+              ]
+            },
+            {
+              "date": "2026-01-02",
+              "symbol": "OMER",
+              "reason": "missing_or_invalid_prior_openings",
+              "missing_dates": [
+                "2025-12-24"
+              ]
+            },
+            {
+              "date": "2026-01-02",
+              "symbol": "RADX",
+              "reason": "missing_or_invalid_prior_openings",
+              "missing_dates": [
+                "2025-12-12"
+              ]
+            }
+          ]
+        },
+        "aborted_sessions": 0,
+        "sha256": "bb43796d769f0fb6269855a89fea47b21412bab54365561af594a08e73a46772",
+        "ledger_passed": true
+      },
+      {
+        "id": "original_strict__ORB-RV-500-v1__a1__c100",
+        "file": "paths/original_strict__ORB-RV-500-v1__a1__c100.json",
+        "status": "incomplete",
+        "sessions_accounted": 1,
+        "entries": 0,
+        "closed_trades": 0,
+        "final_equity": null,
+        "incomplete": {
+          "date": "2026-01-02",
+          "time": "2026-01-02T09:35:00-05:00",
+          "reason": "incomplete_ranking_inputs",
+          "ranking_missing": [
+            {
+              "date": "2026-01-02",
+              "symbol": "CHRN",
+              "reason": "missing_or_invalid_prior_openings",
+              "missing_dates": [
+                "2025-12-24"
+              ]
+            },
+            {
+              "date": "2026-01-02",
+              "symbol": "LONA",
+              "reason": "missing_or_invalid_prior_openings",
+              "missing_dates": [
+                "2025-12-11",
+                "2025-12-15",
+                "2025-12-16"
+              ]
+            },
+            {
+              "date": "2026-01-02",
+              "symbol": "OMER",
+              "reason": "missing_or_invalid_prior_openings",
+              "missing_dates": [
+                "2025-12-24"
+              ]
+            },
+            {
+              "date": "2026-01-02",
+              "symbol": "RADX",
+              "reason": "missing_or_invalid_prior_openings",
+              "missing_dates": [
+                "2025-12-12"
+              ]
+            }
+          ]
+        },
+        "aborted_sessions": 0,
+        "sha256": "4f52bff4b115f9b10ce5d025894c4322872dc3b8a594544a46c4434e67a2cd9b",
+        "ledger_passed": true
+      },
+      {
+        "id": "original_strict__ORB-RV-500-v1__a1__c25",
+        "file": "paths/original_strict__ORB-RV-500-v1__a1__c25.json",
+        "status": "incomplete",
+        "sessions_accounted": 1,
+        "entries": 0,
+        "closed_trades": 0,
+        "final_equity": null,
+        "incomplete": {
+          "date": "2026-01-02",
+          "time": "2026-01-02T09:35:00-05:00",
+          "reason": "incomplete_ranking_inputs",
+          "ranking_missing": [
+            {
+              "date": "2026-01-02",
+              "symbol": "CHRN",
+              "reason": "missing_or_invalid_prior_openings",
+              "missing_dates": [
+                "2025-12-24"
+              ]
+            },
+            {
+              "date": "2026-01-02",
+              "symbol": "LONA",
+              "reason": "missing_or_invalid_prior_openings",
+              "missing_dates": [
+                "2025-12-11",
+                "2025-12-15",
+                "2025-12-16"
+              ]
+            },
+            {
+              "date": "2026-01-02",
+              "symbol": "OMER",
+              "reason": "missing_or_invalid_prior_openings",
+              "missing_dates": [
+                "2025-12-24"
+              ]
+            },
+            {
+              "date": "2026-01-02",
+              "symbol": "RADX",
+              "reason": "missing_or_invalid_prior_openings",
+              "missing_dates": [
+                "2025-12-12"
+              ]
+            }
+          ]
+        },
+        "aborted_sessions": 0,
+        "sha256": "7ce49ad850faf239b671cc424e13b5bf656a54318797cf76ec6d9494133a495b",
+        "ledger_passed": true
+      },
+      {
+        "id": "original_strict__ORB-RV-500-v1__a1__c50",
+        "file": "paths/original_strict__ORB-RV-500-v1__a1__c50.json",
+        "status": "incomplete",
+        "sessions_accounted": 1,
+        "entries": 0,
+        "closed_trades": 0,
+        "final_equity": null,
+        "incomplete": {
+          "date": "2026-01-02",
+          "time": "2026-01-02T09:35:00-05:00",
+          "reason": "incomplete_ranking_inputs",
+          "ranking_missing": [
+            {
+              "date": "2026-01-02",
+              "symbol": "CHRN",
+              "reason": "missing_or_invalid_prior_openings",
+              "missing_dates": [
+                "2025-12-24"
+              ]
+            },
+            {
+              "date": "2026-01-02",
+              "symbol": "LONA",
+              "reason": "missing_or_invalid_prior_openings",
+              "missing_dates": [
+                "2025-12-11",
+                "2025-12-15",
+                "2025-12-16"
+              ]
+            },
+            {
+              "date": "2026-01-02",
+              "symbol": "OMER",
+              "reason": "missing_or_invalid_prior_openings",
+              "missing_dates": [
+                "2025-12-24"
+              ]
+            },
+            {
+              "date": "2026-01-02",
+              "symbol": "RADX",
+              "reason": "missing_or_invalid_prior_openings",
+              "missing_dates": [
+                "2025-12-12"
+              ]
+            }
+          ]
+        },
+        "aborted_sessions": 0,
+        "sha256": "9be55de1c1204288701110418554f8fadd18a05ab03b4dc46732092d0de0e803",
+        "ledger_passed": true
+      }
+    ]
+  },
+  "limitations": [
+    "Cached directory combines current active and inactive records without a historical security identifier; provider default symbol mapping may alias/duplicate historical instruments. Matching OHLCV does not resolve historical identity or point-in-time survivorship.",
+    "No executable spread/order/fill claim. Ledger invariants verify arithmetic and information boundaries, not profitability.",
+    "Real input aggregation is checked only for files present; unavailable production minute data is explicitly pending. A passing partial-path ledger audit is not a complete-year result: actual complete/incomplete path counts and stop reasons are reported separately.",
+    "Skipping an entire session based on later held missing data would be hindsight; current strict tests require unknown final equity. Any new failclosed policy requires separate temporal regression checks."
+  ],
+  "orders_sent": 0
+}
