@@ -1,0 +1,739 @@
+{
+  "audited_at": "2026-10-06T19:03:18.534519+00:00",
+  "review_rows_retained": 68,
+  "positive_cases_checked": 29,
+  "positive_sources_checked": 31,
+  "positive_source_bytes_verified": 14730406,
+  "positive_sources_without_declared_revision": 9,
+  "source_group_hashes_verified": {
+    "primary-group-1.json": "d87b6e81a801b74a2991e33d796b73514c0147ce3e753042815548bf9ac1ae51",
+    "primary-group-2.json": "fbbca7b0356d0c90b52c45a825b8209d7cda6d7b808e5c099196b13318e96f91",
+    "primary-group-3.json": "31cd9e4bc4bc02f3e26d180d8d437c9af8d06e44ed8dd9213c12b1e95549d9e0",
+    "primary-group-4.json": "456d9faa69e47f3fbdf6b23d5652c6e91fab6bf0334d227b24726abaebd9485c"
+  },
+  "classifications_sha256": "46d8faf70b716fca31cd6c6cd05f49ea616f209f6727a89b72d5415d19fa3cdb",
+  "classifications_changed_by_audit": false,
+  "passed_cases": [
+    {
+      "candidate_id": "2026-02-02__AQST",
+      "category": "regulatory announcement: FDA Complete Response Letter",
+      "strict_time_window_passed": true,
+      "announcement_time_utc": "2026-02-02T12:00:00+00:00",
+      "conservative_available_by_utc": "2026-02-02T12:00:00+00:00",
+      "sources": [
+        {
+          "url": "https://www.globenewswire.com/news-release/2026/02/02/3230115/0/en/aquestive-therapeutics-announces-fda-issuance-of-complete-response-letter-for-anaphylm.html",
+          "sha256": "b15231240ca9f2ef3f268b4bacc5fbd511e4b47499a0963a598d49193a3812ef",
+          "body_hash_verified": true,
+          "bytes_verified": 75420,
+          "time_evidence_method": "timezone_aware_json_ld",
+          "declared_publication_utc": [
+            "2026-02-02T12:00:00+00:00"
+          ],
+          "declared_revision_utc": [
+            "2026-02-02T12:00:00+00:00"
+          ],
+          "historical_version_immutable": false,
+          "missing_declared_revision_does_not_prove_no_revision": false
+        }
+      ]
+    },
+    {
+      "candidate_id": "2026-02-04__ENPH",
+      "category": "earnings and guidance",
+      "strict_time_window_passed": true,
+      "announcement_time_utc": "2026-02-03T21:05:00+00:00",
+      "conservative_available_by_utc": "2026-02-03T21:05:00+00:00",
+      "sources": [
+        {
+          "url": "https://www.globenewswire.com/news-release/2026/02/03/3231611/20176/en/enphase-energy-reports-financial-results-for-the-fourth-quarter-of-2025.html",
+          "sha256": "c743b2e0d1fcde8c369055bfce6b979302ff3cb0be1be572250d294d35e26e0c",
+          "body_hash_verified": true,
+          "bytes_verified": 400591,
+          "time_evidence_method": "timezone_aware_json_ld",
+          "declared_publication_utc": [
+            "2026-02-03T21:05:00+00:00"
+          ],
+          "declared_revision_utc": [
+            "2026-02-03T21:05:00+00:00"
+          ],
+          "historical_version_immutable": false,
+          "missing_declared_revision_does_not_prove_no_revision": false
+        }
+      ]
+    },
+    {
+      "candidate_id": "2026-02-09__VAL",
+      "category": "contract: signed definitive merger agreement",
+      "strict_time_window_passed": true,
+      "announcement_time_utc": "2026-02-09T12:50:55+00:00",
+      "conservative_available_by_utc": "2026-02-09T12:50:55+00:00",
+      "sources": [
+        {
+          "url": "https://www.globenewswire.com/news-release/2026/02/09/3234443/0/en/transocean-to-acquire-valaris.html",
+          "sha256": "c566197faa817c4e28c3430316563bb1c5e84f9bcf609273d28654ce395bffbb",
+          "body_hash_verified": true,
+          "bytes_verified": 79901,
+          "time_evidence_method": "timezone_aware_json_ld",
+          "declared_publication_utc": [
+            "2026-02-09T12:50:55+00:00"
+          ],
+          "declared_revision_utc": [
+            "2026-02-09T12:50:55+00:00"
+          ],
+          "historical_version_immutable": false,
+          "missing_declared_revision_does_not_prove_no_revision": false
+        }
+      ]
+    },
+    {
+      "candidate_id": "2026-02-10__ICHR",
+      "category": "earnings",
+      "strict_time_window_passed": true,
+      "announcement_time_utc": "2026-02-09T21:05:00+00:00",
+      "conservative_available_by_utc": "2026-02-09T21:05:00+00:00",
+      "sources": [
+        {
+          "url": "https://www.businesswire.com/news/home/20260209131552/en/Ichor-Holdings-Ltd.-Announces-Fourth-Quarter-and-Fiscal-Year-2025-Financial-Results",
+          "sha256": "a14001dd6e8e73ec76153125b3503ec5eab619a07bedb0c388cf9675f60ab7cb",
+          "body_hash_verified": true,
+          "bytes_verified": 1438511,
+          "time_evidence_method": "timezone_aware_json_ld",
+          "declared_publication_utc": [
+            "2026-02-09T21:05:00+00:00"
+          ],
+          "declared_revision_utc": [
+            "2026-02-09T21:05:00+00:00"
+          ],
+          "historical_version_immutable": false,
+          "missing_declared_revision_does_not_prove_no_revision": false
+        }
+      ]
+    },
+    {
+      "candidate_id": "2026-02-19__RELY",
+      "category": "earnings and guidance",
+      "strict_time_window_passed": true,
+      "announcement_time_utc": "2026-02-18T21:04:00+00:00",
+      "conservative_available_by_utc": "2026-02-18T21:04:00+00:00",
+      "sources": [
+        {
+          "url": "https://www.globenewswire.com/news-release/2026/02/18/3240604/0/en/remitly-reports-fourth-quarter-and-full-year-2025-results-above-outlook.html",
+          "sha256": "d5b05a136ecbb4a7b4b8f4af0f8e7fb10d82e8e32df5e8135288023b93cff459",
+          "body_hash_verified": true,
+          "bytes_verified": 238526,
+          "time_evidence_method": "timezone_aware_json_ld",
+          "declared_publication_utc": [
+            "2026-02-18T21:04:00+00:00"
+          ],
+          "declared_revision_utc": [
+            "2026-02-18T21:04:00+00:00"
+          ],
+          "historical_version_immutable": false,
+          "missing_declared_revision_does_not_prove_no_revision": false
+        }
+      ]
+    },
+    {
+      "candidate_id": "2026-02-20__RNG",
+      "category": "earnings/guidance",
+      "strict_time_window_passed": true,
+      "announcement_time_utc": "2026-02-19T21:09:00+00:00",
+      "conservative_available_by_utc": "2026-02-19T21:09:00+00:00",
+      "sources": [
+        {
+          "url": "https://www.businesswire.com/news/home/20260219280807/en/",
+          "sha256": "1b14db48be6a8e6db982e38ca71bc60800c0f3892b52730cd611902ce426a5ee",
+          "body_hash_verified": true,
+          "bytes_verified": 1377252,
+          "time_evidence_method": "timezone_aware_json_ld",
+          "declared_publication_utc": [
+            "2026-02-19T21:09:00+00:00"
+          ],
+          "declared_revision_utc": [
+            "2026-02-19T21:09:00+00:00"
+          ],
+          "historical_version_immutable": false,
+          "missing_declared_revision_does_not_prove_no_revision": false
+        }
+      ]
+    },
+    {
+      "candidate_id": "2026-02-20__TNDM",
+      "category": "earnings/guidance",
+      "strict_time_window_passed": true,
+      "announcement_time_utc": "2026-02-19T21:05:00+00:00",
+      "conservative_available_by_utc": "2026-02-19T21:05:00+00:00",
+      "sources": [
+        {
+          "url": "https://www.businesswire.com/news/home/20260219656063/en/Tandem-Diabetes-Care-Announces-Fourth-Quarter-and-Full-Year-2025-Financial-Results-and-2026-Financial-Guidance",
+          "sha256": "a4d914594873ad1c3e93b4ce6b24ff72ee8ac3f2b6c6354f6cc533cedcfad29e",
+          "body_hash_verified": true,
+          "bytes_verified": 987525,
+          "time_evidence_method": "timezone_aware_json_ld",
+          "declared_publication_utc": [
+            "2026-02-19T21:05:00+00:00"
+          ],
+          "declared_revision_utc": [
+            "2026-02-19T21:05:00+00:00"
+          ],
+          "historical_version_immutable": false,
+          "missing_declared_revision_does_not_prove_no_revision": false
+        }
+      ]
+    },
+    {
+      "candidate_id": "2026-02-26__GCT",
+      "category": "earnings",
+      "strict_time_window_passed": true,
+      "announcement_time_utc": "2026-02-26T12:00:00+00:00",
+      "conservative_available_by_utc": "2026-02-26T12:00:00+00:00",
+      "sources": [
+        {
+          "url": "https://www.globenewswire.com/news-release/2026/02/26/3245422/0/en/gigacloud-technology-inc-announces-fourth-quarter-and-year-ended-december-31-2025-financial-results.html",
+          "sha256": "a08b46aae76ef9d8c0b8f29302497ada41668e6e26c0b98130bb4e6d05c80d62",
+          "body_hash_verified": true,
+          "bytes_verified": 252790,
+          "time_evidence_method": "timezone_aware_json_ld",
+          "declared_publication_utc": [
+            "2026-02-26T12:00:00+00:00"
+          ],
+          "declared_revision_utc": [
+            "2026-02-26T12:00:00+00:00"
+          ],
+          "historical_version_immutable": false,
+          "missing_declared_revision_does_not_prove_no_revision": false
+        }
+      ]
+    },
+    {
+      "candidate_id": "2026-02-27__AAOI",
+      "category": "earnings and guidance",
+      "strict_time_window_passed": true,
+      "announcement_time_utc": "2026-02-26T21:10:00+00:00",
+      "conservative_available_by_utc": "2026-02-26T21:10:00+00:00",
+      "sources": [
+        {
+          "url": "https://www.globenewswire.com/news-release/2026/02/26/3246121/9986/en/applied-optoelectronics-reports-fourth-quarter-and-full-year-2025-results.html",
+          "sha256": "95255579a4587b3ce62c96a1fadc0cd41ce5c84f04d62136515b2ddb59b79a93",
+          "body_hash_verified": true,
+          "bytes_verified": 223558,
+          "time_evidence_method": "timezone_aware_json_ld",
+          "declared_publication_utc": [
+            "2026-02-26T21:10:00+00:00"
+          ],
+          "declared_revision_utc": [
+            "2026-02-26T21:10:00+00:00"
+          ],
+          "historical_version_immutable": false,
+          "missing_declared_revision_does_not_prove_no_revision": false
+        }
+      ]
+    },
+    {
+      "candidate_id": "2026-03-03__ZD",
+      "category": "contract",
+      "strict_time_window_passed": true,
+      "announcement_time_utc": "2026-03-03T06:00:00+00:00",
+      "conservative_available_by_utc": "2026-03-03T06:00:00+00:00",
+      "sources": [
+        {
+          "url": "https://investor.ziffdavis.com/news/news-details/2026/Ziff-Davis-Announces-Definitive-Agreement-to-Sell-Connectivity-Division-to-Accenture/default.aspx",
+          "sha256": "7e71c0f5c4600b73fb471d6ede630a6f1efeefb3b46bc43e774f5e5e5257b22e",
+          "body_hash_verified": true,
+          "bytes_verified": 125991,
+          "time_evidence_method": "timezone_aware_json_ld",
+          "declared_publication_utc": [
+            "2026-03-03T06:00:00+00:00"
+          ],
+          "declared_revision_utc": [
+            "2026-03-03T06:00:00+00:00"
+          ],
+          "historical_version_immutable": false,
+          "missing_declared_revision_does_not_prove_no_revision": false
+        }
+      ]
+    },
+    {
+      "candidate_id": "2026-03-05__PDYN",
+      "category": "earnings/guidance",
+      "strict_time_window_passed": true,
+      "announcement_time_utc": "2026-03-05T11:00:00+00:00",
+      "conservative_available_by_utc": "2026-03-05T11:00:00+00:00",
+      "sources": [
+        {
+          "url": "https://www.businesswire.com/news/home/20260305148397/en/",
+          "sha256": "5a2695c15b0f983a7cd984af6fc1a4ec608081634a1fbc85ef24e4ea6dad35e8",
+          "body_hash_verified": true,
+          "bytes_verified": 955178,
+          "time_evidence_method": "timezone_aware_json_ld",
+          "declared_publication_utc": [
+            "2026-03-05T11:00:00+00:00"
+          ],
+          "declared_revision_utc": [
+            "2026-03-05T11:00:00+00:00"
+          ],
+          "historical_version_immutable": false,
+          "missing_declared_revision_does_not_prove_no_revision": false
+        }
+      ]
+    },
+    {
+      "candidate_id": "2026-03-06__MRVL",
+      "category": "earnings/guidance",
+      "strict_time_window_passed": true,
+      "announcement_time_utc": "2026-03-05T21:05:00+00:00",
+      "conservative_available_by_utc": "2026-03-05T21:05:00+00:00",
+      "sources": [
+        {
+          "url": "https://www.businesswire.com/news/home/20260305094012/en/",
+          "sha256": "3bc40da8b60c70290c2cc1c509a9fe7d5d4edea6cd0bb4d21290467a9336bea2",
+          "body_hash_verified": true,
+          "bytes_verified": 1461437,
+          "time_evidence_method": "timezone_aware_json_ld",
+          "declared_publication_utc": [
+            "2026-03-05T21:05:00+00:00"
+          ],
+          "declared_revision_utc": [
+            "2026-03-05T21:05:00+00:00"
+          ],
+          "historical_version_immutable": false,
+          "missing_declared_revision_does_not_prove_no_revision": false
+        }
+      ]
+    },
+    {
+      "candidate_id": "2026-03-09__DNTH",
+      "category": "earnings; separate clinical result does not itself qualify",
+      "strict_time_window_passed": true,
+      "announcement_time_utc": "2026-03-09T11:09:07+00:00",
+      "conservative_available_by_utc": "2026-03-09T11:09:07+00:00",
+      "sources": [
+        {
+          "url": "https://www.globenewswire.com/news-release/2026/03/09/3251709/0/en/dianthus-therapeutics-highlights-recent-business-achievements-including-go-decision-for-phase-3-captivate-cidp-trial-and-reports-q4-and-fy-2025-financial-results.html",
+          "sha256": "f53db3aa500de06cb9a73fdf7757ac97dd4f1d30b3315e6ae0f560a95c13e384",
+          "body_hash_verified": true,
+          "bytes_verified": 149181,
+          "time_evidence_method": "timezone_aware_json_ld",
+          "declared_publication_utc": [
+            "2026-03-09T11:09:07+00:00"
+          ],
+          "declared_revision_utc": [
+            "2026-03-09T11:09:07+00:00"
+          ],
+          "historical_version_immutable": false,
+          "missing_declared_revision_does_not_prove_no_revision": false
+        }
+      ]
+    },
+    {
+      "candidate_id": "2026-04-08__AEHR",
+      "category": "earnings/guidance",
+      "strict_time_window_passed": true,
+      "announcement_time_utc": "2026-04-07T20:57:30+00:00",
+      "conservative_available_by_utc": "2026-04-07T20:57:30+00:00",
+      "sources": [
+        {
+          "url": "https://www.aehr.com/2026/04/aehr-test-systems-reports-over-37-million-in-quarterly-bookings-driven-by-strong-ai-and-data-center-infrastructure-demand/",
+          "sha256": "290e1855f932fb0d6220623c739b5c978b47a33876018969d828cf7b57d93e35",
+          "body_hash_verified": true,
+          "bytes_verified": 151302,
+          "time_evidence_method": "timezone_aware_json_ld",
+          "declared_publication_utc": [
+            "2026-04-07T20:57:30+00:00"
+          ],
+          "declared_revision_utc": [],
+          "historical_version_immutable": false,
+          "missing_declared_revision_does_not_prove_no_revision": true
+        }
+      ]
+    },
+    {
+      "candidate_id": "2026-04-17__CRML",
+      "category": "regulatory announcement",
+      "strict_time_window_passed": true,
+      "announcement_time_utc": "2026-04-17T00:30:29+00:00",
+      "conservative_available_by_utc": "2026-04-17T00:30:29+00:00",
+      "sources": [
+        {
+          "url": "https://www.criticalmetalscorp.com/greenland-government-approves-transfer-of-final-50-5-of-tanbreez-taking-critical-metals-corp-to-92-5-ownership/",
+          "sha256": "5a0243fe70ed84b1434b9630886b6725d230042ff539f315212b814882c6ad52",
+          "body_hash_verified": true,
+          "bytes_verified": 164219,
+          "time_evidence_method": "timezone_aware_json_ld",
+          "declared_publication_utc": [
+            "2026-04-17T00:30:29+00:00"
+          ],
+          "declared_revision_utc": [
+            "2026-04-17T00:30:29+00:00"
+          ],
+          "historical_version_immutable": false,
+          "missing_declared_revision_does_not_prove_no_revision": false
+        }
+      ]
+    },
+    {
+      "candidate_id": "2026-04-24__MXL",
+      "category": "earnings/guidance",
+      "strict_time_window_passed": true,
+      "announcement_time_utc": "2026-04-23T20:05:00+00:00",
+      "conservative_available_by_utc": "2026-04-23T20:05:00+00:00",
+      "sources": [
+        {
+          "url": "https://www.businesswire.com/news/home/20260423626027/en/",
+          "sha256": "637d16c1113fd078d8d6ce7d52f12be3ba89973b8e2f87135aa7ab38bd9a3324",
+          "body_hash_verified": true,
+          "bytes_verified": 1135030,
+          "time_evidence_method": "timezone_aware_json_ld",
+          "declared_publication_utc": [
+            "2026-04-23T20:05:00+00:00"
+          ],
+          "declared_revision_utc": [
+            "2026-04-23T20:05:00+00:00"
+          ],
+          "historical_version_immutable": false,
+          "missing_declared_revision_does_not_prove_no_revision": false
+        }
+      ]
+    },
+    {
+      "candidate_id": "2026-05-07__AAON",
+      "category": "earnings/guidance",
+      "strict_time_window_passed": true,
+      "announcement_time_utc": "2026-05-07T11:00:00+00:00",
+      "conservative_available_by_utc": "2026-05-07T11:33:51.030000+00:00",
+      "sources": [
+        {
+          "url": "https://investors.aaon.com/investor-news/aaon-reports-first-quarter-2026-results-with-record-sales-and-backlog-robust-earnings-growth-and-raises-full-year-guidance",
+          "sha256": "73fa87360330815774c398d5dd935de59e4737e3d611d976ccd0d9123468a062",
+          "body_hash_verified": true,
+          "bytes_verified": 74398,
+          "time_evidence_method": "timezone_aware_json_ld",
+          "declared_publication_utc": [
+            "2026-05-07T11:00:00+00:00"
+          ],
+          "declared_revision_utc": [
+            "2026-05-07T11:33:51.030000+00:00"
+          ],
+          "historical_version_immutable": false,
+          "missing_declared_revision_does_not_prove_no_revision": false
+        }
+      ]
+    },
+    {
+      "candidate_id": "2026-05-12__AMBQ",
+      "category": "earnings",
+      "strict_time_window_passed": true,
+      "announcement_time_utc": "2026-05-12T11:30:00+00:00",
+      "conservative_available_by_utc": "2026-05-12T11:30:00+00:00",
+      "sources": [
+        {
+          "url": "https://ir.ambiq.com/news/news-details/2026/Ambiq-Reports-First-Quarter-2026-Financial-Results/default.aspx",
+          "sha256": "f4f96cddfa4fa9254a36a6bdbbad2131873a02b58ebea81a33c5165ae67c8088",
+          "body_hash_verified": true,
+          "bytes_verified": 291045,
+          "time_evidence_method": "timezone_aware_json_ld",
+          "declared_publication_utc": [
+            "2026-05-12T06:30:00+00:00"
+          ],
+          "declared_revision_utc": [
+            "2026-05-12T06:30:00+00:00"
+          ],
+          "historical_version_immutable": false,
+          "missing_declared_revision_does_not_prove_no_revision": false
+        },
+        {
+          "url": "https://www.businesswire.com/news/home/20260512580745/en/",
+          "sha256": "52121a98af47f801bcf758548db06b494b8c19a97b59529a4387446ff5ae664e",
+          "body_hash_verified": true,
+          "bytes_verified": 1006665,
+          "time_evidence_method": "timezone_aware_json_ld",
+          "declared_publication_utc": [
+            "2026-05-12T11:30:00+00:00"
+          ],
+          "declared_revision_utc": [
+            "2026-05-12T11:30:00+00:00"
+          ],
+          "historical_version_immutable": false,
+          "missing_declared_revision_does_not_prove_no_revision": false
+        }
+      ]
+    },
+    {
+      "candidate_id": "2026-05-13__VELO",
+      "category": "earnings",
+      "strict_time_window_passed": true,
+      "announcement_time_utc": "2026-05-12T20:05:00+00:00",
+      "conservative_available_by_utc": "2026-05-12T20:05:31+00:00",
+      "sources": [
+        {
+          "url": "https://ir.velo3d.com/news-events/press-releases/detail/206/velo3d-announces-first-quarter-2026-financial-results",
+          "sha256": "d5bf92237208dd7e8e37657104b910e04e0400e167e3af84acb93c9e450fb155",
+          "body_hash_verified": true,
+          "bytes_verified": 210144,
+          "time_evidence_method": "issuer_time_has_no_timezone_independent_wire_required",
+          "declared_publication_utc": [],
+          "declared_revision_utc": [],
+          "historical_version_immutable": false,
+          "missing_declared_revision_does_not_prove_no_revision": true
+        },
+        {
+          "url": "https://www.prnewswire.com/news-releases/velo3d-announces-first-quarter-2026-financial-results-302770009.html",
+          "sha256": "2335a87d4d20739a30480a5bba7462c4674716762a6605d3c49bdf0338b0e3b1",
+          "body_hash_verified": true,
+          "bytes_verified": 443765,
+          "time_evidence_method": "timezone_aware_json_ld",
+          "declared_publication_utc": [
+            "2026-05-12T20:05:00+00:00"
+          ],
+          "declared_revision_utc": [
+            "2026-05-12T20:05:31+00:00"
+          ],
+          "historical_version_immutable": false,
+          "missing_declared_revision_does_not_prove_no_revision": false
+        }
+      ]
+    },
+    {
+      "candidate_id": "2026-05-20__IMVT",
+      "category": "earnings",
+      "strict_time_window_passed": true,
+      "announcement_time_utc": "2026-05-20T11:00:00+00:00",
+      "conservative_available_by_utc": "2026-05-20T11:00:00+00:00",
+      "sources": [
+        {
+          "url": "https://www.immunovant.com/investors/news-events/press-releases/detail/83/immunovant-provides-corporate-updates-and-reports-financial",
+          "sha256": "39aa2ac40bf89a507346fd00417360529a4cec39aa3e7e27c09898aee85fd08f",
+          "body_hash_verified": true,
+          "bytes_verified": 152579,
+          "time_evidence_method": "visible_release_timestamp_with_EDT",
+          "declared_publication_utc": [
+            "2026-05-20T11:00:00+00:00"
+          ],
+          "declared_revision_utc": [],
+          "historical_version_immutable": false,
+          "missing_declared_revision_does_not_prove_no_revision": true
+        }
+      ]
+    },
+    {
+      "candidate_id": "2026-05-27__MNTS",
+      "category": "contract",
+      "strict_time_window_passed": true,
+      "announcement_time_utc": "2026-05-27T12:01:01+00:00",
+      "conservative_available_by_utc": "2026-05-27T12:01:01+00:00",
+      "sources": [
+        {
+          "url": "https://investors.momentus.space/news-releases/news-release-details/momentus-announces-pricing-25-million-private-placement-common",
+          "sha256": "e40c663d1f3463b6acd6207d63d0ed488a693613cde2497605c306f41e424927",
+          "body_hash_verified": true,
+          "bytes_verified": 27179,
+          "time_evidence_method": "timezone_aware_json_ld",
+          "declared_publication_utc": [
+            "2026-05-27T12:01:01+00:00"
+          ],
+          "declared_revision_utc": [],
+          "historical_version_immutable": false,
+          "missing_declared_revision_does_not_prove_no_revision": true
+        }
+      ]
+    },
+    {
+      "candidate_id": "2026-05-28__SNOW",
+      "category": "earnings",
+      "strict_time_window_passed": true,
+      "announcement_time_utc": "2026-05-27T20:05:00+00:00",
+      "conservative_available_by_utc": "2026-05-27T20:05:00+00:00",
+      "sources": [
+        {
+          "url": "https://www.businesswire.com/news/home/20260527027931/en/Snowflake-Reports-Financial-Results-for-the-First-Quarter-of-Fiscal-2027",
+          "sha256": "52d76c540fc971bd7703dcbe5d315bd8e87609c32828bf93114da6fa5e2a599b",
+          "body_hash_verified": true,
+          "bytes_verified": 1424074,
+          "time_evidence_method": "timezone_aware_json_ld",
+          "declared_publication_utc": [
+            "2026-05-27T20:05:00+00:00"
+          ],
+          "declared_revision_utc": [
+            "2026-05-27T20:05:00+00:00"
+          ],
+          "historical_version_immutable": false,
+          "missing_declared_revision_does_not_prove_no_revision": false
+        }
+      ]
+    },
+    {
+      "candidate_id": "2026-05-29__REPL",
+      "category": "regulatory announcement",
+      "strict_time_window_passed": true,
+      "announcement_time_utc": "2026-05-29T12:00:48+00:00",
+      "conservative_available_by_utc": "2026-05-29T12:00:48+00:00",
+      "sources": [
+        {
+          "url": "https://ir.replimune.com/news-releases/news-release-details/replimune-announces-planned-rp1-bla-resubmission-following",
+          "sha256": "8c64af76dd56dcded571d69676bc2df2212b5b3868ea4d12c0779dbfbb7a0dbc",
+          "body_hash_verified": true,
+          "bytes_verified": 64800,
+          "time_evidence_method": "timezone_aware_json_ld",
+          "declared_publication_utc": [
+            "2026-05-29T12:00:48+00:00"
+          ],
+          "declared_revision_utc": [],
+          "historical_version_immutable": false,
+          "missing_declared_revision_does_not_prove_no_revision": true
+        }
+      ]
+    },
+    {
+      "candidate_id": "2026-06-08__ABAT",
+      "category": "regulatory announcement",
+      "strict_time_window_passed": true,
+      "announcement_time_utc": "2026-06-08T09:51:04+00:00",
+      "conservative_available_by_utc": "2026-06-08T09:51:04+00:00",
+      "sources": [
+        {
+          "url": "https://www.globenewswire.com/news-release/2026/06/08/3307883/0/en/American-Battery-Technology-Company-Wins-Appeal-and-Has-US-Department-of-Energy-Grant-Reinstated-for-115-million-Project-for-Commercial-Scale-Critical-Mineral-Lithium-Refinery.html",
+          "sha256": "c6fe4f47e5877106f6c49d6ce82399e8616f50f2df633fdf80e24220de0d6ab5",
+          "body_hash_verified": true,
+          "bytes_verified": 77606,
+          "time_evidence_method": "timezone_aware_json_ld",
+          "declared_publication_utc": [
+            "2026-06-08T09:51:04+00:00"
+          ],
+          "declared_revision_utc": [
+            "2026-06-08T09:51:04+00:00"
+          ],
+          "historical_version_immutable": false,
+          "missing_declared_revision_does_not_prove_no_revision": false
+        }
+      ]
+    },
+    {
+      "candidate_id": "2026-06-17__QURE",
+      "category": "regulatory announcement",
+      "strict_time_window_passed": true,
+      "announcement_time_utc": "2026-06-17T11:05:23+00:00",
+      "conservative_available_by_utc": "2026-06-17T11:05:23+00:00",
+      "sources": [
+        {
+          "url": "https://uniqure.gcs-web.com/news-releases/news-release-details/uniqure-announces-plan-bla-submission-amt-130-huntingtons",
+          "sha256": "fb1595833dfb45849feacc6771b4aa8a6143b78af6cb6bb858ea4f897f4bd396",
+          "body_hash_verified": true,
+          "bytes_verified": 23390,
+          "time_evidence_method": "timezone_aware_json_ld",
+          "declared_publication_utc": [
+            "2026-06-17T11:05:23+00:00"
+          ],
+          "declared_revision_utc": [],
+          "historical_version_immutable": false,
+          "missing_declared_revision_does_not_prove_no_revision": true
+        }
+      ]
+    },
+    {
+      "candidate_id": "2026-08-04__LIFE",
+      "category": "earnings/guidance",
+      "strict_time_window_passed": true,
+      "announcement_time_utc": "2026-08-03T20:05:16+00:00",
+      "conservative_available_by_utc": "2026-08-03T20:05:16+00:00",
+      "sources": [
+        {
+          "url": "https://investors.ethos.com/news-releases/news-release-details/ethos-reports-second-quarter-fiscal-year-2026-financial-results",
+          "sha256": "a4135e050d78ec2b321e7d09dae70255fbc7281586008b622796fafde684b8ea",
+          "body_hash_verified": true,
+          "bytes_verified": 213888,
+          "time_evidence_method": "timezone_aware_json_ld",
+          "declared_publication_utc": [
+            "2026-08-03T20:05:16+00:00"
+          ],
+          "declared_revision_utc": [],
+          "historical_version_immutable": false,
+          "missing_declared_revision_does_not_prove_no_revision": true
+        }
+      ]
+    },
+    {
+      "candidate_id": "2026-08-07__QNST",
+      "category": "earnings",
+      "strict_time_window_passed": true,
+      "announcement_time_utc": "2026-08-06T20:05:00+00:00",
+      "conservative_available_by_utc": "2026-08-06T20:05:00+00:00",
+      "sources": [
+        {
+          "url": "https://www.businesswire.com/news/home/20260806683938/en/",
+          "sha256": "94d3f37854d6c7cb000ce64cd9fe478140da54a30195005bce79336367eddfb9",
+          "body_hash_verified": true,
+          "bytes_verified": 1142684,
+          "time_evidence_method": "timezone_aware_json_ld",
+          "declared_publication_utc": [
+            "2026-08-06T20:05:00+00:00"
+          ],
+          "declared_revision_utc": [
+            "2026-08-06T20:05:00+00:00"
+          ],
+          "historical_version_immutable": false,
+          "missing_declared_revision_does_not_prove_no_revision": false
+        }
+      ]
+    },
+    {
+      "candidate_id": "2026-08-14__CAPR",
+      "category": "earnings",
+      "strict_time_window_passed": true,
+      "announcement_time_utc": "2026-08-13T20:05:00+00:00",
+      "conservative_available_by_utc": "2026-08-13T20:05:00+00:00",
+      "sources": [
+        {
+          "url": "https://www.capricor.com/investors/news-events/press-releases/detail/353/capricor-therapeutics-reports-second-quarter-2026-financial",
+          "sha256": "4acdbaf1c26decd06003b63c3d3373d3bb418e6b64873b40280e511954484c5c",
+          "body_hash_verified": true,
+          "bytes_verified": 107245,
+          "time_evidence_method": "visible_release_timestamp_with_EDT",
+          "declared_publication_utc": [
+            "2026-08-13T20:05:00+00:00"
+          ],
+          "declared_revision_utc": [],
+          "historical_version_immutable": false,
+          "missing_declared_revision_does_not_prove_no_revision": true
+        }
+      ]
+    },
+    {
+      "candidate_id": "2026-08-14__HTFL",
+      "category": "earnings/guidance",
+      "strict_time_window_passed": true,
+      "announcement_time_utc": "2026-08-13T20:01:35+00:00",
+      "conservative_available_by_utc": "2026-08-13T20:01:35+00:00",
+      "sources": [
+        {
+          "url": "https://ir.heartflow.com/news-releases/news-release-details/heartflow-reports-second-quarter-2026-financial-results-and",
+          "sha256": "3a9661373dcc32e72ae9c779c562048d5b5bd364902c232a3142cc6e7764f51b",
+          "body_hash_verified": true,
+          "bytes_verified": 254532,
+          "time_evidence_method": "timezone_aware_json_ld",
+          "declared_publication_utc": [
+            "2026-08-13T20:01:35+00:00"
+          ],
+          "declared_revision_utc": [],
+          "historical_version_immutable": false,
+          "missing_declared_revision_does_not_prove_no_revision": true
+        }
+      ]
+    }
+  ],
+  "known_source_integrity_issue": {
+    "symbol": "CRM",
+    "recorded_sha256": "bdfcee65ba6d002a606f08247ef57025bcfabea518e09486ab5cce8804c6755a",
+    "observed_sha256": "dc1b3c632d17ea2658e8d89f9bcc226da32706cf32372fdaf5ca11c5a121b88b",
+    "quarantined": true,
+    "candidate_stays_unknown": true,
+    "affected_body_used_for_positive_gate": false
+  },
+  "limits": [
+    "This verifies retrieved bytes and declared/displayed timestamps, not immutable historical versions or client receipt.",
+    "News presence/category does not prove favorable news, a positive surprise, market causation or an executable opportunity.",
+    "VELO issuer time alone has no timezone; a separate original wire timestamp supports the window.",
+    "AMBQ issuer and wire differ by five hours; both are in the window, and the later wire time controls.",
+    "Unknown and outside-category stories do not prove the absence of a qualifying catalyst."
+  ]
+}

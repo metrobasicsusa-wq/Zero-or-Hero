@@ -1,0 +1,828 @@
+{
+  "id": "s500-ep-missing-observation-diagnostic-v1-proposal",
+  "created_at": "2026-10-06T19:05:07.031019+00:00",
+  "status": "planned_not_executed",
+  "post_outcome_diagnostic": true,
+  "parent_results_sha256": "626105c96cfee1cac9b84e6a15dffaa1a1b845a6afc2455836938cfbe1993b4d",
+  "selection": "Every distinct symbol/time of a held_minute_unresolved failure across all 876 results, independent of news classification and PnL; no ranked winner selection.",
+  "failure_records": 414,
+  "unique_points": 38,
+  "queue": [
+    {
+      "symbol": "BIDU",
+      "missing_time": "2026-01-06T14:29:00-05:00",
+      "case_ids": [
+        "2026-01-02__BIDU"
+      ],
+      "variant_ids": [
+        "fixed10__f0.5__c100",
+        "fixed10__f0.5__c25",
+        "fixed10__f0.5__c50",
+        "fixed10__f1.0__c100",
+        "fixed10__f1.0__c25",
+        "fixed10__f1.0__c50",
+        "ma10_max63__f0.5__c100",
+        "ma10_max63__f0.5__c25",
+        "ma10_max63__f0.5__c50",
+        "ma10_max63__f1.0__c100",
+        "ma10_max63__f1.0__c25",
+        "ma10_max63__f1.0__c50"
+      ],
+      "reason": "missing_minute"
+    },
+    {
+      "symbol": "GLUE",
+      "missing_time": "2026-01-08T12:38:00-05:00",
+      "case_ids": [
+        "2026-01-07__GLUE"
+      ],
+      "variant_ids": [
+        "fixed10__f0.5__c100",
+        "fixed10__f0.5__c25",
+        "fixed10__f0.5__c50",
+        "fixed10__f1.0__c100",
+        "fixed10__f1.0__c25",
+        "fixed10__f1.0__c50",
+        "ma10_max63__f0.5__c100",
+        "ma10_max63__f0.5__c25",
+        "ma10_max63__f0.5__c50",
+        "ma10_max63__f1.0__c100",
+        "ma10_max63__f1.0__c25",
+        "ma10_max63__f1.0__c50"
+      ],
+      "reason": "missing_minute"
+    },
+    {
+      "symbol": "LIF",
+      "missing_time": "2026-01-23T11:19:00-05:00",
+      "case_ids": [
+        "2026-01-23__LIF"
+      ],
+      "variant_ids": [
+        "fixed10__f0.5__c100",
+        "fixed10__f0.5__c25",
+        "fixed10__f0.5__c50",
+        "fixed10__f1.0__c100",
+        "fixed10__f1.0__c25",
+        "fixed10__f1.0__c50",
+        "ma10_max63__f0.5__c100",
+        "ma10_max63__f0.5__c25",
+        "ma10_max63__f0.5__c50",
+        "ma10_max63__f1.0__c100",
+        "ma10_max63__f1.0__c25",
+        "ma10_max63__f1.0__c50"
+      ],
+      "reason": "missing_minute"
+    },
+    {
+      "symbol": "INMD",
+      "missing_time": "2026-01-26T12:57:00-05:00",
+      "case_ids": [
+        "2026-01-26__INMD"
+      ],
+      "variant_ids": [
+        "fixed10__f0.5__c100",
+        "fixed10__f0.5__c25",
+        "fixed10__f0.5__c50",
+        "fixed10__f1.0__c100",
+        "fixed10__f1.0__c25",
+        "fixed10__f1.0__c50",
+        "ma10_max63__f0.5__c100",
+        "ma10_max63__f0.5__c25",
+        "ma10_max63__f0.5__c50",
+        "ma10_max63__f1.0__c100",
+        "ma10_max63__f1.0__c25",
+        "ma10_max63__f1.0__c50"
+      ],
+      "reason": "missing_minute"
+    },
+    {
+      "symbol": "AQST",
+      "missing_time": "2026-02-04T11:58:00-05:00",
+      "case_ids": [
+        "2026-02-02__AQST"
+      ],
+      "variant_ids": [
+        "fixed10__f0.5__c100",
+        "ma10_max63__f0.5__c100"
+      ],
+      "reason": "missing_minute"
+    },
+    {
+      "symbol": "VAL",
+      "missing_time": "2026-02-10T12:32:00-05:00",
+      "case_ids": [
+        "2026-02-09__VAL"
+      ],
+      "variant_ids": [
+        "fixed10__f0.5__c100",
+        "fixed10__f0.5__c25",
+        "fixed10__f0.5__c50",
+        "fixed10__f1.0__c100",
+        "fixed10__f1.0__c25",
+        "fixed10__f1.0__c50",
+        "ma10_max63__f0.5__c100",
+        "ma10_max63__f0.5__c25",
+        "ma10_max63__f0.5__c50",
+        "ma10_max63__f1.0__c100",
+        "ma10_max63__f1.0__c25",
+        "ma10_max63__f1.0__c50"
+      ],
+      "reason": "missing_minute"
+    },
+    {
+      "symbol": "ICHR",
+      "missing_time": "2026-02-10T14:32:00-05:00",
+      "case_ids": [
+        "2026-02-10__ICHR"
+      ],
+      "variant_ids": [
+        "fixed10__f0.5__c100",
+        "fixed10__f0.5__c25",
+        "fixed10__f0.5__c50",
+        "fixed10__f1.0__c100",
+        "fixed10__f1.0__c25",
+        "fixed10__f1.0__c50",
+        "ma10_max63__f0.5__c100",
+        "ma10_max63__f0.5__c25",
+        "ma10_max63__f0.5__c50",
+        "ma10_max63__f1.0__c100",
+        "ma10_max63__f1.0__c25",
+        "ma10_max63__f1.0__c50"
+      ],
+      "reason": "missing_minute"
+    },
+    {
+      "symbol": "MSGS",
+      "missing_time": "2026-02-18T10:24:00-05:00",
+      "case_ids": [
+        "2026-02-18__MSGS"
+      ],
+      "variant_ids": [
+        "fixed10__f1.0__c100",
+        "fixed10__f1.0__c25",
+        "fixed10__f1.0__c50",
+        "ma10_max63__f1.0__c100",
+        "ma10_max63__f1.0__c25",
+        "ma10_max63__f1.0__c50"
+      ],
+      "reason": "missing_minute"
+    },
+    {
+      "symbol": "TNDM",
+      "missing_time": "2026-02-24T13:57:00-05:00",
+      "case_ids": [
+        "2026-02-20__TNDM"
+      ],
+      "variant_ids": [
+        "fixed10__f0.5__c100",
+        "fixed10__f0.5__c25",
+        "fixed10__f0.5__c50",
+        "fixed10__f1.0__c100",
+        "fixed10__f1.0__c25",
+        "fixed10__f1.0__c50",
+        "ma10_max63__f0.5__c100",
+        "ma10_max63__f0.5__c25",
+        "ma10_max63__f0.5__c50",
+        "ma10_max63__f1.0__c100",
+        "ma10_max63__f1.0__c25",
+        "ma10_max63__f1.0__c50"
+      ],
+      "reason": "missing_minute"
+    },
+    {
+      "symbol": "GCT",
+      "missing_time": "2026-02-26T12:39:00-05:00",
+      "case_ids": [
+        "2026-02-26__GCT"
+      ],
+      "variant_ids": [
+        "fixed10__f0.5__c100",
+        "fixed10__f0.5__c25",
+        "fixed10__f0.5__c50",
+        "fixed10__f1.0__c100",
+        "fixed10__f1.0__c25",
+        "fixed10__f1.0__c50",
+        "ma10_max63__f0.5__c100",
+        "ma10_max63__f0.5__c25",
+        "ma10_max63__f0.5__c50",
+        "ma10_max63__f1.0__c100",
+        "ma10_max63__f1.0__c25",
+        "ma10_max63__f1.0__c50"
+      ],
+      "reason": "missing_minute"
+    },
+    {
+      "symbol": "DNTH",
+      "missing_time": "2026-03-09T10:55:00-04:00",
+      "case_ids": [
+        "2026-03-09__DNTH"
+      ],
+      "variant_ids": [
+        "fixed10__f0.5__c100",
+        "fixed10__f0.5__c25",
+        "fixed10__f0.5__c50",
+        "fixed10__f1.0__c100",
+        "fixed10__f1.0__c25",
+        "fixed10__f1.0__c50",
+        "ma10_max63__f0.5__c100",
+        "ma10_max63__f0.5__c25",
+        "ma10_max63__f0.5__c50",
+        "ma10_max63__f1.0__c100",
+        "ma10_max63__f1.0__c25",
+        "ma10_max63__f1.0__c50"
+      ],
+      "reason": "missing_minute"
+    },
+    {
+      "symbol": "SRPT",
+      "missing_time": "2026-03-27T14:07:00-04:00",
+      "case_ids": [
+        "2026-03-25__SRPT"
+      ],
+      "variant_ids": [
+        "fixed10__f0.5__c100",
+        "fixed10__f0.5__c25",
+        "fixed10__f0.5__c50",
+        "fixed10__f1.0__c100",
+        "fixed10__f1.0__c25",
+        "fixed10__f1.0__c50",
+        "ma10_max63__f0.5__c100",
+        "ma10_max63__f0.5__c25",
+        "ma10_max63__f0.5__c50",
+        "ma10_max63__f1.0__c100",
+        "ma10_max63__f1.0__c25",
+        "ma10_max63__f1.0__c50"
+      ],
+      "reason": "missing_minute"
+    },
+    {
+      "symbol": "STAA",
+      "missing_time": "2026-04-09T12:00:00-04:00",
+      "case_ids": [
+        "2026-04-09__STAA"
+      ],
+      "variant_ids": [
+        "fixed10__f0.5__c100",
+        "fixed10__f0.5__c25",
+        "fixed10__f0.5__c50",
+        "fixed10__f1.0__c100",
+        "fixed10__f1.0__c25",
+        "fixed10__f1.0__c50",
+        "ma10_max63__f0.5__c100",
+        "ma10_max63__f0.5__c25",
+        "ma10_max63__f0.5__c50",
+        "ma10_max63__f1.0__c100",
+        "ma10_max63__f1.0__c25",
+        "ma10_max63__f1.0__c50"
+      ],
+      "reason": "missing_minute"
+    },
+    {
+      "symbol": "AEHR",
+      "missing_time": "2026-04-13T13:55:00-04:00",
+      "case_ids": [
+        "2026-04-08__AEHR"
+      ],
+      "variant_ids": [
+        "fixed10__f0.5__c100",
+        "fixed10__f0.5__c25",
+        "fixed10__f0.5__c50",
+        "fixed10__f1.0__c100",
+        "fixed10__f1.0__c25",
+        "fixed10__f1.0__c50",
+        "ma10_max63__f0.5__c100",
+        "ma10_max63__f0.5__c25",
+        "ma10_max63__f0.5__c50",
+        "ma10_max63__f1.0__c100",
+        "ma10_max63__f1.0__c25",
+        "ma10_max63__f1.0__c50"
+      ],
+      "reason": "missing_minute"
+    },
+    {
+      "symbol": "OGN",
+      "missing_time": "2026-04-17T11:56:00-04:00",
+      "case_ids": [
+        "2026-04-10__OGN"
+      ],
+      "variant_ids": [
+        "fixed10__f0.5__c100",
+        "fixed10__f0.5__c25",
+        "fixed10__f0.5__c50",
+        "fixed10__f1.0__c100",
+        "fixed10__f1.0__c25",
+        "fixed10__f1.0__c50",
+        "ma10_max63__f0.5__c100",
+        "ma10_max63__f0.5__c25",
+        "ma10_max63__f0.5__c50",
+        "ma10_max63__f1.0__c100",
+        "ma10_max63__f1.0__c25",
+        "ma10_max63__f1.0__c50"
+      ],
+      "reason": "missing_minute"
+    },
+    {
+      "symbol": "NKTR",
+      "missing_time": "2026-04-20T12:16:00-04:00",
+      "case_ids": [
+        "2026-04-20__NKTR"
+      ],
+      "variant_ids": [
+        "fixed10__f0.5__c100",
+        "fixed10__f0.5__c25",
+        "fixed10__f0.5__c50",
+        "fixed10__f1.0__c100",
+        "fixed10__f1.0__c25",
+        "fixed10__f1.0__c50",
+        "ma10_max63__f0.5__c100",
+        "ma10_max63__f0.5__c25",
+        "ma10_max63__f0.5__c50",
+        "ma10_max63__f1.0__c100",
+        "ma10_max63__f1.0__c25",
+        "ma10_max63__f1.0__c50"
+      ],
+      "reason": "missing_minute"
+    },
+    {
+      "symbol": "MANE",
+      "missing_time": "2026-04-27T11:05:00-04:00",
+      "case_ids": [
+        "2026-04-27__MANE"
+      ],
+      "variant_ids": [
+        "fixed10__f0.5__c100",
+        "fixed10__f0.5__c25",
+        "fixed10__f0.5__c50",
+        "fixed10__f1.0__c100",
+        "fixed10__f1.0__c25",
+        "fixed10__f1.0__c50",
+        "ma10_max63__f0.5__c100",
+        "ma10_max63__f0.5__c25",
+        "ma10_max63__f0.5__c50",
+        "ma10_max63__f1.0__c100",
+        "ma10_max63__f1.0__c25",
+        "ma10_max63__f1.0__c50"
+      ],
+      "reason": "missing_minute"
+    },
+    {
+      "symbol": "EVER",
+      "missing_time": "2026-05-05T13:15:00-04:00",
+      "case_ids": [
+        "2026-05-05__EVER"
+      ],
+      "variant_ids": [
+        "fixed10__f0.5__c100",
+        "fixed10__f0.5__c25",
+        "fixed10__f0.5__c50",
+        "fixed10__f1.0__c100",
+        "fixed10__f1.0__c25",
+        "fixed10__f1.0__c50",
+        "ma10_max63__f0.5__c100",
+        "ma10_max63__f0.5__c25",
+        "ma10_max63__f0.5__c50",
+        "ma10_max63__f1.0__c100",
+        "ma10_max63__f1.0__c25",
+        "ma10_max63__f1.0__c50"
+      ],
+      "reason": "missing_minute"
+    },
+    {
+      "symbol": "OSS",
+      "missing_time": "2026-05-07T13:16:00-04:00",
+      "case_ids": [
+        "2026-05-06__OSS"
+      ],
+      "variant_ids": [
+        "fixed10__f0.5__c100",
+        "fixed10__f0.5__c25",
+        "fixed10__f0.5__c50",
+        "fixed10__f1.0__c100",
+        "fixed10__f1.0__c25",
+        "fixed10__f1.0__c50",
+        "ma10_max63__f0.5__c100",
+        "ma10_max63__f0.5__c25",
+        "ma10_max63__f0.5__c50",
+        "ma10_max63__f1.0__c100",
+        "ma10_max63__f1.0__c25",
+        "ma10_max63__f1.0__c50"
+      ],
+      "reason": "missing_minute"
+    },
+    {
+      "symbol": "WYFI",
+      "missing_time": "2026-05-11T14:31:00-04:00",
+      "case_ids": [
+        "2026-05-11__WYFI"
+      ],
+      "variant_ids": [
+        "fixed10__f0.5__c100",
+        "fixed10__f0.5__c25",
+        "fixed10__f0.5__c50",
+        "fixed10__f1.0__c100",
+        "fixed10__f1.0__c25",
+        "fixed10__f1.0__c50",
+        "ma10_max63__f0.5__c100",
+        "ma10_max63__f0.5__c25",
+        "ma10_max63__f0.5__c50",
+        "ma10_max63__f1.0__c100",
+        "ma10_max63__f1.0__c25",
+        "ma10_max63__f1.0__c50"
+      ],
+      "reason": "missing_minute"
+    },
+    {
+      "symbol": "INOD",
+      "missing_time": "2026-05-12T10:46:00-04:00",
+      "case_ids": [
+        "2026-05-08__INOD"
+      ],
+      "variant_ids": [
+        "fixed10__f0.5__c100",
+        "fixed10__f0.5__c25",
+        "fixed10__f0.5__c50",
+        "fixed10__f1.0__c100",
+        "fixed10__f1.0__c25",
+        "fixed10__f1.0__c50",
+        "ma10_max63__f0.5__c100",
+        "ma10_max63__f0.5__c25",
+        "ma10_max63__f0.5__c50",
+        "ma10_max63__f1.0__c100",
+        "ma10_max63__f1.0__c25",
+        "ma10_max63__f1.0__c50"
+      ],
+      "reason": "missing_minute"
+    },
+    {
+      "symbol": "AMBQ",
+      "missing_time": "2026-05-12T11:56:00-04:00",
+      "case_ids": [
+        "2026-05-12__AMBQ"
+      ],
+      "variant_ids": [
+        "fixed10__f0.5__c100",
+        "fixed10__f0.5__c25",
+        "fixed10__f0.5__c50",
+        "fixed10__f1.0__c100",
+        "fixed10__f1.0__c25",
+        "fixed10__f1.0__c50",
+        "ma10_max63__f0.5__c100",
+        "ma10_max63__f0.5__c25",
+        "ma10_max63__f0.5__c50",
+        "ma10_max63__f1.0__c100",
+        "ma10_max63__f1.0__c25",
+        "ma10_max63__f1.0__c50"
+      ],
+      "reason": "missing_minute"
+    },
+    {
+      "symbol": "VELO",
+      "missing_time": "2026-05-14T11:57:00-04:00",
+      "case_ids": [
+        "2026-05-13__VELO"
+      ],
+      "variant_ids": [
+        "fixed10__f0.5__c100",
+        "fixed10__f0.5__c25",
+        "fixed10__f0.5__c50",
+        "fixed10__f1.0__c100",
+        "fixed10__f1.0__c25",
+        "fixed10__f1.0__c50",
+        "ma10_max63__f0.5__c100",
+        "ma10_max63__f0.5__c25",
+        "ma10_max63__f0.5__c50",
+        "ma10_max63__f1.0__c100",
+        "ma10_max63__f1.0__c25",
+        "ma10_max63__f1.0__c50"
+      ],
+      "reason": "missing_minute"
+    },
+    {
+      "symbol": "HIMX",
+      "missing_time": "2026-05-15T13:12:00-04:00",
+      "case_ids": [
+        "2026-05-07__HIMX"
+      ],
+      "variant_ids": [
+        "fixed10__f0.5__c100",
+        "fixed10__f0.5__c25",
+        "fixed10__f0.5__c50",
+        "fixed10__f1.0__c100",
+        "fixed10__f1.0__c25",
+        "fixed10__f1.0__c50",
+        "ma10_max63__f0.5__c100",
+        "ma10_max63__f0.5__c25",
+        "ma10_max63__f0.5__c50",
+        "ma10_max63__f1.0__c100",
+        "ma10_max63__f1.0__c25",
+        "ma10_max63__f1.0__c50"
+      ],
+      "reason": "missing_minute"
+    },
+    {
+      "symbol": "MRAM",
+      "missing_time": "2026-05-15T13:12:00-04:00",
+      "case_ids": [
+        "2026-05-11__MRAM"
+      ],
+      "variant_ids": [
+        "fixed10__f0.5__c100",
+        "fixed10__f0.5__c25",
+        "fixed10__f0.5__c50",
+        "fixed10__f1.0__c100",
+        "fixed10__f1.0__c25",
+        "fixed10__f1.0__c50",
+        "ma10_max63__f0.5__c100",
+        "ma10_max63__f0.5__c25",
+        "ma10_max63__f0.5__c50",
+        "ma10_max63__f1.0__c100",
+        "ma10_max63__f1.0__c25",
+        "ma10_max63__f1.0__c50"
+      ],
+      "reason": "missing_minute"
+    },
+    {
+      "symbol": "WEN",
+      "missing_time": "2026-05-15T13:40:00-04:00",
+      "case_ids": [
+        "2026-05-12__WEN"
+      ],
+      "variant_ids": [
+        "fixed10__f0.5__c100",
+        "fixed10__f0.5__c25",
+        "fixed10__f0.5__c50",
+        "fixed10__f1.0__c100",
+        "fixed10__f1.0__c25",
+        "fixed10__f1.0__c50",
+        "ma10_max63__f0.5__c100",
+        "ma10_max63__f0.5__c25",
+        "ma10_max63__f0.5__c50",
+        "ma10_max63__f1.0__c100",
+        "ma10_max63__f1.0__c25",
+        "ma10_max63__f1.0__c50"
+      ],
+      "reason": "missing_minute"
+    },
+    {
+      "symbol": "IMVT",
+      "missing_time": "2026-05-21T12:18:00-04:00",
+      "case_ids": [
+        "2026-05-20__IMVT"
+      ],
+      "variant_ids": [
+        "fixed10__f0.5__c100",
+        "fixed10__f0.5__c25",
+        "fixed10__f0.5__c50",
+        "fixed10__f1.0__c100",
+        "fixed10__f1.0__c25",
+        "fixed10__f1.0__c50",
+        "ma10_max63__f0.5__c100",
+        "ma10_max63__f0.5__c25",
+        "ma10_max63__f0.5__c50",
+        "ma10_max63__f1.0__c100",
+        "ma10_max63__f1.0__c25",
+        "ma10_max63__f1.0__c50"
+      ],
+      "reason": "missing_minute"
+    },
+    {
+      "symbol": "REPL",
+      "missing_time": "2026-06-01T09:31:00-04:00",
+      "case_ids": [
+        "2026-05-29__REPL"
+      ],
+      "variant_ids": [
+        "fixed10__f0.5__c100",
+        "fixed10__f1.0__c100",
+        "ma10_max63__f0.5__c100",
+        "ma10_max63__f1.0__c100"
+      ],
+      "reason": "missing_minute"
+    },
+    {
+      "symbol": "SPCE",
+      "missing_time": "2026-06-01T10:16:00-04:00",
+      "case_ids": [
+        "2026-06-01__SPCE"
+      ],
+      "variant_ids": [
+        "fixed10__f0.5__c25",
+        "fixed10__f0.5__c50",
+        "ma10_max63__f0.5__c25",
+        "ma10_max63__f0.5__c50"
+      ],
+      "reason": "missing_minute"
+    },
+    {
+      "symbol": "OKTA",
+      "missing_time": "2026-06-05T09:47:00-04:00",
+      "case_ids": [
+        "2026-05-29__OKTA"
+      ],
+      "variant_ids": [
+        "fixed10__f0.5__c100",
+        "fixed10__f0.5__c25",
+        "fixed10__f0.5__c50",
+        "fixed10__f1.0__c100",
+        "fixed10__f1.0__c25",
+        "fixed10__f1.0__c50",
+        "ma10_max63__f0.5__c100",
+        "ma10_max63__f0.5__c25",
+        "ma10_max63__f0.5__c50",
+        "ma10_max63__f1.0__c100",
+        "ma10_max63__f1.0__c25",
+        "ma10_max63__f1.0__c50"
+      ],
+      "reason": "missing_minute"
+    },
+    {
+      "symbol": "QURE",
+      "missing_time": "2026-06-18T12:06:00-04:00",
+      "case_ids": [
+        "2026-06-17__QURE"
+      ],
+      "variant_ids": [
+        "fixed10__f0.5__c100",
+        "fixed10__f0.5__c25",
+        "fixed10__f0.5__c50",
+        "fixed10__f1.0__c100",
+        "fixed10__f1.0__c25",
+        "fixed10__f1.0__c50",
+        "ma10_max63__f0.5__c100",
+        "ma10_max63__f0.5__c25",
+        "ma10_max63__f0.5__c50",
+        "ma10_max63__f1.0__c100",
+        "ma10_max63__f1.0__c25",
+        "ma10_max63__f1.0__c50"
+      ],
+      "reason": "missing_minute"
+    },
+    {
+      "symbol": "VOD",
+      "missing_time": "2026-07-10T11:45:00-04:00",
+      "case_ids": [
+        "2026-07-10__VOD"
+      ],
+      "variant_ids": [
+        "fixed10__f0.5__c100",
+        "fixed10__f0.5__c25",
+        "fixed10__f0.5__c50",
+        "fixed10__f1.0__c100",
+        "fixed10__f1.0__c25",
+        "fixed10__f1.0__c50",
+        "ma10_max63__f0.5__c100",
+        "ma10_max63__f0.5__c25",
+        "ma10_max63__f0.5__c50",
+        "ma10_max63__f1.0__c100",
+        "ma10_max63__f1.0__c25",
+        "ma10_max63__f1.0__c50"
+      ],
+      "reason": "missing_minute"
+    },
+    {
+      "symbol": "QNST",
+      "missing_time": "2026-08-07T14:20:00-04:00",
+      "case_ids": [
+        "2026-08-07__QNST"
+      ],
+      "variant_ids": [
+        "fixed10__f0.5__c100",
+        "fixed10__f0.5__c25",
+        "fixed10__f0.5__c50",
+        "fixed10__f1.0__c100",
+        "fixed10__f1.0__c25",
+        "fixed10__f1.0__c50",
+        "ma10_max63__f0.5__c100",
+        "ma10_max63__f0.5__c25",
+        "ma10_max63__f0.5__c50",
+        "ma10_max63__f1.0__c100",
+        "ma10_max63__f1.0__c25",
+        "ma10_max63__f1.0__c50"
+      ],
+      "reason": "missing_minute"
+    },
+    {
+      "symbol": "PYPL",
+      "missing_time": "2026-08-14T12:03:00-04:00",
+      "case_ids": [
+        "2026-07-15__PYPL"
+      ],
+      "variant_ids": [
+        "ma10_max63__f0.5__c100",
+        "ma10_max63__f0.5__c25",
+        "ma10_max63__f0.5__c50",
+        "ma10_max63__f1.0__c100",
+        "ma10_max63__f1.0__c25",
+        "ma10_max63__f1.0__c50"
+      ],
+      "reason": "missing_minute"
+    },
+    {
+      "symbol": "HTFL",
+      "missing_time": "2026-08-18T11:06:00-04:00",
+      "case_ids": [
+        "2026-08-14__HTFL"
+      ],
+      "variant_ids": [
+        "fixed10__f0.5__c100",
+        "fixed10__f0.5__c25",
+        "fixed10__f0.5__c50",
+        "fixed10__f1.0__c100",
+        "fixed10__f1.0__c25",
+        "fixed10__f1.0__c50",
+        "ma10_max63__f0.5__c100",
+        "ma10_max63__f0.5__c25",
+        "ma10_max63__f0.5__c50",
+        "ma10_max63__f1.0__c100",
+        "ma10_max63__f1.0__c25",
+        "ma10_max63__f1.0__c50"
+      ],
+      "reason": "missing_minute"
+    },
+    {
+      "symbol": "AMLX",
+      "missing_time": "2026-08-19T12:25:00-04:00",
+      "case_ids": [
+        "2026-08-18__AMLX"
+      ],
+      "variant_ids": [
+        "fixed10__f0.5__c100",
+        "fixed10__f0.5__c25",
+        "fixed10__f0.5__c50",
+        "fixed10__f1.0__c100",
+        "fixed10__f1.0__c25",
+        "fixed10__f1.0__c50",
+        "ma10_max63__f0.5__c100",
+        "ma10_max63__f0.5__c25",
+        "ma10_max63__f0.5__c50",
+        "ma10_max63__f1.0__c100",
+        "ma10_max63__f1.0__c25",
+        "ma10_max63__f1.0__c50"
+      ],
+      "reason": "missing_minute"
+    },
+    {
+      "symbol": "ANF",
+      "missing_time": "2026-08-27T12:37:00-04:00",
+      "case_ids": [
+        "2026-08-26__ANF"
+      ],
+      "variant_ids": [
+        "fixed10__f0.5__c100",
+        "fixed10__f0.5__c25",
+        "fixed10__f0.5__c50",
+        "fixed10__f1.0__c100",
+        "fixed10__f1.0__c25",
+        "fixed10__f1.0__c50",
+        "ma10_max63__f0.5__c100",
+        "ma10_max63__f0.5__c25",
+        "ma10_max63__f0.5__c50",
+        "ma10_max63__f1.0__c100",
+        "ma10_max63__f1.0__c25",
+        "ma10_max63__f1.0__c50"
+      ],
+      "reason": "missing_minute"
+    },
+    {
+      "symbol": "KOD",
+      "missing_time": "2026-09-29T13:10:00-04:00",
+      "case_ids": [
+        "2026-09-28__KOD"
+      ],
+      "variant_ids": [
+        "fixed10__f0.5__c25",
+        "fixed10__f0.5__c50",
+        "fixed10__f1.0__c25",
+        "fixed10__f1.0__c50",
+        "ma10_max63__f0.5__c25",
+        "ma10_max63__f0.5__c50",
+        "ma10_max63__f1.0__c25",
+        "ma10_max63__f1.0__c50"
+      ],
+      "reason": "missing_minute"
+    }
+  ],
+  "bounded_requests_per_point": {
+    "minute_bars": "one exact-symbol window, 2 minutes before through 2 after the missing minute",
+    "trades": "same 5-minute window, preserve pagination and trade conditions; cap 10 pages and mark truncation unknown",
+    "quotes": "same 5-minute window, preserve condition metadata and sizes; cap 10 pages and mark truncation unknown",
+    "halt_evidence": "at most 2 authoritative timestamped halt/resumption source requests only if relevant evidence available"
+  },
+  "classification": [
+    "supported evidence of trading halt",
+    "observed trades excluded from bar construction under documented provider rules",
+    "provider returned no eligible trades in the bounded window; source archive completeness still unproven",
+    "minute bar reappeared in a later response: historical version conflict, not silent repair",
+    "unresolved source or coverage discrepancy"
+  ],
+  "forbidden_inferences": [
+    "Missing bar does not imply zero return, no risk, a market halt, or no trades.",
+    "Quotes alone do not prove stop execution or exact fill.",
+    "Do not fill OHLC using a convenient next trade or last quote.",
+    "Do not overwrite version1 classifications or results."
+  ],
+  "next_strategy_rule_changes": "Any new entry timing/catalyst/exit family requires a separate exploratory registration acknowledging exposure to these historical outcomes, all variants and failures retained; chronological holdout or prospective data required before claims of out-of-sample advantage.",
+  "broker_orders_sent": 0,
+  "new_scheduler": false
+}

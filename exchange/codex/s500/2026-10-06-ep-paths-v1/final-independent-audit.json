@@ -1,0 +1,203 @@
+{
+  "audit_status": "passed_with_explicit_research_and_data_limits",
+  "audited_at": "2026-10-06T19:06:00.612333+00:00",
+  "blocking_implementation_or_reconciliation_findings": [],
+  "owned_audit_files": [
+    "audit-plan.json",
+    "audit-plan.md",
+    "audit_ep_paths.py",
+    "source-audit.json",
+    "entry-prefix-source-audit.json",
+    "audit-checkpoint.json",
+    "audit-checkpoint.md",
+    "audit_actual_paths.py",
+    "actual-path-ledger-audit.json",
+    "actual-summary-independent-audit.json",
+    "actual-audit-run.log",
+    "audit_primary_sources.py",
+    "primary-source-independent-audit.json",
+    "primary-source-independent-audit.md",
+    "independent-final-tests.log",
+    "final-independent-audit.json",
+    "final-independent-audit.md"
+  ],
+  "tests": {
+    "implementation_passed": 36,
+    "independent_passed": 23,
+    "total_passed": 59,
+    "failed": 0,
+    "log": "independent-final-tests.log"
+  },
+  "result_checks": {
+    "result_records_checked": 900,
+    "independent_case_count": 73,
+    "variants_per_case": 12,
+    "independent_case_results": 876,
+    "continuous_portfolio_results": 24,
+    "all_continuous_portfolios_incomplete": true,
+    "all_candidate_decision_evidence_rows_checked": 1079,
+    "primary_gate_pass_cases": 32,
+    "summary_group_count_verified": 24,
+    "isolated_status_counts": {
+      "incomplete": 414,
+      "complete": 428,
+      "censored_open_position": 34
+    },
+    "complete_but_no_entry_cases": 68,
+    "complete_closed_cases": 360,
+    "ledger_totals": {
+      "trades_checked": 1168,
+      "buys_checked": 808,
+      "sales_checked": 360,
+      "daily_snapshots_checked": 2732,
+      "ma_decisions_checked": 996
+    },
+    "classification_lock_precedes_run": true,
+    "actual_broker_fills_claimed": false
+  },
+  "summary_checks": {
+    "counts_and_all_24_numeric_groups_match": true,
+    "numeric_absolute_tolerance": 1e-10,
+    "all_closed_subset_group_means_negative": true,
+    "closed_subset_is_coverage_selected": true,
+    "unconfirmed_news_group_is_not_verified_no_news": true
+  },
+  "primary_source_checks": {
+    "positive_cases_checked": 29,
+    "positive_sources_checked": 31,
+    "positive_source_bytes_verified": 14730406,
+    "positive_sources_without_declared_revision": 9,
+    "classifications_changed_by_audit": false,
+    "known_source_integrity_issue": {
+      "symbol": "CRM",
+      "recorded_sha256": "bdfcee65ba6d002a606f08247ef57025bcfabea518e09486ab5cce8804c6755a",
+      "observed_sha256": "dc1b3c632d17ea2658e8d89f9bcc226da32706cf32372fdaf5ca11c5a121b88b",
+      "quarantined": true,
+      "candidate_stays_unknown": true,
+      "affected_body_used_for_positive_gate": false
+    }
+  },
+  "source_checks": {
+    "holding_cases_retained": 73,
+    "required_symbol_session_pairs": 3823,
+    "stages": [
+      {
+        "stage": "repair",
+        "tasks_verified": 112,
+        "pages_verified": 112,
+        "bars_verified": 9588,
+        "raw_bytes_verified": 1014080,
+        "all_page_hash_size_request_chains_and_assembled_bars_verified": true
+      },
+      {
+        "stage": "holding",
+        "tasks_verified": 246,
+        "pages_verified": 246,
+        "bars_verified": 1353239,
+        "raw_bytes_verified": 136468021,
+        "all_page_hash_size_request_chains_and_assembled_bars_verified": true
+      }
+    ],
+    "daily_raw_files_hash_verified": 104,
+    "daily_symbols": 71,
+    "daily_bars": 16279,
+    "daily_extract_and_action_mapping_independently_matched": true,
+    "full_universe_guard_false_sessions": 190,
+    "repair_unknown_cases_unchanged": 112,
+    "zero_filled_bars": 0,
+    "newly_market_pass_cases": [],
+    "audited_at": "2026-10-06T18:47:52.463143+00:00",
+    "audit_script_sha256": "928c951d50bd1042f080c5e5255ae95c177cdfa6a94cc49428e9d33c47894704"
+  },
+  "initial_findings_preserved": [
+    {
+      "id": "MA_failure_time_before_last_observation",
+      "status": "resolved_and_regression_verified",
+      "initial_evidence": "MA missing daily input failed at15:59 after hold had observed16:00 mark. Independent regression reproduced this.",
+      "resolution": "Root changed all3MA-related failure offsets to session close;23independenttests nowpass."
+    },
+    {
+      "id": "signal_close_exact_default_eager_lookup",
+      "status": "root_fixed",
+      "description": "Fallback now avoids evaluating missing signal.close when close_exact supplied. Actual original rows had both."
+    },
+    {
+      "id": "source_complete_claim",
+      "status": "unresolved_research_limit",
+      "description": "190fulluniverse days explicitlyfalse;current/nonPIT universe and daily prescreen limits remain.112unknownrefetch unchanged/no conflicts/no newpasses."
+    },
+    {
+      "id": "vendor_daily_close_availability",
+      "status": "assumption_not_verified",
+      "description": "Completed vendor daily closes are assumed available before next regular open;fixed16:00ledger timestamp not verified historical client availability."
+    }
+  ],
+  "final_findings": [
+    {
+      "id": "historical_primary_version_not_certified",
+      "status": "unresolved_source_limit",
+      "evidence": "29 new positive cases use31 cached primary sources with verified hashes;9 sources declare no revision time. Current displayed times do not certify immutable historical content or client receipt."
+    },
+    {
+      "id": "CRM_cached_body_integrity",
+      "status": "quarantined_before_classification_lock",
+      "evidence": "Stored metadata differs from observedCRMbody; bothhashes preserved, affectedbody is not positiveproof and CRM remainsunknown."
+    },
+    {
+      "id": "complete_cases_are_selected_subset",
+      "status": "research_limit",
+      "evidence": "428 complete isolated results include68 no-entry and360 closed models;414 incomplete and34 censored are retained. No full-cohort mean or annual portfolio return is certified."
+    },
+    {
+      "id": "all_portfolios_unknown",
+      "status": "research_limit",
+      "evidence": "All12 fulluniverse paths haltJan2 on initialscreencoverage; all12 cohortconditional paths haltJan2 on unknownBIDUcatalyst. Endingwealth/profit remainnull."
+    },
+    {
+      "id": "OHLC_fill_cost_model",
+      "status": "unverified_execution_assumption",
+      "evidence": "Savedreferenceprices are checked against rawbarinputs; this doesnot prove actualfills, spread/slippage, historicalquote availability or executionpriority."
+    },
+    {
+      "id": "cost_subsets_and_parameter_reuse",
+      "status": "research_limit",
+      "evidence": "The12models reuse73events. Whole-sharebudget boundaries can changeentrysubsets between costs; grossmean comparisons are not paired causal costestimates."
+    }
+  ],
+  "limits": [
+    "The 12 models overlap the same 73 cases; 876 rows are not 876 independent observations.",
+    "Every isolated case starts with hypothetical500. There is no capital continuity across cases.",
+    "Cost variants can enter different subsets because whole-share budget thresholds and next-open prices differ.",
+    "Unconfirmed-news group is not verified absence of qualifying news.",
+    "Completed-case means exclude missing-data and still-held cases and cannot establish whole-cohort returns.",
+    "This verifies retrieved bytes and declared/displayed timestamps, not immutable historical versions or client receipt.",
+    "News presence/category does not prove favorable news, a positive surprise, market causation or an executable opportunity.",
+    "VELO issuer time alone has no timezone; a separate original wire timestamp supports the window.",
+    "AMBQ issuer and wire differ by five hours; both are in the window, and the later wire time controls.",
+    "Unknown and outside-category stories do not prove the absence of a qualifying catalyst."
+  ],
+  "verified_artifact_sha256": {
+    "ep_engine.py": "a52304e560e819ca3612fbbaeb5145cfddfb7d11181731783db7158402ca5c53",
+    "test_ep_engine.py": "87c24fb66dd993ccd20f8a45c181491fec99bb19ea8a944739c618fe4437eac4",
+    "audit_ep_paths.py": "928c951d50bd1042f080c5e5255ae95c177cdfa6a94cc49428e9d33c47894704",
+    "audit_actual_paths.py": "16cabb10902a4a6e1e0402860e66442711173e2edb0a10fffec255b333557848",
+    "audit_primary_sources.py": "d0d67b77a561569fb2ce44134996f5b9d6d56c9ee4244fd03937063c17c95b88",
+    "study-design.json": "ff1c441ab20f0f6816a862d912e0afaac037b1ba8621eb862e9718ff0aa138cf",
+    "holding-input-design.json": "cd34191b84e72a2b0c9c1dd62c89669495b2d5bad963a0d3c674f57b3cab7a49",
+    "primary-classification-lock.json": "fbb7f75c1a1fdb062ae7361ac91f405bff973a57d25945d3f90beaa3ef5ad781",
+    "all-new-primary-reviews.json": "46d8faf70b716fca31cd6c6cd05f49ea616f209f6727a89b72d5415d19fa3cdb",
+    "source-audit.json": "e663a91164a53578b64e77416125e85cceb209a2e0b069e9c4a9e0c5a2a981fe",
+    "entry-prefix-source-audit.json": "28d158fe93205db920f3e90271927988edac7eec7e5fe1b5b01eb1e8e845fde6",
+    "actual-path-ledger-audit.json": "9fb35615a4bb46ab440557189698097915b02a8006be27da5f690b00273bac04",
+    "actual-summary-independent-audit.json": "ff2bfcfa1b184f592138de40239f12a1cdb2eb92e73486f2209a883067e21f3c",
+    "primary-source-independent-audit.json": "3c696e8a01932d9ad9f9ad3356da68d812910f5d8306ec108bf806eaba7b2d44",
+    "independent-final-tests.log": "4f92cc97331d49392fdbf73f0a5f0788c06f9e5311d6e2560274e1612e393e61",
+    "isolated-case-results.json": "626105c96cfee1cac9b84e6a15dffaa1a1b845a6afc2455836938cfbe1993b4d",
+    "portfolio-results.json": "57d4d0c5e464b1a33e990ddf15cbd67747e21a9b5783782a766ce89ffb156798",
+    "run-summary.json": "0024c0b5abe0b2bdac17b2ed71b4f714dc8664d44e97bd6031a161126900e289",
+    "decision-evidence.json": "3e3656c4506ab324427e163ca60377b864b806e4d2bd6e5f6d72b6b36e65eea6"
+  },
+  "network_calls_by_independent_final_audit": 0,
+  "broker_orders_sent": 0,
+  "classification_changes_by_audit": 0
+}

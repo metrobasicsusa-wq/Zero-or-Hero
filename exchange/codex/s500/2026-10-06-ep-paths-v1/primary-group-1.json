@@ -1,0 +1,1366 @@
+{
+  "group": 1,
+  "assigned_count": 17,
+  "reviewed_count": 17,
+  "state": "all_assigned_cases_reviewed_bounded_sources_no_forced_pass",
+  "reviews": [
+    {
+      "candidate_id": "2026-01-02__BIDU",
+      "symbol": "BIDU",
+      "date": "2026-01-02",
+      "news_status": "confirmed",
+      "pass_registered_news_gate": false,
+      "event_category": "proposed spin-off and listing application; outside frozen categories",
+      "rationale": "The newly accessible issuer-issued PRNewswire release has exact Jan1publication19:30EST and modification19:30:57EST, within the candidate window. It describes a proposed spin-off and submitted confidential listing application, with approvals and final decisions pending. It is not a signed sale/merger contract, earnings/guidance or a completed regulatory decision/communication granting an outcome. The older SEC timestamp conflict is retained as unresolved historical evidence; this review resolves publication timing via independent first-party wire metadata but does not upgrade category.",
+      "announcement_time_utc": "2026-01-02T00:30:00Z",
+      "conservative_available_by_utc": "2026-01-02T00:30:57Z",
+      "declared_modified_time": "2026-01-01T19:30:57-05:00",
+      "in_window_confirmed": true,
+      "window": {
+        "strict_after_utc": "2025-12-31T21:00:00+00:00",
+        "strict_before_utc": "2026-01-02T14:30:00+00:00"
+      },
+      "sources": [
+        {
+          "url": "https://ir.baidu.com/news-releases/news-release-details/baidu-announces-proposed-spin-and-separate-listing-kunlunxin",
+          "requested_url": "https://ir.baidu.com/news-releases/news-release-details/baidu-announces-proposed-spin-and-separate-listing-kunlunxin",
+          "status": 200,
+          "retrieved_at": "2026-10-06T18:38:19.594970+00:00",
+          "sha256": "652de9ed5b004b4bd379fb0e3f19a8046ab66fecf8c4e376c857adb920946a39",
+          "role": "discovery_or_failed_attempt"
+        },
+        {
+          "url": "https://www.prnewswire.com/news-releases/baidu-announces-proposed-spin-off-and-separate-listing-of-kunlunxin-302651578.html",
+          "requested_url": "https://www.prnewswire.com/news-releases/baidu-announces-proposed-spin-off-and-separate-listing-of-kunlunxin-302651578.html",
+          "status": 200,
+          "retrieved_at": "2026-10-06T18:39:49.521675+00:00",
+          "sha256": "ebeaca9d17ab5a57499e6680fbe5a98968824ac9dd52da602021e04b65c9b3ab",
+          "role": "event_evidence",
+          "short_quote": "Details of the Proposed Spin-off have not yet been finalized.",
+          "publication_time": "2026-01-01T19:30:00-05:00",
+          "declared_modified_time": "2026-01-01T19:30:57-05:00"
+        },
+        {
+          "url": "https://www.globenewswire.com/search/keyword/Baidu%20Proposed%20Spin-Off%20Kunlunxin",
+          "requested_url": "https://www.globenewswire.com/search/keyword/Baidu%20Proposed%20Spin-Off%20Kunlunxin",
+          "status": 200,
+          "retrieved_at": "2026-10-06T18:37:49.416228+00:00",
+          "sha256": "234136d4290ca001ce431d6b911ebe218e715fde04d6f772eddc94f7ec24b05e",
+          "role": "discovery_or_failed_attempt"
+        }
+      ],
+      "requests_used": 3,
+      "limits": [
+        "Current fetched issuer page or original wire is not an immutable contemporaneous snapshot; declared publication/modification fields do not supply a full revision history.",
+        "This review confirms event presence/category only, not surprise, causal price attribution, executable fills or returns.",
+        "An outside-category story does not prove no separate qualifying event existed."
+      ],
+      "prior_review_reference": "2026-10-06-orb-v1/ep-event-audit.json and quote-v1/ep-followup.json",
+      "supersedes_scope": "News publication timing only: prior missing exact IR time now supplemented by issuer-issued wire. Original record retained; does not assert SEC conflict resolved.",
+      "prior_sec_timestamp_conflict_retained": true
+    },
+    {
+      "candidate_id": "2026-01-26__INMD",
+      "date": "2026-01-26",
+      "symbol": "INMD",
+      "news_status": "unresolved_after_bounded_primary_review",
+      "pass_registered_news_gate": null,
+      "event_category": "missing",
+      "rationale": "No identifiable in-window company announcement was obtained from the bounded company/IR searches. A mover mention is not catalyst proof.",
+      "announcement_time_utc": null,
+      "conservative_available_by_utc": null,
+      "in_window_confirmed": false,
+      "required_window": {
+        "strict_after": "2026-01-23T21:00:00+00:00",
+        "strict_before": "2026-01-26T14:30:00+00:00"
+      },
+      "source_request_count": 5,
+      "sources": [
+        {
+          "url": "https://inmodeinvestors.com/",
+          "final_url": null,
+          "status": 307,
+          "retrieved_at": "2026-10-06T18:41:57.471914+00:00",
+          "bytes": 1331,
+          "sha256": "64511e966c3243369b821a912b16a9acd76b1250407f4a749668a41dfc4f4b73",
+          "body_hash_verified": true,
+          "observed_body_sha256": "64511e966c3243369b821a912b16a9acd76b1250407f4a749668a41dfc4f4b73",
+          "source_integrity_status": "verified",
+          "role": "discovery_corroboration_or_failed_attempt",
+          "declared_publication_values": [],
+          "declared_modification_values": []
+        },
+        {
+          "url": "https://inmodeinvestors.com/",
+          "final_url": null,
+          "status": 307,
+          "retrieved_at": "2026-10-06T18:43:02.192809+00:00",
+          "bytes": 1331,
+          "sha256": "75666574be05daa28e3c8af9ea5a930133d22ea049eab8b3888120200d6bc8fc",
+          "body_hash_verified": true,
+          "observed_body_sha256": "75666574be05daa28e3c8af9ea5a930133d22ea049eab8b3888120200d6bc8fc",
+          "source_integrity_status": "verified",
+          "role": "discovery_corroboration_or_failed_attempt",
+          "declared_publication_values": [],
+          "declared_modification_values": []
+        },
+        {
+          "url": "https://investors.inmodemd.com/",
+          "final_url": null,
+          "status": "URLError",
+          "retrieved_at": "2026-10-06T18:39:49.532167+00:00",
+          "bytes": null,
+          "sha256": null,
+          "body_hash_verified": false,
+          "observed_body_sha256": null,
+          "source_integrity_status": "quarantined_no_proof",
+          "role": "discovery_corroboration_or_failed_attempt",
+          "declared_publication_values": [],
+          "declared_modification_values": []
+        },
+        {
+          "url": "https://investors.inmodemd.com/news-releases",
+          "final_url": null,
+          "status": "URLError",
+          "retrieved_at": "2026-10-06T18:38:18.511166+00:00",
+          "bytes": null,
+          "sha256": null,
+          "body_hash_verified": false,
+          "observed_body_sha256": null,
+          "source_integrity_status": "quarantined_no_proof",
+          "role": "discovery_corroboration_or_failed_attempt",
+          "declared_publication_values": [],
+          "declared_modification_values": []
+        },
+        {
+          "url": "https://www.globenewswire.com/search/keyword/InMode%20January%202026",
+          "final_url": null,
+          "status": 200,
+          "retrieved_at": "2026-10-06T18:37:49.417708+00:00",
+          "bytes": 49727,
+          "sha256": "70a34936e22a085488efe0b4786d683df5656b6d6c25af3d4268467e924cbc04",
+          "body_hash_verified": true,
+          "observed_body_sha256": "70a34936e22a085488efe0b4786d683df5656b6d6c25af3d4268467e924cbc04",
+          "source_integrity_status": "verified",
+          "role": "discovery_corroboration_or_failed_attempt",
+          "declared_publication_values": [],
+          "declared_modification_values": []
+        }
+      ],
+      "historical_revision_limit": "Current primary pages/declared times are not contemporaneous archived versions. Missing dateModified does not prove no revisions.",
+      "all_possible_registered_catalysts_excluded": false,
+      "review_completed_before_exit_results": true
+    },
+    {
+      "candidate_id": "2026-02-02__AQST",
+      "symbol": "AQST",
+      "date": "2026-02-02",
+      "news_status": "confirmed",
+      "pass_registered_news_gate": true,
+      "event_category": "regulatory announcement: FDA Complete Response Letter",
+      "rationale": "The issuer announces receipt of an actual FDA Complete Response Letter; approval is not claimed. Receipt was Jan30, but the first-party announcement and declared modification are Feb2at07:00EST within the frozen announcement window. The rule requires event presence, not a favorable regulatory outcome.",
+      "announcement_time_utc": "2026-02-02T12:00:00Z",
+      "conservative_available_by_utc": "2026-02-02T12:00:00Z",
+      "declared_modified_time": "2026-02-02T12:00:00Z",
+      "in_window_confirmed": true,
+      "window": {
+        "strict_after_utc": "2026-01-30T21:00:00+00:00",
+        "strict_before_utc": "2026-02-02T14:30:00+00:00"
+      },
+      "sources": [
+        {
+          "url": "https://www.globenewswire.com/news-release/2026/02/02/3230115/0/en/aquestive-therapeutics-announces-fda-issuance-of-complete-response-letter-for-anaphylm.html",
+          "requested_url": "https://www.globenewswire.com/news-release/2026/02/02/3230115/0/en/aquestive-therapeutics-announces-fda-issuance-of-complete-response-letter-for-anaphylm.html",
+          "status": 200,
+          "retrieved_at": "2026-10-06T18:39:49.532636+00:00",
+          "sha256": "b15231240ca9f2ef3f268b4bacc5fbd511e4b47499a0963a598d49193a3812ef",
+          "role": "event_evidence",
+          "short_quote": "today announced that it received a Complete Response Letter (CRL) from the U.S. Food and Drug Administration (FDA) on January 30, 2026",
+          "publication_time": "2026-02-02T12:00:00Z",
+          "declared_modified_time": "2026-02-02T12:00:00Z"
+        },
+        {
+          "url": "https://www.globenewswire.com/search/keyword/Aquestive%20Therapeutics%20Anaphylm%20FDA%20Complete%20Response",
+          "requested_url": "https://www.globenewswire.com/search/keyword/Aquestive%20Therapeutics%20Anaphylm%20FDA%20Complete%20Response",
+          "status": 200,
+          "retrieved_at": "2026-10-06T18:37:49.418614+00:00",
+          "sha256": "3d35c82bcc52ad9ae9cc78f4785ab4a1cdefe45f9223b6b42fc33feff886272c",
+          "role": "discovery_or_failed_attempt"
+        },
+        {
+          "url": "https://www.globenewswire.com/search/keyword/Aquestive%20Receives%20Complete%20Response%20Letter",
+          "requested_url": "https://www.globenewswire.com/search/keyword/Aquestive%20Receives%20Complete%20Response%20Letter",
+          "status": 200,
+          "retrieved_at": "2026-10-06T18:38:17.844073+00:00",
+          "sha256": "62f194b7374fbdf7c0ba58e088b0e5714be68bec31a4eec209758705d66f3842",
+          "role": "discovery_or_failed_attempt"
+        }
+      ],
+      "requests_used": 3,
+      "limits": [
+        "Current fetched issuer page or original wire is not an immutable contemporaneous snapshot; declared publication/modification fields do not supply a full revision history.",
+        "This review confirms event presence/category only, not surprise, causal price attribution, executable fills or returns.",
+        "An outside-category story does not prove no separate qualifying event existed."
+      ]
+    },
+    {
+      "candidate_id": "2026-02-04__ENPH",
+      "symbol": "ENPH",
+      "date": "2026-02-04",
+      "news_status": "confirmed",
+      "pass_registered_news_gate": true,
+      "event_category": "earnings and guidance",
+      "rationale": "The issuer-issued release supplies new fourth-quarter2025 financial results after prior close, with publication and declared modification at16:05EST. No forecast surprise versus third-party estimates is needed or asserted.",
+      "announcement_time_utc": "2026-02-03T21:05:00Z",
+      "conservative_available_by_utc": "2026-02-03T21:05:00Z",
+      "declared_modified_time": "2026-02-03T21:05:00Z",
+      "in_window_confirmed": true,
+      "window": {
+        "strict_after_utc": "2026-02-03T21:00:00+00:00",
+        "strict_before_utc": "2026-02-04T14:30:00+00:00"
+      },
+      "sources": [
+        {
+          "url": "https://investor.enphase.com/news-releases",
+          "requested_url": "https://investor.enphase.com/news-releases",
+          "status": 200,
+          "retrieved_at": "2026-10-06T18:38:18.243483+00:00",
+          "sha256": "48e7edb2885365c0dee3923a5ce32011cf43006f62ccb7f15f2d3fbee82fd76a",
+          "role": "discovery_or_failed_attempt"
+        },
+        {
+          "url": "https://www.globenewswire.com/news-release/2026/02/03/3231611/20176/en/enphase-energy-reports-financial-results-for-the-fourth-quarter-of-2025.html",
+          "requested_url": "https://www.globenewswire.com/news-release/2026/02/03/3231611/20176/en/enphase-energy-reports-financial-results-for-the-fourth-quarter-of-2025.html",
+          "status": 200,
+          "retrieved_at": "2026-10-06T18:41:56.627205+00:00",
+          "sha256": "c743b2e0d1fcde8c369055bfce6b979302ff3cb0be1be572250d294d35e26e0c",
+          "role": "event_evidence",
+          "short_quote": "announced today financial results for the fourth quarter of 2025",
+          "publication_time": "2026-02-03T21:05:00Z",
+          "declared_modified_time": "2026-02-03T21:05:00Z"
+        },
+        {
+          "url": "https://www.globenewswire.com/search/keyword/Enphase%20Energy%20Fourth%20Quarter%202025",
+          "requested_url": "https://www.globenewswire.com/search/keyword/Enphase%20Energy%20Fourth%20Quarter%202025",
+          "status": 200,
+          "retrieved_at": "2026-10-06T18:37:49.418966+00:00",
+          "sha256": "dcaaa03b462d4e21c62b3202b25af43b4d6195468bd1051ad0d154e97d085049",
+          "role": "discovery_or_failed_attempt"
+        },
+        {
+          "url": "https://www.globenewswire.com/search/keyword/Enphase%20Fourth%20343.3",
+          "requested_url": "https://www.globenewswire.com/search/keyword/Enphase%20Fourth%20343.3",
+          "status": 200,
+          "retrieved_at": "2026-10-06T18:39:49.529017+00:00",
+          "sha256": "ae5ee8f96cf362083dd1ffeee698cdef4f1c4e34f6c7391b64228a138d0bc5e4",
+          "role": "discovery_or_failed_attempt"
+        }
+      ],
+      "requests_used": 4,
+      "limits": [
+        "Current fetched issuer page or original wire is not an immutable contemporaneous snapshot; declared publication/modification fields do not supply a full revision history.",
+        "This review confirms event presence/category only, not surprise, causal price attribution, executable fills or returns.",
+        "An outside-category story does not prove no separate qualifying event existed."
+      ]
+    },
+    {
+      "candidate_id": "2026-02-09__VAL",
+      "symbol": "VAL",
+      "date": "2026-02-09",
+      "news_status": "confirmed",
+      "pass_registered_news_gate": true,
+      "event_category": "contract: signed definitive merger agreement",
+      "rationale": "Issuer-issued joint announcement expressly reports a signed definitive agreement for Transocean to acquire Valaris; it is not just an acquisition intention. Publication and declared modification precede open within the frozen overnight interval. Closing remains subject to conditions; no completed merger is claimed.",
+      "announcement_time_utc": "2026-02-09T12:50:55Z",
+      "conservative_available_by_utc": "2026-02-09T12:50:55Z",
+      "declared_modified_time": "2026-02-09T12:50:55Z",
+      "in_window_confirmed": true,
+      "window": {
+        "strict_after_utc": "2026-02-06T21:00:00+00:00",
+        "strict_before_utc": "2026-02-09T14:30:00+00:00"
+      },
+      "sources": [
+        {
+          "url": "https://www.globenewswire.com/news-release/2026/02/09/3234443/0/en/transocean-to-acquire-valaris.html",
+          "requested_url": "https://www.globenewswire.com/news-release/2026/02/09/3234443/0/en/transocean-to-acquire-valaris.html",
+          "status": 200,
+          "retrieved_at": "2026-10-06T18:38:17.840988+00:00",
+          "sha256": "c566197faa817c4e28c3430316563bb1c5e84f9bcf609273d28654ce395bffbb",
+          "role": "event_evidence",
+          "short_quote": "today announced the signing of a definitive agreement to combine the two companies",
+          "publication_time": "2026-02-09T12:50:55Z",
+          "declared_modified_time": "2026-02-09T12:50:55Z"
+        },
+        {
+          "url": "https://www.globenewswire.com/search/keyword/Transocean%20Valaris%20Acquire",
+          "requested_url": "https://www.globenewswire.com/search/keyword/Transocean%20Valaris%20Acquire",
+          "status": 200,
+          "retrieved_at": "2026-10-06T18:37:49.863118+00:00",
+          "sha256": "d1a052906e41a13053cf67c856ecf8aa97ff80d6c21d9931cb1c5fb25300958e",
+          "role": "discovery_or_failed_attempt"
+        }
+      ],
+      "requests_used": 2,
+      "limits": [
+        "Current fetched issuer page or original wire is not an immutable contemporaneous snapshot; declared publication/modification fields do not supply a full revision history.",
+        "This review confirms event presence/category only, not surprise, causal price attribution, executable fills or returns.",
+        "An outside-category story does not prove no separate qualifying event existed."
+      ]
+    },
+    {
+      "candidate_id": "2026-02-10__ICHR",
+      "date": "2026-02-10",
+      "symbol": "ICHR",
+      "news_status": "confirmed_with_historical_version_limit",
+      "pass_registered_news_gate": true,
+      "event_category": "earnings",
+      "rationale": "Issuer-issued original BusinessWire announces fourth-quarter and full-year financial results; publication and declared revision both precede the candidate open.",
+      "announcement_time_utc": "2026-02-09T21:05:00Z",
+      "conservative_available_by_utc": "2026-02-09T21:05:00Z",
+      "in_window_confirmed": true,
+      "required_window": {
+        "strict_after": "2026-02-09T21:00:00+00:00",
+        "strict_before": "2026-02-10T14:30:00+00:00"
+      },
+      "source_request_count": 7,
+      "sources": [
+        {
+          "url": "https://www.businesswire.com/news/home/20260209131552/en/Ichor-Holdings-Ltd.-Announces-Fourth-Quarter-and-Fiscal-Year-2025-Financial-Results",
+          "final_url": "https://www.businesswire.com/news/home/20260209131552/en/Ichor-Holdings-Ltd.-Announces-Fourth-Quarter-and-Fiscal-Year-2025-Financial-Results",
+          "status": 200,
+          "retrieved_at": "2026-10-06T18:51:22.728550+00:00",
+          "bytes": 1438511,
+          "sha256": "a14001dd6e8e73ec76153125b3503ec5eab619a07bedb0c388cf9675f60ab7cb",
+          "body_hash_verified": true,
+          "observed_body_sha256": "a14001dd6e8e73ec76153125b3503ec5eab619a07bedb0c388cf9675f60ab7cb",
+          "source_integrity_status": "verified",
+          "role": "primary_announcement",
+          "declared_publication_values": [
+            "2026-02-09T21:05:00+00:00"
+          ],
+          "declared_modification_values": [
+            "2026-02-09T21:05:00+00:00"
+          ]
+        },
+        {
+          "url": "https://html.duckduckgo.com/html/?q=Ichor%20Holdings%20February%209%202026%20fourth%20quarter%20results%20press%20release",
+          "final_url": "https://html.duckduckgo.com/html/?q=Ichor%20Holdings%20February%209%202026%20fourth%20quarter%20results%20press%20release",
+          "status": 200,
+          "retrieved_at": "2026-10-06T18:50:33.276990+00:00",
+          "bytes": 36561,
+          "sha256": "f8b67d4e59ea053d76a93d2cb0cdee1d1532b59cab35646429a3b96756c4738c",
+          "body_hash_verified": true,
+          "observed_body_sha256": "f8b67d4e59ea053d76a93d2cb0cdee1d1532b59cab35646429a3b96756c4738c",
+          "source_integrity_status": "verified",
+          "role": "discovery_corroboration_or_failed_attempt",
+          "declared_publication_values": [],
+          "declared_modification_values": []
+        },
+        {
+          "url": "https://www.ichorsystems.com/",
+          "final_url": null,
+          "status": 200,
+          "retrieved_at": "2026-10-06T18:41:57.791110+00:00",
+          "bytes": 287376,
+          "sha256": "a98ce1114386b471581aa9dd395e4460b562c175c365d8ae40b79a652ec8b393",
+          "body_hash_verified": true,
+          "observed_body_sha256": "a98ce1114386b471581aa9dd395e4460b562c175c365d8ae40b79a652ec8b393",
+          "source_integrity_status": "verified",
+          "role": "discovery_corroboration_or_failed_attempt",
+          "declared_publication_values": [],
+          "declared_modification_values": []
+        },
+        {
+          "url": "https://ir.ichorsystems.com/",
+          "final_url": null,
+          "status": 200,
+          "retrieved_at": "2026-10-06T18:39:49.689982+00:00",
+          "bytes": 2445,
+          "sha256": "bbc683fe9f4115f17e9f02397d4608e1d8b98aa9cdcf4f737e9ad138f1e0027d",
+          "body_hash_verified": true,
+          "observed_body_sha256": "bbc683fe9f4115f17e9f02397d4608e1d8b98aa9cdcf4f737e9ad138f1e0027d",
+          "source_integrity_status": "verified",
+          "role": "discovery_corroboration_or_failed_attempt",
+          "declared_publication_values": [],
+          "declared_modification_values": []
+        },
+        {
+          "url": "https://ir.ichorsystems.com/news-releases",
+          "final_url": null,
+          "status": 200,
+          "retrieved_at": "2026-10-06T18:38:18.645928+00:00",
+          "bytes": 2445,
+          "sha256": "bbc683fe9f4115f17e9f02397d4608e1d8b98aa9cdcf4f737e9ad138f1e0027d",
+          "body_hash_verified": true,
+          "observed_body_sha256": "bbc683fe9f4115f17e9f02397d4608e1d8b98aa9cdcf4f737e9ad138f1e0027d",
+          "source_integrity_status": "verified",
+          "role": "discovery_corroboration_or_failed_attempt",
+          "declared_publication_values": [],
+          "declared_modification_values": []
+        },
+        {
+          "url": "https://data.sec.gov/submissions/CIK0001652535.json",
+          "final_url": null,
+          "status": 200,
+          "retrieved_at": "2026-10-06T18:43:02.070693+00:00",
+          "bytes": 101978,
+          "sha256": "b3bbf7a0e82abecef9ca9a64558fc87b4e3843dd2583eb6cbb56e8f0cbecdd55",
+          "body_hash_verified": true,
+          "observed_body_sha256": "b3bbf7a0e82abecef9ca9a64558fc87b4e3843dd2583eb6cbb56e8f0cbecdd55",
+          "source_integrity_status": "verified",
+          "role": "discovery_corroboration_or_failed_attempt",
+          "declared_publication_values": [],
+          "declared_modification_values": []
+        },
+        {
+          "url": "https://www.globenewswire.com/search/keyword/Ichor%20Holdings%20Fourth%20Quarter%202025",
+          "final_url": null,
+          "status": 200,
+          "retrieved_at": "2026-10-06T18:37:49.936888+00:00",
+          "bytes": 171080,
+          "sha256": "be59aef8f3a45b38ca37d10bbb7ab0a893087b95da46fbce211d47dd3ed406ec",
+          "body_hash_verified": true,
+          "observed_body_sha256": "be59aef8f3a45b38ca37d10bbb7ab0a893087b95da46fbce211d47dd3ed406ec",
+          "source_integrity_status": "verified",
+          "role": "discovery_corroboration_or_failed_attempt",
+          "declared_publication_values": [],
+          "declared_modification_values": []
+        }
+      ],
+      "historical_revision_limit": "Current primary pages/declared times are not contemporaneous archived versions. Missing dateModified does not prove no revisions.",
+      "all_possible_registered_catalysts_excluded": false,
+      "review_completed_before_exit_results": true
+    },
+    {
+      "candidate_id": "2026-02-18__MSGS",
+      "date": "2026-02-18",
+      "symbol": "MSGS",
+      "news_status": "unresolved_after_bounded_primary_review",
+      "pass_registered_news_gate": null,
+      "event_category": "governance_or_proposed_transaction",
+      "rationale": "Issuer page describes board approval to explore a possible spin-off, not a definitive transaction or completed regulatory communication; its declared publication is also after the candidate open. Other unknown news is not ruled out.",
+      "announcement_time_utc": null,
+      "conservative_available_by_utc": null,
+      "in_window_confirmed": false,
+      "required_window": {
+        "strict_after": "2026-02-17T21:00:00+00:00",
+        "strict_before": "2026-02-18T14:30:00+00:00"
+      },
+      "source_request_count": 5,
+      "sources": [
+        {
+          "url": "https://www.msgsports.com/company-news/",
+          "final_url": null,
+          "status": 200,
+          "retrieved_at": "2026-10-06T18:39:49.727319+00:00",
+          "bytes": 53838,
+          "sha256": "ca02fe8330173a09e3ef2ac82b987787250fd06f2e0f4b1fa9b86d2579886b4c",
+          "body_hash_verified": true,
+          "observed_body_sha256": "ca02fe8330173a09e3ef2ac82b987787250fd06f2e0f4b1fa9b86d2579886b4c",
+          "source_integrity_status": "verified",
+          "role": "discovery_corroboration_or_failed_attempt",
+          "declared_publication_values": [
+            "2019-12-11T17:52:21+00:00"
+          ],
+          "declared_modification_values": [
+            "2024-03-06T16:58:27+00:00"
+          ]
+        },
+        {
+          "url": "https://www.msgsports.com/company-news/page/2/",
+          "final_url": null,
+          "status": 200,
+          "retrieved_at": "2026-10-06T18:41:58.046769+00:00",
+          "bytes": 53863,
+          "sha256": "30b8c1f3ee3e9232519a828088d5e3898c4bad7cdda7db52a45ea90fd844c780",
+          "body_hash_verified": true,
+          "observed_body_sha256": "30b8c1f3ee3e9232519a828088d5e3898c4bad7cdda7db52a45ea90fd844c780",
+          "source_integrity_status": "verified",
+          "role": "discovery_corroboration_or_failed_attempt",
+          "declared_publication_values": [
+            "2019-12-11T17:52:21+00:00"
+          ],
+          "declared_modification_values": [
+            "2024-03-06T16:58:27+00:00"
+          ]
+        },
+        {
+          "url": "https://investor.msgsports.com/press-releases/",
+          "final_url": null,
+          "status": 200,
+          "retrieved_at": "2026-10-06T18:38:18.665892+00:00",
+          "bytes": 63427,
+          "sha256": "f95575218e9a22646430ed31c9e7cf5931c97f170812a39eec5c79bfca378e4d",
+          "body_hash_verified": true,
+          "observed_body_sha256": "f95575218e9a22646430ed31c9e7cf5931c97f170812a39eec5c79bfca378e4d",
+          "source_integrity_status": "verified",
+          "role": "discovery_corroboration_or_failed_attempt",
+          "declared_publication_values": [],
+          "declared_modification_values": []
+        },
+        {
+          "url": "https://www.msgsports.com/madison-square-garden-sports-corp-board-of-directors-unanimously-approves-plan-to-explore-possible-spin-off/",
+          "final_url": null,
+          "status": 200,
+          "retrieved_at": "2026-10-06T18:43:00.667484+00:00",
+          "bytes": 60771,
+          "sha256": "e3dcb917d6a76b5eaeafb3a395429cb3493407e8bcd4cdde87ae438a2578f846",
+          "body_hash_verified": true,
+          "observed_body_sha256": "e3dcb917d6a76b5eaeafb3a395429cb3493407e8bcd4cdde87ae438a2578f846",
+          "source_integrity_status": "verified",
+          "role": "discovery_corroboration_or_failed_attempt",
+          "declared_publication_values": [
+            "2026-02-18T15:00:56+00:00"
+          ],
+          "declared_modification_values": []
+        },
+        {
+          "url": "https://www.globenewswire.com/search/keyword/Madison%20Square%20Garden%20Sports%20Spin-Off%20Knicks%20Rangers",
+          "final_url": null,
+          "status": 200,
+          "retrieved_at": "2026-10-06T18:37:49.947226+00:00",
+          "bytes": 60507,
+          "sha256": "f1fe385792481752c5c9a23ae4bb5dcb08a3acbd9b61fb2679d516c511da20d7",
+          "body_hash_verified": true,
+          "observed_body_sha256": "f1fe385792481752c5c9a23ae4bb5dcb08a3acbd9b61fb2679d516c511da20d7",
+          "source_integrity_status": "verified",
+          "role": "discovery_corroboration_or_failed_attempt",
+          "declared_publication_values": [],
+          "declared_modification_values": []
+        }
+      ],
+      "historical_revision_limit": "Current primary pages/declared times are not contemporaneous archived versions. Missing dateModified does not prove no revisions.",
+      "all_possible_registered_catalysts_excluded": false,
+      "review_completed_before_exit_results": true
+    },
+    {
+      "candidate_id": "2026-02-19__RELY",
+      "symbol": "RELY",
+      "date": "2026-02-19",
+      "news_status": "confirmed",
+      "pass_registered_news_gate": true,
+      "event_category": "earnings and guidance",
+      "rationale": "Issuer-issued release announces fourth-quarter/full-year2025 financial results and2026outlook after prior close. No analyst-estimate beat or strategy profitability is inferred.",
+      "announcement_time_utc": "2026-02-18T21:04:00Z",
+      "conservative_available_by_utc": "2026-02-18T21:04:00Z",
+      "declared_modified_time": "2026-02-18T21:04:00Z",
+      "in_window_confirmed": true,
+      "window": {
+        "strict_after_utc": "2026-02-18T21:00:00+00:00",
+        "strict_before_utc": "2026-02-19T14:30:00+00:00"
+      },
+      "sources": [
+        {
+          "url": "https://www.globenewswire.com/news-release/2026/02/18/3240604/0/en/remitly-reports-fourth-quarter-and-full-year-2025-results-above-outlook.html",
+          "requested_url": "https://www.globenewswire.com/news-release/2026/02/18/3240604/0/en/remitly-reports-fourth-quarter-and-full-year-2025-results-above-outlook.html",
+          "status": 200,
+          "retrieved_at": "2026-10-06T18:38:17.841755+00:00",
+          "sha256": "d5b05a136ecbb4a7b4b8f4af0f8e7fb10d82e8e32df5e8135288023b93cff459",
+          "role": "event_evidence",
+          "short_quote": "reported results for the fourth quarter and full year ended December 31, 2025.",
+          "publication_time": "2026-02-18T21:04:00Z",
+          "declared_modified_time": "2026-02-18T21:04:00Z"
+        },
+        {
+          "url": "https://www.globenewswire.com/search/keyword/Remitly%20Fourth%20Quarter%202025",
+          "requested_url": "https://www.globenewswire.com/search/keyword/Remitly%20Fourth%20Quarter%202025",
+          "status": 200,
+          "retrieved_at": "2026-10-06T18:37:50.073065+00:00",
+          "sha256": "01dc5b2ea6970ce8623e58d11a11031812b7f3ebddebf5a7fcdd0980150dfa27",
+          "role": "discovery_or_failed_attempt"
+        }
+      ],
+      "requests_used": 2,
+      "limits": [
+        "Current fetched issuer page or original wire is not an immutable contemporaneous snapshot; declared publication/modification fields do not supply a full revision history.",
+        "This review confirms event presence/category only, not surprise, causal price attribution, executable fills or returns.",
+        "An outside-category story does not prove no separate qualifying event existed."
+      ]
+    },
+    {
+      "candidate_id": "2026-02-20__RNG",
+      "date": "2026-02-20",
+      "symbol": "RNG",
+      "news_status": "confirmed_with_historical_version_limit",
+      "pass_registered_news_gate": true,
+      "event_category": "earnings/guidance",
+      "rationale": "Issuer-issued original BusinessWire announces fourth-quarter results and next-year guidance. Dividend plans are not needed to qualify the earnings announcement.",
+      "announcement_time_utc": "2026-02-19T21:09:00Z",
+      "conservative_available_by_utc": "2026-02-19T21:09:00Z",
+      "in_window_confirmed": true,
+      "required_window": {
+        "strict_after": "2026-02-19T21:00:00+00:00",
+        "strict_before": "2026-02-20T14:30:00+00:00"
+      },
+      "source_request_count": 6,
+      "sources": [
+        {
+          "url": "https://www.businesswire.com/news/home/20260219280807/en/",
+          "final_url": "https://www.businesswire.com/news/home/20260219280807/en/RingCentral-Announces-Fourth-Quarter-and-Fiscal-Year-2025-Results",
+          "status": 200,
+          "retrieved_at": "2026-10-06T18:50:33.274834+00:00",
+          "bytes": 1377252,
+          "sha256": "1b14db48be6a8e6db982e38ca71bc60800c0f3892b52730cd611902ce426a5ee",
+          "body_hash_verified": true,
+          "observed_body_sha256": "1b14db48be6a8e6db982e38ca71bc60800c0f3892b52730cd611902ce426a5ee",
+          "source_integrity_status": "verified",
+          "role": "primary_announcement",
+          "declared_publication_values": [
+            "2026-02-19T21:09:00+00:00"
+          ],
+          "declared_modification_values": [
+            "2026-02-19T21:09:00+00:00"
+          ]
+        },
+        {
+          "url": "https://www.ringcentral.com/whyringcentral/company/pressreleases.html",
+          "final_url": null,
+          "status": 200,
+          "retrieved_at": "2026-10-06T18:41:57.980517+00:00",
+          "bytes": 154100,
+          "sha256": "0e88e0a0ee04e82f286376183886dfdbec2d1194fb28d565f331bc30a364d516",
+          "body_hash_verified": true,
+          "observed_body_sha256": "0e88e0a0ee04e82f286376183886dfdbec2d1194fb28d565f331bc30a364d516",
+          "source_integrity_status": "verified",
+          "role": "discovery_corroboration_or_failed_attempt",
+          "declared_publication_values": [],
+          "declared_modification_values": []
+        },
+        {
+          "url": "https://ir.ringcentral.com/news/default.aspx",
+          "final_url": null,
+          "status": 200,
+          "retrieved_at": "2026-10-06T18:39:50.110298+00:00",
+          "bytes": 118305,
+          "sha256": "bd3d49e5b0cfbdc071743195f42da4b7b9adf0e8f2c7f9e33c304b7dc683719a",
+          "body_hash_verified": true,
+          "observed_body_sha256": "bd3d49e5b0cfbdc071743195f42da4b7b9adf0e8f2c7f9e33c304b7dc683719a",
+          "source_integrity_status": "verified",
+          "role": "discovery_corroboration_or_failed_attempt",
+          "declared_publication_values": [],
+          "declared_modification_values": []
+        },
+        {
+          "url": "https://ir.ringcentral.com/news/press-releases/default.aspx",
+          "final_url": null,
+          "status": 404,
+          "retrieved_at": "2026-10-06T18:38:18.721130+00:00",
+          "bytes": 93748,
+          "sha256": "d0ae93c72ce0687104a7ed1a9e34b6b908a505314e383400c5815af6f2fcc30b",
+          "body_hash_verified": true,
+          "observed_body_sha256": "d0ae93c72ce0687104a7ed1a9e34b6b908a505314e383400c5815af6f2fcc30b",
+          "source_integrity_status": "verified",
+          "role": "discovery_corroboration_or_failed_attempt",
+          "declared_publication_values": [],
+          "declared_modification_values": []
+        },
+        {
+          "url": "https://www.ringcentral.com/whyringcentral/company/pressreleases/ringcentral-announces-fourth-quarter-and-fiscal-year-2025-results.html",
+          "final_url": null,
+          "status": 200,
+          "retrieved_at": "2026-10-06T18:43:00.668817+00:00",
+          "bytes": 443854,
+          "sha256": "a75e032adfce3955b4988e8f04509664d864a8742ff3eb1b93dd7baaca26c07e",
+          "body_hash_verified": true,
+          "observed_body_sha256": "a75e032adfce3955b4988e8f04509664d864a8742ff3eb1b93dd7baaca26c07e",
+          "source_integrity_status": "verified",
+          "role": "discovery_corroboration_or_failed_attempt",
+          "declared_publication_values": [],
+          "declared_modification_values": []
+        },
+        {
+          "url": "https://www.globenewswire.com/search/keyword/RingCentral%20Fourth%20Quarter%202025",
+          "final_url": null,
+          "status": 200,
+          "retrieved_at": "2026-10-06T18:37:50.446707+00:00",
+          "bytes": 171055,
+          "sha256": "b9a3d233a93cea29c82c37f785e78c46a598b281de5c243b50446406aacd6307",
+          "body_hash_verified": true,
+          "observed_body_sha256": "b9a3d233a93cea29c82c37f785e78c46a598b281de5c243b50446406aacd6307",
+          "source_integrity_status": "verified",
+          "role": "discovery_corroboration_or_failed_attempt",
+          "declared_publication_values": [],
+          "declared_modification_values": []
+        }
+      ],
+      "historical_revision_limit": "Current primary pages/declared times are not contemporaneous archived versions. Missing dateModified does not prove no revisions.",
+      "all_possible_registered_catalysts_excluded": false,
+      "review_completed_before_exit_results": true
+    },
+    {
+      "candidate_id": "2026-02-20__TNDM",
+      "date": "2026-02-20",
+      "symbol": "TNDM",
+      "news_status": "confirmed_with_historical_version_limit",
+      "pass_registered_news_gate": true,
+      "event_category": "earnings/guidance",
+      "rationale": "Issuer-issued BusinessWire announces quarterly/full-year results and annual financial guidance, corroborated by issuer IR.",
+      "announcement_time_utc": "2026-02-19T21:05:00Z",
+      "conservative_available_by_utc": "2026-02-19T21:05:00Z",
+      "in_window_confirmed": true,
+      "required_window": {
+        "strict_after": "2026-02-19T21:00:00+00:00",
+        "strict_before": "2026-02-20T14:30:00+00:00"
+      },
+      "source_request_count": 5,
+      "sources": [
+        {
+          "url": "https://www.businesswire.com/news/home/20260219656063/en/Tandem-Diabetes-Care-Announces-Fourth-Quarter-and-Full-Year-2025-Financial-Results-and-2026-Financial-Guidance",
+          "final_url": null,
+          "status": 200,
+          "retrieved_at": "2026-10-06T18:43:00.668413+00:00",
+          "bytes": 987525,
+          "sha256": "a4d914594873ad1c3e93b4ce6b24ff72ee8ac3f2b6c6354f6cc533cedcfad29e",
+          "body_hash_verified": true,
+          "observed_body_sha256": "a4d914594873ad1c3e93b4ce6b24ff72ee8ac3f2b6c6354f6cc533cedcfad29e",
+          "source_integrity_status": "verified",
+          "role": "primary_announcement",
+          "declared_publication_values": [
+            "2026-02-19T21:05:00+00:00"
+          ],
+          "declared_modification_values": [
+            "2026-02-19T21:05:00+00:00"
+          ]
+        },
+        {
+          "url": "https://investor.tandemdiabetes.com/press-releases",
+          "final_url": null,
+          "status": 200,
+          "retrieved_at": "2026-10-06T18:39:50.487120+00:00",
+          "bytes": 60116,
+          "sha256": "2157903053927634bd851ce92252c16d97aaad38c6f33f42ec68cf032643e703",
+          "body_hash_verified": true,
+          "observed_body_sha256": "2157903053927634bd851ce92252c16d97aaad38c6f33f42ec68cf032643e703",
+          "source_integrity_status": "verified",
+          "role": "discovery_corroboration_or_failed_attempt",
+          "declared_publication_values": [],
+          "declared_modification_values": []
+        },
+        {
+          "url": "https://investor.tandemdiabetes.com/news-and-events/press-releases",
+          "final_url": null,
+          "status": 404,
+          "retrieved_at": "2026-10-06T18:38:19.129160+00:00",
+          "bytes": 25965,
+          "sha256": "061ea001b6318c2080e8b49de2d4594d7faa0a85bd695cf43a868c2d08706123",
+          "body_hash_verified": true,
+          "observed_body_sha256": "061ea001b6318c2080e8b49de2d4594d7faa0a85bd695cf43a868c2d08706123",
+          "source_integrity_status": "verified",
+          "role": "discovery_corroboration_or_failed_attempt",
+          "declared_publication_values": [],
+          "declared_modification_values": []
+        },
+        {
+          "url": "https://investor.tandemdiabetes.com/news-releases/news-release-details/tandem-diabetes-care-announces-fourth-quarter-and-full-year-2025",
+          "final_url": null,
+          "status": 200,
+          "retrieved_at": "2026-10-06T18:41:56.628009+00:00",
+          "bytes": 269972,
+          "sha256": "47fb4836cbee23463b9b6dc29e8c8436c65b0184772f887206222105e9f75568",
+          "body_hash_verified": true,
+          "observed_body_sha256": "47fb4836cbee23463b9b6dc29e8c8436c65b0184772f887206222105e9f75568",
+          "source_integrity_status": "verified",
+          "role": "discovery_corroboration_or_failed_attempt",
+          "declared_publication_values": [
+            "2026-02-19T16:05:45-0500"
+          ],
+          "declared_modification_values": []
+        },
+        {
+          "url": "https://www.globenewswire.com/search/keyword/Tandem%20Diabetes%20Care%20Fourth%20Quarter%202025",
+          "final_url": null,
+          "status": 200,
+          "retrieved_at": "2026-10-06T18:37:50.451586+00:00",
+          "bytes": 45974,
+          "sha256": "c8fa0baa609c0406cd1ae858859010b2af306a3b989cf552c6c09b295c32fff7",
+          "body_hash_verified": true,
+          "observed_body_sha256": "c8fa0baa609c0406cd1ae858859010b2af306a3b989cf552c6c09b295c32fff7",
+          "source_integrity_status": "verified",
+          "role": "discovery_corroboration_or_failed_attempt",
+          "declared_publication_values": [],
+          "declared_modification_values": []
+        }
+      ],
+      "historical_revision_limit": "Current primary pages/declared times are not contemporaneous archived versions. Missing dateModified does not prove no revisions.",
+      "all_possible_registered_catalysts_excluded": false,
+      "review_completed_before_exit_results": true
+    },
+    {
+      "candidate_id": "2026-02-26__GCT",
+      "symbol": "GCT",
+      "date": "2026-02-26",
+      "news_status": "confirmed",
+      "pass_registered_news_gate": true,
+      "event_category": "earnings",
+      "rationale": "Company-issued release announces new fourth-quarter and full-year2025 financial results at07:00EST within the frozen window. Event existence qualifies independently of favorable or unfavorable numeric interpretation.",
+      "announcement_time_utc": "2026-02-26T12:00:00Z",
+      "conservative_available_by_utc": "2026-02-26T12:00:00Z",
+      "declared_modified_time": "2026-02-26T12:00:00Z",
+      "in_window_confirmed": true,
+      "window": {
+        "strict_after_utc": "2026-02-25T21:00:00+00:00",
+        "strict_before_utc": "2026-02-26T14:30:00+00:00"
+      },
+      "sources": [
+        {
+          "url": "https://www.globenewswire.com/news-release/2026/02/26/3245422/0/en/gigacloud-technology-inc-announces-fourth-quarter-and-year-ended-december-31-2025-financial-results.html",
+          "requested_url": "https://www.globenewswire.com/news-release/2026/02/26/3245422/0/en/gigacloud-technology-inc-announces-fourth-quarter-and-year-ended-december-31-2025-financial-results.html",
+          "status": 200,
+          "retrieved_at": "2026-10-06T18:38:17.842810+00:00",
+          "sha256": "a08b46aae76ef9d8c0b8f29302497ada41668e6e26c0b98130bb4e6d05c80d62",
+          "role": "event_evidence",
+          "short_quote": "today announced financial results for the fourth quarter and fiscal year ended December 31, 2025",
+          "publication_time": "2026-02-26T12:00:00Z",
+          "declared_modified_time": "2026-02-26T12:00:00Z"
+        },
+        {
+          "url": "https://www.globenewswire.com/search/keyword/GigaCloud%20Fourth%20Quarter%202025",
+          "requested_url": "https://www.globenewswire.com/search/keyword/GigaCloud%20Fourth%20Quarter%202025",
+          "status": 200,
+          "retrieved_at": "2026-10-06T18:37:50.489866+00:00",
+          "sha256": "f577d939d0568d1f2ee54839ed7dc5f965dfc608945f713a5ff1c3b5cd88a7fc",
+          "role": "discovery_or_failed_attempt"
+        }
+      ],
+      "requests_used": 2,
+      "limits": [
+        "Current fetched issuer page or original wire is not an immutable contemporaneous snapshot; declared publication/modification fields do not supply a full revision history.",
+        "This review confirms event presence/category only, not surprise, causal price attribution, executable fills or returns.",
+        "An outside-category story does not prove no separate qualifying event existed."
+      ]
+    },
+    {
+      "candidate_id": "2026-02-27__AAOI",
+      "symbol": "AAOI",
+      "date": "2026-02-27",
+      "news_status": "confirmed",
+      "pass_registered_news_gate": true,
+      "event_category": "earnings and guidance",
+      "rationale": "Company-issued original wire gives new fourth-quarter/full-year2025 results after prior close; its exact publication and modification fields are both before next open.",
+      "announcement_time_utc": "2026-02-26T21:10:00Z",
+      "conservative_available_by_utc": "2026-02-26T21:10:00Z",
+      "declared_modified_time": "2026-02-26T21:10:00Z",
+      "in_window_confirmed": true,
+      "window": {
+        "strict_after_utc": "2026-02-26T21:00:00+00:00",
+        "strict_before_utc": "2026-02-27T14:30:00+00:00"
+      },
+      "sources": [
+        {
+          "url": "https://www.globenewswire.com/news-release/2026/02/26/3246121/9986/en/applied-optoelectronics-reports-fourth-quarter-and-full-year-2025-results.html",
+          "requested_url": "https://www.globenewswire.com/news-release/2026/02/26/3246121/9986/en/applied-optoelectronics-reports-fourth-quarter-and-full-year-2025-results.html",
+          "status": 200,
+          "retrieved_at": "2026-10-06T18:38:49.304668+00:00",
+          "sha256": "95255579a4587b3ce62c96a1fadc0cd41ce5c84f04d62136515b2ddb59b79a93",
+          "role": "event_evidence",
+          "short_quote": "today announced financial results for its fourth quarter and full year ended December 31, 2025.",
+          "publication_time": "2026-02-26T21:10:00Z",
+          "declared_modified_time": "2026-02-26T21:10:00Z"
+        },
+        {
+          "url": "https://www.globenewswire.com/search/keyword/Applied%20Optoelectronics%20Fourth%20Quarter%202025",
+          "requested_url": "https://www.globenewswire.com/search/keyword/Applied%20Optoelectronics%20Fourth%20Quarter%202025",
+          "status": 200,
+          "retrieved_at": "2026-10-06T18:37:38.712394+00:00",
+          "sha256": "f460004cb6b242f907036d7988f578901f0f87b246671e6a3c87652129e3df93",
+          "role": "discovery_or_failed_attempt"
+        }
+      ],
+      "requests_used": 2,
+      "limits": [
+        "Current fetched issuer page or original wire is not an immutable contemporaneous snapshot; declared publication/modification fields do not supply a full revision history.",
+        "This review confirms event presence/category only, not surprise, causal price attribution, executable fills or returns.",
+        "An outside-category story does not prove no separate qualifying event existed."
+      ]
+    },
+    {
+      "candidate_id": "2026-03-03__ZD",
+      "date": "2026-03-03",
+      "symbol": "ZD",
+      "news_status": "confirmed_with_historical_version_limit",
+      "pass_registered_news_gate": true,
+      "event_category": "contract",
+      "rationale": "Issuer announces a definitive agreement to sell its Connectivity division to Accenture. It is an executed transaction agreement, not a completed sale or realized proceeds. Current CMS time is in the required window; historical timezone/revision fidelity remains unproven.",
+      "announcement_time_utc": "2026-03-03T06:00:00Z",
+      "conservative_available_by_utc": "2026-03-03T06:00:00Z",
+      "in_window_confirmed": true,
+      "required_window": {
+        "strict_after": "2026-03-02T21:00:00+00:00",
+        "strict_before": "2026-03-03T14:30:00+00:00"
+      },
+      "source_request_count": 6,
+      "sources": [
+        {
+          "url": "https://investor.ziffdavis.com/news/news-details/2026/Ziff-Davis-Announces-Definitive-Agreement-to-Sell-Connectivity-Division-to-Accenture/default.aspx",
+          "final_url": "https://investor.ziffdavis.com/news/news-details/2026/Ziff-Davis-Announces-Definitive-Agreement-to-Sell-Connectivity-Division-to-Accenture/default.aspx",
+          "status": 200,
+          "retrieved_at": "2026-10-06T18:51:22.730574+00:00",
+          "bytes": 125991,
+          "sha256": "7e71c0f5c4600b73fb471d6ede630a6f1efeefb3b46bc43e774f5e5e5257b22e",
+          "body_hash_verified": true,
+          "observed_body_sha256": "7e71c0f5c4600b73fb471d6ede630a6f1efeefb3b46bc43e774f5e5e5257b22e",
+          "source_integrity_status": "verified",
+          "role": "primary_announcement",
+          "declared_publication_values": [
+            "2026-03-03T06:00:00Z"
+          ],
+          "declared_modification_values": [
+            "2026-03-03T06:00:00Z"
+          ]
+        },
+        {
+          "url": "https://html.duckduckgo.com/html/?q=Ziff%20Davis%20March%202%202026%20connectivity%20division%20Accenture%20definitive%20agreement",
+          "final_url": "https://html.duckduckgo.com/html/?q=Ziff%20Davis%20March%202%202026%20connectivity%20division%20Accenture%20definitive%20agreement",
+          "status": 200,
+          "retrieved_at": "2026-10-06T18:50:34.209758+00:00",
+          "bytes": 37881,
+          "sha256": "addaab5a1591357320f568c0cd7cc901dbc68156c951876dac881ecce9232f86",
+          "body_hash_verified": true,
+          "observed_body_sha256": "addaab5a1591357320f568c0cd7cc901dbc68156c951876dac881ecce9232f86",
+          "source_integrity_status": "verified",
+          "role": "discovery_corroboration_or_failed_attempt",
+          "declared_publication_values": [],
+          "declared_modification_values": []
+        },
+        {
+          "url": "https://investor.ziffdavis.com/news/default.aspx",
+          "final_url": null,
+          "status": 200,
+          "retrieved_at": "2026-10-06T18:41:57.391864+00:00",
+          "bytes": 123030,
+          "sha256": "ab22410e9462a039a67d20154c8c270fac2261b9b1f9fb90257e814fe0508b97",
+          "body_hash_verified": true,
+          "observed_body_sha256": "ab22410e9462a039a67d20154c8c270fac2261b9b1f9fb90257e814fe0508b97",
+          "source_integrity_status": "verified",
+          "role": "discovery_corroboration_or_failed_attempt",
+          "declared_publication_values": [],
+          "declared_modification_values": []
+        },
+        {
+          "url": "https://investor.ziffdavis.com/news-releases/",
+          "final_url": null,
+          "status": 404,
+          "retrieved_at": "2026-10-06T18:38:49.577032+00:00",
+          "bytes": 103380,
+          "sha256": "bb19369a7592f48dc52cc9cf7bf6b7403ed7ae01c52fe2f2df25dac9703db6db",
+          "body_hash_verified": true,
+          "observed_body_sha256": "bb19369a7592f48dc52cc9cf7bf6b7403ed7ae01c52fe2f2df25dac9703db6db",
+          "source_integrity_status": "verified",
+          "role": "discovery_corroboration_or_failed_attempt",
+          "declared_publication_values": [],
+          "declared_modification_values": []
+        },
+        {
+          "url": "https://data.sec.gov/submissions/CIK0001084048.json",
+          "final_url": null,
+          "status": 200,
+          "retrieved_at": "2026-10-06T18:43:01.875211+00:00",
+          "bytes": 169352,
+          "sha256": "92589bd6985d3c1b938845381470ac412abff9630bb5fe6d1cf99fc7a4b0f51d",
+          "body_hash_verified": true,
+          "observed_body_sha256": "92589bd6985d3c1b938845381470ac412abff9630bb5fe6d1cf99fc7a4b0f51d",
+          "source_integrity_status": "verified",
+          "role": "discovery_corroboration_or_failed_attempt",
+          "declared_publication_values": [],
+          "declared_modification_values": []
+        },
+        {
+          "url": "https://www.ziffdavis.com/press-releases",
+          "final_url": null,
+          "status": 404,
+          "retrieved_at": null,
+          "bytes": 101652,
+          "sha256": "feca6b42bf979478dc3dfe392da7d2c2294c974e3552a4ff58ddc30516763679",
+          "body_hash_verified": true,
+          "observed_body_sha256": "feca6b42bf979478dc3dfe392da7d2c2294c974e3552a4ff58ddc30516763679",
+          "source_integrity_status": "verified",
+          "role": "discovery_corroboration_or_failed_attempt",
+          "declared_publication_values": [],
+          "declared_modification_values": []
+        }
+      ],
+      "historical_revision_limit": "Current primary pages/declared times are not contemporaneous archived versions. Missing dateModified does not prove no revisions.",
+      "all_possible_registered_catalysts_excluded": false,
+      "review_completed_before_exit_results": true
+    },
+    {
+      "candidate_id": "2026-03-05__PDYN",
+      "date": "2026-03-05",
+      "symbol": "PDYN",
+      "news_status": "confirmed_with_historical_version_limit",
+      "pass_registered_news_gate": true,
+      "event_category": "earnings/guidance",
+      "rationale": "Issuer-issued BusinessWire reports fourth-quarter/full-year results and reiterates guidance. Aggregator EPS corrections are not used as evidence of a positive earnings surprise.",
+      "announcement_time_utc": "2026-03-05T11:00:00Z",
+      "conservative_available_by_utc": "2026-03-05T11:00:00Z",
+      "in_window_confirmed": true,
+      "required_window": {
+        "strict_after": "2026-03-04T21:00:00+00:00",
+        "strict_before": "2026-03-05T14:30:00+00:00"
+      },
+      "source_request_count": 7,
+      "sources": [
+        {
+          "url": "https://www.businesswire.com/news/home/20260305148397/en/",
+          "final_url": "https://www.businesswire.com/news/home/20260305148397/en/Palladyne-AI-Reports-Fourth-Quarter-and-Full-Year-2025-Results-and-Reiterates-2026-Revenue-Guidance-of-%2424-to-%2427-Million",
+          "status": 200,
+          "retrieved_at": "2026-10-06T18:52:24.350026+00:00",
+          "bytes": 955178,
+          "sha256": "5a2695c15b0f983a7cd984af6fc1a4ec608081634a1fbc85ef24e4ea6dad35e8",
+          "body_hash_verified": true,
+          "observed_body_sha256": "5a2695c15b0f983a7cd984af6fc1a4ec608081634a1fbc85ef24e4ea6dad35e8",
+          "source_integrity_status": "verified",
+          "role": "primary_announcement",
+          "declared_publication_values": [
+            "2026-03-05T11:00:00+00:00"
+          ],
+          "declared_modification_values": [
+            "2026-03-05T11:00:00+00:00"
+          ]
+        },
+        {
+          "url": "https://html.duckduckgo.com/html/?q=Palladyne%20AI%20March%205%202026%20fourth%20quarter%20results%20press%20release",
+          "final_url": "https://html.duckduckgo.com/html/?q=Palladyne%20AI%20March%205%202026%20fourth%20quarter%20results%20press%20release",
+          "status": 200,
+          "retrieved_at": "2026-10-06T18:50:33.276632+00:00",
+          "bytes": 37121,
+          "sha256": "ecafe58c93e1a1c7e128191a216175fafbfef5a12a02835ffd9cb014520636e2",
+          "body_hash_verified": true,
+          "observed_body_sha256": "ecafe58c93e1a1c7e128191a216175fafbfef5a12a02835ffd9cb014520636e2",
+          "source_integrity_status": "verified",
+          "role": "discovery_corroboration_or_failed_attempt",
+          "declared_publication_values": [],
+          "declared_modification_values": []
+        },
+        {
+          "url": "https://investor.palladyneai.com/news-releases/news-release-details/palladyne-ai-reports-fourth-quarter-and-full-year-2025-results",
+          "final_url": "https://investor.palladyneai.com/news-releases/news-release-details/palladyne-ai-reports-fourth-quarter-and-full-year-2025-results",
+          "status": 200,
+          "retrieved_at": "2026-10-06T18:51:22.729938+00:00",
+          "bytes": 242861,
+          "sha256": "bfb85367b493a7cccefa924438c2801287ef5e2735522ca59047446d22a539f6",
+          "body_hash_verified": true,
+          "observed_body_sha256": "bfb85367b493a7cccefa924438c2801287ef5e2735522ca59047446d22a539f6",
+          "source_integrity_status": "verified",
+          "role": "discovery_corroboration_or_failed_attempt",
+          "declared_publication_values": [
+            "2026-03-05T06:00:44-0500"
+          ],
+          "declared_modification_values": []
+        },
+        {
+          "url": "https://www.palladyneai.com/",
+          "final_url": null,
+          "status": 200,
+          "retrieved_at": "2026-10-06T18:41:57.212289+00:00",
+          "bytes": 387281,
+          "sha256": "30ab1591a426d2492fedc985dab47e84b67ec00855478e3bc07d567ac873beae",
+          "body_hash_verified": true,
+          "observed_body_sha256": "30ab1591a426d2492fedc985dab47e84b67ec00855478e3bc07d567ac873beae",
+          "source_integrity_status": "verified",
+          "role": "discovery_corroboration_or_failed_attempt",
+          "declared_publication_values": [
+            "2026-05-12T06:59:35+00:00"
+          ],
+          "declared_modification_values": [
+            "2026-06-10T22:40:40+00:00"
+          ]
+        },
+        {
+          "url": "https://investor.palladyneai.com/news-releases",
+          "final_url": null,
+          "status": 404,
+          "retrieved_at": "2026-10-06T18:43:01.376738+00:00",
+          "bytes": 20481,
+          "sha256": "a54e2ddd9b34cb119d7562c0c2d2301fe831bc6213d294508fe13a53874609ad",
+          "body_hash_verified": true,
+          "observed_body_sha256": "a54e2ddd9b34cb119d7562c0c2d2301fe831bc6213d294508fe13a53874609ad",
+          "source_integrity_status": "verified",
+          "role": "discovery_corroboration_or_failed_attempt",
+          "declared_publication_values": [],
+          "declared_modification_values": []
+        },
+        {
+          "url": "https://ir.palladyneai.com/news-events/press-releases",
+          "final_url": null,
+          "status": "URLError",
+          "retrieved_at": "2026-10-06T18:38:49.306686+00:00",
+          "bytes": null,
+          "sha256": null,
+          "body_hash_verified": false,
+          "observed_body_sha256": null,
+          "source_integrity_status": "quarantined_no_proof",
+          "role": "discovery_corroboration_or_failed_attempt",
+          "declared_publication_values": [],
+          "declared_modification_values": []
+        },
+        {
+          "url": "https://www.globenewswire.com/search/keyword/Palladyne%20AI%20Fourth%20Quarter%202025",
+          "final_url": "https://www.globenewswire.com/search/keyword/Palladyne%20AI%20Fourth%20Quarter%202025",
+          "status": 200,
+          "retrieved_at": null,
+          "bytes": 40090,
+          "sha256": "e9a080a9f5694ac703730e6f5695d6cbec413fbdecc806547ae78d9d3babee45",
+          "body_hash_verified": true,
+          "observed_body_sha256": "e9a080a9f5694ac703730e6f5695d6cbec413fbdecc806547ae78d9d3babee45",
+          "source_integrity_status": "verified",
+          "role": "discovery_corroboration_or_failed_attempt",
+          "declared_publication_values": [],
+          "declared_modification_values": []
+        }
+      ],
+      "historical_revision_limit": "Current primary pages/declared times are not contemporaneous archived versions. Missing dateModified does not prove no revisions.",
+      "all_possible_registered_catalysts_excluded": false,
+      "review_completed_before_exit_results": true
+    },
+    {
+      "candidate_id": "2026-03-06__MRVL",
+      "date": "2026-03-06",
+      "symbol": "MRVL",
+      "news_status": "confirmed_with_historical_version_limit",
+      "pass_registered_news_gate": true,
+      "event_category": "earnings/guidance",
+      "rationale": "Issuer-issued BusinessWire financial results supply an explicit timezone, unlike the issuer-page timezone-free time element.",
+      "announcement_time_utc": "2026-03-05T21:05:00Z",
+      "conservative_available_by_utc": "2026-03-05T21:05:00Z",
+      "in_window_confirmed": true,
+      "required_window": {
+        "strict_after": "2026-03-05T21:00:00+00:00",
+        "strict_before": "2026-03-06T14:30:00+00:00"
+      },
+      "source_request_count": 7,
+      "sources": [
+        {
+          "url": "https://www.businesswire.com/news/home/20260305094012/en/",
+          "final_url": "https://www.businesswire.com/news/home/20260305094012/en/Marvell-Technology-Inc.-Reports-Fourth-Quarter-and-Fiscal-Year-2026-Financial-Results",
+          "status": 200,
+          "retrieved_at": "2026-10-06T18:52:24.349245+00:00",
+          "bytes": 1461437,
+          "sha256": "3bc40da8b60c70290c2cc1c509a9fe7d5d4edea6cd0bb4d21290467a9336bea2",
+          "body_hash_verified": true,
+          "observed_body_sha256": "3bc40da8b60c70290c2cc1c509a9fe7d5d4edea6cd0bb4d21290467a9336bea2",
+          "source_integrity_status": "verified",
+          "role": "primary_announcement",
+          "declared_publication_values": [
+            "2026-03-05T21:05:00+00:00"
+          ],
+          "declared_modification_values": [
+            "2026-03-05T21:05:00+00:00"
+          ]
+        },
+        {
+          "url": "https://html.duckduckgo.com/html/?q=Marvell%20March%205%202026%20fourth%20quarter%20results%20press%20release",
+          "final_url": "https://html.duckduckgo.com/html/?q=Marvell%20March%205%202026%20fourth%20quarter%20results%20press%20release",
+          "status": 200,
+          "retrieved_at": "2026-10-06T18:50:34.179073+00:00",
+          "bytes": 36135,
+          "sha256": "991baec56b95d9f2377ebc276dabc1ef25220176230d077e19a4b71221cc6205",
+          "body_hash_verified": true,
+          "observed_body_sha256": "991baec56b95d9f2377ebc276dabc1ef25220176230d077e19a4b71221cc6205",
+          "source_integrity_status": "verified",
+          "role": "discovery_corroboration_or_failed_attempt",
+          "declared_publication_values": [],
+          "declared_modification_values": []
+        },
+        {
+          "url": "https://investor.marvell.com/news-events/press-releases/detail/1011/marvell-technology-inc-reports-fourth-quarter-and-fiscal-year-2026-financial-results",
+          "final_url": "https://investor.marvell.com/news-events/press-releases/detail/1011/marvell-technology-inc-reports-fourth-quarter-and-fiscal-year-2026-financial-results",
+          "status": 200,
+          "retrieved_at": "2026-10-06T18:51:22.731071+00:00",
+          "bytes": 513392,
+          "sha256": "603f7b090bf66032528dcac0bffbc67111735103c5eb67a304ac9237120a4bd1",
+          "body_hash_verified": true,
+          "observed_body_sha256": "603f7b090bf66032528dcac0bffbc67111735103c5eb67a304ac9237120a4bd1",
+          "source_integrity_status": "verified",
+          "role": "discovery_corroboration_or_failed_attempt",
+          "declared_publication_values": [],
+          "declared_modification_values": []
+        },
+        {
+          "url": "https://investor.marvell.com/news-events/press-releases",
+          "final_url": null,
+          "status": 200,
+          "retrieved_at": "2026-10-06T18:38:49.307098+00:00",
+          "bytes": 116128,
+          "sha256": "896e5084ab052dac960a86f302e2aba9c9c99ad0931a07aa6a5b7fb751dc628b",
+          "body_hash_verified": true,
+          "observed_body_sha256": "896e5084ab052dac960a86f302e2aba9c9c99ad0931a07aa6a5b7fb751dc628b",
+          "source_integrity_status": "verified",
+          "role": "discovery_corroboration_or_failed_attempt",
+          "declared_publication_values": [],
+          "declared_modification_values": []
+        },
+        {
+          "url": "https://investor.marvell.com/news-events/press-releases?page=2",
+          "final_url": null,
+          "status": 200,
+          "retrieved_at": "2026-10-06T18:41:56.628741+00:00",
+          "bytes": 116319,
+          "sha256": "1566a3254aa90f8b5eadd090fa52f47decba639c532aa5eec53bcb776c3eb356",
+          "body_hash_verified": true,
+          "observed_body_sha256": "1566a3254aa90f8b5eadd090fa52f47decba639c532aa5eec53bcb776c3eb356",
+          "source_integrity_status": "verified",
+          "role": "discovery_corroboration_or_failed_attempt",
+          "declared_publication_values": [],
+          "declared_modification_values": []
+        },
+        {
+          "url": "https://investor.marvell.com/news-events/press-releases?page=3",
+          "final_url": null,
+          "status": 200,
+          "retrieved_at": "2026-10-06T18:43:00.669287+00:00",
+          "bytes": 116544,
+          "sha256": "4bef37b8cce35b13bc8ba62fb76590d2c431292f7f822161d33f7628188b1c8c",
+          "body_hash_verified": true,
+          "observed_body_sha256": "4bef37b8cce35b13bc8ba62fb76590d2c431292f7f822161d33f7628188b1c8c",
+          "source_integrity_status": "verified",
+          "role": "discovery_corroboration_or_failed_attempt",
+          "declared_publication_values": [],
+          "declared_modification_values": []
+        },
+        {
+          "url": "https://www.marvell.com/company/newsroom.html",
+          "final_url": "https://www.marvell.com/company/newsroom.html",
+          "status": 200,
+          "retrieved_at": null,
+          "bytes": 194611,
+          "sha256": "2f8f24ac383d25abe016f6f62ee2d0988ad271f9e83983fb238f28bfd25dc3db",
+          "body_hash_verified": true,
+          "observed_body_sha256": "2f8f24ac383d25abe016f6f62ee2d0988ad271f9e83983fb238f28bfd25dc3db",
+          "source_integrity_status": "verified",
+          "role": "discovery_corroboration_or_failed_attempt",
+          "declared_publication_values": [],
+          "declared_modification_values": []
+        }
+      ],
+      "historical_revision_limit": "Current primary pages/declared times are not contemporaneous archived versions. Missing dateModified does not prove no revisions.",
+      "all_possible_registered_catalysts_excluded": false,
+      "review_completed_before_exit_results": true
+    },
+    {
+      "candidate_id": "2026-03-09__DNTH",
+      "symbol": "DNTH",
+      "date": "2026-03-09",
+      "news_status": "confirmed",
+      "pass_registered_news_gate": true,
+      "event_category": "earnings; separate clinical result does not itself qualify",
+      "rationale": "The same morning includes a distinct qualifying financial-results announcement; the GO clinical decision alone is outside the frozen categories. The issuer-issued release expressly reports Q4/FY2025 financial results at07:09:07EDT within the overnight window.",
+      "announcement_time_utc": "2026-03-09T11:09:07Z",
+      "conservative_available_by_utc": "2026-03-09T11:09:07Z",
+      "declared_modified_time": "2026-03-09T11:09:07Z",
+      "in_window_confirmed": true,
+      "window": {
+        "strict_after_utc": "2026-03-06T21:00:00+00:00",
+        "strict_before_utc": "2026-03-09T13:30:00+00:00"
+      },
+      "sources": [
+        {
+          "url": "https://www.globenewswire.com/news-release/2026/03/09/3251709/0/en/dianthus-therapeutics-highlights-recent-business-achievements-including-go-decision-for-phase-3-captivate-cidp-trial-and-reports-q4-and-fy-2025-financial-results.html",
+          "requested_url": "https://www.globenewswire.com/news-release/2026/03/09/3251709/0/en/dianthus-therapeutics-highlights-recent-business-achievements-including-go-decision-for-phase-3-captivate-cidp-trial-and-reports-q4-and-fy-2025-financial-results.html",
+          "status": 200,
+          "retrieved_at": "2026-10-06T18:38:49.305316+00:00",
+          "sha256": "f53db3aa500de06cb9a73fdf7757ac97dd4f1d30b3315e6ae0f560a95c13e384",
+          "role": "event_evidence",
+          "short_quote": "today reported financial results for the fourth quarter and full year ending December 31, 2025",
+          "publication_time": "2026-03-09T11:09:07Z",
+          "declared_modified_time": "2026-03-09T11:09:07Z"
+        },
+        {
+          "url": "https://www.globenewswire.com/search/keyword/Dianthus%20Fourth%20Quarter%202025",
+          "requested_url": "https://www.globenewswire.com/search/keyword/Dianthus%20Fourth%20Quarter%202025",
+          "status": 200,
+          "retrieved_at": "2026-10-06T18:37:38.716075+00:00",
+          "sha256": "96e1dc3c93615efb466261ef44e5a9f7cc1f2100c64e13afb54b93832548afcd",
+          "role": "discovery_or_failed_attempt"
+        }
+      ],
+      "requests_used": 2,
+      "limits": [
+        "Current fetched issuer page or original wire is not an immutable contemporaneous snapshot; declared publication/modification fields do not supply a full revision history.",
+        "This review confirms event presence/category only, not surprise, causal price attribution, executable fills or returns.",
+        "An outside-category story does not prove no separate qualifying event existed."
+      ]
+    },
+    {
+      "candidate_id": "2026-03-25__SRPT",
+      "date": "2026-03-25",
+      "symbol": "SRPT",
+      "news_status": "unresolved_after_bounded_primary_review",
+      "pass_registered_news_gate": null,
+      "event_category": "clinical_data",
+      "rationale": "Available clue concerns initial clinical results. Bounded company archive attempts did not establish a separate in-window registered catalyst; future study plans do not equal regulatory action.",
+      "announcement_time_utc": null,
+      "conservative_available_by_utc": null,
+      "in_window_confirmed": false,
+      "required_window": {
+        "strict_after": "2026-03-24T20:00:00+00:00",
+        "strict_before": "2026-03-25T13:30:00+00:00"
+      },
+      "source_request_count": 4,
+      "sources": [
+        {
+          "url": "https://investorrelations.sarepta.com/news-releases",
+          "final_url": null,
+          "status": 404,
+          "retrieved_at": "2026-10-06T18:41:56.629134+00:00",
+          "bytes": 81711,
+          "sha256": "613909248794729c2658aa19594b0a06b3133f216ced7ffdc253353b5f669066",
+          "body_hash_verified": true,
+          "observed_body_sha256": "613909248794729c2658aa19594b0a06b3133f216ced7ffdc253353b5f669066",
+          "source_integrity_status": "verified",
+          "role": "discovery_corroboration_or_failed_attempt",
+          "declared_publication_values": [],
+          "declared_modification_values": []
+        },
+        {
+          "url": "https://investor.sarepta.com/news-releases",
+          "final_url": null,
+          "status": "URLError",
+          "retrieved_at": "2026-10-06T18:38:49.473667+00:00",
+          "bytes": null,
+          "sha256": null,
+          "body_hash_verified": false,
+          "observed_body_sha256": null,
+          "source_integrity_status": "quarantined_no_proof",
+          "role": "discovery_corroboration_or_failed_attempt",
+          "declared_publication_values": [],
+          "declared_modification_values": []
+        },
+        {
+          "url": "https://investorrelations.sarepta.com/press-releases",
+          "final_url": null,
+          "status": 200,
+          "retrieved_at": "2026-10-06T18:43:01.006115+00:00",
+          "bytes": 109253,
+          "sha256": "9b8b9d04dd554724176d97ec86e34e6de0f1bbd0fd01be163e665720a156d6d5",
+          "body_hash_verified": true,
+          "observed_body_sha256": "9b8b9d04dd554724176d97ec86e34e6de0f1bbd0fd01be163e665720a156d6d5",
+          "source_integrity_status": "verified",
+          "role": "discovery_corroboration_or_failed_attempt",
+          "declared_publication_values": [],
+          "declared_modification_values": []
+        },
+        {
+          "url": "https://www.globenewswire.com/search/keyword/Sarepta%20siRNA%20March%202025%202026",
+          "final_url": "https://www.globenewswire.com/search/keyword/Sarepta%20siRNA%20March%202025%202026",
+          "status": 200,
+          "retrieved_at": null,
+          "bytes": 38593,
+          "sha256": "cc6a4b764091e4ded159f0ab7aec4c40eb05976728f83d84b45d3f08851b6f43",
+          "body_hash_verified": true,
+          "observed_body_sha256": "cc6a4b764091e4ded159f0ab7aec4c40eb05976728f83d84b45d3f08851b6f43",
+          "source_integrity_status": "verified",
+          "role": "discovery_corroboration_or_failed_attempt",
+          "declared_publication_values": [],
+          "declared_modification_values": []
+        }
+      ],
+      "historical_revision_limit": "Current primary pages/declared times are not contemporaneous archived versions. Missing dateModified does not prove no revisions.",
+      "all_possible_registered_catalysts_excluded": false,
+      "review_completed_before_exit_results": true
+    }
+  ],
+  "generated_at": "2026-10-06T18:55:48.358171+00:00",
+  "study_design_sha256": "ff1c441ab20f0f6816a862d912e0afaac037b1ba8621eb862e9718ff0aa138cf",
+  "completion_note": "Saved parallel-source work was continued by the primary agent after subagent usage interruption; no exit outcomes were viewed to classify cases."
+}

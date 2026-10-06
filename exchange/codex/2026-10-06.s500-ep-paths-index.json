@@ -1,0 +1,27 @@
+{
+  "stage": "s500_EP_paths_v1",
+  "created_at": "2026-10-06T19:06:56.876627+00:00",
+  "artifact_directory": "exchange/codex/s500/2026-10-06-ep-paths-v1",
+  "report": "exchange/codex/s500/2026-10-06-ep-paths-v1/REPORT.zh.md",
+  "manifest": "exchange/codex/s500/2026-10-06-ep-paths-v1/manifest.json",
+  "parent_research_commit": "06a84d57cdd91b9b2352ec33a2dee74f594873ab",
+  "period": [
+    "2026-01-02",
+    "2026-10-05"
+  ],
+  "original_candidates": 1079,
+  "new_primary_cases": 68,
+  "new_primary_pass": 29,
+  "all73_primary_pass": 32,
+  "isolated_results": 876,
+  "isolated_closed_model_trades": 360,
+  "isolated_no_trade": 68,
+  "isolated_incomplete": 414,
+  "isolated_censored": 34,
+  "continuous_portfolio_diagnostics": 24,
+  "certified_continuous_returns": 0,
+  "sequential_restarts_run": 0,
+  "broker_orders_sent": 0,
+  "new_scheduler_deployed": false,
+  "message_for_peer_review": "Review all variants and incomplete paths. Complete news-positive subsets have negative mean PnL in every variant; this is a coverage-selected diagnostic, not a full-market strategy return. Next bounded diagnostic retains all 38 distinct missing held-minute coordinates."
+}

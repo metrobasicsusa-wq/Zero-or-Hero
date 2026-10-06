@@ -1,0 +1,91 @@
+{
+  "id": "s500-EP-paths-and-full-primary-v1",
+  "registered_at": "2026-10-06T18:35:47.312026+00:00",
+  "parent_commit": "06a84d57cdd91b9b2352ec33a2dee74f594873ab",
+  "status": "frozen_before_new_primary_fetch_and_holding_inputs_and_returns",
+  "period": [
+    "2026-01-02",
+    "2026-10-05"
+  ],
+  "input_sha256": {
+    "market-gates.json": "9b275cc1a280a4ba8fc9248c7cf13f342cb2f9b7ce1ee06fa99ea7b21fd20867",
+    "candidate-readiness.json": "9ea089be503dea21ae458830301c189b99a4a3d0c06c2b6265e77f06f60e1e07",
+    "primary-review-queue.json": "076e56ce80f5a2d809f638859a1ad6084130be4d632abfd39748801956eaa9cb",
+    "study-design.json": "78411173d674f6d0b5974a66e95d368bfe2502061ca92a55e9074583999c5952",
+    "news-enriched.json": "0c0b497fadb934ab2de4b080acb44d05b3738a0b197dc552c05535fefce9083d",
+    "candidates.json": "74c90d92ef78faeef3c3f0f0124d22b73c552e25cd3dac129db34724582c9067",
+    "primary-review-assignment.json": "7f5ff113132f849933d34087b89aac36891dc6f03eac5352644f08576e5cb2df",
+    "holding-input-design.json": "cd34191b84e72a2b0c9c1dd62c89669495b2d5bad963a0d3c674f57b3cab7a49"
+  },
+  "primary_review": {
+    "all_cases": 68,
+    "categories": [
+      "earnings",
+      "guidance",
+      "contract",
+      "regulatory announcement"
+    ],
+    "strict_window": "prior regular close < company announcement and declared revision < current regular open; aggregator timestamps alone cannot establish this",
+    "review_budget": "up to 8 successful/error source requests per case; up to 4 extra only to resolve an alreadyfound first-party timestamp/version conflict; include failed/ambiguous cases, no forced pass",
+    "allowed_sources": "issuer IR, issuer-issued original wire, government or SEC exchange filings; search/list/index only discovery; raw bodies private",
+    "classification": "clinical data/enrollment and analyst targets alone outside categories; executed agreements count without inventing revenue requirement; completed regulatory communication can qualify but not label approval",
+    "unknown": "No found qualifying source does not prove absence; keep missing/ambiguous as unknown for strict candidate selection. Identified outside-category story does not prove no other story."
+  },
+  "holding_inputs": {
+    "all_market_pass_cases": 73,
+    "independent_of_primary_results": true,
+    "max_sessions": 63,
+    "entry_session": 1,
+    "requests": 246,
+    "unknown_gate_refetch_cases": 112,
+    "one_fresh_exact_symbol_refetch_per_unknown": true,
+    "no_zero_fill": true
+  },
+  "original_EP12": {
+    "exits": [
+      "fixed10",
+      "ma10_max63"
+    ],
+    "fractions": [
+      0.5,
+      1.0
+    ],
+    "cost_bps_each_side": [
+      25,
+      50,
+      100
+    ],
+    "initial_cash": 500,
+    "funding_injections_after_initial": 0,
+    "restart": false,
+    "no_40percent_stop": true,
+    "one_position": true,
+    "no_exit_day_reentry": true
+  },
+  "implementation": {
+    "intent_sort": "earliest signal completion, descending first30 volume / prior20 mean volume, lexical symbol; causal inputs only",
+    "quantity": "floor(fraction * settledcash / (signal_close * (1+cost))); select first signal even if unaffordable; zero quantity skips day, no replacement",
+    "execution_affordability": "keep intended quantity; entry open*(1+cost)*quantity must remain <= initial intent budget and settled cash; else skip day without resize/replacement",
+    "latency": "unchanged one full minute after completed signal: signal source minute m, intent m+1, entry reference m+2",
+    "stops": "OR30 low fixed; active entry minute; subsequent gap below stop uses lower open; missing minute before exit keeps unresolved exposure; entry open<=stop marks incomplete ambiguity, never favorable stop credit",
+    "exits": "fixed10 entry session=1; last regular minute OPEN on session10. MA10 simple mean 10 completed vendor daily closes including decision day, strict close<MA; next regular open; maximum63 scheduled last-minute OPEN. Early closes per calendar.",
+    "simultaneous_open_events": "one exit only; known scheduled/MA exit and gap-stop use same observed open and cost; include combined reasons, no favorable price choice",
+    "corporate_actions": "use cached improved action records; if relevant held event requires unverified currency/mapping/entitlement or unsupported share/receivable adjustment, stop as incomplete with exposure instead of silently ignoring or zeroing it; before-entry prior9 MA splits require comparable source adjustment or remain unknown",
+    "settlement": "sales are T+1 receivables using calendar settlement_date, not spendable until that session; no same-day recycling; no borrowing",
+    "terminal": "cutoff Oct5 hold censored with last observed source mark, not forced sale; incomplete paths ending_equity null",
+    "unknown_candidate_precedence": "when flat, a possible earlier/tied unresolved market/news candidate blocks complete strict path. If missing initial daily screening coverage or cohort completeness unknown, keep original source limits and explicit incomplete/conditional designation. No silently dropped unresolved case.",
+    "arithmetic": "Decimal via string numeric inputs; preserve exact ledger decimals; presentation rounding only",
+    "restart": "separate future experiment; do not simulate new500 injections without frozen inability-to-trade criterion"
+  },
+  "diagnostics": {
+    "all73_isolated_cases": true,
+    "all12_variants_each": true,
+    "meaning": "independent hypothetical500 initial case ledgers, not daily resets or portfolio wealth; news pass/fail/unknown joined afterward, not filtered before exit input download",
+    "no_current_sample_profit_selection": true,
+    "bar_models_not_actual_fills": true,
+    "quotes": "prior entry quote diagnostics attached separately; OHLC25/50/100bp remain stress models; no exit fill/executable claim"
+  },
+  "publication": "only new exchange/codex paths; all cases/failed/incomplete/ledgers/code/manifests; no fullraw news/market feeds or private paths/credentials",
+  "broker_orders_sent": 0,
+  "new_scheduler_deployed": false
+}

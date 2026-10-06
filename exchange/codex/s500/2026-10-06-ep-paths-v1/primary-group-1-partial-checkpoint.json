@@ -1,0 +1,396 @@
+{
+  "schema": "s500.primary-group-1.v1",
+  "assigned_count": 17,
+  "state": "in_progress",
+  "reviews": [
+    {
+      "candidate_id": "2026-01-02__BIDU",
+      "symbol": "BIDU",
+      "date": "2026-01-02",
+      "news_status": "confirmed",
+      "pass_registered_news_gate": false,
+      "event_category": "proposed spin-off and listing application; outside frozen categories",
+      "rationale": "The newly accessible issuer-issued PRNewswire release has exact Jan1publication19:30EST and modification19:30:57EST, within the candidate window. It describes a proposed spin-off and submitted confidential listing application, with approvals and final decisions pending. It is not a signed sale/merger contract, earnings/guidance or a completed regulatory decision/communication granting an outcome. The older SEC timestamp conflict is retained as unresolved historical evidence; this review resolves publication timing via independent first-party wire metadata but does not upgrade category.",
+      "announcement_time_utc": "2026-01-02T00:30:00Z",
+      "conservative_available_by_utc": "2026-01-02T00:30:57Z",
+      "declared_modified_time": "2026-01-01T19:30:57-05:00",
+      "in_window_confirmed": true,
+      "window": {
+        "strict_after_utc": "2025-12-31T21:00:00+00:00",
+        "strict_before_utc": "2026-01-02T14:30:00+00:00"
+      },
+      "sources": [
+        {
+          "url": "https://ir.baidu.com/news-releases/news-release-details/baidu-announces-proposed-spin-and-separate-listing-kunlunxin",
+          "requested_url": "https://ir.baidu.com/news-releases/news-release-details/baidu-announces-proposed-spin-and-separate-listing-kunlunxin",
+          "status": 200,
+          "retrieved_at": "2026-10-06T18:38:19.594970+00:00",
+          "sha256": "652de9ed5b004b4bd379fb0e3f19a8046ab66fecf8c4e376c857adb920946a39",
+          "role": "discovery_or_failed_attempt"
+        },
+        {
+          "url": "https://www.prnewswire.com/news-releases/baidu-announces-proposed-spin-off-and-separate-listing-of-kunlunxin-302651578.html",
+          "requested_url": "https://www.prnewswire.com/news-releases/baidu-announces-proposed-spin-off-and-separate-listing-of-kunlunxin-302651578.html",
+          "status": 200,
+          "retrieved_at": "2026-10-06T18:39:49.521675+00:00",
+          "sha256": "ebeaca9d17ab5a57499e6680fbe5a98968824ac9dd52da602021e04b65c9b3ab",
+          "role": "event_evidence",
+          "short_quote": "Details of the Proposed Spin-off have not yet been finalized.",
+          "publication_time": "2026-01-01T19:30:00-05:00",
+          "declared_modified_time": "2026-01-01T19:30:57-05:00"
+        },
+        {
+          "url": "https://www.globenewswire.com/search/keyword/Baidu%20Proposed%20Spin-Off%20Kunlunxin",
+          "requested_url": "https://www.globenewswire.com/search/keyword/Baidu%20Proposed%20Spin-Off%20Kunlunxin",
+          "status": 200,
+          "retrieved_at": "2026-10-06T18:37:49.416228+00:00",
+          "sha256": "234136d4290ca001ce431d6b911ebe218e715fde04d6f772eddc94f7ec24b05e",
+          "role": "discovery_or_failed_attempt"
+        }
+      ],
+      "requests_used": 3,
+      "limits": [
+        "Current fetched issuer page or original wire is not an immutable contemporaneous snapshot; declared publication/modification fields do not supply a full revision history.",
+        "This review confirms event presence/category only, not surprise, causal price attribution, executable fills or returns.",
+        "An outside-category story does not prove no separate qualifying event existed."
+      ],
+      "prior_review_reference": "2026-10-06-orb-v1/ep-event-audit.json and quote-v1/ep-followup.json",
+      "supersedes_scope": "News publication timing only: prior missing exact IR time now supplemented by issuer-issued wire. Original record retained; does not assert SEC conflict resolved.",
+      "prior_sec_timestamp_conflict_retained": true
+    },
+    {
+      "candidate_id": "2026-02-02__AQST",
+      "symbol": "AQST",
+      "date": "2026-02-02",
+      "news_status": "confirmed",
+      "pass_registered_news_gate": true,
+      "event_category": "regulatory announcement: FDA Complete Response Letter",
+      "rationale": "The issuer announces receipt of an actual FDA Complete Response Letter; approval is not claimed. Receipt was Jan30, but the first-party announcement and declared modification are Feb2at07:00EST within the frozen announcement window. The rule requires event presence, not a favorable regulatory outcome.",
+      "announcement_time_utc": "2026-02-02T12:00:00Z",
+      "conservative_available_by_utc": "2026-02-02T12:00:00Z",
+      "declared_modified_time": "2026-02-02T12:00:00Z",
+      "in_window_confirmed": true,
+      "window": {
+        "strict_after_utc": "2026-01-30T21:00:00+00:00",
+        "strict_before_utc": "2026-02-02T14:30:00+00:00"
+      },
+      "sources": [
+        {
+          "url": "https://www.globenewswire.com/news-release/2026/02/02/3230115/0/en/aquestive-therapeutics-announces-fda-issuance-of-complete-response-letter-for-anaphylm.html",
+          "requested_url": "https://www.globenewswire.com/news-release/2026/02/02/3230115/0/en/aquestive-therapeutics-announces-fda-issuance-of-complete-response-letter-for-anaphylm.html",
+          "status": 200,
+          "retrieved_at": "2026-10-06T18:39:49.532636+00:00",
+          "sha256": "b15231240ca9f2ef3f268b4bacc5fbd511e4b47499a0963a598d49193a3812ef",
+          "role": "event_evidence",
+          "short_quote": "today announced that it received a Complete Response Letter (CRL) from the U.S. Food and Drug Administration (FDA) on January 30, 2026",
+          "publication_time": "2026-02-02T12:00:00Z",
+          "declared_modified_time": "2026-02-02T12:00:00Z"
+        },
+        {
+          "url": "https://www.globenewswire.com/search/keyword/Aquestive%20Therapeutics%20Anaphylm%20FDA%20Complete%20Response",
+          "requested_url": "https://www.globenewswire.com/search/keyword/Aquestive%20Therapeutics%20Anaphylm%20FDA%20Complete%20Response",
+          "status": 200,
+          "retrieved_at": "2026-10-06T18:37:49.418614+00:00",
+          "sha256": "3d35c82bcc52ad9ae9cc78f4785ab4a1cdefe45f9223b6b42fc33feff886272c",
+          "role": "discovery_or_failed_attempt"
+        },
+        {
+          "url": "https://www.globenewswire.com/search/keyword/Aquestive%20Receives%20Complete%20Response%20Letter",
+          "requested_url": "https://www.globenewswire.com/search/keyword/Aquestive%20Receives%20Complete%20Response%20Letter",
+          "status": 200,
+          "retrieved_at": "2026-10-06T18:38:17.844073+00:00",
+          "sha256": "62f194b7374fbdf7c0ba58e088b0e5714be68bec31a4eec209758705d66f3842",
+          "role": "discovery_or_failed_attempt"
+        }
+      ],
+      "requests_used": 3,
+      "limits": [
+        "Current fetched issuer page or original wire is not an immutable contemporaneous snapshot; declared publication/modification fields do not supply a full revision history.",
+        "This review confirms event presence/category only, not surprise, causal price attribution, executable fills or returns.",
+        "An outside-category story does not prove no separate qualifying event existed."
+      ]
+    },
+    {
+      "candidate_id": "2026-02-04__ENPH",
+      "symbol": "ENPH",
+      "date": "2026-02-04",
+      "news_status": "confirmed",
+      "pass_registered_news_gate": true,
+      "event_category": "earnings and guidance",
+      "rationale": "The issuer-issued release supplies new fourth-quarter2025 financial results after prior close, with publication and declared modification at16:05EST. No forecast surprise versus third-party estimates is needed or asserted.",
+      "announcement_time_utc": "2026-02-03T21:05:00Z",
+      "conservative_available_by_utc": "2026-02-03T21:05:00Z",
+      "declared_modified_time": "2026-02-03T21:05:00Z",
+      "in_window_confirmed": true,
+      "window": {
+        "strict_after_utc": "2026-02-03T21:00:00+00:00",
+        "strict_before_utc": "2026-02-04T14:30:00+00:00"
+      },
+      "sources": [
+        {
+          "url": "https://investor.enphase.com/news-releases",
+          "requested_url": "https://investor.enphase.com/news-releases",
+          "status": 200,
+          "retrieved_at": "2026-10-06T18:38:18.243483+00:00",
+          "sha256": "48e7edb2885365c0dee3923a5ce32011cf43006f62ccb7f15f2d3fbee82fd76a",
+          "role": "discovery_or_failed_attempt"
+        },
+        {
+          "url": "https://www.globenewswire.com/news-release/2026/02/03/3231611/20176/en/enphase-energy-reports-financial-results-for-the-fourth-quarter-of-2025.html",
+          "requested_url": "https://www.globenewswire.com/news-release/2026/02/03/3231611/20176/en/enphase-energy-reports-financial-results-for-the-fourth-quarter-of-2025.html",
+          "status": 200,
+          "retrieved_at": "2026-10-06T18:41:56.627205+00:00",
+          "sha256": "c743b2e0d1fcde8c369055bfce6b979302ff3cb0be1be572250d294d35e26e0c",
+          "role": "event_evidence",
+          "short_quote": "announced today financial results for the fourth quarter of 2025",
+          "publication_time": "2026-02-03T21:05:00Z",
+          "declared_modified_time": "2026-02-03T21:05:00Z"
+        },
+        {
+          "url": "https://www.globenewswire.com/search/keyword/Enphase%20Energy%20Fourth%20Quarter%202025",
+          "requested_url": "https://www.globenewswire.com/search/keyword/Enphase%20Energy%20Fourth%20Quarter%202025",
+          "status": 200,
+          "retrieved_at": "2026-10-06T18:37:49.418966+00:00",
+          "sha256": "dcaaa03b462d4e21c62b3202b25af43b4d6195468bd1051ad0d154e97d085049",
+          "role": "discovery_or_failed_attempt"
+        },
+        {
+          "url": "https://www.globenewswire.com/search/keyword/Enphase%20Fourth%20343.3",
+          "requested_url": "https://www.globenewswire.com/search/keyword/Enphase%20Fourth%20343.3",
+          "status": 200,
+          "retrieved_at": "2026-10-06T18:39:49.529017+00:00",
+          "sha256": "ae5ee8f96cf362083dd1ffeee698cdef4f1c4e34f6c7391b64228a138d0bc5e4",
+          "role": "discovery_or_failed_attempt"
+        }
+      ],
+      "requests_used": 4,
+      "limits": [
+        "Current fetched issuer page or original wire is not an immutable contemporaneous snapshot; declared publication/modification fields do not supply a full revision history.",
+        "This review confirms event presence/category only, not surprise, causal price attribution, executable fills or returns.",
+        "An outside-category story does not prove no separate qualifying event existed."
+      ]
+    },
+    {
+      "candidate_id": "2026-02-09__VAL",
+      "symbol": "VAL",
+      "date": "2026-02-09",
+      "news_status": "confirmed",
+      "pass_registered_news_gate": true,
+      "event_category": "contract: signed definitive merger agreement",
+      "rationale": "Issuer-issued joint announcement expressly reports a signed definitive agreement for Transocean to acquire Valaris; it is not just an acquisition intention. Publication and declared modification precede open within the frozen overnight interval. Closing remains subject to conditions; no completed merger is claimed.",
+      "announcement_time_utc": "2026-02-09T12:50:55Z",
+      "conservative_available_by_utc": "2026-02-09T12:50:55Z",
+      "declared_modified_time": "2026-02-09T12:50:55Z",
+      "in_window_confirmed": true,
+      "window": {
+        "strict_after_utc": "2026-02-06T21:00:00+00:00",
+        "strict_before_utc": "2026-02-09T14:30:00+00:00"
+      },
+      "sources": [
+        {
+          "url": "https://www.globenewswire.com/news-release/2026/02/09/3234443/0/en/transocean-to-acquire-valaris.html",
+          "requested_url": "https://www.globenewswire.com/news-release/2026/02/09/3234443/0/en/transocean-to-acquire-valaris.html",
+          "status": 200,
+          "retrieved_at": "2026-10-06T18:38:17.840988+00:00",
+          "sha256": "c566197faa817c4e28c3430316563bb1c5e84f9bcf609273d28654ce395bffbb",
+          "role": "event_evidence",
+          "short_quote": "today announced the signing of a definitive agreement to combine the two companies",
+          "publication_time": "2026-02-09T12:50:55Z",
+          "declared_modified_time": "2026-02-09T12:50:55Z"
+        },
+        {
+          "url": "https://www.globenewswire.com/search/keyword/Transocean%20Valaris%20Acquire",
+          "requested_url": "https://www.globenewswire.com/search/keyword/Transocean%20Valaris%20Acquire",
+          "status": 200,
+          "retrieved_at": "2026-10-06T18:37:49.863118+00:00",
+          "sha256": "d1a052906e41a13053cf67c856ecf8aa97ff80d6c21d9931cb1c5fb25300958e",
+          "role": "discovery_or_failed_attempt"
+        }
+      ],
+      "requests_used": 2,
+      "limits": [
+        "Current fetched issuer page or original wire is not an immutable contemporaneous snapshot; declared publication/modification fields do not supply a full revision history.",
+        "This review confirms event presence/category only, not surprise, causal price attribution, executable fills or returns.",
+        "An outside-category story does not prove no separate qualifying event existed."
+      ]
+    },
+    {
+      "candidate_id": "2026-02-19__RELY",
+      "symbol": "RELY",
+      "date": "2026-02-19",
+      "news_status": "confirmed",
+      "pass_registered_news_gate": true,
+      "event_category": "earnings and guidance",
+      "rationale": "Issuer-issued release announces fourth-quarter/full-year2025 financial results and2026outlook after prior close. No analyst-estimate beat or strategy profitability is inferred.",
+      "announcement_time_utc": "2026-02-18T21:04:00Z",
+      "conservative_available_by_utc": "2026-02-18T21:04:00Z",
+      "declared_modified_time": "2026-02-18T21:04:00Z",
+      "in_window_confirmed": true,
+      "window": {
+        "strict_after_utc": "2026-02-18T21:00:00+00:00",
+        "strict_before_utc": "2026-02-19T14:30:00+00:00"
+      },
+      "sources": [
+        {
+          "url": "https://www.globenewswire.com/news-release/2026/02/18/3240604/0/en/remitly-reports-fourth-quarter-and-full-year-2025-results-above-outlook.html",
+          "requested_url": "https://www.globenewswire.com/news-release/2026/02/18/3240604/0/en/remitly-reports-fourth-quarter-and-full-year-2025-results-above-outlook.html",
+          "status": 200,
+          "retrieved_at": "2026-10-06T18:38:17.841755+00:00",
+          "sha256": "d5b05a136ecbb4a7b4b8f4af0f8e7fb10d82e8e32df5e8135288023b93cff459",
+          "role": "event_evidence",
+          "short_quote": "reported results for the fourth quarter and full year ended December 31, 2025.",
+          "publication_time": "2026-02-18T21:04:00Z",
+          "declared_modified_time": "2026-02-18T21:04:00Z"
+        },
+        {
+          "url": "https://www.globenewswire.com/search/keyword/Remitly%20Fourth%20Quarter%202025",
+          "requested_url": "https://www.globenewswire.com/search/keyword/Remitly%20Fourth%20Quarter%202025",
+          "status": 200,
+          "retrieved_at": "2026-10-06T18:37:50.073065+00:00",
+          "sha256": "01dc5b2ea6970ce8623e58d11a11031812b7f3ebddebf5a7fcdd0980150dfa27",
+          "role": "discovery_or_failed_attempt"
+        }
+      ],
+      "requests_used": 2,
+      "limits": [
+        "Current fetched issuer page or original wire is not an immutable contemporaneous snapshot; declared publication/modification fields do not supply a full revision history.",
+        "This review confirms event presence/category only, not surprise, causal price attribution, executable fills or returns.",
+        "An outside-category story does not prove no separate qualifying event existed."
+      ]
+    },
+    {
+      "candidate_id": "2026-02-26__GCT",
+      "symbol": "GCT",
+      "date": "2026-02-26",
+      "news_status": "confirmed",
+      "pass_registered_news_gate": true,
+      "event_category": "earnings",
+      "rationale": "Company-issued release announces new fourth-quarter and full-year2025 financial results at07:00EST within the frozen window. Event existence qualifies independently of favorable or unfavorable numeric interpretation.",
+      "announcement_time_utc": "2026-02-26T12:00:00Z",
+      "conservative_available_by_utc": "2026-02-26T12:00:00Z",
+      "declared_modified_time": "2026-02-26T12:00:00Z",
+      "in_window_confirmed": true,
+      "window": {
+        "strict_after_utc": "2026-02-25T21:00:00+00:00",
+        "strict_before_utc": "2026-02-26T14:30:00+00:00"
+      },
+      "sources": [
+        {
+          "url": "https://www.globenewswire.com/news-release/2026/02/26/3245422/0/en/gigacloud-technology-inc-announces-fourth-quarter-and-year-ended-december-31-2025-financial-results.html",
+          "requested_url": "https://www.globenewswire.com/news-release/2026/02/26/3245422/0/en/gigacloud-technology-inc-announces-fourth-quarter-and-year-ended-december-31-2025-financial-results.html",
+          "status": 200,
+          "retrieved_at": "2026-10-06T18:38:17.842810+00:00",
+          "sha256": "a08b46aae76ef9d8c0b8f29302497ada41668e6e26c0b98130bb4e6d05c80d62",
+          "role": "event_evidence",
+          "short_quote": "today announced financial results for the fourth quarter and fiscal year ended December 31, 2025",
+          "publication_time": "2026-02-26T12:00:00Z",
+          "declared_modified_time": "2026-02-26T12:00:00Z"
+        },
+        {
+          "url": "https://www.globenewswire.com/search/keyword/GigaCloud%20Fourth%20Quarter%202025",
+          "requested_url": "https://www.globenewswire.com/search/keyword/GigaCloud%20Fourth%20Quarter%202025",
+          "status": 200,
+          "retrieved_at": "2026-10-06T18:37:50.489866+00:00",
+          "sha256": "f577d939d0568d1f2ee54839ed7dc5f965dfc608945f713a5ff1c3b5cd88a7fc",
+          "role": "discovery_or_failed_attempt"
+        }
+      ],
+      "requests_used": 2,
+      "limits": [
+        "Current fetched issuer page or original wire is not an immutable contemporaneous snapshot; declared publication/modification fields do not supply a full revision history.",
+        "This review confirms event presence/category only, not surprise, causal price attribution, executable fills or returns.",
+        "An outside-category story does not prove no separate qualifying event existed."
+      ]
+    },
+    {
+      "candidate_id": "2026-02-27__AAOI",
+      "symbol": "AAOI",
+      "date": "2026-02-27",
+      "news_status": "confirmed",
+      "pass_registered_news_gate": true,
+      "event_category": "earnings and guidance",
+      "rationale": "Company-issued original wire gives new fourth-quarter/full-year2025 results after prior close; its exact publication and modification fields are both before next open.",
+      "announcement_time_utc": "2026-02-26T21:10:00Z",
+      "conservative_available_by_utc": "2026-02-26T21:10:00Z",
+      "declared_modified_time": "2026-02-26T21:10:00Z",
+      "in_window_confirmed": true,
+      "window": {
+        "strict_after_utc": "2026-02-26T21:00:00+00:00",
+        "strict_before_utc": "2026-02-27T14:30:00+00:00"
+      },
+      "sources": [
+        {
+          "url": "https://www.globenewswire.com/news-release/2026/02/26/3246121/9986/en/applied-optoelectronics-reports-fourth-quarter-and-full-year-2025-results.html",
+          "requested_url": "https://www.globenewswire.com/news-release/2026/02/26/3246121/9986/en/applied-optoelectronics-reports-fourth-quarter-and-full-year-2025-results.html",
+          "status": 200,
+          "retrieved_at": "2026-10-06T18:38:49.304668+00:00",
+          "sha256": "95255579a4587b3ce62c96a1fadc0cd41ce5c84f04d62136515b2ddb59b79a93",
+          "role": "event_evidence",
+          "short_quote": "today announced financial results for its fourth quarter and full year ended December 31, 2025.",
+          "publication_time": "2026-02-26T21:10:00Z",
+          "declared_modified_time": "2026-02-26T21:10:00Z"
+        },
+        {
+          "url": "https://www.globenewswire.com/search/keyword/Applied%20Optoelectronics%20Fourth%20Quarter%202025",
+          "requested_url": "https://www.globenewswire.com/search/keyword/Applied%20Optoelectronics%20Fourth%20Quarter%202025",
+          "status": 200,
+          "retrieved_at": "2026-10-06T18:37:38.712394+00:00",
+          "sha256": "f460004cb6b242f907036d7988f578901f0f87b246671e6a3c87652129e3df93",
+          "role": "discovery_or_failed_attempt"
+        }
+      ],
+      "requests_used": 2,
+      "limits": [
+        "Current fetched issuer page or original wire is not an immutable contemporaneous snapshot; declared publication/modification fields do not supply a full revision history.",
+        "This review confirms event presence/category only, not surprise, causal price attribution, executable fills or returns.",
+        "An outside-category story does not prove no separate qualifying event existed."
+      ]
+    },
+    {
+      "candidate_id": "2026-03-09__DNTH",
+      "symbol": "DNTH",
+      "date": "2026-03-09",
+      "news_status": "confirmed",
+      "pass_registered_news_gate": true,
+      "event_category": "earnings; separate clinical result does not itself qualify",
+      "rationale": "The same morning includes a distinct qualifying financial-results announcement; the GO clinical decision alone is outside the frozen categories. The issuer-issued release expressly reports Q4/FY2025 financial results at07:09:07EDT within the overnight window.",
+      "announcement_time_utc": "2026-03-09T11:09:07Z",
+      "conservative_available_by_utc": "2026-03-09T11:09:07Z",
+      "declared_modified_time": "2026-03-09T11:09:07Z",
+      "in_window_confirmed": true,
+      "window": {
+        "strict_after_utc": "2026-03-06T21:00:00+00:00",
+        "strict_before_utc": "2026-03-09T13:30:00+00:00"
+      },
+      "sources": [
+        {
+          "url": "https://www.globenewswire.com/news-release/2026/03/09/3251709/0/en/dianthus-therapeutics-highlights-recent-business-achievements-including-go-decision-for-phase-3-captivate-cidp-trial-and-reports-q4-and-fy-2025-financial-results.html",
+          "requested_url": "https://www.globenewswire.com/news-release/2026/03/09/3251709/0/en/dianthus-therapeutics-highlights-recent-business-achievements-including-go-decision-for-phase-3-captivate-cidp-trial-and-reports-q4-and-fy-2025-financial-results.html",
+          "status": 200,
+          "retrieved_at": "2026-10-06T18:38:49.305316+00:00",
+          "sha256": "f53db3aa500de06cb9a73fdf7757ac97dd4f1d30b3315e6ae0f560a95c13e384",
+          "role": "event_evidence",
+          "short_quote": "today reported financial results for the fourth quarter and full year ending December 31, 2025",
+          "publication_time": "2026-03-09T11:09:07Z",
+          "declared_modified_time": "2026-03-09T11:09:07Z"
+        },
+        {
+          "url": "https://www.globenewswire.com/search/keyword/Dianthus%20Fourth%20Quarter%202025",
+          "requested_url": "https://www.globenewswire.com/search/keyword/Dianthus%20Fourth%20Quarter%202025",
+          "status": 200,
+          "retrieved_at": "2026-10-06T18:37:38.716075+00:00",
+          "sha256": "96e1dc3c93615efb466261ef44e5a9f7cc1f2100c64e13afb54b93832548afcd",
+          "role": "discovery_or_failed_attempt"
+        }
+      ],
+      "requests_used": 2,
+      "limits": [
+        "Current fetched issuer page or original wire is not an immutable contemporaneous snapshot; declared publication/modification fields do not supply a full revision history.",
+        "This review confirms event presence/category only, not surprise, causal price attribution, executable fills or returns.",
+        "An outside-category story does not prove no separate qualifying event existed."
+      ]
+    }
+  ],
+  "reviewed_count": 8,
+  "updated_at": "2026-10-06T18:43:15.107661+00:00"
+}

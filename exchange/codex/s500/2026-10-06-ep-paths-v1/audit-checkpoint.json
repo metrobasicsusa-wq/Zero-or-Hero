@@ -1,0 +1,48 @@
+{
+  "updated_at": "2026-10-06T18:49:15.889819+00:00",
+  "status": "source_and_synthetic_audit_complete_actual_path_outputs_pending",
+  "synthetic_tests": {
+    "script": "audit_ep_paths.py",
+    "count": 23,
+    "passed": 23,
+    "log": "independent-tests.log",
+    "network_calls": 0
+  },
+  "source_audit_file": "source-audit.json",
+  "source_audit_sha256": "e663a91164a53578b64e77416125e85cceb209a2e0b069e9c4a9e0c5a2a981fe",
+  "source_sha256": {
+    "ep_engine.py": "a52304e560e819ca3612fbbaeb5145cfddfb7d11181731783db7158402ca5c53",
+    "audit_ep_paths.py": "928c951d50bd1042f080c5e5255ae95c177cdfa6a94cc49428e9d33c47894704",
+    "study-design.json": "ff1c441ab20f0f6816a862d912e0afaac037b1ba8621eb862e9718ff0aa138cf",
+    "holding-input-design.json": "cd34191b84e72a2b0c9c1dd62c89669495b2d5bad963a0d3c674f57b3cab7a49",
+    "collect_inputs.py": "9891955223b90f9e2b617d171860ba804ba26ba90789ab865a67d0788bc2fda6"
+  },
+  "findings": [
+    {
+      "id": "MA_failure_time_before_last_observation",
+      "status": "resolved_and_regression_verified",
+      "initial_evidence": "MA missing daily input failed at15:59 after hold had observed16:00 mark. Independent regression reproduced this.",
+      "resolution": "Root changed all3MA-related failure offsets to session close;23independenttests nowpass."
+    },
+    {
+      "id": "signal_close_exact_default_eager_lookup",
+      "status": "root_fixed",
+      "description": "Fallback now avoids evaluating missing signal.close when close_exact supplied. Actual original rows had both."
+    },
+    {
+      "id": "source_complete_claim",
+      "status": "unresolved_research_limit",
+      "description": "190fulluniverse days explicitlyfalse;current/nonPIT universe and daily prescreen limits remain.112unknownrefetch unchanged/no conflicts/no newpasses."
+    },
+    {
+      "id": "vendor_daily_close_availability",
+      "status": "assumption_not_verified",
+      "description": "Completed vendor daily closes are assumed available before next regular open;fixed16:00ledger timestamp not verified historical client availability."
+    }
+  ],
+  "pending": [
+    "Afterroot freezes primary classification and creates output paths, independently reconcile every portfolio/case ledger and all summarycounts.",
+    "Do not read or use case profitability to alter news classifications.",
+    "Preserve all incomplete/censored/noentry cases and distinguish hypotheticalcase500fromreal funding/continuousportfolio."
+  ]
+}

@@ -1,0 +1,1525 @@
+{
+  "group": 4,
+  "assigned_count": 17,
+  "reviewed_count": 17,
+  "state": "all_assigned_cases_reviewed_bounded_sources_no_forced_pass",
+  "reviews": [
+    {
+      "candidate_id": "2026-07-15__PYPL",
+      "date": "2026-07-15",
+      "symbol": "PYPL",
+      "news_status": "unresolved_after_bounded_primary_review",
+      "pass_registered_news_gate": null,
+      "event_category": "takeover_report",
+      "rationale": "Third-party sources describe a proposed bid; bounded issuer searches did not supply a definitive executed agreement or issuer-confirmed registered event.",
+      "announcement_time_utc": null,
+      "conservative_available_by_utc": null,
+      "in_window_confirmed": false,
+      "required_window": {
+        "strict_after": "2026-07-14T20:00:00+00:00",
+        "strict_before": "2026-07-15T13:30:00+00:00"
+      },
+      "source_request_count": 5,
+      "sources": [
+        {
+          "url": "https://investor.pypl.com/news-and-events/news/default.aspx",
+          "final_url": "https://investor.pypl.com/news-and-events/news/default.aspx",
+          "status": 200,
+          "retrieved_at": "2026-10-06T18:37:22.894495+00:00",
+          "bytes": 86499,
+          "sha256": "4549a633d5ea49e87b6f1ba29af46371462ff3f12807b24400e8db37a414ae6e",
+          "body_hash_verified": true,
+          "observed_body_sha256": "4549a633d5ea49e87b6f1ba29af46371462ff3f12807b24400e8db37a414ae6e",
+          "source_integrity_status": "verified",
+          "role": "discovery_corroboration_or_failed_attempt",
+          "declared_publication_values": [],
+          "declared_modification_values": []
+        },
+        {
+          "url": "https://www.google.com/search?q=PayPal%20Stripe%20Advent%20July%2015%202026%20investor%20press%20release",
+          "final_url": "https://www.google.com/search?q=PayPal%20Stripe%20Advent%20July%2015%202026%20investor%20press%20release",
+          "status": 200,
+          "retrieved_at": "2026-10-06T18:38:02.931027+00:00",
+          "bytes": 91448,
+          "sha256": "92290d5f372b020d26e135279b2c4bbdb846dbac747fab751199989d223849e9",
+          "body_hash_verified": true,
+          "observed_body_sha256": "92290d5f372b020d26e135279b2c4bbdb846dbac747fab751199989d223849e9",
+          "source_integrity_status": "verified",
+          "role": "discovery_corroboration_or_failed_attempt",
+          "declared_publication_values": [],
+          "declared_modification_values": []
+        },
+        {
+          "url": "https://www.bing.com/search?format=rss&q=PayPal%20Stripe%20Advent%20July%2015%202026%20investor%20press%20release",
+          "final_url": "https://www.bing.com/search?format=rss&q=PayPal%20Stripe%20Advent%20July%2015%202026%20investor%20press%20release",
+          "status": 200,
+          "retrieved_at": "2026-10-06T18:38:40.955494+00:00",
+          "bytes": 4447,
+          "sha256": "633136310213c03837a6060d233941cbd0b7b02b1ea00d64c3bb466f168498dd",
+          "body_hash_verified": true,
+          "observed_body_sha256": "633136310213c03837a6060d233941cbd0b7b02b1ea00d64c3bb466f168498dd",
+          "source_integrity_status": "verified",
+          "role": "discovery_corroboration_or_failed_attempt",
+          "declared_publication_values": [],
+          "declared_modification_values": []
+        },
+        {
+          "url": "https://investor.pypl.com/feed/PressRelease.svc/GetPressReleaseList?LanguageId=1&PressReleaseDateFilter=3&CategoryId=1cb807d2-208f-4bc3-9133-6a9ad45ac3b0&IncludeTags=true&StartIndex=0&PageSize=-1",
+          "final_url": "https://investor.pypl.com/feed/PressRelease.svc/GetPressReleaseList?LanguageId=1&PressReleaseDateFilter=3&CategoryId=1cb807d2-208f-4bc3-9133-6a9ad45ac3b0&IncludeTags=true&StartIndex=0&PageSize=-1",
+          "status": 200,
+          "retrieved_at": "2026-10-06T18:39:43.833237+00:00",
+          "bytes": 385604,
+          "sha256": "5c8b84034f2f1a401a47e7e27aa6b07b2b04ac23ffbb1d29542b2ebb3de2f983",
+          "body_hash_verified": true,
+          "observed_body_sha256": "5c8b84034f2f1a401a47e7e27aa6b07b2b04ac23ffbb1d29542b2ebb3de2f983",
+          "source_integrity_status": "verified",
+          "role": "discovery_corroboration_or_failed_attempt",
+          "declared_publication_values": [],
+          "declared_modification_values": []
+        },
+        {
+          "url": "https://stripe.com/newsroom/news",
+          "final_url": "https://stripe.com/newsroom/news",
+          "status": 200,
+          "retrieved_at": "2026-10-06T18:41:17.349428+00:00",
+          "bytes": 1174288,
+          "sha256": "429a07e5cd8671484edbee6e431780c5fa002719b47f7fd6ab2ebeb252945ba9",
+          "body_hash_verified": true,
+          "observed_body_sha256": "429a07e5cd8671484edbee6e431780c5fa002719b47f7fd6ab2ebeb252945ba9",
+          "source_integrity_status": "verified",
+          "role": "discovery_corroboration_or_failed_attempt",
+          "declared_publication_values": [],
+          "declared_modification_values": []
+        }
+      ],
+      "historical_revision_limit": "Current primary pages/declared times are not contemporaneous archived versions. Missing dateModified does not prove no revisions.",
+      "all_possible_registered_catalysts_excluded": false,
+      "review_completed_before_exit_results": true
+    },
+    {
+      "candidate_id": "2026-08-04__LIFE",
+      "date": "2026-08-04",
+      "symbol": "LIFE",
+      "news_status": "confirmed_with_historical_version_limit",
+      "pass_registered_news_gate": true,
+      "event_category": "earnings/guidance",
+      "rationale": "Ethos issuer IR announces quarterly results and financial outlook, explicitly identifying Nasdaq LIFE. This is not Life360/LIF. Historical ticker-to-issuer mapping remains a broader source limitation.",
+      "announcement_time_utc": "2026-08-03T20:05:16Z",
+      "conservative_available_by_utc": "2026-08-03T20:05:16Z",
+      "in_window_confirmed": true,
+      "required_window": {
+        "strict_after": "2026-08-03T20:00:00+00:00",
+        "strict_before": "2026-08-04T13:30:00+00:00"
+      },
+      "source_request_count": 6,
+      "sources": [
+        {
+          "url": "https://investors.ethos.com/news-releases/news-release-details/ethos-reports-second-quarter-fiscal-year-2026-financial-results",
+          "final_url": "https://investors.ethos.com/news-releases/news-release-details/ethos-reports-second-quarter-fiscal-year-2026-financial-results",
+          "status": 200,
+          "retrieved_at": "2026-10-06T18:41:16.677224+00:00",
+          "bytes": 213888,
+          "sha256": "a4135e050d78ec2b321e7d09dae70255fbc7281586008b622796fafde684b8ea",
+          "body_hash_verified": true,
+          "observed_body_sha256": "a4135e050d78ec2b321e7d09dae70255fbc7281586008b622796fafde684b8ea",
+          "source_integrity_status": "verified",
+          "role": "primary_announcement",
+          "declared_publication_values": [
+            "2026-08-03T16:05:16-0400"
+          ],
+          "declared_modification_values": []
+        },
+        {
+          "url": "https://investors.ethos.com/news-events/press-releases",
+          "final_url": null,
+          "status": 404,
+          "retrieved_at": "2026-10-06T18:37:22.897796+00:00",
+          "bytes": 309,
+          "sha256": "ebd669fd65bcf0046784e6b7c27f7cb414bc91174ffc2be86f4936983c5186ac",
+          "body_hash_verified": true,
+          "observed_body_sha256": "ebd669fd65bcf0046784e6b7c27f7cb414bc91174ffc2be86f4936983c5186ac",
+          "source_integrity_status": "verified",
+          "role": "discovery_corroboration_or_failed_attempt",
+          "declared_publication_values": [],
+          "declared_modification_values": []
+        },
+        {
+          "url": "https://www.google.com/search?q=Ethos%20reports%20second%20quarter%202026%20August%203%20investor",
+          "final_url": "https://www.google.com/search?q=Ethos%20reports%20second%20quarter%202026%20August%203%20investor",
+          "status": 200,
+          "retrieved_at": "2026-10-06T18:38:02.704664+00:00",
+          "bytes": 91581,
+          "sha256": "16ef580230dcfcf1d764caea8df88d10cc5b813f11b89b9a56ca7cf71ea5dcde",
+          "body_hash_verified": true,
+          "observed_body_sha256": "16ef580230dcfcf1d764caea8df88d10cc5b813f11b89b9a56ca7cf71ea5dcde",
+          "source_integrity_status": "verified",
+          "role": "discovery_corroboration_or_failed_attempt",
+          "declared_publication_values": [],
+          "declared_modification_values": []
+        },
+        {
+          "url": "https://www.bing.com/search?format=rss&q=Ethos%20second%20quarter%202026%20August%203%20investor",
+          "final_url": "https://www.bing.com/search?format=rss&q=Ethos%20second%20quarter%202026%20August%203%20investor",
+          "status": 200,
+          "retrieved_at": "2026-10-06T18:38:40.953317+00:00",
+          "bytes": 4630,
+          "sha256": "624ca3e71a2a007e2ab4a202cb3d477d97de7e2be916d64125a5a6947c4b0adf",
+          "body_hash_verified": true,
+          "observed_body_sha256": "624ca3e71a2a007e2ab4a202cb3d477d97de7e2be916d64125a5a6947c4b0adf",
+          "source_integrity_status": "verified",
+          "role": "discovery_corroboration_or_failed_attempt",
+          "declared_publication_values": [],
+          "declared_modification_values": []
+        },
+        {
+          "url": "https://www.ethos.com/",
+          "final_url": "https://www.ethos.com/",
+          "status": 200,
+          "retrieved_at": "2026-10-06T18:39:43.483075+00:00",
+          "bytes": 416700,
+          "sha256": "79a0ba0369042a3f21652c99300958b8bebc085d92766c50970c815de4209916",
+          "body_hash_verified": true,
+          "observed_body_sha256": "79a0ba0369042a3f21652c99300958b8bebc085d92766c50970c815de4209916",
+          "source_integrity_status": "verified",
+          "role": "discovery_corroboration_or_failed_attempt",
+          "declared_publication_values": [],
+          "declared_modification_values": []
+        },
+        {
+          "url": "https://investors.ethos.com/",
+          "final_url": "https://investors.ethos.com/",
+          "status": 200,
+          "retrieved_at": "2026-10-06T18:40:30.942089+00:00",
+          "bytes": 60968,
+          "sha256": "b9e8a8e160f0e83436f320b2fb2a7426e8bf42eb518af3d31e17357ef0400356",
+          "body_hash_verified": true,
+          "observed_body_sha256": "b9e8a8e160f0e83436f320b2fb2a7426e8bf42eb518af3d31e17357ef0400356",
+          "source_integrity_status": "verified",
+          "role": "discovery_corroboration_or_failed_attempt",
+          "declared_publication_values": [],
+          "declared_modification_values": []
+        }
+      ],
+      "historical_revision_limit": "Current primary pages/declared times are not contemporaneous archived versions. Missing dateModified does not prove no revisions.",
+      "all_possible_registered_catalysts_excluded": false,
+      "review_completed_before_exit_results": true
+    },
+    {
+      "candidate_id": "2026-08-07__QNST",
+      "date": "2026-08-07",
+      "symbol": "QNST",
+      "news_status": "confirmed_with_historical_version_limit",
+      "pass_registered_news_gate": true,
+      "event_category": "earnings",
+      "rationale": "Company-issued BusinessWire reports fiscal-quarter and full-year results, corroborated by issuer IR.",
+      "announcement_time_utc": "2026-08-06T20:05:00Z",
+      "conservative_available_by_utc": "2026-08-06T20:05:00Z",
+      "in_window_confirmed": true,
+      "required_window": {
+        "strict_after": "2026-08-06T20:00:00+00:00",
+        "strict_before": "2026-08-07T13:30:00+00:00"
+      },
+      "source_request_count": 6,
+      "sources": [
+        {
+          "url": "https://www.businesswire.com/news/home/20260806683938/en/",
+          "final_url": "https://www.businesswire.com/news/home/20260806683938/en/QuinStreet-Reports-Record-Fiscal-Fourth-Quarter-and-Full-Year-2026-Results",
+          "status": 200,
+          "retrieved_at": "2026-10-06T18:41:16.675626+00:00",
+          "bytes": 1142684,
+          "sha256": "94d3f37854d6c7cb000ce64cd9fe478140da54a30195005bce79336367eddfb9",
+          "body_hash_verified": true,
+          "observed_body_sha256": "94d3f37854d6c7cb000ce64cd9fe478140da54a30195005bce79336367eddfb9",
+          "source_integrity_status": "verified",
+          "role": "primary_announcement",
+          "declared_publication_values": [
+            "2026-08-06T20:05:00+00:00"
+          ],
+          "declared_modification_values": [
+            "2026-08-06T20:05:00+00:00"
+          ]
+        },
+        {
+          "url": "https://investor.quinstreet.com/news-and-events/press-releases",
+          "final_url": null,
+          "status": 404,
+          "retrieved_at": "2026-10-06T18:37:22.895729+00:00",
+          "bytes": 24414,
+          "sha256": "9b0133119856224f6a9a77f5dc7a7dffae896317855c4c4ceae5dfee1ac1031e",
+          "body_hash_verified": true,
+          "observed_body_sha256": "9b0133119856224f6a9a77f5dc7a7dffae896317855c4c4ceae5dfee1ac1031e",
+          "source_integrity_status": "verified",
+          "role": "discovery_corroboration_or_failed_attempt",
+          "declared_publication_values": [],
+          "declared_modification_values": []
+        },
+        {
+          "url": "https://investor.quinstreet.com/news-releases",
+          "final_url": null,
+          "status": 404,
+          "retrieved_at": "2026-10-06T18:38:01.285970+00:00",
+          "bytes": 24395,
+          "sha256": "056d78e7c03fcad625dea9f5f345048e29b39d07a7d3e8702a5cac6710e6c3fb",
+          "body_hash_verified": true,
+          "observed_body_sha256": "056d78e7c03fcad625dea9f5f345048e29b39d07a7d3e8702a5cac6710e6c3fb",
+          "source_integrity_status": "verified",
+          "role": "discovery_corroboration_or_failed_attempt",
+          "declared_publication_values": [],
+          "declared_modification_values": []
+        },
+        {
+          "url": "https://www.bing.com/search?format=rss&q=QuinStreet%20August%206%202026%20fiscal%20fourth%20quarter%20results",
+          "final_url": "https://www.bing.com/search?format=rss&q=QuinStreet%20August%206%202026%20fiscal%20fourth%20quarter%20results",
+          "status": 200,
+          "retrieved_at": "2026-10-06T18:38:41.474531+00:00",
+          "bytes": 4812,
+          "sha256": "59faef8bef65f2d9fbdf7c7e76449a6b982aa24ab39cdd3eb835e1d3949edd73",
+          "body_hash_verified": true,
+          "observed_body_sha256": "59faef8bef65f2d9fbdf7c7e76449a6b982aa24ab39cdd3eb835e1d3949edd73",
+          "source_integrity_status": "verified",
+          "role": "discovery_corroboration_or_failed_attempt",
+          "declared_publication_values": [],
+          "declared_modification_values": []
+        },
+        {
+          "url": "https://investor.quinstreet.com/news-events/press-releases",
+          "final_url": "https://investor.quinstreet.com/news-events/press-releases",
+          "status": 200,
+          "retrieved_at": "2026-10-06T18:39:42.824980+00:00",
+          "bytes": 42176,
+          "sha256": "727463f8e7485910820c5934195598238e556ad65bf4a8b25a458006aa43eef7",
+          "body_hash_verified": true,
+          "observed_body_sha256": "727463f8e7485910820c5934195598238e556ad65bf4a8b25a458006aa43eef7",
+          "source_integrity_status": "verified",
+          "role": "discovery_corroboration_or_failed_attempt",
+          "declared_publication_values": [],
+          "declared_modification_values": []
+        },
+        {
+          "url": "https://investor.quinstreet.com/news-releases/news-release-details/quinstreet-reports-record-fiscal-fourth-quarter-and-full-year",
+          "final_url": "https://investor.quinstreet.com/news-releases/news-release-details/quinstreet-reports-record-fiscal-fourth-quarter-and-full-year",
+          "status": 200,
+          "retrieved_at": "2026-10-06T18:40:30.944236+00:00",
+          "bytes": 331433,
+          "sha256": "6cdaa7e0886333e32e8debfdd6a0e82df92efa66d28012549ebca21ad26aa3a2",
+          "body_hash_verified": true,
+          "observed_body_sha256": "6cdaa7e0886333e32e8debfdd6a0e82df92efa66d28012549ebca21ad26aa3a2",
+          "source_integrity_status": "verified",
+          "role": "discovery_corroboration_or_failed_attempt",
+          "declared_publication_values": [
+            "2026-08-06T16:06:27-0400"
+          ],
+          "declared_modification_values": []
+        }
+      ],
+      "historical_revision_limit": "Current primary pages/declared times are not contemporaneous archived versions. Missing dateModified does not prove no revisions.",
+      "all_possible_registered_catalysts_excluded": false,
+      "review_completed_before_exit_results": true
+    },
+    {
+      "candidate_id": "2026-08-14__CAPR",
+      "date": "2026-08-14",
+      "symbol": "CAPR",
+      "news_status": "confirmed_with_historical_version_limit",
+      "pass_registered_news_gate": true,
+      "event_category": "earnings",
+      "rationale": "Issuer page explicitly displays August 13, 2026 4:05 pm EDT and announces second-quarter financial results. Older FDA committee news in the release is not relabeled as a fresh approval.",
+      "announcement_time_utc": "2026-08-13T20:05:00Z",
+      "conservative_available_by_utc": "2026-08-13T20:05:00Z",
+      "in_window_confirmed": true,
+      "required_window": {
+        "strict_after": "2026-08-13T20:00:00+00:00",
+        "strict_before": "2026-08-14T13:30:00+00:00"
+      },
+      "source_request_count": 2,
+      "sources": [
+        {
+          "url": "https://www.capricor.com/investors/news-events/press-releases/detail/353/capricor-therapeutics-reports-second-quarter-2026-financial",
+          "final_url": "https://www.capricor.com/investors/news-events/press-releases/detail/353/capricor-therapeutics-reports-second-quarter-2026-financial",
+          "status": 200,
+          "retrieved_at": "2026-10-06T18:38:01.284444+00:00",
+          "bytes": 107245,
+          "sha256": "4acdbaf1c26decd06003b63c3d3373d3bb418e6b64873b40280e511954484c5c",
+          "body_hash_verified": true,
+          "observed_body_sha256": "4acdbaf1c26decd06003b63c3d3373d3bb418e6b64873b40280e511954484c5c",
+          "source_integrity_status": "verified",
+          "role": "primary_announcement",
+          "declared_publication_values": [],
+          "declared_modification_values": []
+        },
+        {
+          "url": "https://www.capricor.com/investors/news-events/press-releases",
+          "final_url": "https://www.capricor.com/investors/news-events/press-releases",
+          "status": 200,
+          "retrieved_at": "2026-10-06T18:37:22.898224+00:00",
+          "bytes": 50971,
+          "sha256": "1484e91d243c8d964b1ba6da4b28689104b480e5c883f89f9283f7175c2b3b9e",
+          "body_hash_verified": true,
+          "observed_body_sha256": "1484e91d243c8d964b1ba6da4b28689104b480e5c883f89f9283f7175c2b3b9e",
+          "source_integrity_status": "verified",
+          "role": "discovery_corroboration_or_failed_attempt",
+          "declared_publication_values": [],
+          "declared_modification_values": []
+        }
+      ],
+      "historical_revision_limit": "Current primary pages/declared times are not contemporaneous archived versions. Missing dateModified does not prove no revisions.",
+      "all_possible_registered_catalysts_excluded": false,
+      "review_completed_before_exit_results": true
+    },
+    {
+      "candidate_id": "2026-08-14__HTFL",
+      "date": "2026-08-14",
+      "symbol": "HTFL",
+      "news_status": "confirmed_with_historical_version_limit",
+      "pass_registered_news_gate": true,
+      "event_category": "earnings/guidance",
+      "rationale": "Issuer IR announces financial results and raises guidance. Primary revenue is 64.1 million; 53.19 million is gross profit, which an aggregator headline mislabeled as sales. That headline is not accepted as financial fact.",
+      "announcement_time_utc": "2026-08-13T20:01:35Z",
+      "conservative_available_by_utc": "2026-08-13T20:01:35Z",
+      "in_window_confirmed": true,
+      "required_window": {
+        "strict_after": "2026-08-13T20:00:00+00:00",
+        "strict_before": "2026-08-14T13:30:00+00:00"
+      },
+      "source_request_count": 5,
+      "sources": [
+        {
+          "url": "https://ir.heartflow.com/news-releases/news-release-details/heartflow-reports-second-quarter-2026-financial-results-and",
+          "final_url": "https://ir.heartflow.com/news-releases/news-release-details/heartflow-reports-second-quarter-2026-financial-results-and",
+          "status": 200,
+          "retrieved_at": "2026-10-06T18:40:30.943516+00:00",
+          "bytes": 254532,
+          "sha256": "3a9661373dcc32e72ae9c779c562048d5b5bd364902c232a3142cc6e7764f51b",
+          "body_hash_verified": true,
+          "observed_body_sha256": "3a9661373dcc32e72ae9c779c562048d5b5bd364902c232a3142cc6e7764f51b",
+          "source_integrity_status": "verified",
+          "role": "primary_announcement",
+          "declared_publication_values": [
+            "2026-08-13T16:01:35-0400"
+          ],
+          "declared_modification_values": []
+        },
+        {
+          "url": "https://ir.heartflow.com/news-events/press-releases",
+          "final_url": null,
+          "status": 404,
+          "retrieved_at": "2026-10-06T18:37:22.898860+00:00",
+          "bytes": 309,
+          "sha256": "ebd669fd65bcf0046784e6b7c27f7cb414bc91174ffc2be86f4936983c5186ac",
+          "body_hash_verified": true,
+          "observed_body_sha256": "ebd669fd65bcf0046784e6b7c27f7cb414bc91174ffc2be86f4936983c5186ac",
+          "source_integrity_status": "verified",
+          "role": "discovery_corroboration_or_failed_attempt",
+          "declared_publication_values": [],
+          "declared_modification_values": []
+        },
+        {
+          "url": "https://ir.heartflow.com/news-releases",
+          "final_url": null,
+          "status": 404,
+          "retrieved_at": "2026-10-06T18:38:02.036825+00:00",
+          "bytes": 296,
+          "sha256": "c3610e156791a8f671896c715e34286eb086eddea246a8e30c369c74c2c83434",
+          "body_hash_verified": true,
+          "observed_body_sha256": "c3610e156791a8f671896c715e34286eb086eddea246a8e30c369c74c2c83434",
+          "source_integrity_status": "verified",
+          "role": "discovery_corroboration_or_failed_attempt",
+          "declared_publication_values": [],
+          "declared_modification_values": []
+        },
+        {
+          "url": "https://www.bing.com/search?format=rss&q=HeartFlow%20August%2013%202026%20second%20quarter%20results",
+          "final_url": "https://www.bing.com/search?format=rss&q=HeartFlow%20August%2013%202026%20second%20quarter%20results",
+          "status": 200,
+          "retrieved_at": "2026-10-06T18:38:41.506969+00:00",
+          "bytes": 4726,
+          "sha256": "515f987c2f8e42c90d0e96a5ef9771c0f6bcedbbd938ddc39422b3bbe0481211",
+          "body_hash_verified": true,
+          "observed_body_sha256": "515f987c2f8e42c90d0e96a5ef9771c0f6bcedbbd938ddc39422b3bbe0481211",
+          "source_integrity_status": "verified",
+          "role": "discovery_corroboration_or_failed_attempt",
+          "declared_publication_values": [],
+          "declared_modification_values": []
+        },
+        {
+          "url": "https://ir.heartflow.com/news-events/news-releases",
+          "final_url": "https://ir.heartflow.com/news-events/news-releases",
+          "status": 200,
+          "retrieved_at": "2026-10-06T18:39:42.831081+00:00",
+          "bytes": 91888,
+          "sha256": "8d28dd944cada8f68374997ebd012d9fb6c9bea0d06ba9fa6f7c72b0522b1827",
+          "body_hash_verified": true,
+          "observed_body_sha256": "8d28dd944cada8f68374997ebd012d9fb6c9bea0d06ba9fa6f7c72b0522b1827",
+          "source_integrity_status": "verified",
+          "role": "discovery_corroboration_or_failed_attempt",
+          "declared_publication_values": [],
+          "declared_modification_values": []
+        }
+      ],
+      "historical_revision_limit": "Current primary pages/declared times are not contemporaneous archived versions. Missing dateModified does not prove no revisions.",
+      "all_possible_registered_catalysts_excluded": false,
+      "review_completed_before_exit_results": true
+    },
+    {
+      "candidate_id": "2026-08-18__AMLX",
+      "date": "2026-08-18",
+      "symbol": "AMLX",
+      "news_status": "unresolved_after_bounded_primary_review",
+      "pass_registered_news_gate": null,
+      "event_category": "clinical_data",
+      "rationale": "Issuer reports Phase3 topline trial results. This is a clinical announcement, not an approval; existence of another qualifying event remains unknown.",
+      "announcement_time_utc": null,
+      "conservative_available_by_utc": null,
+      "in_window_confirmed": false,
+      "required_window": {
+        "strict_after": "2026-08-17T20:00:00+00:00",
+        "strict_before": "2026-08-18T13:30:00+00:00"
+      },
+      "source_request_count": 5,
+      "sources": [
+        {
+          "url": "https://investors.amylyx.com/news-events/press-releases",
+          "final_url": null,
+          "status": 404,
+          "retrieved_at": "2026-10-06T18:37:23.640072+00:00",
+          "bytes": 309,
+          "sha256": "ebd669fd65bcf0046784e6b7c27f7cb414bc91174ffc2be86f4936983c5186ac",
+          "body_hash_verified": true,
+          "observed_body_sha256": "ebd669fd65bcf0046784e6b7c27f7cb414bc91174ffc2be86f4936983c5186ac",
+          "source_integrity_status": "verified",
+          "role": "discovery_corroboration_or_failed_attempt",
+          "declared_publication_values": [],
+          "declared_modification_values": []
+        },
+        {
+          "url": "https://investors.amylyx.com/news-releases",
+          "final_url": null,
+          "status": 404,
+          "retrieved_at": "2026-10-06T18:38:01.290046+00:00",
+          "bytes": 296,
+          "sha256": "c3610e156791a8f671896c715e34286eb086eddea246a8e30c369c74c2c83434",
+          "body_hash_verified": true,
+          "observed_body_sha256": "c3610e156791a8f671896c715e34286eb086eddea246a8e30c369c74c2c83434",
+          "source_integrity_status": "verified",
+          "role": "discovery_corroboration_or_failed_attempt",
+          "declared_publication_values": [],
+          "declared_modification_values": []
+        },
+        {
+          "url": "https://www.bing.com/search?format=rss&q=Amylyx%20August%2018%202026%20LUCIDITY%20topline",
+          "final_url": "https://www.bing.com/search?format=rss&q=Amylyx%20August%2018%202026%20LUCIDITY%20topline",
+          "status": 200,
+          "retrieved_at": "2026-10-06T18:38:41.500652+00:00",
+          "bytes": 4936,
+          "sha256": "4bcfcfcfda9aba6b29b950f9969fd51e0d70cfcf8390f5eb92c780fa38ea0c87",
+          "body_hash_verified": true,
+          "observed_body_sha256": "4bcfcfcfda9aba6b29b950f9969fd51e0d70cfcf8390f5eb92c780fa38ea0c87",
+          "source_integrity_status": "verified",
+          "role": "discovery_corroboration_or_failed_attempt",
+          "declared_publication_values": [],
+          "declared_modification_values": []
+        },
+        {
+          "url": "https://investors.amylyx.com/press-releases",
+          "final_url": "https://investors.amylyx.com/press-releases",
+          "status": 200,
+          "retrieved_at": "2026-10-06T18:39:42.829587+00:00",
+          "bytes": 100927,
+          "sha256": "0ccefcd0ad8e363928cd08cd57fa915504353319658174c5b7dd88dc3425ca59",
+          "body_hash_verified": true,
+          "observed_body_sha256": "0ccefcd0ad8e363928cd08cd57fa915504353319658174c5b7dd88dc3425ca59",
+          "source_integrity_status": "verified",
+          "role": "discovery_corroboration_or_failed_attempt",
+          "declared_publication_values": [],
+          "declared_modification_values": []
+        },
+        {
+          "url": "https://investors.amylyx.com/news-releases/news-release-details/amylyx-pharmaceuticals-announces-positive-topline-results-0",
+          "final_url": "https://investors.amylyx.com/news-releases/news-release-details/amylyx-pharmaceuticals-announces-positive-topline-results-0",
+          "status": 200,
+          "retrieved_at": "2026-10-06T18:40:30.945498+00:00",
+          "bytes": 53954,
+          "sha256": "33bd8c0b5ac71db748e1b6c10bb932844b4c258bcd675637dd50e71df301891c",
+          "body_hash_verified": true,
+          "observed_body_sha256": "33bd8c0b5ac71db748e1b6c10bb932844b4c258bcd675637dd50e71df301891c",
+          "source_integrity_status": "verified",
+          "role": "discovery_corroboration_or_failed_attempt",
+          "declared_publication_values": [
+            "2026-08-18T07:00:41-0400"
+          ],
+          "declared_modification_values": []
+        }
+      ],
+      "historical_revision_limit": "Current primary pages/declared times are not contemporaneous archived versions. Missing dateModified does not prove no revisions.",
+      "all_possible_registered_catalysts_excluded": false,
+      "review_completed_before_exit_results": true
+    },
+    {
+      "candidate_id": "2026-08-19__BNTX",
+      "date": "2026-08-19",
+      "symbol": "BNTX",
+      "news_status": "unresolved_after_bounded_primary_review",
+      "pass_registered_news_gate": null,
+      "event_category": "missing",
+      "rationale": "No exactly timed qualifying first-party release obtained from issuer archives and searches. A zero supplier news hit does not prove no event.",
+      "announcement_time_utc": null,
+      "conservative_available_by_utc": null,
+      "in_window_confirmed": false,
+      "required_window": {
+        "strict_after": "2026-08-18T20:00:00+00:00",
+        "strict_before": "2026-08-19T13:30:00+00:00"
+      },
+      "source_request_count": 6,
+      "sources": [
+        {
+          "url": "https://investors.biontech.de/press-releases",
+          "final_url": null,
+          "status": 404,
+          "retrieved_at": "2026-10-06T18:37:23.677292+00:00",
+          "bytes": 297,
+          "sha256": "2f18f89e11f471dfab4ac48da66f227255cb074b5d079cf82012b2520ec1e967",
+          "body_hash_verified": true,
+          "observed_body_sha256": "2f18f89e11f471dfab4ac48da66f227255cb074b5d079cf82012b2520ec1e967",
+          "source_integrity_status": "verified",
+          "role": "discovery_corroboration_or_failed_attempt",
+          "declared_publication_values": [],
+          "declared_modification_values": []
+        },
+        {
+          "url": "https://investors.biontech.de/news-releases",
+          "final_url": null,
+          "status": 404,
+          "retrieved_at": "2026-10-06T18:38:01.766242+00:00",
+          "bytes": 296,
+          "sha256": "c3610e156791a8f671896c715e34286eb086eddea246a8e30c369c74c2c83434",
+          "body_hash_verified": true,
+          "observed_body_sha256": "c3610e156791a8f671896c715e34286eb086eddea246a8e30c369c74c2c83434",
+          "source_integrity_status": "verified",
+          "role": "discovery_corroboration_or_failed_attempt",
+          "declared_publication_values": [],
+          "declared_modification_values": []
+        },
+        {
+          "url": "https://www.bing.com/search?format=rss&q=BioNTech%20August%2019%202026%20press%20release",
+          "final_url": "https://www.bing.com/search?format=rss&q=BioNTech%20August%2019%202026%20press%20release",
+          "status": 200,
+          "retrieved_at": "2026-10-06T18:38:41.505521+00:00",
+          "bytes": 5263,
+          "sha256": "d345b57e19a493a4d64f838770f5f44f7305b2ee61ffc876d99a28c8136b7967",
+          "body_hash_verified": true,
+          "observed_body_sha256": "d345b57e19a493a4d64f838770f5f44f7305b2ee61ffc876d99a28c8136b7967",
+          "source_integrity_status": "verified",
+          "role": "discovery_corroboration_or_failed_attempt",
+          "declared_publication_values": [],
+          "declared_modification_values": []
+        },
+        {
+          "url": "https://investors.biontech.de/",
+          "final_url": "https://investors.biontech.de/",
+          "status": 200,
+          "retrieved_at": "2026-10-06T18:39:42.828792+00:00",
+          "bytes": 84696,
+          "sha256": "6584c369bb3c81533517de3dc8d2959a6771b3531116203d54e59d5261c9d543",
+          "body_hash_verified": true,
+          "observed_body_sha256": "6584c369bb3c81533517de3dc8d2959a6771b3531116203d54e59d5261c9d543",
+          "source_integrity_status": "verified",
+          "role": "discovery_corroboration_or_failed_attempt",
+          "declared_publication_values": [],
+          "declared_modification_values": []
+        },
+        {
+          "url": "https://www.biontech.com/int/en/home/mediaroom/news/press-releases.html",
+          "final_url": "https://www.biontech.com/int/en/home/mediaroom/news.html",
+          "status": 200,
+          "retrieved_at": "2026-10-06T18:40:31.664859+00:00",
+          "bytes": 177315,
+          "sha256": "809776e7d6bbc6b266e39390d67d8abb504b3f8762d29dcfafc1b5d356068d15",
+          "body_hash_verified": true,
+          "observed_body_sha256": "809776e7d6bbc6b266e39390d67d8abb504b3f8762d29dcfafc1b5d356068d15",
+          "source_integrity_status": "verified",
+          "role": "discovery_corroboration_or_failed_attempt",
+          "declared_publication_values": [],
+          "declared_modification_values": []
+        },
+        {
+          "url": "https://www.biontech.com/int/en/home/mediaroom/news/press-releases/2026/08.html",
+          "final_url": "https://www.biontech.com/int/en/home/mediaroom/news.html",
+          "status": 200,
+          "retrieved_at": "2026-10-06T18:42:34.674283+00:00",
+          "bytes": 177315,
+          "sha256": "642efbb76f26ed5becae7b84624af71b78a4a8e3cbee29c878def653add122a8",
+          "body_hash_verified": true,
+          "observed_body_sha256": "642efbb76f26ed5becae7b84624af71b78a4a8e3cbee29c878def653add122a8",
+          "source_integrity_status": "verified",
+          "role": "discovery_corroboration_or_failed_attempt",
+          "declared_publication_values": [],
+          "declared_modification_values": []
+        }
+      ],
+      "historical_revision_limit": "Current primary pages/declared times are not contemporaneous archived versions. Missing dateModified does not prove no revisions.",
+      "all_possible_registered_catalysts_excluded": false,
+      "review_completed_before_exit_results": true
+    },
+    {
+      "candidate_id": "2026-08-19__MRNA",
+      "date": "2026-08-19",
+      "symbol": "MRNA",
+      "news_status": "unresolved_after_bounded_primary_review",
+      "pass_registered_news_gate": null,
+      "event_category": "clinical_data_unverified_timing",
+      "rationale": "Supplied clue concerns cancer-therapy clinical trial results. Bounded issuer/partner archive attempts did not establish a separate registered in-window event.",
+      "announcement_time_utc": null,
+      "conservative_available_by_utc": null,
+      "in_window_confirmed": false,
+      "required_window": {
+        "strict_after": "2026-08-18T20:00:00+00:00",
+        "strict_before": "2026-08-19T13:30:00+00:00"
+      },
+      "source_request_count": 6,
+      "sources": [
+        {
+          "url": "https://investors.modernatx.com/news/default.aspx",
+          "final_url": "https://news.modernatx.com/",
+          "status": 200,
+          "retrieved_at": "2026-10-06T18:37:23.946166+00:00",
+          "bytes": 222794,
+          "sha256": "c05c9f5db693816cba886b4a62dacc99b388a96f0a1181fc5b21cd9ab28a9372",
+          "body_hash_verified": true,
+          "observed_body_sha256": "c05c9f5db693816cba886b4a62dacc99b388a96f0a1181fc5b21cd9ab28a9372",
+          "source_integrity_status": "verified",
+          "role": "discovery_corroboration_or_failed_attempt",
+          "declared_publication_values": [],
+          "declared_modification_values": []
+        },
+        {
+          "url": "https://www.google.com/search?q=Moderna%20Merck%20August%2019%202026%20INTERPATH-001",
+          "final_url": "https://www.google.com/search?q=Moderna%20Merck%20August%2019%202026%20INTERPATH-001",
+          "status": 200,
+          "retrieved_at": "2026-10-06T18:38:03.110815+00:00",
+          "bytes": 91582,
+          "sha256": "68c2dbfa3796ce015efb124a6e6787ac4a7feae83b007493c11a9ce77da657a6",
+          "body_hash_verified": true,
+          "observed_body_sha256": "68c2dbfa3796ce015efb124a6e6787ac4a7feae83b007493c11a9ce77da657a6",
+          "source_integrity_status": "verified",
+          "role": "discovery_corroboration_or_failed_attempt",
+          "declared_publication_values": [],
+          "declared_modification_values": []
+        },
+        {
+          "url": "https://www.bing.com/search?format=rss&q=Moderna%20Merck%20August%2019%202026%20INTERPATH-001",
+          "final_url": "https://www.bing.com/search?format=rss&q=Moderna%20Merck%20August%2019%202026%20INTERPATH-001",
+          "status": 200,
+          "retrieved_at": "2026-10-06T18:38:40.956438+00:00",
+          "bytes": 4728,
+          "sha256": "d4e4c2e651e8ff8bdc65cb02ced83b9f6537ad1e0d575f193e13b9cb079c7c62",
+          "body_hash_verified": true,
+          "observed_body_sha256": "d4e4c2e651e8ff8bdc65cb02ced83b9f6537ad1e0d575f193e13b9cb079c7c62",
+          "source_integrity_status": "verified",
+          "role": "discovery_corroboration_or_failed_attempt",
+          "declared_publication_values": [],
+          "declared_modification_values": []
+        },
+        {
+          "url": "https://news.modernatx.com/",
+          "final_url": "https://news.modernatx.com/",
+          "status": 200,
+          "retrieved_at": "2026-10-06T18:39:42.834087+00:00",
+          "bytes": 222794,
+          "sha256": "c05c9f5db693816cba886b4a62dacc99b388a96f0a1181fc5b21cd9ab28a9372",
+          "body_hash_verified": true,
+          "observed_body_sha256": "c05c9f5db693816cba886b4a62dacc99b388a96f0a1181fc5b21cd9ab28a9372",
+          "source_integrity_status": "verified",
+          "role": "discovery_corroboration_or_failed_attempt",
+          "declared_publication_values": [],
+          "declared_modification_values": []
+        },
+        {
+          "url": "https://feeds.issuerdirect.com/news.html?symbol=MRNA&news_template=plain&headline_size=16&per_page=100&starttime=2026-08-18&endtime=2026-08-20",
+          "final_url": "https://feeds.issuerdirect.com/news.html?symbol=MRNA&news_template=plain&headline_size=16&per_page=100&starttime=2026-08-18&endtime=2026-08-20",
+          "status": 200,
+          "retrieved_at": "2026-10-06T18:41:16.671844+00:00",
+          "bytes": 7765,
+          "sha256": "47816e0951b94fa1f35371c0c7e3d1ca3b396c9f8fa0449fb61363dd9a17268a",
+          "body_hash_verified": true,
+          "observed_body_sha256": "47816e0951b94fa1f35371c0c7e3d1ca3b396c9f8fa0449fb61363dd9a17268a",
+          "source_integrity_status": "verified",
+          "role": "discovery_corroboration_or_failed_attempt",
+          "declared_publication_values": [],
+          "declared_modification_values": []
+        },
+        {
+          "url": "https://www.merck.com/wp-json/wp/v2/search?search=INTERPATH&per_page=20",
+          "final_url": "https://www.merck.com/wp-json/wp/v2/search?search=INTERPATH&per_page=20",
+          "status": 200,
+          "retrieved_at": "2026-10-06T18:42:34.670914+00:00",
+          "bytes": 6505,
+          "sha256": "c5455b346cdc78d5d978892a49283e7f5b08678f8db80e29676505c3763042fa",
+          "body_hash_verified": true,
+          "observed_body_sha256": "c5455b346cdc78d5d978892a49283e7f5b08678f8db80e29676505c3763042fa",
+          "source_integrity_status": "verified",
+          "role": "discovery_corroboration_or_failed_attempt",
+          "declared_publication_values": [],
+          "declared_modification_values": []
+        }
+      ],
+      "historical_revision_limit": "Current primary pages/declared times are not contemporaneous archived versions. Missing dateModified does not prove no revisions.",
+      "all_possible_registered_catalysts_excluded": false,
+      "review_completed_before_exit_results": true
+    },
+    {
+      "candidate_id": "2026-08-25__RZLV",
+      "date": "2026-08-25",
+      "symbol": "RZLV",
+      "news_status": "unresolved_after_bounded_primary_review",
+      "pass_registered_news_gate": null,
+      "event_category": "old_or_missing_announcement",
+      "rationale": "An issuer post obtained from the CMS is dated August18, before this August25 window. It cannot be recycled as a new catalyst; no timely alternative established.",
+      "announcement_time_utc": null,
+      "conservative_available_by_utc": null,
+      "in_window_confirmed": false,
+      "required_window": {
+        "strict_after": "2026-08-24T20:00:00+00:00",
+        "strict_before": "2026-08-25T13:30:00+00:00"
+      },
+      "source_request_count": 5,
+      "sources": [
+        {
+          "url": "https://www.rezolve.com/investor-relations/",
+          "final_url": null,
+          "status": 404,
+          "retrieved_at": "2026-10-06T18:37:23.958825+00:00",
+          "bytes": 235764,
+          "sha256": "c9552f0bfbea1ddcf5a44ea2a89778ee2995f63fcfce9bfdd8bac7ef6c2ae4eb",
+          "body_hash_verified": true,
+          "observed_body_sha256": "c9552f0bfbea1ddcf5a44ea2a89778ee2995f63fcfce9bfdd8bac7ef6c2ae4eb",
+          "source_integrity_status": "verified",
+          "role": "discovery_corroboration_or_failed_attempt",
+          "declared_publication_values": [],
+          "declared_modification_values": []
+        },
+        {
+          "url": "https://rezolve.com/press-releases/",
+          "final_url": "https://rezolve.com/press-releases/",
+          "status": 200,
+          "retrieved_at": "2026-10-06T18:38:02.110545+00:00",
+          "bytes": 310752,
+          "sha256": "f1d142c2cccf6509035205af2dd5586ae13dcc501f2593880e524ee0499e49b0",
+          "body_hash_verified": true,
+          "observed_body_sha256": "f1d142c2cccf6509035205af2dd5586ae13dcc501f2593880e524ee0499e49b0",
+          "source_integrity_status": "verified",
+          "role": "discovery_corroboration_or_failed_attempt",
+          "declared_publication_values": [],
+          "declared_modification_values": []
+        },
+        {
+          "url": "https://rezolve.com/wp-json/wp/v2/search?search=August%2025%202026&per_page=20",
+          "final_url": "https://rezolve.com/wp-json/wp/v2/search?search=August%2025%202026&per_page=20",
+          "status": 200,
+          "retrieved_at": "2026-10-06T18:38:41.948146+00:00",
+          "bytes": 5024,
+          "sha256": "ba512ab789e1b9dbe20878ea8a02608a2aa497a25ec4562a9f7ecee47987cd6b",
+          "body_hash_verified": true,
+          "observed_body_sha256": "ba512ab789e1b9dbe20878ea8a02608a2aa497a25ec4562a9f7ecee47987cd6b",
+          "source_integrity_status": "verified",
+          "role": "discovery_corroboration_or_failed_attempt",
+          "declared_publication_values": [],
+          "declared_modification_values": []
+        },
+        {
+          "url": "https://rezolve.com/wp-json/wp/v2/posts?after=2026-08-24T00:00:00&before=2026-08-26T00:00:00&per_page=100",
+          "final_url": "https://rezolve.com/wp-json/wp/v2/posts?after=2026-08-24T00:00:00&before=2026-08-26T00:00:00&per_page=100",
+          "status": 200,
+          "retrieved_at": "2026-10-06T18:40:31.653029+00:00",
+          "bytes": 2,
+          "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "body_hash_verified": true,
+          "observed_body_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "source_integrity_status": "verified",
+          "role": "discovery_corroboration_or_failed_attempt",
+          "declared_publication_values": [],
+          "declared_modification_values": []
+        },
+        {
+          "url": "https://rezolve.com/wp-json/wp/v2/posts/28162",
+          "final_url": "https://rezolve.com/wp-json/wp/v2/posts/28162",
+          "status": 200,
+          "retrieved_at": "2026-10-06T18:42:34.665260+00:00",
+          "bytes": 27818,
+          "sha256": "65b1a678ffc222e71cea8e295bf502d92e206564fe2034f85b8179e5859968c9",
+          "body_hash_verified": true,
+          "observed_body_sha256": "65b1a678ffc222e71cea8e295bf502d92e206564fe2034f85b8179e5859968c9",
+          "source_integrity_status": "verified",
+          "role": "discovery_corroboration_or_failed_attempt",
+          "declared_publication_values": [
+            "2026-08-18T12:02:45+00:00"
+          ],
+          "declared_modification_values": [
+            "2026-08-18T12:02:47+00:00"
+          ]
+        }
+      ],
+      "historical_revision_limit": "Current primary pages/declared times are not contemporaneous archived versions. Missing dateModified does not prove no revisions.",
+      "all_possible_registered_catalysts_excluded": false,
+      "review_completed_before_exit_results": true
+    },
+    {
+      "candidate_id": "2026-08-26__ANF",
+      "date": "2026-08-26",
+      "symbol": "ANF",
+      "news_status": "unresolved_after_bounded_primary_review",
+      "pass_registered_news_gate": null,
+      "event_category": "earnings_source_missing",
+      "rationale": "Quarterly earnings clue exists but issuer release API attempts returned400/403 and did not supply the exact announcement record. No invented release time.",
+      "announcement_time_utc": null,
+      "conservative_available_by_utc": null,
+      "in_window_confirmed": false,
+      "required_window": {
+        "strict_after": "2026-08-25T20:00:00+00:00",
+        "strict_before": "2026-08-26T13:30:00+00:00"
+      },
+      "source_request_count": 6,
+      "sources": [
+        {
+          "url": "https://corporate.abercrombie.com/investors/news-releases/",
+          "final_url": null,
+          "status": 404,
+          "retrieved_at": "2026-10-06T18:37:24.360602+00:00",
+          "bytes": 103767,
+          "sha256": "d97a11274745204c1abde6228b4ded2ff88cf8e4eaff9c6165093e4535f1bb27",
+          "body_hash_verified": true,
+          "observed_body_sha256": "d97a11274745204c1abde6228b4ded2ff88cf8e4eaff9c6165093e4535f1bb27",
+          "source_integrity_status": "verified",
+          "role": "discovery_corroboration_or_failed_attempt",
+          "declared_publication_values": [],
+          "declared_modification_values": []
+        },
+        {
+          "url": "https://corporate.abercrombie.com/investors/",
+          "final_url": "https://corporate.abercrombie.com/investors/",
+          "status": 200,
+          "retrieved_at": "2026-10-06T18:38:02.081216+00:00",
+          "bytes": 145656,
+          "sha256": "78026b2d6ae48a7ea30fbcaeda3c19bd407c7db966db27a4e91683f3fac7cbba",
+          "body_hash_verified": true,
+          "observed_body_sha256": "78026b2d6ae48a7ea30fbcaeda3c19bd407c7db966db27a4e91683f3fac7cbba",
+          "source_integrity_status": "verified",
+          "role": "discovery_corroboration_or_failed_attempt",
+          "declared_publication_values": [
+            "2022-11-04T10:37:06+00:00"
+          ],
+          "declared_modification_values": [
+            "2026-07-24T09:03:34+00:00"
+          ]
+        },
+        {
+          "url": "https://corporate.abercrombie.com/investors/news-and-events/news/",
+          "final_url": "https://corporate.abercrombie.com/investors/news-and-events/news/",
+          "status": 200,
+          "retrieved_at": "2026-10-06T18:38:41.533306+00:00",
+          "bytes": 123145,
+          "sha256": "3db05ec5f82da458281781e6a04e14fab6b6c2558fd1b80fd30faf7d3cec7cab",
+          "body_hash_verified": true,
+          "observed_body_sha256": "3db05ec5f82da458281781e6a04e14fab6b6c2558fd1b80fd30faf7d3cec7cab",
+          "source_integrity_status": "verified",
+          "role": "discovery_corroboration_or_failed_attempt",
+          "declared_publication_values": [
+            "2022-11-12T14:44:24+00:00"
+          ],
+          "declared_modification_values": [
+            "2026-03-09T09:36:23+00:00"
+          ]
+        },
+        {
+          "url": "https://corporate.abercrombie.com/wp-content/themes/anfco/blocks/build/press-listing/frontend/frontend.js?m=1790832213g",
+          "final_url": "https://corporate.abercrombie.com/wp-content/themes/anfco/blocks/build/press-listing/frontend/frontend.js?m=1790832213g",
+          "status": 200,
+          "retrieved_at": "2026-10-06T18:40:31.366891+00:00",
+          "bytes": 210302,
+          "sha256": "5b986df606b14c876e782adc02cf516a7817c1374d37d957fd663258660422ea",
+          "body_hash_verified": true,
+          "observed_body_sha256": "5b986df606b14c876e782adc02cf516a7817c1374d37d957fd663258660422ea",
+          "source_integrity_status": "verified",
+          "role": "discovery_corroboration_or_failed_attempt",
+          "declared_publication_values": [],
+          "declared_modification_values": []
+        },
+        {
+          "url": "https://corporate.abercrombie.com/wp-json/anfco/v1/latest-releases?type=news&minDate=2026-08-25&maxDate=2026-08-27&perPage=20&page=1",
+          "final_url": null,
+          "status": 400,
+          "retrieved_at": "2026-10-06T18:41:16.671041+00:00",
+          "bytes": 117,
+          "sha256": "bf81c3544ebcf2e682a7265682f6a83ff63266a1756fe1c02c4dd7bed8032a42",
+          "body_hash_verified": true,
+          "observed_body_sha256": "bf81c3544ebcf2e682a7265682f6a83ff63266a1756fe1c02c4dd7bed8032a42",
+          "source_integrity_status": "verified",
+          "role": "discovery_corroboration_or_failed_attempt",
+          "declared_publication_values": [],
+          "declared_modification_values": []
+        },
+        {
+          "url": "https://corporate.abercrombie.com/wp-json/anfco/v1/latest-releases?post=news&minDate=2026-08-25&maxDate=2026-08-27&size=20&page=1",
+          "final_url": null,
+          "status": 403,
+          "retrieved_at": "2026-10-06T18:42:34.667331+00:00",
+          "bytes": 102,
+          "sha256": "0eaa77facf5fdc164ee61a0ccd5adfcbead988713798bc5610023093873f43dd",
+          "body_hash_verified": true,
+          "observed_body_sha256": "0eaa77facf5fdc164ee61a0ccd5adfcbead988713798bc5610023093873f43dd",
+          "source_integrity_status": "verified",
+          "role": "discovery_corroboration_or_failed_attempt",
+          "declared_publication_values": [],
+          "declared_modification_values": []
+        }
+      ],
+      "historical_revision_limit": "Current primary pages/declared times are not contemporaneous archived versions. Missing dateModified does not prove no revisions.",
+      "all_possible_registered_catalysts_excluded": false,
+      "review_completed_before_exit_results": true
+    },
+    {
+      "candidate_id": "2026-08-27__CRM",
+      "date": "2026-08-27",
+      "symbol": "CRM",
+      "news_status": "unresolved_after_bounded_primary_review",
+      "pass_registered_news_gate": null,
+      "event_category": "earnings_version_and_timing_unknown",
+      "rationale": "Issuer page has results content but no exact publication time; two captures of the same URL have different HTML titles. A later favorable capture is not selected to certify historical timing.",
+      "announcement_time_utc": null,
+      "conservative_available_by_utc": null,
+      "in_window_confirmed": false,
+      "required_window": {
+        "strict_after": "2026-08-26T20:00:00+00:00",
+        "strict_before": "2026-08-27T13:30:00+00:00"
+      },
+      "source_request_count": 7,
+      "sources": [
+        {
+          "url": "https://investor.salesforce.com/press-releases/default.aspx",
+          "final_url": "https://investor.salesforce.com:443/news/default.aspx",
+          "status": 200,
+          "retrieved_at": "2026-10-06T18:37:24.450701+00:00",
+          "bytes": 89453,
+          "sha256": "f7760ad4b245aeb2312f8a4c785b3b919d33f18e2726676f1756568c9634929c",
+          "body_hash_verified": true,
+          "observed_body_sha256": "f7760ad4b245aeb2312f8a4c785b3b919d33f18e2726676f1756568c9634929c",
+          "source_integrity_status": "verified",
+          "role": "discovery_corroboration_or_failed_attempt",
+          "declared_publication_values": [],
+          "declared_modification_values": []
+        },
+        {
+          "url": "https://www.google.com/search?q=Salesforce%20second%20quarter%20fiscal%202027%20August%2026%202026%20results",
+          "final_url": "https://www.google.com/search?q=Salesforce%20second%20quarter%20fiscal%202027%20August%2026%202026%20results",
+          "status": 200,
+          "retrieved_at": "2026-10-06T18:38:02.705119+00:00",
+          "bytes": 91853,
+          "sha256": "1c6b5225ec915e0938a9d7c4dcbb73e8a275051c87978c5694906894740d3b15",
+          "body_hash_verified": true,
+          "observed_body_sha256": "1c6b5225ec915e0938a9d7c4dcbb73e8a275051c87978c5694906894740d3b15",
+          "source_integrity_status": "verified",
+          "role": "discovery_corroboration_or_failed_attempt",
+          "declared_publication_values": [],
+          "declared_modification_values": []
+        },
+        {
+          "url": "https://www.bing.com/search?format=rss&q=Salesforce%20second%20quarter%20fiscal%202027%20August%2026%202026%20results",
+          "final_url": "https://www.bing.com/search?format=rss&q=Salesforce%20second%20quarter%20fiscal%202027%20August%2026%202026%20results",
+          "status": 200,
+          "retrieved_at": "2026-10-06T18:38:40.954134+00:00",
+          "bytes": 4822,
+          "sha256": "dfc8be286aa55d2dfc8b562357fb9dcd484ad31518af463f83cea959a8006249",
+          "body_hash_verified": true,
+          "observed_body_sha256": "dfc8be286aa55d2dfc8b562357fb9dcd484ad31518af463f83cea959a8006249",
+          "source_integrity_status": "verified",
+          "role": "discovery_corroboration_or_failed_attempt",
+          "declared_publication_values": [],
+          "declared_modification_values": []
+        },
+        {
+          "url": "https://investor.salesforce.com/feed/PressRelease.svc/GetPressReleaseList?LanguageId=1&PressReleaseDateFilter=3&CategoryId=00000000-0000-0000-0000-000000000000&IncludeTags=true&StartIndex=0&PageSize=-1",
+          "final_url": "https://investor.salesforce.com/feed/PressRelease.svc/GetPressReleaseList?LanguageId=1&PressReleaseDateFilter=3&CategoryId=00000000-0000-0000-0000-000000000000&IncludeTags=true&StartIndex=0&PageSize=-1",
+          "status": 200,
+          "retrieved_at": "2026-10-06T18:39:43.719716+00:00",
+          "bytes": 1283444,
+          "sha256": "c59ceeefa4b05c8863e502d202721dc2203f3a8cce583cf3c754b52b8f00885c",
+          "body_hash_verified": true,
+          "observed_body_sha256": "c59ceeefa4b05c8863e502d202721dc2203f3a8cce583cf3c754b52b8f00885c",
+          "source_integrity_status": "verified",
+          "role": "discovery_corroboration_or_failed_attempt",
+          "declared_publication_values": [],
+          "declared_modification_values": []
+        },
+        {
+          "url": "https://investor.salesforce.com/news/news-details/2026/Salesforce-Delivers-Record-Second-Quarter-Fiscal-2027-Results/default.aspx",
+          "final_url": "https://investor.salesforce.com/news/news-details/2026/Salesforce-Delivers-Record-Second-Quarter-Fiscal-2027-Results/default.aspx",
+          "status": 200,
+          "retrieved_at": "2026-10-06T18:40:31.669705+00:00",
+          "bytes": 537534,
+          "sha256": "bdfcee65ba6d002a606f08247ef57025bcfabea518e09486ab5cce8804c6755a",
+          "body_hash_verified": false,
+          "observed_body_sha256": "dc1b3c632d17ea2658e8d89f9bcc226da32706cf32372fdaf5ca11c5a121b88b",
+          "source_integrity_status": "quarantined_no_proof",
+          "role": "discovery_corroboration_or_failed_attempt",
+          "declared_publication_values": [],
+          "declared_modification_values": []
+        },
+        {
+          "url": "https://www.salesforce.com/news/stories/q2-fy27-earnings/",
+          "final_url": null,
+          "status": 404,
+          "retrieved_at": "2026-10-06T18:41:17.225189+00:00",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "body_hash_verified": true,
+          "observed_body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "source_integrity_status": "verified",
+          "role": "discovery_corroboration_or_failed_attempt",
+          "declared_publication_values": [],
+          "declared_modification_values": []
+        },
+        {
+          "url": "https://investor.salesforce.com/news/news-details/2026/Salesforce-Delivers-Record-Second-Quarter-Fiscal-2027-Results/default.aspx",
+          "final_url": "https://investor.salesforce.com/news/news-details/2026/Salesforce-Delivers-Record-Second-Quarter-Fiscal-2027-Results/default.aspx",
+          "status": 200,
+          "retrieved_at": "2026-10-06T18:42:34.661182+00:00",
+          "bytes": 537534,
+          "sha256": "4e96ed7ed5f13ca31833869fb3aa15bb1d18cf4fbdf051a238056a81cfdc0432",
+          "body_hash_verified": true,
+          "observed_body_sha256": "4e96ed7ed5f13ca31833869fb3aa15bb1d18cf4fbdf051a238056a81cfdc0432",
+          "source_integrity_status": "verified",
+          "role": "discovery_corroboration_or_failed_attempt",
+          "declared_publication_values": [],
+          "declared_modification_values": []
+        }
+      ],
+      "historical_revision_limit": "Current primary pages/declared times are not contemporaneous archived versions. Missing dateModified does not prove no revisions.",
+      "all_possible_registered_catalysts_excluded": false,
+      "review_completed_before_exit_results": true
+    },
+    {
+      "candidate_id": "2026-09-22__VKTX",
+      "date": "2026-09-22",
+      "symbol": "VKTX",
+      "news_status": "unresolved_after_bounded_primary_review",
+      "pass_registered_news_gate": null,
+      "event_category": "clinical_data",
+      "rationale": "Issuer announces trial-maintenance topline data, outside registered categories. Another qualifying event is not ruled out.",
+      "announcement_time_utc": null,
+      "conservative_available_by_utc": null,
+      "in_window_confirmed": false,
+      "required_window": {
+        "strict_after": "2026-09-21T20:00:00+00:00",
+        "strict_before": "2026-09-22T13:30:00+00:00"
+      },
+      "source_request_count": 2,
+      "sources": [
+        {
+          "url": "https://ir.vikingtherapeutics.com/press-releases",
+          "final_url": "https://ir.vikingtherapeutics.com/press-releases",
+          "status": 200,
+          "retrieved_at": "2026-10-06T18:37:24.841801+00:00",
+          "bytes": 99374,
+          "sha256": "354f4a0859127e6f4cfb522299eb5c15177ea91f1f95f74fad5573eb64f434aa",
+          "body_hash_verified": true,
+          "observed_body_sha256": "354f4a0859127e6f4cfb522299eb5c15177ea91f1f95f74fad5573eb64f434aa",
+          "source_integrity_status": "verified",
+          "role": "discovery_corroboration_or_failed_attempt",
+          "declared_publication_values": [],
+          "declared_modification_values": []
+        },
+        {
+          "url": "https://ir.vikingtherapeutics.com/2026-09-22-Viking-Therapeutics-Announces-Positive-Topline-Results-from-Maintenance-Study-of-GLP-1-GIP-Agonist-VK2735-Demonstrating-the-Promise-of-Multiple-Maintenance-Dosing-Regimens",
+          "final_url": "https://ir.vikingtherapeutics.com/2026-09-22-Viking-Therapeutics-Announces-Positive-Topline-Results-from-Maintenance-Study-of-GLP-1-GIP-Agonist-VK2735-Demonstrating-the-Promise-of-Multiple-Maintenance-Dosing-Regimens",
+          "status": 200,
+          "retrieved_at": "2026-10-06T18:38:01.283571+00:00",
+          "bytes": 128545,
+          "sha256": "8da73b19ca3ed87a95c7cfd49efc8d459efbc6dc87a28d403912b5fc2ee71f8d",
+          "body_hash_verified": true,
+          "observed_body_sha256": "8da73b19ca3ed87a95c7cfd49efc8d459efbc6dc87a28d403912b5fc2ee71f8d",
+          "source_integrity_status": "verified",
+          "role": "discovery_corroboration_or_failed_attempt",
+          "declared_publication_values": [],
+          "declared_modification_values": []
+        }
+      ],
+      "historical_revision_limit": "Current primary pages/declared times are not contemporaneous archived versions. Missing dateModified does not prove no revisions.",
+      "all_possible_registered_catalysts_excluded": false,
+      "review_completed_before_exit_results": true
+    },
+    {
+      "candidate_id": "2026-09-28__KOD",
+      "date": "2026-09-28",
+      "symbol": "KOD",
+      "news_status": "unresolved_after_bounded_primary_review",
+      "pass_registered_news_gate": null,
+      "event_category": "clinical_data",
+      "rationale": "Issuer reports pivotal trial results. Neither future regulatory plans nor clinical success establishes current approval.",
+      "announcement_time_utc": null,
+      "conservative_available_by_utc": null,
+      "in_window_confirmed": false,
+      "required_window": {
+        "strict_after": "2026-09-25T20:00:00+00:00",
+        "strict_before": "2026-09-28T13:30:00+00:00"
+      },
+      "source_request_count": 2,
+      "sources": [
+        {
+          "url": "https://ir.kodiak.com/news-releases",
+          "final_url": "https://ir.kodiak.com/news-releases",
+          "status": 200,
+          "retrieved_at": "2026-10-06T18:37:25.151022+00:00",
+          "bytes": 46461,
+          "sha256": "26f9080131bc365b0848eb406a7c7852006bb3c1eec6599c4cd6bd416b8bd7f9",
+          "body_hash_verified": true,
+          "observed_body_sha256": "26f9080131bc365b0848eb406a7c7852006bb3c1eec6599c4cd6bd416b8bd7f9",
+          "source_integrity_status": "verified",
+          "role": "discovery_corroboration_or_failed_attempt",
+          "declared_publication_values": [],
+          "declared_modification_values": []
+        },
+        {
+          "url": "https://ir.kodiak.com/news-releases/news-release-details/zenkuda-and-tabirafusp-ted-meet-primary-endpoints-pivotal",
+          "final_url": "https://ir.kodiak.com/news-releases/news-release-details/zenkuda-and-tabirafusp-ted-meet-primary-endpoints-pivotal",
+          "status": 200,
+          "retrieved_at": "2026-10-06T18:38:01.287798+00:00",
+          "bytes": 59517,
+          "sha256": "d97f95413fe7152fd9871d383e105c1d17f3d34e8eca561afe50e9d5d3e0d937",
+          "body_hash_verified": true,
+          "observed_body_sha256": "d97f95413fe7152fd9871d383e105c1d17f3d34e8eca561afe50e9d5d3e0d937",
+          "source_integrity_status": "verified",
+          "role": "discovery_corroboration_or_failed_attempt",
+          "declared_publication_values": [
+            "2026-09-28T06:30:37-0400"
+          ],
+          "declared_modification_values": []
+        }
+      ],
+      "historical_revision_limit": "Current primary pages/declared times are not contemporaneous archived versions. Missing dateModified does not prove no revisions.",
+      "all_possible_registered_catalysts_excluded": false,
+      "review_completed_before_exit_results": true
+    },
+    {
+      "candidate_id": "2026-10-01__ACN",
+      "date": "2026-10-01",
+      "symbol": "ACN",
+      "news_status": "unresolved_after_bounded_primary_review",
+      "pass_registered_news_gate": null,
+      "event_category": "earnings_timing_unknown",
+      "rationale": "Issuer financial results page is dated October1 but does not establish exact preopen publication. Aggregator timestamps cannot supply that missing primary evidence.",
+      "announcement_time_utc": null,
+      "conservative_available_by_utc": null,
+      "in_window_confirmed": false,
+      "required_window": {
+        "strict_after": "2026-09-30T20:00:00+00:00",
+        "strict_before": "2026-10-01T13:30:00+00:00"
+      },
+      "source_request_count": 7,
+      "sources": [
+        {
+          "url": "https://newsroom.accenture.com/news/2026",
+          "final_url": null,
+          "status": 404,
+          "retrieved_at": "2026-10-06T18:37:25.275181+00:00",
+          "bytes": 3610,
+          "sha256": "3112e54275bdad85f21a2641c95bac4056cdb75a5ed5cbf908e39d476cf2dfb8",
+          "body_hash_verified": true,
+          "observed_body_sha256": "3112e54275bdad85f21a2641c95bac4056cdb75a5ed5cbf908e39d476cf2dfb8",
+          "source_integrity_status": "verified",
+          "role": "discovery_corroboration_or_failed_attempt",
+          "declared_publication_values": [],
+          "declared_modification_values": []
+        },
+        {
+          "url": "https://www.google.com/search?q=Accenture%20fourth%20quarter%202026%20October%201%20financial%20results",
+          "final_url": "https://www.google.com/search?q=Accenture%20fourth%20quarter%202026%20October%201%20financial%20results",
+          "status": 200,
+          "retrieved_at": "2026-10-06T18:38:03.146156+00:00",
+          "bytes": 91687,
+          "sha256": "e8224e27a6cb8c79d7428c113b9a243191c35bf843281bd655cf5ececd9dd2ab",
+          "body_hash_verified": true,
+          "observed_body_sha256": "e8224e27a6cb8c79d7428c113b9a243191c35bf843281bd655cf5ececd9dd2ab",
+          "source_integrity_status": "verified",
+          "role": "discovery_corroboration_or_failed_attempt",
+          "declared_publication_values": [],
+          "declared_modification_values": []
+        },
+        {
+          "url": "https://www.bing.com/search?format=rss&q=Accenture%20fourth%20quarter%202026%20October%201%20financial%20results",
+          "final_url": "https://www.bing.com/search?format=rss&q=Accenture%20fourth%20quarter%202026%20October%201%20financial%20results",
+          "status": 200,
+          "retrieved_at": "2026-10-06T18:38:40.954853+00:00",
+          "bytes": 4961,
+          "sha256": "6154bc2ba9cff3c3d616d6f34c03736cd914f7ecfc77ef1fc18bed38cd4e77c6",
+          "body_hash_verified": true,
+          "observed_body_sha256": "6154bc2ba9cff3c3d616d6f34c03736cd914f7ecfc77ef1fc18bed38cd4e77c6",
+          "source_integrity_status": "verified",
+          "role": "discovery_corroboration_or_failed_attempt",
+          "declared_publication_values": [],
+          "declared_modification_values": []
+        },
+        {
+          "url": "https://newsroom.accenture.com/",
+          "final_url": "https://newsroom.accenture.com/",
+          "status": 200,
+          "retrieved_at": "2026-10-06T18:39:43.518960+00:00",
+          "bytes": 4660,
+          "sha256": "bfe704c7288f32badf22dcbfed4b2f15b42dbbec42f81e3717475a289b5e1e9c",
+          "body_hash_verified": true,
+          "observed_body_sha256": "bfe704c7288f32badf22dcbfed4b2f15b42dbbec42f81e3717475a289b5e1e9c",
+          "source_integrity_status": "verified",
+          "role": "discovery_corroboration_or_failed_attempt",
+          "declared_publication_values": [],
+          "declared_modification_values": []
+        },
+        {
+          "url": "https://newsroom.accenture.com/news/2026/accenture-reports-fourth-quarter-and-full-year-fiscal-2026-results",
+          "final_url": "https://newsroom.accenture.com/news/2026/accenture-reports-fourth-quarter-and-full-year-fiscal-2026-results",
+          "status": 200,
+          "retrieved_at": "2026-10-06T18:40:30.950186+00:00",
+          "bytes": 3783,
+          "sha256": "488e6f40e17b86bc3b52a7f1d013f38409659ed36501c7393b232a8a0c1616be",
+          "body_hash_verified": true,
+          "observed_body_sha256": "488e6f40e17b86bc3b52a7f1d013f38409659ed36501c7393b232a8a0c1616be",
+          "source_integrity_status": "verified",
+          "role": "discovery_corroboration_or_failed_attempt",
+          "declared_publication_values": [],
+          "declared_modification_values": []
+        },
+        {
+          "url": "https://investor.accenture.com/news-events/press-releases/default.aspx",
+          "final_url": null,
+          "status": 403,
+          "retrieved_at": "2026-10-06T18:41:16.672951+00:00",
+          "bytes": 4918,
+          "sha256": "6fe22a8567c278c3bebb7bd033b7df606008ab61b037420c7b7ec4a95f88e8c7",
+          "body_hash_verified": true,
+          "observed_body_sha256": "6fe22a8567c278c3bebb7bd033b7df606008ab61b037420c7b7ec4a95f88e8c7",
+          "source_integrity_status": "verified",
+          "role": "discovery_corroboration_or_failed_attempt",
+          "declared_publication_values": [],
+          "declared_modification_values": []
+        },
+        {
+          "url": "https://newsroom.accenture.com/blocks/article/article.js",
+          "final_url": null,
+          "status": 404,
+          "retrieved_at": "2026-10-06T18:42:35.293948+00:00",
+          "bytes": 398,
+          "sha256": "5d15f88af557299fb011de3117e46236677781947c5a73108f68d42ae1a69490",
+          "body_hash_verified": true,
+          "observed_body_sha256": "5d15f88af557299fb011de3117e46236677781947c5a73108f68d42ae1a69490",
+          "source_integrity_status": "verified",
+          "role": "discovery_corroboration_or_failed_attempt",
+          "declared_publication_values": [],
+          "declared_modification_values": []
+        }
+      ],
+      "historical_revision_limit": "Current primary pages/declared times are not contemporaneous archived versions. Missing dateModified does not prove no revisions.",
+      "all_possible_registered_catalysts_excluded": false,
+      "review_completed_before_exit_results": true
+    },
+    {
+      "candidate_id": "2026-10-05__PAGS",
+      "date": "2026-10-05",
+      "symbol": "PAGS",
+      "news_status": "unresolved_after_bounded_primary_review",
+      "pass_registered_news_gate": null,
+      "event_category": "missing",
+      "rationale": "Only mover clues/current issuer archive material were obtained; no in-window primary registered catalyst established.",
+      "announcement_time_utc": null,
+      "conservative_available_by_utc": null,
+      "in_window_confirmed": false,
+      "required_window": {
+        "strict_after": "2026-10-02T20:00:00+00:00",
+        "strict_before": "2026-10-05T13:30:00+00:00"
+      },
+      "source_request_count": 2,
+      "sources": [
+        {
+          "url": "https://investors.pagbank.com/press-releases/",
+          "final_url": "https://investors.pagbank.com/news-events/press-releases-ir/",
+          "status": 200,
+          "retrieved_at": "2026-10-06T18:37:25.533633+00:00",
+          "bytes": 71311,
+          "sha256": "1fc1ca704d77cd1425a24bd979cfa25feb5d778e8ea72ff36eca7b05ec626f29",
+          "body_hash_verified": true,
+          "observed_body_sha256": "1fc1ca704d77cd1425a24bd979cfa25feb5d778e8ea72ff36eca7b05ec626f29",
+          "source_integrity_status": "verified",
+          "role": "discovery_corroboration_or_failed_attempt",
+          "declared_publication_values": [
+            "2026-05-04T19:59:15+00:00"
+          ],
+          "declared_modification_values": [
+            "2026-05-04T20:01:24+00:00"
+          ]
+        },
+        {
+          "url": "https://investors.pagbank.com/news-events/press-room-en/",
+          "final_url": "https://investors.pagbank.com/news-events/press-room-en/",
+          "status": 200,
+          "retrieved_at": "2026-10-06T18:38:42.017186+00:00",
+          "bytes": 81685,
+          "sha256": "b348ebfb85153ed172763fe1b67ea205862248c9bc9d8a274ff7eb3d2f2e6b52",
+          "body_hash_verified": true,
+          "observed_body_sha256": "b348ebfb85153ed172763fe1b67ea205862248c9bc9d8a274ff7eb3d2f2e6b52",
+          "source_integrity_status": "verified",
+          "role": "discovery_corroboration_or_failed_attempt",
+          "declared_publication_values": [
+            "2025-07-30T18:11:06+00:00"
+          ],
+          "declared_modification_values": [
+            "2026-05-05T12:42:28+00:00"
+          ]
+        }
+      ],
+      "historical_revision_limit": "Current primary pages/declared times are not contemporaneous archived versions. Missing dateModified does not prove no revisions.",
+      "all_possible_registered_catalysts_excluded": false,
+      "review_completed_before_exit_results": true
+    },
+    {
+      "candidate_id": "2026-10-05__STNE",
+      "date": "2026-10-05",
+      "symbol": "STNE",
+      "news_status": "unresolved_after_bounded_primary_review",
+      "pass_registered_news_gate": null,
+      "event_category": "missing",
+      "rationale": "Only mover clues/current issuer archive material were obtained; no in-window primary registered catalyst established.",
+      "announcement_time_utc": null,
+      "conservative_available_by_utc": null,
+      "in_window_confirmed": false,
+      "required_window": {
+        "strict_after": "2026-10-02T20:00:00+00:00",
+        "strict_before": "2026-10-05T13:30:00+00:00"
+      },
+      "source_request_count": 3,
+      "sources": [
+        {
+          "url": "https://investors.stone.co/news-and-events/news-releases",
+          "final_url": null,
+          "status": 404,
+          "retrieved_at": "2026-10-06T18:37:25.743240+00:00",
+          "bytes": 68905,
+          "sha256": "1103ad40add4dbe2a31bd386f85d7242e6cc429b92b5e6761d84f528a0de49a7",
+          "body_hash_verified": true,
+          "observed_body_sha256": "1103ad40add4dbe2a31bd386f85d7242e6cc429b92b5e6761d84f528a0de49a7",
+          "source_integrity_status": "verified",
+          "role": "discovery_corroboration_or_failed_attempt",
+          "declared_publication_values": [],
+          "declared_modification_values": []
+        },
+        {
+          "url": "https://investors.stone.co/news/",
+          "final_url": "https://investors.stone.co/news-events/",
+          "status": 200,
+          "retrieved_at": "2026-10-06T18:38:02.537724+00:00",
+          "bytes": 70538,
+          "sha256": "7e3893f12529dc5bf61b99fdac24ef04c8e80f0f5d7eeb39abd561cc21a204fe",
+          "body_hash_verified": true,
+          "observed_body_sha256": "7e3893f12529dc5bf61b99fdac24ef04c8e80f0f5d7eeb39abd561cc21a204fe",
+          "source_integrity_status": "verified",
+          "role": "discovery_corroboration_or_failed_attempt",
+          "declared_publication_values": [
+            "2024-09-05T14:40:18+00:00"
+          ],
+          "declared_modification_values": []
+        },
+        {
+          "url": "https://investors.stone.co/news-events/press-releases/",
+          "final_url": "https://investors.stone.co/news-events/press-releases/",
+          "status": 200,
+          "retrieved_at": "2026-10-06T18:38:42.016673+00:00",
+          "bytes": 73035,
+          "sha256": "8cd510c3de93a767e58fcf2b9f18da22282599ba34ed1ca65ca500174f22074c",
+          "body_hash_verified": true,
+          "observed_body_sha256": "8cd510c3de93a767e58fcf2b9f18da22282599ba34ed1ca65ca500174f22074c",
+          "source_integrity_status": "verified",
+          "role": "discovery_corroboration_or_failed_attempt",
+          "declared_publication_values": [
+            "2024-09-05T19:06:32+00:00"
+          ],
+          "declared_modification_values": [
+            "2026-06-02T19:36:39+00:00"
+          ]
+        }
+      ],
+      "historical_revision_limit": "Current primary pages/declared times are not contemporaneous archived versions. Missing dateModified does not prove no revisions.",
+      "all_possible_registered_catalysts_excluded": false,
+      "review_completed_before_exit_results": true
+    },
+    {
+      "candidate_id": "2026-10-05__XP",
+      "date": "2026-10-05",
+      "symbol": "XP",
+      "news_status": "unresolved_after_bounded_primary_review",
+      "pass_registered_news_gate": null,
+      "event_category": "missing",
+      "rationale": "Only mover clues/current issuer archive material were obtained; no in-window primary registered catalyst established.",
+      "announcement_time_utc": null,
+      "conservative_available_by_utc": null,
+      "in_window_confirmed": false,
+      "required_window": {
+        "strict_after": "2026-10-02T20:00:00+00:00",
+        "strict_before": "2026-10-05T13:30:00+00:00"
+      },
+      "source_request_count": 3,
+      "sources": [
+        {
+          "url": "https://investors.xpinc.com/news-events/press-releases/",
+          "final_url": "https://investors.xpinc.com/informacoes-ao-mercado/comunicados/",
+          "status": 200,
+          "retrieved_at": "2026-10-06T18:37:25.860811+00:00",
+          "bytes": 61842,
+          "sha256": "6e5a2fe97ab5fb55c159fd52805a61c82355653676444dc4ccbf5e718adb534c",
+          "body_hash_verified": true,
+          "observed_body_sha256": "6e5a2fe97ab5fb55c159fd52805a61c82355653676444dc4ccbf5e718adb534c",
+          "source_integrity_status": "verified",
+          "role": "discovery_corroboration_or_failed_attempt",
+          "declared_publication_values": [
+            "2021-11-12T18:18:23+00:00"
+          ],
+          "declared_modification_values": [
+            "2021-11-16T12:35:36+00:00"
+          ]
+        },
+        {
+          "url": "https://www.google.com/search?q=XP%20October%205%202026%20Brazil%20election",
+          "final_url": "https://www.google.com/search?q=XP%20October%205%202026%20Brazil%20election",
+          "status": 200,
+          "retrieved_at": "2026-10-06T18:38:03.232405+00:00",
+          "bytes": 91689,
+          "sha256": "c504408fb1d537ca036abae91b3ab493f97f5c21d78a150e0ee2730146f49224",
+          "body_hash_verified": true,
+          "observed_body_sha256": "c504408fb1d537ca036abae91b3ab493f97f5c21d78a150e0ee2730146f49224",
+          "source_integrity_status": "verified",
+          "role": "discovery_corroboration_or_failed_attempt",
+          "declared_publication_values": [],
+          "declared_modification_values": []
+        },
+        {
+          "url": "https://investors.xpinc.com/en/news-events/press-releases/",
+          "final_url": "https://investors.xpinc.com/en/news-events/press-releases/",
+          "status": 200,
+          "retrieved_at": "2026-10-06T18:41:17.887385+00:00",
+          "bytes": 60962,
+          "sha256": "6ac968c060db7705d526481f5f6a3b7f3321600dacc6ea30fd37a85e38788869",
+          "body_hash_verified": true,
+          "observed_body_sha256": "6ac968c060db7705d526481f5f6a3b7f3321600dacc6ea30fd37a85e38788869",
+          "source_integrity_status": "verified",
+          "role": "discovery_corroboration_or_failed_attempt",
+          "declared_publication_values": [
+            "2021-11-10T19:12:08+00:00"
+          ],
+          "declared_modification_values": [
+            "2021-11-12T18:08:38+00:00"
+          ]
+        }
+      ],
+      "historical_revision_limit": "Current primary pages/declared times are not contemporaneous archived versions. Missing dateModified does not prove no revisions.",
+      "all_possible_registered_catalysts_excluded": false,
+      "review_completed_before_exit_results": true
+    }
+  ],
+  "generated_at": "2026-10-06T18:55:48.705666+00:00",
+  "study_design_sha256": "ff1c441ab20f0f6816a862d912e0afaac037b1ba8621eb862e9718ff0aa138cf",
+  "completion_note": "Saved parallel-source work was continued by the primary agent after subagent usage interruption; no exit outcomes were viewed to classify cases."
+}

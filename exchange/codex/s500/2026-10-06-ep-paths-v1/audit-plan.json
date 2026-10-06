@@ -1,0 +1,84 @@
+{
+  "id": "independent-EP-path-audit-plan-v1",
+  "created_at": "2026-10-06T18:42:58.038456+00:00",
+  "source_sha256": {
+    "study-design.json": "ff1c441ab20f0f6816a862d912e0afaac037b1ba8621eb862e9718ff0aa138cf",
+    "holding-input-design.json": "cd34191b84e72a2b0c9c1dd62c89669495b2d5bad963a0d3c674f57b3cab7a49"
+  },
+  "audit_scope": [
+    "frozen rules and source completeness",
+    "independent synthetic causality and exact cash accounting",
+    "all downloaded source manifest/page hash chains",
+    "all original/conditional/case output ledgers and summaries"
+  ],
+  "ep_screen_coverage": {
+    "source": "prior ep-candidate-inventory.json coverage.screen_reason_counts",
+    "prior_history_missing_or_invalid_occurrences": 220175,
+    "missing_or_invalid_current_open_occurrences": 3,
+    "unresolved_split_window_occurrences": 80,
+    "selected_daily_vs_regular_open_mismatches": 252,
+    "not_an_ORB_first5session_warmup_gap": true,
+    "current_nonPIT_universe_and_daily_open_prescreen_remain_unresolved": true
+  },
+  "blocking_guards_required": [
+    "Full-universe strict paths must retain incomplete source coverage, even after all73news reviews.",
+    "112refetch cases that newly pass must be separately retained when holding inputs unavailable, not dropped or assigned zero return.",
+    "News outside-category/missing/ambiguous is unknown unless all possible qualifying catalysts are independently excluded.",
+    "A possible earlier or equally ranked unresolved candidate blocks strict selection; later uncertainty must not alter an already justified earlier intent.",
+    "Never silently ignore held corporate actions or missing held minutes; retain exposure and null unresolved return."
+  ],
+  "test_groups": {
+    "intent": [
+      "earliest completion then RV then symbol",
+      "quantity fixed at signal close",
+      "zero quantity and next-open overbudget skip without resize/replacement",
+      "missing selected entry retains pending unknown exposure"
+    ],
+    "cash": [
+      "purchase debit includes cost",
+      "sale creates receivable, calendar T+1 availability",
+      "no exit-day reentry or borrowing",
+      "closed wealth equals500 plus realized modeled PnL, no reset contributions"
+    ],
+    "exit": [
+      "entry-minute stop",
+      "later gap uses actual lower open",
+      "planned open exits ignore same-minute future HLC",
+      "MA uses10 completed comparable closes incl current day then next open",
+      "fixed10/max63 entry day counted1; early closes",
+      "same-open simultaneous reasons single sale"
+    ],
+    "unknown": [
+      "earlier/tied candidate blocks; later certified candidate does not",
+      "future missing bars or future actions after exit do not rewrite past results",
+      "missing held minute retains position/null result",
+      "relevant held corporate action failclosed",
+      "MA split history needs verified adjustment"
+    ],
+    "outputs": [
+      "case73x12 are independent hypothetical500 ledgers and cannot compound",
+      "all failure/censor/no-entry records retained",
+      "cutoff censor is not a forced sale",
+      "model trades never actual broker fills",
+      "returns/cost distributions conditional on observability and source cohort"
+    ]
+  },
+  "preliminary_findings": [
+    {
+      "id": "MA_close_failure_timestamp",
+      "status": "inspect_implementation",
+      "description": "Current engine calls MA-history failures at last-minute start although decision follows session close; align failure time with known decision time."
+    },
+    {
+      "id": "vendor_daily_close_availability",
+      "status": "source_assumption_needs_explicit_limit",
+      "description": "Daily vendor closes can be revised/finalized after regular close. Next-open MA action assumes data available before next open; a16:00ledger timestamp is not verified historical receipt time."
+    }
+  ],
+  "actions_by_auditor": {
+    "network": false,
+    "orders": false,
+    "external_writes": false,
+    "edits_to_other_owned_files": false
+  }
+}
