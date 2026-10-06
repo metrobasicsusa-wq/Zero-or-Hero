@@ -1,0 +1,72 @@
+{
+  "id": "s500-storage-opening-v1",
+  "frozen_at": "2026-10-06T13:57:54.839567+00:00",
+  "status": "rules_frozen_before_new_bulk_data_or_outcomes",
+  "universe": [
+    "MU",
+    "SNDK",
+    "WDC",
+    "STX",
+    "NTAP",
+    "RMBS",
+    "SIMO",
+    "P"
+  ],
+  "comparators": [
+    "SPY",
+    "QQQ"
+  ],
+  "identity_note": "P is current Everpure ticker, formerly PSTG; record data gaps rather than backfill with unverified splice.",
+  "input": {
+    "provider": "Alpaca",
+    "feed": "sip",
+    "timeframe": "5Min",
+    "adjustment": "raw",
+    "currency": "USD",
+    "start": "2026-06-30T00:00:00Z",
+    "end": "2026-10-03T00:00:00Z",
+    "timezone": "America/New_York"
+  },
+  "periods": {
+    "development": [
+      "2026-07-01",
+      "2026-08-31"
+    ],
+    "chronological_check": [
+      "2026-09-01",
+      "2026-10-02"
+    ]
+  },
+  "biases": [
+    "Fixed current sector universe, not point-in-time and not evidence of dynamic discovery.",
+    "Historical chronological check is exploratory, not genuinely unseen; researcher has prior knowledge of sector and market.",
+    "Exclude known Oct5 case and incomplete Oct6 from this experiment.",
+    "Signal selection uses only completed bars; missing future execution prices must be reported, not silently substituted."
+  ],
+  "hypotheses": {
+    "breakout": "Open gap >=1% vs prior regular-session last 5-minute close; from 09:45 to 10:25 bar starts, first completed close above 09:30-09:45 range high; buy at following bar open.",
+    "retest": "Same gap and opening range; after an earlier qualifying breakout bar, first subsequent 5-minute bar by 10:55 starts with low <= opening high and closes above it; buy at next bar open."
+  },
+  "exit_times": [
+    "12:00",
+    "15:30"
+  ],
+  "cost_bps_each_side": [
+    10,
+    25
+  ],
+  "comparators_rule": "For each SPY/QQQ buy at09:50 open exit12:00 or15:30; same cost/whole-share constraints. Cash comparator 500 unchanged.",
+  "portfolio": "Each path starts500 with no replenishment, no leverage, no shorts and integer shares. At most one selected attempt per day, earliest signal first; simultaneous signals rank larger opening gap then alphabetic. If selected stock unaffordable, remain cash that day; do not retrospectively choose runner-up. Sell only at the fixed exit. Sales proceeds are not reused that day (assumed available next session; actual account settlement constraints not validated).",
+  "fills": "Hypothetical bar-open execution plus adverse10/25bp each side; no proof of NBBO liquidity, queues, spread, price improvement or actual fills. No stop/target intrabar inference.",
+  "missing_policy": "Use broker calendar, including early closes. Eligibility uses prior close and completed opening bars only. Record whole-session completeness diagnostically, never filter candidates using future bar availability. If a chosen entry/exit print is missing, flag the path incomplete and stop its capital ledger; do not choose an alternative winner.",
+  "outputs": [
+    "All symbol-day candidates, signal and skip reasons",
+    "All16 noncash paths:8 sector variants and8 ETF comparators, plus cash; no discarded losers.",
+    "Per-path daily ledger and all hypothetical trades",
+    "Daily close drawdown only, not intraday drawdown",
+    "Both periods, contribution/residual accounting and no10000 guarantee"
+  ],
+  "next_forward": "Freeze any promoted candidate in a future-dated paper-research protocol before observing future outcome; do not activate broker trading from this study.",
+  "corporate_action_policy": "No point-in-time corporate-action file available. Exclude abs raw opening gap >20% from both sector rules, disclose this loses genuine large events too. Raw prices preserve historical whole-share affordability; smaller split/dividend distortions remain a limitation.",
+  "entry_latency": "After the signal bar completes, wait one full additional five-minute interval and use the following bar open (signal start +10min). Baseline ETFs enter09:50. This avoids assuming zero processing time at the same bar boundary."
+}

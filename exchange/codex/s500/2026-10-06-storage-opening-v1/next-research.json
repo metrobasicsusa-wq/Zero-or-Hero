@@ -1,0 +1,21 @@
+{
+  "id": "s500-next-event-confirmation-v1",
+  "created_at": "2026-10-06T14:04:13.875510+00:00",
+  "status": "next_experiment_design_not_executed",
+  "reason": "Generic opening breakout/retest did not show robust net advantage. Need incremental evidence, not parameter fitting to one winning day.",
+  "scope": "Storage universe plus predeclared comparator set; keep unchanged losing baseline.",
+  "required_before_outcomes": [
+    "Freeze timestamped event-source and inclusion/exclusion rules, including no-news controls.",
+    "Specify a signal latency, volume/relative-strength thresholds and matched controls before downloading evaluation outcomes.",
+    "Acquire point-in-time corporate actions/ticker mapping or explicitly exclude unresolved dates and preserve exclusion counts.",
+    "Freeze execution-cost and integer sizing; preserve all failed signals.",
+    "Use untouched future observations for promotion; this historical study cannot be relabeled unseen."
+  ],
+  "readiness": {
+    "news_dataset": "not_yet_collected",
+    "historical_bid_ask": "unavailable",
+    "real_time_opra": "403",
+    "live_trading": "not_enabled"
+  },
+  "decision_policy": "Do not enable a strategy from the current winner. No automatic capital replenishment. Research chooses and documents routine parameters without requiring user expertise."
+}
