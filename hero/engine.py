@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import math
+import time
 import uuid
 from datetime import date, datetime, timedelta, timezone
 from zoneinfo import ZoneInfo
@@ -220,6 +221,8 @@ class Engine:
         """One same-day-expiry trade a day; see hero.zero_dte."""
         day, now = today.isoformat(), zd.hhmm(self.now)
         sim = self.dry
+        if not sim and book.d.get("mode") != "live":
+            book.go_live(day)  # the first live cycle starts a fresh book; the rehearsal is kept inside it
         t = book.trade_today(day)
         if t and t["status"] == "open":
             try:
@@ -232,7 +235,8 @@ class Engine:
                 self.j.event("zdte_result", dry_run=True, symbol=t["symbol"], ret=done["ret"],
                              why=f"末日止盈：{t['symbol']} 碰到 ${t['take_price']:.2f}（{p['take']:g} 倍），"
                                  f"卖得 ${done['proceeds']:,.2f}，模拟余额 ${book.d['sim_cash']:,.2f}")
-            elif not sim and t.get("take_order") and t["symbol"] not in {x["symbol"] for x in self.c.positions()}:
+            elif not sim and t.get("take_order") and not t.get("exit_sent") \
+                    and t["symbol"] not in {x["symbol"] for x in self.c.positions()}:
                 done = book.close(t["take_price"] * 100 * t["qty"], f"止盈 {p['take']:g} 倍（券商挂单成交）", now)
                 self.j.event("zdte_result", dry_run=False, symbol=t["symbol"], ret=done["ret"],
                              why=f"末日止盈成交：{t['symbol']} @ ${t['take_price']:.2f}（{p['take']:g} 倍）")
@@ -240,6 +244,7 @@ class Engine:
                 held = {x["symbol"]: x for x in self.c.positions()}
                 if t["symbol"] in held:
                     t["filled"] = True
+                    t["qty"] = int(float(held[t["symbol"]]["qty"]))  # a partial fill: the take covers what we hold
                     self._order("zdte_take", {"cost": t["price"]}, f"末日止盈单：{t['take_price']:.2f}（{p['take']:g} 倍）挂在券商",
                                 symbol=t["symbol"], qty=held[t["symbol"]]["qty"], side="sell", type="limit",
                                 limit_price=f"{t['take_price']:.2f}", time_in_force="day")
@@ -248,16 +253,9 @@ class Engine:
                 if sim:
                     done = book.close(bid * 100 * t["qty"], "收盘前平仓", now)
                 else:
-                    for o in self.c.open_orders():
-                        if o["symbol"] == t["symbol"]:
-                            try:
-                                self.c.cancel_order(o["id"])
-                            except AlpacaError:
-                                pass
-                    held = {x["symbol"] for x in self.c.positions()}
-                    if t["symbol"] in held:
-                        self._close(t["symbol"], "zdte_exit", {"bid": q.get("bp")}, why="末日期权 15:30 前平仓，不留到收盘")
-                    done = book.close(bid * 100 * t["qty"], "收盘前平仓（按买价估算，以成交为准）", now)
+                    done = self._zero_dte_exit(book, t, bid, now)
+                    if done is None:
+                        return  # exit sent; booked next cycle once the broker shows us flat
                 self.j.event("zdte_result", dry_run=sim, symbol=t["symbol"], ret=done["ret"],
                              why=f"末日平仓：{t['symbol']} 卖得约 ${done['proceeds']:,.2f}，回报 {done['ret']:+.0%}"
                                  + (f"，模拟余额 ${book.d['sim_cash']:,.2f}" if sim else ""))
@@ -313,6 +311,29 @@ class Engine:
                              why=f"模拟余额 ${value:,.2f} 低于结束线，这一轮（演练）归零；模拟账户重置为 ${book.d['start']:,.0f}")
                 book.d["history"].append({"date": day, "attempt_end": value})
                 book.d["sim_cash"] = book.d["start"]
+
+    def _zero_dte_exit(self, book: "zd.Book", t: dict, bid: float, now: str) -> dict | None:
+        """Live time exit. Cancel the resting orders (the take, or a buy that never filled), and
+        only then sell: a sell while the take still holds the contracts would be rejected. The
+        trade is booked once the broker shows the position gone; until then each cycle retries."""
+        for o in self.c.open_orders():
+            if o["symbol"] == t["symbol"]:
+                try:
+                    self.c.cancel_order(o["id"])
+                except AlpacaError:
+                    pass
+        held = {x["symbol"] for x in self.c.positions()}
+        if t["symbol"] in held:
+            for _ in range(5):  # cancels are asynchronous: wait until no order holds the contracts
+                if not any(o["symbol"] == t["symbol"] for o in self.c.open_orders()):
+                    break
+                time.sleep(1)
+            self._close(t["symbol"], "zdte_exit", {"bid": bid}, why="末日期权 15:30 前平仓，不留到收盘")
+            t.update({"exit_sent": True, "exit_bid": bid})
+            return None
+        if t.get("filled") or t.get("exit_sent"):
+            return book.close(t.get("exit_bid", bid) * 100 * t["qty"], "收盘前平仓（按买价估算，以成交为准）", now)
+        return book.close(t["paid"], "买单没有成交，已撤单", now)
 
     def _lottery(self, ledger: "lot.Ledger", closes: dict, today: date) -> None:
         """One small earnings call a week until a 10x hit, a doubled pot or an empty budget."""

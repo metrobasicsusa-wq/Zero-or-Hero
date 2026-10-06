@@ -52,6 +52,12 @@ class Book:
             "phase": "zero_dte", "switched": None, "sim_cash": start_capital, "start": start_capital,
             "today": None, "history": []}
 
+    def go_live(self, day: str) -> None:
+        """Rehearsal over: start the real book on the account, keeping the rehearsal for the record."""
+        rehearsal = {k: v for k, v in self.d.items() if k != "rehearsal"}
+        self.d = {"phase": "zero_dte", "switched": None, "start": self.d["start"], "today": None, "history": [],
+                  "mode": "live", "live_from": day, "rehearsal": rehearsal}
+
     def save(self) -> None:
         self.path.write_text(json.dumps(self.d, indent=1, ensure_ascii=False) + "\n")
 
@@ -67,7 +73,7 @@ class Book:
         t = self.d["today"]
         t.update({"status": "closed", "proceeds": round(proceeds, 2), "exit": how, "closed_at": when,
                   "ret": round(proceeds / t["paid"] - 1, 3) if t["paid"] else -1.0})
-        if t.get("simulated"):
+        if t.get("simulated") and "sim_cash" in self.d:
             self.d["sim_cash"] = round(self.d["sim_cash"] + proceeds, 2)
         self.d["history"].append(dict(t))
         return t

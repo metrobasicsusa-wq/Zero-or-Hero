@@ -521,7 +521,7 @@ class LiveConfig(unittest.TestCase):
         self.assertIn(s500["regime_symbol"], s500["universe"])
         self.assertTrue(s500["stocks"]["fractional"])
         self.assertEqual(s500["risk"]["stop_tif"], "day")
-        self.assertIs(s500["launch_approved"], False)  # flipped only after the go/no-go review
+        self.assertIsInstance(s500["launch_approved"], bool)  # explicit; launch approved by the user on 2026-10-06
         self.assertTrue(s500["options"]["require_held"])
 
 
@@ -1530,6 +1530,93 @@ class ZeroDTE(unittest.TestCase):
         self.assertIn("zdte_attempt_end", [e["kind"] for e in log])
         self.assertEqual(book["sim_cash"], 500)                # rehearsal resets to a fresh $500
         self.assertEqual(book["phase"], "zero_dte")
+
+
+class ZeroDTELive(unittest.TestCase):
+    """Launched: real (paper) orders, the take resting at the broker, a cancel-then-sell exit."""
+
+    def setUp(self):
+        self.tmp = tempfile.TemporaryDirectory()
+        self.root = Path(self.tmp.name)
+        (self.root / "zdte.json").write_text(json.dumps(
+            {"phase": "zero_dte", "switched": None, "sim_cash": 990.0, "start": 500.0, "today": None,
+             "history": [{"date": "2026-10-05", "ret": 2.0}]}))  # what the rehearsal left behind
+        self.conf = {**cfg(stocks={"rsi_max": 101, "top_n": 1}, options={"enabled": False}),
+                     "attempt": {"number": 1, "start_capital": 500, "end_loss": 0.9},
+                     "live_from": "2000-01-01", "launch_approved": True,
+                     "zero_dte": {"enabled": True, "underlying": "SPY", "entry": "10:00", "offset": 0.006,
+                                  "direction": "trend", "take": 3, "fraction": 0.5, "exit_at": "15:30", "switch_at": 2.0}}
+        self.closes = {"SPY": series(0.001, seed=5), "UP1": series(0.002, seed=1)}
+        self.pos, self.oo = [], []
+
+    def tearDown(self):
+        self.tmp.cleanup()
+
+    def cycle(self, hh, mm, bid=0.06, ask=0.07):
+        from datetime import datetime
+        test = self
+
+        class Broker(FakeClient):
+            def option_snapshots(self, symbols):
+                return {s: {"latestQuote": {"bp": bid, "ap": ask}} for s in symbols}
+
+            def submit_order(self, **o):
+                super().submit_order(**o)
+                test.oo.append({"id": f"order-{len(self.orders)}", "symbol": o["symbol"], "side": o["side"]})
+                return {"id": f"order-{len(self.orders)}"}
+
+            def cancel_order(self, oid):
+                test.oo[:] = [o for o in test.oo if o["id"] != oid]
+                return super().cancel_order(oid)
+
+        c = Broker(self.closes, positions=self.pos, open_orders=self.oo, equity=500, last_equity=500)
+        c.pos, c.oo = self.pos, self.oo
+        c.snaps = {"SPY": {"dailyBar": {"o": 770.0}, "latestTrade": {"p": 772.0}}}
+        Engine(c, self.conf, Journal(self.root)).run(today=TODAY, now=datetime(TODAY.year, TODAY.month, TODAY.day, hh, mm))
+        book = json.loads((self.root / "zdte.json").read_text())
+        log = [json.loads(l) for l in (self.root / "trades.jsonl").read_text().splitlines()]
+        return c, book, log
+
+    def test_live_round_trip_with_cancel_then_sell(self):
+        c, book, _ = self.cycle(10, 5)
+        self.assertEqual(book["mode"], "live")
+        self.assertEqual(book["rehearsal"]["sim_cash"], 990.0)        # the rehearsal is kept, not traded on
+        self.assertNotIn("sim_cash", book)
+        buy = c.orders[0]
+        self.assertEqual((buy["side"], buy["type"], buy["limit_price"], buy["qty"]), ("buy", "limit", "0.07", "35"))
+        sym = buy["symbol"]
+        self.oo[:] = []                                                # the buy fills
+        self.pos.append({"symbol": sym, "qty": "35", "market_value": "245"})
+        c, book, _ = self.cycle(10, 15)
+        take = c.orders[0]
+        self.assertEqual((take["side"], take["limit_price"], take["qty"]), ("sell", "0.21", "35"))
+        c, book, _ = self.cycle(15, 30, bid=0.03)                     # time exit: cancel the take, then sell
+        self.assertEqual(c.cancelled, ["order-1"])
+        self.assertEqual(c.closed, [sym])
+        self.assertEqual(book["today"]["status"], "open")             # booked once the broker shows us flat
+        self.pos[:] = []
+        c, book, log = self.cycle(15, 40)
+        self.assertEqual((book["today"]["status"], book["today"]["proceeds"]), ("closed", 105.0))  # 35 x $0.03
+        self.assertEqual(c.closed, [])
+        self.assertEqual([e for e in log if e["kind"] == "zdte_result"][-1]["dry_run"], False)
+
+    def test_unfilled_buy_is_cancelled_not_booked_as_a_loss(self):
+        self.cycle(10, 5)
+        c, book, _ = self.cycle(15, 30)
+        self.assertEqual(c.cancelled, ["order-1"])
+        self.assertEqual(c.closed, [])
+        self.assertEqual((book["today"]["exit"], book["today"]["ret"]), ("买单没有成交，已撤单", 0.0))
+
+    def test_take_filled_at_the_broker(self):
+        self.cycle(10, 5)
+        self.oo[:] = []
+        sym = json.loads((self.root / "zdte.json").read_text())["today"]["symbol"]
+        self.pos.append({"symbol": sym, "qty": "35", "market_value": "245"})
+        self.cycle(10, 15)
+        self.oo[:], self.pos[:] = [], []                               # the take fills
+        c, book, _ = self.cycle(11, 0)
+        self.assertEqual((book["today"]["exit"], book["today"]["proceeds"]), ("止盈 3 倍（券商挂单成交）", 735.0))
+        self.assertEqual(c.orders, [])                                 # no second trade the same day
 
 
 class Safety(unittest.TestCase):
