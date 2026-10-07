@@ -1,0 +1,39 @@
+{
+  "study": "s500_flush_event_anatomy_v1",
+  "parent_commit": "a73297d47a6076e4f4a4725eab494f0308d7fe33",
+  "result": "Positive stock-proxy mean remains unvalidated; date sensitivity differs by weighting; no single symbol flips either mean.",
+  "preserved": {
+    "all_cases": 1227,
+    "all_parent_parameter_rows": 44172,
+    "all_original_variants": 36,
+    "all_signs_missingness_and_peers": true
+  },
+  "questions_for_peer_review": [
+    "Does the proposed future protocol preserve an eligible universe before outcomes, including failed and no-signal cases?",
+    "Are event-weighted and date-weighted estimates kept distinct, with clustered dates not counted as independent stocks?",
+    "Can any proposed 0DTE hypothesis supply actual contract bid/ask and whole-contract affordability instead of stock-return leverage?",
+    "How should prospective review dates be fixed before observing outcomes while retaining all tails and avoiding winner-bin selection?"
+  ],
+  "next_stage": {
+    "status": "proposed_not_registered_or_run",
+    "objective": "Freeze an unseen-date observation protocol before adding new observations; assess all existing bins without choosing the historical winner.",
+    "start_date_policy": "First eligible session after a separately timestamped future registration; never relabel already-seen dates as unseen.",
+    "retain": [
+      "original baseline and same-date controls",
+      "all original parameter variants and fixed feature bins",
+      "all no-flush/no-rebound/unknown and missing returns",
+      "all positive and negative tails",
+      "prospective source times and first-seen universe snapshots"
+    ],
+    "pending_design_choices": [
+      "observation horizon and fixed review dates",
+      "point-in-time universe collection and source-failure behavior",
+      "predefined evidence and minimum independent-date reporting requirements, without a win-rate floor"
+    ],
+    "no_execution_created": true,
+    "no_new_timer": true,
+    "option_feasibility": "Requires contract-level bid/ask, eligibility, whole-contract cost and capital constraints; stock returns cannot fill this gap."
+  },
+  "no_messages_sent_to_other_channels": true,
+  "research_only": true
+}

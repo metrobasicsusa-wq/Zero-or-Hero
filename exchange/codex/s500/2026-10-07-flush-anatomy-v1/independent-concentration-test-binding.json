@@ -1,0 +1,17 @@
+{
+  "completed_at_utc": "2026-10-07T15:51:41.563114+00:00",
+  "passed": true,
+  "tests_run": 17,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0,
+  "deterministic_synthetic_grid_scenarios": 40,
+  "actual_new_features_or_stratified_outcomes_used": false,
+  "production_import_scope": "summarize_concentration public entry point only; no production numeric helpers used in expected values",
+  "independent_expected_arithmetic": "exact Fraction from synthetic decimal values, explicit original row weights, freshly selected remaining samples",
+  "peer_scope": "synthetic extra peer metadata confirms this API preserves supplied matched_excess; actual runner peer immutability requires separate full-data audit",
+  "bound_sha256": {
+    "concentration.py": "3fdfe8294807d2c638369550151a0bd0d8ab88b528c79d8f6300a925161b313a",
+    "independent_concentration_tests.py": "718444c93ad249a4459e4ce0c79c132eff12b4ac378a84b41ddf964bc262a5c3"
+  }
+}

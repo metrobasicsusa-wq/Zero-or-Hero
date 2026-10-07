@@ -1,0 +1,131 @@
+{
+  "id": "s500_flush_event_anatomy_v1",
+  "registered_at": "2026-10-07T15:50:07.464807+00:00",
+  "status": "frozen_before_new_features_and_contribution_decomposition",
+  "exploratory": true,
+  "parent_commit": "a73297d47a6076e4f4a4725eab494f0308d7fe33",
+  "grandparent_commit": "634a93c65e1adec6c5908f9ad249c5b8e6224ba8",
+  "scope": {
+    "parent_calendar_sessions": 191,
+    "outcome_support_dates": [
+      "2026-01-29",
+      "2026-02-13",
+      "2026-02-17",
+      "2026-03-09",
+      "2026-03-20",
+      "2026-03-27",
+      "2026-03-30",
+      "2026-04-30",
+      "2026-05-15",
+      "2026-06-12",
+      "2026-06-25"
+    ],
+    "diagnostic_dates": [
+      "2026-06-18"
+    ],
+    "anatomy_dates": [
+      "2026-01-29",
+      "2026-02-13",
+      "2026-02-17",
+      "2026-03-09",
+      "2026-03-20",
+      "2026-03-27",
+      "2026-03-30",
+      "2026-04-30",
+      "2026-05-15",
+      "2026-06-12",
+      "2026-06-18",
+      "2026-06-25"
+    ],
+    "cases": 1227,
+    "stock_cases": 1203,
+    "benchmark_cases": 24,
+    "all_original_variants": 36,
+    "inherited_rows": 44172
+  },
+  "date_selection": "11dates with previouslyobserved at leastone complete parent SPYdownprimary targetreturn, plus everyextra date withSPYdown selectedcases butnocompleteprimaryreturn (June18). Allselectedstocks andETFcontrols onall12dates retained. Thisisnotprospectivedate selection.",
+  "retained_parent": "Everyparent signal/entry/exit/cost/peer/net/excess record unchanged; no new trades or portfolio. The original153complete returns/134pairs remain reference totals, withallnonsignal/fail/unknowncases retained.",
+  "primary_variant": [
+    "0.02",
+    "REBOUND",
+    "60m",
+    10
+  ],
+  "primary_concentration_scope": "AllSPYdown primarysignalrows onthe12dates, includingmissingnet/excess. EveryknowncompleteparentSPYdown net/excess mustreconcile exactly; othergroups/all36 are retained ratherthan retuned.",
+  "features": {
+    "information_time": "Onlycompleted minute0..29, available10:00ET; exact same rulesforstocks andbenchmarks. Parententry_minute islater_realized_strategy_timing, notpartof10:00feature set.",
+    "validity": "Uniquecomplete validOHLCV prefixrequired; knownfuturebarsignored, unlocatabletimestamp unknown. Noffill orzeroimputation.",
+    "previous_close": "Use originalregistry selection_metrics.prior_close only, preservingrawhistorical-source/revision/splitlimitations. ForcedETFpriorclose isnotprovided and remainsunknown; no newdailyquery.",
+    "fields": [
+      "gap_to_previous_close",
+      "close29_return",
+      "min_close_return",
+      "max_close_return",
+      "t_min",
+      "first30_volume",
+      "first30_high_low_range"
+    ],
+    "volume": "Rawsumof30volumes, notRVOL or normalizeagainstwrongtimewindow.",
+    "range": "(maxfirst30high-minfirst30low)/open0; fractionnotpercent.",
+    "gap_and_close29_bins": [
+      "le_minus_2pct",
+      "minus_2pct_to_below_zero",
+      "zero_or_positive",
+      "unknown"
+    ],
+    "trough_time_bins": [
+      "minute0_9",
+      "minute10_19",
+      "minute20_29",
+      "unknown"
+    ],
+    "bin_boundaries": "For gap/close29 <=Decimal(-.02), then<0, else>=0. Forinteger t_min floor(t/10). No thresholds selectedfromoutcomes.",
+    "description_only": "Report fixedbins among allSPYdownprimarycases withallstatus counts andcomplete netdistributions. Alsofirst30 summariesbysignalpositive/negative/zero/unknown_or_not_triggered, explicitly outcome-conditioneddescription notpredictiveproof. No new fitted model."
+  },
+  "statistics": {
+    "primary": "ExactFraction date/symbol/date×symbol signedcontribution fornet/excess separately. Pooled=sum/N; dateequal=mean(per-date available-eventmean). Unobserved dates notzero.",
+    "leave_one_out": "For each date andeachsymbol, remove allits observedandmissing targetsignalrecords in sensitivityonly; retainoriginalpeers/otherreturns, recompute remaining N andnonemptydates andlistdisappearingdates. Includeeveryentitypositiveornegative; notleaveoutwinneroptimization, notOOS.",
+    "all_dates": "Dailycase/status/return/pair tablefor12datesand3SPYgroups. Keepannual191datecoverage. DetailJune18 all3SPYdown selectedcases toexplainno completeoutcome.",
+    "other_variants": "All44172inheritedrows and counts/status/net/excess summaries for36×3SPYgroups onthisfixed12dates, no winner selection ornewCIs.",
+    "tails": "Allpositiveandnegativeevents remain inprimary estimates; concentration is descriptive andnotautomaticrejection. No minimumwinrate gate.",
+    "new_inference": "No newbootstrap orcausaltest; existingparentCIs staycontextonly. No fundedcapital/optionreturn orprobabilitycalculation."
+  },
+  "official_macro_context": {
+    "dates": "All12anatomydates, identicalcategoryqueryscope",
+    "categories": [
+      "BLS ConsumerPriceIndex",
+      "BLS ProducerPriceIndex",
+      "BLS EmploymentSituation",
+      "BEA GDP advance/second/third",
+      "BEA PersonalIncomeAndOutlays",
+      "FOMC statement/meeting"
+    ],
+    "retrieval": "OfficialpublicHTTPS only,bounded20GETtotal, perhostatmost1/sec,no401403retry; preserveURL/status/hash/retrievedtime andshortquotes; rawHTMLprivate.",
+    "time": "Scheduledtime andactualrelease-page statedtime separate; before09:30,during09:30-10:00,exact10:00,after10:00,unknown. A timestamp at10:00 isnotproofinformation receivedbeforedecision.",
+    "negative_evidence": "Noevent claim forbiddenfrommissing/deniedsources; usecurrentofficialcalendar_not_listed onlywithadequatecoverage, otherwiseunknown.",
+    "causality": "Currentretrospectivecalendar andreleasecontent nothistoricalreceiptlogs. Listedrelease doesnotprove itcausedrebound; limitedmacroinventorynotallnews."
+  },
+  "limitations": [
+    "Knownparentoutcomes influencedfocus; noneofthisisanunseentest",
+    "Currentdirectorysurvivorship andretrospectivedataversions",
+    "Completeholding/prefixanddateavailabilityselection",
+    "Marketclassificationatstock-specifict_minconfoundedbytiming",
+    "Linearstockreturns do notshow0DTEconvexprofits; historicalbidaskmissing",
+    "Group/tail/leaveoneout descriptions notcausalor futureprobabilities"
+  ],
+  "user_preference": "No minimum40percentwinrate; examine asymmetry/netexpectancy andalltaiIs. PAPER500perroundgoal10000,allfailures/residualsandnewinjections countinanyfuturewealthmodel.",
+  "publication": "Newimmutableexchange/codex only, completeallcases/allvariants/features/status/contributions/sourcehashes/code/audits; no rawmarketexports/secrets/accountIDs/privateabsolute paths.",
+  "scope_sha256": {
+    "focus-scope.json": "af1f035dc089a9ffa91cea27b33a0ff3109e85c8b54f413f23015d8c61f4d9ae",
+    "focus-case-registry.json": "24c14cef71c557ad701b68649f1931681d2f0d59a11dbef48ad2521a6d1f9de8",
+    "diagnostic-case-registry.json": "94046a87f0580a91579c7dd32524567e9fd1b8f9abd60c0421d2968c0cf76ae0",
+    "anatomy-case-registry.json": "f250bb2a77db8b12335bf34076fb28b66eb4e4640a1ecea85bd5c324d55ef7b9",
+    "annual-date-coverage.json": "c1fab369d9b3d8985649530041f20e0c97481fc7ebb48e590920550e28373a4b",
+    "reuse-input-manifest.json": "bbbae9acaa48e7449157049573089fdfdce633d4ce3497fbdf628dc0ce7b5e1c"
+  },
+  "new_market_requests": 0,
+  "orders_sent": 0,
+  "account_reads": 0,
+  "new_scheduler": false,
+  "vendor_purchase": false
+}

@@ -1,0 +1,112 @@
+{
+  "id": "s500_flush_anatomy_retrospective_focus_scope_v1",
+  "created_at": "2026-10-07T15:44:44.963864+00:00",
+  "selection_basis": "Dates in parent SPY market_down primary all.date_means with net_n>0; dates are selected using previously observed outcome completeness, not a prospective market-day filter.",
+  "parent_primary_variant": [
+    "0.02",
+    "REBOUND",
+    "60m",
+    10
+  ],
+  "focus_dates": [
+    "2026-01-29",
+    "2026-02-13",
+    "2026-02-17",
+    "2026-03-09",
+    "2026-03-20",
+    "2026-03-27",
+    "2026-03-30",
+    "2026-04-30",
+    "2026-05-15",
+    "2026-06-12",
+    "2026-06-25"
+  ],
+  "focus_date_count": 11,
+  "focus_selected_cases": 1125,
+  "focus_stock_cases": 1103,
+  "focus_benchmark_cases": 22,
+  "focus_unique_symbols": 414,
+  "parent_known_complete_target_returns": 153,
+  "parent_known_complete_matched_pairs": 134,
+  "annual_calendar_sessions": 191,
+  "annual_SPY_down_selected_stock_cases": 363,
+  "annual_dates_with_any_SPY_down_selected_stock": 12,
+  "extra_SPY_down_selected_dates_without_complete_primary_return": [
+    "2026-06-18"
+  ],
+  "extra_dates_details": [
+    {
+      "date": "2026-06-18",
+      "session_open_et": "09:30",
+      "session_close_et": "16:00",
+      "selected_cases": 102,
+      "selected_stock_cases": 100,
+      "selected_benchmark_cases": 2,
+      "classification_counts_by_benchmark": {
+        "SPY": {
+          "market_down": 3,
+          "market_not_down": 80,
+          "unknown": 17
+        },
+        "QQQ": {
+          "market_down": 36,
+          "market_not_down": 47,
+          "unknown": 17
+        }
+      },
+      "known_parent_SPY_down_primary_complete_target_returns": 0,
+      "known_parent_SPY_down_primary_complete_matched_pairs": 0,
+      "parent_summary_reference": {
+        "name": "primary-results.json",
+        "group": "SPY|market_down|0.02|REBOUND|60m|10",
+        "date_means_key": null,
+        "no_entry_interpretation": "No complete target return reported for this date; does not assert no selected cases, no signals, or successful hypothetical trades."
+      },
+      "included_in_focus_dates": false,
+      "nonfocus_reason": "SPY_down_selected_cases_but_no_complete_primary_target_return_in_parent_summary"
+    }
+  ],
+  "nonfocus_date_count": 180,
+  "all_groups_on_focus_dates_included": true,
+  "new_features_computed": false,
+  "new_returns_computed": false,
+  "source_primary_summary_sha256": "0161823956eb41746f8b96d8a5324d989326fec5d26192ba5b7ab0514fcad730",
+  "source_classifications_sha256": "a15fe5cdeead7d48d418299f9a3b2987f118c57504e956ec2c004ec36ee11045",
+  "limitations": [
+    "The 11 focus dates were chosen from a prior result and are not an untouched evaluation sample.",
+    "All 191 dates remain in annual coverage; dates with SPY-down selected cases but no completed primary return are explicitly listed rather than silently omitted.",
+    "No new feature or outcome computation has been performed by this scope preparation.",
+    "Original current-directory/survivorship, missing-minute, timestamp and retrospective historical-source limitations persist.",
+    "The diagnostic extension adds June 18 before anatomy features are computed; it does not establish a prospective date-selection rule or eliminate outcome-informed scope selection."
+  ],
+  "scope_extended_at": "2026-10-07T15:49:00.650376+00:00",
+  "anatomy_dates": [
+    "2026-01-29",
+    "2026-02-13",
+    "2026-02-17",
+    "2026-03-09",
+    "2026-03-20",
+    "2026-03-27",
+    "2026-03-30",
+    "2026-04-30",
+    "2026-05-15",
+    "2026-06-12",
+    "2026-06-18",
+    "2026-06-25"
+  ],
+  "anatomy_date_count": 12,
+  "anatomy_selected_cases": 1227,
+  "anatomy_stock_cases": 1203,
+  "anatomy_benchmark_cases": 24,
+  "anatomy_unique_symbols": 445,
+  "diagnostic_dates": [
+    "2026-06-18"
+  ],
+  "diagnostic_selected_cases": 102,
+  "diagnostic_stock_cases": 100,
+  "diagnostic_benchmark_cases": 2,
+  "anatomy_extension_reason": "Include the extra SPY-down-selected date without a complete primary outcome so the diagnostic denominator does not silently exclude noncompletion or no-signal cases. This reduces omission in the anatomy description; it does not remove the retrospective nature of choosing these dates.",
+  "anatomy_concentration_scope": "All SPY-down primary signal records on all 12 anatomy dates must be retained; no-signal cases remain cases, and missing outcomes must never be replaced by zero.",
+  "all_36_parent_variants_on_all_anatomy_dates_required": true,
+  "initial_scope_archive_manifest": "scope-initial-manifest.json"
+}

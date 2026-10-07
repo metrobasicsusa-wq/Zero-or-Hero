@@ -1,0 +1,126 @@
+"""Render every fixed group and concentration entity; never rank-select a strategy."""
+from pathlib import Path
+from decimal import Decimal
+import json,csv,hashlib,datetime
+ROOT=Path(__file__).parent
+def read(n):return json.loads((ROOT/n).read_text())
+def save(n,o):(ROOT/n).write_text(json.dumps(o,ensure_ascii=False,indent=2)+'\n')
+def pct(x):return '—' if x is None else f'{Decimal(str(x))*100:+.5f}%'
+def pp(x):return '—' if x is None else f'{Decimal(str(x))*100:+.5f}'
+def table(headers,rows):return '\n'.join(['| '+' | '.join(headers)+' |','| '+' | '.join(['---']*len(headers))+' |']+['| '+' | '.join(str(x) for x in r)+' |' for r in rows])
+def csvfile(n,rows):
+    with (ROOT/n).open('w',newline='') as f:
+        w=csv.DictWriter(f,fieldnames=list(rows[0]));w.writeheader();w.writerows(rows)
+def flat_summary(s):
+    d=s['target_net_distribution']
+    return {**s['counts'],'net_mean':d['mean'],'net_win_rate':d['win_rate_all_n'],'net_average_win':d['conditional_average_win'],'net_average_absolute_loss':d['conditional_average_absolute_loss'],'net_payoff_ratio':d['payoff_ratio_average_win_to_average_absolute_loss'],'net_profit_factor':d['profit_factor_total_positive_to_total_absolute_loss'],'date_equal_net_mean':s['date_equal_net']['mean'],'date_equal_net_dates':s['date_equal_net']['n'],'matched_excess_mean':s['matched_excess']['mean'],'date_equal_excess_mean':s['date_equal_excess']['mean'],'date_equal_excess_dates':s['date_equal_excess']['n']}
+def main():
+    s=read('summary.json');c=read('concentration.json');design=read('study-design.json');macro=read('macro-calendar-review.json')
+    assert s['counts']['cases']==1227 and s['counts']['inherited_rows']==44172
+    primary=next(r['summary'] for r in s['variant_group_summaries'] if r['variant']==design['primary_variant'] and r['SPY_group']=='market_down')
+    assert primary['counts']['complete_net']==153 and primary['counts']['complete_pairs']==134
+    csvfile('all-variant-group-summaries.csv',[dict(drop_threshold=r['variant'][0],family=r['variant'][1],exit_horizon=r['variant'][2],cost_bps_per_side=r['variant'][3],SPY_group=r['SPY_group'],**flat_summary(r['summary'])) for r in s['variant_group_summaries']])
+    csvfile('all-date-group-summaries.csv',[dict(date=r['date'],date_role=r['date_role'],SPY_group=r['SPY_group'],**flat_summary(r['summary'])) for r in s['primary_date_group_summaries']])
+    csvfile('all-fixed-feature-bins.csv',[dict(axis=r['axis'],bin=r['bin'],**flat_summary(r['primary_SPY_down_all_selected_case_summary'])) for r in s['fixed_feature_bins']])
+    for key,name in [('by_date','all-date-contributions.csv'),('by_symbol','all-symbol-contributions.csv'),('date_symbol_matrix_observed_cells','all-date-symbol-contributions.csv')]:
+        data=[]
+        for r in c[key]:
+            for metric,m in r['metrics'].items():
+                data.append(dict(entity_type=r['entity_type'],entity=r['entity'],metric=metric,signals=r['signals'],**{k:m[k] for k in ['complete_count','missing_count','observed_date_count','event_mean','date_equal_mean','contribution_to_original_pooled_mean','contribution_to_original_date_equal_mean','original_complete_denominator','original_observed_date_denominator']}))
+        csvfile(name,data)
+    for key,name in [('leave_one_date_out','all-leave-one-date-out.csv'),('leave_one_symbol_out','all-leave-one-symbol-out.csv')]:
+        data=[]
+        for r in c[key]:
+            for metric,m in r['metrics'].items():
+                data.append(dict(removed_entity_type=r['removed_entity_type'],removed_entity=r['removed_entity'],metric=metric,remaining_signal_count=r['remaining_signal_count'],**{k:m[k] for k in ['complete_count','missing_count','observed_date_count','event_mean','date_equal_mean','removed_complete_count','removed_missing_count']},lost_observed_dates='|'.join(m['lost_observed_dates'])))
+        csvfile(name,data)
+    down=[r for r in s['primary_date_group_summaries'] if r['SPY_group']=='market_down'];date_rows=[]
+    for r in down:
+        z=r['summary'];n=z['counts'];date_rows.append([r['date'],n['selected_cases'],n['signals'],n['complete_net'],n['signal_return_missing'],n['complete_pairs'],pct(z['target_net_distribution']['mean'])])
+    binlabel={'le_minus_2pct':'≤−2%','minus_2pct_to_below_zero':'(−2%, 0)','zero_or_positive':'≥0','unknown':'未知','minute0_9':'0–9','minute10_19':'10–19','minute20_29':'20–29'}
+    binrows=[]
+    for r in s['fixed_feature_bins']:
+        z=r['primary_SPY_down_all_selected_case_summary'];n=z['counts'];binrows.append([r['axis'],binlabel[r['bin']],n['selected_cases'],n['signals'],n['complete_net'],n['signal_return_missing'],pct(z['target_net_distribution']['mean'])])
+    loo=[[r['removed_entity'],r['metrics']['net_return']['complete_count'],r['metrics']['net_return']['observed_date_count'],pct(r['metrics']['net_return']['event_mean']),pct(r['metrics']['net_return']['date_equal_mean'])] for r in c['leave_one_date_out']]
+    daily=[[r['entity'],r['metrics']['net_return']['complete_count'],pct(r['metrics']['net_return']['event_mean']),pp(r['metrics']['net_return']['contribution_to_original_pooled_mean']),pp(r['metrics']['net_return']['contribution_to_original_date_equal_mean'])] for r in c['by_date']]
+    nextstage={'status':'proposed_not_registered_or_run','objective':'Freeze an unseen-date observation protocol before adding new observations; assess all existing bins without choosing the historical winner.','start_date_policy':'First eligible session after a separately timestamped future registration; never relabel already-seen dates as unseen.','retain':['original baseline and same-date controls','all original parameter variants and fixed feature bins','all no-flush/no-rebound/unknown and missing returns','all positive and negative tails','prospective source times and first-seen universe snapshots'],'pending_design_choices':['observation horizon and fixed review dates','point-in-time universe collection and source-failure behavior','predefined evidence and minimum independent-date reporting requirements, without a win-rate floor'],'no_execution_created':True,'no_new_timer':True,'option_feasibility':'Requires contract-level bid/ask, eligibility, whole-contract cost and capital constraints; stock returns cannot fill this gap.'}
+    decision={'study':design['id'],'created_at':datetime.datetime.now(datetime.timezone.utc).isoformat(),'status':'completed_retrospective_anatomy_candidate_unvalidated','scope':s['counts'],'primary_variant':design['primary_variant'],'primary_counts':primary['counts'],'net_event_mean':c['overall']['net_return']['event_mean'],'net_date_equal_mean':c['overall']['net_return']['date_equal_mean'],'no_minimum_40_percent_win_rate':True,'tail_dependence_is_not_automatic_rejection':True,'no_new_confidence_interval':True,'next_stage':nextstage,'orders_sent':0,'account_reads':0,'new_market_requests':0,'official_public_calendar_requests':11,'new_scheduler':False,'paper_capital_round':500,'paper_target':10000,'funded_capital_or_option_simulation_performed':False,'limitations':design['limitations']}
+    save('stage-decision.json',decision)
+    save('peer-exchange.json',{'study':design['id'],'parent_commit':design['parent_commit'],'result':'Positive stock-proxy mean remains unvalidated; date sensitivity differs by weighting; no single symbol flips either mean.','preserved':{'all_cases':1227,'all_parent_parameter_rows':44172,'all_original_variants':36,'all_signs_missingness_and_peers':True},'questions_for_peer_review':['Does the proposed future protocol preserve an eligible universe before outcomes, including failed and no-signal cases?','Are event-weighted and date-weighted estimates kept distinct, with clustered dates not counted as independent stocks?','Can any proposed 0DTE hypothesis supply actual contract bid/ask and whole-contract affordability instead of stock-return leverage?','How should prospective review dates be fixed before observing outcomes while retaining all tails and avoiding winner-bin selection?'],'next_stage':nextstage,'no_messages_sent_to_other_channels':True,'research_only':True})
+    text=f'''# $500 研究：早盘急跌反弹的 12 日剖析
+
+本轮发现：**事件平均收益对 6 月 25 日较敏感，但并非某一只股票独自决定；这些结果仍不足以确认可交易优势。** 全部大赢家、亏损、未触发和缺失样本均保留，没有因为尾部重要而否定这条研究线索，也没有从表现好的分箱里选出新策略。
+
+原主方案为 SPY 同跌组、股票前 30 分钟跌幅门槛 2%、反弹确认、持有 60 分钟、每边 10 bp 固定成本情景。153 个完整股票净收益的事件等权均值 **{pct(c['overall']['net_return']['event_mean'])}**，日期等权均值 **{pct(c['overall']['net_return']['date_equal_mean'])}**。本轮是已见历史的进一步描述，没有新增独立日期，也没有运行 $500 账户资金路径或 0DTE 期权回测。
+
+## 范围与完整性
+
+父研究覆盖 2026-01-02 至 2026-10-06 的 191 个交易日。本轮继承其中所有出现 SPY 同跌入选股票的 12 日，包含原先有完整主方案收益的 11 日，以及 6 月 18 日这个无完整收益的诊断日。其余 179 日仍在全年覆盖表中，未填零收益。12 日共 **1,227 个 case（1,203 股票、24 基准，445 个不同符号）**；全部 36 个原参数组合、44,172 条原结果和原配对对象完整继承。case 指日期×股票，不能当作独立样本或可同时配置的账户仓位。
+
+主组有 363 个入选股票 case、161 个信号、153 个完整净收益及 8 个信号收益缺失；134 个完整配对超额、27 个信号配对结果缺失。信号来自 11 日、83 只股票。153 个完整收益为 79 正、74 负，零收益 0；观察胜率约 51.63% 仅是股票样本描述，**不设 40% 胜率门槛，也不外推成末日期权胜率**。
+
+先固定范围和分解规则，再运行新特征计算：设计冻结于 2026-10-07 11:50:07 纽约时间。由于父结果已知，这种冻结不能使本轮成为样本外验证。全部前 30 分钟特征中，983 个 case 完整、244 个未知；未知保留，未用未来分钟补齐。
+
+## 每天发生了什么
+
+下表仅展示固定主方案 SPY 同跌组；三种市场分组及所有参数详见 CSV 和完整流水。未触发、缺失与亏损有独立状态。
+
+{table(['日期','入选 case','信号','完整收益','信号收益缺失','完整配对','事件均值'],date_rows)}
+
+**6 月 18 日的 CRM、MSFT、TXN 均为 `no_flush`**：它们按原市场分类属于 SPY 同跌组，但股票自身没有跌到 2% 门槛，没有产生信号。这不是行情错误或亏损为零，未为了制造信号而改变阈值。
+
+## 日期和股票集中度
+
+贡献的单位为百分点；事件等权按原 153 个完整事件分摊，日期等权先按各日完整事件数分摊，再按原 11 日分摊。两种贡献均精确加总为各自原均值。
+
+{table(['日期','完整收益','日内均值','事件均值贡献（百分点）','日期均值贡献（百分点）'],daily)}
+
+6 月 25 日的 44 个完整事件占全体 28.76%，贡献超过最后事件均值，因为其他日期有亏损抵消。假想去掉这一天，事件均值变为 **−0.12103%**，日期等权仍为 **+0.14234%**。日期等权下最大正贡献来自 2 月 17 日。3 月 30 日贡献最负，完整保留；移除亏损日并不代表事前能够避开它。
+
+所有逐日移除结果如下。这些只是敏感性计算，主样本未删除任何一天，不是交易过滤规则。
+
+{table(['假想移除日期','剩余完整收益','剩余日期','事件等权均值','日期等权均值'],loo)}
+
+全部 83 次逐股移除后，两种均值仍为正：事件等权范围 +0.12798% 至 +0.22537%，日期等权范围 +0.15958% 至 +0.26628%。CRWV 是最大正股票贡献，5 个完整事件，事件均值贡献 +0.05056 个百分点；移除后两种均值为 +0.12798% / +0.15958%。NBIS 是最大负贡献。全体股票及日期×股票结果见 CSV，正负均保留。单股敏感性不能证明行业或共同因子已分散。
+
+## 信号之前可观察的特征
+
+特征仅用已完成的前 30 个一分钟区间，最早在 **10:00 纽约时间**可知。`gap` 为开盘相对继承的前日原始收盘价变动，`close29` 为第 30 个区间收盘相对开盘变动，`trough` 为首次最低收盘价所在分钟。后来策略的决定、入场和离场时点另列，不伪装成 10:00 已知信息。成交量是前 30 分钟原始总量，未称 RVOL。
+
+以下全部固定分箱均以 363 个入选主组 case 为分母基础，未丢掉无信号 case；收益均值仅使用各箱完整收益。
+
+{table(['特征','固定箱','入选 case','信号','完整收益','信号收益缺失','事件均值'],binrows)}
+
+截至 10:00 已有所修复的两个 `close29` 箱，分别只有 **25 和 2** 个完整收益；后者另有 2 个缺失结果。高均值不能当成稳定期望。第二箱的 27 是信号数，不是完整收益数。所有分箱只是提出后续假设；不能挑出最好的箱再把同一批日期称为验证。按最终赚赔分组的特征摘要也明确标记为事后描述。
+
+## 官方日历背景
+
+对 12 日同样核查 CPI、PPI、就业报告、GDP、个人收入与支出、FOMC 会议/声明；另查 FOMC 纪要作为额外背景，未增加交易条件。11 次官方公开请求得到 96 个日期×类别格：5 个列有发布安排，91 个为“当前抓取日历未列出该类别事件”，不等于当天没有新闻。
+
+| 日期 | 当前官方日历及发布页时间标签 | 纽约时间 |
+| --- | --- | --- |
+| 2 月 13 日 | 1 月 CPI | 08:30 |
+| 4 月 30 日 | 一季度 GDP 初值；3 月个人收入与支出 | 各 08:30 |
+| 6 月 25 日 | 一季度 GDP 第三次估计；5 月个人收入与支出 | 各 08:30 |
+
+来源：[BLS 年度日历](https://www.bls.gov/schedule/2026/home.htm)、[BEA 发布安排](https://www.bea.gov/news/schedule)、[美联储日历](https://www.federalreserve.gov/monetarypolicy/fomccalendars.htm)。逐页 URL、抓取时间、哈希和短引文在 `macro-calendar-review.json` 与 `macro-source-manifest.json`。发布页禁发期结束标签与当前日历吻合，**没有验证当时实际首次公开或策略收到时间，也不证明这些消息造成了收益**。未完成个股新闻归因。
+
+## 验证与边界
+
+85 项测试通过。独立实现从 456,195 根原始分钟条目复算所有 1,227 个特征 case，核对 44,172 行中 1,501,848 个继承字段；108 个参数×分组摘要、36 个日期×分组摘要、12 个分箱、156 个收益分布、624 个尾部诊断、全部 11 次逐日和 83 次逐股移除，以及 96 个日历格均通过复核。代码、原始设计、所有派生结果及审计一起发布。
+
+本轮不新增置信区间。父研究同组日期等权净均值区间为 **[−0.36916%, +0.85633%]**，仍跨零。当前股票目录的幸存者偏差、历史修订、缺分钟筛选、股票各自低点时刻的市场分组、已知结果后聚焦日期等限制继续存在。公开包不含完整原始市场输入，不能称完全独立可复现；复算要求见 `REPRODUCE.md`。
+
+这些是带固定成本情景的股票价格代理收益，不是实际成交、账户利润或期权回报。缺少对应历史合约买卖报价，尚不能验证末日期权的整张成本、价差和可成交退出，更不能计算 $500 到 $10,000 概率。每轮本金、失败历史、残余资金和重新注资的累计财富口径保留。
+
+## 下一阶段
+
+建议先在新日期出现前冻结观察规则：保留原基线、固定分箱、所有失败和无信号 case，记录事前股票池与资料收到时点，并预定查看结果的日期。所有分箱一起看，尚无新的市场同跌样本时明确记“无新样本”。观察期限、评估节点和证据门槛将在独立登记中固定；**本报告只提出下一阶段，尚未登记、运行或新增调度**。原始大赢家继续保留，评估净期望与赔率，而非强制提高胜率。
+
+父研究 commit：`{design['parent_commit']}`；祖研究 commit：`{design['grandparent_commit']}`。本轮新市场请求 0、账户读取 0、订单 0、新定时器 0。开始时核对的最新自有仓库运行是成功的连接观察任务，不代表 AI 研究被自动唤醒。
+'''
+    (ROOT/'REPORT.zh-CN.md').write_text(text)
+    outputs=['REPORT.zh-CN.md','stage-decision.json','peer-exchange.json']+[p.name for p in sorted(ROOT.glob('all-*.csv'))]
+    save('report-output-manifest.json',{'generated_at':datetime.datetime.now(datetime.timezone.utc).isoformat(),'files':[{'name':n,'sha256':hashlib.sha256((ROOT/n).read_bytes()).hexdigest(),'bytes':(ROOT/n).stat().st_size} for n in outputs]})
+    print(json.dumps({'rendered':outputs,'strategy_changes':0},ensure_ascii=False))
+if __name__=='__main__':main()

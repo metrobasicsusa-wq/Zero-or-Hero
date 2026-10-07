@@ -1,0 +1,38 @@
+{
+  "version": "prefix-feature-validation-v1",
+  "validated_at_utc": "2026-10-07T15:46:10.003259+00:00",
+  "data_kind": "synthetic_only_no_actual_features_or_outcomes",
+  "command": [
+    "python3",
+    "-m",
+    "unittest",
+    "-v",
+    "test_prefix_features"
+  ],
+  "exit_code": 0,
+  "tests_run": 25,
+  "passed": 25,
+  "elapsed_seconds": 0.104675,
+  "files": {
+    "prefix_features.py": {
+      "sha256": "2999bd495d0d0063f2f372c601d8dd0ad32541d20d6b1d0062e6abeb8e05b8b2",
+      "bytes": 4381
+    },
+    "test_prefix_features.py": {
+      "sha256": "74492adaeeeec7848fe81a529aaf2fa160d02c4a90f444410d411614ce1b5357",
+      "bytes": 9297
+    },
+    "PREFIX_FEATURE_API.md": {
+      "sha256": "01e6d5064ae21575b83701e5838735b8af26f4bd4b48fa01dc869928dacc5704",
+      "bytes": 2955
+    },
+    "prefix-feature-tests.log": {
+      "sha256": "551de4798764beb3646f599a14d96c825ec4de5c92bb072ae4d0eac480e41ec3",
+      "bytes": 3236
+    },
+    "vendor/flush_engine.py": {
+      "sha256": "a11e335abb7b1d14cc535829c219edc40291c30cacd1794a67fb60542690dc05",
+      "bytes": 11277
+    }
+  }
+}

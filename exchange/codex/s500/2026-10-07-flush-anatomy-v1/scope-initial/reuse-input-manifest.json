@@ -1,0 +1,359 @@
+{
+  "id": "s500_flush_anatomy_offline_reuse_manifest_v1",
+  "verified_at": "2026-10-07T15:44:44.963864+00:00",
+  "parent_stage": "s500-relative-flush-20261007",
+  "grandparent_stage": "s500-flush-rebound-20261007",
+  "parent_publication": {
+    "ancestor": "parent",
+    "name": "publication-verification.json",
+    "sha256": "286f29724c3a7eddc0f5e0ee1d1e5d132a0154ede8d6b647022da2207097b59b",
+    "bytes": 19969,
+    "commit": "a73297d47a6076e4f4a4725eab494f0308d7fe33",
+    "repository": "metrobasicsusa-wq/Zero-or-Hero",
+    "branch": "claude/cloud-paper-trading-ivwxqk",
+    "local_publication_files_reverified": 81,
+    "new_remote_requests": 0
+  },
+  "source_files": [
+    {
+      "ancestor": "parent",
+      "name": "classifications.jsonl.gz",
+      "sha256": "a15fe5cdeead7d48d418299f9a3b2987f118c57504e956ec2c004ec36ee11045",
+      "bytes": 2878825,
+      "verified_publication_path": "exchange/codex/s500/2026-10-07-relative-flush-v1/classifications.jsonl.gz",
+      "published_sha256": "a15fe5cdeead7d48d418299f9a3b2987f118c57504e956ec2c004ec36ee11045"
+    },
+    {
+      "ancestor": "parent",
+      "name": "classification-output-manifest.json",
+      "sha256": "af6155f47152e679ae1452acc14e74339cb1a9358d3cdb672236583b2f78ad4e",
+      "bytes": 37987,
+      "verified_publication_path": "exchange/codex/s500/2026-10-07-relative-flush-v1/classification-output-manifest.json",
+      "published_sha256": "af6155f47152e679ae1452acc14e74339cb1a9358d3cdb672236583b2f78ad4e"
+    },
+    {
+      "ancestor": "parent",
+      "name": "primary-results.json",
+      "sha256": "0161823956eb41746f8b96d8a5324d989326fec5d26192ba5b7ab0514fcad730",
+      "bytes": 789321,
+      "verified_publication_path": "exchange/codex/s500/2026-10-07-relative-flush-v1/primary-results.json.gz",
+      "published_sha256": "4550563ed64cf8bbecaee577e8d9971baffb132a0adaa8f0306d5657ea014068"
+    },
+    {
+      "ancestor": "parent",
+      "name": "reuse-input-manifest.json",
+      "sha256": "21ba24fbb2d92d55a21eac330e2b77c39f64d43d47eeda62cead54847969d239",
+      "bytes": 67609,
+      "verified_publication_path": "exchange/codex/s500/2026-10-07-relative-flush-v1/reuse-input-manifest.json",
+      "published_sha256": "21ba24fbb2d92d55a21eac330e2b77c39f64d43d47eeda62cead54847969d239"
+    },
+    {
+      "ancestor": "parent",
+      "name": "analysis-output-manifest.json",
+      "sha256": "9e0a09956380ff54fa42ab6cf136be571099e7e6494442b133170091a0e2521f",
+      "bytes": 1967,
+      "verified_publication_path": "exchange/codex/s500/2026-10-07-relative-flush-v1/analysis-output-manifest.json",
+      "published_sha256": "9e0a09956380ff54fa42ab6cf136be571099e7e6494442b133170091a0e2521f"
+    },
+    {
+      "ancestor": "parent",
+      "name": "return_distribution.py",
+      "sha256": "f499534ea183a0fd6646a90dea2b341a7a962b980884f114e5629584f0f73d26",
+      "bytes": 10389,
+      "verified_publication_path": "exchange/codex/s500/2026-10-07-relative-flush-v1/return_distribution.py",
+      "published_sha256": "f499534ea183a0fd6646a90dea2b341a7a962b980884f114e5629584f0f73d26"
+    },
+    {
+      "ancestor": "grandparent",
+      "name": "analysis-output-manifest.json",
+      "sha256": "fa447e3fdc33b10bbb3a2c9fedf4fdd63422f8bd334f75dc49cd22c04e59071e",
+      "bytes": 3040,
+      "verified_against_parent_reuse_manifest": true
+    },
+    {
+      "ancestor": "grandparent",
+      "name": "selected-case-registry.json",
+      "sha256": "273c12aae2d5486ecb7921960d2de50e3ff1380ffa390ffec25fc5d4db2b3699",
+      "bytes": 21121615,
+      "verified_against_parent_reuse_manifest": true
+    },
+    {
+      "ancestor": "grandparent",
+      "name": "calendar-2026-ytd.json",
+      "sha256": "80425a15b7b99d086d2204c30dd3971808bd7279652593d3b7c6f5c5751d8e2e",
+      "bytes": 32664,
+      "verified_against_parent_reuse_manifest": true
+    },
+    {
+      "ancestor": "grandparent",
+      "name": "minute-source-manifest.json",
+      "sha256": "5acd311de13d15014d90b901a2df5bfa60e34ae23f6fc12cb7412b02cefe4c94",
+      "bytes": 911645,
+      "verified_against_parent_reuse_manifest": true
+    },
+    {
+      "ancestor": "grandparent",
+      "name": "normalize_bars.py",
+      "sha256": "1e41697f3fa2e3024901fd49b76b79b646a55041551c88fdb3e2cb6ff075e0a9",
+      "bytes": 5293,
+      "verified_against_parent_reuse_manifest": true
+    },
+    {
+      "ancestor": "grandparent",
+      "name": "flush_engine.py",
+      "sha256": "a11e335abb7b1d14cc535829c219edc40291c30cacd1794a67fb60542690dc05",
+      "bytes": 11277,
+      "verified_against_parent_reuse_manifest": true
+    },
+    {
+      "ancestor": "grandparent",
+      "name": "results/2026-01.jsonl.gz",
+      "sha256": "5457a372ec7a7c2e6a75881aadd3e6a1f06556248adcc2d78b5c392fe2add3a1",
+      "bytes": 2295312,
+      "verified_against_parent_reuse_manifest": true,
+      "use": "Hash binding only; no new outcome values or groups are read in this preparation."
+    },
+    {
+      "ancestor": "grandparent",
+      "name": "results/2026-02.jsonl.gz",
+      "sha256": "5f27b4c911cbfd825e3b91dc388a01021692cc031ede97a42d7b653d4e395b51",
+      "bytes": 2582752,
+      "verified_against_parent_reuse_manifest": true,
+      "use": "Hash binding only; no new outcome values or groups are read in this preparation."
+    },
+    {
+      "ancestor": "grandparent",
+      "name": "results/2026-03.jsonl.gz",
+      "sha256": "9b94ef0d14067e577ac455ceb773e556ccd327eedeeba1bd8456f53b61f26fd7",
+      "bytes": 2178615,
+      "verified_against_parent_reuse_manifest": true,
+      "use": "Hash binding only; no new outcome values or groups are read in this preparation."
+    },
+    {
+      "ancestor": "grandparent",
+      "name": "results/2026-04.jsonl.gz",
+      "sha256": "ed5fa0c836e3265a3b005d066355957cd26a12a0821785e3dc07bed5a308a2f1",
+      "bytes": 2632901,
+      "verified_against_parent_reuse_manifest": true,
+      "use": "Hash binding only; no new outcome values or groups are read in this preparation."
+    },
+    {
+      "ancestor": "grandparent",
+      "name": "results/2026-05.jsonl.gz",
+      "sha256": "c88d8b32233241ee0404ff2126d921946f74864e15e817df563ec8cf06e585c9",
+      "bytes": 3368793,
+      "verified_against_parent_reuse_manifest": true,
+      "use": "Hash binding only; no new outcome values or groups are read in this preparation."
+    },
+    {
+      "ancestor": "grandparent",
+      "name": "results/2026-06.jsonl.gz",
+      "sha256": "e42a7c9d5b6b50697ea6cc2343fc2c24f22a10634102cccbc4eeed6eb2424bb1",
+      "bytes": 3886403,
+      "verified_against_parent_reuse_manifest": true,
+      "use": "Hash binding only; no new outcome values or groups are read in this preparation."
+    },
+    {
+      "ancestor": "grandparent",
+      "name": "results/2026-07.jsonl.gz",
+      "sha256": "90eea102c0b9b435d74f90046b9bede5ae477e34dfd00936f5549ca2fe2860a6",
+      "bytes": 3802329,
+      "verified_against_parent_reuse_manifest": true,
+      "use": "Hash binding only; no new outcome values or groups are read in this preparation."
+    },
+    {
+      "ancestor": "grandparent",
+      "name": "results/2026-08.jsonl.gz",
+      "sha256": "377181d242bd63cc46ebebbe2d3fbfee8680dbb9890170e8a113e683cf408a3e",
+      "bytes": 2642779,
+      "verified_against_parent_reuse_manifest": true,
+      "use": "Hash binding only; no new outcome values or groups are read in this preparation."
+    },
+    {
+      "ancestor": "grandparent",
+      "name": "results/2026-09.jsonl.gz",
+      "sha256": "b3ef00a29f10485a87e0f4ab63c24a68738200f79b4ca1c2ead44a1926298cdb",
+      "bytes": 1977973,
+      "verified_against_parent_reuse_manifest": true,
+      "use": "Hash binding only; no new outcome values or groups are read in this preparation."
+    },
+    {
+      "ancestor": "grandparent",
+      "name": "results/2026-10.jsonl.gz",
+      "sha256": "52ec08b91f66577384f2212798240ca52ed1a55f996cdb56281d70fd55c98aaf",
+      "bytes": 391743,
+      "verified_against_parent_reuse_manifest": true,
+      "use": "Hash binding only; no new outcome values or groups are read in this preparation."
+    }
+  ],
+  "normalized_focus_days": [
+    {
+      "date": "2026-01-29",
+      "ancestor": "grandparent",
+      "name": "private-inputs/minute-days/2026-01-29.json",
+      "sha256": "4daa7550e8cf2d3bcadba310bbccb1c1a263b3ea3177bffb6c7a96761e313dd4",
+      "bytes": 4057729,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 103
+    },
+    {
+      "date": "2026-02-13",
+      "ancestor": "grandparent",
+      "name": "private-inputs/minute-days/2026-02-13.json",
+      "sha256": "88d493147b1a2840f6f06aae7c277522c34a8536244ef9146fc969553d25aad9",
+      "bytes": 4094373,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 102
+    },
+    {
+      "date": "2026-02-17",
+      "ancestor": "grandparent",
+      "name": "private-inputs/minute-days/2026-02-17.json",
+      "sha256": "c7e2fff6f0aa2f77a98989efce437aaed6d457e9e1f0ad575cae8f83d7e314af",
+      "bytes": 3965911,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 102
+    },
+    {
+      "date": "2026-03-09",
+      "ancestor": "grandparent",
+      "name": "private-inputs/minute-days/2026-03-09.json",
+      "sha256": "3aef6ca212051b16aff2f81c9323d372fc7857a05a3a9db8b8231c0c7e347653",
+      "bytes": 4097573,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 103
+    },
+    {
+      "date": "2026-03-20",
+      "ancestor": "grandparent",
+      "name": "private-inputs/minute-days/2026-03-20.json",
+      "sha256": "a60ad46e9cf0c34e051def47228eed6030b7fa62c813f2b10e5521524c7068f3",
+      "bytes": 4093448,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 103
+    },
+    {
+      "date": "2026-03-27",
+      "ancestor": "grandparent",
+      "name": "private-inputs/minute-days/2026-03-27.json",
+      "sha256": "bf016f12bae29e6cab28b822c7d2ffb6b2ebc36b8399ba0d8cbd00d2fa082c5e",
+      "bytes": 3972529,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 102
+    },
+    {
+      "date": "2026-03-30",
+      "ancestor": "grandparent",
+      "name": "private-inputs/minute-days/2026-03-30.json",
+      "sha256": "893a0b88a2e2fd2276108add2e1a9f20419de073718d5d86cadd05298e8a90b6",
+      "bytes": 3940210,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 102
+    },
+    {
+      "date": "2026-04-30",
+      "ancestor": "grandparent",
+      "name": "private-inputs/minute-days/2026-04-30.json",
+      "sha256": "5abe55e5f89c4a118fb6d04a030403bd4fca8c652360524c2343d25b3cb2f0bf",
+      "bytes": 3929408,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 102
+    },
+    {
+      "date": "2026-05-15",
+      "ancestor": "grandparent",
+      "name": "private-inputs/minute-days/2026-05-15.json",
+      "sha256": "f6dbeee32fef9f8df372aa5ce3dbe1d1c8df148bf808b0fd345bd39da1a909a6",
+      "bytes": 4018491,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 102
+    },
+    {
+      "date": "2026-06-12",
+      "ancestor": "grandparent",
+      "name": "private-inputs/minute-days/2026-06-12.json",
+      "sha256": "a76dbd14e82189b42a7af9753941b5fbf5f0777a37a80e5dafb8abb7aa81c175",
+      "bytes": 4067392,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 102
+    },
+    {
+      "date": "2026-06-25",
+      "ancestor": "grandparent",
+      "name": "private-inputs/minute-days/2026-06-25.json",
+      "sha256": "bcaf79cddb01eb3bb10964a056b9ab625af5f4a67f5dd788138c50d8d572ef05",
+      "bytes": 3933699,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 102
+    }
+  ],
+  "vendor_files": [
+    {
+      "name": "vendor/normalize_bars.py",
+      "sha256": "1e41697f3fa2e3024901fd49b76b79b646a55041551c88fdb3e2cb6ff075e0a9",
+      "bytes": 5293,
+      "source_ancestor": "grandparent",
+      "source_name": "normalize_bars.py",
+      "byte_identical": true
+    },
+    {
+      "name": "vendor/flush_engine.py",
+      "sha256": "a11e335abb7b1d14cc535829c219edc40291c30cacd1794a67fb60542690dc05",
+      "bytes": 11277,
+      "source_ancestor": "grandparent",
+      "source_name": "flush_engine.py",
+      "byte_identical": true
+    },
+    {
+      "name": "vendor/return_distribution.py",
+      "sha256": "f499534ea183a0fd6646a90dea2b341a7a962b980884f114e5629584f0f73d26",
+      "bytes": 10389,
+      "source_ancestor": "parent",
+      "source_name": "return_distribution.py",
+      "byte_identical": true
+    }
+  ],
+  "generated_scope_files": [
+    {
+      "ancestor": "current",
+      "name": "focus-scope.json",
+      "sha256": "94c07346f239f9fc558f0d7bd71746d4b5fa6aaa44fde692149b60a344cfb562",
+      "bytes": 3088
+    },
+    {
+      "ancestor": "current",
+      "name": "focus-case-registry.json",
+      "sha256": "24c14cef71c557ad701b68649f1931681d2f0d59a11dbef48ad2521a6d1f9de8",
+      "bytes": 4218410
+    },
+    {
+      "ancestor": "current",
+      "name": "annual-date-coverage.json",
+      "sha256": "c1fab369d9b3d8985649530041f20e0c97481fc7ebb48e590920550e28373a4b",
+      "bytes": 203152
+    }
+  ],
+  "verification": {
+    "passed": true,
+    "source_files": 22,
+    "normalized_focus_days": 11,
+    "parent_ledger_files_hash_checked": 10,
+    "classified_cases_matched_to_registry": 19519,
+    "new_market_api_requests": 0,
+    "raw_market_input_files_copied": false,
+    "new_features_computed": false,
+    "new_returns_computed": false
+  },
+  "method_sha256": "52956572d6e5ddb529fc3f1dc7d3dfc60b5925105830c4c99468b998dbd179dc"
+}

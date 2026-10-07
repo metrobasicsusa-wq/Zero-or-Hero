@@ -1,0 +1,75 @@
+{
+  "study": "s500_flush_event_anatomy_v1",
+  "created_at": "2026-10-07T16:08:26.554543+00:00",
+  "status": "completed_retrospective_anatomy_candidate_unvalidated",
+  "scope": {
+    "cases": 1227,
+    "stock_cases": 1203,
+    "benchmark_cases": 24,
+    "dates": 12,
+    "inherited_rows": 44172,
+    "variants": 36,
+    "variant_group_summaries": 108,
+    "primary_SPY_down_selected_cases": 363,
+    "primary_SPY_down_signals": 161,
+    "primary_SPY_down_complete_returns": 153,
+    "primary_SPY_down_complete_pairs": 134
+  },
+  "primary_variant": [
+    "0.02",
+    "REBOUND",
+    "60m",
+    10
+  ],
+  "primary_counts": {
+    "selected_cases": 363,
+    "signals": 161,
+    "unknown_signals": 2,
+    "no_flush": 182,
+    "no_rebound": 18,
+    "complete_net": 153,
+    "complete_pairs": 134,
+    "signal_return_missing": 8
+  },
+  "net_event_mean": "0.0017436379355270818940359365569701837839466274509804",
+  "net_date_equal_mean": "0.0021177717019202067354204076531627270796812512396694",
+  "no_minimum_40_percent_win_rate": true,
+  "tail_dependence_is_not_automatic_rejection": true,
+  "no_new_confidence_interval": true,
+  "next_stage": {
+    "status": "proposed_not_registered_or_run",
+    "objective": "Freeze an unseen-date observation protocol before adding new observations; assess all existing bins without choosing the historical winner.",
+    "start_date_policy": "First eligible session after a separately timestamped future registration; never relabel already-seen dates as unseen.",
+    "retain": [
+      "original baseline and same-date controls",
+      "all original parameter variants and fixed feature bins",
+      "all no-flush/no-rebound/unknown and missing returns",
+      "all positive and negative tails",
+      "prospective source times and first-seen universe snapshots"
+    ],
+    "pending_design_choices": [
+      "observation horizon and fixed review dates",
+      "point-in-time universe collection and source-failure behavior",
+      "predefined evidence and minimum independent-date reporting requirements, without a win-rate floor"
+    ],
+    "no_execution_created": true,
+    "no_new_timer": true,
+    "option_feasibility": "Requires contract-level bid/ask, eligibility, whole-contract cost and capital constraints; stock returns cannot fill this gap."
+  },
+  "orders_sent": 0,
+  "account_reads": 0,
+  "new_market_requests": 0,
+  "official_public_calendar_requests": 11,
+  "new_scheduler": false,
+  "paper_capital_round": 500,
+  "paper_target": 10000,
+  "funded_capital_or_option_simulation_performed": false,
+  "limitations": [
+    "Knownparentoutcomes influencedfocus; noneofthisisanunseentest",
+    "Currentdirectorysurvivorship andretrospectivedataversions",
+    "Completeholding/prefixanddateavailabilityselection",
+    "Marketclassificationatstock-specifict_minconfoundedbytiming",
+    "Linearstockreturns do notshow0DTEconvexprofits; historicalbidaskmissing",
+    "Group/tail/leaveoneout descriptions notcausalor futureprobabilities"
+  ]
+}

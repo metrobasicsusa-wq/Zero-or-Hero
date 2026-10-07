@@ -1,0 +1,30 @@
+{
+  "passed": true,
+  "reviewed_at": "2026-10-07T15:51:32.233092+00:00",
+  "study_design_sha256": "7768a193c9fcddd4b846680ad278e23d4e5ad25bb57d461a01e30f8019a901be",
+  "new_features_or_feature_return_splits_read": false,
+  "checks": {
+    "retrospective_scope_explicit": true,
+    "extra_selected_without_complete_return_date_included": true,
+    "all_same_day_registry_groups_and_36_variants_retained": true,
+    "original_controls_fixed_and_no_new_returns": true,
+    "features_strict_first30_entry_separate": true,
+    "gap_prior_trading_close_revision_split_limits": true,
+    "raw_volume_not_same_time_rvol": true,
+    "fixed_bins_descriptive_only": true,
+    "outcome_conditioned_feature_summary_not_predictive_validation": true,
+    "per_metric_denominators_and_lost_dates_in_leaveouts": true,
+    "all_signed_contributions_and_missing_rows_retained": true,
+    "no_minimum_win_rate_or_tail_based_rejection": true,
+    "official_calendar_timing_not_causal_receipt_evidence": true,
+    "no_options_or_500_wealth_inference": true
+  },
+  "implementation_requirements": [
+    "Concentration runner must include only fixed primary SPY market_down stock signal rows, preserve signal rows missing target/pair returns, and reconcile to all 153 complete returns and 134 complete pairs.",
+    "All 363 classified SPY-down stock cases on the 12 dates must remain visible in case/bin/status tables, including untriggered and June18 diagnostic cases.",
+    "Leave-symbol-out does not modify peer memberships or other targets original matched excess even when the removed symbol was a peer.",
+    "For bins and outcome-conditioned feature summaries, unknown features and zero net returns must not be combined with negative returns; report explicit denominators.",
+    "Noevent wording requires documented category/date coverage; inaccessible calendars are unknown.",
+    "No new confidence intervals, strategy choice or OOS claims from these known-outcome concentration diagnostics."
+  ]
+}

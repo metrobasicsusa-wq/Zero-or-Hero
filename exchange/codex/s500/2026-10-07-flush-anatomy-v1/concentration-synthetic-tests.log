@@ -1,0 +1,28 @@
+test_actual_zero_return_counts_as_observed_date (test_concentration.ContributionTests.test_actual_zero_return_counts_as_observed_date) ... ok
+test_every_partition_exactly_adds_back_both_means (test_concentration.ContributionTests.test_every_partition_exactly_adds_back_both_means) ... ok
+test_full_signal_and_separate_denominators (test_concentration.ContributionTests.test_full_signal_and_separate_denominators) ... ok
+test_missing_only_date_retained_but_not_zero_return_day (test_concentration.ContributionTests.test_missing_only_date_retained_but_not_zero_return_day) ... ok
+test_observed_matrix_retains_missing_cells_without_fabrication (test_concentration.ContributionTests.test_observed_matrix_retains_missing_cells_without_fabrication) ... ok
+test_order_invariant (test_concentration.ContributionTests.test_order_invariant) ... ok
+test_symbol_date_equal_uses_global_date_counts (test_concentration.ContributionTests.test_symbol_date_equal_uses_global_date_counts) ... ok
+test_all_entities_including_negative_and_missing_receive_leave_out (test_concentration.LeaveOneOutTests.test_all_entities_including_negative_and_missing_receive_leave_out) ... ok
+test_drop_missing_only_entity_does_not_change_returns (test_concentration.LeaveOneOutTests.test_drop_missing_only_entity_does_not_change_returns) ... ok
+test_leave_date_drops_positive_negative_and_missing_together (test_concentration.LeaveOneOutTests.test_leave_date_drops_positive_negative_and_missing_together) ... ok
+test_leave_symbol_different_metric_lost_dates (test_concentration.LeaveOneOutTests.test_leave_symbol_different_metric_lost_dates) ... ok
+test_leave_symbol_recomputes_day_mean_instead_of_subtracting_contribution (test_concentration.LeaveOneOutTests.test_leave_symbol_recomputes_day_mean_instead_of_subtracting_contribution) ... ok
+test_single_entity_leaves_no_samples_not_zero (test_concentration.LeaveOneOutTests.test_single_entity_leaves_no_samples_not_zero) ... ok
+test_negative_positive_zero_and_missing_separate (test_concentration.RankingTests.test_negative_positive_zero_and_missing_separate) ... ok
+test_ranking_uses_exact_values_not_display_rounding (test_concentration.RankingTests.test_ranking_uses_exact_values_not_display_rounding) ... ok
+test_ties_use_stable_entity_identifier (test_concentration.RankingTests.test_ties_use_stable_entity_identifier) ... ok
+test_all_missing (test_concentration.ValidationTests.test_all_missing) ... ok
+test_decimal_exact_before_display (test_concentration.ValidationTests.test_decimal_exact_before_display) ... ok
+test_duplicate_case_rejected (test_concentration.ValidationTests.test_duplicate_case_rejected) ... ok
+test_empty (test_concentration.ValidationTests.test_empty) ... ok
+test_invalid_date_rejected (test_concentration.ValidationTests.test_invalid_date_rejected) ... ok
+test_invalid_symbol_rejected (test_concentration.ValidationTests.test_invalid_symbol_rejected) ... ok
+test_nonfinite_boolean_and_float_rejected (test_concentration.ValidationTests.test_nonfinite_boolean_and_float_rejected) ... ok
+
+----------------------------------------------------------------------
+Ran 23 tests in 0.024s
+
+OK
