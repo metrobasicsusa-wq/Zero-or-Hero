@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "id": "s500-native-loop-acceptance-v2",
+  "as_of": "2026-10-07T19:15:10.037647+00:00",
+  "historical_native_task_reports": {
+    "status": "observed_in_owner_accessible_chat",
+    "dates": [
+      "2026-10-05",
+      "2026-10-06"
+    ],
+    "limitation": "Report history is visible; current scheduler enablement and independent native experiment execution were not queried/verified."
+  },
+  "new_instructions": {
+    "status": "prepared_for_immutable_publication",
+    "prefix": "exchange/codex/s500/2026-10-07-ai-daily-process-v2",
+    "supersedes": [
+      {
+        "path": "exchange/codex/s500/2026-10-05-handoff-v1/handoff.md",
+        "sha256": "3c1a295f81cbb1ee455d3fdb97ecd4afe3c284d15f7ddd454c2c98f96373f37f"
+      },
+      {
+        "path": "exchange/codex/s500/2026-10-05-handoff-v1/next-experiment.json",
+        "sha256": "4535a96e73d5563312870da10dec704a46898f0cee8c7fafb0ce2eb9e914ef7c"
+      },
+      {
+        "path": "exchange/codex/s500/2026-10-05-daily-process-v1/daily-process.md",
+        "sha256": "463bb191cd237863171e73aa29af44b7374e615158fef0692bd0912d956db1b0"
+      }
+    ]
+  },
+  "native_consumed_v2": {
+    "status": "unverified",
+    "required": "Next native report cites this directory and a resolved commit."
+  },
+  "native_registered_then_executed_new_experiment": {
+    "status": "unverified",
+    "required": "Plan time/hash, actual execution command/status and complete output hash; not a digest of an existing study."
+  },
+  "native_persisted_results": {
+    "status": "unverified",
+    "historical_blocker": "Prior reports described platform pre-execution write denials. No workaround or restoration claim.",
+    "required": "Native run publishes permitted paths and verifies exact readback, or reports persistence_blocked."
+  },
+  "subsequent_native_run_restored_memory": {
+    "status": "unverified",
+    "required": "A later native run reads the previous run state and continues its pending work."
+  },
+  "new_scheduler_created": false,
+  "existing_schedule_modified": false,
+  "native_run_triggered_by_this_stage": false,
+  "new_strategy_or_orders_enabled": false,
+  "current_chat_publication_is_not_native_acceptance": true
+}
