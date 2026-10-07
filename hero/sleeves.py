@@ -256,6 +256,36 @@ class Runner:
                      why=f"{sid}：{t['sym']} {how}，花 ${t['paid']:,.2f}、收回 ${done['proceeds']:,.2f}（{done['ret']:+.0%}），"
                          f"账本 ${s['cash']:,.2f}")
 
+    # ---- plan only (a rehearsal on live quotes: what each sleeve would buy now; nothing is sent) ----
+    def plan(self) -> None:
+        for spec in self.specs:
+            rule = self.rules.get(spec["kind"])
+            s = self.book.s(spec["id"])
+            if not rule:
+                continue
+            try:
+                got = rule.entries(self, spec, s)
+            except Exception as e:
+                self.j.event("alert_error", source=f"sleeve_plan:{spec['id']}", error=str(e)[:200])
+                continue
+            if not got:
+                continue
+            slot, picks = got
+            s["slots"][slot] = self.now.isoformat(timespec="minutes")
+            if not picks:
+                self.j.event("sleeve_plan", dry_run=True, sleeve=spec["id"], why=f"{spec['id']}（演算）：{slot} 没有要买的")
+                continue
+            each = spec.get("fraction", self.p["fraction"]) * s["cash"] / len(picks)
+            for pk in picks:
+                if pk["asset"] == "stock":
+                    size = f"买 ${each:,.2f}"
+                else:
+                    limit = tick(pk["ask"] + self.p["buy_pad"])
+                    qty = int(each // (limit * 100))
+                    size = f"{qty} 张 × ${limit:.2f}" if qty else f"一张 ${limit * 100:,.2f} 超过 ${each:,.2f}，买不起"
+                self.j.event("sleeve_plan", dry_run=True, sleeve=spec["id"], symbol=pk["sym"],
+                             why=f"{spec['id']}（演算，不下单）：{pk['why']}；{size}")
+
     # ---- entries ----
     def enter(self) -> None:
         intents = []

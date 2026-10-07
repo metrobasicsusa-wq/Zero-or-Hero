@@ -15,7 +15,7 @@ EVENT_KINDS = {"order", "close", "halt", "option_skip", "attempt_end", "attempt_
                "lottery_pick", "lottery_skip", "lottery_result",
                "zdte_skip", "zdte_fill", "zdte_result", "zdte_switch", "zdte_attempt_end",
                "net_skip", "net_buy", "net_result", "net_round", "zdte_shadow_open", "zdte_shadow_result",
-               "sleeve_buy", "sleeve_fill", "sleeve_skip", "sleeve_exit", "sleeve_result", "sleeve_round"}
+               "sleeve_plan", "sleeve_buy", "sleeve_fill", "sleeve_skip", "sleeve_exit", "sleeve_result", "sleeve_round"}
 MAX_EVENTS = 200
 REPO_BLOB = "https://github.com/metrobasicsusa-wq/Zero-or-Hero/blob/claude/cloud-paper-trading-ivwxqk"
 
@@ -39,7 +39,7 @@ def collect(journal: Path, cfg: dict) -> dict:
                 gauges = {"ts": e.get("ts"), "gauges": e["macro"], "risk_off": e.get("macro_risk_off"),
                           "applied": e.get("macro_applied")}  # market data: rehearsal readings count too
             # simulated events show in a rehearsal; the net shadow book is always a simulation
-            if e.get("dry_run") and not ((show_sim and e["kind"] in EVENT_KINDS) or e["kind"].startswith(("net_", "zdte_shadow_"))):
+            if e.get("dry_run") and not ((show_sim and e["kind"] in EVENT_KINDS) or e["kind"].startswith(("net_", "zdte_shadow_", "sleeve_plan"))):
                 continue
             if e["kind"] == "targets":
                 targets = e

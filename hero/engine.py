@@ -151,6 +151,12 @@ class Engine:
             self.j.equity(today.isoformat(), equity, float(acct["cash"]), self.cfg["generation"], bench)
             return {"status": "ok", "equity": equity, "day_pl": day_pl, "halted": halted}
 
+        if self.cfg.get("sleeves", {}).get("plan_only"):
+            try:  # what every sleeve would buy, on live quotes; nothing is sent
+                self._sleeves_plan(today)
+            except Exception as e:
+                self.j.event("alert_error", source="sleeves_plan", error=str(e)[:200])
+
         # Zero-or-hero phase 1: while it runs, the account does nothing but the daily 0DTE trade.
         zp = zd.settings(self.cfg) if self.cfg.get("zero_dte", {}).get("enabled") else None
         book = zd.Book(self.j.root / "zdte.json", float(self.cfg.get("attempt", {}).get("start_capital", equity))) \
@@ -464,6 +470,13 @@ class Engine:
             sleeves.Runner(self.c, self.j, self.cfg, specs, book, sleeve_rules.RULES, self.now, today).run()
         finally:
             book.save()
+
+    def _sleeves_plan(self, today: date) -> None:
+        from hero import sleeve_rules, sleeves
+        specs = self.cfg["sleeves"]["list"]
+        book = sleeves.Book(self.j.root / "sleeves_plan.json", specs)  # its own file: the real ledgers stay untouched
+        sleeves.Runner(self.c, self.j, self.cfg, specs, book, sleeve_rules.RULES, self.now, today).plan()
+        book.save()
 
     def _zdte_shadow(self, today: date) -> None:
         """The same-day rule on single stocks with real quotes; see hero.zdte_shadow. Never sends an order."""

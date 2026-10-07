@@ -2174,6 +2174,18 @@ class Sleeves(unittest.TestCase):
         self.assertEqual([o for o in b.orders.values()], [])
         self.assertIn("超过这笔可用", [e for e in log if e["kind"] == "sleeve_skip"][-1]["why"])
 
+    def test_plan_only_logs_what_it_would_buy_and_sends_nothing(self):
+        from datetime import datetime
+        from hero import sleeve_rules, sleeves
+        b = SleeveBroker(lambda s: (0.08, 0.10))
+        book = sleeves.Book(self.root / "plan.json", self.specs)
+        sleeves.Runner(b, Journal(self.root), self.cfg, self.specs, book, sleeve_rules.RULES, datetime(2026, 10, 8, 10, 0),
+                       date(2026, 10, 8), sleep=lambda s: None).plan()
+        self.assertEqual(b.orders, {})
+        log = [json.loads(l) for l in (self.root / "trades.jsonl").read_text().splitlines()]
+        self.assertEqual([e["kind"] for e in log], ["sleeve_plan", "sleeve_plan"])
+        self.assertIn("45 张 × $0.11", log[-1]["why"])
+
     def test_letf_holds_above_its_average_and_sells_below(self):
         spec = [{"id": "tqqq-500", "kind": "letf", "start": 500, "sym": "TQQQ", "ma": 20, "fraction": 1.0}]
         b = SleeveBroker(lambda s: (100.0, 100.0))
