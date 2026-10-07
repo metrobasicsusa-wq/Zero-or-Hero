@@ -1,0 +1,38 @@
+test_authorization_denial_stops_all_other_batches (test_capture_prior20.CaptureTests.test_authorization_denial_stops_all_other_batches) ... ok
+test_batch_cap_is_checked_before_any_request (test_capture_prior20.CaptureTests.test_batch_cap_is_checked_before_any_request) ... ok
+test_binding_path_escape_zero_get (test_capture_prior20.CaptureTests.test_binding_path_escape_zero_get) ... ok
+test_daily_timestamp_uses_ny_session_date (test_capture_prior20.CaptureTests.test_daily_timestamp_uses_ny_session_date) ... ok
+test_distinct_pages_merge_and_hash_all_source_bytes (test_capture_prior20.CaptureTests.test_distinct_pages_merge_and_hash_all_source_bytes) ... ok
+test_draft_protocol_zero_get (test_capture_prior20.CaptureTests.test_draft_protocol_zero_get) ... ok
+test_duplicate_dates_retained_and_seal_rejected (test_capture_prior20.CaptureTests.test_duplicate_dates_retained_and_seal_rejected) ... ok
+test_duplicate_json_symbol_keys_not_silently_dropped (test_capture_prior20.CaptureTests.test_duplicate_json_symbol_keys_not_silently_dropped) ... ok
+test_empty_success_includes_every_requested_symbol (test_capture_prior20.CaptureTests.test_empty_success_includes_every_requested_symbol) ... ok
+test_encoder_only_converts_decimal_and_rejects_other_objects (test_capture_prior20.CaptureTests.test_encoder_only_converts_decimal_and_rejects_other_objects) ... ok
+test_exact_json_numbers_on_both_sides_of_thresholds (test_capture_prior20.CaptureTests.test_exact_json_numbers_on_both_sides_of_thresholds) ... ok
+test_existing_output_never_overwritten (test_capture_prior20.CaptureTests.test_existing_output_never_overwritten) ... ok
+test_failed_later_batch_never_ranks_partial_pool (test_capture_prior20.CaptureTests.test_failed_later_batch_never_ranks_partial_pool) ... ok
+test_full_panel_6633_and_exact_prior_only_query (test_capture_prior20.CaptureTests.test_full_panel_6633_and_exact_prior_only_query) ... ok
+test_future_daily_bar_retained_and_seal_rejected (test_capture_prior20.CaptureTests.test_future_daily_bar_retained_and_seal_rejected) ... ok
+test_invalid_response_body_not_hidden_as_empty_success (test_capture_prior20.CaptureTests.test_invalid_response_body_not_hidden_as_empty_success) ... ok
+test_known_symbol_from_wrong_batch_blocks_pool (test_capture_prior20.CaptureTests.test_known_symbol_from_wrong_batch_blocks_pool) ... ok
+test_late_preopen_blocks_before_credentials_or_transport (test_capture_prior20.CaptureTests.test_late_preopen_blocks_before_credentials_or_transport) ... ok
+test_late_response_preserved_but_cannot_seal (test_capture_prior20.CaptureTests.test_late_response_preserved_but_cannot_seal) ... ok
+test_method_hash_mismatch_zero_get (test_capture_prior20.CaptureTests.test_method_hash_mismatch_zero_get) ... ok
+test_missing_required_binding_zero_get (test_capture_prior20.CaptureTests.test_missing_required_binding_zero_get) ... ok
+test_nonfinite_source_values_never_break_failure_manifest (test_capture_prior20.CaptureTests.test_nonfinite_source_values_never_break_failure_manifest) ... ok
+test_numeric_encoding_bounds_match_selector (test_capture_prior20.CaptureTests.test_numeric_encoding_bounds_match_selector) ... ok
+test_numeric_pagination_token_is_not_coerced_to_string (test_capture_prior20.CaptureTests.test_numeric_pagination_token_is_not_coerced_to_string) ... ok
+test_page_and_total_get_limits_are_enforced (test_capture_prior20.CaptureTests.test_page_and_total_get_limits_are_enforced) ... ok
+test_private_output_modes_and_no_credentials_in_receipts (test_capture_prior20.CaptureTests.test_private_output_modes_and_no_credentials_in_receipts) ... ok
+test_redirect_refused_not_retried (test_capture_prior20.CaptureTests.test_redirect_refused_not_retried) ... ok
+test_repeated_page_token_stops_without_rank (test_capture_prior20.CaptureTests.test_repeated_page_token_stops_without_rank) ... ok
+test_retry_then_success_complete_receipt (test_capture_prior20.CaptureTests.test_retry_then_success_complete_receipt) ... ok
+test_three_attempt_cap_retains_every_body (test_capture_prior20.CaptureTests.test_three_attempt_cap_retains_every_body) ... ok
+test_today_cannot_capture_tomorrow (test_capture_prior20.CaptureTests.test_today_cannot_capture_tomorrow) ... ok
+test_unknown_symbol_retained_and_seal_rejected (test_capture_prior20.CaptureTests.test_unknown_symbol_retained_and_seal_rejected) ... ok
+test_unregistered_date_is_zero_get (test_capture_prior20.CaptureTests.test_unregistered_date_is_zero_get) ... ok
+
+----------------------------------------------------------------------
+Ran 33 tests in 4.694s
+
+OK

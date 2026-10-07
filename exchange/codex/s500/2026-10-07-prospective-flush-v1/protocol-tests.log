@@ -1,0 +1,34 @@
+test_dst_and_early_closes (test_protocol_tools.ReceiptTests.test_dst_and_early_closes) ... ok
+test_duplicate_batch_is_blocked (test_protocol_tools.ReceiptTests.test_duplicate_batch_is_blocked) ... ok
+test_exclusive_write (test_protocol_tools.ReceiptTests.test_exclusive_write) ... ok
+test_future_or_previous_receipt_date (test_protocol_tools.ReceiptTests.test_future_or_previous_receipt_date) ... ok
+test_holiday_not_registered (test_protocol_tools.ReceiptTests.test_holiday_not_registered) ... ok
+test_late_final_page_receipt (test_protocol_tools.ReceiptTests.test_late_final_page_receipt) ... ok
+test_ledger_missed_day_not_removed (test_protocol_tools.ReceiptTests.test_ledger_missed_day_not_removed) ... ok
+test_ledger_unknown_is_not_zero (test_protocol_tools.ReceiptTests.test_ledger_unknown_is_not_zero) ... ok
+test_malformed_input_is_rejected (test_protocol_tools.ReceiptTests.test_malformed_input_is_rejected) ... ok
+test_missing_price_history_is_observed_exclusion (test_protocol_tools.ReceiptTests.test_missing_price_history_is_observed_exclusion) ... ok
+test_no_capture_before_target_date (test_protocol_tools.ReceiptTests.test_no_capture_before_target_date) ... ok
+test_no_naive_timestamp (test_protocol_tools.ReceiptTests.test_no_naive_timestamp) ... ok
+test_no_unregistered_capture (test_protocol_tools.ReceiptTests.test_no_unregistered_capture) ... ok
+test_omitted_unselected_batch_is_not_complete (test_protocol_tools.ReceiptTests.test_omitted_unselected_batch_is_not_complete) ... ok
+test_panel_digest_and_registered_panel (test_protocol_tools.ReceiptTests.test_panel_digest_and_registered_panel) ... ok
+test_postclose_future_receipt (test_protocol_tools.ReceiptTests.test_postclose_future_receipt) ... ok
+test_postclose_late_arrival_not_saved_by_old_bar_time (test_protocol_tools.ReceiptTests.test_postclose_late_arrival_not_saved_by_old_bar_time) ... ok
+test_postclose_no_preopen_seal (test_protocol_tools.ReceiptTests.test_postclose_no_preopen_seal) ... ok
+test_postclose_no_symbol_replacement (test_protocol_tools.ReceiptTests.test_postclose_no_symbol_replacement) ... ok
+test_postclose_on_time_source_review_later (test_protocol_tools.ReceiptTests.test_postclose_on_time_source_review_later) ... ok
+test_receipt_time_order (test_protocol_tools.ReceiptTests.test_receipt_time_order) ... ok
+test_receipts_before_same_day_registration (test_protocol_tools.ReceiptTests.test_receipts_before_same_day_registration) ... ok
+test_same_day_return_cannot_enter_ranking (test_protocol_tools.ReceiptTests.test_same_day_return_cannot_enter_ranking) ... ok
+test_seal_deadline_exact_then_late (test_protocol_tools.ReceiptTests.test_seal_deadline_exact_then_late) ... ok
+test_seal_selection_tampering (test_protocol_tools.ReceiptTests.test_seal_selection_tampering) ... ok
+test_source_failed_batch (test_protocol_tools.ReceiptTests.test_source_failed_batch) ... ok
+test_source_incomplete_blocks_whole_pool (test_protocol_tools.ReceiptTests.test_source_incomplete_blocks_whole_pool) ... ok
+test_valid_full_pool (test_protocol_tools.ReceiptTests.test_valid_full_pool) ... ok
+test_wrong_prior20_subset (test_protocol_tools.ReceiptTests.test_wrong_prior20_subset) ... ok
+
+----------------------------------------------------------------------
+Ran 29 tests in 0.022s
+
+OK

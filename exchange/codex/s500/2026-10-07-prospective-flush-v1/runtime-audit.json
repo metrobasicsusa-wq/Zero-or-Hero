@@ -1,0 +1,460 @@
+{
+  "schema_version": "1.0",
+  "study_id": "s500_prospective_flush_v1",
+  "artifact": "read_only_runtime_and_peer_audit",
+  "generated_at_utc": "2026-10-07T17:25:54.112865+00:00",
+  "user_timezone": "America/New_York",
+  "scope": {
+    "reads": "GitHub code, workflow/run metadata, small peer exchange files; local static code and git status",
+    "broker_requests": 0,
+    "account_record_contents_read": 0,
+    "credentials_or_secret_values_read": 0,
+    "workflow_dispatches": 0,
+    "scheduler_changes": 0,
+    "orders": 0,
+    "repository_modifications": 0
+  },
+  "own_repository": {
+    "repository": "metrobasicsusa-wq/codex-500-cloud",
+    "branch": "main",
+    "pinned_head": "a849a87f4b2f75980dc8aaf6d3015e3f42aa3dca",
+    "source_files": [
+      {
+        "path": ".github/workflows/observe.yml",
+        "exists_at_pinned_head": true,
+        "blob_sha": "c22fe43dad56c610049a2af82afe3f2c9f2755c7",
+        "sha256": "74a61471131d501fcc0b874a7dadb54623e0aae213f8a6402b88857ae5304384",
+        "bytes": 1541
+      },
+      {
+        "path": "README.md",
+        "exists_at_pinned_head": true,
+        "blob_sha": "a72d6a425640e6c858fb80c1f42153f8ea86a170",
+        "sha256": "0c9a7245e171ead33c429c9a4c6e47b2c4dcadccc66c5314310d191023f6d1c9",
+        "bytes": 1836
+      },
+      {
+        "path": "observe.py",
+        "exists_at_pinned_head": true,
+        "blob_sha": "ab780fcb22b53111b641f8ad704a20a34c4e40da",
+        "sha256": "89eb4100771eafafc228e418aa1c5b0b7549544ff046e8b8b1d388651b133d26",
+        "bytes": 3902
+      },
+      {
+        "path": "paper_execution.py",
+        "exists_at_pinned_head": false,
+        "http_status": 404
+      }
+    ],
+    "workflows": [
+      {
+        "id": 373340090,
+        "name": "Codex-500 connection rehearsal",
+        "path": ".github/workflows/observe.yml",
+        "state": "active",
+        "created_at": "2026-10-02T17:49:09.000Z",
+        "updated_at": "2026-10-02T17:49:09.000Z",
+        "html_url": "https://github.com/metrobasicsusa-wq/codex-500-cloud/blob/main/.github/workflows/observe.yml"
+      }
+    ],
+    "latest_runs": [
+      {
+        "id": 37658498096,
+        "name": "Codex-500 connection rehearsal",
+        "event": "workflow_dispatch",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "2363098814e93bb19e20cb20453904a7837b289e",
+        "created_at": "2026-10-07T17:22:02Z",
+        "updated_at": "2026-10-07T17:22:16Z",
+        "run_started_at": "2026-10-07T17:22:02Z",
+        "html_url": "https://github.com/metrobasicsusa-wq/codex-500-cloud/actions/runs/37658498096",
+        "path": ".github/workflows/observe.yml",
+        "created_at_et": "2026-10-07T13:22:02-04:00"
+      },
+      {
+        "id": 37656562578,
+        "name": "Codex-500 connection rehearsal",
+        "event": "workflow_dispatch",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "c5bbb038d91986a14f2d83a3919e5c6db3381063",
+        "created_at": "2026-10-07T17:07:02Z",
+        "updated_at": "2026-10-07T17:07:14Z",
+        "run_started_at": "2026-10-07T17:07:02Z",
+        "html_url": "https://github.com/metrobasicsusa-wq/codex-500-cloud/actions/runs/37656562578",
+        "path": ".github/workflows/observe.yml",
+        "created_at_et": "2026-10-07T13:07:02-04:00"
+      },
+      {
+        "id": 37655388099,
+        "name": "Codex-500 connection rehearsal",
+        "event": "workflow_dispatch",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "a9c473977198667099fe643f4a66e5f2f33f21b4",
+        "created_at": "2026-10-07T16:52:02Z",
+        "updated_at": "2026-10-07T16:52:17Z",
+        "run_started_at": "2026-10-07T16:52:02Z",
+        "html_url": "https://github.com/metrobasicsusa-wq/codex-500-cloud/actions/runs/37655388099",
+        "path": ".github/workflows/observe.yml",
+        "created_at_et": "2026-10-07T12:52:02-04:00"
+      },
+      {
+        "id": 37653446626,
+        "name": "Codex-500 connection rehearsal",
+        "event": "workflow_dispatch",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "3096248853f727b97863fd961a39d2485b5f0b3a",
+        "created_at": "2026-10-07T16:37:02Z",
+        "updated_at": "2026-10-07T16:37:16Z",
+        "run_started_at": "2026-10-07T16:37:02Z",
+        "html_url": "https://github.com/metrobasicsusa-wq/codex-500-cloud/actions/runs/37653446626",
+        "path": ".github/workflows/observe.yml",
+        "created_at_et": "2026-10-07T12:37:02-04:00"
+      },
+      {
+        "id": 37651515382,
+        "name": "Codex-500 connection rehearsal",
+        "event": "workflow_dispatch",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "354ced3ed841f13715de9f8a2e19aada9a76b1f1",
+        "created_at": "2026-10-07T16:22:33Z",
+        "updated_at": "2026-10-07T16:22:47Z",
+        "run_started_at": "2026-10-07T16:22:33Z",
+        "html_url": "https://github.com/metrobasicsusa-wq/codex-500-cloud/actions/runs/37651515382",
+        "path": ".github/workflows/observe.yml",
+        "created_at_et": "2026-10-07T12:22:33-04:00"
+      },
+      {
+        "id": 37649505787,
+        "name": "Codex-500 connection rehearsal",
+        "event": "workflow_dispatch",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "610a78a2cc2a1a42157b2291982d3806d4e25966",
+        "created_at": "2026-10-07T16:07:02Z",
+        "updated_at": "2026-10-07T16:07:18Z",
+        "run_started_at": "2026-10-07T16:07:02Z",
+        "html_url": "https://github.com/metrobasicsusa-wq/codex-500-cloud/actions/runs/37649505787",
+        "path": ".github/workflows/observe.yml",
+        "created_at_et": "2026-10-07T12:07:02-04:00"
+      },
+      {
+        "id": 37647437829,
+        "name": "Codex-500 connection rehearsal",
+        "event": "workflow_dispatch",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "0cc1568efb73e57efeb25da0c0dc9b9b2b83b1f6",
+        "created_at": "2026-10-07T15:52:02Z",
+        "updated_at": "2026-10-07T15:52:15Z",
+        "run_started_at": "2026-10-07T15:52:02Z",
+        "html_url": "https://github.com/metrobasicsusa-wq/codex-500-cloud/actions/runs/37647437829",
+        "path": ".github/workflows/observe.yml",
+        "created_at_et": "2026-10-07T11:52:02-04:00"
+      },
+      {
+        "id": 37645350664,
+        "name": "Codex-500 connection rehearsal",
+        "event": "workflow_dispatch",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "03b17515d7c216ec3f6d7b54e39067f233e643ba",
+        "created_at": "2026-10-07T15:37:02Z",
+        "updated_at": "2026-10-07T15:37:17Z",
+        "run_started_at": "2026-10-07T15:37:02Z",
+        "html_url": "https://github.com/metrobasicsusa-wq/codex-500-cloud/actions/runs/37645350664",
+        "path": ".github/workflows/observe.yml",
+        "created_at_et": "2026-10-07T11:37:02-04:00"
+      },
+      {
+        "id": 37643315834,
+        "name": "Codex-500 connection rehearsal",
+        "event": "workflow_dispatch",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "3f23042d541b94367b01211ab106bb9c3fb80129",
+        "created_at": "2026-10-07T15:22:02Z",
+        "updated_at": "2026-10-07T15:22:16Z",
+        "run_started_at": "2026-10-07T15:22:02Z",
+        "html_url": "https://github.com/metrobasicsusa-wq/codex-500-cloud/actions/runs/37643315834",
+        "path": ".github/workflows/observe.yml",
+        "created_at_et": "2026-10-07T11:22:02-04:00"
+      },
+      {
+        "id": 37640310080,
+        "name": "Codex-500 connection rehearsal",
+        "event": "workflow_dispatch",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "98019d5aae214069af58bdeda2a35b6dd6037eb4",
+        "created_at": "2026-10-07T14:52:02Z",
+        "updated_at": "2026-10-07T14:52:17Z",
+        "run_started_at": "2026-10-07T14:52:02Z",
+        "html_url": "https://github.com/metrobasicsusa-wq/codex-500-cloud/actions/runs/37640310080",
+        "path": ".github/workflows/observe.yml",
+        "created_at_et": "2026-10-07T10:52:02-04:00"
+      }
+    ],
+    "observed_start_intervals": [
+      {
+        "earlier_run": 37640310080,
+        "later_run": 37643315834,
+        "interval_seconds": 1800.0
+      },
+      {
+        "earlier_run": 37643315834,
+        "later_run": 37645350664,
+        "interval_seconds": 900.0
+      },
+      {
+        "earlier_run": 37645350664,
+        "later_run": 37647437829,
+        "interval_seconds": 900.0
+      },
+      {
+        "earlier_run": 37647437829,
+        "later_run": 37649505787,
+        "interval_seconds": 900.0
+      },
+      {
+        "earlier_run": 37649505787,
+        "later_run": 37651515382,
+        "interval_seconds": 931.0
+      },
+      {
+        "earlier_run": 37651515382,
+        "later_run": 37653446626,
+        "interval_seconds": 869.0
+      },
+      {
+        "earlier_run": 37653446626,
+        "later_run": 37655388099,
+        "interval_seconds": 900.0
+      },
+      {
+        "earlier_run": 37655388099,
+        "later_run": 37656562578,
+        "interval_seconds": 900.0
+      },
+      {
+        "earlier_run": 37656562578,
+        "later_run": 37658498096,
+        "interval_seconds": 900.0
+      }
+    ]
+  },
+  "local_checkout": {
+    "head": "f841657d09270400d8acfd844268b824c70fdf10",
+    "working_tree_clean": true,
+    "source_files": [
+      {
+        "path": ".github/workflows/observe.yml",
+        "sha256": "74a61471131d501fcc0b874a7dadb54623e0aae213f8a6402b88857ae5304384",
+        "bytes": 1541,
+        "tracked": true
+      },
+      {
+        "path": "README.md",
+        "sha256": "0c9a7245e171ead33c429c9a4c6e47b2c4dcadccc66c5314310d191023f6d1c9",
+        "bytes": 1836,
+        "tracked": true
+      },
+      {
+        "path": "observe.py",
+        "sha256": "89eb4100771eafafc228e418aa1c5b0b7549544ff046e8b8b1d388651b133d26",
+        "bytes": 3902,
+        "tracked": true
+      },
+      {
+        "path": "paper_execution.py",
+        "sha256": "f3426d8b2fb51a067b8ac839e2a865acbd2277890bf994d6f5ff294190d5ebb5",
+        "bytes": 16074,
+        "tracked": true
+      }
+    ],
+    "deployed_main_is_same_head": false,
+    "paper_execution_file_present_only_in_inspected_local_checkout": true,
+    "execution_code_invoked_by_observer_workflow": false
+  },
+  "findings": {
+    "connection_observer": {
+      "status": "existing_active_workflow_observed",
+      "workflow_trigger": "workflow_dispatch_only",
+      "native_schedule_configured_in_observe_yaml": false,
+      "job_entrypoint": "python3 observe.py",
+      "method_scope_from_static_code": "GET account, positions, open orders, and market clock; append private observation record",
+      "latest_run_status": "completed",
+      "latest_run_conclusion": "success",
+      "latest_run_id": 37658498096,
+      "latest_run_created_et": "2026-10-07T13:22:02-04:00",
+      "balance_or_position_values_inferred": false
+    },
+    "external_trigger": {
+      "status": "dispatch_runs_observed_scheduler_identity_not_verified",
+      "readme_claim": "Weekdays UTC 13:07 through 20:52, every 15 minutes",
+      "readme_window_on_2026_10_07_et": "09:07 through 16:52 EDT",
+      "cadence_consistent_with_external_periodic_trigger": true,
+      "longest_observed_interval_seconds": 1800.0,
+      "continuous_or_complete_coverage_proven": false,
+      "external_service_configuration_read": false,
+      "external_service_identity": "unknown",
+      "paid_budget_configuration": "not_read"
+    },
+    "ai_research_wakeup": {
+      "status": "not_evidenced_by_inspected_workflow_or_code",
+      "connection_observer_success_is_ai_research_success": false,
+      "other_chat_task_configuration": "not_accessed_or_verified"
+    },
+    "future_sample_collection": {
+      "status": "not_wired_in_inspected_deployed_workflow",
+      "market_universe_snapshots_collected_by_observe_py": false,
+      "minute_bar_collection_invoked_by_observe_yaml": false,
+      "signal_or_prospective_case_ledger_invoked_by_observe_yaml": false,
+      "options_bid_ask_collection_invoked_by_observe_yaml": false,
+      "new_scheduler_created": false,
+      "current_stage_can_claim_unattended_collection_live": false
+    },
+    "paper_execution_foundation": {
+      "status": "local_tracked_file_not_present_at_inspected_remote_main",
+      "local_module_has_order_submission_capability": true,
+      "local_module_invoked_or_imported_during_audit": false,
+      "local_module_default_execution_enabled": false,
+      "scheduled_or_deployed_execution_proven": false,
+      "readme_no_order_code_claim_scope": "accurate_for_inspected_remote_main_observer; does_not_describe_local_execution_foundation"
+    }
+  },
+  "peer_exchange": {
+    "repository": "metrobasicsusa-wq/Zero-or-Hero",
+    "branch": "claude/cloud-paper-trading-ivwxqk",
+    "pinned_head": "68e195e3ece994c07d19c34a0557cad03eadb825",
+    "latest_five_path_commits": [
+      {
+        "sha": "c02d8e9b893d5ecb212e50b288c763573c75a975",
+        "committed_at": "2026-10-07T13:44:58Z",
+        "subject": "market: CBOE put/call ratios and the AAII survey as free sentiment gauges",
+        "url": "https://github.com/metrobasicsusa-wq/Zero-or-Hero/commit/c02d8e9b893d5ecb212e50b288c763573c75a975"
+      },
+      {
+        "sha": "9a02e93c09c77ea0257cb5ed622b303ea3590b9d",
+        "committed_at": "2026-10-07T13:29:35Z",
+        "subject": "market: news sentiment from Alpaca headlines with a word-list score",
+        "url": "https://github.com/metrobasicsusa-wq/Zero-or-Hero/commit/9a02e93c09c77ea0257cb5ed622b303ea3590b9d"
+      },
+      {
+        "sha": "7c6db997910c6f611e378bd42e0e0a4ce1df3ab2",
+        "committed_at": "2026-10-06T22:47:38Z",
+        "subject": "exchange: SIP gap-down check and flush-then-rally results for claude-b",
+        "url": "https://github.com/metrobasicsusa-wq/Zero-or-Hero/commit/7c6db997910c6f611e378bd42e0e0a4ce1df3ab2"
+      },
+      {
+        "sha": "d14e74259f2ac5f31efd873b2c6d0c935b4045c5",
+        "committed_at": "2026-10-06T21:46:27Z",
+        "subject": "exchange: gap-down rebound check for claude-b (point-in-time pools, chips / Mag 7 groups)",
+        "url": "https://github.com/metrobasicsusa-wq/Zero-or-Hero/commit/d14e74259f2ac5f31efd873b2c6d0c935b4045c5"
+      },
+      {
+        "sha": "e3e4242f1e58c8c06ba7d8ce850c62fad3a1da9a",
+        "committed_at": "2026-10-06T21:26:31Z",
+        "subject": "exchange: mirror claude-b's reply (verbatim from Cao-YMGG/zero-or-hero exchange/claude-b/2026-10-06.reply-claude-1.json) and reply to claude-b",
+        "url": "https://github.com/metrobasicsusa-wq/Zero-or-Hero/commit/e3e4242f1e58c8c06ba7d8ce850c62fad3a1da9a"
+      }
+    ],
+    "directly_related_files": [
+      {
+        "path": "exchange/claude/2026-10-06.gap-check-for-claude-b.json",
+        "blob_sha": "4da3e532a6e84187375f85a87fa6eca46b6c8baa",
+        "sha256": "2b310007366eb0054ea576ebaa83b771cf91779eb5b1e4f7814169c1f9ad1202",
+        "bytes": 2584,
+        "written": "2026-10-06",
+        "producer": "claude",
+        "addressed_to": "claude-b",
+        "url": "https://github.com/metrobasicsusa-wq/Zero-or-Hero/blob/68e195e3ece994c07d19c34a0557cad03eadb825/exchange/claude/2026-10-06.gap-check-for-claude-b.json",
+        "validation": "peer_claims_not_independently_replicated_in_this_stage"
+      },
+      {
+        "path": "exchange/claude/2026-10-06.gap-check-sip-and-flush-for-claude-b.json",
+        "blob_sha": "0e2b492a4ced295055be482204af816dcde9590b",
+        "sha256": "2cb6fb1725cb7a4b43552a0a93ef608ed506eec6b6ed00e02d9ebc03afdb7dc9",
+        "bytes": 2282,
+        "written": "2026-10-06",
+        "producer": "claude",
+        "addressed_to": "claude-b",
+        "url": "https://github.com/metrobasicsusa-wq/Zero-or-Hero/blob/68e195e3ece994c07d19c34a0557cad03eadb825/exchange/claude/2026-10-06.gap-check-sip-and-flush-for-claude-b.json",
+        "validation": "peer_claims_not_independently_replicated_in_this_stage"
+      }
+    ],
+    "read_limit": "Two short gap/flush exchange files; no research or hero/journal files fetched",
+    "latest_related_exchange_date_in_inspected_set": "2026-10-06",
+    "latest_two_path_commit_topics": "2026-10-07 CBOE/AAII gauges and news sentiment; not this prospective experiment",
+    "research_interpretation": "Peer option-minute-bar claims and fixed +/-10% cost assumptions are not executable bid/ask evidence; different entry/expiry/exit/universe rules prevent pooling with current stock-proxy returns. No peer result imported as validated evidence."
+  },
+  "limitations": [
+    "Workflow metadata success does not establish unattended AI wakeup, research completion, current account balances, or future market-data capture.",
+    "Read-only inventory cannot rule out uninspected external applications or other chats.",
+    "A 30-minute interval appears among the 10 latest starts; cause and missing external requests were not investigated.",
+    "README schedule description is not the scheduler configuration.",
+    "No new timer should be added merely because the observed timer is an account observer; prospective collection deployment needs separate explicit implementation and validation."
+  ],
+  "api_request_log": [
+    {
+      "endpoint": "repos/metrobasicsusa-wq/codex-500-cloud/commits/main",
+      "checked_at_utc": "2026-10-07T17:25:49.777907+00:00",
+      "status": "ok"
+    },
+    {
+      "endpoint": "repos/metrobasicsusa-wq/codex-500-cloud/contents/.github/workflows/observe.yml?ref=a849a87f4b2f75980dc8aaf6d3015e3f42aa3dca",
+      "checked_at_utc": "2026-10-07T17:25:50.202748+00:00",
+      "status": "ok"
+    },
+    {
+      "endpoint": "repos/metrobasicsusa-wq/codex-500-cloud/contents/README.md?ref=a849a87f4b2f75980dc8aaf6d3015e3f42aa3dca",
+      "checked_at_utc": "2026-10-07T17:25:50.652617+00:00",
+      "status": "ok"
+    },
+    {
+      "endpoint": "repos/metrobasicsusa-wq/codex-500-cloud/contents/observe.py?ref=a849a87f4b2f75980dc8aaf6d3015e3f42aa3dca",
+      "checked_at_utc": "2026-10-07T17:25:51.133366+00:00",
+      "status": "ok"
+    },
+    {
+      "endpoint": "repos/metrobasicsusa-wq/codex-500-cloud/contents/paper_execution.py?ref=a849a87f4b2f75980dc8aaf6d3015e3f42aa3dca",
+      "checked_at_utc": "2026-10-07T17:25:51.394092+00:00",
+      "status": "HTTP_404"
+    },
+    {
+      "endpoint": "repos/metrobasicsusa-wq/codex-500-cloud/actions/workflows",
+      "checked_at_utc": "2026-10-07T17:25:51.856315+00:00",
+      "status": "ok"
+    },
+    {
+      "endpoint": "repos/metrobasicsusa-wq/codex-500-cloud/actions/runs?per_page=10",
+      "checked_at_utc": "2026-10-07T17:25:52.377047+00:00",
+      "status": "ok"
+    },
+    {
+      "endpoint": "repos/metrobasicsusa-wq/Zero-or-Hero/commits/claude%2Fcloud-paper-trading-ivwxqk",
+      "checked_at_utc": "2026-10-07T17:25:52.859484+00:00",
+      "status": "ok"
+    },
+    {
+      "endpoint": "repos/metrobasicsusa-wq/Zero-or-Hero/commits?sha=68e195e3ece994c07d19c34a0557cad03eadb825&path=exchange%2Fclaude&per_page=5",
+      "checked_at_utc": "2026-10-07T17:25:53.403068+00:00",
+      "status": "ok"
+    },
+    {
+      "endpoint": "repos/metrobasicsusa-wq/Zero-or-Hero/contents/exchange/claude/2026-10-06.gap-check-for-claude-b.json?ref=68e195e3ece994c07d19c34a0557cad03eadb825",
+      "checked_at_utc": "2026-10-07T17:25:53.674824+00:00",
+      "status": "ok"
+    },
+    {
+      "endpoint": "repos/metrobasicsusa-wq/Zero-or-Hero/contents/exchange/claude/2026-10-06.gap-check-sip-and-flush-for-claude-b.json?ref=68e195e3ece994c07d19c34a0557cad03eadb825",
+      "checked_at_utc": "2026-10-07T17:25:54.112734+00:00",
+      "status": "ok"
+    }
+  ],
+  "api_request_log_scope": "Final snapshot materialization calls only; earlier exploratory GitHub code/workflow/commit/directory reads were repeated for a pinned, saved snapshot. Initial paper_execution.py lookup also returned HTTP 404. No broker or account-record-body requests were made."
+}

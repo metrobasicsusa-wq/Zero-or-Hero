@@ -1,0 +1,79 @@
+{
+  "passed": true,
+  "audited_at_utc": "2026-10-07T17:54:07.259088+00:00",
+  "tests_passed": 37,
+  "failed_tests": 0,
+  "runs": [
+    {
+      "module": "independent_selection_tests",
+      "tests_run": 16,
+      "passed": true,
+      "failures": 0,
+      "errors": 0,
+      "log": "independent-selection-tests.log"
+    },
+    {
+      "module": "independent_protocol_tests",
+      "tests_run": 17,
+      "passed": true,
+      "failures": 0,
+      "errors": 0,
+      "log": "independent-protocol-tests.log"
+    },
+    {
+      "module": "independent_capture_precision_tests",
+      "tests_run": 4,
+      "passed": true,
+      "failures": 0,
+      "errors": 0,
+      "log": "independent-capture-precision-tests.log"
+    }
+  ],
+  "source_checks_passed": true,
+  "source_checks": 77,
+  "bound_sha256": {
+    "protocol.json": "92382d11cb5970a3a0f959c41b5afd94dd209e5bddadcab92cefd0e830f623fc",
+    "prospect_selection.py": "c15ee425b5ea8441a8d4b92b65c58b0cbacfa20e1eef645752a7d551a248d8d7",
+    "protocol_tools.py": "77691f4a35727ef7cba6db875799591bcc4ac820eade9e28839e9b0c77d22780",
+    "capture_prior20.py": "4310a473648ca4f0eb367979e8456866284e67baed0704224cb9d30a705f2d69",
+    "fixed-panel.json": "f7598f2e6e85d53a38a6c84d5d311eaae90f423582a6f61f5019302954cbb389",
+    "fixed-panel-source.json": "4a5cbd9b19fa3b30538afb33cc0e0361ef2ad9e04041589a7de6fc213082180e",
+    "calendar-sessions.json": "37e2e800840c9352d15346216675aa4aae7ac732cbbd360b699881edb9a065ad",
+    "calendar-source.json": "16086f8129938001adc569ddce47ed030a9c1789fef1595725cf51e92ee254b6",
+    "independent_selection_tests.py": "6948d6966b329ef722f57adb8b67e39ba380b4148f072de6009e771fca73063e",
+    "independent_protocol_tests.py": "064d81288221ae5f605a1f3988bc24422f04235ab7e5718b69aef5fe9b7d1458",
+    "independent_capture_precision_tests.py": "da25ec662cfcc52d4e9125ecb231c740d67232a5195a3e6a2e738caafe9e6d55",
+    "independent_input_audit.py": "4ae102ea98385a885b66f5322b5bd30742d6c583c2f8bf1777f5c9a238653cf3",
+    "independent-input-draft-audit.json": "e4314ee0e53b2e6bc13a2f9848706f2050f01984828311343cb7f5bce8b85998",
+    "independent_pre_registration_audit.py": "3febf8dc00fe3d2774599feb025368d524104862c2e4e4e1bd123a0fb8654828",
+    "independent-selection-tests.log": "c58deb981eb425effcdbe0faf67e42babebc4b1308c9a7641783647b8a86ca9d",
+    "independent-protocol-tests.log": "fe0a9f8c7a4ac5b11b63c46a61783f76dcf8f053d0dae902696bdd8fc3a70485",
+    "independent-capture-precision-tests.log": "4bcdf597ce3a73ca5ad9d503c992e8e20e99d0fe4e84c9d32afd5eab84cc6698"
+  },
+  "resolved_production_findings": [
+    {
+      "issue": "Unbounded finite Decimal exponents could raise Overflow or silently underflow",
+      "resolution": "Explicit coefficient/exponent limits and wide local contexts; independently tested"
+    },
+    {
+      "issue": "Source capture before protocol registration could be accepted",
+      "resolution": "check_clock rejects capture before registered_at; independently tested"
+    },
+    {
+      "issue": "Malformed bundle/receipt objects could escape as AttributeError",
+      "resolution": "Gate returns malformed rejection; independently tested"
+    },
+    {
+      "issue": "Parsing source JSON decimal literals into float could cross exact selection boundaries",
+      "resolution": "Source parser preserves decimal literals; independent Fraction end-to-end precision tests"
+    }
+  ],
+  "test_fixture_corrections": [
+    "Renamed an overlength synthetic symbol NEGATIVEPAIR to legal NEGPAIR before final passing run",
+    "Renamed a shadowed fixture loop variable that wrongly accessed prior20_dates on a panel row"
+  ],
+  "real_price_gets": 0,
+  "account_reads": 0,
+  "orders_sent": 0,
+  "scope": "Independent synthetic selection arithmetic, receipt guards, raw JSON precision and source/calendar/panel reconstruction. No future price observations, live execution or scheduler activation claim."
+}

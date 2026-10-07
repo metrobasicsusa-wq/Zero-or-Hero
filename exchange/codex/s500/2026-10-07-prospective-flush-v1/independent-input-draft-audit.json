@@ -1,0 +1,374 @@
+{
+  "status": "passed",
+  "audited_at_utc": "2026-10-07T17:54:07.246017+00:00",
+  "bindings": {
+    "protocol.json": "92382d11cb5970a3a0f959c41b5afd94dd209e5bddadcab92cefd0e830f623fc",
+    "fixed-panel.json": "f7598f2e6e85d53a38a6c84d5d311eaae90f423582a6f61f5019302954cbb389",
+    "fixed-panel-source.json": "4a5cbd9b19fa3b30538afb33cc0e0361ef2ad9e04041589a7de6fc213082180e",
+    "calendar-source.json": "16086f8129938001adc569ddce47ed030a9c1789fef1595725cf51e92ee254b6",
+    "calendar-sessions.json": "37e2e800840c9352d15346216675aa4aae7ac732cbbd360b699881edb9a065ad",
+    "prospect_selection.py": "c15ee425b5ea8441a8d4b92b65c58b0cbacfa20e1eef645752a7d551a248d8d7",
+    "protocol_tools.py": "77691f4a35727ef7cba6db875799591bcc4ac820eade9e28839e9b0c77d22780",
+    "capture_prior20.py": "4310a473648ca4f0eb367979e8456866284e67baed0704224cb9d30a705f2d69",
+    "independent_selection_tests.py": "6948d6966b329ef722f57adb8b67e39ba380b4148f072de6009e771fca73063e",
+    "independent_protocol_tests.py": "064d81288221ae5f605a1f3988bc24422f04235ab7e5718b69aef5fe9b7d1458",
+    "independent_capture_precision_tests.py": "da25ec662cfcc52d4e9125ecb231c740d67232a5195a3e6a2e738caafe9e6d55",
+    "independent-capture-precision-tests.log": "4bcdf597ce3a73ca5ad9d503c992e8e20e99d0fe4e84c9d32afd5eab84cc6698",
+    "independent-selection-tests.log": "c58deb981eb425effcdbe0faf67e42babebc4b1308c9a7641783647b8a86ca9d",
+    "independent-protocol-tests.log": "fe0a9f8c7a4ac5b11b63c46a61783f76dcf8f053d0dae902696bdd8fc3a70485",
+    "independent_input_audit.py": "4ae102ea98385a885b66f5322b5bd30742d6c583c2f8bf1777f5c9a238653cf3"
+  },
+  "checks": [
+    {
+      "check": "calendar_successful_get_only",
+      "passed": true
+    },
+    {
+      "check": "calendar_raw_sha256",
+      "passed": true
+    },
+    {
+      "check": "calendar_raw_bytes",
+      "passed": true
+    },
+    {
+      "check": "calendar_receipt_order",
+      "passed": true
+    },
+    {
+      "check": "all_85_calendar_rows_preserved_exactly",
+      "passed": true
+    },
+    {
+      "check": "calendar_dates_match_independent_weekday_holiday_construction",
+      "passed": true
+    },
+    {
+      "check": "all_59_future_dates_exact",
+      "passed": true
+    },
+    {
+      "check": "independent_times_and_prior20_2026-10-08",
+      "passed": true
+    },
+    {
+      "check": "independent_times_and_prior20_2026-10-09",
+      "passed": true
+    },
+    {
+      "check": "independent_times_and_prior20_2026-10-12",
+      "passed": true
+    },
+    {
+      "check": "independent_times_and_prior20_2026-10-13",
+      "passed": true
+    },
+    {
+      "check": "independent_times_and_prior20_2026-10-14",
+      "passed": true
+    },
+    {
+      "check": "independent_times_and_prior20_2026-10-15",
+      "passed": true
+    },
+    {
+      "check": "independent_times_and_prior20_2026-10-16",
+      "passed": true
+    },
+    {
+      "check": "independent_times_and_prior20_2026-10-19",
+      "passed": true
+    },
+    {
+      "check": "independent_times_and_prior20_2026-10-20",
+      "passed": true
+    },
+    {
+      "check": "independent_times_and_prior20_2026-10-21",
+      "passed": true
+    },
+    {
+      "check": "independent_times_and_prior20_2026-10-22",
+      "passed": true
+    },
+    {
+      "check": "independent_times_and_prior20_2026-10-23",
+      "passed": true
+    },
+    {
+      "check": "independent_times_and_prior20_2026-10-26",
+      "passed": true
+    },
+    {
+      "check": "independent_times_and_prior20_2026-10-27",
+      "passed": true
+    },
+    {
+      "check": "independent_times_and_prior20_2026-10-28",
+      "passed": true
+    },
+    {
+      "check": "independent_times_and_prior20_2026-10-29",
+      "passed": true
+    },
+    {
+      "check": "independent_times_and_prior20_2026-10-30",
+      "passed": true
+    },
+    {
+      "check": "independent_times_and_prior20_2026-11-02",
+      "passed": true
+    },
+    {
+      "check": "independent_times_and_prior20_2026-11-03",
+      "passed": true
+    },
+    {
+      "check": "independent_times_and_prior20_2026-11-04",
+      "passed": true
+    },
+    {
+      "check": "independent_times_and_prior20_2026-11-05",
+      "passed": true
+    },
+    {
+      "check": "independent_times_and_prior20_2026-11-06",
+      "passed": true
+    },
+    {
+      "check": "independent_times_and_prior20_2026-11-09",
+      "passed": true
+    },
+    {
+      "check": "independent_times_and_prior20_2026-11-10",
+      "passed": true
+    },
+    {
+      "check": "independent_times_and_prior20_2026-11-11",
+      "passed": true
+    },
+    {
+      "check": "independent_times_and_prior20_2026-11-12",
+      "passed": true
+    },
+    {
+      "check": "independent_times_and_prior20_2026-11-13",
+      "passed": true
+    },
+    {
+      "check": "independent_times_and_prior20_2026-11-16",
+      "passed": true
+    },
+    {
+      "check": "independent_times_and_prior20_2026-11-17",
+      "passed": true
+    },
+    {
+      "check": "independent_times_and_prior20_2026-11-18",
+      "passed": true
+    },
+    {
+      "check": "independent_times_and_prior20_2026-11-19",
+      "passed": true
+    },
+    {
+      "check": "independent_times_and_prior20_2026-11-20",
+      "passed": true
+    },
+    {
+      "check": "independent_times_and_prior20_2026-11-23",
+      "passed": true
+    },
+    {
+      "check": "independent_times_and_prior20_2026-11-24",
+      "passed": true
+    },
+    {
+      "check": "independent_times_and_prior20_2026-11-25",
+      "passed": true
+    },
+    {
+      "check": "independent_times_and_prior20_2026-11-27",
+      "passed": true
+    },
+    {
+      "check": "independent_times_and_prior20_2026-11-30",
+      "passed": true
+    },
+    {
+      "check": "independent_times_and_prior20_2026-12-01",
+      "passed": true
+    },
+    {
+      "check": "independent_times_and_prior20_2026-12-02",
+      "passed": true
+    },
+    {
+      "check": "independent_times_and_prior20_2026-12-03",
+      "passed": true
+    },
+    {
+      "check": "independent_times_and_prior20_2026-12-04",
+      "passed": true
+    },
+    {
+      "check": "independent_times_and_prior20_2026-12-07",
+      "passed": true
+    },
+    {
+      "check": "independent_times_and_prior20_2026-12-08",
+      "passed": true
+    },
+    {
+      "check": "independent_times_and_prior20_2026-12-09",
+      "passed": true
+    },
+    {
+      "check": "independent_times_and_prior20_2026-12-10",
+      "passed": true
+    },
+    {
+      "check": "independent_times_and_prior20_2026-12-11",
+      "passed": true
+    },
+    {
+      "check": "independent_times_and_prior20_2026-12-14",
+      "passed": true
+    },
+    {
+      "check": "independent_times_and_prior20_2026-12-15",
+      "passed": true
+    },
+    {
+      "check": "independent_times_and_prior20_2026-12-16",
+      "passed": true
+    },
+    {
+      "check": "independent_times_and_prior20_2026-12-17",
+      "passed": true
+    },
+    {
+      "check": "independent_times_and_prior20_2026-12-18",
+      "passed": true
+    },
+    {
+      "check": "independent_times_and_prior20_2026-12-21",
+      "passed": true
+    },
+    {
+      "check": "independent_times_and_prior20_2026-12-22",
+      "passed": true
+    },
+    {
+      "check": "independent_times_and_prior20_2026-12-23",
+      "passed": true
+    },
+    {
+      "check": "independent_times_and_prior20_2026-12-24",
+      "passed": true
+    },
+    {
+      "check": "independent_times_and_prior20_2026-12-28",
+      "passed": true
+    },
+    {
+      "check": "independent_times_and_prior20_2026-12-29",
+      "passed": true
+    },
+    {
+      "check": "independent_times_and_prior20_2026-12-30",
+      "passed": true
+    },
+    {
+      "check": "independent_times_and_prior20_2026-12-31",
+      "passed": true
+    },
+    {
+      "check": "ancestor_hash_broad_20261006",
+      "passed": true
+    },
+    {
+      "check": "ancestor_hash_flush_rebound_20261007",
+      "passed": true
+    },
+    {
+      "check": "ancestor_labels_unique",
+      "passed": true
+    },
+    {
+      "check": "all_panel_symbols_and_classifications_rebuilt_from_ancestors",
+      "passed": true
+    },
+    {
+      "check": "panel_exactly6633_unique_symbols",
+      "passed": true
+    },
+    {
+      "check": "panel_no_current_tradable_or_option_filter",
+      "passed": true
+    },
+    {
+      "check": "panel_hash_bound_by_protocol_and_source",
+      "passed": true
+    },
+    {
+      "check": "no_account_or_order_or_scheduler_claim",
+      "passed": true
+    },
+    {
+      "check": "passing_log_independent-selection-tests.log",
+      "passed": true
+    },
+    {
+      "check": "passing_log_independent-protocol-tests.log",
+      "passed": true
+    },
+    {
+      "check": "passing_log_independent-capture-precision-tests.log",
+      "passed": true
+    }
+  ],
+  "check_count": 77,
+  "ledger": null,
+  "source_summary": {
+    "calendar_raw_rows": 85,
+    "planned_future_sessions": 59,
+    "fixed_panel_symbols": 6633,
+    "panel_classification_counts": {
+      "N": 5672,
+      "unknown": 951,
+      "Y": 10
+    }
+  },
+  "independent_test_results": {
+    "selection_tests": 16,
+    "protocol_tests": 17,
+    "capture_precision_tests": 4,
+    "random_fraction_pools": 16,
+    "synthetic_full_pool_symbols": 6633,
+    "synthetic_inputs_are_not_future_market_observations": true
+  },
+  "resolved_production_findings": [
+    {
+      "issue": "Unbounded finite Decimal exponents could raise Overflow or silently underflow",
+      "resolution": "Explicit coefficient/exponent limits and wide local contexts; independently tested"
+    },
+    {
+      "issue": "Source capture before protocol registration could be accepted",
+      "resolution": "check_clock rejects capture before registered_at; independently tested"
+    },
+    {
+      "issue": "Malformed bundle/receipt objects could escape as AttributeError",
+      "resolution": "Gate returns malformed rejection; independently tested"
+    },
+    {
+      "issue": "Parsing source JSON decimal literals into float could cross exact selection boundaries",
+      "resolution": "Source parser preserves decimal literals; independent Fraction end-to-end precision tests"
+    }
+  ],
+  "test_fixture_corrections": [
+    "Renamed an overlength synthetic symbol NEGATIVEPAIR to legal NEGPAIR before final passing run",
+    "Renamed a shadowed fixture loop variable that wrongly accessed prior20_dates on a panel row"
+  ],
+  "scope": "Source/calendar/panel reconstruction and receipt metadata guards. Does not authenticate logged historical delivery, certify raw future bars or prove live execution, scheduler activation, returns, or option profitability."
+}

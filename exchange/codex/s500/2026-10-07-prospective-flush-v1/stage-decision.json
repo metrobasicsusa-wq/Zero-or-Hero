@@ -1,0 +1,46 @@
+{
+  "study": "s500_prospective_flush_fixed_panel_v1",
+  "status": "registered_future_observation_protocol_zero_future_results",
+  "registered_at": "2026-10-07T17:54:54.206250+00:00",
+  "window": [
+    "2026-10-08",
+    "2026-12-31"
+  ],
+  "planned_sessions": 59,
+  "fixed_panel_symbols": 6633,
+  "observed_future_dates": 0,
+  "primary_future_complete_returns": null,
+  "future_mean_return": null,
+  "checkpoints": [
+    {
+      "ordinal": 20,
+      "date": "2026-11-04",
+      "at_et": "17:30",
+      "purpose": "descriptive_progress_no_retuning"
+    },
+    {
+      "ordinal": 40,
+      "date": "2026-12-03",
+      "at_et": "17:30",
+      "purpose": "descriptive_progress_no_retuning"
+    },
+    {
+      "ordinal": 59,
+      "date": "2026-12-31",
+      "at_et": "17:30",
+      "purpose": "final_primary_endpoint"
+    }
+  ],
+  "no_minimum_40_percent_winrate": true,
+  "all_tail_winners_and_losses_retained": true,
+  "new_scheduler": false,
+  "existing_observer_connected_to_this_study": false,
+  "preopen_collector": "implemented_with_mock_tests_and_before_date_refusal; successful real future capture not yet verified",
+  "postclose_pipeline": "receipt metadata guard and inherited economic methods registered; automatic postclose capture and analysis not deployed in this stage",
+  "next_action": "On an eligible date, invoke preopen capture before09:20ET; if not run or late, preserve missed date. Connect daily execution separately without duplicating the existing observer.",
+  "account_reads": 0,
+  "orders_sent": 0,
+  "this_stage_calendar_GET": 1,
+  "this_stage_market_price_GET": 0,
+  "vendor_purchase": false
+}

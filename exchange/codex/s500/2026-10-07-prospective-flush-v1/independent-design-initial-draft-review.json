@@ -1,0 +1,384 @@
+{
+  "phase": "draft",
+  "reviewed_at_utc": "2026-10-07T17:43:19.209356+00:00",
+  "protocol_sha256": "92382d11cb5970a3a0f959c41b5afd94dd209e5bddadcab92cefd0e830f623fc",
+  "reviewer_code_sha256": "52b61306d7c0d6f8a311ce428b09cd7d8b70ac77ec8375de44ae44b3b90b01bc",
+  "binding": {
+    "calendar-sessions.json": "37e2e800840c9352d15346216675aa4aae7ac732cbbd360b699881edb9a065ad",
+    "calendar-source.json": "16086f8129938001adc569ddce47ed030a9c1789fef1595725cf51e92ee254b6",
+    "fixed-panel.json": "f7598f2e6e85d53a38a6c84d5d311eaae90f423582a6f61f5019302954cbb389",
+    "protocol_tools.py": "77691f4a35727ef7cba6db875799591bcc4ac820eade9e28839e9b0c77d22780",
+    "prospect_selection.py": "c15ee425b5ea8441a8d4b92b65c58b0cbacfa20e1eef645752a7d551a248d8d7"
+  },
+  "structural_checks_passed": true,
+  "checks_count": 86,
+  "checks": [
+    {
+      "name": "window",
+      "passed": true
+    },
+    {
+      "name": "registration_day_excluded",
+      "passed": true
+    },
+    {
+      "name": "timezone",
+      "passed": true
+    },
+    {
+      "name": "calendar_hash",
+      "passed": true
+    },
+    {
+      "name": "calendar_source_hash",
+      "passed": true
+    },
+    {
+      "name": "panel_hash",
+      "passed": true
+    },
+    {
+      "name": "panel_content_digest",
+      "passed": true
+    },
+    {
+      "name": "panel_size_uniqueness",
+      "passed": true
+    },
+    {
+      "name": "panel_flags",
+      "passed": true
+    },
+    {
+      "name": "exact_future_session_sequence",
+      "passed": true
+    },
+    {
+      "name": "future_session_count",
+      "passed": true
+    },
+    {
+      "name": "all_calendar_time_fields_2026-10-08",
+      "passed": true
+    },
+    {
+      "name": "all_calendar_time_fields_2026-10-09",
+      "passed": true
+    },
+    {
+      "name": "all_calendar_time_fields_2026-10-12",
+      "passed": true
+    },
+    {
+      "name": "all_calendar_time_fields_2026-10-13",
+      "passed": true
+    },
+    {
+      "name": "all_calendar_time_fields_2026-10-14",
+      "passed": true
+    },
+    {
+      "name": "all_calendar_time_fields_2026-10-15",
+      "passed": true
+    },
+    {
+      "name": "all_calendar_time_fields_2026-10-16",
+      "passed": true
+    },
+    {
+      "name": "all_calendar_time_fields_2026-10-19",
+      "passed": true
+    },
+    {
+      "name": "all_calendar_time_fields_2026-10-20",
+      "passed": true
+    },
+    {
+      "name": "all_calendar_time_fields_2026-10-21",
+      "passed": true
+    },
+    {
+      "name": "all_calendar_time_fields_2026-10-22",
+      "passed": true
+    },
+    {
+      "name": "all_calendar_time_fields_2026-10-23",
+      "passed": true
+    },
+    {
+      "name": "all_calendar_time_fields_2026-10-26",
+      "passed": true
+    },
+    {
+      "name": "all_calendar_time_fields_2026-10-27",
+      "passed": true
+    },
+    {
+      "name": "all_calendar_time_fields_2026-10-28",
+      "passed": true
+    },
+    {
+      "name": "all_calendar_time_fields_2026-10-29",
+      "passed": true
+    },
+    {
+      "name": "all_calendar_time_fields_2026-10-30",
+      "passed": true
+    },
+    {
+      "name": "all_calendar_time_fields_2026-11-02",
+      "passed": true
+    },
+    {
+      "name": "all_calendar_time_fields_2026-11-03",
+      "passed": true
+    },
+    {
+      "name": "all_calendar_time_fields_2026-11-04",
+      "passed": true
+    },
+    {
+      "name": "all_calendar_time_fields_2026-11-05",
+      "passed": true
+    },
+    {
+      "name": "all_calendar_time_fields_2026-11-06",
+      "passed": true
+    },
+    {
+      "name": "all_calendar_time_fields_2026-11-09",
+      "passed": true
+    },
+    {
+      "name": "all_calendar_time_fields_2026-11-10",
+      "passed": true
+    },
+    {
+      "name": "all_calendar_time_fields_2026-11-11",
+      "passed": true
+    },
+    {
+      "name": "all_calendar_time_fields_2026-11-12",
+      "passed": true
+    },
+    {
+      "name": "all_calendar_time_fields_2026-11-13",
+      "passed": true
+    },
+    {
+      "name": "all_calendar_time_fields_2026-11-16",
+      "passed": true
+    },
+    {
+      "name": "all_calendar_time_fields_2026-11-17",
+      "passed": true
+    },
+    {
+      "name": "all_calendar_time_fields_2026-11-18",
+      "passed": true
+    },
+    {
+      "name": "all_calendar_time_fields_2026-11-19",
+      "passed": true
+    },
+    {
+      "name": "all_calendar_time_fields_2026-11-20",
+      "passed": true
+    },
+    {
+      "name": "all_calendar_time_fields_2026-11-23",
+      "passed": true
+    },
+    {
+      "name": "all_calendar_time_fields_2026-11-24",
+      "passed": true
+    },
+    {
+      "name": "all_calendar_time_fields_2026-11-25",
+      "passed": true
+    },
+    {
+      "name": "all_calendar_time_fields_2026-11-27",
+      "passed": true
+    },
+    {
+      "name": "all_calendar_time_fields_2026-11-30",
+      "passed": true
+    },
+    {
+      "name": "all_calendar_time_fields_2026-12-01",
+      "passed": true
+    },
+    {
+      "name": "all_calendar_time_fields_2026-12-02",
+      "passed": true
+    },
+    {
+      "name": "all_calendar_time_fields_2026-12-03",
+      "passed": true
+    },
+    {
+      "name": "all_calendar_time_fields_2026-12-04",
+      "passed": true
+    },
+    {
+      "name": "all_calendar_time_fields_2026-12-07",
+      "passed": true
+    },
+    {
+      "name": "all_calendar_time_fields_2026-12-08",
+      "passed": true
+    },
+    {
+      "name": "all_calendar_time_fields_2026-12-09",
+      "passed": true
+    },
+    {
+      "name": "all_calendar_time_fields_2026-12-10",
+      "passed": true
+    },
+    {
+      "name": "all_calendar_time_fields_2026-12-11",
+      "passed": true
+    },
+    {
+      "name": "all_calendar_time_fields_2026-12-14",
+      "passed": true
+    },
+    {
+      "name": "all_calendar_time_fields_2026-12-15",
+      "passed": true
+    },
+    {
+      "name": "all_calendar_time_fields_2026-12-16",
+      "passed": true
+    },
+    {
+      "name": "all_calendar_time_fields_2026-12-17",
+      "passed": true
+    },
+    {
+      "name": "all_calendar_time_fields_2026-12-18",
+      "passed": true
+    },
+    {
+      "name": "all_calendar_time_fields_2026-12-21",
+      "passed": true
+    },
+    {
+      "name": "all_calendar_time_fields_2026-12-22",
+      "passed": true
+    },
+    {
+      "name": "all_calendar_time_fields_2026-12-23",
+      "passed": true
+    },
+    {
+      "name": "all_calendar_time_fields_2026-12-24",
+      "passed": true
+    },
+    {
+      "name": "all_calendar_time_fields_2026-12-28",
+      "passed": true
+    },
+    {
+      "name": "all_calendar_time_fields_2026-12-29",
+      "passed": true
+    },
+    {
+      "name": "all_calendar_time_fields_2026-12-30",
+      "passed": true
+    },
+    {
+      "name": "all_calendar_time_fields_2026-12-31",
+      "passed": true
+    },
+    {
+      "name": "review_ordinals",
+      "passed": true
+    },
+    {
+      "name": "review_dates",
+      "passed": true
+    },
+    {
+      "name": "half_days",
+      "passed": true
+    },
+    {
+      "name": "all36_exact_variants",
+      "passed": true
+    },
+    {
+      "name": "primary_variant",
+      "passed": true
+    },
+    {
+      "name": "selection_constants",
+      "passed": true
+    },
+    {
+      "name": "storage_overlay",
+      "passed": true
+    },
+    {
+      "name": "benchmark_controls",
+      "passed": true
+    },
+    {
+      "name": "market_groups",
+      "passed": true
+    },
+    {
+      "name": "price_bins",
+      "passed": true
+    },
+    {
+      "name": "trough_bins",
+      "passed": true
+    },
+    {
+      "name": "bins_not_promoted",
+      "passed": true
+    },
+    {
+      "name": "sample_label20_only",
+      "passed": true
+    },
+    {
+      "name": "no_scheduler_claim",
+      "passed": true
+    },
+    {
+      "name": "user_payoff_constraints",
+      "passed": true
+    },
+    {
+      "name": "no_orders_or_wealth_claims",
+      "passed": true
+    }
+  ],
+  "manual_semantic_review": {
+    "primary_endpoint": "One final SPYdown date-equal net stock-proxy mean; all other estimates descriptive.",
+    "checks20_40": "No interval or retuning at interim checkpoints; no performance-dependent stopping.",
+    "minimum20_dates": "Operational sufficiency label only, not independence/power/significance.",
+    "capture_vs_review": "On-time source and preopen seal required; offline metadata verification may occur later.",
+    "receipt_guard_scope": "Validates supplied metadata, not source-body hash correctness or authenticated historical receipt.",
+    "activation": "Registration plus tools only; no connected schedule, daily-run promise, orders or option-execution validation."
+  },
+  "pre_registration_clarifications": [
+    {
+      "field": "outcomes.peers",
+      "request": "Explicitly constrain peers to that day's sealed selected eligible stock cases, excluding SPY/QQQ, with complete first30 and nonflush at the same threshold."
+    },
+    {
+      "field": "feature_bins",
+      "request": "State raw-price gap/close29 formulas, earliest trough, exact -0.02/0 boundaries and unknown treatment."
+    },
+    {
+      "field": "timing.primary_source_version",
+      "request": "Complete means requests/pagination complete; missing bars do not justify waiting for a gap-free replacement."
+    }
+  ],
+  "approval_scope": "Structural and design review only; does not certify raw data, collection deployment, future observations, or future return implementation."
+}

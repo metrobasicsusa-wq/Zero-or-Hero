@@ -1,0 +1,45 @@
+{
+  "study": "s500_prospective_flush_fixed_panel_v1",
+  "published_prefix": "exchange/codex/s500/2026-10-07-prospective-flush-v1",
+  "report": "exchange/codex/s500/2026-10-07-prospective-flush-v1/REPORT.zh-CN.md",
+  "manifest": "exchange/codex/s500/2026-10-07-prospective-flush-v1/artifact-manifest.json",
+  "protocol": "exchange/codex/s500/2026-10-07-prospective-flush-v1/protocol.json",
+  "status": "registered_future_observation_protocol_zero_future_results",
+  "registered_at": "2026-10-07T17:54:54.206250+00:00",
+  "window": [
+    "2026-10-08",
+    "2026-12-31"
+  ],
+  "planned_sessions": 59,
+  "fixed_panel_symbols": 6633,
+  "observed_future_dates": 0,
+  "checkpoints": [
+    {
+      "ordinal": 20,
+      "date": "2026-11-04",
+      "at_et": "17:30",
+      "purpose": "descriptive_progress_no_retuning"
+    },
+    {
+      "ordinal": 40,
+      "date": "2026-12-03",
+      "at_et": "17:30",
+      "purpose": "descriptive_progress_no_retuning"
+    },
+    {
+      "ordinal": 59,
+      "date": "2026-12-31",
+      "at_et": "17:30",
+      "purpose": "final_primary_endpoint"
+    }
+  ],
+  "tests_passed": 133,
+  "prior_stage_commit": "f3274a94e16c00beae81094d3ec0410c826b6583",
+  "report_sha256": "8871252aa35b32fe943f0789b2cfc2cdff8a16bda7372caef717e75aa27d4f5b",
+  "protocol_sha256": "2916ce06a0db24e18a754abae8943470ba9419e914b11d03d2f05d99f64e6d71",
+  "market_price_requests": 0,
+  "actual_fills": false,
+  "options_profit_claim": false,
+  "new_scheduler": false,
+  "automatic_future_capture_connected": false
+}
