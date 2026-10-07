@@ -1,6 +1,6 @@
 {
  "source": "alphavantage+alpaca-news",
- "fetched_at": "2026-10-07T09:40:17-04:00",
+ "fetched_at": "2026-10-07T09:50:15-04:00",
  "fetched_on": "2026-10-07",
  "symbols": [
   "AAPL",
@@ -150,6 +150,22 @@
   }
  },
  "errors": {},
+ "gauges": {
+  "putcall": {
+   "date": "2026-10-06",
+   "total": 0.82,
+   "equity": 0.57,
+   "index": 0.88,
+   "spx": 1.03
+  },
+  "aaii": {
+   "date": "2026-09-30",
+   "bullish": 34.6,
+   "neutral": 18.9,
+   "bearish": 46.5,
+   "spread": -11.9
+  }
+ },
  "news": {
   "FCX": {
    "articles": 2,
@@ -2338,5 +2354,6 @@
  },
  "news_window": "since 2026-10-06T09:40-04:00 (Alpaca/Benzinga, 213 articles, word-list score)",
  "attempts": 2,
- "news_attempts": 1
+ "news_attempts": 1,
+ "gauge_attempts": 1
 }
