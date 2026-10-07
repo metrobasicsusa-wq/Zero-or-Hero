@@ -1,0 +1,169 @@
+{
+  "schema_version": 1,
+  "id": "s500-macro-context-v4",
+  "created_at": "2026-10-07T20:29:14.984106+00:00",
+  "status": "instructions_only_sources_not_connected",
+  "applies_to": [
+    "premarket",
+    "intraday",
+    "postmarket"
+  ],
+  "required_categories": [
+    {
+      "id": "us_rates",
+      "required": [
+        "US2Y_yield",
+        "US10Y_yield",
+        "US10Y_minus_US2Y"
+      ],
+      "units": [
+        "percent",
+        "basis_points"
+      ],
+      "identification": "same source/type and comparable observation times; distinguish yield from price proxies",
+      "interpretation": "policy/discount/growth scenarios, not a deterministic stock trade"
+    },
+    {
+      "id": "oil",
+      "required": [
+        "WTI",
+        "Brent"
+      ],
+      "units": [
+        "USD_per_barrel",
+        "percent_change_if_positive_comparable_base"
+      ],
+      "identification": "spot_or_future,exchange,contract,expiry,last_or_settlement,reference_time,roll_flag",
+      "interpretation": "separate supply and demand hypotheses; price move alone does not identify cause"
+    },
+    {
+      "id": "usd",
+      "required": [
+        "named_USD_index"
+      ],
+      "units": [
+        "index_points",
+        "percent_change"
+      ],
+      "identification": "ICE_DXY or Fed_broad_trade_weighted; never interchange",
+      "interpretation": "financial conditions and exposure hypothesis"
+    },
+    {
+      "id": "volatility_market",
+      "required": [
+        "VIX_index",
+        "SPY_or_identified_SP500_instrument",
+        "QQQ_or_identified_Nasdaq_instrument"
+      ],
+      "units": [
+        "index_points",
+        "USD_or_contract_specific"
+      ],
+      "identification": "cash_index,ETF,futures separately; actual source latency",
+      "interpretation": "VIX roughly30daySPX implied volatility, not stock IV or executable0DTE quote"
+    },
+    {
+      "id": "macro_events",
+      "required": [
+        "CPI",
+        "PCE",
+        "payrolls",
+        "FOMC",
+        "Treasury_auctions",
+        "EIA_inventory"
+      ],
+      "identification": "official calendar, actual release time, reference period, first vs revised, ex-ante consensus provenance",
+      "interpretation": "not_scheduled_today or missing is valid; no fabricated surprise"
+    }
+  ],
+  "source_catalog": [
+    {
+      "id": "treasury",
+      "name": "US Treasury daily yield curves / auction announcements and results",
+      "url": "https://home.treasury.gov/resource-center-data-chart-center/interest-rates",
+      "auxiliary_url": "https://www.treasurydirect.gov/auctions/",
+      "role": "official daily yields and auction events; no assumed intraday feed"
+    },
+    {
+      "id": "fred",
+      "name": "FRED / ALFRED",
+      "url": "https://fred.stlouisfed.org/",
+      "auxiliary_url": "https://alfred.stlouisfed.org/",
+      "role": "daily series and vintage research; publication/availability still must be verified"
+    },
+    {
+      "id": "bls",
+      "name": "BLS release calendar",
+      "url": "https://www.bls.gov/schedule/",
+      "role": "official CPI/employment release times"
+    },
+    {
+      "id": "bea",
+      "name": "BEA release schedule",
+      "url": "https://www.bea.gov/news/schedule",
+      "role": "official PCE and national accounts release times"
+    },
+    {
+      "id": "fed",
+      "name": "Federal Reserve FOMC calendars",
+      "url": "https://www.federalreserve.gov/monetarypolicy/fomccalendars.htm",
+      "role": "official policy release/press conference events"
+    },
+    {
+      "id": "eia",
+      "name": "EIA Weekly Petroleum Status Report",
+      "url": "https://www.eia.gov/petroleum/supply/weekly/",
+      "role": "official oil inventory/statistical release; not live futures quotes"
+    },
+    {
+      "id": "cboe",
+      "name": "Cboe VIX methodology and market data",
+      "url": "https://www.cboe.com/tradable_products/vix/",
+      "role": "VIX identity/methodology; actual quote timestamp/delay/access require validation"
+    }
+  ],
+  "source_catalog_validation": "reference_directory_only_not_fetched_or_tested_this_stage",
+  "required_observation_fields": [
+    "instrument_id",
+    "instrument_type",
+    "source_url",
+    "observed_at",
+    "source_published_at",
+    "available_at",
+    "availability_evidence",
+    "retrieved_at",
+    "as_of",
+    "frequency",
+    "unit",
+    "value",
+    "reference_value",
+    "reference_observed_at",
+    "delay_status",
+    "missing_reason",
+    "vintage_or_revision_status"
+  ],
+  "permitted_data_states": [
+    "observed",
+    "last_known",
+    "scheduled",
+    "not_scheduled_today",
+    "missing",
+    "stale",
+    "retrospective",
+    "revision_limited"
+  ],
+  "invariants": {
+    "frozen59day36variant_protocol_unchanged": true,
+    "new_strategy_macro_filter": false,
+    "new_hypothesis_limit_per_trading_day": 1,
+    "new_paid_service": false,
+    "new_quote_collector": false,
+    "orders_enabled": false
+  },
+  "acceptance": [
+    "Native phase names every required category with an observed record or explicit missing/stale/not_scheduled status.",
+    "Point-in-time decisions use only data demonstrably available by decision time.",
+    "Next phase links predecessor and appends changes, preserving original snapshots.",
+    "Any strategy use requires separate preregistration and real execution evidence; contextual observation is not a verified edge."
+  ]
+}
