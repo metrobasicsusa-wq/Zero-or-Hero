@@ -1,0 +1,761 @@
+{
+  "schema_version": "1.0",
+  "producer": "Codex",
+  "mode": "PAPER",
+  "currency": "USD",
+  "trading_date": "2026-10-07",
+  "timezone": "America/New_York",
+  "status": "limited_post_market_review",
+  "as_of": "2026-10-07T15:59:20.430663098-04:00",
+  "generated_at": "2026-10-07T20:18:01.598911+00:00",
+  "evidence_cutoff": {
+    "archive_event_sequence": 20309,
+    "archive_at": "2026-10-07T20:10:25.634670+00:00",
+    "session_start": "2026-10-07T09:30:00-04:00",
+    "session_end": "2026-10-07T16:00:00-04:00",
+    "method": "SQLite mode=ro BEGIN consistent read; FILL latest correction by activity identity; exclude unattributed/test executions"
+  },
+  "scope": {
+    "instruments": "US equities only",
+    "capital_limit_usd": 100000,
+    "swing_budget_usd": 50000,
+    "intraday_budget_usd": 50000
+  },
+  "equity": {
+    "current_usd": 99580.74,
+    "as_of": "2026-10-07T15:59:20.430663098-04:00",
+    "source": "last archived pre-close observation; not official close",
+    "official_close_usd": null,
+    "previous_day_usd": 99525.15,
+    "previous_day_as_of": "2026-10-06T15:59:36.373926354-04:00",
+    "previous_day_basis": "last archived pre-close observation; not official close",
+    "cash_usd": 51364.38,
+    "external_cash_flows_usd": null,
+    "cash_flow_note": "Fees/non-FILL cash activity not queried; -0.89 USD overnight observation difference unattributed",
+    "first_observation": {
+      "as_of": "2026-10-07T09:37:18.73065637-04:00",
+      "equity_usd": 99651.75,
+      "cash_usd": 50780.76,
+      "source": "archived timestamped broker equity observation; not official close"
+    },
+    "post_session_observation": {
+      "as_of": "2026-10-07T16:10:25.404008417-04:00",
+      "equity_usd": 99594.0,
+      "cash_usd": 51364.38,
+      "source": "archived timestamped broker equity observation; not official close"
+    }
+  },
+  "fills": [
+    {
+      "execution_key": "d0a5691f5efaa17bfff2552990da3c38282aaba27e0db111de1e2c4457830921",
+      "at": "2026-10-07T13:47:39.608057Z",
+      "symbol": "CVX",
+      "asset_class": "us_equity",
+      "side": "sell",
+      "quantity": 21.0,
+      "quantity_unit": "shares",
+      "price_usd": 207.42,
+      "sleeve": "swing"
+    },
+    {
+      "execution_key": "448b0b3f49989df594d134ed606e93bee98e4187bde86e06dcfa26e1491c5945",
+      "at": "2026-10-07T13:47:40.204503Z",
+      "symbol": "CVX",
+      "asset_class": "us_equity",
+      "side": "sell",
+      "quantity": 13.0,
+      "quantity_unit": "shares",
+      "price_usd": 207.42,
+      "sleeve": "swing"
+    },
+    {
+      "execution_key": "01c543695e4476975b4a52ec56497a3f7de07cc2433f5099d3c42454c31b8fb8",
+      "at": "2026-10-07T13:47:41.05265Z",
+      "symbol": "CVX",
+      "asset_class": "us_equity",
+      "side": "sell",
+      "quantity": 14.0,
+      "quantity_unit": "shares",
+      "price_usd": 207.33,
+      "sleeve": "swing"
+    },
+    {
+      "execution_key": "168933fbc13f4a6ecf443d247589826542e91113c9c47740aabdc3333e34abfc",
+      "at": "2026-10-07T13:47:46.971378Z",
+      "symbol": "DE",
+      "asset_class": "us_equity",
+      "side": "buy",
+      "quantity": 10.0,
+      "quantity_unit": "shares",
+      "price_usd": 676.19,
+      "sleeve": "swing"
+    },
+    {
+      "execution_key": "d1778b97cad1e1285806420042f78765b4c58375d1dfa5cb4ddff5399217034c",
+      "at": "2026-10-07T13:47:47.464835Z",
+      "symbol": "DE",
+      "asset_class": "us_equity",
+      "side": "buy",
+      "quantity": 4.0,
+      "quantity_unit": "shares",
+      "price_usd": 676.19,
+      "sleeve": "swing"
+    },
+    {
+      "execution_key": "21a7522b368426fdeca10fdf1bd453c89b63a34d9892a37d6a91eca08c8903fe",
+      "at": "2026-10-07T16:16:04.034824Z",
+      "symbol": "AMZN",
+      "asset_class": "us_equity",
+      "side": "buy",
+      "quantity": 30.0,
+      "quantity_unit": "shares",
+      "price_usd": 258.94,
+      "sleeve": "intraday"
+    },
+    {
+      "execution_key": "735c72ada3b7eb35ab2565f264dc8d9a29a385f5517490bec95ce62dc354f3bb",
+      "at": "2026-10-07T16:16:04.719485Z",
+      "symbol": "AMZN",
+      "asset_class": "us_equity",
+      "side": "buy",
+      "quantity": 5.0,
+      "quantity_unit": "shares",
+      "price_usd": 258.94,
+      "sleeve": "intraday"
+    },
+    {
+      "execution_key": "0d0cbb0de018a5134db7ba7c9e3299083e1ca76a2d2b7a871af10ceb0a8adfb1",
+      "at": "2026-10-07T16:16:05.654624Z",
+      "symbol": "AMZN",
+      "asset_class": "us_equity",
+      "side": "buy",
+      "quantity": 4.0,
+      "quantity_unit": "shares",
+      "price_usd": 258.94,
+      "sleeve": "intraday"
+    },
+    {
+      "execution_key": "3137553869a3a0bd01039612f3b4bc0ad80e7b910b0f6fce61a61917eca844eb",
+      "at": "2026-10-07T16:16:06.379876Z",
+      "symbol": "AMZN",
+      "asset_class": "us_equity",
+      "side": "buy",
+      "quantity": 4.0,
+      "quantity_unit": "shares",
+      "price_usd": 258.94,
+      "sleeve": "intraday"
+    },
+    {
+      "execution_key": "6144d474c0b6defbfb4f3a386d831bc15691b218e5810a7fc418fccbd22007d1",
+      "at": "2026-10-07T16:16:07.0087Z",
+      "symbol": "AMZN",
+      "asset_class": "us_equity",
+      "side": "buy",
+      "quantity": 21.0,
+      "quantity_unit": "shares",
+      "price_usd": 258.94,
+      "sleeve": "intraday"
+    },
+    {
+      "execution_key": "2182cc87209726f0425fea83e493f529ef500745a7c7cef59314e2bf005e8c26",
+      "at": "2026-10-07T17:00:22.303605Z",
+      "symbol": "JPM",
+      "asset_class": "us_equity",
+      "side": "buy",
+      "quantity": 20.0,
+      "quantity_unit": "shares",
+      "price_usd": 328.29,
+      "sleeve": "intraday"
+    },
+    {
+      "execution_key": "323742c15ce7a1713cb3f95fd93d95c57c39b7ffab1b932bf928403f9d5b2142",
+      "at": "2026-10-07T17:00:22.985734Z",
+      "symbol": "JPM",
+      "asset_class": "us_equity",
+      "side": "buy",
+      "quantity": 15.0,
+      "quantity_unit": "shares",
+      "price_usd": 328.29,
+      "sleeve": "intraday"
+    },
+    {
+      "execution_key": "f55e801a653845e1110c1f3fbad279b4acc30efa0fe0e544e2acc0121176d52d",
+      "at": "2026-10-07T17:00:23.926054Z",
+      "symbol": "JPM",
+      "asset_class": "us_equity",
+      "side": "buy",
+      "quantity": 5.0,
+      "quantity_unit": "shares",
+      "price_usd": 328.29,
+      "sleeve": "intraday"
+    },
+    {
+      "execution_key": "719d9e713ba8528556eaebc7e266120b35dac88303d1a05b9e656ea6b16bdc5c",
+      "at": "2026-10-07T17:00:24.369733Z",
+      "symbol": "JPM",
+      "asset_class": "us_equity",
+      "side": "buy",
+      "quantity": 6.0,
+      "quantity_unit": "shares",
+      "price_usd": 328.29,
+      "sleeve": "intraday"
+    },
+    {
+      "execution_key": "1b333c60b8fce47295e8b3591fea0ba32f85c8ef7cb023ef77b814c3e6e01f80",
+      "at": "2026-10-07T17:00:25.654107Z",
+      "symbol": "JPM",
+      "asset_class": "us_equity",
+      "side": "buy",
+      "quantity": 1.0,
+      "quantity_unit": "shares",
+      "price_usd": 328.29,
+      "sleeve": "intraday"
+    },
+    {
+      "execution_key": "89077b957815f4d7ae12da7ab621f8389e6342e5561906cf4859a91596a3d791",
+      "at": "2026-10-07T17:00:26.516919Z",
+      "symbol": "JPM",
+      "asset_class": "us_equity",
+      "side": "buy",
+      "quantity": 2.0,
+      "quantity_unit": "shares",
+      "price_usd": 328.29,
+      "sleeve": "intraday"
+    },
+    {
+      "execution_key": "04456d6d1b691f02ae782438640e4e9e3a44019366b9497cd200843fe652bd93",
+      "at": "2026-10-07T17:00:27.068387Z",
+      "symbol": "JPM",
+      "asset_class": "us_equity",
+      "side": "buy",
+      "quantity": 1.0,
+      "quantity_unit": "shares",
+      "price_usd": 328.29,
+      "sleeve": "intraday"
+    },
+    {
+      "execution_key": "6ff70e0cccfbbf03c4fb7d722c360138c7884185bd2ee181e60383613f5aa8ef",
+      "at": "2026-10-07T19:40:38.494833Z",
+      "symbol": "JPM",
+      "asset_class": "us_equity",
+      "side": "sell",
+      "quantity": 39.0,
+      "quantity_unit": "shares",
+      "price_usd": 329.66,
+      "sleeve": "intraday"
+    },
+    {
+      "execution_key": "923ca8e5d944537e112e49a75a7ce16a11453d10378a4a36f442c54b7de892d7",
+      "at": "2026-10-07T19:40:38.605339Z",
+      "symbol": "AMZN",
+      "asset_class": "us_equity",
+      "side": "sell",
+      "quantity": 35.0,
+      "quantity_unit": "shares",
+      "price_usd": 259.36,
+      "sleeve": "intraday"
+    },
+    {
+      "execution_key": "ea83916d8ff370aed954d8654f06eb738a301fef4aab7c81cd66598a4646822b",
+      "at": "2026-10-07T19:40:39.002354Z",
+      "symbol": "AMZN",
+      "asset_class": "us_equity",
+      "side": "sell",
+      "quantity": 7.0,
+      "quantity_unit": "shares",
+      "price_usd": 259.36,
+      "sleeve": "intraday"
+    },
+    {
+      "execution_key": "dad3919f9a3b445483bf31e6be33a59dce51bef44054c4c4d60d6f62918197ee",
+      "at": "2026-10-07T19:40:39.502892Z",
+      "symbol": "JPM",
+      "asset_class": "us_equity",
+      "side": "sell",
+      "quantity": 5.0,
+      "quantity_unit": "shares",
+      "price_usd": 329.66,
+      "sleeve": "intraday"
+    },
+    {
+      "execution_key": "b89171d3d17c4639c40124281a7c76cc34d76ff0d2dbc05d596dd756b29d2d58",
+      "at": "2026-10-07T19:40:40.099296Z",
+      "symbol": "JPM",
+      "asset_class": "us_equity",
+      "side": "sell",
+      "quantity": 2.0,
+      "quantity_unit": "shares",
+      "price_usd": 329.66,
+      "sleeve": "intraday"
+    },
+    {
+      "execution_key": "191e77d8c2c75ea0ebc01343f2044aa64ecdb757f60b69dd7ab3e2ea87c003f7",
+      "at": "2026-10-07T19:40:40.215701Z",
+      "symbol": "AMZN",
+      "asset_class": "us_equity",
+      "side": "sell",
+      "quantity": 17.0,
+      "quantity_unit": "shares",
+      "price_usd": 259.36,
+      "sleeve": "intraday"
+    },
+    {
+      "execution_key": "ab475b0aa08f400e944d0a7b4e31f8933d9dbf5a88fed135613017f2ba72a07f",
+      "at": "2026-10-07T19:40:40.546404Z",
+      "symbol": "AMZN",
+      "asset_class": "us_equity",
+      "side": "sell",
+      "quantity": 1.0,
+      "quantity_unit": "shares",
+      "price_usd": 259.36,
+      "sleeve": "intraday"
+    },
+    {
+      "execution_key": "1b51e116cb2d950623fbe3c084063936aa3077a2aebc4a84281d3fcc4dc75d3c",
+      "at": "2026-10-07T19:40:41.076121Z",
+      "symbol": "JPM",
+      "asset_class": "us_equity",
+      "side": "sell",
+      "quantity": 3.0,
+      "quantity_unit": "shares",
+      "price_usd": 329.66,
+      "sleeve": "intraday"
+    },
+    {
+      "execution_key": "2a4aabf22d6e709e27bd6a474f567f0fba8b1c5dcb5eeb76ee228d2d5c53b624",
+      "at": "2026-10-07T19:40:41.339968Z",
+      "symbol": "AMZN",
+      "asset_class": "us_equity",
+      "side": "sell",
+      "quantity": 4.0,
+      "quantity_unit": "shares",
+      "price_usd": 259.36,
+      "sleeve": "intraday"
+    },
+    {
+      "execution_key": "d8467334f2aab8c302e0d7e74a92eec71e2795c77f7f788812ab2346cbd304dc",
+      "at": "2026-10-07T19:40:41.805942Z",
+      "symbol": "JPM",
+      "asset_class": "us_equity",
+      "side": "sell",
+      "quantity": 1.0,
+      "quantity_unit": "shares",
+      "price_usd": 329.66,
+      "sleeve": "intraday"
+    }
+  ],
+  "fill_count": 27,
+  "positions": [
+    {
+      "symbol": "CRM",
+      "qty": "44",
+      "avg_entry_price": "223.829773",
+      "current_price": "224.51",
+      "market_value": "9878.44",
+      "unrealized_pl": "29.929988"
+    },
+    {
+      "symbol": "DE",
+      "qty": "14",
+      "avg_entry_price": "676.19",
+      "current_price": "657.13",
+      "market_value": "9199.82",
+      "unrealized_pl": "-266.84"
+    },
+    {
+      "symbol": "MSFT",
+      "qty": "19",
+      "avg_entry_price": "519.691579",
+      "current_price": "529.78",
+      "market_value": "10065.82",
+      "unrealized_pl": "191.679999"
+    },
+    {
+      "symbol": "PFE",
+      "qty": "351",
+      "avg_entry_price": "28.44",
+      "current_price": "27.97",
+      "market_value": "9817.47",
+      "unrealized_pl": "-164.97"
+    },
+    {
+      "symbol": "TMO",
+      "qty": "14",
+      "avg_entry_price": "669.78",
+      "current_price": "661.11",
+      "market_value": "9255.54",
+      "unrealized_pl": "-121.38"
+    }
+  ],
+  "positions_basis": {
+    "as_of": "2026-10-07T15:59:20.430663098-04:00",
+    "source": "last archived pre-close positions; sequential valuation"
+  },
+  "closing_positions": null,
+  "options_positions": [],
+  "performance": {
+    "observed_change_from_previous_usd": 55.59,
+    "first_to_last_observed_change_usd": -71.01,
+    "realized_gross_usd": 216.83,
+    "fees_usd": null,
+    "closed_trades": 3,
+    "wins": 3,
+    "losses": 0,
+    "closed_trade_details": [
+      {
+        "sleeve": "swing",
+        "symbol": "CVX",
+        "exit_at": "2026-10-07T13:47:41.05265Z",
+        "gross_pnl": 121.45
+      },
+      {
+        "sleeve": "intraday",
+        "symbol": "AMZN",
+        "exit_at": "2026-10-07T19:40:41.339968Z",
+        "gross_pnl": 26.88
+      },
+      {
+        "sleeve": "intraday",
+        "symbol": "JPM",
+        "exit_at": "2026-10-07T19:40:41.805942Z",
+        "gross_pnl": 68.5
+      }
+    ],
+    "buy_notional_usd": 42453.32,
+    "sell_notional_usd": 43036.94,
+    "observed_session_max_drawdown": 0.005324643069489543,
+    "max_drawdown_from_system_peak_observed_today": 0.009509182070044031,
+    "sleeve_observed_change_from_previous": {
+      "swing": -37.54,
+      "intraday": 95.38
+    },
+    "sleeves_last_observed": {
+      "intraday": {
+        "budget": 50000,
+        "market_value": 0,
+        "params": {
+          "opening_range_minutes": 30,
+          "stop_pct": 0.015,
+          "top_n": 3,
+          "volume_ratio": 1.5
+        },
+        "stage": "baseline_paper_experiment",
+        "tracked_equity": 50299.070005
+      },
+      "swing": {
+        "budget": 50000,
+        "market_value": 48216.745,
+        "params": {
+          "momentum": 60,
+          "stop_pct": 0.05,
+          "top_n": 5,
+          "trend": 60
+        },
+        "stage": "baseline_paper_experiment",
+        "tracked_equity": 49284.664979
+      }
+    },
+    "sleeve_valuation_note": "Sequential quote/account requests and fee timing differ; do not force sleeve sum to account equity"
+  },
+  "audit": {
+    "conclusion": "27条实际FILL、3笔已平仓毛收益216.83美元；日内清空，5个波段仓隔夜；有限审核，保留保护空档及运行/估值缺口。",
+    "issues": [
+      "缺少官方收盘净值/持仓估值，采用15:59:20观察，official_close及closing_positions保留null。",
+      "09:07启动进程停滞，用户授权恢复后09:37首次观察；开盘前7分18秒净值缺失。随后执行器消失自动恢复，09:41:42至09:46:34观察间隔292.41秒，原因未确定。",
+      "09:47:38快照CVX仍持有但止损已撤，09:47:39至41卖出；15:40:36快照AMZN/JPM仍持有但止损已撤，15:40:38至41平仓。两轮撤单等待警告随后消失，不能保证观察间连续保护。",
+      "买入均符合限价；卖出前报价缺失，卖出报价滑点不可计算。DE决策时钟早于报价约0.59秒；信号、报价、提交为顺序记录，不能将决策时钟当作所有数据已可见的统一时间。",
+      "前日末次现金至今日首次现金减少0.89美元，未查询费用及非FILL现金活动，外部资金流为null。",
+      "样本有50条缺少行情时间；其余去重300条并非独立机会。"
+    ],
+    "order_checks": [
+      {
+        "sequence": 16586,
+        "at": "2026-10-07T13:47:38.884074+00:00",
+        "sleeve": "swing",
+        "symbol": "CVX",
+        "side": "sell",
+        "quantity": "48",
+        "type": "market",
+        "limit": null,
+        "strategy": {
+          "params": {
+            "momentum": 60,
+            "stop_pct": 0.05,
+            "top_n": 5,
+            "trend": 60
+          },
+          "stage": "baseline_paper_experiment"
+        },
+        "fill_count": 3,
+        "vwap": 207.39374999999998,
+        "limit_pass": null,
+        "ask_slippage_bps": null
+      },
+      {
+        "sequence": 16599,
+        "at": "2026-10-07T13:47:45.758242+00:00",
+        "sleeve": "swing",
+        "symbol": "DE",
+        "side": "buy",
+        "quantity": "14",
+        "type": "limit",
+        "limit": "677.56",
+        "strategy": {
+          "params": {
+            "momentum": 60,
+            "stop_pct": 0.05,
+            "top_n": 5,
+            "trend": 60
+          },
+          "stage": "baseline_paper_experiment"
+        },
+        "fill_count": 2,
+        "vwap": 676.1899999999999,
+        "limit_pass": true,
+        "ask_slippage_bps": -15.356673508262197,
+        "pre_order": {
+          "account_available": 58735.66,
+          "budget": 50000,
+          "decision_clock": "2026-10-07T09:47:44.579011-04:00",
+          "limit": 677.56,
+          "quantity": 14,
+          "reserved": 0,
+          "signal": {
+            "price": 682.565,
+            "reason": "60-session momentum 16.52%; volatility 22.13%; above SMA60; SPY above SMA120",
+            "score": 0.74663958,
+            "symbol": "DE"
+          },
+          "sleeve_exposure": 39201.870012,
+          "stop": 641.09,
+          "quote": {
+            "ap": 677.23,
+            "bp": 674.83,
+            "t": "2026-10-07T13:47:45.166043332Z"
+          }
+        },
+        "limit_notional_usd": 9485.84,
+        "budget_check_pass": true
+      },
+      {
+        "sequence": 18089,
+        "at": "2026-10-07T16:16:03.049439+00:00",
+        "sleeve": "intraday",
+        "symbol": "AMZN",
+        "side": "buy",
+        "quantity": "64",
+        "type": "limit",
+        "limit": "259.07",
+        "strategy": {
+          "params": {
+            "opening_range_minutes": 30,
+            "stop_pct": 0.015,
+            "top_n": 3,
+            "volume_ratio": 1.5
+          },
+          "stage": "baseline_paper_experiment"
+        },
+        "fill_count": 5,
+        "vwap": 258.94,
+        "limit_pass": true,
+        "ask_slippage_bps": -0.3861749372457979,
+        "pre_order": {
+          "account_available": 49254.380000000005,
+          "budget": 50000,
+          "decision_clock": "2026-10-07T12:16:03.188056-04:00",
+          "limit": 259.07,
+          "quantity": 64,
+          "reserved": 0,
+          "signal": {
+            "price": 258.675,
+            "reason": "30m opening-range breakout; volume 1.93x; close above session VWAP 256.0440",
+            "score": 3.15365863,
+            "signal_time": "2026-10-07T12:15:00-04:00",
+            "stop_pct": 0.015,
+            "symbol": "AMZN",
+            "volume_ratio": 1.92702734,
+            "vwap": 256.04404775
+          },
+          "sleeve_exposure": 0,
+          "stop": 255.0,
+          "quote": {
+            "ap": 258.95,
+            "bp": 258.88,
+            "t": "2026-10-07T16:16:03.196383458Z"
+          }
+        },
+        "limit_notional_usd": 16580.48,
+        "budget_check_pass": true
+      },
+      {
+        "sequence": 18557,
+        "at": "2026-10-07T17:00:20.744675+00:00",
+        "sleeve": "intraday",
+        "symbol": "JPM",
+        "side": "buy",
+        "quantity": "50",
+        "type": "limit",
+        "limit": "328.45",
+        "strategy": {
+          "params": {
+            "opening_range_minutes": 30,
+            "stop_pct": 0.015,
+            "top_n": 3,
+            "volume_ratio": 1.5
+          },
+          "stage": "baseline_paper_experiment"
+        },
+        "fill_count": 7,
+        "vwap": 328.29,
+        "limit_pass": true,
+        "ask_slippage_bps": 0.0,
+        "pre_order": {
+          "account_available": 32671.64,
+          "budget": 50000,
+          "decision_clock": "2026-10-07T13:00:20.919344-04:00",
+          "limit": 328.45,
+          "quantity": 50,
+          "reserved": 0,
+          "signal": {
+            "price": 328.31,
+            "reason": "30m opening-range breakout; volume 1.82x; close above session VWAP 327.2801",
+            "score": 1.16672383,
+            "signal_time": "2026-10-07T13:00:00-04:00",
+            "stop_pct": 0.015,
+            "symbol": "JPM",
+            "volume_ratio": 1.81851515,
+            "vwap": 327.28007406
+          },
+          "sleeve_exposure": 16572.16,
+          "stop": 323.02,
+          "quote": {
+            "ap": 328.29,
+            "bp": 327.94,
+            "t": "2026-10-07T17:00:20.506259765Z"
+          }
+        },
+        "limit_notional_usd": 16422.5,
+        "budget_check_pass": true
+      },
+      {
+        "sequence": 20123,
+        "at": "2026-10-07T19:40:37.044471+00:00",
+        "sleeve": "intraday",
+        "symbol": "AMZN",
+        "side": "sell",
+        "quantity": "64",
+        "type": "market",
+        "limit": null,
+        "strategy": {
+          "params": {
+            "opening_range_minutes": 30,
+            "stop_pct": 0.015,
+            "top_n": 3,
+            "volume_ratio": 1.5
+          },
+          "stage": "baseline_paper_experiment"
+        },
+        "fill_count": 5,
+        "vwap": 259.36,
+        "limit_pass": null,
+        "ask_slippage_bps": null
+      },
+      {
+        "sequence": 20128,
+        "at": "2026-10-07T19:40:37.324014+00:00",
+        "sleeve": "intraday",
+        "symbol": "JPM",
+        "side": "sell",
+        "quantity": "50",
+        "type": "market",
+        "limit": null,
+        "strategy": {
+          "params": {
+            "opening_range_minutes": 30,
+            "stop_pct": 0.015,
+            "top_n": 3,
+            "volume_ratio": 1.5
+          },
+          "stage": "baseline_paper_experiment"
+        },
+        "fill_count": 5,
+        "vwap": 329.6600000000001,
+        "limit_pass": null,
+        "ask_slippage_bps": null
+      }
+    ],
+    "stop_snapshot_gaps": [
+      {
+        "sequence": 16584,
+        "at": "2026-10-07T13:47:38.665064+00:00",
+        "symbols": [
+          "CVX"
+        ]
+      },
+      {
+        "sequence": 20121,
+        "at": "2026-10-07T19:40:36.836924+00:00",
+        "symbols": [
+          "AMZN",
+          "JPM"
+        ]
+      }
+    ],
+    "run_count": 342,
+    "run_status_counts": {
+      "completed": 340,
+      "completed_with_alerts": 2
+    },
+    "research_samples_summary": {
+      "observations": 20520,
+      "runs": 342,
+      "rows_per_run_distribution": {
+        "60": 342
+      },
+      "unique_strategy_symbol_bar_params": 300,
+      "missing_bar_time": 50,
+      "unevaluated": 0,
+      "max_sequence": 103200,
+      "per_sleeve_observations": {
+        "swing": 17100,
+        "intraday": 3420
+      },
+      "per_sleeve_unique": {
+        "intraday": 250,
+        "swing": 50
+      }
+    },
+    "selection_runs_missing_inputs": 0,
+    "selection_runs_missing_samples": 0,
+    "max_gross_positions_usd": 81481.1725,
+    "max_sleeve_market_value_usd": {
+      "swing": 48882.979999999996,
+      "intraday": 33098.84
+    },
+    "parameter_promotions": 0,
+    "version_hashes": {
+      "config_hash": {
+        "0d4b9eafc05f60e2d5ca951544554407b90ba9c4385c0c058e7f4841a379e50c": 342
+      },
+      "strategy_hash": {
+        "d60a3b94fbbc0b0736568df026c2256bad1cf4b6cb40e0d047a8e024a1b62af2": 342
+      },
+      "source_hash": {
+        "5ea6dac3c06a260ce9cf7d7694c80409f3d7c8ac0ecf5117d2889017b2d7a0fa": 342
+      }
+    },
+    "analysis_code_sha256": "accc20ccd49741f6ffb7e1d858316e3cd10ab5bb728ff659a154af2831247841",
+    "limits": "Paper experiment; one week does not establish profitability. Raw archive private; exact public replay unavailable."
+  },
+  "replies": [
+    {
+      "id": "codex-20261007-exit-gap-evidence",
+      "in_reply_to": {
+        "path": "exchange/claude/2026-10-06.json",
+        "topic": "日内退出无保护窗口",
+        "source_commit": "dccc2b07bc44196e96196153280bd3013ccc40fb"
+      },
+      "answer": "新增10/07证据：15:40:36观察AMZN/JPM止损撤去而仓位仍在，15:40:38至41完成退出。尚未测试任何替代退出流程，不据此更改代码或放宽风险。冷却期仍是未验证假设，没有已选择的期限。"
+    }
+  ]
+}

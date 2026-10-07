@@ -1,0 +1,36 @@
+ZERO OR HERO 首周有限复盘（2026-10-01至10-07五个交易时段）
+
+起点2026-09-30 17:13净值/现金$100000，无持仓。期末采用10/07 15:59:20观察$99,580.74，观察亏损$419.26（-0.41926%）；官方收盘未知。
+波段账本观察亏损$715.34（-1.43067%），日内+$299.07（+0.59814%）；顺序估值与费用/到账时差导致合计不能硬归因账户。
+84条实际FILL，11笔已平仓交易，8赢3亏，毛已实现-$84.34：波段-$383.41，日内+$299.07。费用未知。最大观察峰值回撤0.9509%，未达到10%停机。
+期末波段CRM44、DE14、MSFT19、PFE351、TMO14；日内清空。16:10后续观察$99,594.00，隔夜五仓风险单列；五个足量GTC止损仅证明观察时存在。
+1718轮有净值/样本，103080条样本，每轮60；按策略/股票/行情时点/参数去重1500（波段250、日内1250），320条时间缺失，40条未评估。1719个交易时段开始的运行中有一个未形成时段内完整记录；保留原始证据，不编造缺口。
+无参数升级，首个周一评估10/12；本次未开展新候选实验。源码版本变化不等同策略参数升级。
+
+全部已平仓交易：
+{'sleeve': 'intraday', 'symbol': 'TSLA', 'exit_at': '2026-10-01T19:41:09.184525Z', 'gross_pnl': -45.98}
+{'sleeve': 'intraday', 'symbol': 'TSLA', 'exit_at': '2026-10-02T19:40:21.486855Z', 'gross_pnl': 37.58}
+{'sleeve': 'intraday', 'symbol': 'AMZN', 'exit_at': '2026-10-05T19:41:05.78578Z', 'gross_pnl': 21.45}
+{'sleeve': 'intraday', 'symbol': 'NVDA', 'exit_at': '2026-10-05T19:41:06.355617Z', 'gross_pnl': 97.82}
+{'sleeve': 'intraday', 'symbol': 'AVGO', 'exit_at': '2026-10-05T19:41:07.550889Z', 'gross_pnl': -7.2}
+{'sleeve': 'swing', 'symbol': 'CRM', 'exit_at': '2026-10-06T18:44:50.94595Z', 'gross_pnl': -504.86}
+{'sleeve': 'intraday', 'symbol': 'AMZN', 'exit_at': '2026-10-06T19:40:54.929097Z', 'gross_pnl': 78.99}
+{'sleeve': 'intraday', 'symbol': 'AVGO', 'exit_at': '2026-10-06T19:40:59.338513Z', 'gross_pnl': 21.03}
+{'sleeve': 'swing', 'symbol': 'CVX', 'exit_at': '2026-10-07T13:47:41.05265Z', 'gross_pnl': 121.45}
+{'sleeve': 'intraday', 'symbol': 'AMZN', 'exit_at': '2026-10-07T19:40:41.339968Z', 'gross_pnl': 26.88}
+{'sleeve': 'intraday', 'symbol': 'JPM', 'exit_at': '2026-10-07T19:40:41.805942Z', 'gross_pnl': 68.5}
+
+运行、保护与数据局限：
+缺少官方收盘净值/持仓估值，采用15:59:20观察，official_close及closing_positions保留null。
+09:07启动进程停滞，用户授权恢复后09:37首次观察；开盘前7分18秒净值缺失。随后执行器消失自动恢复，09:41:42至09:46:34观察间隔292.41秒，原因未确定。
+09:47:38快照CVX仍持有但止损已撤，09:47:39至41卖出；15:40:36快照AMZN/JPM仍持有但止损已撤，15:40:38至41平仓。两轮撤单等待警告随后消失，不能保证观察间连续保护。
+买入均符合限价；卖出前报价缺失，卖出报价滑点不可计算。DE决策时钟早于报价约0.59秒；信号、报价、提交为顺序记录，不能将决策时钟当作所有数据已可见的统一时间。
+前日末次现金至今日首次现金减少0.89美元，未查询费用及非FILL现金活动，外部资金流为null。
+样本有50条缺少行情时间；其余去重300条并非独立机会。
+Oct6 CRM old holding stopped out, then new44-share holding opened about46seconds later; no validated cooldown.
+Six warning cycles across week; one extra started run lacks session equity/samples. Overnight gaps are excluded from within-session interruption counts.
+Source hashes changed while config/strategy hashes stayed fixed; source changes do not prove parameter promotion. Prior daily audits retain detailed per-day execution evidence.
+
+各日前次审核保留具体中断/拒单/退出核对。本周没有已核实未知持仓或预算越界；保护缺口与CRM旧仓止损后约46秒重开均需独立验证。仅5天/11笔平仓，不能断言策略有效。
+改进假设（未测试、未应用）：Validate stop-cancel-to-flat gap mitigation without duplicate/uncertain orders; Evaluate stop-out reentry cooldown with point-in-time signals, all candidate failures, fees and fresh-capital/reentry accounting; Improve sell quote capture and fee/non-FILL reconciliation
+证据截止20309，交易区间截至10/07 16:00；原始输入私有，公开汇总不能精确复跑。
