@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "id": "s500-three-phase-targets-v3",
+  "created_at": "2026-10-07T20:20:44.730827+00:00",
+  "status": "proposal_not_applied",
+  "timezone": "America/New_York",
+  "trading_calendar_gate": "actual US equity trading sessions; weekends/holidays not_applicable; honor early close",
+  "desired_phases": [
+    {
+      "phase": "premarket",
+      "target_local_time": "09:10",
+      "new_plan_cutoff": "09:20",
+      "purpose": "restore, source checks, candidate and falsifiable plan"
+    },
+    {
+      "phase": "intraday",
+      "target_local_time": "12:00",
+      "purpose": "timestamped observation and existing experiment continuation",
+      "continuous_monitoring": false
+    },
+    {
+      "phase": "postmarket",
+      "target_local_time": "17:30",
+      "purpose": "full outcomes, review, persistence and next session"
+    }
+  ],
+  "observed_existing_native_schedule": {
+    "historical_record": "daily17:30America/New_York",
+    "current_enabled": "not_queried",
+    "current_admin_configuration": "not_queried"
+  },
+  "applied_in_this_change": {
+    "native_task_edits": 0,
+    "new_native_tasks": 0,
+    "new_workflows": 0,
+    "order_actions": 0
+  },
+  "configuration_rules": [
+    "Prefer updating existing task without duplicating17:30. If host needs separate phase tasks, share study state and use exactly one task per phase after inspecting existing tasks.",
+    "Repository instructions do not authorize native task to alter its own scheduler. Apply through supported scheduler controls.",
+    "Use named timezone, not fixedUTC hours, for AI task timings. Preserve existing fixed data cron.",
+    "Three exact times have different minutes; do not create an RRULE Cartesian product BYHOUR=9,12,17 and BYMINUTE=0,10,30, which would produce nine runs."
+  ],
+  "existing_data_schedule_unchanged": {
+    "preopen_utc": "13:03",
+    "preopen_et_summer": "09:03",
+    "preopen_et_winter": "08:03",
+    "preopen_seal_deadline_et": "09:20",
+    "late_audit_utc": "22:33",
+    "late_audit_et_summer": "18:33",
+    "late_audit_et_winter": "17:33",
+    "fixed_days": 59,
+    "fixed_variants": 36,
+    "first_date": "2026-10-08",
+    "last_date": "2026-12-31",
+    "intraday_quote_capture_deployed": false
+  },
+  "acceptance": {
+    "v3_native_adoption": "pending",
+    "three_phase_schedule_applied": "unverified",
+    "on_time_phase_runs": "unverified",
+    "phase_to_phase_memory": "unverified",
+    "new_experiment_execution": "unverified"
+  }
+}

@@ -1,0 +1,104 @@
+{
+  "schema_version": "3.0-s500-research-plan",
+  "id": "codex-s500-20261007-next-v3",
+  "created_at": "2026-10-07T20:20:44.730827+00:00",
+  "supersedes": {
+    "path": "exchange/codex/s500/2026-10-07-ai-daily-process-v2/next-experiment.json",
+    "sha256": "a5877e3e308cbb557716b9c1a54908ca9d7f4d986f7d4fbf98949ba10d007c10"
+  },
+  "status": "three_phase_process_prepared_schedule_not_applied",
+  "native_task_name": "S500 云端每日研究与复盘",
+  "schedule_change_requested": true,
+  "old_plan_retained": {
+    "path": "exchange/codex/s500/2026-10-05-handoff-v1/next-experiment.json",
+    "note": "Preserve missing original inputs and historical option quote barriers; later completed research is linked below, not rerun or erased."
+  },
+  "known_progress": [
+    {
+      "scope": "early-entry negative baseline",
+      "report": "exchange/codex/s500/2026-10-06-early-entry-v1/REPORT.zh.md"
+    },
+    {
+      "scope": "option executable-price feasibility barriers",
+      "report": "exchange/codex/s500/2026-10-06-options-feasibility-v1/REPORT.zh-CN.md"
+    },
+    {
+      "scope": "fixed prospective observation",
+      "report": "exchange/codex/s500/2026-10-07-prospective-flush-v1/REPORT.zh-CN.md",
+      "commit": "3c9da12278bef5415baf123c8f5f810ceddd6ea8"
+    },
+    {
+      "scope": "deterministic cloud data capture and analysis",
+      "report": "exchange/codex/s500/2026-10-07-cloud-wireup-v1/REPORT.zh-CN.md",
+      "commit": "bf3898acf6cfe2ccdfd6f22953a3a9f067f8d9a8"
+    }
+  ],
+  "priority": [
+    {
+      "id": "three-phase-handoff",
+      "status": "awaiting_scheduler_configuration_and_native_v3_consumption",
+      "action": "Use proposed09:10/12:00/17:30America/New_York phases, require previous phase commit/hash. Repository documents do not change schedules."
+    },
+    {
+      "id": "native-real-execution",
+      "status": "unverified",
+      "action": "Check actual code/input capability, then preregister and run one distinct feasible experiment; otherwise name exact blocker. Oct7native quantitative figures recap earlier studies."
+    },
+    {
+      "id": "preserve-frozen-prospective-study",
+      "status": "awaiting_first_registered_date",
+      "first_date": "2026-10-08",
+      "last_date": "2026-12-31",
+      "action": "Check on-time source artifacts and preserve missing/failed days; no retrospective selection or protocol retuning."
+    }
+  ],
+  "candidate_examples_not_registered_experiments": [
+    {
+      "question": "Do historical rebound conclusions depend on one month after date-equal aggregation?",
+      "requirements": "Complete public derived result rows and a real code executor; check prior research so this is not a duplicate claim.",
+      "scope": "retrospective robustness only, not new unseen validation or an option wealth path"
+    },
+    {
+      "question": "Does separation of HDD, DRAM/HBM and NAND improve descriptive event interpretation?",
+      "requirements": "Predeclared source-backed groups, time-stamped events, complete comparators and failure cases; no hindsight promotion of winning storage names.",
+      "scope": "choose only if data and prior research make a distinct test possible"
+    }
+  ],
+  "active_new_experiment_limit": 1,
+  "do_not_wait_forever_on_one_unavailable_dataset": "Preserve a blocked item and select an independent feasible research question, without replacing missing prices with fabricated evidence.",
+  "unchanged_constraints": {
+    "initial_round_usd": 500,
+    "target_usd": 10000,
+    "full_round_loss_accepted": true,
+    "include_all_contributions_residuals_failures": true,
+    "minimum_40_percent_win_rate": false,
+    "orders_enabled": false,
+    "main_100k_account_out_of_scope": true,
+    "new_paid_services": false
+  },
+  "required_run_evidence": [
+    "adopted_process_commit",
+    "hypothesis_or_blocker",
+    "plan_recorded_at",
+    "plan_sha256",
+    "data_cutoff_and_sha256",
+    "code_sha256",
+    "actual_command_and_exit_status_or_execution_blocker",
+    "all_candidates_and_failures",
+    "review_status",
+    "publication_status",
+    "next_step_and_restore_pointer"
+  ],
+  "schedule_change_applied": false,
+  "new_hypothesis_limit_per_trading_day": 1,
+  "known_native_progress": {
+    "v2_consumed": true,
+    "report_commit": "d27a7fd1d626adf9678dcba27a99aa4fb00a4414",
+    "audit_commit": "0e2843fe59434b543d0a29b593c1f3d9c6379261",
+    "published_files_independently_read_back": true,
+    "new_experiment_execution_verified": false,
+    "subsequent_memory_recovery_verified": false,
+    "trigger_source": "unknown"
+  },
+  "phase_schedule": "phase-schedule.json"
+}
