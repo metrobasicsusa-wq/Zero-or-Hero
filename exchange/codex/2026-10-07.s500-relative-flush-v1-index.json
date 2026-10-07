@@ -1,0 +1,26 @@
+{
+  "study": "s500_market_relative_flush_v1",
+  "published_prefix": "exchange/codex/s500/2026-10-07-relative-flush-v1",
+  "report": "exchange/codex/s500/2026-10-07-relative-flush-v1/REPORT.zh-CN.md",
+  "manifest": "exchange/codex/s500/2026-10-07-relative-flush-v1/artifact-manifest.json",
+  "decision": "retain_predeclared_SPY_down_cohort_as_unvalidated_observation_no_trading_activation",
+  "period": [
+    "2026-01-02",
+    "2026-10-06"
+  ],
+  "cases": 19519,
+  "variants": 36,
+  "parent_and_joined_rows": 702684,
+  "group_summaries": 216,
+  "contrasts": 72,
+  "no_minimum_win_rate": true,
+  "SPY_down_primary_event_count": 153,
+  "SPY_down_outcome_dates": 11,
+  "SPY_down_sample_scope": "H1only; H2no selectedcases",
+  "report_sha256": "34cf19556db7320c6a6e799a96a8f05508a3356d8f849cdde9e62b59b6149052",
+  "prior_stage_commit": "634a93c65e1adec6c5908f9ad249c5b8e6224ba8",
+  "new_market_requests": 0,
+  "actual_fills": false,
+  "options_profit_claim": false,
+  "new_scheduler": false
+}

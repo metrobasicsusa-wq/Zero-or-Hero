@@ -1,0 +1,32 @@
+test_all_negative_profit_factor_zero_payoff_undefined (test_return_distribution.DistributionTests.test_all_negative_profit_factor_zero_payoff_undefined) ... ok
+test_all_positive_undefined_loss_ratios_are_null (test_return_distribution.DistributionTests.test_all_positive_undefined_loss_ratios_are_null) ... ok
+test_all_zero_has_zero_mean_but_no_undefined_ratio (test_return_distribution.DistributionTests.test_all_zero_has_zero_mean_but_no_undefined_ratio) ... ok
+test_decimal_precision_not_binary_float_arithmetic (test_return_distribution.DistributionTests.test_decimal_precision_not_binary_float_arithmetic) ... ok
+test_empirical_quantiles_not_drawdown (test_return_distribution.DistributionTests.test_empirical_quantiles_not_drawdown) ... ok
+test_empty_outcomes_not_zero (test_return_distribution.DistributionTests.test_empty_outcomes_not_zero) ... ok
+test_even_median (test_return_distribution.DistributionTests.test_even_median) ... ok
+test_exact_identity_for_repeating_ratios (test_return_distribution.DistributionTests.test_exact_identity_for_repeating_ratios) ... ok
+test_low_win_rate_can_have_positive_expectancy (test_return_distribution.DistributionTests.test_low_win_rate_can_have_positive_expectancy) ... ok
+test_profit_factor_uses_sums_not_conditional_ratio (test_return_distribution.DistributionTests.test_profit_factor_uses_sums_not_conditional_ratio) ... ok
+test_win_rate_above_40_percent_can_have_negative_expectancy (test_return_distribution.DistributionTests.test_win_rate_above_40_percent_can_have_negative_expectancy) ... ok
+test_zero_in_all_n_but_not_conditional_break_even (test_return_distribution.DistributionTests.test_zero_in_all_n_but_not_conditional_break_even) ... ok
+test_40_percent_not_a_profit_guarantee (test_return_distribution.HypotheticalExamplesTests.test_40_percent_not_a_profit_guarantee) ... ok
+test_each_break_even_exact_fraction_identity (test_return_distribution.HypotheticalExamplesTests.test_each_break_even_exact_fraction_identity) ... ok
+test_profit_multiple_is_distinct_from_payout (test_return_distribution.HypotheticalExamplesTests.test_profit_multiple_is_distinct_from_payout) ... ok
+test_registered_probabilities (test_return_distribution.HypotheticalExamplesTests.test_registered_probabilities) ... ok
+test_duplicate_case_id_rejected (test_return_distribution.InputTests.test_duplicate_case_id_rejected) ... ok
+test_invalid_values_rejected (test_return_distribution.InputTests.test_invalid_values_rejected) ... ok
+test_json_has_no_nonfinite_numbers (test_return_distribution.InputTests.test_json_has_no_nonfinite_numbers) ... ok
+test_missing_case_id_rejected (test_return_distribution.InputTests.test_missing_case_id_rejected) ... ok
+test_missing_return_not_zero (test_return_distribution.InputTests.test_missing_return_not_zero) ... ok
+test_positive_outlier_contribution_and_main_mean_preserved (test_return_distribution.TailTests.test_positive_outlier_contribution_and_main_mean_preserved) ... ok
+test_positive_tail_does_not_remove_zeros_or_losses (test_return_distribution.TailTests.test_positive_tail_does_not_remove_zeros_or_losses) ... ok
+test_removing_only_positive_observation_leaves_null_mean (test_return_distribution.TailTests.test_removing_only_positive_observation_leaves_null_mean) ... ok
+test_tie_uses_case_id_and_is_order_invariant (test_return_distribution.TailTests.test_tie_uses_case_id_and_is_order_invariant) ... ok
+test_top_count_based_on_all_n_not_positive_n (test_return_distribution.TailTests.test_top_count_based_on_all_n_not_positive_n) ... ok
+test_worst_loss_tail_retained_and_described (test_return_distribution.TailTests.test_worst_loss_tail_retained_and_described) ... ok
+
+----------------------------------------------------------------------
+Ran 27 tests in 0.007s
+
+OK

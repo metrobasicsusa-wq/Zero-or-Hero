@@ -1,0 +1,32 @@
+test_benchmark_full_prefix_required_even_after_comparison_minute (test_classify_relative.RelativeClassifierTests.test_benchmark_full_prefix_required_even_after_comparison_minute) ... ok
+test_benchmark_own_low_not_used (test_classify_relative.RelativeClassifierTests.test_benchmark_own_low_not_used) ... ok
+test_both_missing_explicit (test_classify_relative.RelativeClassifierTests.test_both_missing_explicit) ... ok
+test_duplicate_benchmark_prefix_not_overwritten (test_classify_relative.RelativeClassifierTests.test_duplicate_benchmark_prefix_not_overwritten) ... ok
+test_duplicate_target_prefix_not_overwritten (test_classify_relative.RelativeClassifierTests.test_duplicate_target_prefix_not_overwritten) ... ok
+test_earliest_tie_uses_earliest_benchmark_minute (test_classify_relative.RelativeClassifierTests.test_earliest_tie_uses_earliest_benchmark_minute) ... ok
+test_final_prefix_minute_included (test_classify_relative.RelativeClassifierTests.test_final_prefix_minute_included) ... ok
+test_fraction_units_and_simple_subtraction (test_classify_relative.RelativeClassifierTests.test_fraction_units_and_simple_subtraction) ... ok
+test_future_duplicate_does_not_erase_classification (test_classify_relative.RelativeClassifierTests.test_future_duplicate_does_not_erase_classification) ... ok
+test_inclusive_half_percent_boundary (test_classify_relative.RelativeClassifierTests.test_inclusive_half_percent_boundary) ... ok
+test_invalid_container_is_unknown (test_classify_relative.RelativeClassifierTests.test_invalid_container_is_unknown) ... ok
+test_invalid_ohlc_and_volume_fail_closed (test_classify_relative.RelativeClassifierTests.test_invalid_ohlc_and_volume_fail_closed) ... ok
+test_just_above_boundary_not_down (test_classify_relative.RelativeClassifierTests.test_just_above_boundary_not_down) ... ok
+test_just_below_boundary_down (test_classify_relative.RelativeClassifierTests.test_just_below_boundary_down) ... ok
+test_known_future_bad_rows_cannot_erase_classification (test_classify_relative.RelativeClassifierTests.test_known_future_bad_rows_cannot_erase_classification) ... ok
+test_minute_thirty_is_excluded (test_classify_relative.RelativeClassifierTests.test_minute_thirty_is_excluded) ... ok
+test_no_implicit_two_percent_signal_filter (test_classify_relative.RelativeClassifierTests.test_no_implicit_two_percent_signal_filter) ... ok
+test_open_anchor_instead_of_first_close (test_classify_relative.RelativeClassifierTests.test_open_anchor_instead_of_first_close) ... ok
+test_order_invariance_and_no_mutation (test_classify_relative.RelativeClassifierTests.test_order_invariance_and_no_mutation) ... ok
+test_precision_beyond_return_display_cannot_flip_boundary (test_classify_relative.RelativeClassifierTests.test_precision_beyond_return_display_cannot_flip_boundary) ... ok
+test_price_scale_invariance (test_classify_relative.RelativeClassifierTests.test_price_scale_invariance) ... ok
+test_relative_return_not_price_difference_or_ratio (test_classify_relative.RelativeClassifierTests.test_relative_return_not_price_difference_or_ratio) ... ok
+test_source_complete_requires_literal_true (test_classify_relative.RelativeClassifierTests.test_source_complete_requires_literal_true) ... ok
+test_target_low_not_close_ignored (test_classify_relative.RelativeClassifierTests.test_target_low_not_close_ignored) ... ok
+test_target_missing_prefix_explicit (test_classify_relative.RelativeClassifierTests.test_target_missing_prefix_explicit) ... ok
+test_unlocatable_timestamp_conservatively_unknown (test_classify_relative.RelativeClassifierTests.test_unlocatable_timestamp_conservatively_unknown) ... ok
+test_zero_volume_allowed (test_classify_relative.RelativeClassifierTests.test_zero_volume_allowed) ... ok
+
+----------------------------------------------------------------------
+Ran 27 tests in 0.017s
+
+OK

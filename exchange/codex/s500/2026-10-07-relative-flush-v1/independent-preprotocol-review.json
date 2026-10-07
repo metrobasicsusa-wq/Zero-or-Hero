@@ -1,0 +1,44 @@
+{
+  "version": "relative_flush_independent_preprotocol_v1",
+  "created_at_utc": "2026-10-07T15:11:55.485801+00:00",
+  "status": "design_recommendations_before_frozen_protocol_and_stratified_outcomes",
+  "actual_stratified_outcomes_read": false,
+  "overall_parent_study_results_previously_known": true,
+  "scope": "Exploratory benchmark-return strata of frozen stockevent outcomes; not optionprofit or capital survival.",
+  "causal_requirements": [
+    "Stocktmin is earliest timestamp attaining minimum first30 closes; full first30 completevalidunique required.",
+    "Benchmark own openingopen and benchmarkclose at stocktmin; recommend complete benchmarkfirst30 required; missing cannot be assignednotdown.",
+    "Allclassification information is available at10:00, before fixed10:01 and causalreboundentries.",
+    "Exactly -0.005 is market_down; strictly greater market_not_down; SPY primary andQQQ prespecified sensitivity, nochoosebest.",
+    "Relative return stockminusbenchmark atsamepoint is descriptive, not beta residual, idiosyncraticshock or causal effect.",
+    "Benchmarktarget rows retainN/A status but exclude stockprimary; duplicated SPY/QQQ strata shouldnever be pooled as independenttargetobservations."
+  ],
+  "comparison_requirements": [
+    "Maincomparison within-date mean existingmatched3excess in market_not_down minus market_down, usingonly dates withbothgroups completepairs.",
+    "Preserve all191calendar dates withtwo groups,onegroup,nopairs,unknownclassification distinctly; selectionofdoublegroupdates is a limitation.",
+    "Keep existing causalentry/exits, costvariants, fixed3peeridentities andunknownreturns; never rematch controls afterstratification or missingoutcomes.",
+    "Do not claim randomized/controlcausal effect from benchmarkstate strata; earlymarket regime andstockselection may confound.",
+    "Resample whole date differences2000times fromfixedseed; <2dates nointerval. Markmonth/H1H2 exploration, notholdout."
+  ],
+  "payoff_requirements": [
+    "Netpositive wins, negative losses, zeroexplicit; unconditionalwinrate wins/N and conditionalnonzerowinrate wins/(wins+losses) distinct.",
+    "avgwin and absavgloss strictlypositive outcomes only; missing-side payoffratio/profitfactor/breakeven null withreason, not infinity.",
+    "Profitfactor totalpositive/abs(totalnegative) is event percentage-sum ratio, not capitalportfolio profitability.",
+    "Breakeven p=L/(G+L) applies to nonzerooutcomes; unconditional equivalent multiplies1-pzero. Net outcomes alreadyinclude costs.",
+    "Lowwinrate isnot a rejectioncriterion; meanexpectancy, payoffasymmetry, costs, tails anduncertainty assessed jointly.",
+    "Matchedexcess winner signs arenot signs of actualtarget profit; targetnetpayoff andrelativeexcess statistics separate."
+  ],
+  "extreme_and_streak_requirements": [
+    "Freeze whether tailk is fractionofallcompleteevents oronlywins. Recommendedk=min(wins,ceil(q*Ncomplete)), q=.01,.05.",
+    "Toppositive contribution denominator totalpositivegains, not nettotal that can benegative/nearzero.",
+    "Removingtoppositiveevents is labeled sensitivityonly with remainingn, no strategyoptimization ornewstockexclusions.",
+    "Do not concatenate overlapping/simultaneous stockevents into an inventedaccountlosingstreak.",
+    "If reporting streaks use predeclared datelevel equalweightnet and explicitlyhandlezero/noevent/missingdays; thisdoesnot prove500round survival or0DTE suitability."
+  ],
+  "validation_plan": [
+    "Rebuild everyclassification from frozenminuteinputs independentofproductionengine.",
+    "Verify every reusedbaseoutcome andpeeridentity unchanged; all registeredcase/variant/view rows retained.",
+    "Independently recompute allgroup/month/half statistics, datepairdenominators, payoffalgebra, tailremoval andbootstrap.",
+    "Audit prose explicitly preserves nooptionsdata,noorders,noOOS,noaccountwealth/nozeroorhero success inference."
+  ]
+}

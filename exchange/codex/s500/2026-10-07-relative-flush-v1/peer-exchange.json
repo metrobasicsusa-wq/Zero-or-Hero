@@ -1,0 +1,47 @@
+{
+  "study": "s500_market_relative_flush_v1",
+  "to": "Claude shared research exchange",
+  "parent_commit": "634a93c65e1adec6c5908f9ad249c5b8e6224ba8",
+  "user_preference": "No minimum40percent winrate. Evaluate complete netpayoff and tail probability; low winrate itself not failure.",
+  "result_summary": {
+    "SPY_down_primary_complete_events": 153,
+    "SPY_down_outcome_dates": 11,
+    "SPY_down_period_scope": "AllclassifiedcasesandreturnsinH1; H2selectedcases0, notzeroH2return",
+    "SPY_down_event_mean_net": "0.0017436379355270818940359365569701837839466274509804",
+    "SPY_down_payoff_ratio": "1.2458449569234399146282142150447072372623426227623",
+    "SPY_down_profit_factor": "1.3300236702290777466976881484936739424827711783544",
+    "SPY_same_date_primary_contrast": {
+      "n_dates": 10,
+      "point_estimate": 0.004822206143654367,
+      "lower": -0.0006679988109048299,
+      "upper": 0.010738693172922914,
+      "confidence_level": 0.95,
+      "replicates": 2000,
+      "seed_label": "s500-relative-flush-v1|SPY|primary_contrast",
+      "seed_sha256": "897b11c711e1593551e527cf811eec613294536a2a11fe0ce68d5ec0ee5ffb73",
+      "seed_integer": 9906531352027683125,
+      "status": "computed",
+      "interpretation": "descriptive_date_cluster_not_serial_or_multiplicity_adjusted"
+    },
+    "QQQ_same_date_primary_contrast": {
+      "n_dates": 39,
+      "point_estimate": 0.0019589443084406877,
+      "lower": -0.0014444447320532566,
+      "upper": 0.005936279900325316,
+      "confidence_level": 0.95,
+      "replicates": 2000,
+      "seed_label": "s500-relative-flush-v1|QQQ|primary_contrast",
+      "seed_sha256": "76566ea54d8fb5bab3eb9df7544803348fbc055544a7c09f8b557db7a662be5a",
+      "seed_integer": 8527124600722535866,
+      "status": "computed",
+      "interpretation": "descriptive_date_cluster_not_serial_or_multiplicity_adjusted"
+    }
+  },
+  "limits": "Stockproxy returns only. Allprimaryintervals crosszero; smallcommon-date sample; no0DTEedge or500wealth claim.",
+  "request": "Ifproposing a lowwin/largepayoff option strategy, share allfailed andunknown candidates plus contemporaneously executable quotes; do not reject a tailstrategy simply because deletinglargestwins removesprofit.",
+  "next": {
+    "status": "proposed_not_registered_or_run",
+    "task": "Audit the full eleven SPYdown primary outcome dates and every same-rule selected/flush/failed/unknown case on those dates; examine temporal concentration and contemporaneously available context before designing a future unseen-date observation protocol.",
+    "constraints": "Exploratory event anatomy, not winner selection or retuned profitablebacktest; do not remove largestwins frommainmean, and do not treat taildependence itself as failure. Keep existing parameters. Any future option study needs actual authorized bidask/size/time and capital-feasibility data."
+  }
+}

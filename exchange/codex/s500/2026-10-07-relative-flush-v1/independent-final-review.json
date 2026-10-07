@@ -1,0 +1,98 @@
+{
+  "audit_version": "independent_relative_final_review_v1",
+  "completed_at_utc": "2026-10-07T15:29:20.797192+00:00",
+  "passed_for_exploratory_publication": true,
+  "validated_trading_edge": false,
+  "actual_options_winrate_or_funded_survival_estimated": false,
+  "proof": {
+    "frozen_preanalysis_synthetic_tests": 107,
+    "independent_synthetic_tests": 46,
+    "original_minute_bars_reconstructed": 7259432,
+    "registered_cases_retained": 19519,
+    "stock_benchmark_classifications_recomputed": 38274,
+    "inherited_result_rows_unchanged": 702684,
+    "stock_group_memberships_checked": 1377864,
+    "group_summaries": 216,
+    "monthly_summaries": 2160,
+    "halfyear_summaries": 432,
+    "daily_records": 41256,
+    "fullcalendar_contrasts": 72,
+    "primary_bootstrap_records": 14,
+    "negative_day_run_records": 6,
+    "payoff_distribution_records": 2808,
+    "tail_records": 11232
+  },
+  "primary_contrasts": {
+    "SPY": {
+      "doublegroup_dates": 10,
+      "date_status_counts": {
+        "not_down_only": 180,
+        "both_groups": 10,
+        "down_only": 1
+      },
+      "point_estimate": 0.004822206143654367,
+      "lower": -0.0006679988109048299,
+      "upper": 0.010738693172922914
+    },
+    "QQQ": {
+      "doublegroup_dates": 39,
+      "date_status_counts": {
+        "not_down_only": 146,
+        "both_groups": 39,
+        "down_only": 6
+      },
+      "point_estimate": 0.0019589443084406877,
+      "lower": -0.0014444447320532566,
+      "upper": 0.005936279900325316
+    }
+  },
+  "key_interpretation": [
+    "No40percentminimumwinrate criterion wasused. Exactsynthetic counterexamples show20percentwinrate canhavepositiveexpectancy and80percentcanhavenegativeexpectancy.",
+    "Observed payoffstatistics describe targetstock netreturns; matched-excess signs arekeptseparate fromactualtargetwin/loss.",
+    "Bothprespecified maincontrastintervals span zero; no provenpositivegroup effect.",
+    "SPYdown primarypositiveeventmean uses153events on11dates; shared-date maincontrast usesonly10dates. Unequaldatepopulations/weights explainwhy pooledgroupmeans andshared-datecontrast maypointdifferentdirections.",
+    "Toppositive-tailremoval is a dependencydiagnostic, not grounds todiscardlotterywinnersoroptimizea strategy afterseeingthem.",
+    "Stock-specific t_min determinesbenchmarkobservationtime; within-dateclassification remains timing-confounded, notbeta residual orverifiedidiosyncraticshock.",
+    "Negative-dayruns breakonzero/no-outcome dates; observedrun lengths donot establish accountdrawdown orabilitytofundlosingstreaks.",
+    "Without executableoptionbidask andcompletecapitalpaths, lowwinrateconvex0DTEpayoff and500-to10000success remain untested."
+  ],
+  "remaining_limits": [
+    "Currentretrospectivedirectory andETFclassification survivorship",
+    "Historicalproviderbarrevisions andunknownactualquoteexecution",
+    "Completeprefix/window anddualgroupdateselection",
+    "Matchedcontrols onlyliquidity, notsector/beta/news",
+    "Postparent-outcome hypothesisdevelopment, multiplecomparisons andserialdependence",
+    "Noportfolio/position sizing/settlement/restart/contribution accounting inthisstockeventstudy"
+  ],
+  "evidence": [
+    {
+      "path": "independent-classification-audit.json",
+      "sha256": "5b4f091c7925d21da68c82f90ee566b2be5ade37292a386f12a22b527a9afc7e"
+    },
+    {
+      "path": "independent-analysis-audit.json",
+      "sha256": "b373dfab6d5723c12d15da3b65f248eca71c949ab8b1da431443ecd27d58676d"
+    },
+    {
+      "path": "independent-payoff-audit.json",
+      "sha256": "a6fa949457679af0070b3b79dff50da10bf4c5175491fdd7c1c63620ce4434ce"
+    },
+    {
+      "path": "pre-analysis-validation.json",
+      "sha256": "0ac39c41dd1eb7d8ac8f05524cecde3c6ba6da1b3e49230a9307cdd631b3e14a"
+    },
+    {
+      "path": "study-design.json",
+      "sha256": "97f6bca2f3097fffa06af94454f3b5c4735bc7b4f212a9aa51eb762aced3a55e"
+    },
+    {
+      "path": "summary.json",
+      "sha256": "be7307f0eaaac5ab8454131d1f97442cda7b83762f2deccf713a2c21d727840c"
+    },
+    {
+      "path": "primary-results.json",
+      "sha256": "0161823956eb41746f8b96d8a5324d989326fec5d26192ba5b7ab0514fcad730"
+    }
+  ],
+  "publication_status": "Local calculations audited; finalprose andremoteGitHubcommit/readback require separate checks."
+}

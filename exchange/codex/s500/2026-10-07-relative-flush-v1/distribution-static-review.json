@@ -1,0 +1,82 @@
+{
+  "reviewed_at_utc": "2026-10-07T15:21:58.910621+00:00",
+  "scope": "independent_static_review_and_synthetic_microbenchmark_before_root_GO; no_real_event_returns_read",
+  "decision": "no_statistical_logic_blocker_identified_in_reviewed_scope",
+  "checks": [
+    {
+      "id": "complete_variant_reporting",
+      "finding": "36 fixed variants x SPY/QQQ classifications x three groups; no return ranking or return-based branch",
+      "status": "reviewed"
+    },
+    {
+      "id": "target_and_excess_separation",
+      "finding": "Target net returns use payoff diagnostics; matched excess uses plain descriptive moments and explicitly is not target profit",
+      "status": "reviewed"
+    },
+    {
+      "id": "no_win_rate_gate",
+      "finding": "No 40-percent or other win-rate acceptance gate in analyze_relative or return_distribution",
+      "status": "reviewed"
+    },
+    {
+      "id": "missing_outcomes",
+      "finding": "Null net/excess stays missing; no fill-to-zero; unknown classification is retained as its own group",
+      "status": "reviewed"
+    },
+    {
+      "id": "date_means",
+      "finding": "Complete outcomes averaged within date; empty date has no return observation",
+      "status": "reviewed"
+    },
+    {
+      "id": "same_date_contrast",
+      "finding": "not_down-minus-down uses matched excess means only on dates where both groups exist; down-only/not-down-only/neither preserved",
+      "status": "reviewed"
+    },
+    {
+      "id": "bootstrap",
+      "finding": "Primary intervals sample equally weighted date means with replacement; fixed label-derived seeds and 2000 draws; fewer than two dates yields no interval",
+      "status": "reviewed"
+    },
+    {
+      "id": "negative_day_runs",
+      "finding": "Uses full calendar; zero/missing breaks runs; labels calendar-adjacent date means, not trade losing streak/account drawdown",
+      "status": "reviewed"
+    },
+    {
+      "id": "tails",
+      "finding": "All supplied positive/negative/zero target returns remain in main statistics; top/worst tail removal is separately retrospective",
+      "status": "reviewed"
+    },
+    {
+      "id": "parent_and_classification_bindings",
+      "finding": "Production main verifies frozen source and parent hashes, classification file hash, case identity, exact 36-variant masks and fixed counts",
+      "status": "reviewed"
+    },
+    {
+      "id": "no_external_execution",
+      "finding": "Production main performs offline local file processing; no order, funding, API, or scheduler path",
+      "status": "reviewed"
+    }
+  ],
+  "source_sha256": {
+    "analyze_relative.py": "56e4cb59ce5446299d00675f316cce1d5f438e06f72b75d3c79a5a644aa9ca5b",
+    "return_distribution.py": "f499534ea183a0fd6646a90dea2b341a7a962b980884f114e5629584f0f73d26",
+    "performance_distribution_synthetic.py": "d2c2d896acf651cadec58f1fa0a20603356a298da7447ec9ace6038813cbf25b"
+  },
+  "performance_file": "distribution-synthetic-performance.json",
+  "memory_note": {
+    "planned_stock_group_memberships": 1377864,
+    "synthetic_dict_shallow_bytes": 464,
+    "dict_containers_only_MiB": 609.7115478515625,
+    "list_references_only_MiB": 10.51226806640625,
+    "production_peak_not_measured": true,
+    "cgroup_limit_GiB_at_review": 32
+  },
+  "limits": [
+    "Static review does not validate empirical outputs or classification source causality; other audits cover those.",
+    "Microbenchmark uses synthetic data only and is not a production performance guarantee.",
+    "Daily output has counts and means; full payoff diagnostics are all-period/month/H1/H2, not repeated daily.",
+    "No assertion of strategy advantage, unseen H2 validation, or implementable options/portfolio results."
+  ]
+}

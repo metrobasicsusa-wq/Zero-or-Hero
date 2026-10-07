@@ -1,0 +1,33 @@
+{
+  "version": "relative_flush_independent_protocol_review_v1",
+  "reviewed_at_utc": "2026-10-07T15:17:11.923070+00:00",
+  "study_design_sha256": "97f6bca2f3097fffa06af94454f3b5c4735bc7b4f212a9aa51eb762aced3a55e",
+  "passed_for_exploratory_descriptive_stage": true,
+  "actual_stratified_outcomes_read": false,
+  "parent_aggregate_outcomes_previously_known": true,
+  "satisfied": [
+    "Earliesttargetfirst30minimum andsame-minute benchmarkreturn are knowablebefore inheritedentry.",
+    "Fulltargetandbenchmarkvalidprefixrequired; unknowns retained separately.",
+    "SPYprimary/QQQsensitivity andthresholdinclusive arefixed; inheritedsignals/returns/peers remainunchanged.",
+    "Within-dateprimarycontrast requirescompletepairedexcess inbothgroups; allotherdates preservedwithoutzeroimputation.",
+    "No40percentwinrate gate; exactnetpayoff/winloss/zero/tail diagnostics explicitly exploratory.",
+    "Date-levelnegative-runs are not pertrade orfunded-account survival.",
+    "All36variants, allgroups, months/H1/H2 andunknowns preserved; no group/variant declaredwinner.",
+    "Privateoriginalmarketinputs reused withhashes; noadditionalAPI/order/account/scheduleraction."
+  ],
+  "critical_interpretation_limits": [
+    "Same-date group membership can differ because eachstockusesa different t_min; marketstate strata thus include timingselection/confounding, not fixed-time randomassignments.",
+    "Same-date dualgroup restriction can exclude quietormoreuniformmarketdates; mainestimate isconditional onthatselecteddatepopulation.",
+    "Existingliquiditymatchedpeers are not newrandomizedtreatments andremainobservational.",
+    "Winratebelow40percent is compatiblewithpositiveornegativeexpectancy dependingpayoffmagnitude; currentstocklinearreturns cannot infer0DTEconvexity.",
+    "Observedwinning/lossmagnitudes andbreakevenwinrate do not establish futurestability or raretailprobabilities.",
+    "Overlappingstockevents anddateequalmeans are not aninvestable500wealthledger; negative-dayruns are descriptions not ruinprobabilities.",
+    "This is a retrospectivehypothesisextension afterparentresults; all CIs/slices descriptive, not untouchedOOS or multiplicity/serial-dependence adjusted."
+  ],
+  "deferred": [
+    "Every new classification reconstructed independently from boundoriginalminutes",
+    "Full reusedledger andpeeridentity integrity checks",
+    "Independent allstatistics/payoff/tail/datecontrast/bootstrap audits",
+    "Finalreport numericalandscope binding"
+  ]
+}

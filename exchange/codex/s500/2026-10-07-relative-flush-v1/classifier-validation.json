@@ -1,0 +1,42 @@
+{
+  "version": "classifier-validation-v1",
+  "validated_at_utc": "2026-10-07T15:14:20.569143+00:00",
+  "data_kind": "synthetic_only_no_actual_classifications_or_outcomes",
+  "command": [
+    "python3",
+    "-m",
+    "unittest",
+    "-v",
+    "test_classify_relative"
+  ],
+  "exit_code": 0,
+  "tests_run": 27,
+  "passed": 27,
+  "elapsed_seconds": 0.109093,
+  "files": {
+    "classify_relative.py": {
+      "sha256": "ce967edfbe6509ef49c6a3bcd3194a9bcd506a6bd5fba7bba79f47ed201b0365",
+      "bytes": 5078
+    },
+    "test_classify_relative.py": {
+      "sha256": "8305e68ab45677125bf80c51071729840deaabfdd603ef751a2c34e5672f165b",
+      "bytes": 8950
+    },
+    "RELATIVE_API.md": {
+      "sha256": "646796719fcad215e59911f88f4b1dddb606d534de54768df750c65fcaf6bdfb",
+      "bytes": 2910
+    },
+    "classifier-tests.log": {
+      "sha256": "db1acdc0aea4c6053791e6e5491d5c60eb47b4dbb1e836bc33b87e89c01dbde8",
+      "bytes": 3817
+    },
+    "vendor/flush_engine.py": {
+      "sha256": "a11e335abb7b1d14cc535829c219edc40291c30cacd1794a67fb60542690dc05",
+      "bytes": 11277
+    },
+    "vendor/normalize_bars.py": {
+      "sha256": "1e41697f3fa2e3024901fd49b76b79b646a55041551c88fdb3e2cb6ff075e0a9",
+      "bytes": 5293
+    }
+  }
+}

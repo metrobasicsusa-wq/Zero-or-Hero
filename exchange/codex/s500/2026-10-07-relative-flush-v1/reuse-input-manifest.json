@@ -1,0 +1,1870 @@
+{
+  "id": "s500_relative_flush_offline_reuse_inputs_v1",
+  "verified_at": "2026-10-07T15:12:17.602097+00:00",
+  "source_stage": "s500-flush-rebound-20261007",
+  "source_publication": {
+    "name": "publication-verification.json",
+    "bytes": 28488,
+    "sha256": "3bc06e8692ef22ca512412a19b77eba4bce5df42c01b3f0cf5fda6fdeeb3f741",
+    "commit": "634a93c65e1adec6c5908f9ad249c5b8e6224ba8",
+    "repository": "metrobasicsusa-wq/Zero-or-Hero",
+    "branch": "claude/cloud-paper-trading-ivwxqk",
+    "previous_exact_readback_files": 117,
+    "local_publication_bytes_reverified": 117
+  },
+  "publications_verification_limits": "Existing local publication receipts and all 117 staged file bytes were checked offline. No new remote request was made.",
+  "source_files": [
+    {
+      "name": "analysis-output-manifest.json",
+      "bytes": 3040,
+      "sha256": "fa447e3fdc33b10bbb3a2c9fedf4fdd63422f8bd334f75dc49cd22c04e59071e",
+      "matches_verified_publication_path": "exchange/codex/s500/2026-10-07-flush-rebound-v1/analysis-output-manifest.json",
+      "public_artifact_sha256": "fa447e3fdc33b10bbb3a2c9fedf4fdd63422f8bd334f75dc49cd22c04e59071e"
+    },
+    {
+      "name": "selected-case-registry.json",
+      "bytes": 21121615,
+      "sha256": "273c12aae2d5486ecb7921960d2de50e3ff1380ffa390ffec25fc5d4db2b3699",
+      "matches_verified_publication_path": "exchange/codex/s500/2026-10-07-flush-rebound-v1/selected-case-registry.json.gz",
+      "public_artifact_sha256": "3d6c910dfbf2cac6f4b425ca7881fa784f49cb83c4bcdc1893d66686c56f5be3"
+    },
+    {
+      "name": "calendar-2026-ytd.json",
+      "bytes": 32664,
+      "sha256": "80425a15b7b99d086d2204c30dd3971808bd7279652593d3b7c6f5c5751d8e2e",
+      "matches_verified_publication_path": "exchange/codex/s500/2026-10-07-flush-rebound-v1/calendar-2026-ytd.json",
+      "public_artifact_sha256": "80425a15b7b99d086d2204c30dd3971808bd7279652593d3b7c6f5c5751d8e2e"
+    },
+    {
+      "name": "minute-source-manifest.json",
+      "bytes": 911645,
+      "sha256": "5acd311de13d15014d90b901a2df5bfa60e34ae23f6fc12cb7412b02cefe4c94",
+      "matches_verified_publication_path": "exchange/codex/s500/2026-10-07-flush-rebound-v1/minute-source-manifest.json.gz",
+      "public_artifact_sha256": "3c9f75af89331c0ac74c558e23255803e5ddf259e87d41c5eee9dd7666effe2c"
+    },
+    {
+      "name": "normalize_bars.py",
+      "bytes": 5293,
+      "sha256": "1e41697f3fa2e3024901fd49b76b79b646a55041551c88fdb3e2cb6ff075e0a9",
+      "matches_verified_publication_path": "exchange/codex/s500/2026-10-07-flush-rebound-v1/normalize_bars.py",
+      "public_artifact_sha256": "1e41697f3fa2e3024901fd49b76b79b646a55041551c88fdb3e2cb6ff075e0a9"
+    },
+    {
+      "name": "flush_engine.py",
+      "bytes": 11277,
+      "sha256": "a11e335abb7b1d14cc535829c219edc40291c30cacd1794a67fb60542690dc05",
+      "matches_verified_publication_path": "exchange/codex/s500/2026-10-07-flush-rebound-v1/flush_engine.py",
+      "public_artifact_sha256": "a11e335abb7b1d14cc535829c219edc40291c30cacd1794a67fb60542690dc05"
+    },
+    {
+      "name": "results/2026-01.jsonl.gz",
+      "sha256": "5457a372ec7a7c2e6a75881aadd3e6a1f06556248adcc2d78b5c392fe2add3a1",
+      "bytes": 2295312,
+      "use": "hash binding only before classification; returns not parsed or regrouped"
+    },
+    {
+      "name": "results/2026-02.jsonl.gz",
+      "sha256": "5f27b4c911cbfd825e3b91dc388a01021692cc031ede97a42d7b653d4e395b51",
+      "bytes": 2582752,
+      "use": "hash binding only before classification; returns not parsed or regrouped"
+    },
+    {
+      "name": "results/2026-03.jsonl.gz",
+      "sha256": "9b94ef0d14067e577ac455ceb773e556ccd327eedeeba1bd8456f53b61f26fd7",
+      "bytes": 2178615,
+      "use": "hash binding only before classification; returns not parsed or regrouped"
+    },
+    {
+      "name": "results/2026-04.jsonl.gz",
+      "sha256": "ed5fa0c836e3265a3b005d066355957cd26a12a0821785e3dc07bed5a308a2f1",
+      "bytes": 2632901,
+      "use": "hash binding only before classification; returns not parsed or regrouped"
+    },
+    {
+      "name": "results/2026-05.jsonl.gz",
+      "sha256": "c88d8b32233241ee0404ff2126d921946f74864e15e817df563ec8cf06e585c9",
+      "bytes": 3368793,
+      "use": "hash binding only before classification; returns not parsed or regrouped"
+    },
+    {
+      "name": "results/2026-06.jsonl.gz",
+      "sha256": "e42a7c9d5b6b50697ea6cc2343fc2c24f22a10634102cccbc4eeed6eb2424bb1",
+      "bytes": 3886403,
+      "use": "hash binding only before classification; returns not parsed or regrouped"
+    },
+    {
+      "name": "results/2026-07.jsonl.gz",
+      "sha256": "90eea102c0b9b435d74f90046b9bede5ae477e34dfd00936f5549ca2fe2860a6",
+      "bytes": 3802329,
+      "use": "hash binding only before classification; returns not parsed or regrouped"
+    },
+    {
+      "name": "results/2026-08.jsonl.gz",
+      "sha256": "377181d242bd63cc46ebebbe2d3fbfee8680dbb9890170e8a113e683cf408a3e",
+      "bytes": 2642779,
+      "use": "hash binding only before classification; returns not parsed or regrouped"
+    },
+    {
+      "name": "results/2026-09.jsonl.gz",
+      "sha256": "b3ef00a29f10485a87e0f4ab63c24a68738200f79b4ca1c2ead44a1926298cdb",
+      "bytes": 1977973,
+      "use": "hash binding only before classification; returns not parsed or regrouped"
+    },
+    {
+      "name": "results/2026-10.jsonl.gz",
+      "sha256": "52ec08b91f66577384f2212798240ca52ed1a55f996cdb56281d70fd55c98aaf",
+      "bytes": 391743,
+      "use": "hash binding only before classification; returns not parsed or regrouped"
+    }
+  ],
+  "normalized_days": [
+    {
+      "date": "2026-01-02",
+      "source_name": "private-inputs/minute-days/2026-01-02.json",
+      "sha256": "e512ec7a777dcb917791f31b80d3376070c5134af84d4e63ca5243319b43338a",
+      "bytes": 4075148,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 104
+    },
+    {
+      "date": "2026-01-05",
+      "source_name": "private-inputs/minute-days/2026-01-05.json",
+      "sha256": "b4709acb1582e5acb7918574dbefe8b59ae542ab3f30115f73c9152316971584",
+      "bytes": 4100847,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 103
+    },
+    {
+      "date": "2026-01-06",
+      "source_name": "private-inputs/minute-days/2026-01-06.json",
+      "sha256": "911bb363a2aa816969c664a402341533785beb8836840e946d794f5f5352c31a",
+      "bytes": 4071083,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 104
+    },
+    {
+      "date": "2026-01-07",
+      "source_name": "private-inputs/minute-days/2026-01-07.json",
+      "sha256": "788c9fc85bc1ba8d6966d2163ec1f4a18f53a333dc8829b0422e5ee91dae3ced",
+      "bytes": 4116352,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 104
+    },
+    {
+      "date": "2026-01-08",
+      "source_name": "private-inputs/minute-days/2026-01-08.json",
+      "sha256": "1c41a52cee6b3f1c56ab5b1c78d533a57b14d44728c6d386f2a3a7296e168834",
+      "bytes": 4015840,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 103
+    },
+    {
+      "date": "2026-01-09",
+      "source_name": "private-inputs/minute-days/2026-01-09.json",
+      "sha256": "ca19e01fc0e185a54fe50613300ba132d3aa79a557286fee3dec97247f02b9d3",
+      "bytes": 4021492,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 103
+    },
+    {
+      "date": "2026-01-12",
+      "source_name": "private-inputs/minute-days/2026-01-12.json",
+      "sha256": "aa6dc5c510ef24e5edf71c49555ad25d90e95a05cc1e4e24644ce7e566e7b4c2",
+      "bytes": 4026645,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 103
+    },
+    {
+      "date": "2026-01-13",
+      "source_name": "private-inputs/minute-days/2026-01-13.json",
+      "sha256": "5c5e501daa244bbea2ed208b44ac6168dbfc748f54d24df24caf0288bfc85a7d",
+      "bytes": 4006584,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 103
+    },
+    {
+      "date": "2026-01-14",
+      "source_name": "private-inputs/minute-days/2026-01-14.json",
+      "sha256": "f0bdd9b2534874a62d7912f8b97db8d17a865078ae04f71413ee9d74a0abd81c",
+      "bytes": 4037390,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 103
+    },
+    {
+      "date": "2026-01-15",
+      "source_name": "private-inputs/minute-days/2026-01-15.json",
+      "sha256": "170e368d43a4d4e12d478a957a2aab05d59e97b43055cdba69bf61b71b7ab96c",
+      "bytes": 3990455,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 103
+    },
+    {
+      "date": "2026-01-16",
+      "source_name": "private-inputs/minute-days/2026-01-16.json",
+      "sha256": "8285713d71d691617ff6df05c30f99a825bf74dc732c6caa2a5c19e1a65afcec",
+      "bytes": 4050065,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 103
+    },
+    {
+      "date": "2026-01-20",
+      "source_name": "private-inputs/minute-days/2026-01-20.json",
+      "sha256": "6ff7a15e5d0c10a621a392334d9fec547052268c5407383085e0f1aee31923f9",
+      "bytes": 4023219,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 103
+    },
+    {
+      "date": "2026-01-21",
+      "source_name": "private-inputs/minute-days/2026-01-21.json",
+      "sha256": "bf641475ba9c4d8384f324abc114415fb3d06b3bedc9010e73c149f92b311b7a",
+      "bytes": 4104141,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 103
+    },
+    {
+      "date": "2026-01-22",
+      "source_name": "private-inputs/minute-days/2026-01-22.json",
+      "sha256": "7e29f6721458337dfe917ca84feb8f6b486cc05384f052766f00c86bab04bc60",
+      "bytes": 4054896,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 103
+    },
+    {
+      "date": "2026-01-23",
+      "source_name": "private-inputs/minute-days/2026-01-23.json",
+      "sha256": "311f4e8932d40728efd122285a38e41600bef0b3c8f6a473d876e4bd2de5ac92",
+      "bytes": 4029853,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 103
+    },
+    {
+      "date": "2026-01-26",
+      "source_name": "private-inputs/minute-days/2026-01-26.json",
+      "sha256": "76c2faadd5e445d226e1e61953f260ef9dd3b0a2527ec4ae2a581063dea47086",
+      "bytes": 4026969,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 103
+    },
+    {
+      "date": "2026-01-27",
+      "source_name": "private-inputs/minute-days/2026-01-27.json",
+      "sha256": "08b3e67b93493eccbf0e1db2eb56e24ce4de66496e3c5658f40f6998382443d2",
+      "bytes": 4109589,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 103
+    },
+    {
+      "date": "2026-01-28",
+      "source_name": "private-inputs/minute-days/2026-01-28.json",
+      "sha256": "ab4abd944c3b3870b5d20590d7c939895c67c1f5858a89075583099d9f8f4595",
+      "bytes": 4056168,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 103
+    },
+    {
+      "date": "2026-01-29",
+      "source_name": "private-inputs/minute-days/2026-01-29.json",
+      "sha256": "4daa7550e8cf2d3bcadba310bbccb1c1a263b3ea3177bffb6c7a96761e313dd4",
+      "bytes": 4057729,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 103
+    },
+    {
+      "date": "2026-01-30",
+      "source_name": "private-inputs/minute-days/2026-01-30.json",
+      "sha256": "2d78980769203d4b44ccc9e511c8f02b269d251cdde83f5fdbf9f44280d781e8",
+      "bytes": 4061891,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 102
+    },
+    {
+      "date": "2026-02-02",
+      "source_name": "private-inputs/minute-days/2026-02-02.json",
+      "sha256": "4b7c0e6ab7f391e40978f16013c1b8850d0137b9c67dbbc6b0a736b65a80c0f2",
+      "bytes": 4064405,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 103
+    },
+    {
+      "date": "2026-02-03",
+      "source_name": "private-inputs/minute-days/2026-02-03.json",
+      "sha256": "9b394b315ac30fd21f5627ee32064f785105af018a303146707fb5a0c4041278",
+      "bytes": 4072565,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 103
+    },
+    {
+      "date": "2026-02-04",
+      "source_name": "private-inputs/minute-days/2026-02-04.json",
+      "sha256": "f01b8e1078f29c67c025f83a802b9d4762473d51276b67948f501d7761970073",
+      "bytes": 4099237,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 102
+    },
+    {
+      "date": "2026-02-05",
+      "source_name": "private-inputs/minute-days/2026-02-05.json",
+      "sha256": "097465c809ee254bf415d34ff811625a1241e7f5488b718ed49973fd994a037e",
+      "bytes": 4054569,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 102
+    },
+    {
+      "date": "2026-02-06",
+      "source_name": "private-inputs/minute-days/2026-02-06.json",
+      "sha256": "00b55a34016ee506550e0728b258173fc822c13b5683c38a82dfcf4b238eb83d",
+      "bytes": 4045459,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 102
+    },
+    {
+      "date": "2026-02-09",
+      "source_name": "private-inputs/minute-days/2026-02-09.json",
+      "sha256": "fb53ff21f40595b094e8e93beb181794b2220e44a557e198f1ff96e6921c2cc6",
+      "bytes": 3923120,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 102
+    },
+    {
+      "date": "2026-02-10",
+      "source_name": "private-inputs/minute-days/2026-02-10.json",
+      "sha256": "16ede227c9a2b7cb3b2d92cd0e7b53337c8bf4212cf8fdd5fcd9b3245885b7a5",
+      "bytes": 4077095,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 103
+    },
+    {
+      "date": "2026-02-11",
+      "source_name": "private-inputs/minute-days/2026-02-11.json",
+      "sha256": "863ef5b25482713ee3b7e2d3aaed48dd2bef2938e5f098b772648547b0f5304a",
+      "bytes": 4036525,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 103
+    },
+    {
+      "date": "2026-02-12",
+      "source_name": "private-inputs/minute-days/2026-02-12.json",
+      "sha256": "cfeb0ef50801005ff8db2f2bc71fe473df4e800b6e89b2c5878216f85407e4ce",
+      "bytes": 4077575,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 102
+    },
+    {
+      "date": "2026-02-13",
+      "source_name": "private-inputs/minute-days/2026-02-13.json",
+      "sha256": "88d493147b1a2840f6f06aae7c277522c34a8536244ef9146fc969553d25aad9",
+      "bytes": 4094373,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 102
+    },
+    {
+      "date": "2026-02-17",
+      "source_name": "private-inputs/minute-days/2026-02-17.json",
+      "sha256": "c7e2fff6f0aa2f77a98989efce437aaed6d457e9e1f0ad575cae8f83d7e314af",
+      "bytes": 3965911,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 102
+    },
+    {
+      "date": "2026-02-18",
+      "source_name": "private-inputs/minute-days/2026-02-18.json",
+      "sha256": "a4b34248c931018d83f6f233fdbe74fcafce3712c2b8a559a4393b42b0cc95ea",
+      "bytes": 3957005,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 102
+    },
+    {
+      "date": "2026-02-19",
+      "source_name": "private-inputs/minute-days/2026-02-19.json",
+      "sha256": "e89847fb40af876faf83a6cc21fc1659d9ee16b5e0b393d185f7a01ed227ba1d",
+      "bytes": 4017381,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 102
+    },
+    {
+      "date": "2026-02-20",
+      "source_name": "private-inputs/minute-days/2026-02-20.json",
+      "sha256": "90aaf545e805927337c19c516d5dee58c0ed8da9e36a02ec9ee1fa4cb41b5619",
+      "bytes": 4025933,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 102
+    },
+    {
+      "date": "2026-02-23",
+      "source_name": "private-inputs/minute-days/2026-02-23.json",
+      "sha256": "c45b9b1063c68268069531f0372fae4ff878aeec3540654e131e659871065110",
+      "bytes": 4044158,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 102
+    },
+    {
+      "date": "2026-02-24",
+      "source_name": "private-inputs/minute-days/2026-02-24.json",
+      "sha256": "c4b10dadcc52b9b208499c905a28ce20f9afe21b2fddca0e5a6e846ae51b9f9a",
+      "bytes": 4057573,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 102
+    },
+    {
+      "date": "2026-02-25",
+      "source_name": "private-inputs/minute-days/2026-02-25.json",
+      "sha256": "e443b61a56cd31ebe8f8a31279762ab682f4812935cc72bf2ee5658e68a8063d",
+      "bytes": 4080544,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 103
+    },
+    {
+      "date": "2026-02-26",
+      "source_name": "private-inputs/minute-days/2026-02-26.json",
+      "sha256": "f9cbc75f657b632300e8f809e0cd688659dee8013abb53ae5a642eec0c83b05f",
+      "bytes": 4118359,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 103
+    },
+    {
+      "date": "2026-02-27",
+      "source_name": "private-inputs/minute-days/2026-02-27.json",
+      "sha256": "0fc873559399978ef6d7eca171fb6fbe29f205c66e370fbe9cb4748b75c6fbbb",
+      "bytes": 4066462,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 103
+    },
+    {
+      "date": "2026-03-02",
+      "source_name": "private-inputs/minute-days/2026-03-02.json",
+      "sha256": "05f64b98126b563fc40c935f5f57399d729d5914455fba37332a57693d860809",
+      "bytes": 4054069,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 103
+    },
+    {
+      "date": "2026-03-03",
+      "source_name": "private-inputs/minute-days/2026-03-03.json",
+      "sha256": "65ebe951c3631bcb53a3169f5d6732dd75718360ebf322a776baacfe9bd853f3",
+      "bytes": 4097727,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 103
+    },
+    {
+      "date": "2026-03-04",
+      "source_name": "private-inputs/minute-days/2026-03-04.json",
+      "sha256": "2542d4d9bc8ecad0e45c0f07c5494491a99492890f18d46af40f82cc84ec92db",
+      "bytes": 4088139,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 103
+    },
+    {
+      "date": "2026-03-05",
+      "source_name": "private-inputs/minute-days/2026-03-05.json",
+      "sha256": "93ad8d70fb5bc7f80f13eb64c5d1819e7bf759108e0dae39ad89fd4fcf9a480d",
+      "bytes": 3998285,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 103
+    },
+    {
+      "date": "2026-03-06",
+      "source_name": "private-inputs/minute-days/2026-03-06.json",
+      "sha256": "9ef483b72d0d81c9e905ac28a28a8b419408eb2df64b41640d714b086654cf17",
+      "bytes": 4066635,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 103
+    },
+    {
+      "date": "2026-03-09",
+      "source_name": "private-inputs/minute-days/2026-03-09.json",
+      "sha256": "3aef6ca212051b16aff2f81c9323d372fc7857a05a3a9db8b8231c0c7e347653",
+      "bytes": 4097573,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 103
+    },
+    {
+      "date": "2026-03-10",
+      "source_name": "private-inputs/minute-days/2026-03-10.json",
+      "sha256": "b1e914f138e6ad68570add4f8565b7bf599d6de3fa71345489ded08753a80f49",
+      "bytes": 4032235,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 103
+    },
+    {
+      "date": "2026-03-11",
+      "source_name": "private-inputs/minute-days/2026-03-11.json",
+      "sha256": "43279ae7377b98e2a033a6a11a6483e5b29bdd690fe9532a28a025547f9bfc0d",
+      "bytes": 4063949,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 103
+    },
+    {
+      "date": "2026-03-12",
+      "source_name": "private-inputs/minute-days/2026-03-12.json",
+      "sha256": "5f452972c1c4d742194b60c8ee627a97d1e4866875a277e1a03bccaacb462d32",
+      "bytes": 4066144,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 103
+    },
+    {
+      "date": "2026-03-13",
+      "source_name": "private-inputs/minute-days/2026-03-13.json",
+      "sha256": "638a11f5436e09f179e758ab4fd2a795f1cdda9225c662e77684fbf253740362",
+      "bytes": 3969309,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 103
+    },
+    {
+      "date": "2026-03-16",
+      "source_name": "private-inputs/minute-days/2026-03-16.json",
+      "sha256": "efd225b78674624a754c5d898a11522d8c66c1c8ea804c5c38926b778c7734d2",
+      "bytes": 3945547,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 103
+    },
+    {
+      "date": "2026-03-17",
+      "source_name": "private-inputs/minute-days/2026-03-17.json",
+      "sha256": "564da994601382523c41983d5be6ac9140e61f48624b72b5f49e87293e24dd3a",
+      "bytes": 3995880,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 102
+    },
+    {
+      "date": "2026-03-18",
+      "source_name": "private-inputs/minute-days/2026-03-18.json",
+      "sha256": "eaca2c137af9cce5a2582482f3291644a9fea5be7395d0be7781aba36fb9082f",
+      "bytes": 3923534,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 103
+    },
+    {
+      "date": "2026-03-19",
+      "source_name": "private-inputs/minute-days/2026-03-19.json",
+      "sha256": "bfd68b111065e50a8943de6093b8b2f908fce099cef28b26a3a11d3a3251ffce",
+      "bytes": 4037845,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 103
+    },
+    {
+      "date": "2026-03-20",
+      "source_name": "private-inputs/minute-days/2026-03-20.json",
+      "sha256": "a60ad46e9cf0c34e051def47228eed6030b7fa62c813f2b10e5521524c7068f3",
+      "bytes": 4093448,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 103
+    },
+    {
+      "date": "2026-03-23",
+      "source_name": "private-inputs/minute-days/2026-03-23.json",
+      "sha256": "9aab0bf2077707daf2fea86f13897db8594db09e6a7afe124d5ae1b8080f7d42",
+      "bytes": 4029653,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 103
+    },
+    {
+      "date": "2026-03-24",
+      "source_name": "private-inputs/minute-days/2026-03-24.json",
+      "sha256": "da08b8f8fe60e7799b759093a9af8691a73141ceee0923b61f9bfd70b70fc472",
+      "bytes": 4017059,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 103
+    },
+    {
+      "date": "2026-03-25",
+      "source_name": "private-inputs/minute-days/2026-03-25.json",
+      "sha256": "e46b9ce06392040ee7e698388104118edf370e2628a6e29d0b2204bff64ca891",
+      "bytes": 4089728,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 103
+    },
+    {
+      "date": "2026-03-26",
+      "source_name": "private-inputs/minute-days/2026-03-26.json",
+      "sha256": "6f314943f16073c87897f3a4d3ea5d322a4a0c142b752242b7c20616c7d252aa",
+      "bytes": 3953296,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 103
+    },
+    {
+      "date": "2026-03-27",
+      "source_name": "private-inputs/minute-days/2026-03-27.json",
+      "sha256": "bf016f12bae29e6cab28b822c7d2ffb6b2ebc36b8399ba0d8cbd00d2fa082c5e",
+      "bytes": 3972529,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 102
+    },
+    {
+      "date": "2026-03-30",
+      "source_name": "private-inputs/minute-days/2026-03-30.json",
+      "sha256": "893a0b88a2e2fd2276108add2e1a9f20419de073718d5d86cadd05298e8a90b6",
+      "bytes": 3940210,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 102
+    },
+    {
+      "date": "2026-03-31",
+      "source_name": "private-inputs/minute-days/2026-03-31.json",
+      "sha256": "6ccc8a49cb40ec220c9183276d2053f122f532d2db85bbe7341754789aaf4697",
+      "bytes": 3998841,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 102
+    },
+    {
+      "date": "2026-04-01",
+      "source_name": "private-inputs/minute-days/2026-04-01.json",
+      "sha256": "a436295dc6ef2ccf66c611cee3adc89617d93bc4c58b3d872d889b96522b3be0",
+      "bytes": 4053229,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 102
+    },
+    {
+      "date": "2026-04-02",
+      "source_name": "private-inputs/minute-days/2026-04-02.json",
+      "sha256": "883e35ead34b366095943f5e7eda0f756de9ae7076d0b110847bb308c4ba00ff",
+      "bytes": 4008313,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 102
+    },
+    {
+      "date": "2026-04-06",
+      "source_name": "private-inputs/minute-days/2026-04-06.json",
+      "sha256": "28a3a8fb83621b598c4dc06f82c566bcbf984a58e30d2feef727701785b87f54",
+      "bytes": 3961078,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 102
+    },
+    {
+      "date": "2026-04-07",
+      "source_name": "private-inputs/minute-days/2026-04-07.json",
+      "sha256": "ad4e875b55b5b8a7691941d64d05359d3188fc96b6b5c3920be161236f23a3ce",
+      "bytes": 3941738,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 102
+    },
+    {
+      "date": "2026-04-08",
+      "source_name": "private-inputs/minute-days/2026-04-08.json",
+      "sha256": "002642fdc51a1b6f59a49ff9c6496e123f46e047990ff88c0b443ee716241d71",
+      "bytes": 3961847,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 102
+    },
+    {
+      "date": "2026-04-09",
+      "source_name": "private-inputs/minute-days/2026-04-09.json",
+      "sha256": "3af06ec762b39799f16b41960b019a7dd94be256d88ca592ccf48b1833be4ccf",
+      "bytes": 3982447,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 102
+    },
+    {
+      "date": "2026-04-10",
+      "source_name": "private-inputs/minute-days/2026-04-10.json",
+      "sha256": "d00e96620bedaa365e1c194d26d588fce131346dff2263dc7b7639c6820c7205",
+      "bytes": 3929049,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 102
+    },
+    {
+      "date": "2026-04-13",
+      "source_name": "private-inputs/minute-days/2026-04-13.json",
+      "sha256": "0a5c4979a58ea34d197d071e8567ad42aa7272854692a6cbc1a31f677b973e15",
+      "bytes": 3981933,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 102
+    },
+    {
+      "date": "2026-04-14",
+      "source_name": "private-inputs/minute-days/2026-04-14.json",
+      "sha256": "17857dd8a6605696ee43a1891012901d4a467864eedb10e4d8185bdbb4cee9e3",
+      "bytes": 3978346,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 102
+    },
+    {
+      "date": "2026-04-15",
+      "source_name": "private-inputs/minute-days/2026-04-15.json",
+      "sha256": "4fec187c8639928cbc47251c2a9b394fbcfe9cacf60b3dbd7b501bdca71fe0d9",
+      "bytes": 3949846,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 102
+    },
+    {
+      "date": "2026-04-16",
+      "source_name": "private-inputs/minute-days/2026-04-16.json",
+      "sha256": "fb3840ac46ec5e37bd42af77d37a8bcfb388cd635b5cb495c64253e2d42a6552",
+      "bytes": 3981857,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 102
+    },
+    {
+      "date": "2026-04-17",
+      "source_name": "private-inputs/minute-days/2026-04-17.json",
+      "sha256": "b41da24e457d18b8ef1fa7612178e0d78948abc6b464ad69410d2f392e7ec12c",
+      "bytes": 4039141,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 102
+    },
+    {
+      "date": "2026-04-20",
+      "source_name": "private-inputs/minute-days/2026-04-20.json",
+      "sha256": "00eb924cb52a51006ce78a46a622b0d2f849b1b2eed2c89b543da4e6eb11551a",
+      "bytes": 4001555,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 102
+    },
+    {
+      "date": "2026-04-21",
+      "source_name": "private-inputs/minute-days/2026-04-21.json",
+      "sha256": "9511aae3af08e7234042cecfeaa1ca36c6988346ffc616a749a42e543964ae0d",
+      "bytes": 4030540,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 102
+    },
+    {
+      "date": "2026-04-22",
+      "source_name": "private-inputs/minute-days/2026-04-22.json",
+      "sha256": "7342a6e9951bb513bcf5aa5e95df3591bfa31d0456b68e3ae26cdc62bb77f107",
+      "bytes": 3997559,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 102
+    },
+    {
+      "date": "2026-04-23",
+      "source_name": "private-inputs/minute-days/2026-04-23.json",
+      "sha256": "b318a14306b12debaa8a5f6721665385964fccb66fc9f54e1e1632ee55c13e3a",
+      "bytes": 4015303,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 102
+    },
+    {
+      "date": "2026-04-24",
+      "source_name": "private-inputs/minute-days/2026-04-24.json",
+      "sha256": "e43c681747f2ba17e00f17c7b96621b8bdbbd32febeae7bd100f140b40e6a913",
+      "bytes": 3969016,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 102
+    },
+    {
+      "date": "2026-04-27",
+      "source_name": "private-inputs/minute-days/2026-04-27.json",
+      "sha256": "019137a3a90de532238f11e9089d702cf3b6593133c532ab1999875f7a0fe74e",
+      "bytes": 3993088,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 102
+    },
+    {
+      "date": "2026-04-28",
+      "source_name": "private-inputs/minute-days/2026-04-28.json",
+      "sha256": "7c458aaba7bac827f9da8755abc9bbb0320ed68225d1063ef1d5dcfe45b2c2ab",
+      "bytes": 4047400,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 102
+    },
+    {
+      "date": "2026-04-29",
+      "source_name": "private-inputs/minute-days/2026-04-29.json",
+      "sha256": "b00dbad1bb093035bce22fbfc37e6b64ba2b3ff8eade38a94132dc0aa966023e",
+      "bytes": 4050318,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 102
+    },
+    {
+      "date": "2026-04-30",
+      "source_name": "private-inputs/minute-days/2026-04-30.json",
+      "sha256": "5abe55e5f89c4a118fb6d04a030403bd4fca8c652360524c2343d25b3cb2f0bf",
+      "bytes": 3929408,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 102
+    },
+    {
+      "date": "2026-05-01",
+      "source_name": "private-inputs/minute-days/2026-05-01.json",
+      "sha256": "9a8ca131726ac50a554529106e6e26f5a43e3fcb30c05962ee402deec65c52ca",
+      "bytes": 4011738,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 101
+    },
+    {
+      "date": "2026-05-04",
+      "source_name": "private-inputs/minute-days/2026-05-04.json",
+      "sha256": "3dcca70df521e321ab6e0d52cb6fff8c975dee73a37e15092e2ed4d6789fcbb4",
+      "bytes": 3964217,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 102
+    },
+    {
+      "date": "2026-05-05",
+      "source_name": "private-inputs/minute-days/2026-05-05.json",
+      "sha256": "4419300c7da22e5fb369cbd278accd92e5afb884d8d160455b8ee5722af0cb85",
+      "bytes": 4033722,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 102
+    },
+    {
+      "date": "2026-05-06",
+      "source_name": "private-inputs/minute-days/2026-05-06.json",
+      "sha256": "3b371538e730d4715ffbaf904fc3472ee24df909a794289672763f2b69d1a9ac",
+      "bytes": 4033641,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 102
+    },
+    {
+      "date": "2026-05-07",
+      "source_name": "private-inputs/minute-days/2026-05-07.json",
+      "sha256": "c830b0e31f275b86d4f644b4e746db0491ef9a9890aa70719aa010029329464c",
+      "bytes": 4055079,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 102
+    },
+    {
+      "date": "2026-05-08",
+      "source_name": "private-inputs/minute-days/2026-05-08.json",
+      "sha256": "9f1d026066aaebeb0f547e3c9f59a124a0fa38be2ca50cdd6852bd0821f51203",
+      "bytes": 3996765,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 101
+    },
+    {
+      "date": "2026-05-11",
+      "source_name": "private-inputs/minute-days/2026-05-11.json",
+      "sha256": "01194c9988039b019b1679f1255ac35472a9d4df8e46756ae9c19fdfee351b3a",
+      "bytes": 4058488,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 102
+    },
+    {
+      "date": "2026-05-12",
+      "source_name": "private-inputs/minute-days/2026-05-12.json",
+      "sha256": "b924dcf906f3199c97b7a7e7320a9b2fb74b425bfe452fd4c59f9a736c10e6f5",
+      "bytes": 4032536,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 102
+    },
+    {
+      "date": "2026-05-13",
+      "source_name": "private-inputs/minute-days/2026-05-13.json",
+      "sha256": "f1b9f96601051ba3195af4249d7026a3c4fffce65e7ab68a69e29f3ba3393baa",
+      "bytes": 4108599,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 102
+    },
+    {
+      "date": "2026-05-14",
+      "source_name": "private-inputs/minute-days/2026-05-14.json",
+      "sha256": "8393a738155269df5fdc6741368b29c812d5348ff7bf026d37bd492d494025fb",
+      "bytes": 4003157,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 102
+    },
+    {
+      "date": "2026-05-15",
+      "source_name": "private-inputs/minute-days/2026-05-15.json",
+      "sha256": "f6dbeee32fef9f8df372aa5ce3dbe1d1c8df148bf808b0fd345bd39da1a909a6",
+      "bytes": 4018491,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 102
+    },
+    {
+      "date": "2026-05-18",
+      "source_name": "private-inputs/minute-days/2026-05-18.json",
+      "sha256": "c3d6dcfb853ea1730690f8d6321c362d5b532b922a9391e1b9660a7a5a827b74",
+      "bytes": 4071695,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 102
+    },
+    {
+      "date": "2026-05-19",
+      "source_name": "private-inputs/minute-days/2026-05-19.json",
+      "sha256": "5bba5e804fd1b7f7ee8ecb10c317d308005597bc0491df4d4a83e3303cfd7b22",
+      "bytes": 4102130,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 102
+    },
+    {
+      "date": "2026-05-20",
+      "source_name": "private-inputs/minute-days/2026-05-20.json",
+      "sha256": "bada8734aafba065099e4bde10ac3c1f8069113e77672b7955f04cabf9318207",
+      "bytes": 4015466,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 102
+    },
+    {
+      "date": "2026-05-21",
+      "source_name": "private-inputs/minute-days/2026-05-21.json",
+      "sha256": "c726ca976a40ee5d86175da441b406e93881f8f396d7b8cf6118e331cc333d72",
+      "bytes": 4016310,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 102
+    },
+    {
+      "date": "2026-05-22",
+      "source_name": "private-inputs/minute-days/2026-05-22.json",
+      "sha256": "cc9d812679c3abb5f1fb70d0ae35fcf4cc1b17a2093300a63f392508dbb74b33",
+      "bytes": 4047879,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 102
+    },
+    {
+      "date": "2026-05-26",
+      "source_name": "private-inputs/minute-days/2026-05-26.json",
+      "sha256": "a9aec1c6c06a6750f03544024ef87d003f27db773f1e3e28c6a6f928ca43bb03",
+      "bytes": 4074080,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 102
+    },
+    {
+      "date": "2026-05-27",
+      "source_name": "private-inputs/minute-days/2026-05-27.json",
+      "sha256": "16bed02008b0265eedcc29fc453e015d05f1bd1f8dc0571c0c4d498f36098f47",
+      "bytes": 4012745,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 102
+    },
+    {
+      "date": "2026-05-28",
+      "source_name": "private-inputs/minute-days/2026-05-28.json",
+      "sha256": "0a3c5c97aa81760e57e163f72b7cf0b77c84b8c8e167767b6dc0e33ef1492c64",
+      "bytes": 4111663,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 102
+    },
+    {
+      "date": "2026-05-29",
+      "source_name": "private-inputs/minute-days/2026-05-29.json",
+      "sha256": "27a49bef946b0aaf2151f51cd2a689b67e6a8345f927f28f83938bf5afed11d6",
+      "bytes": 4069239,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 102
+    },
+    {
+      "date": "2026-06-01",
+      "source_name": "private-inputs/minute-days/2026-06-01.json",
+      "sha256": "ceebf12aef4964d756c091914ff92e971155a9acd2e2a3b9491bfc8ad2cc9ff9",
+      "bytes": 4090365,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 102
+    },
+    {
+      "date": "2026-06-02",
+      "source_name": "private-inputs/minute-days/2026-06-02.json",
+      "sha256": "aeac1b092a1ab4b99351502ab872ebf5e7c51e1c7d89a89e9d3d6beb1d061a33",
+      "bytes": 4075923,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 102
+    },
+    {
+      "date": "2026-06-03",
+      "source_name": "private-inputs/minute-days/2026-06-03.json",
+      "sha256": "9e378d76a34e9a626e11bc5705636f0fc300d38ed38af6f2595e3650da0919a5",
+      "bytes": 3955618,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 101
+    },
+    {
+      "date": "2026-06-04",
+      "source_name": "private-inputs/minute-days/2026-06-04.json",
+      "sha256": "97cdee5c720cf082dd887a7f52a7199ec651b8278b84ff0fe1ed6ec9ba8a50eb",
+      "bytes": 4029348,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 102
+    },
+    {
+      "date": "2026-06-05",
+      "source_name": "private-inputs/minute-days/2026-06-05.json",
+      "sha256": "1e4639a631539c2637685fb94f8bc62f850518d21a3328f5096351f5ad99531d",
+      "bytes": 4014536,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 102
+    },
+    {
+      "date": "2026-06-08",
+      "source_name": "private-inputs/minute-days/2026-06-08.json",
+      "sha256": "aaad7f54e5a3d9c42799433d2683b5bcd5692974d33ab53adbf5ae9c6e94c38a",
+      "bytes": 3934017,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 102
+    },
+    {
+      "date": "2026-06-09",
+      "source_name": "private-inputs/minute-days/2026-06-09.json",
+      "sha256": "66409b571767c4f92d46e41c1ef82a933c968ae5fb6f61bfc4044f058ce30278",
+      "bytes": 4023347,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 102
+    },
+    {
+      "date": "2026-06-10",
+      "source_name": "private-inputs/minute-days/2026-06-10.json",
+      "sha256": "37cbc6c31e98cff47b3629fa9e762f978a1b9728a00e8fdc2c305f73cf266b21",
+      "bytes": 4053389,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 102
+    },
+    {
+      "date": "2026-06-11",
+      "source_name": "private-inputs/minute-days/2026-06-11.json",
+      "sha256": "d4b0114ba6a7c5ba4ea1b4291c570e4aa5624fe95d3ddca94635f7692d092d41",
+      "bytes": 4071315,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 102
+    },
+    {
+      "date": "2026-06-12",
+      "source_name": "private-inputs/minute-days/2026-06-12.json",
+      "sha256": "a76dbd14e82189b42a7af9753941b5fbf5f0777a37a80e5dafb8abb7aa81c175",
+      "bytes": 4067392,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 102
+    },
+    {
+      "date": "2026-06-15",
+      "source_name": "private-inputs/minute-days/2026-06-15.json",
+      "sha256": "40c5ef0e9f2d0f43318aeb773636ca29934dc4dd8d1fc39c7567e87236d74133",
+      "bytes": 4058448,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 102
+    },
+    {
+      "date": "2026-06-16",
+      "source_name": "private-inputs/minute-days/2026-06-16.json",
+      "sha256": "507505e9ed68c71232c4a468962e0a02130a6e4ab48dcb1ab2cc45a987e678f0",
+      "bytes": 3997786,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 102
+    },
+    {
+      "date": "2026-06-17",
+      "source_name": "private-inputs/minute-days/2026-06-17.json",
+      "sha256": "4e2354fc9b3b3a9083f19ce36a3dac71ca571fc5b37eeae6f88eb1c6c02959a6",
+      "bytes": 4054588,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 102
+    },
+    {
+      "date": "2026-06-18",
+      "source_name": "private-inputs/minute-days/2026-06-18.json",
+      "sha256": "8d10093ef4ef960ca6c5d1a95b03fdb803f945446d274b620e67b8203aef65f8",
+      "bytes": 4057899,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 102
+    },
+    {
+      "date": "2026-06-22",
+      "source_name": "private-inputs/minute-days/2026-06-22.json",
+      "sha256": "11b5f41f0f206c472999d45ba84eec537d63ba8d13741834f69dbb54f21bc6f8",
+      "bytes": 4003123,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 101
+    },
+    {
+      "date": "2026-06-23",
+      "source_name": "private-inputs/minute-days/2026-06-23.json",
+      "sha256": "a5a9d11e51abccaa1437fa1700cfbd1900512e7d2a9ca9c29fa2e2495b91adc3",
+      "bytes": 4038668,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 102
+    },
+    {
+      "date": "2026-06-24",
+      "source_name": "private-inputs/minute-days/2026-06-24.json",
+      "sha256": "b3bfd2593811d255e6ebfe8ff7bd0bcebe97d67f05670ab0f22ae6b9e1a805db",
+      "bytes": 4066647,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 102
+    },
+    {
+      "date": "2026-06-25",
+      "source_name": "private-inputs/minute-days/2026-06-25.json",
+      "sha256": "bcaf79cddb01eb3bb10964a056b9ab625af5f4a67f5dd788138c50d8d572ef05",
+      "bytes": 3933699,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 102
+    },
+    {
+      "date": "2026-06-26",
+      "source_name": "private-inputs/minute-days/2026-06-26.json",
+      "sha256": "e2c404eed7938c5038a1982b23398f2f6de6a83302ecad7259bf4c97af55fba9",
+      "bytes": 3984216,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 101
+    },
+    {
+      "date": "2026-06-29",
+      "source_name": "private-inputs/minute-days/2026-06-29.json",
+      "sha256": "6c05a4b154d5a4c92cf73d4a2c27ac001ced57750c477bea48ccf724ed945384",
+      "bytes": 4156399,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 102
+    },
+    {
+      "date": "2026-06-30",
+      "source_name": "private-inputs/minute-days/2026-06-30.json",
+      "sha256": "a00cf267e7eec7c290c3a23249c5fb02d20dacd3dfc092507b683c15f71f9fbf",
+      "bytes": 4030618,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 102
+    },
+    {
+      "date": "2026-07-01",
+      "source_name": "private-inputs/minute-days/2026-07-01.json",
+      "sha256": "5df75e9203b291bd22e9c78ffbcfe0c7c8c185fb1c073471bb6f3311488246c8",
+      "bytes": 4023468,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 102
+    },
+    {
+      "date": "2026-07-02",
+      "source_name": "private-inputs/minute-days/2026-07-02.json",
+      "sha256": "07ef3e99f7bdb4141ad56ee4c06a5e810468d9b81c877b3057f70351ed3bf8e5",
+      "bytes": 3984325,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 102
+    },
+    {
+      "date": "2026-07-06",
+      "source_name": "private-inputs/minute-days/2026-07-06.json",
+      "sha256": "d1dfecd0f3ef94caca9af327ea061782fbc784456d2b0df55a5300cb9bd0ed52",
+      "bytes": 3997909,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 102
+    },
+    {
+      "date": "2026-07-07",
+      "source_name": "private-inputs/minute-days/2026-07-07.json",
+      "sha256": "080cd9e669d44124fd2ecb8680d3b24a6e2200ea3365629f1c3d9b1cabe7e923",
+      "bytes": 3949515,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 102
+    },
+    {
+      "date": "2026-07-08",
+      "source_name": "private-inputs/minute-days/2026-07-08.json",
+      "sha256": "5df697e56910ff2e343e118511359449ac41e9866da5dcd72564b452484ebbc0",
+      "bytes": 4036387,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 102
+    },
+    {
+      "date": "2026-07-09",
+      "source_name": "private-inputs/minute-days/2026-07-09.json",
+      "sha256": "9678019a0c830d25c10b2692397d21f2bb51c5651be188087983832a5ccad2e1",
+      "bytes": 4026288,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 102
+    },
+    {
+      "date": "2026-07-10",
+      "source_name": "private-inputs/minute-days/2026-07-10.json",
+      "sha256": "7037329f1cdbab11e13ae6170366db2a461bb8508d0662625d6eb3768bb5b900",
+      "bytes": 3869089,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 102
+    },
+    {
+      "date": "2026-07-13",
+      "source_name": "private-inputs/minute-days/2026-07-13.json",
+      "sha256": "d86feaba5a21717410aced45dd5db72ba598b20b6203cb9ebf1f504f97b5486e",
+      "bytes": 3994141,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 102
+    },
+    {
+      "date": "2026-07-14",
+      "source_name": "private-inputs/minute-days/2026-07-14.json",
+      "sha256": "326a3452b6e50debb2f153fb83488b07e7f38227754264d2efb363d8470d3727",
+      "bytes": 3997004,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 102
+    },
+    {
+      "date": "2026-07-15",
+      "source_name": "private-inputs/minute-days/2026-07-15.json",
+      "sha256": "4a3df260827b4657d69775375c8fb14127749cd762616bc075836fea72dcd248",
+      "bytes": 4054562,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 102
+    },
+    {
+      "date": "2026-07-16",
+      "source_name": "private-inputs/minute-days/2026-07-16.json",
+      "sha256": "875c1e85fc3939b0e1e438c3f6621a922380ebe4f4dd237cbc5f05ba1b5f4639",
+      "bytes": 4038120,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 102
+    },
+    {
+      "date": "2026-07-17",
+      "source_name": "private-inputs/minute-days/2026-07-17.json",
+      "sha256": "e299bb2a528bfdf0a3b7fcc4bbe220700159af6f83d41783899465d815906ec6",
+      "bytes": 4086643,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 102
+    },
+    {
+      "date": "2026-07-20",
+      "source_name": "private-inputs/minute-days/2026-07-20.json",
+      "sha256": "5582958545a57f8b7ee00f45c73c34ae018bc9c95a1ab3a12c8d04f8eb41fa48",
+      "bytes": 4010645,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 102
+    },
+    {
+      "date": "2026-07-21",
+      "source_name": "private-inputs/minute-days/2026-07-21.json",
+      "sha256": "6f5f91709abd849eb8f5b2ff5e2771f069dade4917d18c7c0c6f5a1a88931a16",
+      "bytes": 3991106,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 101
+    },
+    {
+      "date": "2026-07-22",
+      "source_name": "private-inputs/minute-days/2026-07-22.json",
+      "sha256": "a6217bcf09010d8fe35f03991e0ec6c88b87bb0c2979cfc227bee70566acd138",
+      "bytes": 3935086,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 102
+    },
+    {
+      "date": "2026-07-23",
+      "source_name": "private-inputs/minute-days/2026-07-23.json",
+      "sha256": "708374bceed72399a3e6b45f9203c3f1902544b72ec8b1cb4a5184534cf0304c",
+      "bytes": 4021142,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 102
+    },
+    {
+      "date": "2026-07-24",
+      "source_name": "private-inputs/minute-days/2026-07-24.json",
+      "sha256": "1df7b410494b006f9922f51934bc93bd6794fb21d12805154f9fcdc42b682a95",
+      "bytes": 4017964,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 102
+    },
+    {
+      "date": "2026-07-27",
+      "source_name": "private-inputs/minute-days/2026-07-27.json",
+      "sha256": "69efb81ad0b4fc0ec9faaa30b7b5fd3a0489d1afc48f0f7ee35cacd3199e1800",
+      "bytes": 4034134,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 102
+    },
+    {
+      "date": "2026-07-28",
+      "source_name": "private-inputs/minute-days/2026-07-28.json",
+      "sha256": "58c884182496ea4e25c9d018a6bed0fb701d13c3468e72ee37d0f4149de0837c",
+      "bytes": 4121102,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 102
+    },
+    {
+      "date": "2026-07-29",
+      "source_name": "private-inputs/minute-days/2026-07-29.json",
+      "sha256": "6eedda1936486c2f91c35b365eb529ba3e7cf78de963aba5a8b7e6eb25192f96",
+      "bytes": 4029442,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 101
+    },
+    {
+      "date": "2026-07-30",
+      "source_name": "private-inputs/minute-days/2026-07-30.json",
+      "sha256": "998a4e1047d8916bd191ce025817d6a3e457a460f9e71e9e814a5dea1e75e5e5",
+      "bytes": 4048085,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 102
+    },
+    {
+      "date": "2026-07-31",
+      "source_name": "private-inputs/minute-days/2026-07-31.json",
+      "sha256": "2e6435ad0c367453abcaedc71046868170c661789be53fef915b76f729547fa7",
+      "bytes": 4080228,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 102
+    },
+    {
+      "date": "2026-08-03",
+      "source_name": "private-inputs/minute-days/2026-08-03.json",
+      "sha256": "16cbc1de50b132282912f0ef309905e1ff1379a1b2114040d48d77af25506993",
+      "bytes": 3983700,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 102
+    },
+    {
+      "date": "2026-08-04",
+      "source_name": "private-inputs/minute-days/2026-08-04.json",
+      "sha256": "c744a025326f5363d4db47b6972c1eabc1395bf39a2a2b7738783de8aa312d49",
+      "bytes": 4082646,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 102
+    },
+    {
+      "date": "2026-08-05",
+      "source_name": "private-inputs/minute-days/2026-08-05.json",
+      "sha256": "e763d1e0525a30c3b714028f3bbb09bcc0047ae1485c06148713b2fd2d78bcd3",
+      "bytes": 4100144,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 102
+    },
+    {
+      "date": "2026-08-06",
+      "source_name": "private-inputs/minute-days/2026-08-06.json",
+      "sha256": "0587ac7e3867f4c25994e2b56021c957d88c6fcdd9c348cdc5f9086fbacacd80",
+      "bytes": 4004881,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 102
+    },
+    {
+      "date": "2026-08-07",
+      "source_name": "private-inputs/minute-days/2026-08-07.json",
+      "sha256": "0dc21e125ed96947c5be34b27d7f5d21b3ac1d63b452be4f9795a0657e233ef9",
+      "bytes": 4003599,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 102
+    },
+    {
+      "date": "2026-08-10",
+      "source_name": "private-inputs/minute-days/2026-08-10.json",
+      "sha256": "97763eafa1d582128ca4f6d8054f85a669363abd0e0b10cded509c0ba56193dc",
+      "bytes": 4028678,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 102
+    },
+    {
+      "date": "2026-08-11",
+      "source_name": "private-inputs/minute-days/2026-08-11.json",
+      "sha256": "d08704e771f3589417017950556960a0b15e4f868a61e7910d4aa4ef969c44ee",
+      "bytes": 3965024,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 102
+    },
+    {
+      "date": "2026-08-12",
+      "source_name": "private-inputs/minute-days/2026-08-12.json",
+      "sha256": "d4b04f5ef60056cd1c66180a6766793cf108dd3fdea768356ecbd9bea4baecd1",
+      "bytes": 3919911,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 101
+    },
+    {
+      "date": "2026-08-13",
+      "source_name": "private-inputs/minute-days/2026-08-13.json",
+      "sha256": "4802833c07c11ae34c4ff7c5003598e434e9efcb7e1b918ba717f19196d596c8",
+      "bytes": 3921082,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 102
+    },
+    {
+      "date": "2026-08-14",
+      "source_name": "private-inputs/minute-days/2026-08-14.json",
+      "sha256": "ad10b0daeaf7571f2cf71fd975f3b9a7515e5002bf9a86b0078171085745cf94",
+      "bytes": 3958655,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 102
+    },
+    {
+      "date": "2026-08-17",
+      "source_name": "private-inputs/minute-days/2026-08-17.json",
+      "sha256": "05a7ce75b22a1a04beebc5a59fcfecf5db8ddd0f8d27f3575ff429fef275f624",
+      "bytes": 4017388,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 102
+    },
+    {
+      "date": "2026-08-18",
+      "source_name": "private-inputs/minute-days/2026-08-18.json",
+      "sha256": "b99e9cef1b40572228a09b1aff80645babb24c723ed44410ceec974790b45cf5",
+      "bytes": 4011725,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 102
+    },
+    {
+      "date": "2026-08-19",
+      "source_name": "private-inputs/minute-days/2026-08-19.json",
+      "sha256": "ba3b3ec0d4893790ba5647cf8ad792f21a043477c9a9e173f91c98f6f462e3d2",
+      "bytes": 4014746,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 102
+    },
+    {
+      "date": "2026-08-20",
+      "source_name": "private-inputs/minute-days/2026-08-20.json",
+      "sha256": "f21ae202e520f9e3698889d65609abd72bd8c4c1ebeaa8ffa96a6b6e14fa2951",
+      "bytes": 3930399,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 102
+    },
+    {
+      "date": "2026-08-21",
+      "source_name": "private-inputs/minute-days/2026-08-21.json",
+      "sha256": "00667a339caf1ab8b277ace053f7deb23edc84f02d47c04cb9d9dc122589c504",
+      "bytes": 3974917,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 102
+    },
+    {
+      "date": "2026-08-24",
+      "source_name": "private-inputs/minute-days/2026-08-24.json",
+      "sha256": "b1e402bd0eac2aee4d1aa22e5f8caba028e8186ee45a50ea45f3bfab720f8342",
+      "bytes": 3999176,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 102
+    },
+    {
+      "date": "2026-08-25",
+      "source_name": "private-inputs/minute-days/2026-08-25.json",
+      "sha256": "57dba8dcc1915c218a792902c6f78ffe8caecddca0c570141742549fbc1ed9e9",
+      "bytes": 3907764,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 102
+    },
+    {
+      "date": "2026-08-26",
+      "source_name": "private-inputs/minute-days/2026-08-26.json",
+      "sha256": "923f0322e018156718d9f7058e1ed88a6e75655570ba4a4d720adb8a4e1e490e",
+      "bytes": 3906978,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 102
+    },
+    {
+      "date": "2026-08-27",
+      "source_name": "private-inputs/minute-days/2026-08-27.json",
+      "sha256": "b30db9167b348b65df91f0a665b4482705fe8dcad12a6d49b4440a17687930d5",
+      "bytes": 3937222,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 102
+    },
+    {
+      "date": "2026-08-28",
+      "source_name": "private-inputs/minute-days/2026-08-28.json",
+      "sha256": "ef756005babbf636e5d8661e1250df38d78d794df433ba91c0a7b3476df77ea7",
+      "bytes": 4010015,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 102
+    },
+    {
+      "date": "2026-08-31",
+      "source_name": "private-inputs/minute-days/2026-08-31.json",
+      "sha256": "e763127d4ca5e1a356350df331838eec4e6cb01054a010b8c0f80945bd1b3ed5",
+      "bytes": 3993938,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 102
+    },
+    {
+      "date": "2026-09-01",
+      "source_name": "private-inputs/minute-days/2026-09-01.json",
+      "sha256": "2905b81f54efb5cb99750f933e19d565d919cc2c1af94fe4e5321befcd246a53",
+      "bytes": 3967644,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 102
+    },
+    {
+      "date": "2026-09-02",
+      "source_name": "private-inputs/minute-days/2026-09-02.json",
+      "sha256": "016f4a46eb0a7dc1e5f338da684a6d541f48f3267f5b095150c4e3d009cd60ca",
+      "bytes": 3967829,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 102
+    },
+    {
+      "date": "2026-09-03",
+      "source_name": "private-inputs/minute-days/2026-09-03.json",
+      "sha256": "7eb52b4358491eecd489d35f2b96a979fc771ca3fdfb326c4b11d6ce3780bcb1",
+      "bytes": 3929413,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 102
+    },
+    {
+      "date": "2026-09-04",
+      "source_name": "private-inputs/minute-days/2026-09-04.json",
+      "sha256": "cf8d4bade142994def064ed1e0a05efeef9830ccc026fba27f80b91041fc0abf",
+      "bytes": 3990819,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 102
+    },
+    {
+      "date": "2026-09-08",
+      "source_name": "private-inputs/minute-days/2026-09-08.json",
+      "sha256": "52560620404d18da05514f4c25f8df58608c2b00a1a7147365fc5b6fb6b150ff",
+      "bytes": 3978776,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 102
+    },
+    {
+      "date": "2026-09-09",
+      "source_name": "private-inputs/minute-days/2026-09-09.json",
+      "sha256": "9edb27d3e1138cccc16ed0d5c620d40364100cb4720e2e016e4bb9bc416fdd5a",
+      "bytes": 4046756,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 102
+    },
+    {
+      "date": "2026-09-10",
+      "source_name": "private-inputs/minute-days/2026-09-10.json",
+      "sha256": "76ced5d873875c4549c9aaea2b8ee9b5dabeda7d7edffb2bea19940642f8fed6",
+      "bytes": 3989378,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 102
+    },
+    {
+      "date": "2026-09-11",
+      "source_name": "private-inputs/minute-days/2026-09-11.json",
+      "sha256": "088491e50302a65996632d3da7d7d9c5f2e35949b686da547ae043f7dba60460",
+      "bytes": 3988221,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 102
+    },
+    {
+      "date": "2026-09-14",
+      "source_name": "private-inputs/minute-days/2026-09-14.json",
+      "sha256": "371daa4927f59a0c3ba4d259646b765cff68e4a905e22b10bc250abbdf48fc87",
+      "bytes": 3977655,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 102
+    },
+    {
+      "date": "2026-09-15",
+      "source_name": "private-inputs/minute-days/2026-09-15.json",
+      "sha256": "61e4c51958ce11eb757f6fb67c4595dab65c0370160c1535e95f7f78c81b1eae",
+      "bytes": 3912905,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 102
+    },
+    {
+      "date": "2026-09-16",
+      "source_name": "private-inputs/minute-days/2026-09-16.json",
+      "sha256": "a6ca4ad1f2c9f4d9b86706a8c1e7140ef4cba2f282e5461af968ad3d6cf83fb0",
+      "bytes": 4014362,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 102
+    },
+    {
+      "date": "2026-09-17",
+      "source_name": "private-inputs/minute-days/2026-09-17.json",
+      "sha256": "3349bfe7d4c90e2ac7a41915ea5794b40346d4400523fc35a439d1ac411cca75",
+      "bytes": 4046233,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 102
+    },
+    {
+      "date": "2026-09-18",
+      "source_name": "private-inputs/minute-days/2026-09-18.json",
+      "sha256": "998d6d780ae2f9a17048c6b0c1521a541931ca7b2b1b6e294f3f52b81fa30275",
+      "bytes": 3938263,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 102
+    },
+    {
+      "date": "2026-09-21",
+      "source_name": "private-inputs/minute-days/2026-09-21.json",
+      "sha256": "ee733b1306716ce044539be4e0222843f32b9c39210635d0da0b65ba766a2d80",
+      "bytes": 3982673,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 102
+    },
+    {
+      "date": "2026-09-22",
+      "source_name": "private-inputs/minute-days/2026-09-22.json",
+      "sha256": "a9a3327b256b809b7959025d601c87f28a469675871aa978518087d3b3eba6b5",
+      "bytes": 4063092,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 102
+    },
+    {
+      "date": "2026-09-23",
+      "source_name": "private-inputs/minute-days/2026-09-23.json",
+      "sha256": "3930e1bd2322ec3e8606ed73b859f0b1f7cd38cf06ea5a359cd653fd10a935eb",
+      "bytes": 4036230,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 102
+    },
+    {
+      "date": "2026-09-24",
+      "source_name": "private-inputs/minute-days/2026-09-24.json",
+      "sha256": "d46279ab0e53bd521a0e0b17648cd3c5ef116f89c75d3dae8079c0eef754887d",
+      "bytes": 3992133,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 101
+    },
+    {
+      "date": "2026-09-25",
+      "source_name": "private-inputs/minute-days/2026-09-25.json",
+      "sha256": "1a80852fdfa50b9e13904e84adbea8280f908f920c891f85b9f2dd1b85fe3c26",
+      "bytes": 3968659,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 101
+    },
+    {
+      "date": "2026-09-28",
+      "source_name": "private-inputs/minute-days/2026-09-28.json",
+      "sha256": "49078e392ce4be1a8be77978b6eeab6c17801e0ea515f07ca1cdcda24439d36b",
+      "bytes": 4013243,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 102
+    },
+    {
+      "date": "2026-09-29",
+      "source_name": "private-inputs/minute-days/2026-09-29.json",
+      "sha256": "293411b256b97cd1ce14c98d3b461ff7f710d6b859d5243ffb860b1d37ed75ee",
+      "bytes": 4062640,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 102
+    },
+    {
+      "date": "2026-09-30",
+      "source_name": "private-inputs/minute-days/2026-09-30.json",
+      "sha256": "b84c5b468b6138d28a480660ee1be399afcab7851e0120b98db1668c67edd144",
+      "bytes": 4033453,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 102
+    },
+    {
+      "date": "2026-10-01",
+      "source_name": "private-inputs/minute-days/2026-10-01.json",
+      "sha256": "849368c562a12d139168a5356c7051858f682b3abd05ea776f00a5d10da960b6",
+      "bytes": 4102551,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 102
+    },
+    {
+      "date": "2026-10-02",
+      "source_name": "private-inputs/minute-days/2026-10-02.json",
+      "sha256": "15de44bd7023b347e6337627ae1b24e9d9a7b3664d0e3b7f2f4b1d9aac3bbf89",
+      "bytes": 4011648,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 102
+    },
+    {
+      "date": "2026-10-05",
+      "source_name": "private-inputs/minute-days/2026-10-05.json",
+      "sha256": "5a499e7961e1a0393d568c1ada5b8e192eefa68005cd9bb2b4651cf3c024b653",
+      "bytes": 4006918,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 102
+    },
+    {
+      "date": "2026-10-06",
+      "source_name": "private-inputs/minute-days/2026-10-06.json",
+      "sha256": "25ad27790fda32ba5223d0088ddfc869e9bbe9c89cf45807f9bd519a0dc80cca",
+      "bytes": 4010968,
+      "request_complete": true,
+      "request_status": "complete",
+      "requested_symbol_count": 102
+    }
+  ],
+  "vendor_files": [
+    {
+      "name": "vendor/normalize_bars.py",
+      "sha256": "1e41697f3fa2e3024901fd49b76b79b646a55041551c88fdb3e2cb6ff075e0a9",
+      "bytes": 5293,
+      "parent_source": "normalize_bars.py",
+      "byte_identical": true
+    },
+    {
+      "name": "vendor/flush_engine.py",
+      "sha256": "a11e335abb7b1d14cc535829c219edc40291c30cacd1794a67fb60542690dc05",
+      "bytes": 11277,
+      "parent_source": "flush_engine.py",
+      "byte_identical": true
+    }
+  ],
+  "scope": {
+    "calendar_sessions": 191,
+    "registered_cases": 19519,
+    "unique_symbols": 2025,
+    "normalized_days": 191,
+    "return_files_hash_checked": 10,
+    "return_groups_read": false,
+    "new_market_api_requests": 0,
+    "raw_prices_copied_into_new_stage": false
+  },
+  "passed": true,
+  "classification_executed": false,
+  "method_sha256": "2a8609c7e96708489a4b495267e0aaae3e2fef686e816afa49cd8e82e1924bef"
+}

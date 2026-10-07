@@ -1,0 +1,126 @@
+{
+  "audit_version": "independent_relative_payoff_v1",
+  "started_at_utc": "2026-10-07T15:26:01.606252+00:00",
+  "completed_at_utc": "2026-10-07T15:26:23.371820+00:00",
+  "passed": true,
+  "mismatches": [],
+  "counts": {
+    "benchmark_group_variant_records_checked": 216,
+    "benchmark_rows_excluded": 13752,
+    "comparison_nodes": 295909,
+    "distribution_category_both_signs": 1616,
+    "distribution_category_empty": 1152,
+    "distribution_category_no_negative": 13,
+    "distribution_category_no_positive": 27,
+    "distributions_rebuilt": 2808,
+    "enriched_rows_read": 702684,
+    "exact_scalar_fields_checked": 174622,
+    "numerical_decimal_fields_checked": 79167,
+    "ordered_case_id_lists_checked": 11232,
+    "primary_distribution_copies_verified": 78,
+    "stock_complete_returns": 71538,
+    "stock_missing_returns": 617394,
+    "stock_rows_read": 688932,
+    "tail_diagnostics_rebuilt": 11232,
+    "tail_selected_case_id_occurrences_rebuilt": 54921
+  },
+  "scope": {
+    "cases": 19519,
+    "stock_cases": 19137,
+    "base_rows": 702684,
+    "benchmarks": [
+      "SPY",
+      "QQQ"
+    ],
+    "groups": [
+      "market_down",
+      "market_not_down",
+      "unknown"
+    ],
+    "variants": 36,
+    "months": [
+      "2026-01",
+      "2026-02",
+      "2026-03",
+      "2026-04",
+      "2026-05",
+      "2026-06",
+      "2026-07",
+      "2026-08",
+      "2026-09",
+      "2026-10"
+    ],
+    "periods": [
+      "H1",
+      "H2_to_cutoff"
+    ],
+    "return_unit": "stock_return_fraction; multiply_by_100_for_percent",
+    "actual_option_win_rate_estimated": false,
+    "funded_account_survival_estimated": false,
+    "win_rate_gate": null
+  },
+  "method": "Independent exact Fraction reconstruction from enriched target net returns and separate classifications; no production module imports or calls. All numerical fields, ordered tail case IDs, counts, nulls, undefined reasons, and scope metadata verified.",
+  "numeric_comparison": {
+    "display_precision_significant_digits": 50,
+    "tolerance": "1e-45 * max(1, abs(exact_expected))",
+    "maximum_normalized_error_below_tolerance": true,
+    "arithmetic": "exact Fraction from finite decimal strings; unrounded expectancy identity checked before displayed-value comparison"
+  },
+  "bound_sha256": {
+    "study-design.json": "97f6bca2f3097fffa06af94454f3b5c4735bc7b4f212a9aa51eb762aced3a55e",
+    "pre-analysis-validation.json": "0ac39c41dd1eb7d8ac8f05524cecde3c6ba6da1b3e49230a9307cdd631b3e14a",
+    "classification-output-manifest.json": "af6155f47152e679ae1452acc14e74339cb1a9358d3cdb672236583b2f78ad4e",
+    "classifications.jsonl.gz": "a15fe5cdeead7d48d418299f9a3b2987f118c57504e956ec2c004ec36ee11045",
+    "analysis-output-manifest.json": "9e0a09956380ff54fa42ab6cf136be571099e7e6494442b133170091a0e2521f",
+    "summary.json": "be7307f0eaaac5ab8454131d1f97442cda7b83762f2deccf713a2c21d727840c",
+    "primary-results.json": "0161823956eb41746f8b96d8a5324d989326fec5d26192ba5b7ab0514fcad730",
+    "independent_payoff_audit.py": "1876a96b7cd7a43519f400105371e793b5a0319da1554593fceabb107e22b639"
+  },
+  "enriched_files_verified": [
+    {
+      "path": "enriched-results/2026-01.jsonl.gz",
+      "sha256": "58dd5ea192300b6e7023c66c7557046ec3ccbadafc8f850e5e94789e7299c878"
+    },
+    {
+      "path": "enriched-results/2026-02.jsonl.gz",
+      "sha256": "5981c67856cc372efd00b919bebba53355531ed42346e419c0690a74c13c74cb"
+    },
+    {
+      "path": "enriched-results/2026-03.jsonl.gz",
+      "sha256": "71996201daa6e1db7f58e5b579914dd11688866dbb9bca4b4863079007e0421d"
+    },
+    {
+      "path": "enriched-results/2026-04.jsonl.gz",
+      "sha256": "9ab2460ec23c1ecb14142e18f5e5b8c12480d7b7f424e4ffff1faf732a77c59c"
+    },
+    {
+      "path": "enriched-results/2026-05.jsonl.gz",
+      "sha256": "889b1a21d17a105068c1a8bfd7a48a0b404b15855c812da015f0f80e6b71c6c4"
+    },
+    {
+      "path": "enriched-results/2026-06.jsonl.gz",
+      "sha256": "9eed28243b97ec1939afa62a2bf83b6a960d4130d9f3753d2384393dc817be07"
+    },
+    {
+      "path": "enriched-results/2026-07.jsonl.gz",
+      "sha256": "00887bca39fe6e2dbdc673c53e520ae7cab7d140c62206d4da700af8bc610b68"
+    },
+    {
+      "path": "enriched-results/2026-08.jsonl.gz",
+      "sha256": "bc22eda5d7854fc78bc265bb5db8f332fbc02f56ea92af0924535545b5498a42"
+    },
+    {
+      "path": "enriched-results/2026-09.jsonl.gz",
+      "sha256": "806dce311069d669ececd4ad8a2b1bf5600dbe6a84c1345d5235f4054c6af0bc"
+    },
+    {
+      "path": "enriched-results/2026-10.jsonl.gz",
+      "sha256": "623099fe7253ff06bfae43b7c35e131485887196ba84d6bd9976a02f3193ba5f"
+    }
+  ],
+  "limitations": [
+    "The inherited parent-return calculation and original classification inputs are verified by separate auditors.",
+    "Observed stock-return distributions do not estimate 0DTE option win rates, fills, nonlinear payoffs, or funded-account survival.",
+    "Tail removal is retrospective descriptive sensitivity, not an actionable filter or a trading target."
+  ]
+}

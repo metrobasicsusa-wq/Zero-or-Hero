@@ -1,0 +1,53 @@
+{
+  "scope": "synthetic_only_no_market_rows_read_or_analysis_main_run",
+  "timings": [
+    {
+      "call": "compute_distribution",
+      "synthetic_n": 0,
+      "repetitions": 100,
+      "seconds": 0.005016508017433807,
+      "seconds_per_call": 5.016508017433807e-05
+    },
+    {
+      "call": "compute_distribution",
+      "synthetic_n": 10,
+      "repetitions": 100,
+      "seconds": 0.026739996013930067,
+      "seconds_per_call": 0.00026739996013930067
+    },
+    {
+      "call": "compute_distribution",
+      "synthetic_n": 100,
+      "repetitions": 50,
+      "seconds": 0.05204951899941079,
+      "seconds_per_call": 0.001040990379988216
+    },
+    {
+      "call": "compute_distribution",
+      "synthetic_n": 1000,
+      "repetitions": 10,
+      "seconds": 0.13149245898239315,
+      "seconds_per_call": 0.013149245898239315
+    },
+    {
+      "call": "compute_distribution",
+      "synthetic_n": 5000,
+      "repetitions": 5,
+      "seconds": 0.371771734993672,
+      "seconds_per_call": 0.0743543469987344
+    },
+    {
+      "call": "analyze_relative.summarize",
+      "synthetic_n": 5000,
+      "repetitions": 5,
+      "seconds": 0.4483113450114615,
+      "seconds_per_call": 0.08966226900229231
+    }
+  ],
+  "maximum_process_rss_kib_linux": 19068,
+  "source_sha256": {
+    "return_distribution.py": "f499534ea183a0fd6646a90dea2b341a7a962b980884f114e5629584f0f73d26",
+    "analyze_relative.py": "56e4cb59ce5446299d00675f316cce1d5f438e06f72b75d3c79a5a644aa9ca5b"
+  },
+  "interpretation": "microbenchmark_not_a_guarantee_of_production_runtime_or_bucket_memory"
+}
