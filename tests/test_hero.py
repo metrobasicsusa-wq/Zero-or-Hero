@@ -2051,6 +2051,250 @@ class ZeroDTEShadow(unittest.TestCase):
         self.assertEqual((summ["TSLA"]["takes"], summ["NVDA"]["n"]), (1, 1))
 
 
+class SleeveBroker:
+    """A small broker for the sleeve tests: orders by client id, fills decided by `fill(order)`."""
+
+    def __init__(self, quotes, fill=None, cash=50_000):
+        self.quotes, self.cash = quotes, cash
+        self.fill = fill or (lambda o: o["side"] == "buy")  # resting sells (takes) wait for the test
+        self.orders, self.pos, self.cancelled = {}, {}, []
+        self.snaps = {"SPY": {"dailyBar": {"o": 700.0, "l": 699.0}, "latestTrade": {"p": 702.0}, "prevDailyBar": {"c": 700.0}}}
+        self.bars = {}
+
+    def account(self): return {"cash": str(self.cash), "equity": str(self.cash), "last_equity": str(self.cash)}
+    def positions(self): return [{"symbol": k, "qty": str(v)} for k, v in self.pos.items() if v]
+    def open_orders(self): return [o for o in self.orders.values() if o["status"] == "new"]
+    def stock_snapshots(self, syms): return {s: self.snaps[s] for s in syms if s in self.snaps}
+    def option_snapshots(self, syms):
+        return {s: {"latestQuote": {"bp": self.quotes(s)[0], "ap": self.quotes(s)[1]}} for s in syms}
+    def option_contracts(self, und, **kw):
+        exp, t = kw["expiration_date_gte"], kw.get("type", "call")
+        return [{"symbol": f"{und}{exp}{t[0].upper()}{k}", "strike_price": str(k), "expiration_date": exp, "type": t}
+                for k in range(690, 716)]
+    def daily_bars(self, syms, start, adjustment="all"): return {s: self.bars.get(s, []) for s in syms}
+
+    def submit_order(self, **o):
+        oid = f"id{len(self.orders)}"
+        rec = {**o, "id": oid, "status": "new", "filled_qty": "0", "filled_avg_price": None}
+        self.orders[o["client_order_id"]] = rec
+        if o["type"] == "market" or self.fill(rec):
+            self._fill(rec, float(o.get("limit_price") or self.quotes(o["symbol"])[0 if o["side"] == "sell" else 1] or 1))
+        return {"id": oid}
+
+    def _fill(self, rec, px):
+        qty = float(rec.get("qty") or (float(rec["notional"]) / px))
+        rec.update(status="filled", filled_qty=str(qty), filled_avg_price=str(px))
+        sign = 1 if rec["side"] == "buy" else -1
+        self.pos[rec["symbol"]] = round(self.pos.get(rec["symbol"], 0) + sign * qty, 6)
+
+    def order_by_client_id(self, c): return self.orders.get(c, {})
+    def cancel_order(self, oid):
+        for r in self.orders.values():
+            if r["id"] == oid and r["status"] == "new":
+                r["status"] = "canceled"
+                self.cancelled.append(r["client_order_id"])
+        return "canceled"
+
+
+class Sleeves(unittest.TestCase):
+    def setUp(self):
+        self.tmp = tempfile.TemporaryDirectory()
+        self.root = Path(self.tmp.name)
+        self.specs = [{"id": "spy0dte-500", "kind": "zdte", "start": 500, "und": "SPY", "offset": 0.006, "take": 3},
+                      {"id": "spy0dte-1000", "kind": "zdte", "start": 1000, "und": "SPY", "offset": 0.006, "take": 3}]
+        self.cfg = {"sleeves": {"enabled": True, "fill_wait_s": 0}}
+
+    def tearDown(self):
+        self.tmp.cleanup()
+
+    def cycle(self, broker, hh, mm, specs=None):
+        from datetime import datetime
+        from hero import sleeve_rules, sleeves
+        specs = specs or self.specs
+        book = sleeves.Book(self.root / "sleeves.json", specs, {"spy0dte-500": 279.0})
+        j = Journal(self.root)
+        sleeves.Runner(broker, j, self.cfg, specs, book, sleeve_rules.RULES, datetime(2026, 10, 8, hh, mm), date(2026, 10, 8),
+                       sleep=lambda s: None).run()
+        book.save()
+        log = [json.loads(l) for l in (self.root / "trades.jsonl").read_text().splitlines()] if (self.root / "trades.jsonl").exists() else []
+        return book, log
+
+    def test_two_sleeves_buy_the_same_contract_on_their_own_money_and_take_profits(self):
+        b = SleeveBroker(lambda s: (0.08, 0.10))
+        book, log = self.cycle(b, 10, 0)
+        buys = [o for o in b.orders.values() if o["side"] == "buy"]
+        self.assertEqual({o["symbol"] for o in buys}, {"SPY2026-10-08C707"})          # 702 x 1.006 = 706.2 -> 707
+        self.assertEqual(sorted(int(o["qty"]) for o in buys), [12, 45])               # 139.5 / 11 and 500 / 11
+        small = book.s("spy0dte-500")
+        self.assertEqual((small["cash"], small["open"][0]["take"]), (round(279 - 12 * 11, 2), 0.33))  # 3 x $0.11
+        takes = [o for o in b.orders.values() if o["side"] == "sell"]
+        self.assertEqual(sorted(int(o["qty"]) for o in takes), [12, 45])
+        for o in takes:                                                              # both takes fill
+            b._fill(o, 0.33)
+        book, log = self.cycle(b, 11, 0)
+        self.assertEqual(book.s("spy0dte-500")["cash"], round(279 - 132 + 12 * 33, 2))
+        self.assertEqual(book.s("spy0dte-1000")["cash"], round(1000 - 45 * 11 + 45 * 33, 2))
+        self.assertEqual(b.pos["SPY2026-10-08C707"], 0)
+        book, log = self.cycle(b, 12, 0)
+        self.assertEqual(len([o for o in b.orders.values() if o["side"] == "buy"]), 2)  # one try a day
+
+    def test_unfilled_is_requoted_once_then_dropped(self):
+        b = SleeveBroker(lambda s: (0.08, 0.10), fill=lambda o: False)
+        book, log = self.cycle(b, 10, 0, self.specs[:1])
+        self.assertEqual(len([o for o in b.orders.values() if o["side"] == "buy"]), 2)
+        self.assertEqual(len(b.cancelled), 2)
+        self.assertEqual(book.s("spy0dte-500")["open"], [])
+        self.assertEqual(book.s("spy0dte-500")["cash"], 279.0)
+
+    def test_time_exit_cancels_the_take_and_sells_only_its_own_contracts(self):
+        b = SleeveBroker(lambda s: (0.08, 0.10))
+        self.cycle(b, 10, 0)
+        b.quotes = lambda s: (0.02, 0.03)
+        book, log = self.cycle(b, 15, 30)
+        sells = [o for o in b.orders.values() if o["side"] == "sell" and o["type"] == "market"]
+        self.assertEqual(sorted(int(o["qty"]) for o in sells), [12, 45])
+        self.assertEqual(len(b.cancelled), 2)                                        # both takes first
+        self.assertEqual(book.s("spy0dte-500")["cash"], round(279 - 132 + 12 * 2, 2))
+        self.assertTrue(all(not s["open"] for s in book.d["sleeves"].values()))
+
+    def test_a_round_ends_below_ten_percent_and_restarts(self):
+        b = SleeveBroker(lambda s: (0.08, 0.10))
+        book, _ = self.cycle(b, 10, 0, self.specs[:1])
+        book.s("spy0dte-500")["cash"] = 20.0
+        b.quotes = lambda s: (0.01, 0.02)                                            # sold 12 at $0.01: $32 < $50
+        book.save()
+        book, log = self.cycle(b, 15, 30, self.specs[:1])
+        s = book.s("spy0dte-500")
+        self.assertEqual((s["round"], s["zeros"], s["cash"]), (2, 1, 500.0))
+        self.assertIn("归零", [e for e in log if e["kind"] == "sleeve_round"][-1]["why"])
+
+    def test_cannot_afford_one_contract_skips(self):
+        b = SleeveBroker(lambda s: (2.00, 3.00))
+        book, log = self.cycle(b, 10, 0, self.specs[:1])
+        self.assertEqual([o for o in b.orders.values()], [])
+        self.assertIn("超过这笔可用", [e for e in log if e["kind"] == "sleeve_skip"][-1]["why"])
+
+    def test_letf_holds_above_its_average_and_sells_below(self):
+        spec = [{"id": "tqqq-500", "kind": "letf", "start": 500, "sym": "TQQQ", "ma": 20, "fraction": 1.0}]
+        b = SleeveBroker(lambda s: (100.0, 100.0))
+        b.bars["TQQQ"] = [{"t": f"2026-09-{d:02d}T04:00:00Z", "c": 90.0} for d in range(1, 30)]
+        b.snaps["TQQQ"] = {"dailyBar": {"o": 99}, "latestTrade": {"p": 100.0}, "latestQuote": {"bp": 100.0, "ap": 100.0}}
+        book, log = self.cycle(b, 15, 50, spec)
+        s = book.s("tqqq-500")
+        self.assertEqual((s["open"][0]["qty"], s["cash"]), (5.0, 0.0))                 # $500 of shares at $100
+        b.snaps["TQQQ"]["latestTrade"]["p"] = 80.0
+        b.snaps["TQQQ"]["latestQuote"] = {"bp": 80.0, "ap": 80.0}
+        b.quotes = lambda s: (80.0, 80.0)
+        from datetime import datetime
+        from hero import sleeve_rules, sleeves
+        book = sleeves.Book(self.root / "sleeves.json", spec)
+        sleeves.Runner(b, Journal(self.root), self.cfg, spec, book, sleeve_rules.RULES, datetime(2026, 10, 9, 15, 50),
+                       date(2026, 10, 9), sleep=lambda s: None).run()
+        self.assertEqual(book.s("tqqq-500")["cash"], 400.0)                           # sold 5 at $80
+
+
+class SleeveRules(unittest.TestCase):
+    """Each rule's picks on a fake market (what to buy, when); the order handling is tested in Sleeves."""
+
+    def run_at(self, day, hh, mm, broker, pool=("AAA", "BBB", "CCC")):
+        from datetime import datetime
+        from types import SimpleNamespace
+        r = SimpleNamespace(c=broker, today=day, hhmm=f"{hh:02d}:{mm:02d}", j=SimpleNamespace(event=lambda *a, **k: None),
+                            specs=[], cache={"pool": list(pool)})
+        return r
+
+    def broker(self):
+        b = SleeveBroker(lambda s: (0.40, 0.50))
+        b.snaps = {"AAA": {"dailyBar": {"o": 97.0, "l": 95.0}, "latestTrade": {"p": 100.0}, "prevDailyBar": {"c": 100.0}},
+                   "BBB": {"dailyBar": {"o": 100.0, "l": 99.5}, "latestTrade": {"p": 100.0}, "prevDailyBar": {"c": 100.0}},
+                   "CCC": {"dailyBar": {"o": 100.0, "l": 99.9}, "latestTrade": {"p": 100.0}, "prevDailyBar": {"c": 100.0}},
+                   "NVDA": {"dailyBar": {"o": 100.0, "l": 97.0}, "latestTrade": {"p": 98.0}, "prevDailyBar": {"c": 99.0}}}
+        b.option_contracts = lambda und, **kw: [
+            {"symbol": f"{und}{kw['expiration_date_lte']}{t[0].upper()}{k}", "strike_price": str(k),
+             "expiration_date": kw["expiration_date_lte"], "type": t}
+            for k in range(70, 131) for t in (["call", "put"] if "type" not in kw else [kw["type"]])]
+        rising = [{"t": f"2026-0{m}-{d:02d}T04:00:00Z", "c": 50.0 + m * 5 + d * 0.1} for m in (6, 7, 8, 9) for d in range(1, 29)]
+        b.bars = {"AAA": rising, "BBB": rising[::-1], "CCC": [{**x, "c": 60.0} for x in rising]}
+        return b
+
+    def test_gap_picks_the_gap_down_with_a_trailing_call(self):
+        from hero import sleeve_rules as sr
+        r = self.run_at(date(2026, 10, 8), 9, 50, self.broker())
+        slot, picks = sr.Gap().entries(r, {"n": 2}, {"slots": {}})
+        self.assertEqual([p["und"] for p in picks], ["AAA"])                         # 97 / 100: -3%
+        self.assertTrue(picks[0]["trail"] and picks[0]["sym"].endswith("C101"))
+        self.assertIsNone(sr.Gap().entries(r, {"n": 2}, {"slots": {slot: "x"}}))       # once a day
+
+    def test_flush_needs_two_percent_under_the_open(self):
+        from hero import sleeve_rules as sr
+        r = self.run_at(date(2026, 10, 8), 10, 0, self.broker())
+        slot, picks = sr.Flush().entries(r, {"n": 2}, {"slots": {}})
+        self.assertEqual([p["und"] for p in picks], ["NVDA"])                         # 97 / 100: 3% down
+        self.assertEqual((picks[0]["take"], picks[0]["exit_at"]), (2, "15:50"))
+        self.assertIsNone(sr.Flush().entries(self.run_at(date(2026, 10, 8), 9, 50, self.broker()), {}, {"slots": {}}))
+
+    def test_weekly_trend_and_momentum_buy_this_weeks_last_expiry(self):
+        from hero import sleeve_rules as sr
+        r = self.run_at(date(2026, 10, 12), 10, 0, self.broker())                      # a Monday
+        slot, picks = sr.Weekly().entries(r, {"mode": "momentum", "n": 1}, {"slots": {}})
+        self.assertEqual(slot, "2026-W42")
+        self.assertEqual((picks[0]["und"], picks[0]["expiry"], picks[0]["exit_day"]), ("AAA", "2026-10-16", "2026-10-15"))
+        slot, picks = sr.Weekly().entries(r, {"mode": "trend", "n": 3}, {"slots": {}})
+        kinds = {p["und"]: p["sym"][13] for p in picks}                                # BBB + 2026-10-16 + C/P
+        self.assertEqual(kinds.get("BBB"), "P")                                       # falling: a put
+        self.assertIsNone(sr.Weekly().entries(self.run_at(date(2026, 10, 14), 10, 0, self.broker()), {"mode": "trend"}, {"slots": {}}))
+
+    def test_earnings_buys_the_close_before_the_reaction(self):
+        from hero import sleeve_rules as sr
+        import hero.sleeve_rules as mod
+        b = self.broker()
+        orig = mod.ROOT
+        tmp = Path(self.id().replace(".", "_"))
+        try:
+            mod.ROOT = Path(tempfile.mkdtemp())
+            (mod.ROOT / "data").mkdir()
+            (mod.ROOT / "data" / "earnings.json").write_text(json.dumps({"reports": {
+                "AAA": [{"date": "2026-10-08", "time": "post-market"}], "BBB": [{"date": "2026-10-09", "time": "pre-market"}],
+                "CCC": [{"date": "2026-10-20", "time": "pre-market"}]}}))
+            r = self.run_at(date(2026, 10, 8), 15, 50, b)
+            slot, picks = sr.EarningsLotto().entries(r, {"n": 3}, {"slots": {}})
+        finally:
+            mod.ROOT = orig
+        self.assertEqual(sorted(p["und"] for p in picks), ["AAA", "BBB"])
+        self.assertEqual((picks[0]["exit_day"], picks[0]["exit_at"]), ("2026-10-09", "09:35"))
+        # implied move = (0.50 + 0.50) / 100 = 1%: a call 2% above, at 102
+        self.assertTrue(all(p["sym"].endswith("C102") for p in picks))
+
+    def test_net_waits_for_a_wild_week(self):
+        from hero import sleeve_rules as sr
+        b = self.broker()
+        b.bars["SPY"] = [{"t": (date(2024, 1, 1) + timedelta(days=i)).isoformat() + "T04:00:00Z", "c": 500.0 + i * 0.1}
+                         for i in range(0, 640) if (date(2024, 1, 1) + timedelta(days=i)).weekday() < 5]
+        r = self.run_at(date(2026, 10, 12), 10, 0, b)
+        self.assertEqual(sr.Net().entries(r, {"n": 3}, {"slots": {}}), ("2026-W42", []))   # a calm, steady market
+
+    def test_a_failing_rule_does_not_stop_the_others(self):
+        from datetime import datetime
+        from hero import sleeves
+        class Boom:
+            def entries(self, *a):
+                raise RuntimeError("bad data")
+        tmp = Path(tempfile.mkdtemp())
+        specs = [{"id": "x-500", "kind": "boom", "start": 500}]
+        book = sleeves.Book(tmp / "s.json", specs)
+        sleeves.Runner(SleeveBroker(lambda s: (0, 0)), Journal(tmp), {"sleeves": {}}, specs, book, {"boom": Boom()},
+                       datetime(2026, 10, 8, 10, 0), date(2026, 10, 8), sleep=lambda s: None).run()
+        log = [json.loads(l) for l in (tmp / "trades.jsonl").read_text().splitlines()]
+        self.assertEqual(log[-1]["kind"], "alert_error")
+
+    def test_zero_dte_skips_a_name_without_an_expiry_today(self):
+        from hero import sleeve_rules as sr
+        b = self.broker()
+        b.option_contracts = lambda und, **kw: []
+        r = self.run_at(date(2026, 10, 8), 10, 0, b)
+        self.assertEqual(sr.ZeroDTE().entries(r, {"und": "AAA", "offset": 0.006, "take": 3}, {"slots": {}}), ("2026-10-08", []))
+
+
 class NetShadow(unittest.TestCase):
     """The simulated net: casts only in a wild week, never sends an order, books the 20x take."""
 

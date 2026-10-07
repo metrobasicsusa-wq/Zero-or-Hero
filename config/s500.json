@@ -104,6 +104,250 @@
     "chase_cap": 1.3,
     "note": "phase 1 of zero-or-hero until the account doubles, then momentum for good; parameters from research/2026-10-05-0dte-double.md (fewest attempts per doubling)"
   },
+  "sleeves": {
+    "enabled": false,
+    "fraction": 0.5,
+    "zero_line": 0.1,
+    "target": 10000,
+    "buy_pad": 0.01,
+    "fill_wait_s": 60,
+    "chase_cap": 1.3,
+    "cash_buffer": 1000,
+    "note": "docs/sleeves-plan.md: 14 directions x $500 / $1,000, each its own ledger (journal-s500/sleeves.json); turned on after a dry check",
+    "list": [
+      {
+        "id": "spy0dte-500",
+        "kind": "zdte",
+        "start": 500,
+        "name": "SPY 末日单（现行规则）",
+        "und": "SPY",
+        "offset": 0.006,
+        "take": 3,
+        "carry": "zdte"
+      },
+      {
+        "id": "spy0dte-1000",
+        "kind": "zdte",
+        "start": 1000,
+        "name": "SPY 末日单（现行规则）",
+        "und": "SPY",
+        "offset": 0.006,
+        "take": 3
+      },
+      {
+        "id": "qqq0dte-500",
+        "kind": "zdte",
+        "start": 500,
+        "name": "QQQ 末日单",
+        "und": "QQQ",
+        "offset": 0.006,
+        "take": 3
+      },
+      {
+        "id": "qqq0dte-1000",
+        "kind": "zdte",
+        "start": 1000,
+        "name": "QQQ 末日单",
+        "und": "QQQ",
+        "offset": 0.006,
+        "take": 3
+      },
+      {
+        "id": "tsla0dte-500",
+        "kind": "zdte",
+        "start": 500,
+        "name": "TSLA 末日单",
+        "und": "TSLA",
+        "offset": 0.006,
+        "take": 3
+      },
+      {
+        "id": "tsla0dte-1000",
+        "kind": "zdte",
+        "start": 1000,
+        "name": "TSLA 末日单",
+        "und": "TSLA",
+        "offset": 0.006,
+        "take": 3
+      },
+      {
+        "id": "nvda0dte-500",
+        "kind": "zdte",
+        "start": 500,
+        "name": "NVDA 末日单",
+        "und": "NVDA",
+        "offset": 0.006,
+        "take": 3
+      },
+      {
+        "id": "nvda0dte-1000",
+        "kind": "zdte",
+        "start": 1000,
+        "name": "NVDA 末日单",
+        "und": "NVDA",
+        "offset": 0.006,
+        "take": 3
+      },
+      {
+        "id": "spy0dte-near-500",
+        "kind": "zdte",
+        "start": 500,
+        "name": "SPY 末日单，离现价 0.3%",
+        "und": "SPY",
+        "offset": 0.003,
+        "take": 3
+      },
+      {
+        "id": "spy0dte-near-1000",
+        "kind": "zdte",
+        "start": 1000,
+        "name": "SPY 末日单，离现价 0.3%",
+        "und": "SPY",
+        "offset": 0.003,
+        "take": 3
+      },
+      {
+        "id": "tsla0dte-5x-500",
+        "kind": "zdte",
+        "start": 500,
+        "name": "TSLA 末日单，5 倍止盈",
+        "und": "TSLA",
+        "offset": 0.006,
+        "take": 5
+      },
+      {
+        "id": "tsla0dte-5x-1000",
+        "kind": "zdte",
+        "start": 1000,
+        "name": "TSLA 末日单，5 倍止盈",
+        "und": "TSLA",
+        "offset": 0.006,
+        "take": 5
+      },
+      {
+        "id": "wk-trend-500",
+        "kind": "weekly",
+        "start": 500,
+        "name": "周内买方：随机 3 只按 20 日趋势",
+        "mode": "trend",
+        "n": 3
+      },
+      {
+        "id": "wk-trend-1000",
+        "kind": "weekly",
+        "start": 1000,
+        "name": "周内买方：随机 3 只按 20 日趋势",
+        "mode": "trend",
+        "n": 3
+      },
+      {
+        "id": "wk-momo-500",
+        "kind": "weekly",
+        "start": 500,
+        "name": "周内动量股只买看涨",
+        "mode": "momentum",
+        "n": 1
+      },
+      {
+        "id": "wk-momo-1000",
+        "kind": "weekly",
+        "start": 1000,
+        "name": "周内动量股只买看涨",
+        "mode": "momentum",
+        "n": 1
+      },
+      {
+        "id": "wk-news-500",
+        "kind": "weekly",
+        "start": 500,
+        "name": "周内新闻挑股",
+        "mode": "news",
+        "n": 3
+      },
+      {
+        "id": "wk-news-1000",
+        "kind": "weekly",
+        "start": 1000,
+        "name": "周内新闻挑股",
+        "mode": "news",
+        "n": 3
+      },
+      {
+        "id": "net-500",
+        "kind": "net",
+        "start": 500,
+        "name": "撒网（疯狂市场）",
+        "n": 3
+      },
+      {
+        "id": "net-1000",
+        "kind": "net",
+        "start": 1000,
+        "name": "撒网（疯狂市场）",
+        "n": 5
+      },
+      {
+        "id": "gap-500",
+        "kind": "gap",
+        "start": 500,
+        "name": "低开反弹（claude-b 规则）",
+        "n": 2
+      },
+      {
+        "id": "gap-1000",
+        "kind": "gap",
+        "start": 1000,
+        "name": "低开反弹（claude-b 规则）",
+        "n": 2
+      },
+      {
+        "id": "flush-500",
+        "kind": "flush",
+        "start": 500,
+        "name": "急跌再拉（AMD 式）",
+        "n": 2
+      },
+      {
+        "id": "flush-1000",
+        "kind": "flush",
+        "start": 1000,
+        "name": "急跌再拉（AMD 式）",
+        "n": 2
+      },
+      {
+        "id": "earn-500",
+        "kind": "earnings",
+        "start": 500,
+        "name": "财报彩票",
+        "n": 3
+      },
+      {
+        "id": "earn-1000",
+        "kind": "earnings",
+        "start": 1000,
+        "name": "财报彩票",
+        "n": 3
+      },
+      {
+        "id": "tqqq-500",
+        "kind": "letf",
+        "start": 500,
+        "name": "TQQQ 20 日均线上方持有",
+        "sym": "TQQQ",
+        "ma": 20,
+        "fraction": 1.0
+      },
+      {
+        "id": "tqqq-1000",
+        "kind": "letf",
+        "start": 1000,
+        "name": "TQQQ 20 日均线上方持有",
+        "sym": "TQQQ",
+        "ma": 20,
+        "fraction": 1.0
+      }
+    ]
+  },
   "zdte_shadow": {
     "enabled": true,
     "symbols": ["TSLA", "NVDA", "AMZN", "SPY"],

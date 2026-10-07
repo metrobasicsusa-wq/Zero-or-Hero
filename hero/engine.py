@@ -141,6 +141,16 @@ class Engine:
             except Exception as e:
                 self.j.event("alert_error", source="zdte_shadow", error=str(e)[:200])
 
+        # Many small accounts in one (hero.sleeves): when on, they are the account's only trading.
+        if self.cfg.get("sleeves", {}).get("enabled"):
+            self._sleeves(today)
+            state["last_run"] = today.isoformat()
+            if not self.dry:
+                self.j.save_state(state)
+            bench = closes.get(self.cfg["regime_symbol"], [None])[-1]
+            self.j.equity(today.isoformat(), equity, float(acct["cash"]), self.cfg["generation"], bench)
+            return {"status": "ok", "equity": equity, "day_pl": day_pl, "halted": halted}
+
         # Zero-or-hero phase 1: while it runs, the account does nothing but the daily 0DTE trade.
         zp = zd.settings(self.cfg) if self.cfg.get("zero_dte", {}).get("enabled") else None
         book = zd.Book(self.j.root / "zdte.json", float(self.cfg.get("attempt", {}).get("start_capital", equity))) \
@@ -437,6 +447,23 @@ class Engine:
         cut = self.cfg["stocks"].get("macro_scale", 1.0) < 1.0 and macro.risk_off(g)
         self.j.event("macro", macro=g, macro_risk_off=macro.risk_off(g), macro_applied=cut, why=macro.summary(g))
         mark.write_text(hour + "\n")
+
+    def _sleeves(self, today: date) -> None:
+        """Run every sleeve once (hero.sleeves, hero.sleeve_rules). Never in a rehearsal: sleeves send orders."""
+        from hero import sleeve_rules, sleeves
+        if self.dry:
+            self.j.event("sleeve_skip", dry_run=True, why="演练模式：多账本不下单")
+            return
+        specs = self.cfg["sleeves"]["list"]
+        carry = {}
+        for spec in specs:  # a sleeve can continue an older book's money (the first 0DTE ledger)
+            if spec.get("carry") == "zdte" and (self.j.root / "zdte.json").exists():
+                carry[spec["id"]] = zd.Book(self.j.root / "zdte.json", float(spec["start"])).live_cash()
+        book = sleeves.Book(self.j.root / "sleeves.json", specs, carry)
+        try:
+            sleeves.Runner(self.c, self.j, self.cfg, specs, book, sleeve_rules.RULES, self.now, today).run()
+        finally:
+            book.save()
 
     def _zdte_shadow(self, today: date) -> None:
         """The same-day rule on single stocks with real quotes; see hero.zdte_shadow. Never sends an order."""
