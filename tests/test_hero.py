@@ -1759,6 +1759,19 @@ class ResearchLotto0DTE(unittest.TestCase):
         self.assertEqual(g["end"], 500 + 8 * 3 * 66)                                 # $25 buys 8 contracts at $3
 
 
+class ResearchLETF(unittest.TestCase):
+    def test_holds_only_after_a_close_above_the_average(self):
+        from hero import research_letf as r
+        closes = [10, 10, 12, 6, 6, 9]
+        eq = r.curve(closes, 2)
+        # day 2 closes above its 2-day average (12 > 11): held for day 3 (12 -> 6, -50%); day 3 closes below: out
+        self.assertAlmostEqual(eq[3], (1 - r.COST) ** 2 * 0.5)      # in at day 2's close, out at day 3's
+        self.assertAlmostEqual(eq[4], eq[3])                       # 6 is not above the average of 6 and 6: still out
+        self.assertAlmostEqual(eq[5], eq[4] * (1 - r.COST))        # 9 > 7.5: back in at the close
+        self.assertAlmostEqual(r.curve(closes, None)[-1], (1 - r.COST) * 0.9)  # buy and hold
+        self.assertAlmostEqual(r.max_dd([1, 2, 1, 3]), -0.5)
+
+
 class ResearchIronFly(unittest.TestCase):
     def test_credit_reaction_buyback_and_expiry(self):
         from hero import research_ironfly as r
