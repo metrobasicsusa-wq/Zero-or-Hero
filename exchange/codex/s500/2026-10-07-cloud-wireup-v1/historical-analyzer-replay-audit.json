@@ -1,0 +1,295 @@
+{
+  "status": "passed",
+  "analysis_scope": "historical_replay_not_prospective",
+  "future_observations_added": 0,
+  "dates": 12,
+  "cases": 1227,
+  "exact_inherited_rows": 44172,
+  "exact_inherited_fields": 1501848,
+  "features_fixed_bins_SPY_groups_exact_cases": 1227,
+  "source_bindings": [
+    {
+      "name": "anatomy/inherited-results/2026-01.jsonl.gz",
+      "sha256": "54c4312cc52dfdc5e03eef0c90fe25538c21fba3982e481e3c232aa3239d39d4"
+    },
+    {
+      "name": "anatomy/inherited-results/2026-02.jsonl.gz",
+      "sha256": "9b0d3c36d3835375048f54c11a856cd99e5cf59b0c14e0a28957157a3acbf65a"
+    },
+    {
+      "name": "anatomy/inherited-results/2026-03.jsonl.gz",
+      "sha256": "7455087740785819631efa3f47f1e57806aa7efeb1459079050b0d5b5abd65bf"
+    },
+    {
+      "name": "anatomy/inherited-results/2026-04.jsonl.gz",
+      "sha256": "e60e534da5a712284ed9fddcc9c1f2d816d60d76414300eeb5c516cb9c47612f"
+    },
+    {
+      "name": "anatomy/inherited-results/2026-05.jsonl.gz",
+      "sha256": "48843729f6a78d0ddb4a5642e3972b6e4606ffb39f7568edda518ac84e32b21f"
+    },
+    {
+      "name": "anatomy/inherited-results/2026-06.jsonl.gz",
+      "sha256": "629ff70336ca8509d3a3b35f745ddc7256f04e14bfe2b8134b8901e29810e88e"
+    },
+    {
+      "name": "ancestor/minute-days/2026-01-29.json",
+      "sha256": "4daa7550e8cf2d3bcadba310bbccb1c1a263b3ea3177bffb6c7a96761e313dd4"
+    },
+    {
+      "name": "ancestor/minute-days/2026-02-13.json",
+      "sha256": "88d493147b1a2840f6f06aae7c277522c34a8536244ef9146fc969553d25aad9"
+    },
+    {
+      "name": "ancestor/minute-days/2026-02-17.json",
+      "sha256": "c7e2fff6f0aa2f77a98989efce437aaed6d457e9e1f0ad575cae8f83d7e314af"
+    },
+    {
+      "name": "ancestor/minute-days/2026-03-09.json",
+      "sha256": "3aef6ca212051b16aff2f81c9323d372fc7857a05a3a9db8b8231c0c7e347653"
+    },
+    {
+      "name": "ancestor/minute-days/2026-03-20.json",
+      "sha256": "a60ad46e9cf0c34e051def47228eed6030b7fa62c813f2b10e5521524c7068f3"
+    },
+    {
+      "name": "ancestor/minute-days/2026-03-27.json",
+      "sha256": "bf016f12bae29e6cab28b822c7d2ffb6b2ebc36b8399ba0d8cbd00d2fa082c5e"
+    },
+    {
+      "name": "ancestor/minute-days/2026-03-30.json",
+      "sha256": "893a0b88a2e2fd2276108add2e1a9f20419de073718d5d86cadd05298e8a90b6"
+    },
+    {
+      "name": "ancestor/minute-days/2026-04-30.json",
+      "sha256": "5abe55e5f89c4a118fb6d04a030403bd4fca8c652360524c2343d25b3cb2f0bf"
+    },
+    {
+      "name": "ancestor/minute-days/2026-05-15.json",
+      "sha256": "f6dbeee32fef9f8df372aa5ce3dbe1d1c8df148bf808b0fd345bd39da1a909a6"
+    },
+    {
+      "name": "ancestor/minute-days/2026-06-12.json",
+      "sha256": "a76dbd14e82189b42a7af9753941b5fbf5f0777a37a80e5dafb8abb7aa81c175"
+    },
+    {
+      "name": "ancestor/minute-days/2026-06-18.json",
+      "sha256": "8d10093ef4ef960ca6c5d1a95b03fdb803f945446d274b620e67b8203aef65f8"
+    },
+    {
+      "name": "ancestor/minute-days/2026-06-25.json",
+      "sha256": "bcaf79cddb01eb3bb10964a056b9ab625af5f4a67f5dd788138c50d8d572ef05"
+    }
+  ],
+  "days": [
+    {
+      "date": "2026-01-29",
+      "cases": 103,
+      "exact_inherited_rows": 3708,
+      "primary_SPY_down_counts": {
+        "selected_cases": 32,
+        "signals": 12,
+        "unknown_signals": 0,
+        "no_flush": 15,
+        "no_rebound": 5,
+        "complete_net": 11,
+        "complete_pairs": 7,
+        "signal_return_missing": 1
+      },
+      "analysis_scope": "historical_replay_not_prospective"
+    },
+    {
+      "date": "2026-02-13",
+      "cases": 102,
+      "exact_inherited_rows": 3672,
+      "primary_SPY_down_counts": {
+        "selected_cases": 32,
+        "signals": 12,
+        "unknown_signals": 0,
+        "no_flush": 20,
+        "no_rebound": 0,
+        "complete_net": 10,
+        "complete_pairs": 10,
+        "signal_return_missing": 2
+      },
+      "analysis_scope": "historical_replay_not_prospective"
+    },
+    {
+      "date": "2026-02-17",
+      "cases": 102,
+      "exact_inherited_rows": 3672,
+      "primary_SPY_down_counts": {
+        "selected_cases": 26,
+        "signals": 5,
+        "unknown_signals": 0,
+        "no_flush": 16,
+        "no_rebound": 5,
+        "complete_net": 5,
+        "complete_pairs": 4,
+        "signal_return_missing": 0
+      },
+      "analysis_scope": "historical_replay_not_prospective"
+    },
+    {
+      "date": "2026-03-09",
+      "cases": 103,
+      "exact_inherited_rows": 3708,
+      "primary_SPY_down_counts": {
+        "selected_cases": 13,
+        "signals": 5,
+        "unknown_signals": 0,
+        "no_flush": 7,
+        "no_rebound": 1,
+        "complete_net": 5,
+        "complete_pairs": 4,
+        "signal_return_missing": 0
+      },
+      "analysis_scope": "historical_replay_not_prospective"
+    },
+    {
+      "date": "2026-03-20",
+      "cases": 103,
+      "exact_inherited_rows": 3708,
+      "primary_SPY_down_counts": {
+        "selected_cases": 41,
+        "signals": 11,
+        "unknown_signals": 0,
+        "no_flush": 28,
+        "no_rebound": 2,
+        "complete_net": 11,
+        "complete_pairs": 11,
+        "signal_return_missing": 0
+      },
+      "analysis_scope": "historical_replay_not_prospective"
+    },
+    {
+      "date": "2026-03-27",
+      "cases": 102,
+      "exact_inherited_rows": 3672,
+      "primary_SPY_down_counts": {
+        "selected_cases": 43,
+        "signals": 16,
+        "unknown_signals": 0,
+        "no_flush": 24,
+        "no_rebound": 3,
+        "complete_net": 15,
+        "complete_pairs": 9,
+        "signal_return_missing": 1
+      },
+      "analysis_scope": "historical_replay_not_prospective"
+    },
+    {
+      "date": "2026-03-30",
+      "cases": 102,
+      "exact_inherited_rows": 3672,
+      "primary_SPY_down_counts": {
+        "selected_cases": 55,
+        "signals": 25,
+        "unknown_signals": 1,
+        "no_flush": 29,
+        "no_rebound": 0,
+        "complete_net": 25,
+        "complete_pairs": 23,
+        "signal_return_missing": 0
+      },
+      "analysis_scope": "historical_replay_not_prospective"
+    },
+    {
+      "date": "2026-04-30",
+      "cases": 102,
+      "exact_inherited_rows": 3672,
+      "primary_SPY_down_counts": {
+        "selected_cases": 7,
+        "signals": 3,
+        "unknown_signals": 0,
+        "no_flush": 4,
+        "no_rebound": 0,
+        "complete_net": 3,
+        "complete_pairs": 3,
+        "signal_return_missing": 0
+      },
+      "analysis_scope": "historical_replay_not_prospective"
+    },
+    {
+      "date": "2026-05-15",
+      "cases": 102,
+      "exact_inherited_rows": 3672,
+      "primary_SPY_down_counts": {
+        "selected_cases": 8,
+        "signals": 4,
+        "unknown_signals": 0,
+        "no_flush": 4,
+        "no_rebound": 0,
+        "complete_net": 4,
+        "complete_pairs": 4,
+        "signal_return_missing": 0
+      },
+      "analysis_scope": "historical_replay_not_prospective"
+    },
+    {
+      "date": "2026-06-12",
+      "cases": 102,
+      "exact_inherited_rows": 3672,
+      "primary_SPY_down_counts": {
+        "selected_cases": 45,
+        "signals": 22,
+        "unknown_signals": 1,
+        "no_flush": 21,
+        "no_rebound": 1,
+        "complete_net": 20,
+        "complete_pairs": 19,
+        "signal_return_missing": 2
+      },
+      "analysis_scope": "historical_replay_not_prospective"
+    },
+    {
+      "date": "2026-06-18",
+      "cases": 102,
+      "exact_inherited_rows": 3672,
+      "primary_SPY_down_counts": {
+        "selected_cases": 3,
+        "signals": 0,
+        "unknown_signals": 0,
+        "no_flush": 3,
+        "no_rebound": 0,
+        "complete_net": 0,
+        "complete_pairs": 0,
+        "signal_return_missing": 0
+      },
+      "analysis_scope": "historical_replay_not_prospective"
+    },
+    {
+      "date": "2026-06-25",
+      "cases": 102,
+      "exact_inherited_rows": 3672,
+      "primary_SPY_down_counts": {
+        "selected_cases": 58,
+        "signals": 46,
+        "unknown_signals": 0,
+        "no_flush": 11,
+        "no_rebound": 1,
+        "complete_net": 44,
+        "complete_pairs": 40,
+        "signal_return_missing": 2
+      },
+      "analysis_scope": "historical_replay_not_prospective"
+    }
+  ],
+  "bound_sha256": {
+    "deploy/research/s500/analyze_session.py": "a5081447e52a8821d616e8547e3f3e9caaff96ee2178b0794b277bbc72b53427",
+    "tests/test_analyze_session.py": "1841119a40fa58a34d321049564e4092102f33cbc6ee7c14022edc851674e87c",
+    "historical_analyzer_replay.py": "7f45d8155288156f69988e583e076fab6ed7484f7e9acd9e8dc87426f382e354",
+    "deploy/research/s500/vendor/classify_relative.py": "ce967edfbe6509ef49c6a3bcd3194a9bcd506a6bd5fba7bba79f47ed201b0365",
+    "deploy/research/s500/vendor/concentration.py": "3fdfe8294807d2c638369550151a0bd0d8ab88b528c79d8f6300a925161b313a",
+    "deploy/research/s500/vendor/flush_engine.py": "a11e335abb7b1d14cc535829c219edc40291c30cacd1794a67fb60542690dc05",
+    "deploy/research/s500/vendor/normalize_bars.py": "1e41697f3fa2e3024901fd49b76b79b646a55041551c88fdb3e2cb6ff075e0a9",
+    "deploy/research/s500/vendor/prefix_features.py": "2999bd495d0d0063f2f372c601d8dd0ad32541d20d6b1d0062e6abeb8e05b8b2",
+    "deploy/research/s500/vendor/return_distribution.py": "f499534ea183a0fd6646a90dea2b341a7a962b980884f114e5629584f0f73d26"
+  },
+  "economic_changes": false,
+  "cost_deducted_again": false,
+  "peer_replacement": false,
+  "raw_market_sources_exported": false,
+  "network_calls": 0,
+  "orders": 0
+}

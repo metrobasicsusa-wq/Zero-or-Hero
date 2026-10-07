@@ -1,0 +1,141 @@
+{
+  "verified_at": "2026-10-07T18:40:47.618792+00:00",
+  "deployment_commit": "95c3212fa2c6c9f7010c20b5e351edaa422f01db",
+  "executed_commit": "8c0472aa9dcb032793fee55846d5975f71f09ab8",
+  "executed_code_files_exact_readback": 35,
+  "observer_workflow_unchanged": true,
+  "workflow_id": 377722674,
+  "workflow_active": true,
+  "runs": [
+    {
+      "id": 37668333125,
+      "mode": "rehearsal",
+      "event": "workflow_dispatch",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "8c0472aa9dcb032793fee55846d5975f71f09ab8",
+      "url": "https://github.com/metrobasicsusa-wq/codex-500-cloud/actions/runs/37668333125",
+      "created_at": "2026-10-07T18:38:07Z",
+      "started_at": "2026-10-07T18:38:11Z",
+      "completed_at": "2026-10-07T18:38:45Z",
+      "runner_labels": [
+        "ubuntu-latest"
+      ],
+      "steps": [
+        {
+          "name": "Set up job",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
+          "conclusion": "success"
+        },
+        {
+          "name": "Verify deterministic research tests",
+          "conclusion": "success"
+        },
+        {
+          "name": "Capture or audit within the registered real-clock window",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
+          "conclusion": "success"
+        },
+        {
+          "name": "Complete job",
+          "conclusion": "success"
+        }
+      ],
+      "result": {
+        "account_reads": 0,
+        "archive_bytes_readback_identical": true,
+        "archive_sha256": "9cc93510838d297a0e4034df2b211482952cf9e106eef8317fa30ce1c3b37956",
+        "date": "2026-10-07",
+        "market_gets": 0,
+        "not_a_future_capture_validation": true,
+        "orders_sent": 0,
+        "prospective_observations_added": 0,
+        "real_clock_route": "before_study",
+        "status": "cloud_state_roundtrip_passed",
+        "synthetic": true
+      },
+      "state_result_sha256": "737082e3da9537901913d739c66547a78b56caca476c29f7ef1706aba09c1f32",
+      "private_state_exact_readback": true
+    },
+    {
+      "id": 37668439035,
+      "mode": "connectivity",
+      "event": "workflow_dispatch",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "8c0472aa9dcb032793fee55846d5975f71f09ab8",
+      "url": "https://github.com/metrobasicsusa-wq/codex-500-cloud/actions/runs/37668439035",
+      "created_at": "2026-10-07T18:38:59Z",
+      "started_at": "2026-10-07T18:39:04Z",
+      "completed_at": "2026-10-07T18:39:28Z",
+      "runner_labels": [
+        "ubuntu-latest"
+      ],
+      "steps": [
+        {
+          "name": "Set up job",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
+          "conclusion": "success"
+        },
+        {
+          "name": "Verify deterministic research tests",
+          "conclusion": "success"
+        },
+        {
+          "name": "Capture or audit within the registered real-clock window",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
+          "conclusion": "success"
+        },
+        {
+          "name": "Complete job",
+          "conclusion": "success"
+        }
+      ],
+      "result": {
+        "accepted": true,
+        "account_reads": 0,
+        "date": "2026-10-06",
+        "feed": "sip",
+        "historical_probe": true,
+        "http_status": 200,
+        "market_gets": 1,
+        "orders_sent": 0,
+        "prospective_observations_added": 0,
+        "received_at": "2026-10-07T18:39:20.660954+00:00",
+        "requested_at": "2026-10-07T18:39:20.499867+00:00",
+        "returned_bars": 1,
+        "source_bytes": 150,
+        "source_sha256": "78a9411f30713a562d168a2b419761b65a17fee3ed83987256efbdd4d36fa0bf",
+        "status": "historical_sip_access_verified",
+        "symbol": "SPY"
+      },
+      "state_result_sha256": "0eadcf2964b3fe208fd81031b0f3e828b7796f5e3c044d06aea9152f95846f81",
+      "private_state_exact_readback": true
+    }
+  ],
+  "local_tests": 269,
+  "cloud_tests_per_run": 269,
+  "scheduled_event_observed": false,
+  "first_future_capture_verified": false,
+  "future_observations": 0,
+  "total_broker_gets_this_stage": 1,
+  "broker_get_scope": "one historical SPY SIP minute on 2026-10-06, isolated connectivity probe",
+  "account_reads": 0,
+  "orders_sent": 0,
+  "new_paid_subscription": false,
+  "repository_variable_api_status": 403,
+  "variable_setting_changed": false,
+  "pause_switch": "optional S500_RESEARCH_ENABLED=false; existing CLOUD_ENABLED=true remains required"
+}

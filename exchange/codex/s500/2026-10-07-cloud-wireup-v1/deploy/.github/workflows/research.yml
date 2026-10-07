@@ -1,0 +1,45 @@
+name: S500 registered research
+
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: Real-clock research, or a synthetic persistence rehearsal
+        type: choice
+        options: [auto, rehearsal, connectivity]
+        default: rehearsal
+  schedule:
+    - cron: '3 13 * 10-12 1-5'
+    - cron: '23 20,21 * 10-12 1-5'
+    - cron: '33 22 * 10-12 1-5'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: codex-500-registered-research
+  cancel-in-progress: false
+
+jobs:
+  research:
+    if: >-
+      github.event.repository.private == true &&
+      vars.CLOUD_ENABLED == 'true' &&
+      vars.S500_RESEARCH_ENABLED != 'false'
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Verify deterministic research tests
+        run: python3 -m unittest discover -s research/s500/tests -v
+        env:
+          PYTHONPATH: research/s500
+      - name: Capture or audit within the registered real-clock window
+        run: python3 research/s500/cloud_runner.py --mode "$RESEARCH_MODE"
+        env:
+          RESEARCH_MODE: ${{ inputs.mode || 'auto' }}
+          GH_TOKEN: ${{ github.token }}
+          ALPACA_500_API_KEY: ${{ secrets.ALPACA_500_API_KEY }}
+          ALPACA_500_SECRET_KEY: ${{ secrets.ALPACA_500_SECRET_KEY }}

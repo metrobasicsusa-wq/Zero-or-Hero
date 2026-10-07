@@ -1,0 +1,58 @@
+{
+  "status": "passed",
+  "reviewed_at": "2026-10-07T18:37:03.687153+00:00",
+  "network_calls": 0,
+  "market_gets": 0,
+  "github_writes": 0,
+  "independent_tests_passed": 25,
+  "registered_sessions_checked": 59,
+  "frozen_protocol_and_all_original_bindings_unchanged": true,
+  "candidate_utc_schedule": [
+    "13:03",
+    "20:23",
+    "21:23",
+    "22:33"
+  ],
+  "workflow_month_limit": [
+    10,
+    11,
+    12
+  ],
+  "test_scope": [
+    "DST and all 59 dates",
+    "early closes and inclusive capture deadlines",
+    "no data GET after uncertain or prior claim",
+    "late claim acquisition misses deadline",
+    "failed attempts retain archives and cannot retry",
+    "as-of unknown may later acquire a confirmed legal result",
+    "rejected source archive cannot promote analysis returns",
+    "append-only audit and input-bound checkpoint reuse/revisions",
+    "synthetic rehearsals excluded from real records",
+    "expired main entry performs no capture or audit",
+    "production CLI has no fake clock override"
+  ],
+  "issues_resolved_by_implementer": [
+    "after-study repeated audits removed",
+    "checkpoint excludes rejected/unarchived source results",
+    "checkpoint lookup includes persisted checkpoint namespace while input records remain restricted to real day namespace"
+  ],
+  "files_sha256": {
+    ".github/workflows/research.yml": "ac2cef4b06a5582f2dbab64180ac14013d761a54cfc59022595aff258d9db75c",
+    "research/s500/cloud_runner.py": "2bc7af72c5c0bea13ae919f500116e5fbfe226603611ce45cc5ef935e1e39b57",
+    "research/s500/state_store.py": "dd7d0fc19860f4a536bd1f11ef8effe35b1b89180b7b58f60fe85fd59d4e31a6",
+    "research/s500/checkpoint.py": "8321e1a2e5b2b500a1e9dfe7e2be345bd930296b8130311f743c54b36734d512",
+    "research/s500/analyze_session.py": "a5081447e52a8821d616e8547e3f3e9caaff96ee2178b0794b277bbc72b53427",
+    "research/s500/capture_postclose.py": "fb4ae9b4492354274f5bb024a4879328a69908de40a04bca0a1dbc1bcb75d02d",
+    "research/s500/verify_sources.py": "e91abbe2568ef5d3ee1560d8d07e179d1a7c3394c2a97255dea6844b35aee5d8",
+    "research/s500/protocol.json": "2916ce06a0db24e18a754abae8943470ba9419e914b11d03d2f05d99f64e6d71",
+    "research/s500/tests/test_cloud_runner_independent.py": "d998ca89fb3d5678871313a746ceafca21432a672bfff5e34f6c7be4dbac6f39"
+  },
+  "calendar_audit_sha256": "181f06efaf48019ba18fa79726ea9a4d42dafb9652df426370d1d8ff6e95e420",
+  "test_log_sha256": "2dec0b9e723aa986e40d2fbeae7e622e253a7b4bec5591f3a1e75480ce699250",
+  "audit_code_sha256": "43c841b869acd0d3262fe28684c19ebd05e69c8477aafb7735268daef6af2241",
+  "limits": [
+    "Offline simulated state/clock tests do not prove GitHub auth, workflow permission, source entitlement, first future capture, or punctual scheduling.",
+    "GitHub scheduled execution and registered real source receipts remain separate later evidence.",
+    "Production deployment revisions require renewed byte binding and targeted tests."
+  ]
+}

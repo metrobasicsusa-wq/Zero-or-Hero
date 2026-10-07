@@ -1,0 +1,30 @@
+test_failed_archive_cannot_promote_existing_profit_to_checkpoint (test_cloud_runner_independent.AuditTests.test_failed_archive_cannot_promote_existing_profit_to_checkpoint) ... ok
+test_late_audit_is_append_only_no_capture_or_result_path (test_cloud_runner_independent.AuditTests.test_late_audit_is_append_only_no_capture_or_result_path) ... ok
+test_new_source_state_appends_checkpoint_revision_preserving_old (test_cloud_runner_independent.AuditTests.test_new_source_state_appends_checkpoint_revision_preserving_old) ... ok
+test_rehearsal_records_never_used_as_real_observation_inputs (test_cloud_runner_independent.AuditTests.test_rehearsal_records_never_used_as_real_observation_inputs) ... ok
+test_same_checkpoint_inputs_not_recomputed_next_audit (test_cloud_runner_independent.AuditTests.test_same_checkpoint_inputs_not_recomputed_next_audit) ... ok
+test_all_59_stay_and_no_run_never_zero_return (test_cloud_runner_independent.LedgerTests.test_all_59_stay_and_no_run_never_zero_return) ... ok
+test_crashed_preopen_claim_is_unknown (test_cloud_runner_independent.LedgerTests.test_crashed_preopen_claim_is_unknown) ... ok
+test_failed_preopen_and_failed_postclose_not_signalless_days (test_cloud_runner_independent.LedgerTests.test_failed_preopen_and_failed_postclose_not_signalless_days) ... ok
+test_future_dates_not_false_misses (test_cloud_runner_independent.LedgerTests.test_future_dates_not_false_misses) ... ok
+test_postclose_late_legal_result_can_follow_asof_unknown (test_cloud_runner_independent.LedgerTests.test_postclose_late_legal_result_can_follow_asof_unknown) ... ok
+test_after_study_does_not_capture_or_recompute_audit (test_cloud_runner_independent.MainEntryTests.test_after_study_does_not_capture_or_recompute_audit) ... ok
+test_cli_has_no_artificial_now_override (test_cloud_runner_independent.MainEntryTests.test_cli_has_no_artificial_now_override) ... ok
+test_capture_failure_archived_and_rerun_cannot_retry (test_cloud_runner_independent.ReservationTests.test_capture_failure_archived_and_rerun_cannot_retry) ... ok
+test_clock_advance_during_claim_no_get_and_preserves_failed_attempt (test_cloud_runner_independent.ReservationTests.test_clock_advance_during_claim_no_get_and_preserves_failed_attempt) ... ok
+test_exception_details_never_in_persistent_result (test_cloud_runner_independent.ReservationTests.test_exception_details_never_in_persistent_result) ... ok
+test_existing_claim_prevents_second_get (test_cloud_runner_independent.ReservationTests.test_existing_claim_prevents_second_get) ... ok
+test_late_initial_clock_does_not_even_reserve (test_cloud_runner_independent.ReservationTests.test_late_initial_clock_does_not_even_reserve) ... ok
+test_unconfirmed_reservation_stops_before_get (test_cloud_runner_independent.ReservationTests.test_unconfirmed_reservation_stops_before_get) ... ok
+test_all_dates_have_postclose_slot_and_final_audit (test_cloud_runner_independent.RoutingTests.test_all_dates_have_postclose_slot_and_final_audit) ... ok
+test_cutoff_edges_and_review_gap (test_cloud_runner_independent.RoutingTests.test_cutoff_edges_and_review_gap) ... ok
+test_early_closes_obey_registered_13_et (test_cloud_runner_independent.RoutingTests.test_early_closes_obey_registered_13_et) ... ok
+test_naive_timestamp_rejected (test_cloud_runner_independent.RoutingTests.test_naive_timestamp_rejected) ... ok
+test_non_sessions_and_expiry (test_cloud_runner_independent.RoutingTests.test_non_sessions_and_expiry) ... ok
+test_registered_all_dates_single_preopen_schedule (test_cloud_runner_independent.RoutingTests.test_registered_all_dates_single_preopen_schedule) ... ok
+test_winter_not_yet_closed (test_cloud_runner_independent.RoutingTests.test_winter_not_yet_closed) ... ok
+
+----------------------------------------------------------------------
+Ran 25 tests in 0.021s
+
+OK

@@ -1,0 +1,25 @@
+{
+  "symbols": 6633,
+  "source_directory_asof": "2026-10-06",
+  "frozen_panel_for_future_dates": true,
+  "daily_refreshed_directory": false,
+  "sources": [
+    {
+      "ancestor": "broad_20261006",
+      "name": "universe.json",
+      "sha256": "beb07623123f6628e783a33809b67c2fdf40faf89d1f266c79bdf4b0e5f2882a"
+    },
+    {
+      "ancestor": "flush_rebound_20261007",
+      "name": "universe-classification.json",
+      "sha256": "81fa5857e8dadb6b7fb44328a083bbfb58567b7daa328f7ac051f5abf4eece8b"
+    }
+  ],
+  "panel_sha256": "f7598f2e6e85d53a38a6c84d5d311eaae90f423582a6f61f5019302954cbb389",
+  "limits": [
+    "New listings excluded throughout this version.",
+    "Known historical survivorship and symbol-reuse limitations persist.",
+    "ETF labels are frozen historical directory labels, not daily updated instrument guarantees.",
+    "No has_options or tradable flag is used as an additional outcome filter."
+  ]
+}
