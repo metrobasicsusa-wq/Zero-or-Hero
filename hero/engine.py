@@ -290,8 +290,8 @@ class Engine:
             except Exception:
                 q = {}
             ask = float(q.get("ap") or 0)
-            cash = book.d["sim_cash"] if sim else equity
-            budget = p["fraction"] * cash
+            cash = book.d["sim_cash"] if sim else book.live_cash()  # the book's own money, not the account's
+            budget = p["fraction"] * min(cash, equity)
             limit = ask if sim else round_option_price(ask + p["buy_pad"])  # live: a little above the ask, to get filled
             qty = math.floor(budget / (limit * 100)) if ask > 0 else 0
             side = "看涨" if kind == "C" else "看跌"
@@ -323,18 +323,23 @@ class Engine:
                                    "paid": round(price * 100 * got["qty"], 2), "filled": True,
                                    "take_price": round_option_price(price * p["take"]), "opened_at": now,
                                    "simulated": False}
-        # Phase bookkeeping: in rehearsal on the simulated balance, live on the account.
-        value = book.d["sim_cash"] if sim else equity
+        # Phase bookkeeping on the book's own money (rehearsal: the simulated balance; live: its ledger).
+        value = book.d["sim_cash"] if sim else book.live_cash()
         open_t = book.trade_today(day)
         if not (open_t and open_t["status"] == "open"):
             msg = book.maybe_switch(value, p, day)
             if msg:
                 self.j.event("zdte_switch", dry_run=sim, why=msg)
-            elif sim and value < book.d["start"] * (1 - self.cfg.get("attempt", {}).get("end_loss", 0.9)):
-                self.j.event("zdte_attempt_end", dry_run=True,
-                             why=f"模拟余额 ${value:,.2f} 低于结束线，这一轮（演练）归零；模拟账户重置为 ${book.d['start']:,.0f}")
-                book.d["history"].append({"date": day, "attempt_end": value})
-                book.d["sim_cash"] = book.d["start"]
+            elif value < book.d["start"] * (1 - self.cfg.get("attempt", {}).get("end_loss", 0.9)):
+                if sim:
+                    self.j.event("zdte_attempt_end", dry_run=True,
+                                 why=f"模拟余额 ${value:,.2f} 低于结束线，这一轮（演练）归零；模拟账户重置为 ${book.d['start']:,.0f}")
+                    book.d["history"].append({"date": day, "attempt_end": value})
+                    book.d["sim_cash"] = book.d["start"]
+                else:
+                    book.new_round(day, value)
+                    self.j.event("zdte_attempt_end", dry_run=False,
+                                 why=f"末日账本 ${value:,.2f} 低于结束线，这一轮归零；第 {book.d['rounds']} 轮从 ${book.d['start']:,.0f} 重新开始")
 
     def _await_fill(self, cid: str, wait: float) -> dict:
         """The broker's view of an order, polled until it is filled or `wait` seconds pass."""

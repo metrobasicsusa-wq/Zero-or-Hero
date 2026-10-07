@@ -1943,6 +1943,34 @@ class ZeroDTELive(unittest.TestCase):
         c, _, _ = self.cycle(10, 15)
         self.assertEqual((c.orders[0]["side"], c.orders[0]["qty"]), ("sell", "10"))
 
+    def test_sizes_on_its_own_ledger_not_a_bigger_account(self):
+        # the paper account reset to $50,000: the book still bets half of its own $500, and does not
+        # mistake the account for a 100x win and switch phase
+        self.fills = ["fill"]
+        orig = FakeClient.account
+        FakeClient.account = lambda self: {"equity": "50000", "last_equity": "50000", "cash": "50000"}
+        try:
+            c, book, log = self.cycle(10, 5)
+        finally:
+            FakeClient.account = orig
+        self.assertEqual(c.orders[0]["qty"], "31")                     # 250 / 8, not 25,000 / 8
+        self.assertEqual(book["phase"], "zero_dte")
+        self.assertNotIn("zdte_switch", [e["kind"] for e in log])
+
+    def test_live_round_ends_below_the_line_and_restarts(self):
+        book = json.loads((self.root / "zdte.json").read_text())
+        book.update({"mode": "live", "live_from": "2026-10-07", "history": [
+            {"date": "2026-10-07", "paid": 250.0, "proceeds": 0.0, "status": "closed"},
+            {"date": "2026-10-08", "paid": 210.0, "proceeds": 0.0, "status": "closed"}]})   # $500 -> $40, below the $50 line
+        book.pop("sim_cash", None)
+        (self.root / "zdte.json").write_text(json.dumps(book))
+        c, book, log = self.cycle(9, 45)                               # before the entry: bookkeeping only
+        self.assertEqual(book["rounds"], 2)
+        self.assertIn("第 2 轮", [e for e in log if e["kind"] == "zdte_attempt_end"][-1]["why"])
+        from hero import zero_dte as zd
+        b = zd.Book(self.root / "zdte.json", 500)
+        self.assertEqual(b.live_cash(), 500.0)                         # the new round starts at $500
+
     def test_take_filled_at_the_broker(self):
         self.fills = ["fill"]
         self.cycle(10, 5)

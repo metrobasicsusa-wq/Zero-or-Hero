@@ -81,6 +81,19 @@ class Book:
         self.d["history"].append(dict(t))
         return t
 
+    def live_cash(self) -> float:
+        """The live book's own money: its start plus what its closed trades made since the last round
+        began. Sizing and the phase switch use this, never the broker's equity, so the account can hold
+        more than this book (other sleeves, a reset to a larger paper balance) without it betting that."""
+        hist = self.d["history"]
+        since = max((i for i, h in enumerate(hist) if h.get("round_start")), default=-1)
+        made = sum(h.get("proceeds", 0.0) - h.get("paid", 0.0) for h in hist[since + 1:] if not h.get("simulated"))
+        return round(self.d["start"] + made, 2)
+
+    def new_round(self, day: str, value: float) -> None:
+        self.d["history"].append({"date": day, "round_start": True, "ended_at": value})
+        self.d["rounds"] = self.d.get("rounds", 1) + 1
+
     def maybe_switch(self, equity: float, p: dict, day: str) -> str | None:
         if self.active and equity >= p["switch_at"] * self.d["start"]:
             self.d["phase"], self.d["switched"] = "momentum", day
