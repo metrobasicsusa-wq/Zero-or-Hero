@@ -1,0 +1,43 @@
+test_complete_grid_and_nonsignals_retained (test_flush_engine.FlushEngineTests.test_complete_grid_and_nonsignals_retained) ... ok
+test_cost_formula_both_sides (test_flush_engine.FlushEngineTests.test_cost_formula_both_sides) ... ok
+test_duplicate_later_minute_not_retroactive (test_flush_engine.FlushEngineTests.test_duplicate_later_minute_not_retroactive) ... ok
+test_duplicate_minute_invalid_no_last_write_wins (test_flush_engine.FlushEngineTests.test_duplicate_minute_invalid_no_last_write_wins) ... ok
+test_early_close_horizon (test_flush_engine.FlushEngineTests.test_early_close_horizon) ... ok
+test_entry_exit_and_interior_must_exist (test_flush_engine.FlushEngineTests.test_entry_exit_and_interior_must_exist) ... ok
+test_exact_two_percent_flush (test_flush_engine.FlushEngineTests.test_exact_two_percent_flush) ... ok
+test_first_signal_is_retained (test_flush_engine.FlushEngineTests.test_first_signal_is_retained) ... ok
+test_fixed_entry_has_full_minute_delay (test_flush_engine.FlushEngineTests.test_fixed_entry_has_full_minute_delay) ... ok
+test_flat_price_loses_cost (test_flush_engine.FlushEngineTests.test_flat_price_loses_cost) ... ok
+test_future_minimum_does_not_move_signal (test_flush_engine.FlushEngineTests.test_future_minimum_does_not_move_signal) ... ok
+test_higher_cost_monotonically_reduces_return (test_flush_engine.FlushEngineTests.test_higher_cost_monotonically_reduces_return) ... ok
+test_invalid_parameters_raise (test_flush_engine.FlushEngineTests.test_invalid_parameters_raise) ... ok
+test_invalid_windows (test_flush_engine.FlushEngineTests.test_invalid_windows) ... ok
+test_last_scan_minute_inclusive (test_flush_engine.FlushEngineTests.test_last_scan_minute_inclusive) ... ok
+test_low_is_not_close (test_flush_engine.FlushEngineTests.test_low_is_not_close) ... ok
+test_minimum_after_prefix_is_ignored (test_flush_engine.FlushEngineTests.test_minimum_after_prefix_is_ignored) ... ok
+test_minute_ninety_excluded (test_flush_engine.FlushEngineTests.test_minute_ninety_excluded) ... ok
+test_missing_after_signal_does_not_revoke (test_flush_engine.FlushEngineTests.test_missing_after_signal_does_not_revoke) ... ok
+test_missing_before_rebound_not_skipped (test_flush_engine.FlushEngineTests.test_missing_before_rebound_not_skipped) ... ok
+test_missing_first_bar_cannot_reanchor (test_flush_engine.FlushEngineTests.test_missing_first_bar_cannot_reanchor) ... ok
+test_missing_midprefix_is_unknown (test_flush_engine.FlushEngineTests.test_missing_midprefix_is_unknown) ... ok
+test_missing_source_all_rows_retained (test_flush_engine.FlushEngineTests.test_missing_source_all_rows_retained) ... ok
+test_new_minimum_not_same_bar_rebound (test_flush_engine.FlushEngineTests.test_new_minimum_not_same_bar_rebound) ... ok
+test_no_flush_cannot_trigger_rebound (test_flush_engine.FlushEngineTests.test_no_flush_cannot_trigger_rebound) ... ok
+test_no_input_mutation (test_flush_engine.FlushEngineTests.test_no_input_mutation) ... ok
+test_numeric_invalid_fields (test_flush_engine.FlushEngineTests.test_numeric_invalid_fields) ... ok
+test_ohlc_relation_invalid (test_flush_engine.FlushEngineTests.test_ohlc_relation_invalid) ... ok
+test_one_digit_above_threshold_does_not_flush (test_flush_engine.FlushEngineTests.test_one_digit_above_threshold_does_not_flush) ... ok
+test_opening_anchor_not_first_close (test_flush_engine.FlushEngineTests.test_opening_anchor_not_first_close) ... ok
+test_outside_window_missing_does_not_affect_return (test_flush_engine.FlushEngineTests.test_outside_window_missing_does_not_affect_return) ... ok
+test_prepared_false_cannot_be_reset (test_flush_engine.FlushEngineTests.test_prepared_false_cannot_be_reset) ... ok
+test_rebound_below_boundary_does_not_trigger (test_flush_engine.FlushEngineTests.test_rebound_below_boundary_does_not_trigger) ... ok
+test_rebound_exact_boundary_first_possible (test_flush_engine.FlushEngineTests.test_rebound_exact_boundary_first_possible) ... ok
+test_source_complete_requires_literal_true (test_flush_engine.FlushEngineTests.test_source_complete_requires_literal_true) ... ok
+test_unlocatable_minute_unknown_source (test_flush_engine.FlushEngineTests.test_unlocatable_minute_unknown_source) ... ok
+test_zero_cost_equals_gross (test_flush_engine.FlushEngineTests.test_zero_cost_equals_gross) ... ok
+test_zero_volume_is_valid (test_flush_engine.FlushEngineTests.test_zero_volume_is_valid) ... ok
+
+----------------------------------------------------------------------
+Ran 38 tests in 0.100s
+
+OK

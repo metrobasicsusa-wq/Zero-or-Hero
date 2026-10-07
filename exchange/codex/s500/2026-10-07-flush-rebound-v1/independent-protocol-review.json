@@ -1,0 +1,31 @@
+{
+  "audit": "independent_final_protocol_review_v1",
+  "reviewed_at_utc": "2026-10-07T14:02:42.523581+00:00",
+  "study_design_sha256": "a57214a566b84a24a3fdd127af90b9445b9372c63325d0482ee0d0bf47202666",
+  "passed_for_registered_descriptive_event_study": true,
+  "satisfied": [
+    "Prior-only daily universe selection independently reconstructed across all191sessions and19519cases",
+    "Opening-open anchor and close-only flush eliminate future daily lows",
+    "After-first30 rebound definition uses strictly previous closes; confirmation t+1 and referenceentry t+2",
+    "Fixed strategy does not require future rebound prefix; missing signal/holding data remain explicit",
+    "Each event compared with benchmark and predetermined peers at identical entry/exit times and same costs",
+    "All36 parameter variants and all702684 risksetrows retained; no-event distinct from zero realizedreturn",
+    "Three nearest liquidity peers chosen using only prior20 metrics and first30 nonflush status; no return-based replacement",
+    "Primary predeclared before newly acquired minute data; descriptive caveat explicitly disclaims untouchedOOS",
+    "Per-date means and whole-date resampling address simultaneous-event dependence",
+    "Costs hypothetical; no actualfills, capitalcompounding, options performance, order oraccount activity"
+  ],
+  "retained_limitations": [
+    "Directory/ETF classification not historical PIT, fixedcurrent population can exclude delisted names",
+    "Raw historical provider data may be revised; actual realtime receipt and fillability unverified",
+    "Conditioning on complete holding coverage can select liquid/uninterrupted outcomes; unknown rows retained but bias not eliminated",
+    "Matching is observational, only liquidity adjusted, and uses selected currentdirectory cohort; not causal attribution",
+    "Intraday flush definition does not test gapdown from previousclose or intrabar-low reversal",
+    "Hypothesis informed by prior public2026research, hence date slices not trueholdout"
+  ],
+  "deferred_checks": [
+    "Bound collector source and every rawsource/normalized hash",
+    "Independent actual decision/window/control recomputation",
+    "Final statistical summaries and report claims"
+  ]
+}

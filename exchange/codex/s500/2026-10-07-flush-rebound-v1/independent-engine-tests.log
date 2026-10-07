@@ -1,0 +1,46 @@
+test_after_cutoff_signal_not_allowed (__main__.IndependentCausalTests.test_after_cutoff_signal_not_allowed) ... ok
+test_boolean_timestamp_invalid (__main__.IndependentCausalTests.test_boolean_timestamp_invalid) ... ok
+test_duplicate_early_timestamp_unknown (__main__.IndependentCausalTests.test_duplicate_early_timestamp_unknown) ... ok
+test_duplicate_later_timestamp_does_not_affect_fixed (__main__.IndependentCausalTests.test_duplicate_later_timestamp_does_not_affect_fixed) ... ok
+test_fixed_does_not_require_later_search_bars (__main__.IndependentCausalTests.test_fixed_does_not_require_later_search_bars) ... ok
+test_fixed_uses_exact_31_and_not_signal_bar (__main__.IndependentCausalTests.test_fixed_uses_exact_31_and_not_signal_bar) ... ok
+test_incomplete_api_request_unknown (__main__.IndependentCausalTests.test_incomplete_api_request_unknown) ... ok
+test_input_order_invariance (__main__.IndependentCausalTests.test_input_order_invariance) ... ok
+test_inputs_not_mutated (__main__.IndependentCausalTests.test_inputs_not_mutated) ... ok
+test_intrabar_low_does_not_create_close_flush (__main__.IndependentCausalTests.test_intrabar_low_does_not_create_close_flush) ... ok
+test_invalid_ohlc_is_not_repaired (__main__.IndependentCausalTests.test_invalid_ohlc_is_not_repaired) ... ok
+test_last_search_minute_allowed (__main__.IndependentCausalTests.test_last_search_minute_allowed) ... ok
+test_later_invalid_ohlc_cannot_revoke_signal (__main__.IndependentCausalTests.test_later_invalid_ohlc_cannot_revoke_signal) ... ok
+test_later_lower_low_does_not_create_historical_rebound (__main__.IndependentCausalTests.test_later_lower_low_does_not_create_historical_rebound) ... ok
+test_later_lower_low_does_not_move_prior_signal (__main__.IndependentCausalTests.test_later_lower_low_does_not_move_prior_signal) ... ok
+test_later_missing_search_bar_cannot_revoke_signal (__main__.IndependentCausalTests.test_later_missing_search_bar_cannot_revoke_signal) ... ok
+test_missing_first_minute_unknown (__main__.IndependentCausalTests.test_missing_first_minute_unknown) ... ok
+test_missing_prefix_middle_unknown (__main__.IndependentCausalTests.test_missing_prefix_middle_unknown) ... ok
+test_missing_search_bar_prevents_later_confirmation (__main__.IndependentCausalTests.test_missing_search_bar_prevents_later_confirmation) ... ok
+test_missing_volume_is_invalid_not_zero_filled (__main__.IndependentCausalTests.test_missing_volume_is_invalid_not_zero_filled) ... ok
+test_new_low_cannot_same_bar_rebound_via_high (__main__.IndependentCausalTests.test_new_low_cannot_same_bar_rebound_via_high) ... ok
+test_nonfinite_number_invalid (__main__.IndependentCausalTests.test_nonfinite_number_invalid) ... ok
+test_opening_anchor_is_open_not_first_close (__main__.IndependentCausalTests.test_opening_anchor_is_open_not_first_close) ... ok
+test_rebound_earliest_t30_entry32 (__main__.IndependentCausalTests.test_rebound_earliest_t30_entry32) ... ok
+test_rebound_just_below_threshold_no_early_signal (__main__.IndependentCausalTests.test_rebound_just_below_threshold_no_early_signal) ... ok
+test_threshold_exact_boundary (__main__.IndependentCausalTests.test_threshold_exact_boundary) ... ok
+test_threshold_just_above (__main__.IndependentCausalTests.test_threshold_just_above) ... ok
+test_uniform_price_scaling_preserves_signal_and_return (__main__.IndependentCausalTests.test_uniform_price_scaling_preserves_signal_and_return) ... ok
+test_cost_monotonically_reduces_same_path_return (__main__.IndependentWindowTests.test_cost_monotonically_reduces_same_path_return) ... ok
+test_endpoints_are_opens_not_highs_or_closes (__main__.IndependentWindowTests.test_endpoints_are_opens_not_highs_or_closes) ... ok
+test_future_after_exit_does_not_affect_window (__main__.IndependentWindowTests.test_future_after_exit_does_not_affect_window) ... ok
+test_half_day_close_minus10_is_relative_to_session (__main__.IndependentWindowTests.test_half_day_close_minus10_is_relative_to_session) ... ok
+test_middle_missing_preserved (__main__.IndependentWindowTests.test_middle_missing_preserved) ... ok
+test_missing_entry_never_uses_next_open (__main__.IndependentWindowTests.test_missing_entry_never_uses_next_open) ... ok
+test_missing_exit_never_uses_previous_open (__main__.IndependentWindowTests.test_missing_exit_never_uses_previous_open) ... ok
+test_no_verified_fill_claim (__main__.IndependentWindowTests.test_no_verified_fill_claim) ... ok
+test_nontrading_or_reversed_window_invalid (__main__.IndependentWindowTests.test_nontrading_or_reversed_window_invalid) ... ok
+test_prepared_input_cannot_promote_incomplete_source (__main__.IndependentWindowTests.test_prepared_input_cannot_promote_incomplete_source) ... ok
+test_registered_grid_all_rows_retained_when_unknown (__main__.IndependentWindowTests.test_registered_grid_all_rows_retained_when_unknown) ... ok
+test_registered_grid_all_rows_retained_without_signal (__main__.IndependentWindowTests.test_registered_grid_all_rows_retained_without_signal) ... ok
+test_two_sided_cost_exact (__main__.IndependentWindowTests.test_two_sided_cost_exact) ... ok
+
+----------------------------------------------------------------------
+Ran 41 tests in 0.112s
+
+OK

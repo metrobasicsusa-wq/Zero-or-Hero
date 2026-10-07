@@ -1,0 +1,64 @@
+{
+  "version": "independent-design-checklist-v1",
+  "created_at_utc": "2026-10-07T13:55:47.176469+00:00",
+  "status": "recommendations_before_final_protocol_and_actual_outputs",
+  "scope": "Historical stock signal event study; no account wealth, options returns, orders, or scheduling.",
+  "checks": [
+    {
+      "id": "universe_no_return_selection",
+      "required": "Each day universe chosen only from current-directory eligibility plus complete daily history strictly before that day; disclose current directory is non-PIT and sample is not a historical all-market universe."
+    },
+    {
+      "id": "drop_anchor_fixed",
+      "required": "Specify opening print/bar-open versus prior-session-close anchor; gap-down from yesterday and intraday flush are different hypotheses."
+    },
+    {
+      "id": "known_bars_only",
+      "required": "Bar start-time t becomes knowable after t+1. No full bar high/low/close used to fill an order at the start or inside the same bar."
+    },
+    {
+      "id": "minimum_causal",
+      "required": "Running minimum may only incorporate bars observed so far, never session-low or future low. A new running minimum cannot also produce a rebound from that same new low."
+    },
+    {
+      "id": "entry_latency",
+      "required": "For a close signal at minute t, specify entry t+2 open if retaining an additional full minute latency. Exact timestamp missing is unfilled, not nearest available."
+    },
+    {
+      "id": "missing_prefix",
+      "required": "Require complete and valid early observation minutes through signal for primary paths, retain partial paths with reasons and no forward fill."
+    },
+    {
+      "id": "timing_control",
+      "required": "Compare confirmed-rebound events to controls on same date and identical entry minute/horizon, not solely against a 10:01 unconditional baseline."
+    },
+    {
+      "id": "risk_set_control",
+      "required": "If testing rebound timing value, retain all initially eligible flushes including no-rebound outcomes and separate conditional matched-time baseline from an unconditional policy comparison."
+    },
+    {
+      "id": "realistic_costs",
+      "required": "Bid/ask unavailable: label fixed-bp costs as scenarios, open prints as proxies, never verified fills. Correct two-sided cost arithmetic and differing missing outcomes."
+    },
+    {
+      "id": "exit_exact",
+      "required": "Predefine intraday or later horizon and exact clock semantics, including partial sessions. Exits before entries and non-trading dates invalid."
+    },
+    {
+      "id": "candidate_ledger",
+      "required": "Save every eligible symbol-day x parameter configuration, all statuses and costs, including no drop, no rebound, missing data, bad data, and missing fill."
+    },
+    {
+      "id": "multiplicity",
+      "required": "All registered candidate variants reported; no best variant called alpha. Correlated events/dates are not independent trial counts."
+    },
+    {
+      "id": "descriptive_period_split",
+      "required": "Predeclare time split or monthly diagnostics and do not use late holdout for selection; same sample after selection is descriptive."
+    },
+    {
+      "id": "limits",
+      "required": "No claim of executable 500-dollar whole-contract strategy or 500-to10000 potential from stock-event returns."
+    }
+  ]
+}

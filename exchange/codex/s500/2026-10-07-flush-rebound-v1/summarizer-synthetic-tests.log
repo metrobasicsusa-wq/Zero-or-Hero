@@ -1,0 +1,33 @@
+test_date_means_have_equal_weight (test_summarize_flush.BootstrapTests.test_date_means_have_equal_weight) ... ok
+test_empty_has_no_estimate (test_summarize_flush.BootstrapTests.test_empty_has_no_estimate) ... ok
+test_horizons_have_separate_seed (test_summarize_flush.BootstrapTests.test_horizons_have_separate_seed) ... ok
+test_null_date_mean_rejected (test_summarize_flush.BootstrapTests.test_null_date_mean_rejected) ... ok
+test_order_and_repeated_run_reproducible (test_summarize_flush.BootstrapTests.test_order_and_repeated_run_reproducible) ... ok
+test_single_date_has_no_interval (test_summarize_flush.BootstrapTests.test_single_date_has_no_interval) ... ok
+test_decimal_string_is_fraction_not_percent (test_summarize_flush.DescriptiveTests.test_decimal_string_is_fraction_not_percent) ... ok
+test_empty_is_missing_not_zero (test_summarize_flush.DescriptiveTests.test_empty_is_missing_not_zero) ... ok
+test_nonfinite_and_boolean_rejected (test_summarize_flush.DescriptiveTests.test_nonfinite_and_boolean_rejected) ... ok
+test_null_not_silently_ignored_inside_observed_vector (test_summarize_flush.DescriptiveTests.test_null_not_silently_ignored_inside_observed_vector) ... ok
+test_zero_counts_are_not_positive (test_summarize_flush.DescriptiveTests.test_zero_counts_are_not_positive) ... ok
+test_duplicate_control_not_counted_twice (test_summarize_flush.MatchedTests.test_duplicate_control_not_counted_twice) ... ok
+test_missing_control_not_replaced_by_two_control_mean (test_summarize_flush.MatchedTests.test_missing_control_not_replaced_by_two_control_mean) ... ok
+test_target_missing_is_not_zero (test_summarize_flush.MatchedTests.test_target_missing_is_not_zero) ... ok
+test_three_control_equal_mean (test_summarize_flush.MatchedTests.test_three_control_equal_mean) ... ok
+test_three_controls_required (test_summarize_flush.MatchedTests.test_three_controls_required) ... ok
+test_duplicate_case_variant_rejected (test_summarize_flush.StreamingSummaryTests.test_duplicate_case_variant_rejected) ... ok
+test_incomplete_pair_cannot_supply_excess (test_summarize_flush.StreamingSummaryTests.test_incomplete_pair_cannot_supply_excess) ... ok
+test_missing_variant_rejected (test_summarize_flush.StreamingSummaryTests.test_missing_variant_rejected) ... ok
+test_no_signal_cannot_be_zero_return (test_summarize_flush.StreamingSummaryTests.test_no_signal_cannot_be_zero_return) ... ok
+test_null_missing_target_stays_out_of_means (test_summarize_flush.StreamingSummaryTests.test_null_missing_target_stays_out_of_means) ... ok
+test_pooled_date_weight_and_no_signal_denominators (test_summarize_flush.StreamingSummaryTests.test_pooled_date_weight_and_no_signal_denominators) ... ok
+test_registry_missing_case_rejected (test_summarize_flush.StreamingSummaryTests.test_registry_missing_case_rejected) ... ok
+test_runner_matched_excess_independently_checked (test_summarize_flush.StreamingSummaryTests.test_runner_matched_excess_independently_checked) ... ok
+test_self_control_rejected (test_summarize_flush.StreamingSummaryTests.test_self_control_rejected) ... ok
+test_spy_cannot_enter_stock_sample (test_summarize_flush.StreamingSummaryTests.test_spy_cannot_enter_stock_sample) ... ok
+test_time_horizon_never_mixed (test_summarize_flush.StreamingSummaryTests.test_time_horizon_never_mixed) ... ok
+test_unknown_date_rejected (test_summarize_flush.StreamingSummaryTests.test_unknown_date_rejected) ... ok
+
+----------------------------------------------------------------------
+Ran 28 tests in 0.680s
+
+OK

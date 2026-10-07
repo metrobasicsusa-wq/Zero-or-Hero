@@ -1,0 +1,90 @@
+{
+  "completed_at_utc": "2026-10-07T14:21:24.053717+00:00",
+  "command": "python summarize_flush.py --input results/*.jsonl.gz --calendar calendar-2026-ytd.json --registry selected-case-registry.json --output-dir statistics",
+  "exit_code": 0,
+  "actual_summary_runs": 1,
+  "pre_analysis_binding_sha256": "b9a70ef14be8986e96cdf98b46f0df27c949c2da6b1f2ebd1bb6450168e97abb",
+  "analysis_output_manifest_sha256": "fa447e3fdc33b10bbb3a2c9fedf4fdd63422f8bd334f75dc49cd22c04e59071e",
+  "summarizer_sha256": "7bb47dfbc2e717c9338cddb731562743731a22941108bfa1ea557e6ab278d5a2",
+  "bound_code_unchanged": true,
+  "input_files_sha256_match_runner_manifest": true,
+  "input_files": [
+    {
+      "path": "results/2026-01.jsonl.gz",
+      "bytes": 2295312,
+      "sha256": "5457a372ec7a7c2e6a75881aadd3e6a1f06556248adcc2d78b5c392fe2add3a1"
+    },
+    {
+      "path": "results/2026-02.jsonl.gz",
+      "bytes": 2582752,
+      "sha256": "5f27b4c911cbfd825e3b91dc388a01021692cc031ede97a42d7b653d4e395b51"
+    },
+    {
+      "path": "results/2026-03.jsonl.gz",
+      "bytes": 2178615,
+      "sha256": "9b94ef0d14067e577ac455ceb773e556ccd327eedeeba1bd8456f53b61f26fd7"
+    },
+    {
+      "path": "results/2026-04.jsonl.gz",
+      "bytes": 2632901,
+      "sha256": "ed5fa0c836e3265a3b005d066355957cd26a12a0821785e3dc07bed5a308a2f1"
+    },
+    {
+      "path": "results/2026-05.jsonl.gz",
+      "bytes": 3368793,
+      "sha256": "c88d8b32233241ee0404ff2126d921946f74864e15e817df563ec8cf06e585c9"
+    },
+    {
+      "path": "results/2026-06.jsonl.gz",
+      "bytes": 3886403,
+      "sha256": "e42a7c9d5b6b50697ea6cc2343fc2c24f22a10634102cccbc4eeed6eb2424bb1"
+    },
+    {
+      "path": "results/2026-07.jsonl.gz",
+      "bytes": 3802329,
+      "sha256": "90eea102c0b9b435d74f90046b9bede5ae477e34dfd00936f5549ca2fe2860a6"
+    },
+    {
+      "path": "results/2026-08.jsonl.gz",
+      "bytes": 2642779,
+      "sha256": "377181d242bd63cc46ebebbe2d3fbfee8680dbb9890170e8a113e683cf408a3e"
+    },
+    {
+      "path": "results/2026-09.jsonl.gz",
+      "bytes": 1977973,
+      "sha256": "b3ef00a29f10485a87e0f4ab63c24a68738200f79b4ca1c2ead44a1926298cdb"
+    },
+    {
+      "path": "results/2026-10.jsonl.gz",
+      "bytes": 391743,
+      "sha256": "52ec08b91f66577384f2212798240ca52ed1a55f996cdb56281d70fd55c98aaf"
+    }
+  ],
+  "outputs": [
+    {
+      "path": "statistics/daily-statistics.jsonl",
+      "bytes": 30561660,
+      "sha256": "ae46e5184cbd4174cae19c8b60d1a8b461cccbad0d6e2a2ab5681854e39fe8d3"
+    },
+    {
+      "path": "statistics/primary-inference.json",
+      "bytes": 65490,
+      "sha256": "5f6472719ce29a4b9e417041bfdb871ca36d791479e214395dea0ed9b8649846"
+    },
+    {
+      "path": "statistics/summary.json",
+      "bytes": 6808907,
+      "sha256": "c71cf372a41340e7a6855e05e4c2558cc81ada39f1c444fab69131959ec2f864"
+    },
+    {
+      "path": "statistics-run.log",
+      "bytes": 159,
+      "sha256": "32327a3ff199462303beb077bd4eac7df34f81faafaec4fc0826755a7af7a0f4"
+    }
+  ],
+  "counts": {
+    "cases": 19519,
+    "rows": 702684,
+    "variants": 36
+  }
+}

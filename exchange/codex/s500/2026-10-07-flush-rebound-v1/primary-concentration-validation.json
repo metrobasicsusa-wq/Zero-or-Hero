@@ -1,0 +1,81 @@
+{
+  "checked_at": "2026-10-07T14:24:43.771152+00:00",
+  "passed": true,
+  "checks": {
+    "unique_primary_case_ids": true,
+    "all_191_dates_represented": true,
+    "all_191_dates_have_complete_pair": true,
+    "counts_match_independent_audit": true,
+    "all_symbol_pooled_contributions_sum_to_primary": true,
+    "all_symbol_dateequal_contributions_sum_to_primary": true,
+    "primary_matches_independent_audit_and_requested_value": true,
+    "all_fixed_storage_labels_retained": true
+  },
+  "checks_count": 8,
+  "failed_checks": 0,
+  "source_files_checked": 10,
+  "source_file_hashes": [
+    {
+      "name": "results/2026-01.jsonl.gz",
+      "sha256": "5457a372ec7a7c2e6a75881aadd3e6a1f06556248adcc2d78b5c392fe2add3a1",
+      "bytes": 2295312
+    },
+    {
+      "name": "results/2026-02.jsonl.gz",
+      "sha256": "5f27b4c911cbfd825e3b91dc388a01021692cc031ede97a42d7b653d4e395b51",
+      "bytes": 2582752
+    },
+    {
+      "name": "results/2026-03.jsonl.gz",
+      "sha256": "9b94ef0d14067e577ac455ceb773e556ccd327eedeeba1bd8456f53b61f26fd7",
+      "bytes": 2178615
+    },
+    {
+      "name": "results/2026-04.jsonl.gz",
+      "sha256": "ed5fa0c836e3265a3b005d066355957cd26a12a0821785e3dc07bed5a308a2f1",
+      "bytes": 2632901
+    },
+    {
+      "name": "results/2026-05.jsonl.gz",
+      "sha256": "c88d8b32233241ee0404ff2126d921946f74864e15e817df563ec8cf06e585c9",
+      "bytes": 3368793
+    },
+    {
+      "name": "results/2026-06.jsonl.gz",
+      "sha256": "e42a7c9d5b6b50697ea6cc2343fc2c24f22a10634102cccbc4eeed6eb2424bb1",
+      "bytes": 3886403
+    },
+    {
+      "name": "results/2026-07.jsonl.gz",
+      "sha256": "90eea102c0b9b435d74f90046b9bede5ae477e34dfd00936f5549ca2fe2860a6",
+      "bytes": 3802329
+    },
+    {
+      "name": "results/2026-08.jsonl.gz",
+      "sha256": "377181d242bd63cc46ebebbe2d3fbfee8680dbb9890170e8a113e683cf408a3e",
+      "bytes": 2642779
+    },
+    {
+      "name": "results/2026-09.jsonl.gz",
+      "sha256": "b3ef00a29f10485a87e0f4ab63c24a68738200f79b4ca1c2ead44a1926298cdb",
+      "bytes": 1977973
+    },
+    {
+      "name": "results/2026-10.jsonl.gz",
+      "sha256": "52ec08b91f66577384f2212798240ca52ed1a55f996cdb56281d70fd55c98aaf",
+      "bytes": 391743
+    }
+  ],
+  "method_sha256": "61dd8946f30d8f1fcfc78973745127ee11bbaa8dfd1bdb9fea8711288dde02a8",
+  "output_sha256": "97eb925ef8f7c454f913592f73159be37b3b9c8a76acaa7e97f905f688a2814d",
+  "primary_reference_audit_sha256": "c0251046d1602c80c9558dbd614ecf931331a1ef09954875059d07be331320bf",
+  "dateequal_contribution_sum": "0.000595544903671664386616762407450336998549261421564103905483047",
+  "dateequal_direct_calculation": "0.000595544903671664386616762407450336998549261421564103905483031",
+  "dateequal_audit_reference": "0.0005955449036716643",
+  "absolute_difference_vs_audit": "8.6616762407450336998549261421564103905483031E-20",
+  "pooled_contribution_sum": "0.000653753547187036328831913274003292822963673507943713118474807",
+  "pooled_direct_calculation": "0.000653753547187036328831913274003292822963673507943713118474807",
+  "all_symbol_rows": 2023,
+  "no_raw_market_API_used": true,
+  "no_production_result_or_rule_modification": true
+}

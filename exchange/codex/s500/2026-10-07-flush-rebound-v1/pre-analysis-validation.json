@@ -1,0 +1,41 @@
+{
+  "registered_at": "2026-10-07T14:11:48.780285+00:00",
+  "tests_passed": 160,
+  "failed_tests": 0,
+  "actual_event_outcome_math_started": false,
+  "test_breakdown": {
+    "author_engine": 38,
+    "independent_engine": 41,
+    "author_statistics": 28,
+    "independent_statistics": 13,
+    "author_normalization": 24,
+    "independent_normalization": 9,
+    "runner": 7
+  },
+  "scope": "Final synthetic/causal validations and immutablecode/inputsource bindings afterminuteacquisition, beforeanyactualsignal/return/outcomeaggregation. DoesnotmakehypothesisexternallypreregisteredortrulyOOS.",
+  "bound_sha256": {
+    "study-design.json": "a57214a566b84a24a3fdd127af90b9445b9372c63325d0482ee0d0bf47202666",
+    "acquisition-authorization.json": "abbf3757849e0687315567b4776db7458f7f6e3085f53e55c2734901f5c1dbfc",
+    "selected-case-registry.json": "273c12aae2d5486ecb7921960d2de50e3ff1380ffa390ffec25fc5d4db2b3699",
+    "daily-scope.json": "66db0a74ec0c380ea3c0325d4859d860efc6525fc2b0cb7e5c912a3d4f4a1bc5",
+    "calendar-2026-ytd.json": "80425a15b7b99d086d2204c30dd3971808bd7279652593d3b7c6f5c5751d8e2e",
+    "input-source-hashes.json": "282313d653dd2da0d3292da7a6222867d09582e74bc163f5f4cef8c1e51dafdd",
+    "minute-source-manifest.json": "5acd311de13d15014d90b901a2df5bfa60e34ae23f6fc12cb7412b02cefe4c94",
+    "symbol-session-coverage.json": "a6678d5c2d5798fac76a298e14b8225b38562c0685f80f22b464def965276f2d",
+    "minute-acquisition-summary.json": "1b8931602b144fadac3e948a4d785a8d63eeda80de2ee714eeea45a8a4605f64",
+    "input-integrity-verification.json": "d3d4edd01b47da493bbd4d6d167ad556117cdc5dcd13ef4067a87d6c2bf8abd6",
+    "flush_engine.py": "a11e335abb7b1d14cc535829c219edc40291c30cacd1794a67fb60542690dc05",
+    "test_flush_engine.py": "fa9ca252bac10ddae4841ea1fbf4a30f03428182f75ec586db2fdf2599e2c960",
+    "independent_engine_tests.py": "075e0e0ea72ac56416b2a9d47ce4cf17650b3ac68caa35390ebe0202928253d5",
+    "normalize_bars.py": "1e41697f3fa2e3024901fd49b76b79b646a55041551c88fdb3e2cb6ff075e0a9",
+    "test_normalize_bars.py": "7838c6f1f0824bd1d453183256edadc5cf707088cfe922d0e9068350ea3b7992",
+    "independent_normalization_tests.py": "5c18888c4001986327102714f2eb03168e27dd6ab9eff48d746bffc42d8ecd2c",
+    "run_flush.py": "026931d7bc2f84ace2f597d821a33ed92083ce269a85a58507f052577251faa0",
+    "test_run_flush.py": "9707d1ebdea96d5563fa262714a192f19333ce9af952b331d8f5b5a597258ae9",
+    "summarize_flush.py": "7bb47dfbc2e717c9338cddb731562743731a22941108bfa1ea557e6ab278d5a2",
+    "test_summarize_flush.py": "dca26ce969ac19338f0ebd0647e1ceeaa371df505e99be55e94188c46f7f7612",
+    "independent_stats_tests.py": "58ae439eb975c2f38ea7dd1aa4d3f193de2796e012aa4e4278b43cf80f7ba3ea",
+    "pre-analysis-tests.log": "6d2cf92553ace55d6aac335ef3121be41b7173847ba46c7bfe3441b3db480132"
+  },
+  "private_normalized_day_binding": "minute-source-manifest bindsall191dayfiles; runner reverifieseachdayhashbeforemath."
+}

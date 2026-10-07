@@ -1,0 +1,16 @@
+{
+  "authorized_at": "2026-10-07T14:03:31.525260+00:00",
+  "minute_fetch_authorized": true,
+  "scope": "Userauthorizedstockresearch GETonly usingexistingconfiguredSIPdata; noorders/accounts/payment/schedulers. Study frozenbeforefirstminuteGET.",
+  "bound_files": {
+    "study-design.json": "a57214a566b84a24a3fdd127af90b9445b9372c63325d0482ee0d0bf47202666",
+    "daily-scope.json": "66db0a74ec0c380ea3c0325d4859d860efc6525fc2b0cb7e5c912a3d4f4a1bc5",
+    "selected-case-registry.json": "273c12aae2d5486ecb7921960d2de50e3ff1380ffa390ffec25fc5d4db2b3699",
+    "calendar-2026-ytd.json": "80425a15b7b99d086d2204c30dd3971808bd7279652593d3b7c6f5c5751d8e2e",
+    "input-source-hashes.json": "282313d653dd2da0d3292da7a6222867d09582e74bc163f5f4cef8c1e51dafdd",
+    "collect_minutes.py": "11d22a47867e52ac54182e0b6c01ff805cda2e0f136838e90d138bd8aa2c31e3"
+  },
+  "supersedes": "acquisition-authorization-before-timestamp-check.json",
+  "previous_binding_executed": false,
+  "reason": "Before first minute GET: preserve exact nonzero fractional timestamp as nonminute instead ofdatetime microsecond truncation. Economicrules/selection unchanged."
+}

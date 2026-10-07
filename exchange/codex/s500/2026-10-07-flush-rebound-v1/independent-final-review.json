@@ -1,0 +1,95 @@
+{
+  "audit_version": "independent_final_review_v1",
+  "completed_at_utc": "2026-10-07T14:23:43.770291+00:00",
+  "passed_for_descriptive_research_publication": true,
+  "approved_for_trading_or_profit_claim": false,
+  "scope": "2026Jan2-Oct6 USstock openingflush/rebound retrospective eventstudy, 191sessions currentdirectory cohort; no options or500wealthledger.",
+  "independent_verification": {
+    "daily_universe_symbol_days_reconstructed": 1266903,
+    "registered_cases": 19519,
+    "distinct_selected_symbols": 2025,
+    "source_response_hashes_verified": 764,
+    "normalized_days_reconstructed_from_raw_pages": 191,
+    "minute_bars_exactly_reconstructed": 7259432,
+    "all_variant_rows_recomputed": 702684,
+    "matched_peer_windows_recomputed": 233847,
+    "benchmark_windows_recomputed": 155934,
+    "all_period_group_variant_summaries": 108,
+    "monthly_summaries": 1080,
+    "halfyear_summaries": 216,
+    "daily_summary_rows": 20628,
+    "bootstrap_records": 108,
+    "independent_synthetic_tests": 63,
+    "bound_preanalysis_test_total": 160
+  },
+  "primary_result": {
+    "definition": "stocktargets;2percentfirst30closeflush;1percentcausalrebound;entrysignalbar+2minuteopen;60minutehorizon;10bpper-sidecosthypothesis",
+    "stock_case_count": 19137,
+    "flush_true": 3004,
+    "signals": 2681,
+    "signal_unknown": 3800,
+    "no_rebound": 286,
+    "complete_reference_returns": 2542,
+    "missing_return_after_signal": 139,
+    "net_return_event_mean": -0.00039135565155401937,
+    "complete_three_peer_pairs": 2203,
+    "incomplete_signal_pairs": 478,
+    "date_weighted_matched_excess": 0.0005955449036716643,
+    "date_cluster_95pct_interval": [
+      -0.0007977450269878914,
+      0.0020426014044001672
+    ],
+    "interpretation": "Mean modeled net reference return is negative; descriptive paired-excess interval spanszero. Evidence doesnot establish profitability or reliable positive excess."
+  },
+  "corrections_before_actual_math": [
+    "Collector exceptions retain every registeredsymbol-day as explicit allmissing ratherthan omit rows.",
+    "Runner forcedbenchmark nullselectionmetrics handled; absent normalizedfailedsource becomes explicitunknown for all36variants.",
+    "Standalone statistics binding finalversion history preserved; full finalsource alreadybound and all160tests passed beforeactualmath."
+  ],
+  "limitations": [
+    "Currentdirectory and ETF classifications are not pointintime; delisted/unavailable names can be absent.",
+    "Providerhistorical rawdaily/minutedata are retrospective revisions; realtimeavailability not established.",
+    "Minuteopen prices are proxies; actual bidask, slippage, halts, fills and tinyaccountability notverified.",
+    "Fixedbp costs are scenarios, not measured fees/spreads.",
+    "Missingfirst30/holdingdata can create observability/liquidityselection even with fullunknownledgers.",
+    "Liquiditymatchednonflushpeers control onlyone characteristic; associations are not causal effects.",
+    "Hypothesis informed by previouslyseen2026research, hence H1/H2/months are descriptive, not untouched outofsample.",
+    "Datecluster bootstrap handles samedaycooccurrence, not arbitrary serialdependence; multivariant exploration precludes simple alphaclaims.",
+    "Allreturns are stockevent percentages; no500-to10000 wealthpath, optionsreturn, orders oraccount operation."
+  ],
+  "evidence": [
+    {
+      "path": "independent-scope-audit.json",
+      "sha256": "86ebb1e53f73cfe3b8a1e5e4a6d4bd0f29ae9834df0549c03b27781b66b0893d"
+    },
+    {
+      "path": "independent-protocol-review.json",
+      "sha256": "62af00520140819e050389ab1eb7c6542af29a3000724eb84e4cd46ca6ef91d1"
+    },
+    {
+      "path": "independent-source-audit.json",
+      "sha256": "e1cd9c1ad966422f6a4b3f3934513a828774f77869412f0586cd48794c8ad2ec"
+    },
+    {
+      "path": "independent-actual-audit.json",
+      "sha256": "c0251046d1602c80c9558dbd614ecf931331a1ef09954875059d07be331320bf"
+    },
+    {
+      "path": "independent-summary-audit.json",
+      "sha256": "2800ea5eb063f0d8fd5a3a80737ac4c3b93bd593c01ce610d68ee2ecbc480ac2"
+    },
+    {
+      "path": "independent-stats-binding-history.json",
+      "sha256": "6d93f557fa45beaf66d810b50a958854f2b47f14832aab7a290a03b6dd2e143e"
+    },
+    {
+      "path": "pre-analysis-validation.json",
+      "sha256": "b9a70ef14be8986e96cdf98b46f0df27c949c2da6b1f2ebd1bb6450168e97abb"
+    },
+    {
+      "path": "statistics/summary.json",
+      "sha256": "c71cf372a41340e7a6855e05e4c2558cc81ada39f1c444fab69131959ec2f864"
+    }
+  ],
+  "publication_status": "Localresearchauditpassed; remoteGitHubpublicationandbyte-readbackareparentresponsibilityandnotclaimedhere."
+}

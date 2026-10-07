@@ -1,0 +1,29 @@
+test_all_fraction_precisions (test_normalize_bars.NormalizeBarsTests.test_all_fraction_precisions) ... ok
+test_calendar_validation (test_normalize_bars.NormalizeBarsTests.test_calendar_validation) ... ok
+test_duplicate_records_preserved_and_diagnosed (test_normalize_bars.NormalizeBarsTests.test_duplicate_records_preserved_and_diagnosed) ... ok
+test_explicit_session_open (test_normalize_bars.NormalizeBarsTests.test_explicit_session_open) ... ok
+test_invalid_clock_and_leap_second_fail_closed (test_normalize_bars.NormalizeBarsTests.test_invalid_clock_and_leap_second_fail_closed) ... ok
+test_invalid_offset_minute_not_normalized (test_normalize_bars.NormalizeBarsTests.test_invalid_offset_minute_not_normalized) ... ok
+test_invalid_session_parameters_raise (test_normalize_bars.NormalizeBarsTests.test_invalid_session_parameters_raise) ... ok
+test_known_future_duplicate_cannot_erase_signal (test_normalize_bars.NormalizeBarsTests.test_known_future_duplicate_cannot_erase_signal) ... ok
+test_known_future_price_error_cannot_erase_signal (test_normalize_bars.NormalizeBarsTests.test_known_future_price_error_cannot_erase_signal) ... ok
+test_lowercase_t_and_z_permitted_by_rfc3339 (test_normalize_bars.NormalizeBarsTests.test_lowercase_t_and_z_permitted_by_rfc3339) ... ok
+test_more_than_nine_fraction_digits_rejected_even_zero (test_normalize_bars.NormalizeBarsTests.test_more_than_nine_fraction_digits_rejected_even_zero) ... ok
+test_naive_timezone_rejected (test_normalize_bars.NormalizeBarsTests.test_naive_timezone_rejected) ... ok
+test_no_clipping_prior_or_following_session (test_normalize_bars.NormalizeBarsTests.test_no_clipping_prior_or_following_session) ... ok
+test_no_whitespace_or_compact_offset (test_normalize_bars.NormalizeBarsTests.test_no_whitespace_or_compact_offset) ... ok
+test_non_sequence_parameters_raise (test_normalize_bars.NormalizeBarsTests.test_non_sequence_parameters_raise) ... ok
+test_nonmapping_record_retained_unknown (test_normalize_bars.NormalizeBarsTests.test_nonmapping_record_retained_unknown) ... ok
+test_nonzero_nanosecond_cannot_truncate (test_normalize_bars.NormalizeBarsTests.test_nonzero_nanosecond_cannot_truncate) ... ok
+test_numeric_timestamp_cannot_become_valid_minute (test_normalize_bars.NormalizeBarsTests.test_numeric_timestamp_cannot_become_valid_minute) ... ok
+test_order_and_ohlcv_unchanged (test_normalize_bars.NormalizeBarsTests.test_order_and_ohlcv_unchanged) ... ok
+test_seconds_must_exist_and_be_zero (test_normalize_bars.NormalizeBarsTests.test_seconds_must_exist_and_be_zero) ... ok
+test_unknown_negative_zero_offset_rejected (test_normalize_bars.NormalizeBarsTests.test_unknown_negative_zero_offset_rejected) ... ok
+test_unlocatable_future_subsecond_conservatively_unknown_source (test_normalize_bars.NormalizeBarsTests.test_unlocatable_future_subsecond_conservatively_unknown_source) ... ok
+test_utc_and_eastern_same_minute (test_normalize_bars.NormalizeBarsTests.test_utc_and_eastern_same_minute) ... ok
+test_winter_dst_offset (test_normalize_bars.NormalizeBarsTests.test_winter_dst_offset) ... ok
+
+----------------------------------------------------------------------
+Ran 24 tests in 0.012s
+
+OK

@@ -1,0 +1,32 @@
+{
+  "audit_version": "independent_final_report_review_v1",
+  "completed_at_utc": "2026-10-07T14:28:21.334284+00:00",
+  "passed": true,
+  "numeric_checks": {
+    "all36parameter_table_rows": 36,
+    "monthly_and_halfyear_rows": 12,
+    "primary_decision_matches_full_audited_primary": true,
+    "all_cost_sensitivity_counts_recomputed": true,
+    "peer_message_numerics_match": true
+  },
+  "scope_review": [
+    "Broad daily sample and fullcutoff dates distinguished from fullmarket orcompletedyear",
+    "Negative absolute modelednet and zero-crossing pairedexcessCI both emphasized; denominators andweights distinct",
+    "Unknown andno-event states retained without zeroimputation",
+    "Currentdirectory, missingdata, costs, fillability, observationalmatching, retrospectivehypothesis andmultiplicity limitations explicit",
+    "Concentration clearly postresult descriptive; fixed8storage symbols retained andPclassification unknown",
+    "Nextcandidate explicitly not registered/run; no impliedactivepapertrading orAIautowake",
+    "Public reproduction limits and privateinputrequirements explicit",
+    "User-facing freeze time shown in New York EDT"
+  ],
+  "bound_documents": {
+    "REPORT.zh-CN.md": "abcf4f92104a87e1d4dd3ea0ed5f2f26320f7996c0c1833c9da2c7f9422ffeff",
+    "stage-decision.json": "e07e9d20ea9e5dac7179cb967c587466d8b262979a9fbdaa0a48779df74a91ac",
+    "peer-exchange.json": "59894314222f7ce48c06d2a33e2d79063647f8abc8fe9a4894428defaa3c3c7c",
+    "REPRODUCE.md": "87b210c737d11c9dbf15071def2d89d1f39eeb2a10e3d7b4f97fd55b1395cd2f",
+    "primary-concentration.json": "97eb925ef8f7c454f913592f73159be37b3b9c8a76acaa7e97f905f688a2814d",
+    "independent-concentration-audit.json": "65dfd85ce6bc7a554e9d3c7be65f2f570345fa5d333349b3d7e445a6bc6b8440"
+  },
+  "auditor_code_sha256": "493070fef60d0ca45f73b2147db36d9242ed00db6d38648ef908c7693731e0b1",
+  "publication_status": "Documents approved as localdescriptive research; remotecommit/publicationreadbacknotclaimed."
+}

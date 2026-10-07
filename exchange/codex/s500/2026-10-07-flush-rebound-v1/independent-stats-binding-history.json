@@ -1,0 +1,19 @@
+{
+  "version": "independent_stats_binding_history_v1",
+  "created_at_utc": "2026-10-07T14:21:11.952773+00:00",
+  "initial_binding_file": "independent-stats-test-binding.initial.json",
+  "initial_bound_summarizer_sha256": "3b58c395d8a04a58b98d5927b0c75c4349bad5776071b0e627419846857a72ec",
+  "initial_tests_completed_at": "2026-10-07T14:03:42.261436+00:00",
+  "final_binding_file": "independent-stats-test-binding.json",
+  "final_bound_summarizer_sha256": "7bb47dfbc2e717c9338cddb731562743731a22941108bfa1ea557e6ab278d5a2",
+  "final_tests_completed_at": "2026-10-07T14:17:20.357075+00:00",
+  "test_fixture_source_unchanged": true,
+  "reason": "Initial independent tests exercised early pure-statistics helper version. Parent subsequently added completeledger aggregation and strict decimal-string parsing before preanalysis. Final standalone rerun records current full-module hash; it does not replace original binding or pretend to predate actual outcomes.",
+  "authoritative_preanalysis_binding": "pre-analysis-validation.json",
+  "authoritative_preanalysis_registered_at": "2026-10-07T14:11:48.780285+00:00",
+  "authoritative_preanalysis_summarizer_sha256": "7bb47dfbc2e717c9338cddb731562743731a22941108bfa1ea557e6ab278d5a2",
+  "preanalysis_and_final_hash_equal": true,
+  "preanalysis_all_tests_passed": 160,
+  "preanalysis_independent_statistics_tests_passed": 13,
+  "economic_parameters_or_test_fixtures_changed_after_results": false
+}

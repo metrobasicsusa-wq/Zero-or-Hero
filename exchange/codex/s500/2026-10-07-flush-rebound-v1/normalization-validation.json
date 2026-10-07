@@ -1,0 +1,38 @@
+{
+  "version": "normalization-validation-v1",
+  "validated_at_utc": "2026-10-07T14:07:40.451947+00:00",
+  "data_kind": "synthetic_only",
+  "command": [
+    "python3",
+    "-m",
+    "unittest",
+    "-v",
+    "test_normalize_bars"
+  ],
+  "exit_code": 0,
+  "tests_run": 24,
+  "passed": 24,
+  "elapsed_seconds": 0.101826,
+  "files": {
+    "normalize_bars.py": {
+      "sha256": "1e41697f3fa2e3024901fd49b76b79b646a55041551c88fdb3e2cb6ff075e0a9",
+      "bytes": 5293
+    },
+    "test_normalize_bars.py": {
+      "sha256": "7838c6f1f0824bd1d453183256edadc5cf707088cfe922d0e9068350ea3b7992",
+      "bytes": 8215
+    },
+    "NORMALIZATION.md": {
+      "sha256": "6a73cc46ac0918a4592f87698cf810be28053f9ec8129bc183b826edad627609",
+      "bytes": 2125
+    },
+    "normalization-tests.log": {
+      "sha256": "ff5e26b90e8efacdfddd6c2df92ad0e1abeb33017f29db8d60380bf199d2401a",
+      "bytes": 3165
+    },
+    "flush_engine.py": {
+      "sha256": "a11e335abb7b1d14cc535829c219edc40291c30cacd1794a67fb60542690dc05",
+      "bytes": 11277
+    }
+  }
+}
