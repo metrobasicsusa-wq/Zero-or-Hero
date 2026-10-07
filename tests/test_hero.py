@@ -1748,6 +1748,17 @@ class ResearchWeekly(unittest.TestCase):
         self.assertIsNone(w.spread_result(0.03, 0.02, 100, 99, 101))           # no credit after costs
 
 
+class ResearchLotto0DTE(unittest.TestCase):
+    def test_ticket_costs_a_cent_more_and_the_game_buys_whole_contracts(self):
+        from hero import research_lotto0dte as l
+        t = l.ticket({"10:00": {"c": 0.02}, "12:00": {"c": 0.5, "h": 0.6}, "15:55": {"c": 2.02}})
+        self.assertEqual((t["cost"], t["take20"], t["take50"]), (0.03, 19, 49))   # $0.02 + $0.01; 0.6 >= 20 x 0.03
+        self.assertAlmostEqual(t["hold"], (2.02 - 0.202) / 0.03 - 1, places=3)
+        self.assertIsNone(l.ticket({"10:00": {"c": 0.20}}))                          # not a lottery ticket
+        g = l.game([{"day": "2026-01-02", "cost": 0.03, "hold": 66.0}], 500, "hold")
+        self.assertEqual(g["end"], 500 + 8 * 3 * 66)                                 # $25 buys 8 contracts at $3
+
+
 class ResearchIronFly(unittest.TestCase):
     def test_credit_reaction_buyback_and_expiry(self):
         from hero import research_ironfly as r
