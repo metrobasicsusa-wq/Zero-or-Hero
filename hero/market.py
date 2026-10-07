@@ -1,12 +1,15 @@
-"""Daily market context from Alpha Vantage: Treasury yields, oil, and news sentiment.
+"""Daily market context: Treasury yields and oil from Alpha Vantage, news sentiment from
+Alpaca's news feed (Benzinga headlines) scored with a small finance word list.
 
-Fetched at most once per ET day (4 API calls) and archived by date. Record only: nothing here
-changes a trade until it has been measured against what actually happened.
+Fetched at most once per ET day (3 Alpha Vantage calls plus a few Alpaca news pages) and archived
+by date. Record only: nothing here changes a trade until it has been measured against what
+actually happened.
 """
 
 from __future__ import annotations
 
 import json
+import re
 import time
 from datetime import datetime, timedelta
 from pathlib import Path
@@ -47,32 +50,67 @@ def summarize_series(points: list[dict], unit: str) -> dict:
             "chg_20d": round(v - back, 3) if back is not None else None}
 
 
-def summarize_news(feed: list[dict], symbols: set[str], top: int = 3) -> dict:
-    """Relevance-weighted sentiment per symbol from the market-wide news feed (one call covers all)."""
+# Headline word list. Deliberately small and plain: a score is (positive - negative) hits over all
+# hits in the headline and summary, so a headline with no listed word counts as neutral (0).
+POSITIVE = ("beat", "beats", "tops", "surge", "surges", "soar", "soars", "jump", "jumps", "rally", "rallies",
+            "record", "upgrade", "upgrades", "upgraded", "raise", "raises", "raised", "outperform", "buy",
+            "bullish", "strong", "growth", "gain", "gains", "rise", "rises", "rebound", "rebounds", "boost",
+            "boosts", "approval", "approved", "wins", "win", "expands", "profit", "optimistic", "top pick")
+NEGATIVE = ("miss", "misses", "missed", "plunge", "plunges", "sink", "sinks", "tumble", "tumbles", "drop",
+            "drops", "fall", "falls", "slump", "slumps", "downgrade", "downgrades", "downgraded", "cut", "cuts",
+            "lower", "lowers", "underperform", "sell", "bearish", "weak", "loss", "losses", "lawsuit", "probe",
+            "investigation", "recall", "warns", "warning", "halt", "halted", "layoffs", "decline", "declines",
+            "concern", "concerns", "fraud", "delay", "delays", "selloff", "sell-off", "pessimistic")
+_POS = re.compile(r"\b(" + "|".join(map(re.escape, POSITIVE)) + r")\b", re.I)
+_NEG = re.compile(r"\b(" + "|".join(map(re.escape, NEGATIVE)) + r")\b", re.I)
+NEWS_CHUNK = 50      # symbols per request
+NEWS_MAX = 1000      # articles per day, to bound the number of pages
+
+
+def score_text(text: str) -> float:
+    pos, neg = len(_POS.findall(text or "")), len(_NEG.findall(text or ""))
+    return (pos - neg) / (pos + neg) if pos + neg else 0.0
+
+
+def summarize_news(items: list[dict], symbols: set[str], top: int = 3) -> dict:
+    """Mean word-list score per symbol over Alpaca news items (one item can name several symbols)."""
     acc: dict[str, dict] = {}
-    for item in feed:
-        for t in item.get("ticker_sentiment", []):
-            sym = t.get("ticker")
+    for item in items:
+        score = score_text(f"{item.get('headline', '')}. {item.get('summary', '')}")
+        for sym in item.get("symbols") or []:
             if sym not in symbols:
                 continue
-            rel, score = float(t.get("relevance_score") or 0), float(t.get("ticker_sentiment_score") or 0)
-            a = acc.setdefault(sym, {"n": 0, "w": 0.0, "ws": 0.0, "items": []})
+            a = acc.setdefault(sym, {"n": 0, "s": 0.0, "items": []})
             a["n"] += 1
-            a["w"] += rel
-            a["ws"] += rel * score
-            a["items"].append({"relevance": round(rel, 3), "score": round(score, 3), "title": item.get("title"),
+            a["s"] += score
+            a["items"].append({"score": round(score, 3), "title": item.get("headline"),
                                "source": item.get("source"), "url": item.get("url"),
-                               "published": item.get("time_published")})
+                               "published": item.get("created_at")})
     out = {}
     for sym, a in acc.items():
-        avg = a["ws"] / a["w"] if a["w"] else 0.0
+        avg = a["s"] / a["n"]
         out[sym] = {"articles": a["n"], "sentiment": round(avg, 3), "label": label(avg),
-                    "top": sorted(a["items"], key=lambda x: -x["relevance"])[:top]}
+                    "top": sorted(a["items"], key=lambda x: -abs(x["score"]))[:top]}
     return out
 
 
+def fetch_news(client, symbols: set[str], start: datetime, end: datetime) -> list[dict]:
+    """Every Alpaca news item for the symbols in the window, deduplicated, capped at NEWS_MAX."""
+    seen, items = set(), []
+    syms = sorted(symbols)
+    for i in range(0, len(syms), NEWS_CHUNK):
+        for item in client.news_range(syms[i:i + NEWS_CHUNK], start.isoformat(), end.isoformat()):
+            if item.get("id") in seen:
+                continue
+            seen.add(item.get("id"))
+            items.append(item)
+            if len(items) >= NEWS_MAX:
+                return items
+    return items
+
+
 def label(score: float) -> str:
-    # Alpha Vantage's own bands.
+    # The bands Alpha Vantage used for its scores; kept so labels read the same as before.
     if score <= -0.35:
         return "偏空"
     if score <= -0.15:
@@ -85,11 +123,11 @@ def label(score: float) -> str:
 
 
 def build(key: str, symbols: set[str], now: datetime, pause: float = PAUSE_S,
-          previous: dict | None = None) -> dict:
-    """One call per item, each preceded by a pause: the step before this one (earnings) also calls
-    Alpha Vantage, and the free tier rejects bursts. Items already fetched today (in previous) are
-    kept instead of being requested again."""
-    out = {"source": "alphavantage", "fetched_at": now.isoformat(timespec="seconds"),
+          previous: dict | None = None, news_client=None) -> dict:
+    """Yields and oil: one Alpha Vantage call per series, each preceded by a pause (the earnings step
+    before this one also calls Alpha Vantage, and the free tier rejects bursts). News: Alpaca, if a
+    client is given. Items already fetched today (in previous) are kept instead of requested again."""
+    out = {"source": "alphavantage+alpaca-news", "fetched_at": now.isoformat(timespec="seconds"),
            "fetched_on": now.date().isoformat(), "symbols": sorted(symbols), "series": {}, "errors": {}}
     done = previous if previous and previous.get("fetched_on") == out["fetched_on"] else {}
     for name, (fn, params, unit) in SERIES.items():
@@ -104,24 +142,27 @@ def build(key: str, symbols: set[str], now: datetime, pause: float = PAUSE_S,
     if "news" in done and "news" not in done.get("errors", {}):
         out["news"], out["news_window"] = done["news"], done.get("news_window")
         return out
-    since = (now - timedelta(hours=24)).strftime("%Y%m%dT%H%M")
-    time.sleep(pause)
+    if news_client is None:
+        out["errors"]["news"] = "no Alpaca client (ALPACA_API_KEY not set)"
+        return out
+    since = now - timedelta(hours=24)
     try:
-        feed = _get({"function": "NEWS_SENTIMENT", "sort": "LATEST", "limit": "1000", "time_from": since}, key)
-        out["news"] = summarize_news(feed.get("feed", []), symbols)
-        out["news_window"] = f"since {since} (market-wide feed, up to 1000 articles)"
+        items = fetch_news(news_client, symbols, since, now)
+        out["news"] = summarize_news(items, symbols)
+        out["news_window"] = (f"since {since.isoformat(timespec='minutes')} (Alpaca/Benzinga, {len(items)} articles, "
+                              f"word-list score)")
     except Exception as e:
         out["errors"]["news"] = str(e)[:200]
     return out
 
 
-def refresh(path: Path, symbols: set[str], key: str, now: datetime) -> str:
+def refresh(path: Path, symbols: set[str], key: str, now: datetime, news_client=None) -> str:
     current = load(path)
     today = now.date().isoformat()
     tries = current.get("attempts", 1) if current and current["fetched_on"] == today else 0
     if tries and (not current.get("errors") or tries >= MAX_ATTEMPTS):
-        return "fresh"  # at most MAX_ATTEMPTS x 4 calls per day, even if something keeps failing
-    data = build(key, symbols, now, previous=current)  # a retry only re-requests what failed
+        return "fresh"  # at most MAX_ATTEMPTS x 3 Alpha Vantage calls per day, even if something keeps failing
+    data = build(key, symbols, now, previous=current, news_client=news_client)  # a retry only re-requests what failed
     data["attempts"] = tries + 1
     text = json.dumps(data, indent=1, ensure_ascii=False) + "\n"
     path.parent.mkdir(parents=True, exist_ok=True)

@@ -89,7 +89,7 @@
 ## 市场数据（2026-10-02 新增，Alpha Vantage 免费 Key）
 
 - `data/earnings.json`：财报日历（每美东日最多 1 次调用），按日存档 `data/earnings/YYYY-MM-DD.json`。Claude-500 的期权到期日不跨财报（`options.earnings_guard`）；日历不可用 = 不买期权。
-- `data/market.json`：2 年/10 年美债收益率、WTI 原油、过去 24 小时新闻情绪（全市场新闻流里按相关度加权，只保留两个实验的标的），每美东日最多 4 次调用、失败最多重试 1 次，按日存档 `data/market/YYYY-MM-DD.json`。**只记录，不影响交易**；出现在面板「宏观指标」和每日复盘要点里。
+- `data/market.json`：2 年/10 年美债收益率、WTI 原油（Alpha Vantage，每美东日 3 次调用，失败项最多重试 1 次）；过去 24 小时新闻情绪（自 2026-10-07 起改用 Alpaca 新闻 / Benzinga 标题，按一份金融词表给每篇打分 −1~+1，再按标的取平均，只保留两个实验的标的）。按日存档 `data/market/YYYY-MM-DD.json`。**只记录，不影响交易**；出现在面板「宏观指标」和每日复盘要点里。
 
 ## 盘中防御（2026-10-02 新增，两个账户都启用）
 

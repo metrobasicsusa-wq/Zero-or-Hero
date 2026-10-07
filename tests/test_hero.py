@@ -1017,16 +1017,38 @@ class Market(unittest.TestCase):
         x = market.summarize_series(pts, "%")
         self.assertEqual((x["date"], x["latest"], x["chg_1d"]), ("2026-09-29", 4.29, 0.01))
         self.assertEqual(x["chg_20d"], 0.2)
-        feed = [{"title": "Up", "url": "u1", "source": "s", "time_published": "t",
-                 "ticker_sentiment": [{"ticker": "NVDA", "relevance_score": "0.9", "ticker_sentiment_score": "0.5"},
-                                      {"ticker": "XYZ", "relevance_score": "1", "ticker_sentiment_score": "-1"}]},
-                {"title": "Down", "url": "u2", "source": "s", "time_published": "t",
-                 "ticker_sentiment": [{"ticker": "NVDA", "relevance_score": "0.1", "ticker_sentiment_score": "-0.5"}]}]
-        n = market.summarize_news(feed, {"NVDA"})
+        items = [{"id": 1, "headline": "Nvidia shares surge to record on upgrade", "summary": "", "symbols": ["NVDA", "XYZ"],
+                  "url": "u1", "source": "benzinga", "created_at": "t"},
+                 {"id": 2, "headline": "Nvidia supplier misses estimates, warns", "summary": "", "symbols": ["NVDA"],
+                  "url": "u2", "source": "benzinga", "created_at": "t"},
+                 {"id": 3, "headline": "Nvidia to present at conference", "summary": "", "symbols": ["NVDA"],
+                  "url": "u3", "source": "benzinga", "created_at": "t"}]
+        self.assertEqual(market.score_text("Shares surge on upgrade but guidance cut"), 1 / 3)
+        self.assertEqual(market.score_text("Company to present at conference"), 0.0)
+        self.assertEqual(market.score_text("Lowered expectations"), 0.0)  # whole words only
+        n = market.summarize_news(items, {"NVDA"})
         self.assertEqual(list(n), ["NVDA"])  # only our symbols
-        self.assertEqual((n["NVDA"]["articles"], n["NVDA"]["sentiment"]), (2, 0.4))  # relevance-weighted
-        self.assertEqual(n["NVDA"]["label"], "偏多")
-        self.assertEqual(n["NVDA"]["top"][0]["title"], "Up")
+        self.assertEqual((n["NVDA"]["articles"], n["NVDA"]["sentiment"]), (3, 0.0))  # (1 - 1 + 0) / 3
+        self.assertEqual(n["NVDA"]["label"], "中性")
+        self.assertEqual({t["title"] for t in n["NVDA"]["top"][:2]},
+                         {"Nvidia shares surge to record on upgrade", "Nvidia supplier misses estimates, warns"})
+
+    def test_fetch_news_chunks_and_dedupes(self):
+        from datetime import datetime
+
+        class Client:
+            def __init__(self):
+                self.calls = []
+
+            def news_range(self, symbols, start, end):
+                self.calls.append(len(symbols))
+                return iter([{"id": 7, "headline": "x", "symbols": symbols[:1]},
+                             {"id": len(self.calls) * 100, "headline": "y", "symbols": symbols[:1]}])
+        c = Client()
+        syms = {f"S{i:03d}" for i in range(120)}
+        items = market.fetch_news(c, syms, datetime(2026, 10, 6, 9), datetime(2026, 10, 7, 9))
+        self.assertEqual(c.calls, [50, 50, 20])
+        self.assertEqual(len(items), 4)  # id 7 appears in every chunk but is kept once
 
     def test_build_survives_one_failed_series(self):
         calls = []
@@ -1045,8 +1067,9 @@ class Market(unittest.TestCase):
             d = market.build("k", {"NVDA"}, datetime(2026, 10, 2, 9, 0), pause=0)
         finally:
             market._get = orig
-        self.assertEqual(len(calls), 4)
+        self.assertEqual(len(calls), 3)  # yields and oil only; news comes from Alpaca
         self.assertIn("us2y", d["errors"])
+        self.assertIn("no Alpaca client", d["errors"]["news"])
         self.assertEqual(sorted(d["series"]), ["us10y", "wti"])
         self.assertTrue(any("10 年期美债 4.10%" in l for l in market.lines(d)))
 
@@ -1071,7 +1094,7 @@ class Market(unittest.TestCase):
             self.assertEqual(d["series"]["us10y"], {"latest": 5.2})
             calls.clear()
             market.build("k", {"NVDA"}, now, pause=0, previous={**prev, "fetched_on": "2026-10-02"})
-            self.assertEqual(len(calls), 4)  # yesterday's data is not reused
+            self.assertEqual(len(calls), 3)  # yesterday's data is not reused
         finally:
             market._get = orig
 

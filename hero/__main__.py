@@ -58,7 +58,7 @@ def main() -> None:
     e.add_argument("--configs", nargs="+", default=[str(CFG_PATH), str(ROOT / "config" / "s500.json")])
     u = sub.add_parser("universe", help="rebuild the monthly dynamic universe (once per ET month)")
     u.add_argument("--size", type=int, default=100)
-    m = sub.add_parser("market", help="refresh yields, oil and news sentiment (at most 4 API calls per ET day)")
+    m = sub.add_parser("market", help="refresh yields and oil (Alpha Vantage) and news sentiment (Alpaca), once per ET day")
     m.add_argument("--configs", nargs="+", default=[str(CFG_PATH), str(ROOT / "config" / "s500.json")])
     args = ap.parse_args()
 
@@ -90,8 +90,11 @@ def main() -> None:
         symbols = set().union(*(json.loads(Path(c).read_text())["universe"] for c in args.configs),
                               universe.symbols(universe.load(UNIVERSE)))
         now = datetime.now(ZoneInfo("America/New_York"))
-        mod, path = (earnings, EARNINGS) if args.cmd == "earnings" else (market, MARKET)
-        print(mod.refresh(path, symbols, os.environ["ALPHAVANTAGE_API_KEY"], now))
+        if args.cmd == "earnings":
+            print(earnings.refresh(EARNINGS, symbols, os.environ["ALPHAVANTAGE_API_KEY"], now))
+        else:
+            news_client = Alpaca() if os.getenv("ALPACA_API_KEY") or os.getenv("APCA_API_KEY_ID") else None
+            print(market.refresh(MARKET, symbols, os.environ["ALPHAVANTAGE_API_KEY"], now, news_client))
         return
     client = Alpaca()
     if args.cmd == "universe":
