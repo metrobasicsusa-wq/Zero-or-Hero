@@ -1,11 +1,11 @@
 {
   "account": {
-    "buying_power": "265.99",
-    "cash": "500",
-    "equity": "500",
+    "buying_power": "265.67",
+    "cash": "265.67",
+    "equity": "447.67",
     "last_equity": "500",
-    "long_market_value": "0",
-    "portfolio_value": "500"
+    "long_market_value": "182",
+    "portfolio_value": "447.67"
   },
   "open_orders": [
     {
@@ -13,18 +13,33 @@
       "filled_at": null,
       "filled_avg_price": null,
       "filled_qty": "0",
-      "limit_price": "0.18",
+      "limit_price": "0.54",
       "protective_stop": false,
       "qty": "13",
-      "side": "buy",
+      "side": "sell",
       "status": "new",
       "stop_price": null,
-      "submitted_at": "2026-10-07T14:00:31.691388274Z",
+      "submitted_at": "2026-10-07T14:20:24.049552855Z",
       "symbol": "SPY261007P00770000",
       "time_in_force": "day",
       "type": "limit"
     }
   ],
-  "positions": [],
-  "ts": "2026-10-07T14:10:26+00:00"
+  "positions": [
+    {
+      "asset_class": "us_option",
+      "avg_entry_price": "0.18",
+      "cost_basis": "234",
+      "current_price": "0.14",
+      "lastday_price": "0.08",
+      "market_value": "182",
+      "qty": "13",
+      "side": "long",
+      "symbol": "SPY261007P00770000",
+      "unrealized_intraday_pl": "-52",
+      "unrealized_pl": "-52",
+      "unrealized_plpc": "-0.22222"
+    }
+  ],
+  "ts": "2026-10-07T14:20:24+00:00"
 }
