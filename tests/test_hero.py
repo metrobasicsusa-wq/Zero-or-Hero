@@ -1011,6 +1011,52 @@ class Earnings(unittest.TestCase):
 
 
 class Market(unittest.TestCase):
+    def setUp(self):  # never touch CBOE or AAII from tests
+        self._orig = market.fetch_putcall, market.fetch_aaii
+        market.fetch_putcall = lambda today: {"date": "2026-10-06", "total": 0.82}
+        market.fetch_aaii = lambda today: {"date": "2026-09-30", "bullish": 34.6, "neutral": 18.9,
+                                           "bearish": 46.5, "spread": -11.9}
+
+    def tearDown(self):
+        market.fetch_putcall, market.fetch_aaii = self._orig
+
+    def test_putcall_and_aaii_parsing(self):
+        from datetime import date
+
+        class Resp:
+            def __init__(self, code, body=None):
+                self.status_code, self._body = code, body
+
+            def raise_for_status(self):
+                if self.status_code >= 400:
+                    raise RuntimeError(self.status_code)
+
+            def json(self):
+                return self._body
+        seen = []
+
+        def get(url, **kw):
+            seen.append(url[-24:-14])
+            if "2026-10-06" in url:
+                return Resp(200, {"ratios": [{"name": "TOTAL PUT/CALL RATIO", "value": "0.82"},
+                                             {"name": "EQUITY PUT/CALL RATIO", "value": "0.57"},
+                                             {"name": "SPX + SPXW PUT/CALL RATIO", "value": "1.03"}]})
+            return Resp(403)
+        p = self._orig[0](date(2026, 10, 7), get=get)
+        self.assertEqual(seen, ["2026-10-07", "2026-10-06"])  # today not published yet: one day back
+        self.assertEqual(p, {"date": "2026-10-06", "total": 0.82, "equity": 0.57, "spx": 1.03})
+        html = ("<table><tr><td>Reported Date</td><td>Bullish</td><td>Neutral</td><td>Bearish</td></tr>"
+                "<tr><td>Sep 30</td><td>34.6%</td><td>18.9%</td><td>46.5%</td></tr>"
+                "<tr><td>Sep 23</td><td>32.7%</td><td>19.2%</td><td>48.1%</td></tr></table>")
+        a = market.parse_aaii(html, date(2026, 10, 7))
+        self.assertEqual(a, {"date": "2026-09-30", "bullish": 34.6, "neutral": 18.9, "bearish": 46.5,
+                             "spread": -11.9})
+        self.assertEqual(market.parse_aaii(html.replace("Sep 30", "Dec 31"), date(2027, 1, 5))["date"],
+                         "2026-12-31")
+        lines = market.lines({"series": {}, "gauges": {"putcall": p, "aaii": a}})
+        self.assertIn("CBOE 认沽/认购比（2026-10-06）：全部 0.82，个股 0.57，SPX 1.03", lines)
+        self.assertTrue(any("多空差 -11.9 点" in l for l in lines))
+
     def test_series_and_news_summaries(self):
         pts = [{"date": f"2026-09-{d:02d}", "value": str(4.0 + d / 100)} for d in range(1, 30)] + \
               [{"date": "2026-09-30", "value": "."}]
@@ -1113,6 +1159,7 @@ class Market(unittest.TestCase):
                 # This morning's file: series fine, news failed, both old retries used up, no news counter.
                 path.write_text(json.dumps({"fetched_on": "2026-10-07", "attempts": 2,
                                             "series": {k: {"latest": 1.0} for k in market.SERIES},
+                                            "gauges": {"putcall": {"total": 1.0}, "aaii": {"spread": 0}},
                                             "errors": {"news": "premium endpoint"}}))
                 now = datetime(2026, 10, 7, 10, 0)
                 self.assertEqual(market.refresh(path, {"NVDA"}, "k", now), "fresh")  # no news client: wait
@@ -1125,6 +1172,7 @@ class Market(unittest.TestCase):
                 self.assertEqual(market.refresh(path, {"NVDA"}, "k", now, Client()), "fresh")
                 # Series exhausted with a failure left: a news retry must not re-ask Alpha Vantage.
                 path.write_text(json.dumps({"fetched_on": "2026-10-07", "attempts": 2, "series": {},
+                                            "gauges": {"putcall": {"total": 1.0}, "aaii": {"spread": 0}},
                                             "errors": {"us2y": "x", "news": "y"}}))
                 market.refresh(path, {"NVDA"}, "k", now, Client())
                 d2 = json.loads(path.read_text())
