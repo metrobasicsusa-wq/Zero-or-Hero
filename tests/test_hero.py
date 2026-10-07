@@ -1098,6 +1098,41 @@ class Market(unittest.TestCase):
         finally:
             market._get = orig
 
+    def test_news_retries_do_not_spend_alpha_vantage_calls(self):
+        from datetime import datetime
+        calls = []
+        orig = market._get
+        market._get = lambda params, key: calls.append(params["function"]) or {"data": []}
+
+        class Client:
+            def news_range(self, symbols, start, end):
+                return iter([{"id": 1, "headline": "NVDA shares surge", "symbols": ["NVDA"]}])
+        try:
+            with tempfile.TemporaryDirectory() as d:
+                path = Path(d) / "market.json"
+                # This morning's file: series fine, news failed, both old retries used up, no news counter.
+                path.write_text(json.dumps({"fetched_on": "2026-10-07", "attempts": 2,
+                                            "series": {k: {"latest": 1.0} for k in market.SERIES},
+                                            "errors": {"news": "premium endpoint"}}))
+                now = datetime(2026, 10, 7, 10, 0)
+                self.assertEqual(market.refresh(path, {"NVDA"}, "k", now), "fresh")  # no news client: wait
+                market.refresh(path, {"NVDA"}, "k", now, Client())
+                d1 = json.loads(path.read_text())
+                self.assertEqual(calls, [])  # no Alpha Vantage call
+                self.assertEqual(d1["errors"], {})
+                self.assertEqual(d1["news"]["NVDA"]["sentiment"], 1.0)
+                self.assertEqual((d1["attempts"], d1["news_attempts"]), (2, 1))
+                self.assertEqual(market.refresh(path, {"NVDA"}, "k", now, Client()), "fresh")
+                # Series exhausted with a failure left: a news retry must not re-ask Alpha Vantage.
+                path.write_text(json.dumps({"fetched_on": "2026-10-07", "attempts": 2, "series": {},
+                                            "errors": {"us2y": "x", "news": "y"}}))
+                market.refresh(path, {"NVDA"}, "k", now, Client())
+                d2 = json.loads(path.read_text())
+                self.assertEqual(calls, [])
+                self.assertEqual(sorted(d2["errors"]), ["us2y"])
+        finally:
+            market._get = orig
+
     def test_refresh_caps_daily_calls(self):
         from datetime import datetime
         runs = []

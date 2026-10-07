@@ -123,7 +123,7 @@ def label(score: float) -> str:
 
 
 def build(key: str, symbols: set[str], now: datetime, pause: float = PAUSE_S,
-          previous: dict | None = None, news_client=None) -> dict:
+          previous: dict | None = None, news_client=None, series: bool = True, news: bool = True) -> dict:
     """Yields and oil: one Alpha Vantage call per series, each preceded by a pause (the earnings step
     before this one also calls Alpha Vantage, and the free tier rejects bursts). News: Alpaca, if a
     client is given. Items already fetched today (in previous) are kept instead of requested again."""
@@ -134,6 +134,10 @@ def build(key: str, symbols: set[str], now: datetime, pause: float = PAUSE_S,
         if name in done.get("series", {}) and name not in done.get("errors", {}):
             out["series"][name] = done["series"][name]
             continue
+        if not series:  # today's Alpha Vantage retries are used up: keep the failure, ask nothing
+            if name in done.get("errors", {}):
+                out["errors"][name] = done["errors"][name]
+            continue
         time.sleep(pause)
         try:
             out["series"][name] = summarize_series(_get({"function": fn, **params}, key).get("data", []), unit)
@@ -141,6 +145,10 @@ def build(key: str, symbols: set[str], now: datetime, pause: float = PAUSE_S,
             out["errors"][name] = str(e)[:200]
     if "news" in done and "news" not in done.get("errors", {}):
         out["news"], out["news_window"] = done["news"], done.get("news_window")
+        return out
+    if not news:  # today's news retries are used up
+        if "news" in done.get("errors", {}):
+            out["errors"]["news"] = done["errors"]["news"]
         return out
     if news_client is None:
         out["errors"]["news"] = "no Alpaca client (ALPACA_API_KEY not set)"
@@ -157,13 +165,21 @@ def build(key: str, symbols: set[str], now: datetime, pause: float = PAUSE_S,
 
 
 def refresh(path: Path, symbols: set[str], key: str, now: datetime, news_client=None) -> str:
+    """Once per ET day, with up to MAX_ATTEMPTS tries counted separately for the Alpha Vantage series
+    and for the news, so a news failure never spends Alpha Vantage calls and vice versa."""
     current = load(path)
     today = now.date().isoformat()
-    tries = current.get("attempts", 1) if current and current["fetched_on"] == today else 0
-    if tries and (not current.get("errors") or tries >= MAX_ATTEMPTS):
+    same_day = bool(current) and current["fetched_on"] == today
+    errors = current.get("errors", {}) if same_day else {}
+    tries = current.get("attempts", 1) if same_day else 0
+    news_tries = current.get("news_attempts", 0) if same_day else 0  # files before 10/07 had no news counter
+    want_series = not same_day or (any(k in errors for k in SERIES) and tries < MAX_ATTEMPTS)
+    want_news = not same_day or ("news" in errors and news_tries < MAX_ATTEMPTS and news_client is not None)
+    if not want_series and not want_news:
         return "fresh"  # at most MAX_ATTEMPTS x 3 Alpha Vantage calls per day, even if something keeps failing
-    data = build(key, symbols, now, previous=current, news_client=news_client)  # a retry only re-requests what failed
-    data["attempts"] = tries + 1
+    data = build(key, symbols, now, previous=current, news_client=news_client, series=want_series, news=want_news)
+    data["attempts"] = tries + (1 if want_series else 0)
+    data["news_attempts"] = news_tries + (1 if want_news else 0)
     text = json.dumps(data, indent=1, ensure_ascii=False) + "\n"
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(text)
