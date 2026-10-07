@@ -1631,6 +1631,27 @@ class ResearchFlush(unittest.TestCase):
         self.assertEqual(f.next_minute("09:59"), "10:00")
 
 
+class ResearchFlushStock(unittest.TestCase):
+    def test_close_stop_target_spy_and_next_day(self):
+        from hero import research_flush_stock as f
+        bar = lambda o, h, l, c: {"o": o, "h": h, "l": l, "c": c}
+        sm = {"09:30": bar(100, 100, 97, 97.5), "10:00": bar(98, 98.2, 97.8, 98), "10:30": bar(98, 100.2, 98, 100),
+              "15:59": bar(100, 100, 99, 99)}
+        spy = {"10:00": 500.0, "15:59": 505.0}
+        r = f.after(sm, "10:00", spy, 102.0)
+        self.assertEqual(r["entry_at"], "10:00")
+        self.assertAlmostEqual(r["close"], 99 / 98 - 1 - f.COST, places=4)
+        self.assertAlmostEqual(r["excess"], round(99 / 98 - 1 - f.COST, 4) - 0.01, places=4)
+        self.assertAlmostEqual(r["stop"], r["close"], places=4)              # never back to 97
+        self.assertAlmostEqual(r["stop_tp"], 0.02 - f.COST, places=4)       # 100.2 >= 98 x 1.02
+        self.assertAlmostEqual(r["next_day"], 102 / 98 - 1 - f.COST, places=4)
+        sm["10:30"] = bar(98, 98.5, 96.5, 97)                                # back through the 97 low first
+        r = f.after(sm, "10:00", None, None)
+        self.assertAlmostEqual(r["stop"], 97 / 98 - 1 - f.COST, places=4)
+        self.assertAlmostEqual(r["stop_tp"], r["stop"], places=4)
+        self.assertNotIn("excess", r)
+
+
 class ResearchIronFly(unittest.TestCase):
     def test_credit_reaction_buyback_and_expiry(self):
         from hero import research_ironfly as r
