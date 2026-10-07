@@ -1772,6 +1772,21 @@ class ResearchLETF(unittest.TestCase):
         self.assertAlmostEqual(r.max_dd([1, 2, 1, 3]), -0.5)
 
 
+class ResearchReclaim(unittest.TestCase):
+    def test_signal_after_taking_back_the_prior_close_and_the_exits(self):
+        from hero import research_reclaim as r
+        bar = lambda o, c: {"o": o, "c": c}
+        m = {"09:30": bar(97, 97), "09:45": bar(98, 98.5), "10:05": bar(99, 99.8), "10:18": bar(99.9, 100.2), "11:00": bar(101, 101)}
+        self.assertEqual(r.signal(m, 100.0), "10:19")                    # the minute after the first close above 100
+        self.assertIsNone(r.signal({**m, "09:30": bar(101, 101)}, 100.0))  # opened above: not this setup
+        self.assertIsNone(r.signal({k: v for k, v in m.items() if k < "10:18"}, 100.0))
+        opt = {"10:19": {"c": 0.20}, "11:00": {"c": 0.50, "h": 0.70}, "12:00": {"c": 1.40, "h": 1.60}, "15:50": {"c": 0.30}}
+        t = r.trade(opt, "10:19")
+        self.assertEqual((t["cost"], t["take3"], t["take5"]), (0.22, 2, 4))      # 0.70 >= 3 x 0.22; 1.60 >= 5 x 0.22
+        self.assertAlmostEqual(t["hold"], (0.30 - 0.03) / 0.22 - 1, places=3)
+        self.assertAlmostEqual(t["trail"], t["hold"], places=3)                    # armed at 1.26 >= 0.44; 0.27 <= 0.6 x 1.26 only at 15:50
+
+
 class ResearchIronFly(unittest.TestCase):
     def test_credit_reaction_buyback_and_expiry(self):
         from hero import research_ironfly as r
