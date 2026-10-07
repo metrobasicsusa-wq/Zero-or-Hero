@@ -1838,28 +1838,45 @@ class ZeroDTELive(unittest.TestCase):
                      "attempt": {"number": 1, "start_capital": 500, "end_loss": 0.9},
                      "live_from": "2000-01-01", "launch_approved": True,
                      "zero_dte": {"enabled": True, "underlying": "SPY", "entry": "10:00", "offset": 0.006,
-                                  "direction": "trend", "take": 3, "fraction": 0.5, "exit_at": "15:30", "switch_at": 2.0}}
+                                  "direction": "trend", "take": 3, "fraction": 0.5, "exit_at": "15:30", "switch_at": 2.0,
+                                  "buy_pad": 0.01, "fill_wait_s": 0, "chase_cap": 1.3}}
         self.closes = {"SPY": series(0.001, seed=5), "UP1": series(0.002, seed=1)}
         self.pos, self.oo = [], []
+        self.fills = []   # per buy order, in order: "fill", "none", or a partial quantity
 
     def tearDown(self):
         self.tmp.cleanup()
 
-    def cycle(self, hh, mm, bid=0.06, ask=0.07):
+    def cycle(self, hh, mm, bid=0.06, ask=0.07, asks=None):
         from datetime import datetime
         test = self
+        quotes = list(asks or [])
 
         class Broker(FakeClient):
             def option_snapshots(self, symbols):
-                return {s: {"latestQuote": {"bp": bid, "ap": ask}} for s in symbols}
+                a = quotes.pop(0) if quotes else ask
+                return {s: {"latestQuote": {"bp": bid, "ap": a}} for s in symbols}
 
             def submit_order(self, **o):
                 super().submit_order(**o)
-                test.oo.append({"id": f"order-{len(self.orders)}", "symbol": o["symbol"], "side": o["side"]})
-                return {"id": f"order-{len(self.orders)}"}
+                oid = f"order-{len(self.orders)}"
+                test.oo.append({"id": oid, "symbol": o["symbol"], "side": o["side"]})
+                if o["side"] == "buy":
+                    how = test.fills.pop(0) if test.fills else "none"
+                    n = int(o["qty"]) if how == "fill" else (how if isinstance(how, int) else 0)
+                    self.by_cid = {**getattr(self, "by_cid", {}), o["client_order_id"]: {
+                        "id": oid, "status": "filled" if how == "fill" else ("partially_filled" if n else "new"),
+                        "filled_qty": str(n), "filled_avg_price": o["limit_price"] if n else None}}
+                    if n:
+                        test.oo[:] = [x for x in test.oo if x["id"] != oid] if how == "fill" else test.oo
+                        test.pos.append({"symbol": o["symbol"], "qty": str(n), "market_value": "0"})
+                return {"id": oid}
 
             def cancel_order(self, oid):
                 test.oo[:] = [o for o in test.oo if o["id"] != oid]
+                for v in getattr(self, "by_cid", {}).values():
+                    if v["id"] == oid and v["status"] != "filled":
+                        v["status"] = "canceled"
                 return super().cancel_order(oid)
 
         c = Broker(self.closes, positions=self.pos, open_orders=self.oo, equity=500, last_equity=500)
@@ -1871,44 +1888,68 @@ class ZeroDTELive(unittest.TestCase):
         return c, book, log
 
     def test_live_round_trip_with_cancel_then_sell(self):
+        self.fills = ["fill"]
         c, book, _ = self.cycle(10, 5)
         self.assertEqual(book["mode"], "live")
         self.assertEqual(book["rehearsal"]["sim_cash"], 990.0)        # the rehearsal is kept, not traded on
         self.assertNotIn("sim_cash", book)
         buy = c.orders[0]
-        self.assertEqual((buy["side"], buy["type"], buy["limit_price"], buy["qty"]), ("buy", "limit", "0.07", "35"))
+        self.assertEqual((buy["side"], buy["type"], buy["limit_price"], buy["qty"]), ("buy", "limit", "0.08", "31"))  # ask + 1c
+        self.assertEqual((book["today"]["qty"], book["today"]["price"], book["today"]["take_price"]), (31, 0.08, 0.24))
         sym = buy["symbol"]
-        self.oo[:] = []                                                # the buy fills
-        self.pos.append({"symbol": sym, "qty": "35", "market_value": "245"})
         c, book, _ = self.cycle(10, 15)
         take = c.orders[0]
-        self.assertEqual((take["side"], take["limit_price"], take["qty"]), ("sell", "0.21", "35"))
+        self.assertEqual((take["side"], take["limit_price"], take["qty"]), ("sell", "0.24", "31"))
         c, book, _ = self.cycle(15, 30, bid=0.03)                     # time exit: cancel the take, then sell
         self.assertEqual(c.cancelled, ["order-1"])
         self.assertEqual(c.closed, [sym])
         self.assertEqual(book["today"]["status"], "open")             # booked once the broker shows us flat
         self.pos[:] = []
         c, book, log = self.cycle(15, 40)
-        self.assertEqual((book["today"]["status"], book["today"]["proceeds"]), ("closed", 105.0))  # 35 x $0.03
+        self.assertEqual((book["today"]["status"], book["today"]["proceeds"]), ("closed", 93.0))  # 31 x $0.03
         self.assertEqual(c.closed, [])
         self.assertEqual([e for e in log if e["kind"] == "zdte_result"][-1]["dry_run"], False)
 
-    def test_unfilled_buy_is_cancelled_not_booked_as_a_loss(self):
-        self.cycle(10, 5)
-        c, book, _ = self.cycle(15, 30)
+    def test_unfilled_buy_is_requoted_once_at_the_new_ask(self):
+        self.fills = ["none", "fill"]
+        c, book, log = self.cycle(10, 5, asks=[0.07, 0.08])            # the ask moved up a cent
         self.assertEqual(c.cancelled, ["order-1"])
-        self.assertEqual(c.closed, [])
-        self.assertEqual((book["today"]["exit"], book["today"]["ret"]), ("买单没有成交，已撤单", 0.0))
+        self.assertEqual([(o["limit_price"], o["qty"]) for o in c.orders], [("0.08", "31"), ("0.09", "27")])
+        self.assertEqual((book["today"]["status"], book["today"]["qty"], book["today"]["price"]), ("open", 27, 0.09))
+        self.assertEqual([e["attempt"] for e in log if e["kind"] == "zdte_fill"], [2])
+
+    def test_no_chase_above_the_cap_and_no_trade_that_day(self):
+        self.fills = ["none"]
+        c, book, log = self.cycle(10, 5, asks=[0.07, 0.10])            # 0.11 > 0.07 x 1.3
+        self.assertEqual((len(c.orders), c.cancelled), (1, ["order-1"]))
+        self.assertEqual(book["today"]["status"], "skipped")
+        self.assertIn("超过上限", [e for e in log if e["kind"] == "zdte_skip"][-1]["why"])
+        c, book, _ = self.cycle(15, 30)                                # nothing left to do at the exit
+        self.assertEqual((c.orders, c.closed), ([], []))
+        self.assertEqual(book["today"]["status"], "skipped")
+
+    def test_two_misses_cancel_both_and_skip(self):
+        self.fills = ["none", "none"]
+        c, book, log = self.cycle(10, 5)
+        self.assertEqual(c.cancelled, ["order-1", "order-2"])
+        self.assertEqual(book["today"]["status"], "skipped")
+        self.assertIn("两次挂单都没成交", [e for e in log if e["kind"] == "zdte_skip"][-1]["why"])
+
+    def test_partial_fill_keeps_what_was_bought(self):
+        self.fills = [10]
+        c, book, _ = self.cycle(10, 5)
+        self.assertEqual((len(c.orders), c.cancelled), (1, ["order-1"]))  # the rest is cancelled, no re-quote
+        self.assertEqual((book["today"]["qty"], book["today"]["paid"]), (10, 80.0))
+        c, _, _ = self.cycle(10, 15)
+        self.assertEqual((c.orders[0]["side"], c.orders[0]["qty"]), ("sell", "10"))
 
     def test_take_filled_at_the_broker(self):
+        self.fills = ["fill"]
         self.cycle(10, 5)
-        self.oo[:] = []
-        sym = json.loads((self.root / "zdte.json").read_text())["today"]["symbol"]
-        self.pos.append({"symbol": sym, "qty": "35", "market_value": "245"})
         self.cycle(10, 15)
         self.oo[:], self.pos[:] = [], []                               # the take fills
         c, book, _ = self.cycle(11, 0)
-        self.assertEqual((book["today"]["exit"], book["today"]["proceeds"]), ("止盈 3 倍（券商挂单成交）", 735.0))
+        self.assertEqual((book["today"]["exit"], book["today"]["proceeds"]), ("止盈 3 倍（券商挂单成交）", 744.0))  # 31 x 0.24
         self.assertEqual(c.orders, [])                                 # no second trade the same day
 
 

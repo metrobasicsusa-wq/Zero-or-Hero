@@ -20,7 +20,10 @@ from datetime import date
 from pathlib import Path
 
 DEFAULTS = {"underlying": "SPY", "entry": "12:00", "offset": 0.003, "direction": "trend", "take": 5,
-            "fraction": 1.0, "exit_at": "15:30", "switch_at": 2.0}
+            "fraction": 1.0, "exit_at": "15:30", "switch_at": 2.0,
+            # live entry: a limit this far above the ask; if not filled within fill_wait_s, one re-quote
+            # at the new ask + buy_pad, capped at the first ask x chase_cap; else no trade that day
+            "buy_pad": 0.01, "fill_wait_s": 60, "chase_cap": 1.3}
 
 
 def settings(cfg: dict) -> dict:

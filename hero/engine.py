@@ -287,7 +287,8 @@ class Engine:
             ask = float(q.get("ap") or 0)
             cash = book.d["sim_cash"] if sim else equity
             budget = p["fraction"] * cash
-            qty = math.floor(budget / (ask * 100)) if ask > 0 else 0
+            limit = ask if sim else round_option_price(ask + p["buy_pad"])  # live: a little above the ask, to get filled
+            qty = math.floor(budget / (limit * 100)) if ask > 0 else 0
             side = "看涨" if kind == "C" else "看跌"
             if qty < 1:
                 book.d["today"] = {"date": day, "status": "skipped", "symbol": sym}
@@ -296,16 +297,27 @@ class Engine:
                 return
             take_price = round_option_price(ask * p["take"])
             why = (f"末日买入：{und} 开盘 ${day_open:,.2f}、现在 ${spot:,.2f}，{'顺势' if p['direction'] == 'trend' else '只买看涨'}买{side}；"
-                   f"行权价 ${strike:,.0f}（离现价 {abs(strike / spot - 1):.1%}），今天到期，{qty} 张 × ${ask:.2f}；"
-                   f"止盈 ${take_price:.2f}（{p['take']:g} 倍），{p['exit_at']} 前没到就平仓")
-            self._order("zdte", {"ask": ask, "bid": q.get("bp"), "spot": spot, "open": day_open}, why, symbol=sym,
-                        qty=str(qty), side="buy", type="limit", limit_price=f"{round_option_price(ask):.2f}",
-                        time_in_force="day")
-            book.d["today"] = {"date": day, "status": "open", "symbol": sym, "qty": qty, "price": ask,
-                               "paid": round(ask * 100 * qty, 2), "take_price": take_price, "opened_at": now,
-                               "simulated": sim}
+                   f"行权价 ${strike:,.0f}（离现价 {abs(strike / spot - 1):.1%}），今天到期，{qty} 张 × ${limit:.2f}"
+                   + ("" if sim else f"（卖价 ${ask:.2f} 加 ${p['buy_pad']:.2f}）")
+                   + f"；止盈 {p['take']:g} 倍，{p['exit_at']} 前没到就平仓")
+            evidence = {"ask": ask, "bid": q.get("bp"), "spot": spot, "open": day_open}
             if sim:
+                self._order("zdte", evidence, why, symbol=sym, qty=str(qty), side="buy", type="limit",
+                            limit_price=f"{round_option_price(ask):.2f}", time_in_force="day")
+                book.d["today"] = {"date": day, "status": "open", "symbol": sym, "qty": qty, "price": ask,
+                                   "paid": round(ask * 100 * qty, 2), "take_price": take_price, "opened_at": now,
+                                   "simulated": True}
                 book.d["sim_cash"] = round(book.d["sim_cash"] - ask * 100 * qty, 2)
+            else:
+                got = self._zero_dte_buy(sym, limit, qty, ask, budget, p, why, evidence)
+                if not got:
+                    book.d["today"] = {"date": day, "status": "skipped", "symbol": sym}
+                    return
+                price = got["price"]
+                book.d["today"] = {"date": day, "status": "open", "symbol": sym, "qty": got["qty"], "price": price,
+                                   "paid": round(price * 100 * got["qty"], 2), "filled": True,
+                                   "take_price": round_option_price(price * p["take"]), "opened_at": now,
+                                   "simulated": False}
         # Phase bookkeeping: in rehearsal on the simulated balance, live on the account.
         value = book.d["sim_cash"] if sim else equity
         open_t = book.trade_today(day)
@@ -318,6 +330,65 @@ class Engine:
                              why=f"模拟余额 ${value:,.2f} 低于结束线，这一轮（演练）归零；模拟账户重置为 ${book.d['start']:,.0f}")
                 book.d["history"].append({"date": day, "attempt_end": value})
                 book.d["sim_cash"] = book.d["start"]
+
+    def _await_fill(self, cid: str, wait: float) -> dict:
+        """The broker's view of an order, polled until it is filled or `wait` seconds pass."""
+        deadline = time.monotonic() + wait
+        while True:
+            try:
+                o = self.c.order_by_client_id(cid)
+            except Exception:
+                o = {}
+            if o.get("status") == "filled" or time.monotonic() >= deadline:
+                return o
+            time.sleep(5)
+
+    def _zero_dte_buy(self, sym: str, limit: float, qty: int, ask: float, budget: float, p: dict, why: str,
+                      evidence: dict) -> dict | None:
+        """Live entry, all inside this cycle: the limit, a wait for the fill, then at most one re-quote at
+        the new ask + buy_pad (never above the first ask x chase_cap), then give up for the day. A
+        resting buy would otherwise fill only when the price comes back, i.e. mostly when the move
+        went against us. Returns {"qty", "price"} of what was bought, or None."""
+        cap = round_option_price(ask * p["chase_cap"])
+        for attempt in (1, 2):
+            cid = uuid.uuid4().hex
+            self._order("zdte", evidence, why, symbol=sym, qty=str(qty), side="buy", type="limit",
+                        limit_price=f"{limit:.2f}", time_in_force="day", client_order_id=cid)
+            o = self._await_fill(cid, p["fill_wait_s"])
+            if o.get("id") and o.get("status") != "filled":
+                try:
+                    self.c.cancel_order(o["id"])
+                except AlpacaError:
+                    pass
+                try:
+                    o = self.c.order_by_client_id(cid)  # the final state: a fill can land during the cancel
+                except Exception:
+                    pass
+            filled = int(float(o.get("filled_qty") or 0))
+            if filled:
+                price = float(o.get("filled_avg_price") or limit)
+                self.j.event("zdte_fill", dry_run=False, symbol=sym, qty=filled, price=price, attempt=attempt,
+                             why=f"末日买单成交：{filled} 张 × ${price:.2f}（第 {attempt} 次挂单）")
+                return {"qty": filled, "price": price}
+            if attempt == 2:
+                break
+            try:
+                q = (self.c.option_snapshots([sym]).get(sym) or {}).get("latestQuote") or {}
+            except Exception:
+                q = {}
+            new_ask = float(q.get("ap") or 0)
+            limit = round_option_price(new_ask + p["buy_pad"]) if new_ask else 0.0
+            qty = math.floor(budget / (limit * 100)) if limit else 0
+            if not new_ask or limit > cap or qty < 1:
+                self.j.event("zdte_skip", dry_run=False, symbol=sym,
+                             why=f"末日跳过：{sym} {p['fill_wait_s']:g} 秒没成交，已撤单；新卖价 "
+                                 + (f"${new_ask:.2f}，加价后 ${limit:.2f} 超过上限 ${cap:.2f}（首个卖价 × {p['chase_cap']:g}）"
+                                    if new_ask else "取不到") + "，今天不做")
+                return None
+            evidence = {**evidence, "ask": new_ask, "bid": q.get("bp"), "chase_from": ask}
+            why = f"末日追价：第一次挂单没成交，按新卖价 ${new_ask:.2f} 加 ${p['buy_pad']:.2f} 重挂 {qty} 张 × ${limit:.2f}"
+        self.j.event("zdte_skip", dry_run=False, symbol=sym, why=f"末日跳过：{sym} 两次挂单都没成交，已撤单，今天不做")
+        return None
 
     def _zero_dte_exit(self, book: "zd.Book", t: dict, bid: float, now: str) -> dict | None:
         """Live time exit. Cancel the resting orders (the take, or a buy that never filled), and
