@@ -442,7 +442,7 @@ function renderEvents() {
   if (DATA.rehearsal) $("events-note").textContent = "· 演练中：以下都是模拟，没有真下单";
   if (!es.length) { $("events").innerHTML = empty("还没有交易"); return; }
   const kind = (e) => e.kind === "close" ? "平仓" : e.kind === "halt" ? "暂停开仓" : e.kind === "option_skip" ? "未买期权"
-    : e.kind === "zdte_result" ? "末日结果" : e.kind === "zdte_fill" ? "末日成交" : e.kind === "zdte_skip" ? "末日跳过"
+    : e.kind === "zdte_result" ? "末日结果" : e.kind === "zdte_fill" ? "末日成交" : e.kind === "zdte_shadow_open" ? "个股末日影子" : e.kind === "zdte_shadow_result" ? "个股末日影子结果" : e.kind === "zdte_skip" ? "末日跳过"
     : e.kind === "zdte_switch" ? "翻倍切换" : e.kind === "zdte_attempt_end" ? "本轮归零"
     : e.kind === "net_buy" ? "撒网买入" : e.kind === "net_result" ? "撒网结果" : e.kind === "net_skip" ? "撒网跳过" : e.kind === "net_round" ? "撒网换轮"
     : e.kind === "lottery_pick" ? "本周彩票" : e.kind === "lottery_skip" ? "彩票跳过" : e.kind === "lottery_result" ? "彩票结果"

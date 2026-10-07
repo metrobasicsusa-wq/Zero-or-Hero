@@ -135,6 +135,11 @@ class Engine:
                 self._net_shadow(closes, today)
             except Exception as e:
                 self.j.event("alert_error", source="net_shadow", error=str(e)[:200])
+        if self.cfg.get("zdte_shadow", {}).get("enabled"):
+            try:  # quotes only, never an order
+                self._zdte_shadow(today)
+            except Exception as e:
+                self.j.event("alert_error", source="zdte_shadow", error=str(e)[:200])
 
         # Zero-or-hero phase 1: while it runs, the account does nothing but the daily 0DTE trade.
         zp = zd.settings(self.cfg) if self.cfg.get("zero_dte", {}).get("enabled") else None
@@ -427,6 +432,64 @@ class Engine:
         cut = self.cfg["stocks"].get("macro_scale", 1.0) < 1.0 and macro.risk_off(g)
         self.j.event("macro", macro=g, macro_risk_off=macro.risk_off(g), macro_applied=cut, why=macro.summary(g))
         mark.write_text(hour + "\n")
+
+    def _zdte_shadow(self, today: date) -> None:
+        """The same-day rule on single stocks with real quotes; see hero.zdte_shadow. Never sends an order."""
+        from hero import zdte_shadow as zs
+        p = zs.settings(self.cfg)
+        book = zs.Book(self.j.root / "zdte_shadow.json")
+        day, now = today.isoformat(), zd.hhmm(self.now)
+        tickets = book.today(day)
+        open_t = {s: t for s, t in tickets.items() if t.get("status") == "open"}
+        if open_t:
+            snaps = self.c.option_snapshots([t["contract"] for t in open_t.values()])
+            for sym, t in open_t.items():
+                q = (snaps.get(t["contract"]) or {}).get("latestQuote") or {}
+                bid, ask = float(q.get("bp") or 0), float(q.get("ap") or 0)
+                t["best_bid"] = max(t.get("best_bid", 0.0), bid)
+                take = p["take"] * t["ask"]
+                if bid >= take:
+                    t.update({"status": "closed", "exit": "take", "exit_bid": bid, "exit_at": now, "ret": round(p["take"] - 1, 3)})
+                elif now >= p["exit_at"]:
+                    t.update({"status": "closed", "exit": "time", "exit_bid": bid, "exit_ask": ask, "exit_at": now,
+                              "exit_spread": zs.spread(bid, ask), "ret": round(bid / t["ask"] - 1, 3)})
+                else:
+                    continue
+                self.j.event("zdte_shadow_result", dry_run=True, symbol=t["contract"], ret=t["ret"],
+                             why=f"个股末日影子单：{sym} {t['contract']} 按卖价 ${t['ask']:.2f} 买，"
+                                 + (f"买价碰到 ${take:.2f}（{p['take']:g} 倍）止盈" if t["exit"] == "take"
+                                    else f"{p['exit_at']} 按买价 ${bid:.2f} 卖出") + f"，{t['ret']:+.0%}（只记录，不下单）")
+        if p["entry"] <= now < p["exit_at"]:
+            todo = [s for s in p["symbols"] if s not in tickets]
+            snaps = self.c.stock_snapshots(todo) if todo else {}
+            for sym in todo:
+                snap = snaps.get(sym) or {}
+                day_open = float((snap.get("dailyBar") or {}).get("o") or 0)
+                spot = float((snap.get("latestTrade") or {}).get("p") or 0)
+                if not day_open or not spot:
+                    continue
+                kind = "C" if spot >= day_open else "P"
+                lo, hi = spot * (1 - p["offset"] - 0.03), spot * (1 + p["offset"] + 0.03)
+                cs = self.c.option_contracts(sym, status="active", type="call" if kind == "C" else "put",
+                                             expiration_date=day, strike_price_gte=f"{lo:.2f}", strike_price_lte=f"{hi:.2f}")
+                c = zs.pick([x for x in cs if x.get("expiration_date", day) == day], kind, spot, p["offset"])
+                if not c:
+                    tickets[sym] = {"status": "no_expiry"}  # no contract expiring today: nothing to log
+                    continue
+                q = (self.c.option_snapshots([c["symbol"]]).get(c["symbol"]) or {}).get("latestQuote") or {}
+                bid, ask = float(q.get("bp") or 0), float(q.get("ap") or 0)
+                if ask <= 0:
+                    continue  # no quote yet: try again next cycle
+                sp = zs.spread(bid, ask)
+                tickets[sym] = {"status": "open", "contract": c["symbol"], "kind": kind, "strike": float(c["strike_price"]),
+                                "spot": spot, "open": day_open, "bid": bid, "ask": ask, "spread": sp, "opened_at": now,
+                                "best_bid": bid}
+                self.j.event("zdte_shadow_open", dry_run=True, symbol=c["symbol"],
+                             evidence={"bid": bid, "ask": ask, "spot": spot, "open": day_open},
+                             why=f"个股末日影子单：{sym} {'涨' if kind == 'C' else '跌'}，看{'涨' if kind == 'C' else '跌'} "
+                                 f"{float(c['strike_price']):g}，买价 ${bid:.2f} / 卖价 ${ask:.2f}"
+                                 + (f"，价差占中间价 {sp:.0%}" if sp is not None else "") + "（只记录，不下单）")
+        book.save()
 
     def _net_shadow(self, closes: dict, today: date) -> None:
         """Simulated net of cheap calls in wild weeks; see hero.net. Never sends an order."""

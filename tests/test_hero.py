@@ -1953,6 +1953,63 @@ class ZeroDTELive(unittest.TestCase):
         self.assertEqual(c.orders, [])                                 # no second trade the same day
 
 
+class ZeroDTEShadow(unittest.TestCase):
+    """Single-stock same-day rule on real quotes: logged, never ordered."""
+
+    def setUp(self):
+        self.tmp = tempfile.TemporaryDirectory()
+        self.root = Path(self.tmp.name)
+        self.conf = {**cfg(options={"enabled": False}), "live_from": "2000-01-01", "launch_approved": True,
+                     "zdte_shadow": {"enabled": True, "symbols": ["TSLA", "NVDA", "AAPL"], "offset": 0.006, "take": 3}}
+        self.closes = {"SPY": series(0.001, seed=5), "UP1": series(0.002, seed=1)}
+
+    def tearDown(self):
+        self.tmp.cleanup()
+
+    def cycle(self, hh, mm, quote):
+        from datetime import datetime
+
+        class Broker(FakeClient):
+            def option_contracts(self, und, **kw):
+                if und == "AAPL":
+                    return []                                          # no same-day expiry
+                exp = kw["expiration_date"]
+                t = "C" if kw["type"] == "call" else "P"
+                return [{"symbol": f"{und}{exp}{t}{k}", "strike_price": str(k), "expiration_date": exp}
+                        for k in (395, 400, 402.5, 405, 410)]
+
+            def option_snapshots(self, symbols):
+                return {s: {"latestQuote": quote(s)} for s in symbols}
+        c = Broker(self.closes)
+        c.snaps = {"TSLA": {"dailyBar": {"o": 398.0}, "latestTrade": {"p": 400.0}},   # up: a call
+                   "NVDA": {"dailyBar": {"o": 404.0}, "latestTrade": {"p": 400.0}},   # down: a put
+                   "AAPL": {"dailyBar": {"o": 200.0}, "latestTrade": {"p": 201.0}}}
+        Engine(c, self.conf, Journal(self.root)).run(today=TODAY, now=datetime(TODAY.year, TODAY.month, TODAY.day, hh, mm))
+        book = json.loads((self.root / "zdte_shadow.json").read_text())["days"][TODAY.isoformat()]
+        log = [json.loads(l) for l in (self.root / "trades.jsonl").read_text().splitlines()]
+        return c, book, log
+
+    def test_logs_real_spreads_takes_and_time_exits_without_orders(self):
+        c, book, log = self.cycle(10, 5, lambda s: {"bp": 0.40, "ap": 0.60})
+        options = lambda c: [o for o in c.orders if o["symbol"] not in self.closes]  # the stock sleeve may trade
+        self.assertEqual(options(c), [])
+        self.assertEqual(book["AAPL"], {"status": "no_expiry"})
+        self.assertEqual((book["TSLA"]["kind"], book["TSLA"]["strike"]), ("C", 402.5))   # first strike >= 402.4
+        self.assertEqual((book["NVDA"]["kind"], book["NVDA"]["strike"]), ("P", 395.0))   # last strike <= 397.6
+        self.assertEqual(book["TSLA"]["spread"], 0.4)                                    # 0.20 / 0.50 mid
+        self.assertEqual(len([e for e in log if e["kind"] == "zdte_shadow_open"]), 2)
+        c, book, log = self.cycle(11, 0, lambda s: {"bp": 1.85, "ap": 1.95} if "TSLA" in s else {"bp": 0.30, "ap": 0.35})
+        self.assertEqual((book["TSLA"]["status"], book["TSLA"]["ret"]), ("closed", 2.0))  # bid 1.85 >= 3 x 0.60
+        self.assertEqual(book["NVDA"]["status"], "open")
+        c, book, log = self.cycle(15, 30, lambda s: {"bp": 0.10, "ap": 0.14})
+        self.assertEqual((book["NVDA"]["exit"], book["NVDA"]["ret"]), ("time", round(0.10 / 0.60 - 1, 3)))
+        self.assertEqual(options(c), [])
+        self.assertTrue(all(e["dry_run"] for e in log if e["kind"].startswith("zdte_shadow")))
+        from hero import zdte_shadow as zs
+        summ = zs.Book(self.root / "zdte_shadow.json").summary()
+        self.assertEqual((summ["TSLA"]["takes"], summ["NVDA"]["n"]), (1, 1))
+
+
 class NetShadow(unittest.TestCase):
     """The simulated net: casts only in a wild week, never sends an order, books the 20x take."""
 

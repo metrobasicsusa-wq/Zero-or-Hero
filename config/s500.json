@@ -104,6 +104,15 @@
     "chase_cap": 1.3,
     "note": "phase 1 of zero-or-hero until the account doubles, then momentum for good; parameters from research/2026-10-05-0dte-double.md (fewest attempts per doubling)"
   },
+  "zdte_shadow": {
+    "enabled": true,
+    "symbols": ["TSLA", "NVDA", "SPY"],
+    "entry": "10:00",
+    "offset": 0.006,
+    "take": 3,
+    "exit_at": "15:30",
+    "note": "quotes only, never an order: the live same-day rule on TSLA / NVDA (and SPY for comparison) with real bid/ask, to measure single-stock spreads (research/2026-10-07-0dte-names.md assumed 10% for every name)"
+  },
   "net_shadow": {
     "enabled": true,
     "net": 15,
