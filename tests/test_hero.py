@@ -1735,6 +1735,19 @@ class ResearchFlushStock(unittest.TestCase):
         self.assertNotIn("excess", r)
 
 
+class ResearchWeekly(unittest.TestCase):
+    def test_take_exit_and_spread_settlement(self):
+        from hero import research_weekly as w
+        m = {"2026-01-05 10:00": {"c": 1.0}, "2026-01-06 11:00": {"c": 1.5, "h": 2.3}, "2026-01-08 15:50": {"c": 0.5}}
+        self.assertEqual(w.buy_trade(m, 2, "2026-01-08 15:50"), 1)              # 2.3 >= 2 x 1.10
+        self.assertAlmostEqual(w.buy_trade(m, 3, "2026-01-08 15:50"), (0.5 - 0.05) / 1.1 - 1)
+        r = w.spread_result(1.00, 0.40, 100, 99, 101)                            # expires above the short put
+        self.assertAlmostEqual(r["credit"], (1.00 - 0.03) - (0.40 + 0.012), places=3)
+        self.assertAlmostEqual(r["pnl"], r["credit"], places=3)
+        self.assertAlmostEqual(w.spread_result(1.00, 0.40, 100, 99, 90)["pnl"], r["credit"] - 1, places=3)  # full loss
+        self.assertIsNone(w.spread_result(0.03, 0.02, 100, 99, 101))           # no credit after costs
+
+
 class ResearchIronFly(unittest.TestCase):
     def test_credit_reaction_buyback_and_expiry(self):
         from hero import research_ironfly as r
