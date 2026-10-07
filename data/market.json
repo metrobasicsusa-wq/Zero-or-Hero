@@ -1,6 +1,6 @@
 {
- "source": "alphavantage",
- "fetched_at": "2026-10-07T09:10:14-04:00",
+ "source": "alphavantage+alpaca-news",
+ "fetched_at": "2026-10-07T09:40:17-04:00",
  "fetched_on": "2026-10-07",
  "symbols": [
   "AAPL",
@@ -149,8 +149,2194 @@
    "chg_20d": 9.13
   }
  },
- "errors": {
-  "news": "alpha vantage NEWS_SENTIMENT: Thank you for using Alpha Vantage! This is a premium endpoint. You may subscribe to any of the premium plans at https://www.alphavantage.co/premium/ to instantly unlock a"
+ "errors": {},
+ "news": {
+  "FCX": {
+   "articles": 2,
+   "sentiment": 0.5,
+   "label": "偏多",
+   "top": [
+    {
+     "score": 1.0,
+     "title": "Barclays Maintains Overweight on Freeport-McMoRan, Raises Price Target to $83",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/news/26/10/62191078/barclays-maintains-overweight-freeport-mcmoran-raises-price-target-83",
+     "published": "2026-10-06T13:45:31Z"
+    },
+    {
+     "score": 0.0,
+     "title": "'Antofagasta Copper Miners to Strike as High Prices Fan Tensions' - Bloomberg",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/news/26/10/62212500/antofagasta-copper-miners-strike-high-prices-fan-tensions-bloomberg",
+     "published": "2026-10-07T11:17:35Z"
+    }
+   ]
+  },
+  "GEV": {
+   "articles": 2,
+   "sentiment": 0.5,
+   "label": "偏多",
+   "top": [
+    {
+     "score": 1.0,
+     "title": "Billionaire Philippe Laffont’s $1.2 Billion Constellation Bet Gets a Google AI Boost",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/trading-ideas/long-ideas/26/10/62194958/constellation-google-ai-deal",
+     "published": "2026-10-06T15:07:43Z"
+    },
+    {
+     "score": 0.0,
+     "title": "Watching GE Vernova; Hearing Investor Business Daily SwingTrader Buys Stock",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/quote/GEV",
+     "published": "2026-10-06T13:56:33Z"
+    }
+   ]
+  },
+  "AMZN": {
+   "articles": 21,
+   "sentiment": 0.333,
+   "label": "略偏多",
+   "top": [
+    {
+     "score": 1.0,
+     "title": "Billionaire Philippe Laffont’s $1.2 Billion Constellation Bet Gets a Google AI Boost",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/trading-ideas/long-ideas/26/10/62194958/constellation-google-ai-deal",
+     "published": "2026-10-06T15:07:43Z"
+    },
+    {
+     "score": 1.0,
+     "title": "9 Of 11 Sectors Rise In Tuesday Trading As Defensives Lead",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/etfs/sector-etfs/26/10/62195896/9-of-11-sectors-rise-in-tuesday-trading-as-defensives-lead",
+     "published": "2026-10-06T15:33:30Z"
+    },
+    {
+     "score": 1.0,
+     "title": "S&P Eyes Record High, Yet Concentration Risk Looms",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/Opinion/26/10/62200112/sp-eyes-record-high-yet-concentration-risk-looms",
+     "published": "2026-10-06T17:34:34Z"
+    }
+   ]
+  },
+  "GOOGL": {
+   "articles": 30,
+   "sentiment": 0.367,
+   "label": "偏多",
+   "top": [
+    {
+     "score": 1.0,
+     "title": "AMD’s Monster 2026 Rally Gets Fresh Fuel From Lisa Su’s 2027 AI Supply Push",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/tech/26/10/62192348/amds-ai-boom-gets-bigger-lisa-su-sees-very-very-high-demand-for-the-next-several-years",
+     "published": "2026-10-06T14:17:38Z"
+    },
+    {
+     "score": 1.0,
+     "title": "Billionaire Philippe Laffont’s $1.2 Billion Constellation Bet Gets a Google AI Boost",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/trading-ideas/long-ideas/26/10/62194958/constellation-google-ai-deal",
+     "published": "2026-10-06T15:07:43Z"
+    },
+    {
+     "score": 1.0,
+     "title": "Challenging Nvidia's Dominance: Broadcom Pairs Custom TPU Chips with $60 Billion Debt Package",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/tech/26/10/62200140/challenging-nvidias-dominance-broadcom-pairs-custom-tpu-chips-with-60-billion-debt-package",
+     "published": "2026-10-06T17:35:29Z"
+    }
+   ]
+  },
+  "JPM": {
+   "articles": 5,
+   "sentiment": 0.1,
+   "label": "中性",
+   "top": [
+    {
+     "score": 1.0,
+     "title": "Jamie Dimon Says AI Boom Is Competing With Government Borrowing for Capital: ‘Rates Are Going Up’",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/prediction-markets/26/10/62202607/jamie-dimon-ai-capital-crunch-rates",
+     "published": "2026-10-06T19:00:08Z"
+    },
+    {
+     "score": -1.0,
+     "title": "Michael Burry Says Big Tech Is 'Spending Wildly' on AI Because CEOs Expect to Be 'Granted an Oligopoly' That Can't Fall",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/tech/26/10/62208295/burry-big-tech-ai-spending-oligopoly-too-big-to-fail",
+     "published": "2026-10-07T03:13:29Z"
+    },
+    {
+     "score": 0.5,
+     "title": "SpaceX Stock Drops After Hours as Elon Musk-led Company Seeks $40 Billion to Buy Nvidia Chips",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/tech/26/10/62208031/spacex-apollo-40-billion-nvidia-chips-financing",
+     "published": "2026-10-07T01:49:22Z"
+    }
+   ]
+  },
+  "MSFT": {
+   "articles": 19,
+   "sentiment": 0.368,
+   "label": "偏多",
+   "top": [
+    {
+     "score": 1.0,
+     "title": "Billionaire Philippe Laffont’s $1.2 Billion Constellation Bet Gets a Google AI Boost",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/trading-ideas/long-ideas/26/10/62194958/constellation-google-ai-deal",
+     "published": "2026-10-06T15:07:43Z"
+    },
+    {
+     "score": 1.0,
+     "title": "Warren Buffett Said Buy the S&P 500 — But This ETF Is Secretly an AI Powerhouse",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/etfs/sector-etfs/26/10/62202508/warren-buffett-said-buy-the-sp-500-but-this-etf-is-secretly-an-ai-powerhouse",
+     "published": "2026-10-06T18:56:43Z"
+    },
+    {
+     "score": 1.0,
+     "title": "Jamie Dimon Says AI Boom Is Competing With Government Borrowing for Capital: ‘Rates Are Going Up’",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/prediction-markets/26/10/62202607/jamie-dimon-ai-capital-crunch-rates",
+     "published": "2026-10-06T19:00:08Z"
+    }
+   ]
+  },
+  "ALAB": {
+   "articles": 3,
+   "sentiment": 1.0,
+   "label": "偏多",
+   "top": [
+    {
+     "score": 1.0,
+     "title": "Apogee Enterprises Posts Upbeat Q2 Earnings, Joins Constellation Energy, Freshworks  And Other Big Stocks Moving Higher On Tuesday",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/news/26/10/62191591/apogee-enterprises-posts-upbeat-q2-earnings-joins-constellation-energy-freshworks-and-other-big-stocks-moving-higher-on-tuesday",
+     "published": "2026-10-06T13:59:37Z"
+    },
+    {
+     "score": 1.0,
+     "title": "Marvell Stock Rallies as Investor Day Targets Smash Wall Street Estimates",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/news/26/10/62198187/marvell-investor-day-stock-jumps-90-billion-revenue-target",
+     "published": "2026-10-06T16:35:41Z"
+    },
+    {
+     "score": 1.0,
+     "title": "Why Is Astera Labs Stock Surging on Tuesday?",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/trading-ideas/movers/26/10/62198359/why-is-astera-labs-stock-surging-on-tuesday-2",
+     "published": "2026-10-06T16:42:21Z"
+    }
+   ]
+  },
+  "MRVL": {
+   "articles": 16,
+   "sentiment": 0.771,
+   "label": "偏多",
+   "top": [
+    {
+     "score": 1.0,
+     "title": "Apogee Enterprises Posts Upbeat Q2 Earnings, Joins Constellation Energy, Freshworks  And Other Big Stocks Moving Higher On Tuesday",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/news/26/10/62191591/apogee-enterprises-posts-upbeat-q2-earnings-joins-constellation-energy-freshworks-and-other-big-stocks-moving-higher-on-tuesday",
+     "published": "2026-10-06T13:59:37Z"
+    },
+    {
+     "score": 1.0,
+     "title": "Marvell Stock Rallies as Investor Day Targets Smash Wall Street Estimates",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/news/26/10/62198187/marvell-investor-day-stock-jumps-90-billion-revenue-target",
+     "published": "2026-10-06T16:35:41Z"
+    },
+    {
+     "score": 1.0,
+     "title": "Jim Cramer Sees Marvell Sending a Bigger Signal to Broadcom",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/tech/26/10/62198664/jim-cramer-sees-marvell-sending-a-bigger-signal-to-broadcom",
+     "published": "2026-10-06T16:50:13Z"
+    }
+   ]
+  },
+  "CRM": {
+   "articles": 2,
+   "sentiment": 0.0,
+   "label": "中性",
+   "top": [
+    {
+     "score": 0.0,
+     "title": "Here's How Much $100 Invested In Salesforce 20 Years Ago Would Be Worth Today",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/news/26/10/62191675/here-s-how-much-100-invested-salesforce-20-years-ago-would-be-worth-today",
+     "published": "2026-10-06T14:00:34Z"
+    },
+    {
+     "score": 0.0,
+     "title": "10 Information Technology Stocks Whale Activity In Today’s Session",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/options/26/10/62200135/10-information-technology-stocks-whale-activity-today-s-session",
+     "published": "2026-10-06T17:35:22Z"
+    }
+   ]
+  },
+  "AMD": {
+   "articles": 8,
+   "sentiment": 0.625,
+   "label": "偏多",
+   "top": [
+    {
+     "score": 1.0,
+     "title": "AMD’s Monster 2026 Rally Gets Fresh Fuel From Lisa Su’s 2027 AI Supply Push",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/tech/26/10/62192348/amds-ai-boom-gets-bigger-lisa-su-sees-very-very-high-demand-for-the-next-several-years",
+     "published": "2026-10-06T14:17:38Z"
+    },
+    {
+     "score": 1.0,
+     "title": "S&P Eyes Record High, Yet Concentration Risk Looms",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/Opinion/26/10/62200112/sp-eyes-record-high-yet-concentration-risk-looms",
+     "published": "2026-10-06T17:34:34Z"
+    },
+    {
+     "score": 1.0,
+     "title": "Citigroup Maintains Buy on Advanced Micro Devices, Raises Price Target to $800",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/news/26/10/62200897/citigroup-maintains-buy-advanced-micro-devices-raises-price-target-800",
+     "published": "2026-10-06T18:01:42Z"
+    }
+   ]
+  },
+  "INTC": {
+   "articles": 7,
+   "sentiment": 0.571,
+   "label": "偏多",
+   "top": [
+    {
+     "score": 1.0,
+     "title": "AMD’s Monster 2026 Rally Gets Fresh Fuel From Lisa Su’s 2027 AI Supply Push",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/tech/26/10/62192348/amds-ai-boom-gets-bigger-lisa-su-sees-very-very-high-demand-for-the-next-several-years",
+     "published": "2026-10-06T14:17:38Z"
+    },
+    {
+     "score": 1.0,
+     "title": "Nvidia-Backed Robotics Startup FieldAI Set to Hit $10 Billion Valuation After $700 Million Planned Raise, Nearly Quintupling Value in Just Over a Year: Report (CORRECTED)",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/tech/26/10/62150844/fieldai-700-million-10-billion-valuation-physical-ai",
+     "published": "2026-10-06T14:26:06Z"
+    },
+    {
+     "score": 1.0,
+     "title": "Marvell Stock Rallies as Investor Day Targets Smash Wall Street Estimates",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/news/26/10/62198187/marvell-investor-day-stock-jumps-90-billion-revenue-target",
+     "published": "2026-10-06T16:35:41Z"
+    }
+   ]
+  },
+  "META": {
+   "articles": 19,
+   "sentiment": 0.316,
+   "label": "略偏多",
+   "top": [
+    {
+     "score": 1.0,
+     "title": "AMD’s Monster 2026 Rally Gets Fresh Fuel From Lisa Su’s 2027 AI Supply Push",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/tech/26/10/62192348/amds-ai-boom-gets-bigger-lisa-su-sees-very-very-high-demand-for-the-next-several-years",
+     "published": "2026-10-06T14:17:38Z"
+    },
+    {
+     "score": 1.0,
+     "title": "Nvidia-Backed Robotics Startup FieldAI Set to Hit $10 Billion Valuation After $700 Million Planned Raise, Nearly Quintupling Value in Just Over a Year: Report (CORRECTED)",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/tech/26/10/62150844/fieldai-700-million-10-billion-valuation-physical-ai",
+     "published": "2026-10-06T14:26:06Z"
+    },
+    {
+     "score": 1.0,
+     "title": "Billionaire Philippe Laffont’s $1.2 Billion Constellation Bet Gets a Google AI Boost",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/trading-ideas/long-ideas/26/10/62194958/constellation-google-ai-deal",
+     "published": "2026-10-06T15:07:43Z"
+    }
+   ]
+  },
+  "NVDA": {
+   "articles": 32,
+   "sentiment": 0.344,
+   "label": "略偏多",
+   "top": [
+    {
+     "score": 1.0,
+     "title": "AMD’s Monster 2026 Rally Gets Fresh Fuel From Lisa Su’s 2027 AI Supply Push",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/tech/26/10/62192348/amds-ai-boom-gets-bigger-lisa-su-sees-very-very-high-demand-for-the-next-several-years",
+     "published": "2026-10-06T14:17:38Z"
+    },
+    {
+     "score": 1.0,
+     "title": "Nvidia-Backed Robotics Startup FieldAI Set to Hit $10 Billion Valuation After $700 Million Planned Raise, Nearly Quintupling Value in Just Over a Year: Report (CORRECTED)",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/tech/26/10/62150844/fieldai-700-million-10-billion-valuation-physical-ai",
+     "published": "2026-10-06T14:26:06Z"
+    },
+    {
+     "score": 1.0,
+     "title": "Why Is Nebius Group Stock Soaring Tuesday?",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/tech/26/10/62197008/why-is-nebius-group-stock-soaring-tuesday",
+     "published": "2026-10-06T16:02:48Z"
+    }
+   ]
+  },
+  "QCOM": {
+   "articles": 3,
+   "sentiment": 0.333,
+   "label": "略偏多",
+   "top": [
+    {
+     "score": 1.0,
+     "title": "AMD’s Monster 2026 Rally Gets Fresh Fuel From Lisa Su’s 2027 AI Supply Push",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/tech/26/10/62192348/amds-ai-boom-gets-bigger-lisa-su-sees-very-very-high-demand-for-the-next-several-years",
+     "published": "2026-10-06T14:17:38Z"
+    },
+    {
+     "score": 0.0,
+     "title": "10 Information Technology Stocks Whale Activity In Today’s Session",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/options/26/10/62200135/10-information-technology-stocks-whale-activity-today-s-session",
+     "published": "2026-10-06T17:35:22Z"
+    },
+    {
+     "score": 0.0,
+     "title": "Most Undervalued Chip Stocks In October 2026: Four Are Cheaper Than The S&P 500",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/equities/26/10/62215069/undervalued-chip-stocks-october-cheaper-than-sp-500",
+     "published": "2026-10-07T12:49:50Z"
+    }
+   ]
+  },
+  "TSM": {
+   "articles": 2,
+   "sentiment": 1.0,
+   "label": "偏多",
+   "top": [
+    {
+     "score": 1.0,
+     "title": "AMD’s Monster 2026 Rally Gets Fresh Fuel From Lisa Su’s 2027 AI Supply Push",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/tech/26/10/62192348/amds-ai-boom-gets-bigger-lisa-su-sees-very-very-high-demand-for-the-next-several-years",
+     "published": "2026-10-06T14:17:38Z"
+    },
+    {
+     "score": 1.0,
+     "title": "Barclays Maintains Overweight on Taiwan Semiconductor, Raises Price Target to $665",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/news/26/10/62193396/barclays-maintains-overweight-taiwan-semiconductor-raises-price-target-665",
+     "published": "2026-10-06T14:36:23Z"
+    }
+   ]
+  },
+  "BE": {
+   "articles": 6,
+   "sentiment": 0.333,
+   "label": "略偏多",
+   "top": [
+    {
+     "score": 1.0,
+     "title": "What's Going On With Bloom Energy Stock Tuesday?",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/trading-ideas/movers/26/10/62192931/whats-going-on-with-bloom-energy-stock-tuesday-3",
+     "published": "2026-10-06T14:32:58Z"
+    },
+    {
+     "score": 1.0,
+     "title": "FuelCell Energy Stock Gains 14% Today — Here's Why",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/trading-ideas/movers/26/10/62205376/fuelcell-energy-stock-gains-14-today-heres-why",
+     "published": "2026-10-06T20:20:15Z"
+    },
+    {
+     "score": 0.0,
+     "title": "Watching Bloom Energy; Hearing Investor Business Daily SwingTrader Buys Stock",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/quote/BE",
+     "published": "2026-10-06T15:29:11Z"
+    }
+   ]
+  },
+  "AMAT": {
+   "articles": 1,
+   "sentiment": 0.0,
+   "label": "中性",
+   "top": [
+    {
+     "score": 0.0,
+     "title": "Here’s How Much You Would Have Made Owning Applied Materials Stock In The Last 20 Years",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/news/26/10/62194124/here-s-how-much-you-would-have-made-owning-applied-materials-stock-last-20-years",
+     "published": "2026-10-06T14:45:52Z"
+    }
+   ]
+  },
+  "CRWD": {
+   "articles": 6,
+   "sentiment": 0.5,
+   "label": "偏多",
+   "top": [
+    {
+     "score": 1.0,
+     "title": "CrowdStrike Hits Record High, Up 147% In 2026 As AI Security Demand Booms",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/tech/26/10/62194906/crowdstrike-hits-record-high-up-147-in-2026-as-ai-security-demand-booms",
+     "published": "2026-10-06T15:06:32Z"
+    },
+    {
+     "score": 1.0,
+     "title": "The S&P 500 Is Partying at Record Highs: Only 3% of Its Stocks Were Invited",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/equities/26/10/62203364/sp-500-record-high-only-3-percent-stocks-invited",
+     "published": "2026-10-06T19:29:38Z"
+    },
+    {
+     "score": 1.0,
+     "title": "Jim Cramer Sees More AI Upside Ahead for Meta, Microsoft and AMD Despite Bubble Fears: ‘They Were Going to Figure Something Out’",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/tech/26/10/62209518/jim-cramer-sees-more-ai-upside-ahead-for-meta-microsoft-and-amd-despite-bubble-fears-they-were-going-to-figure-something-out",
+     "published": "2026-10-07T07:40:47Z"
+    }
+   ]
+  },
+  "ABBV": {
+   "articles": 2,
+   "sentiment": 0.5,
+   "label": "偏多",
+   "top": [
+    {
+     "score": 1.0,
+     "title": "9 Of 11 Sectors Rise In Tuesday Trading As Defensives Lead",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/etfs/sector-etfs/26/10/62195896/9-of-11-sectors-rise-in-tuesday-trading-as-defensives-lead",
+     "published": "2026-10-06T15:33:30Z"
+    },
+    {
+     "score": 0.0,
+     "title": "AbbVie Receives Two New FDA's Breakthrough Therapy Designations For Telisotuzumab Adizutecan In Colorectal Cancer, Non-Small Cell Lung Cancer",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/news/26/10/62214708/abbvie-receives-two-new-fda-s-breakthrough-therapy-designations-telisotuzumab-adizutecan-colorectal-",
+     "published": "2026-10-07T12:38:58Z"
+    }
+   ]
+  },
+  "DIA": {
+   "articles": 4,
+   "sentiment": 0.5,
+   "label": "偏多",
+   "top": [
+    {
+     "score": 1.0,
+     "title": "9 Of 11 Sectors Rise In Tuesday Trading As Defensives Lead",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/etfs/sector-etfs/26/10/62195896/9-of-11-sectors-rise-in-tuesday-trading-as-defensives-lead",
+     "published": "2026-10-06T15:33:30Z"
+    },
+    {
+     "score": 1.0,
+     "title": "S&P 500, Nasdaq Hit Records, Power Stocks Rally on Google's Nuclear Deal: Stock Market Today",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/equities/26/10/62199369/sp-500-nasdaq-100-record-highs-treasury-yields-ease-stock-market-today",
+     "published": "2026-10-06T17:11:12Z"
+    },
+    {
+     "score": 1.0,
+     "title": "Stock Market: Will S&P 500 Open Up or Down Today?",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/prediction-markets/26/10/62208852/stock-market-will-sp-500-open-up-or-down-today-52",
+     "published": "2026-10-07T06:14:09Z"
+    }
+   ]
+  },
+  "HD": {
+   "articles": 2,
+   "sentiment": 0.5,
+   "label": "偏多",
+   "top": [
+    {
+     "score": 1.0,
+     "title": "9 Of 11 Sectors Rise In Tuesday Trading As Defensives Lead",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/etfs/sector-etfs/26/10/62195896/9-of-11-sectors-rise-in-tuesday-trading-as-defensives-lead",
+     "published": "2026-10-06T15:33:30Z"
+    },
+    {
+     "score": 0.0,
+     "title": "6 Consumer Discretionary Stocks Whale Activity In Today’s Session",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/options/26/10/62200137/6-consumer-discretionary-stocks-whale-activity-today-s-session",
+     "published": "2026-10-06T17:35:22Z"
+    }
+   ]
+  },
+  "IWM": {
+   "articles": 2,
+   "sentiment": 1.0,
+   "label": "偏多",
+   "top": [
+    {
+     "score": 1.0,
+     "title": "9 Of 11 Sectors Rise In Tuesday Trading As Defensives Lead",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/etfs/sector-etfs/26/10/62195896/9-of-11-sectors-rise-in-tuesday-trading-as-defensives-lead",
+     "published": "2026-10-06T15:33:30Z"
+    },
+    {
+     "score": 1.0,
+     "title": "S&P 500, Nasdaq Hit Records, Power Stocks Rally on Google's Nuclear Deal: Stock Market Today",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/equities/26/10/62199369/sp-500-nasdaq-100-record-highs-treasury-yields-ease-stock-market-today",
+     "published": "2026-10-06T17:11:12Z"
+    }
+   ]
+  },
+  "JNJ": {
+   "articles": 2,
+   "sentiment": 1.0,
+   "label": "偏多",
+   "top": [
+    {
+     "score": 1.0,
+     "title": "9 Of 11 Sectors Rise In Tuesday Trading As Defensives Lead",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/etfs/sector-etfs/26/10/62195896/9-of-11-sectors-rise-in-tuesday-trading-as-defensives-lead",
+     "published": "2026-10-06T15:33:30Z"
+    },
+    {
+     "score": 1.0,
+     "title": "Guggenheim Reiterates Buy on Johnson & Johnson, Maintains $287 Price Target",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/news/26/10/62215749/guggenheim-reiterates-buy-johnson-johnson-maintains-287-price-target",
+     "published": "2026-10-07T13:03:43Z"
+    }
+   ]
+  },
+  "NKE": {
+   "articles": 2,
+   "sentiment": 0.5,
+   "label": "偏多",
+   "top": [
+    {
+     "score": 1.0,
+     "title": "9 Of 11 Sectors Rise In Tuesday Trading As Defensives Lead",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/etfs/sector-etfs/26/10/62195896/9-of-11-sectors-rise-in-tuesday-trading-as-defensives-lead",
+     "published": "2026-10-06T15:33:30Z"
+    },
+    {
+     "score": 0.0,
+     "title": "6 Consumer Discretionary Stocks Whale Activity In Today’s Session",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/options/26/10/62200137/6-consumer-discretionary-stocks-whale-activity-today-s-session",
+     "published": "2026-10-06T17:35:22Z"
+    }
+   ]
+  },
+  "QQQ": {
+   "articles": 9,
+   "sentiment": 0.222,
+   "label": "略偏多",
+   "top": [
+    {
+     "score": 1.0,
+     "title": "9 Of 11 Sectors Rise In Tuesday Trading As Defensives Lead",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/etfs/sector-etfs/26/10/62195896/9-of-11-sectors-rise-in-tuesday-trading-as-defensives-lead",
+     "published": "2026-10-06T15:33:30Z"
+    },
+    {
+     "score": 1.0,
+     "title": "S&P 500, Nasdaq Hit Records, Power Stocks Rally on Google's Nuclear Deal: Stock Market Today",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/equities/26/10/62199369/sp-500-nasdaq-100-record-highs-treasury-yields-ease-stock-market-today",
+     "published": "2026-10-06T17:11:12Z"
+    },
+    {
+     "score": 1.0,
+     "title": "S&P Eyes Record High, Yet Concentration Risk Looms",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/Opinion/26/10/62200112/sp-eyes-record-high-yet-concentration-risk-looms",
+     "published": "2026-10-06T17:34:34Z"
+    }
+   ]
+  },
+  "SPY": {
+   "articles": 29,
+   "sentiment": 0.138,
+   "label": "中性",
+   "top": [
+    {
+     "score": 1.0,
+     "title": "9 Of 11 Sectors Rise In Tuesday Trading As Defensives Lead",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/etfs/sector-etfs/26/10/62195896/9-of-11-sectors-rise-in-tuesday-trading-as-defensives-lead",
+     "published": "2026-10-06T15:33:30Z"
+    },
+    {
+     "score": 1.0,
+     "title": "S&P Eyes Record High, Yet Concentration Risk Looms",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/Opinion/26/10/62200112/sp-eyes-record-high-yet-concentration-risk-looms",
+     "published": "2026-10-06T17:34:34Z"
+    },
+    {
+     "score": 1.0,
+     "title": "What's Going On With Vistra Stock Today?",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/trading-ideas/movers/26/10/62202028/whats-going-on-with-vistra-stock-today",
+     "published": "2026-10-06T18:36:14Z"
+    }
+   ]
+  },
+  "UNH": {
+   "articles": 6,
+   "sentiment": -0.167,
+   "label": "略偏空",
+   "top": [
+    {
+     "score": 1.0,
+     "title": "9 Of 11 Sectors Rise In Tuesday Trading As Defensives Lead",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/etfs/sector-etfs/26/10/62195896/9-of-11-sectors-rise-in-tuesday-trading-as-defensives-lead",
+     "published": "2026-10-06T15:33:30Z"
+    },
+    {
+     "score": -1.0,
+     "title": "Texas AG Targets UnitedHealth: Probe Examines Alleged Bribes, Care Delays and Coverage Denials",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/news/health-care/26/10/62201393/texas-ag-targets-unitedhealth-probe-examines-alleged-bribes-care-delays-and-coverage-denials",
+     "published": "2026-10-06T18:16:33Z"
+    },
+    {
+     "score": -1.0,
+     "title": "Elizabeth Warren, Josh Hawley Launch Probe Into Insurance Giants Over Claims That End With $0 Payouts — State Farm, Allstate Face Tough Questions: Report (UPDATED)",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/news/health-care/26/10/62159743/elizabeth-warren-josh-hawley-launch-probe-into-insurance-giants-over-claims-that-end-with-0-payouts-state-farm-allstate-face-tough-questions-report",
+     "published": "2026-10-07T06:05:41Z"
+    }
+   ]
+  },
+  "XLB": {
+   "articles": 2,
+   "sentiment": 1.0,
+   "label": "偏多",
+   "top": [
+    {
+     "score": 1.0,
+     "title": "9 Of 11 Sectors Rise In Tuesday Trading As Defensives Lead",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/etfs/sector-etfs/26/10/62195896/9-of-11-sectors-rise-in-tuesday-trading-as-defensives-lead",
+     "published": "2026-10-06T15:33:30Z"
+    },
+    {
+     "score": 1.0,
+     "title": "S&P 500, Nasdaq Hit Records, Power Stocks Rally on Google's Nuclear Deal: Stock Market Today",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/equities/26/10/62199369/sp-500-nasdaq-100-record-highs-treasury-yields-ease-stock-market-today",
+     "published": "2026-10-06T17:11:12Z"
+    }
+   ]
+  },
+  "XLC": {
+   "articles": 2,
+   "sentiment": 1.0,
+   "label": "偏多",
+   "top": [
+    {
+     "score": 1.0,
+     "title": "9 Of 11 Sectors Rise In Tuesday Trading As Defensives Lead",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/etfs/sector-etfs/26/10/62195896/9-of-11-sectors-rise-in-tuesday-trading-as-defensives-lead",
+     "published": "2026-10-06T15:33:30Z"
+    },
+    {
+     "score": 1.0,
+     "title": "S&P 500, Nasdaq Hit Records, Power Stocks Rally on Google's Nuclear Deal: Stock Market Today",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/equities/26/10/62199369/sp-500-nasdaq-100-record-highs-treasury-yields-ease-stock-market-today",
+     "published": "2026-10-06T17:11:12Z"
+    }
+   ]
+  },
+  "XLE": {
+   "articles": 2,
+   "sentiment": 1.0,
+   "label": "偏多",
+   "top": [
+    {
+     "score": 1.0,
+     "title": "9 Of 11 Sectors Rise In Tuesday Trading As Defensives Lead",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/etfs/sector-etfs/26/10/62195896/9-of-11-sectors-rise-in-tuesday-trading-as-defensives-lead",
+     "published": "2026-10-06T15:33:30Z"
+    },
+    {
+     "score": 1.0,
+     "title": "S&P 500, Nasdaq Hit Records, Power Stocks Rally on Google's Nuclear Deal: Stock Market Today",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/equities/26/10/62199369/sp-500-nasdaq-100-record-highs-treasury-yields-ease-stock-market-today",
+     "published": "2026-10-06T17:11:12Z"
+    }
+   ]
+  },
+  "XLF": {
+   "articles": 2,
+   "sentiment": 1.0,
+   "label": "偏多",
+   "top": [
+    {
+     "score": 1.0,
+     "title": "9 Of 11 Sectors Rise In Tuesday Trading As Defensives Lead",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/etfs/sector-etfs/26/10/62195896/9-of-11-sectors-rise-in-tuesday-trading-as-defensives-lead",
+     "published": "2026-10-06T15:33:30Z"
+    },
+    {
+     "score": 1.0,
+     "title": "S&P 500, Nasdaq Hit Records, Power Stocks Rally on Google's Nuclear Deal: Stock Market Today",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/equities/26/10/62199369/sp-500-nasdaq-100-record-highs-treasury-yields-ease-stock-market-today",
+     "published": "2026-10-06T17:11:12Z"
+    }
+   ]
+  },
+  "XLI": {
+   "articles": 2,
+   "sentiment": 1.0,
+   "label": "偏多",
+   "top": [
+    {
+     "score": 1.0,
+     "title": "9 Of 11 Sectors Rise In Tuesday Trading As Defensives Lead",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/etfs/sector-etfs/26/10/62195896/9-of-11-sectors-rise-in-tuesday-trading-as-defensives-lead",
+     "published": "2026-10-06T15:33:30Z"
+    },
+    {
+     "score": 1.0,
+     "title": "S&P 500, Nasdaq Hit Records, Power Stocks Rally on Google's Nuclear Deal: Stock Market Today",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/equities/26/10/62199369/sp-500-nasdaq-100-record-highs-treasury-yields-ease-stock-market-today",
+     "published": "2026-10-06T17:11:12Z"
+    }
+   ]
+  },
+  "XLK": {
+   "articles": 2,
+   "sentiment": 1.0,
+   "label": "偏多",
+   "top": [
+    {
+     "score": 1.0,
+     "title": "9 Of 11 Sectors Rise In Tuesday Trading As Defensives Lead",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/etfs/sector-etfs/26/10/62195896/9-of-11-sectors-rise-in-tuesday-trading-as-defensives-lead",
+     "published": "2026-10-06T15:33:30Z"
+    },
+    {
+     "score": 1.0,
+     "title": "S&P 500, Nasdaq Hit Records, Power Stocks Rally on Google's Nuclear Deal: Stock Market Today",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/equities/26/10/62199369/sp-500-nasdaq-100-record-highs-treasury-yields-ease-stock-market-today",
+     "published": "2026-10-06T17:11:12Z"
+    }
+   ]
+  },
+  "XLP": {
+   "articles": 2,
+   "sentiment": 1.0,
+   "label": "偏多",
+   "top": [
+    {
+     "score": 1.0,
+     "title": "9 Of 11 Sectors Rise In Tuesday Trading As Defensives Lead",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/etfs/sector-etfs/26/10/62195896/9-of-11-sectors-rise-in-tuesday-trading-as-defensives-lead",
+     "published": "2026-10-06T15:33:30Z"
+    },
+    {
+     "score": 1.0,
+     "title": "S&P 500, Nasdaq Hit Records, Power Stocks Rally on Google's Nuclear Deal: Stock Market Today",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/equities/26/10/62199369/sp-500-nasdaq-100-record-highs-treasury-yields-ease-stock-market-today",
+     "published": "2026-10-06T17:11:12Z"
+    }
+   ]
+  },
+  "XLRE": {
+   "articles": 2,
+   "sentiment": 1.0,
+   "label": "偏多",
+   "top": [
+    {
+     "score": 1.0,
+     "title": "9 Of 11 Sectors Rise In Tuesday Trading As Defensives Lead",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/etfs/sector-etfs/26/10/62195896/9-of-11-sectors-rise-in-tuesday-trading-as-defensives-lead",
+     "published": "2026-10-06T15:33:30Z"
+    },
+    {
+     "score": 1.0,
+     "title": "S&P 500, Nasdaq Hit Records, Power Stocks Rally on Google's Nuclear Deal: Stock Market Today",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/equities/26/10/62199369/sp-500-nasdaq-100-record-highs-treasury-yields-ease-stock-market-today",
+     "published": "2026-10-06T17:11:12Z"
+    }
+   ]
+  },
+  "XLU": {
+   "articles": 3,
+   "sentiment": 1.0,
+   "label": "偏多",
+   "top": [
+    {
+     "score": 1.0,
+     "title": "9 Of 11 Sectors Rise In Tuesday Trading As Defensives Lead",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/etfs/sector-etfs/26/10/62195896/9-of-11-sectors-rise-in-tuesday-trading-as-defensives-lead",
+     "published": "2026-10-06T15:33:30Z"
+    },
+    {
+     "score": 1.0,
+     "title": "S&P 500, Nasdaq Hit Records, Power Stocks Rally on Google's Nuclear Deal: Stock Market Today",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/equities/26/10/62199369/sp-500-nasdaq-100-record-highs-treasury-yields-ease-stock-market-today",
+     "published": "2026-10-06T17:11:12Z"
+    },
+    {
+     "score": 1.0,
+     "title": "What's Going On With Vistra Stock Today?",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/trading-ideas/movers/26/10/62202028/whats-going-on-with-vistra-stock-today",
+     "published": "2026-10-06T18:36:14Z"
+    }
+   ]
+  },
+  "XLV": {
+   "articles": 3,
+   "sentiment": 1.0,
+   "label": "偏多",
+   "top": [
+    {
+     "score": 1.0,
+     "title": "9 Of 11 Sectors Rise In Tuesday Trading As Defensives Lead",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/etfs/sector-etfs/26/10/62195896/9-of-11-sectors-rise-in-tuesday-trading-as-defensives-lead",
+     "published": "2026-10-06T15:33:30Z"
+    },
+    {
+     "score": 1.0,
+     "title": "S&P 500, Nasdaq Hit Records, Power Stocks Rally on Google's Nuclear Deal: Stock Market Today",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/equities/26/10/62199369/sp-500-nasdaq-100-record-highs-treasury-yields-ease-stock-market-today",
+     "published": "2026-10-06T17:11:12Z"
+    },
+    {
+     "score": 1.0,
+     "title": "What's Going On With Vistra Stock Today?",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/trading-ideas/movers/26/10/62202028/whats-going-on-with-vistra-stock-today",
+     "published": "2026-10-06T18:36:14Z"
+    }
+   ]
+  },
+  "XLY": {
+   "articles": 3,
+   "sentiment": 0.556,
+   "label": "偏多",
+   "top": [
+    {
+     "score": 1.0,
+     "title": "9 Of 11 Sectors Rise In Tuesday Trading As Defensives Lead",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/etfs/sector-etfs/26/10/62195896/9-of-11-sectors-rise-in-tuesday-trading-as-defensives-lead",
+     "published": "2026-10-06T15:33:30Z"
+    },
+    {
+     "score": 1.0,
+     "title": "S&P 500, Nasdaq Hit Records, Power Stocks Rally on Google's Nuclear Deal: Stock Market Today",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/equities/26/10/62199369/sp-500-nasdaq-100-record-highs-treasury-yields-ease-stock-market-today",
+     "published": "2026-10-06T17:11:12Z"
+    },
+    {
+     "score": -0.333,
+     "title": "QUICK SPARK: Booking Holdings Stock Eyes 9th Straight Week of Losses, Worst Streak Ever",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/large-cap/26/10/62205480/booking-holdings-stock-ninth-weekly-loss-record-streak",
+     "published": "2026-10-06T20:25:53Z"
+    }
+   ]
+  },
+  "XOM": {
+   "articles": 7,
+   "sentiment": 0.143,
+   "label": "中性",
+   "top": [
+    {
+     "score": 1.0,
+     "title": "9 Of 11 Sectors Rise In Tuesday Trading As Defensives Lead",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/etfs/sector-etfs/26/10/62195896/9-of-11-sectors-rise-in-tuesday-trading-as-defensives-lead",
+     "published": "2026-10-06T15:33:30Z"
+    },
+    {
+     "score": -1.0,
+     "title": "Robert Reich Warns Big Oil and Big AI Could Face ‘Tens if Not Hundreds of Billions’ in Liability: 'Make Them Pay'",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/tech/26/10/62211075/robert-reich-warns-big-oil-and-big-ai-could-face-tens-if-not-hundreds-of-billions-in-liability",
+     "published": "2026-10-07T10:17:07Z"
+    },
+    {
+     "score": 1.0,
+     "title": "Helmerich & Payne Expands Deployment Of FlexRobotics Technology With ExxonMobil",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/news/26/10/62213543/helmerich-payne-expands-deployment-flexrobotics-technology-exxonmobil",
+     "published": "2026-10-07T12:04:07Z"
+    }
+   ]
+  },
+  "DELL": {
+   "articles": 2,
+   "sentiment": 0.0,
+   "label": "中性",
+   "top": [
+    {
+     "score": 0.0,
+     "title": "US Economy Kept Growing For 78 Months: These 10 Stocks Top The Leaderboard",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/equities/26/10/62196774/best-sp-500-stocks-78-month-us-expansion",
+     "published": "2026-10-06T15:55:40Z"
+    },
+    {
+     "score": 0.0,
+     "title": "10 Information Technology Stocks Whale Activity In Today’s Session",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/options/26/10/62200135/10-information-technology-stocks-whale-activity-today-s-session",
+     "published": "2026-10-06T17:35:22Z"
+    }
+   ]
+  },
+  "MU": {
+   "articles": 14,
+   "sentiment": 0.095,
+   "label": "中性",
+   "top": [
+    {
+     "score": 1.0,
+     "title": "Marvell Stock Rallies as Investor Day Targets Smash Wall Street Estimates",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/news/26/10/62198187/marvell-investor-day-stock-jumps-90-billion-revenue-target",
+     "published": "2026-10-06T16:35:41Z"
+    },
+    {
+     "score": 1.0,
+     "title": "Warren Buffett Said Buy the S&P 500 — But This ETF Is Secretly an AI Powerhouse",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/etfs/sector-etfs/26/10/62202508/warren-buffett-said-buy-the-sp-500-but-this-etf-is-secretly-an-ai-powerhouse",
+     "published": "2026-10-06T18:56:43Z"
+    },
+    {
+     "score": -1.0,
+     "title": "MU, SNDK, SKHY Stocks Decline on Toshiba Storage Fears: Researcher Points to Cantor Note Calling the Pullback a 'Buying Opportunity'",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/equities/26/10/62209966/mu-sndk-skhy-stocks-decline-on-toshiba-storage-fears-researcher-points-to-cantor-note-calling-the-pullback-a-buying-opportunity",
+     "published": "2026-10-07T08:51:48Z"
+    }
+   ]
+  },
+  "SMCI": {
+   "articles": 2,
+   "sentiment": 0.0,
+   "label": "中性",
+   "top": [
+    {
+     "score": 0.0,
+     "title": "US Economy Kept Growing For 78 Months: These 10 Stocks Top The Leaderboard",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/equities/26/10/62196774/best-sp-500-stocks-78-month-us-expansion",
+     "published": "2026-10-06T15:55:40Z"
+    },
+    {
+     "score": 0.0,
+     "title": "'AI Neocloud Lambda Is Raising $4B  in Final Round Before Planned IPO'-WSJ",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/news/26/10/62198519/ai-neocloud-lambda-is-raising-4b-in-final-round-before-planned-ipo-wsj",
+     "published": "2026-10-06T16:48:13Z"
+    }
+   ]
+  },
+  "STX": {
+   "articles": 6,
+   "sentiment": -0.056,
+   "label": "中性",
+   "top": [
+    {
+     "score": 1.0,
+     "title": "S&P 500, Nasdaq Hit Records, Power Stocks Rally on Google's Nuclear Deal: Stock Market Today",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/equities/26/10/62199369/sp-500-nasdaq-100-record-highs-treasury-yields-ease-stock-market-today",
+     "published": "2026-10-06T17:11:12Z"
+    },
+    {
+     "score": -1.0,
+     "title": "Seagate Technology Holdings (STX) Stock Is Trending After Hours: Here's Why",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/equities/26/10/62208375/seagate-technology-shares-after-hours-toshiba-hdd-expansion",
+     "published": "2026-10-07T03:58:28Z"
+    },
+    {
+     "score": -0.333,
+     "title": "Western Digital Stock Drops Tuesday: Here's Why",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/trading-ideas/movers/26/10/62200680/western-digital-stock-drops-tuesday-heres-why",
+     "published": "2026-10-06T17:53:10Z"
+    }
+   ]
+  },
+  "VRT": {
+   "articles": 1,
+   "sentiment": 0.0,
+   "label": "中性",
+   "top": [
+    {
+     "score": 0.0,
+     "title": "US Economy Kept Growing For 78 Months: These 10 Stocks Top The Leaderboard",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/equities/26/10/62196774/best-sp-500-stocks-78-month-us-expansion",
+     "published": "2026-10-06T15:55:40Z"
+    }
+   ]
+  },
+  "ANET": {
+   "articles": 2,
+   "sentiment": 0.0,
+   "label": "中性",
+   "top": [
+    {
+     "score": 0.0,
+     "title": "Watching Artista Networks; Hearing Investor Business Daily SwingTrader Buys Stock",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/quote/ANET",
+     "published": "2026-10-06T15:57:11Z"
+    },
+    {
+     "score": 0.0,
+     "title": "Arista Networks Announces Ethernet Rack-Scale AI Networking Portfolio, Developed With AMD, Arm, Broadcom, d-Matrix, Meta, Microsoft, And Qualcomm",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/quote/ANET",
+     "published": "2026-10-07T13:02:56Z"
+    }
+   ]
+  },
+  "CRWV": {
+   "articles": 5,
+   "sentiment": 0.2,
+   "label": "略偏多",
+   "top": [
+    {
+     "score": 1.0,
+     "title": "Why Is Nebius Group Stock Soaring Tuesday?",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/tech/26/10/62197008/why-is-nebius-group-stock-soaring-tuesday",
+     "published": "2026-10-06T16:02:48Z"
+    },
+    {
+     "score": 0.0,
+     "title": "Cathie Wood Trims Elon Musk's SpaceX, ARK Invest Adds To Meta, Amazon And CoreWeave Positions",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/equities/26/10/62208213/cathie-wood-trims-elon-musks-spacex-ark-invest-adds-to-meta-amazon-and-coreweave-positions",
+     "published": "2026-10-07T02:29:01Z"
+    },
+    {
+     "score": 0.0,
+     "title": "'CoreWeave Tees Up First India Data Centers With AdaniConneX Deal' - Bloomberg",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/news/26/10/62212911/coreweave-tees-first-india-data-centers-adaniconnex-deal-bloomberg",
+     "published": "2026-10-07T11:40:24Z"
+    }
+   ]
+  },
+  "IREN": {
+   "articles": 2,
+   "sentiment": 0.5,
+   "label": "偏多",
+   "top": [
+    {
+     "score": 1.0,
+     "title": "Why Is Nebius Group Stock Soaring Tuesday?",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/tech/26/10/62197008/why-is-nebius-group-stock-soaring-tuesday",
+     "published": "2026-10-06T16:02:48Z"
+    },
+    {
+     "score": 0.0,
+     "title": "10 Information Technology Stocks Whale Activity In Today’s Session",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/options/26/10/62200135/10-information-technology-stocks-whale-activity-today-s-session",
+     "published": "2026-10-06T17:35:22Z"
+    }
+   ]
+  },
+  "NBIS": {
+   "articles": 4,
+   "sentiment": 0.25,
+   "label": "略偏多",
+   "top": [
+    {
+     "score": 1.0,
+     "title": "Why Is Nebius Group Stock Soaring Tuesday?",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/tech/26/10/62197008/why-is-nebius-group-stock-soaring-tuesday",
+     "published": "2026-10-06T16:02:48Z"
+    },
+    {
+     "score": 0.0,
+     "title": "10 Information Technology Stocks Whale Activity In Today’s Session",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/options/26/10/62200135/10-information-technology-stocks-whale-activity-today-s-session",
+     "published": "2026-10-06T17:35:22Z"
+    },
+    {
+     "score": 0.0,
+     "title": "Watching Nebius Group; Hearing Investor Business Daily SwingTrader Buys Stock",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/quote/NBIS",
+     "published": "2026-10-06T17:55:29Z"
+    }
+   ]
+  },
+  "PANW": {
+   "articles": 3,
+   "sentiment": 0.667,
+   "label": "偏多",
+   "top": [
+    {
+     "score": 1.0,
+     "title": "The S&P 500 Is Partying at Record Highs: Only 3% of Its Stocks Were Invited",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/equities/26/10/62203364/sp-500-record-high-only-3-percent-stocks-invited",
+     "published": "2026-10-06T19:29:38Z"
+    },
+    {
+     "score": 1.0,
+     "title": "Jim Cramer Sees More AI Upside Ahead for Meta, Microsoft and AMD Despite Bubble Fears: ‘They Were Going to Figure Something Out’",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/tech/26/10/62209518/jim-cramer-sees-more-ai-upside-ahead-for-meta-microsoft-and-amd-despite-bubble-fears-they-were-going-to-figure-something-out",
+     "published": "2026-10-07T07:40:47Z"
+    },
+    {
+     "score": 0.0,
+     "title": "Palo Alto Networks Stock Reaches New Highs: What's Happening?",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/trading-ideas/movers/26/10/62197509/palo-alto-networks-stock-reaches-new-highs-whats-happening",
+     "published": "2026-10-06T16:16:39Z"
+    }
+   ]
+  },
+  "IBM": {
+   "articles": 6,
+   "sentiment": 0.167,
+   "label": "略偏多",
+   "top": [
+    {
+     "score": 1.0,
+     "title": "These Analysts Boost Their Forecasts On Zscaler",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/news/26/10/62216332/these-analysts-boost-their-forecasts-on-zscaler",
+     "published": "2026-10-07T13:23:50Z"
+    },
+    {
+     "score": 0.0,
+     "title": "Live On CNBC, Kevin Simpson Announces Bought More UnitedHealth Group; Sold IBM",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/quote/UNH",
+     "published": "2026-10-06T16:27:46Z"
+    },
+    {
+     "score": 0.0,
+     "title": "Zscaler Says Agentic AI Could Be Its Biggest Opportunity Ever",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/trading-ideas/movers/26/10/62198354/zscaler-says-agentic-ai-could-be-its-biggest-opportunity-ever",
+     "published": "2026-10-06T16:42:14Z"
+    }
+   ]
+  },
+  "BA": {
+   "articles": 1,
+   "sentiment": 0.0,
+   "label": "中性",
+   "top": [
+    {
+     "score": 0.0,
+     "title": "Boeing, Ford and Warner Bros. Discovery Have Billions in Debt Coming Due as Yields Hit 5.3%",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/bonds/26/10/62198030/boeing-ford-wbd-debt-wall",
+     "published": "2026-10-06T16:30:59Z"
+    }
+   ]
+  },
+  "WBD": {
+   "articles": 6,
+   "sentiment": 0.0,
+   "label": "中性",
+   "top": [
+    {
+     "score": -1.0,
+     "title": "'Skydance CEOs Acknowledge Layoffs Will Be Coming After Paramount-Warner Bros. Merger'- Variety",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/news/26/10/62196141/skydance-ceos-acknowledge-layoffs-will-be-coming-after-paramount-warner-bros-merger-variety",
+     "published": "2026-10-06T15:41:13Z"
+    },
+    {
+     "score": 1.0,
+     "title": "'Poland to Vet Paramount Buy of Local Warner Bros. Discovery Unit' - Bloomberg",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/news/26/10/62212887/poland-vet-paramount-buy-local-warner-bros-discovery-unit-bloomberg",
+     "published": "2026-10-07T11:37:56Z"
+    },
+    {
+     "score": 0.0,
+     "title": "Boeing, Ford and Warner Bros. Discovery Have Billions in Debt Coming Due as Yields Hit 5.3%",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/bonds/26/10/62198030/boeing-ford-wbd-debt-wall",
+     "published": "2026-10-06T16:30:59Z"
+    }
+   ]
+  },
+  "CRDO": {
+   "articles": 1,
+   "sentiment": 1.0,
+   "label": "偏多",
+   "top": [
+    {
+     "score": 1.0,
+     "title": "Marvell Stock Rallies as Investor Day Targets Smash Wall Street Estimates",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/news/26/10/62198187/marvell-investor-day-stock-jumps-90-billion-revenue-target",
+     "published": "2026-10-06T16:35:41Z"
+    }
+   ]
+  },
+  "LRCX": {
+   "articles": 2,
+   "sentiment": 0.5,
+   "label": "偏多",
+   "top": [
+    {
+     "score": 1.0,
+     "title": "Marvell Stock Rallies as Investor Day Targets Smash Wall Street Estimates",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/news/26/10/62198187/marvell-investor-day-stock-jumps-90-billion-revenue-target",
+     "published": "2026-10-06T16:35:41Z"
+    },
+    {
+     "score": 0.0,
+     "title": "10 Information Technology Stocks Whale Activity In Today’s Session",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/options/26/10/62200135/10-information-technology-stocks-whale-activity-today-s-session",
+     "published": "2026-10-06T17:35:22Z"
+    }
+   ]
+  },
+  "AVGO": {
+   "articles": 7,
+   "sentiment": 0.429,
+   "label": "偏多",
+   "top": [
+    {
+     "score": 1.0,
+     "title": "Jim Cramer Sees Marvell Sending a Bigger Signal to Broadcom",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/tech/26/10/62198664/jim-cramer-sees-marvell-sending-a-bigger-signal-to-broadcom",
+     "published": "2026-10-06T16:50:13Z"
+    },
+    {
+     "score": 1.0,
+     "title": "Challenging Nvidia's Dominance: Broadcom Pairs Custom TPU Chips with $60 Billion Debt Package",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/tech/26/10/62200140/challenging-nvidias-dominance-broadcom-pairs-custom-tpu-chips-with-60-billion-debt-package",
+     "published": "2026-10-06T17:35:29Z"
+    },
+    {
+     "score": 1.0,
+     "title": "Warren Buffett Said Buy the S&P 500 — But This ETF Is Secretly an AI Powerhouse",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/etfs/sector-etfs/26/10/62202508/warren-buffett-said-buy-the-sp-500-but-this-etf-is-secretly-an-ai-powerhouse",
+     "published": "2026-10-06T18:56:43Z"
+    }
+   ]
+  },
+  "SMH": {
+   "articles": 1,
+   "sentiment": 1.0,
+   "label": "偏多",
+   "top": [
+    {
+     "score": 1.0,
+     "title": "S&P 500, Nasdaq Hit Records, Power Stocks Rally on Google's Nuclear Deal: Stock Market Today",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/equities/26/10/62199369/sp-500-nasdaq-100-record-highs-treasury-yields-ease-stock-market-today",
+     "published": "2026-10-06T17:11:12Z"
+    }
+   ]
+  },
+  "WDC": {
+   "articles": 5,
+   "sentiment": 0.133,
+   "label": "中性",
+   "top": [
+    {
+     "score": 1.0,
+     "title": "S&P 500, Nasdaq Hit Records, Power Stocks Rally on Google's Nuclear Deal: Stock Market Today",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/equities/26/10/62199369/sp-500-nasdaq-100-record-highs-treasury-yields-ease-stock-market-today",
+     "published": "2026-10-06T17:11:12Z"
+    },
+    {
+     "score": -0.333,
+     "title": "Western Digital Stock Drops Tuesday: Here's Why",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/trading-ideas/movers/26/10/62200680/western-digital-stock-drops-tuesday-heres-why",
+     "published": "2026-10-06T17:53:10Z"
+    },
+    {
+     "score": 0.0,
+     "title": "Reported Earlier, 'Seagate Said to Vie With Toshiba for TDK’s Hard-Drive Magnetic Heads Unit' - Bloomberg",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/news/26/10/62194029/reported-earlier-seagate-said-vie-toshiba-tdk-s-hard-drive-magnetic-heads-unit-bloomberg",
+     "published": "2026-10-06T14:44:19Z"
+    }
+   ]
+  },
+  "AAPL": {
+   "articles": 12,
+   "sentiment": 0.333,
+   "label": "略偏多",
+   "top": [
+    {
+     "score": 1.0,
+     "title": "S&P Eyes Record High, Yet Concentration Risk Looms",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/Opinion/26/10/62200112/sp-eyes-record-high-yet-concentration-risk-looms",
+     "published": "2026-10-06T17:34:34Z"
+    },
+    {
+     "score": 1.0,
+     "title": "Warren Buffett Said Buy the S&P 500 — But This ETF Is Secretly an AI Powerhouse",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/etfs/sector-etfs/26/10/62202508/warren-buffett-said-buy-the-sp-500-but-this-etf-is-secretly-an-ai-powerhouse",
+     "published": "2026-10-06T18:56:43Z"
+    },
+    {
+     "score": 1.0,
+     "title": "The S&P 500 Is Partying at Record Highs: Only 3% of Its Stocks Were Invited",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/equities/26/10/62203364/sp-500-record-high-only-3-percent-stocks-invited",
+     "published": "2026-10-06T19:29:38Z"
+    }
+   ]
+  },
+  "T": {
+   "articles": 2,
+   "sentiment": 0.0,
+   "label": "中性",
+   "top": [
+    {
+     "score": 0.0,
+     "title": "Nvidia, Apple, Microsoft Now Drive 21% of S&P 500: Here’s How Much ETF Investors Own",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/etfs/sector-etfs/26/10/62200101/nvidia-apple-microsoft-now-drive-21-of-sp-500-heres-how-much-etf-investors-own",
+     "published": "2026-10-06T17:34:23Z"
+    },
+    {
+     "score": 0.0,
+     "title": "'Diversification is Dying' — Nvidia, Apple Lead 10 Stocks Taking 41 Cents Of Every Dollar Invested In S&P 500, Says This Commentator",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/tech/26/10/62209295/nvidia-apple-sp-500-top-10-stocks-41-percent-diversification",
+     "published": "2026-10-07T07:03:47Z"
+    }
+   ]
+  },
+  "COHR": {
+   "articles": 1,
+   "sentiment": 0.0,
+   "label": "中性",
+   "top": [
+    {
+     "score": 0.0,
+     "title": "10 Information Technology Stocks Whale Activity In Today’s Session",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/options/26/10/62200135/10-information-technology-stocks-whale-activity-today-s-session",
+     "published": "2026-10-06T17:35:22Z"
+    }
+   ]
+  },
+  "GLW": {
+   "articles": 1,
+   "sentiment": 0.0,
+   "label": "中性",
+   "top": [
+    {
+     "score": 0.0,
+     "title": "10 Information Technology Stocks Whale Activity In Today’s Session",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/options/26/10/62200135/10-information-technology-stocks-whale-activity-today-s-session",
+     "published": "2026-10-06T17:35:22Z"
+    }
+   ]
+  },
+  "CAT": {
+   "articles": 1,
+   "sentiment": 0.0,
+   "label": "中性",
+   "top": [
+    {
+     "score": 0.0,
+     "title": "8 Industrials Stocks With Whale Alerts In Today’s Session",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/options/26/10/62200136/8-industrials-stocks-whale-alerts-today-s-session",
+     "published": "2026-10-06T17:35:22Z"
+    }
+   ]
+  },
+  "GE": {
+   "articles": 1,
+   "sentiment": 0.0,
+   "label": "中性",
+   "top": [
+    {
+     "score": 0.0,
+     "title": "8 Industrials Stocks With Whale Alerts In Today’s Session",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/options/26/10/62200136/8-industrials-stocks-whale-alerts-today-s-session",
+     "published": "2026-10-06T17:35:22Z"
+    }
+   ]
+  },
+  "RKLB": {
+   "articles": 3,
+   "sentiment": 0.0,
+   "label": "中性",
+   "top": [
+    {
+     "score": 0.0,
+     "title": "8 Industrials Stocks With Whale Alerts In Today’s Session",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/options/26/10/62200136/8-industrials-stocks-whale-alerts-today-s-session",
+     "published": "2026-10-06T17:35:22Z"
+    },
+    {
+     "score": 0.0,
+     "title": "Rocket Lab Stock Pops Tuesday: What's Going On?",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/trading-ideas/movers/26/10/62194506/rocket-lab-stock-pops-tuesday-whats-going-on",
+     "published": "2026-10-06T14:57:52Z"
+    },
+    {
+     "score": 0.0,
+     "title": "Federal Aviation Administration Proposes Streamlining, Modernizing Commercial Space Launch And Reentry Regulations",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/news/26/10/62201824/federal-aviation-administration-proposes-streamlining-modernizing-commercial-space-launch-and-reentr",
+     "published": "2026-10-06T18:29:36Z"
+    }
+   ]
+  },
+  "BKNG": {
+   "articles": 2,
+   "sentiment": -0.167,
+   "label": "略偏空",
+   "top": [
+    {
+     "score": -0.333,
+     "title": "QUICK SPARK: Booking Holdings Stock Eyes 9th Straight Week of Losses, Worst Streak Ever",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/large-cap/26/10/62205480/booking-holdings-stock-ninth-weekly-loss-record-streak",
+     "published": "2026-10-06T20:25:53Z"
+    },
+    {
+     "score": 0.0,
+     "title": "6 Consumer Discretionary Stocks Whale Activity In Today’s Session",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/options/26/10/62200137/6-consumer-discretionary-stocks-whale-activity-today-s-session",
+     "published": "2026-10-06T17:35:22Z"
+    }
+   ]
+  },
+  "COIN": {
+   "articles": 6,
+   "sentiment": 0.5,
+   "label": "偏多",
+   "top": [
+    {
+     "score": 1.0,
+     "title": "Bitcoin Tops Liquidity Ranking, ETH Follows: Where Does XRP Rank?",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/crypto/cryptocurrency/26/10/62202953/bitcoin-tops-liquidity-ranking-eth-follows-where-does-xrp-rank",
+     "published": "2026-10-06T19:15:41Z"
+    },
+    {
+     "score": 1.0,
+     "title": "CFTC Approval 'Opens Many Doors,' Top Coinbase Exec Says",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/crypto/cryptocurrency/26/10/62203454/cftc-approval-opens-many-doors-top-coinbase-exec-says",
+     "published": "2026-10-06T19:33:37Z"
+    },
+    {
+     "score": 1.0,
+     "title": "BTIG Reiterates Buy on Coinbase Global, Maintains $240 Price Target",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/news/26/10/62211348/btig-reiterates-buy-coinbase-global-maintains-240-price-target",
+     "published": "2026-10-07T10:28:48Z"
+    }
+   ]
+  },
+  "HOOD": {
+   "articles": 3,
+   "sentiment": 0.333,
+   "label": "略偏多",
+   "top": [
+    {
+     "score": 1.0,
+     "title": "Robinhood Joins Strategy, Tesla In Holding Bitcoin, Exec Says: 'We Care Deeply About Bitcoin'",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/crypto/cryptocurrency/26/10/62216088/robinhood-joins-strategy-tesla-in-holding-bitcoin-exec-says-we-care-deeply-about-bitcoin",
+     "published": "2026-10-07T13:17:57Z"
+    },
+    {
+     "score": 0.0,
+     "title": "EXCLUSIVE: Are DraftKings, Flutter Toast? Only 1 in 6 Benzinga Viewers Think Prediction Markets Will Kill Them",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/prediction-markets/26/10/62201084/exclusive-are-draftkings-flutter-toast-only-1-in-6-benzinga-viewers-think-prediction-markets-will-kill-them",
+     "published": "2026-10-06T18:07:10Z"
+    },
+    {
+     "score": 0.0,
+     "title": "Robinhood's Investment Chief Says She Prefers Owning Energy Stocks Over ETFs — Should These Stocks Be on Your Radar?",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/equities/26/10/62210506/robinhoods-investment-chief-says-she-prefers-owning-energy-stocks-over-etfs-should-these-stocks-be-on-your-radar",
+     "published": "2026-10-07T09:56:21Z"
+    }
+   ]
+  },
+  "TSLA": {
+   "articles": 13,
+   "sentiment": 0.538,
+   "label": "偏多",
+   "top": [
+    {
+     "score": 1.0,
+     "title": "Warren Buffett Said Buy the S&P 500 — But This ETF Is Secretly an AI Powerhouse",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/etfs/sector-etfs/26/10/62202508/warren-buffett-said-buy-the-sp-500-but-this-etf-is-secretly-an-ai-powerhouse",
+     "published": "2026-10-06T18:56:43Z"
+    },
+    {
+     "score": 1.0,
+     "title": "The S&P 500 Is Partying at Record Highs: Only 3% of Its Stocks Were Invited",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/equities/26/10/62203364/sp-500-record-high-only-3-percent-stocks-invited",
+     "published": "2026-10-06T19:29:38Z"
+    },
+    {
+     "score": 1.0,
+     "title": "Elon Musk Defends $1 Trillion Fortune Tied to SPCX, TSLA, Slams Bernie Sanders: ‘Takers’ Take From the Makers",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/news/politics/26/10/62208662/elon-musk-defends-1-trillion-fortune-tied-to-spcx-tsla-slams-bernie-sanders-takers-take-from-the-makers",
+     "published": "2026-10-07T05:48:59Z"
+    }
+   ]
+  },
+  "APH": {
+   "articles": 1,
+   "sentiment": 1.0,
+   "label": "偏多",
+   "top": [
+    {
+     "score": 1.0,
+     "title": "The S&P 500 Is Partying at Record Highs: Only 3% of Its Stocks Were Invited",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/equities/26/10/62203364/sp-500-record-high-only-3-percent-stocks-invited",
+     "published": "2026-10-06T19:29:38Z"
+    }
+   ]
+  },
+  "HPE": {
+   "articles": 2,
+   "sentiment": 0.5,
+   "label": "偏多",
+   "top": [
+    {
+     "score": 1.0,
+     "title": "The S&P 500 Is Partying at Record Highs: Only 3% of Its Stocks Were Invited",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/equities/26/10/62203364/sp-500-record-high-only-3-percent-stocks-invited",
+     "published": "2026-10-06T19:29:38Z"
+    },
+    {
+     "score": 0.0,
+     "title": "HPE Announces Four ProLiant Gen13 Servers With AMD's 6th Gen EPYC Processors, First Available Later In 2026",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/quote/HPE",
+     "published": "2026-10-07T13:02:27Z"
+    }
+   ]
+  },
+  "LITE": {
+   "articles": 1,
+   "sentiment": 1.0,
+   "label": "偏多",
+   "top": [
+    {
+     "score": 1.0,
+     "title": "The S&P 500 Is Partying at Record Highs: Only 3% of Its Stocks Were Invited",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/equities/26/10/62203364/sp-500-record-high-only-3-percent-stocks-invited",
+     "published": "2026-10-06T19:29:38Z"
+    }
+   ]
+  },
+  "TMO": {
+   "articles": 1,
+   "sentiment": 1.0,
+   "label": "偏多",
+   "top": [
+    {
+     "score": 1.0,
+     "title": "The S&P 500 Is Partying at Record Highs: Only 3% of Its Stocks Were Invited",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/equities/26/10/62203364/sp-500-record-high-only-3-percent-stocks-invited",
+     "published": "2026-10-06T19:29:38Z"
+    }
+   ]
+  },
+  "VLO": {
+   "articles": 2,
+   "sentiment": 1.0,
+   "label": "偏多",
+   "top": [
+    {
+     "score": 1.0,
+     "title": "The S&P 500 Is Partying at Record Highs: Only 3% of Its Stocks Were Invited",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/equities/26/10/62203364/sp-500-record-high-only-3-percent-stocks-invited",
+     "published": "2026-10-06T19:29:38Z"
+    },
+    {
+     "score": 1.0,
+     "title": "Barclays Maintains Overweight on Valero Energy, Raises Price Target to $441",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/news/26/10/62193918/barclays-maintains-overweight-valero-energy-raises-price-target-441",
+     "published": "2026-10-06T14:42:44Z"
+    }
+   ]
+  },
+  "COST": {
+   "articles": 1,
+   "sentiment": 0.0,
+   "label": "中性",
+   "top": [
+    {
+     "score": 0.0,
+     "title": "$1000 Invested In Costco Wholesale 5 Years Ago Would Be Worth This Much Today",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/news/26/10/62205981/1000-invested-costco-wholesale-5-years-ago-would-be-worth-much-today",
+     "published": "2026-10-06T20:45:36Z"
+    }
+   ]
+  },
+  "CVX": {
+   "articles": 3,
+   "sentiment": -0.333,
+   "label": "略偏空",
+   "top": [
+    {
+     "score": -1.0,
+     "title": "Chevron Swaps Hess Midstream Stake for 50% Lower Bakken Costs — and a $200 Million Payment",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/large-cap/26/10/62214999/chevron-swaps-hess-midstream-stake-for-50-lower-bakken-costs-and-a-200-million-payment",
+     "published": "2026-10-07T12:46:31Z"
+    },
+    {
+     "score": 0.0,
+     "title": "Chevron To Divest Its Ownership Interests In Hess Midstream And DJ Basin Crude Midstream Assets;   Revised Agreements Expected To Reduce Bakken Unit Midstream Costs By About 50%;  To Transfer Hess Midstream Interests And DJ Basin Assets For $200M Cash",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/news/26/10/62206672/chevron-divest-its-ownership-interests-hess-midstream-and-dj-basin-crude-midstream-assets-revised-ag",
+     "published": "2026-10-06T21:17:36Z"
+    },
+    {
+     "score": 0.0,
+     "title": "Robinhood's Investment Chief Says She Prefers Owning Energy Stocks Over ETFs — Should These Stocks Be on Your Radar?",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/equities/26/10/62210506/robinhoods-investment-chief-says-she-prefers-owning-energy-stocks-over-etfs-should-these-stocks-be-on-your-radar",
+     "published": "2026-10-07T09:56:21Z"
+    }
+   ]
+  },
+  "MSTR": {
+   "articles": 3,
+   "sentiment": 0.444,
+   "label": "偏多",
+   "top": [
+    {
+     "score": 1.0,
+     "title": "Robinhood Joins Strategy, Tesla In Holding Bitcoin, Exec Says: 'We Care Deeply About Bitcoin'",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/crypto/cryptocurrency/26/10/62216088/robinhood-joins-strategy-tesla-in-holding-bitcoin-exec-says-we-care-deeply-about-bitcoin",
+     "published": "2026-10-07T13:17:57Z"
+    },
+    {
+     "score": 0.333,
+     "title": "Bitcoin's Rebound Isn't as Strong as It Seems: Watch These Warning Signs",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/crypto/cryptocurrency/26/10/62200044/bitcoins-rebound-isnt-as-strong-as-it-seems-watch-these-warning-signs",
+     "published": "2026-10-06T17:32:21Z"
+    },
+    {
+     "score": 0.0,
+     "title": "Bitcoin, Ethereum, XRP, Dogecoin Dip Ahead of Fed Minutes: Analyst Says $100,000 Could 'Come Back Into Focus'",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/crypto/cryptocurrency/26/10/62208076/bitcoin-ethereum-xrp-dogecoin-crypto-fed-minutes",
+     "published": "2026-10-07T01:53:28Z"
+    }
+   ]
+  },
+  "GS": {
+   "articles": 2,
+   "sentiment": 0.25,
+   "label": "略偏多",
+   "top": [
+    {
+     "score": 0.5,
+     "title": "SpaceX Stock Drops After Hours as Elon Musk-led Company Seeks $40 Billion to Buy Nvidia Chips",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/tech/26/10/62208031/spacex-apollo-40-billion-nvidia-chips-financing",
+     "published": "2026-10-07T01:49:22Z"
+    },
+    {
+     "score": 0.0,
+     "title": "Iran’s Security Chief Blasts Scott Bessent as Crude Oil Prices Remain Volatile: ‘Hormuz Will Not Be Opened by Threats or Pressure’",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/news/politics/26/10/62209272/iran-security-chief-slams-scott-bessent-crude-oil-hormuz-not-opened",
+     "published": "2026-10-07T07:01:53Z"
+    }
+   ]
+  },
+  "PLTR": {
+   "articles": 1,
+   "sentiment": 0.0,
+   "label": "中性",
+   "top": [
+    {
+     "score": 0.0,
+     "title": "Dan Ives Names 5 Potential Tech Winners for 2027 as Investors Underestimate $4 Trillion Spending Wave",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/equities/26/10/62209448/dan-ives-names-5-potential-tech-winners-for-2027-as-investors-underestimate-4-trillion-spending-wave",
+     "published": "2026-10-07T07:22:58Z"
+    }
+   ]
+  },
+  "ORCL": {
+   "articles": 3,
+   "sentiment": 0.333,
+   "label": "略偏多",
+   "top": [
+    {
+     "score": 1.0,
+     "title": "Ray Dalio Says AI Bubble Is ‘Close’ to Bursting as Debt and Rising Rates Raise Red Flags",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/economic-data/26/10/62209975/ray-dalio-ai-classic-bubble-nearing-bursting-point",
+     "published": "2026-10-07T08:52:05Z"
+    },
+    {
+     "score": 0.0,
+     "title": "Anthropic CEO Dario Amodei Took Home $18 Million in 2025 — How His Pay Compares With Google and Amazon CEOs: Report",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/tech/26/10/62211147/anthropic-ceo-dario-amodei-took-home-18-million-in-2025-how-his-pay-compares-with-google-and-amazon-ceos-report",
+     "published": "2026-10-07T10:19:46Z"
+    },
+    {
+     "score": 0.0,
+     "title": "Teladoc Turns Smartphone Cameras Into AI-Powered Vital Sign Monitors",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/news/health-care/26/10/62214223/teladoc-turns-smartphone-cameras-into-ai-powered-vital-sign-monitors",
+     "published": "2026-10-07T12:25:15Z"
+    }
+   ]
+  },
+  "NFLX": {
+   "articles": 1,
+   "sentiment": 0.0,
+   "label": "中性",
+   "top": [
+    {
+     "score": 0.0,
+     "title": "The Emmys Are Moving to Amazon Prime Video — And You Won’t Need a Prime Subscription to Watch",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/tech/26/10/62210129/amazon-prime-video-emmys-streaming-deal-2027",
+     "published": "2026-10-07T09:18:56Z"
+    }
+   ]
+  },
+  "ADBE": {
+   "articles": 1,
+   "sentiment": 0.0,
+   "label": "中性",
+   "top": [
+    {
+     "score": 0.0,
+     "title": "Competitor Analysis: Evaluating Adobe And Competitors In Software Industry",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/news/26/10/62210525/competitor-analysis-evaluating-adobe-and-competitors-software-industry",
+     "published": "2026-10-07T09:59:06Z"
+    }
+   ]
+  },
+  "ADI": {
+   "articles": 1,
+   "sentiment": 0.0,
+   "label": "中性",
+   "top": [
+    {
+     "score": 0.0,
+     "title": "Inquiry Into Analog Devices's Competitor Dynamics In Semiconductors &amp; Semiconductor Equipment Industry",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/news/26/10/62210527/inquiry-analog-devices-s-competitor-dynamics-semiconductors-amp-semiconductor-equipment-industry",
+     "published": "2026-10-07T09:59:09Z"
+    }
+   ]
+  },
+  "BSX": {
+   "articles": 2,
+   "sentiment": 0.0,
+   "label": "中性",
+   "top": [
+    {
+     "score": 0.0,
+     "title": "Boston Scientific Appoints Joseph M. Fitzgerald As EVP And COO, Effective January 1, 2027",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/news/26/10/62210789/boston-scientific-appoints-joseph-m-fitzgerald-evp-and-coo-effective-january-1-2027",
+     "published": "2026-10-07T10:05:26Z"
+    },
+    {
+     "score": 0.0,
+     "title": "Barclays Initiates Coverage On Boston Scientific with Equal-Weight Rating, Announces Price Target of $48",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/news/26/10/62213923/barclays-initiates-coverage-boston-scientific-equal-weight-rating-announces-price-target-48",
+     "published": "2026-10-07T12:18:19Z"
+    }
+   ]
+  },
+  "DHR": {
+   "articles": 1,
+   "sentiment": 0.0,
+   "label": "中性",
+   "top": [
+    {
+     "score": 0.0,
+     "title": "Danaher To Launch Its First AI-powered Autonomous Lab To Help Researchers Develop Custom Antibodies And Other Molecular Tools Faster And More Efficiently; Expected To Operate At Scale In Early 2027",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/news/26/10/62212386/danaher-launch-its-first-ai-powered-autonomous-lab-help-researchers-develop-custom-antibodies-and-ot",
+     "published": "2026-10-07T11:12:05Z"
+    }
+   ]
+  },
+  "ABT": {
+   "articles": 3,
+   "sentiment": 0.444,
+   "label": "偏多",
+   "top": [
+    {
+     "score": 1.0,
+     "title": "This Abbott Analyst Begins Coverage On A Bullish Note; Here Are Top 5 Initiations For Wednesday",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/news/26/10/62214615/this-abbott-analyst-begins-coverage-on-a-bullish-note-here-are-top-5-initiations-for-wednesday-2",
+     "published": "2026-10-07T12:37:31Z"
+    },
+    {
+     "score": 0.333,
+     "title": "Micron To Rally Around 187%? Here Are 10 Top Analyst Forecasts For Wednesday",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/analyst-stock-ratings/price-target/26/10/62213969/micron-to-rally-around-187-here-are-10-top-analyst-forecasts-for-wednesday",
+     "published": "2026-10-07T12:19:47Z"
+    },
+    {
+     "score": 0.0,
+     "title": "Barclays Initiates Coverage On Abbott Laboratories with Overweight Rating, Announces Price Target of $120",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/news/26/10/62213614/barclays-initiates-coverage-abbott-laboratories-overweight-rating-announces-price-target-120",
+     "published": "2026-10-07T12:06:02Z"
+    }
+   ]
+  },
+  "NET": {
+   "articles": 1,
+   "sentiment": 0.0,
+   "label": "中性",
+   "top": [
+    {
+     "score": 0.0,
+     "title": "Here’s How Much You Would Have Made Owning Cloudflare Stock In The Last 5 Years",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/news/26/10/62192297/here-s-how-much-you-would-have-made-owning-cloudflare-stock-last-5-years",
+     "published": "2026-10-06T14:16:07Z"
+    }
+   ]
+  },
+  "SNDK": {
+   "articles": 2,
+   "sentiment": -0.5,
+   "label": "偏空",
+   "top": [
+    {
+     "score": -1.0,
+     "title": "MU, SNDK, SKHY Stocks Decline on Toshiba Storage Fears: Researcher Points to Cantor Note Calling the Pullback a 'Buying Opportunity'",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/equities/26/10/62209966/mu-sndk-skhy-stocks-decline-on-toshiba-storage-fears-researcher-points-to-cantor-note-calling-the-pullback-a-buying-opportunity",
+     "published": "2026-10-07T08:51:48Z"
+    },
+    {
+     "score": 0.0,
+     "title": "Reported Earlier, 'Seagate Said to Vie With Toshiba for TDK’s Hard-Drive Magnetic Heads Unit' - Bloomberg",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/news/26/10/62194029/reported-earlier-seagate-said-vie-toshiba-tdk-s-hard-drive-magnetic-heads-unit-bloomberg",
+     "published": "2026-10-06T14:44:19Z"
+    }
+   ]
+  },
+  "SHOP": {
+   "articles": 1,
+   "sentiment": 1.0,
+   "label": "偏多",
+   "top": [
+    {
+     "score": 1.0,
+     "title": "JP Morgan Maintains Overweight on Shopify, Raises Price Target to $200",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/news/26/10/62194562/jp-morgan-maintains-overweight-shopify-raises-price-target-200",
+     "published": "2026-10-06T14:58:54Z"
+    }
+   ]
+  },
+  "SOFI": {
+   "articles": 1,
+   "sentiment": -1.0,
+   "label": "偏空",
+   "top": [
+    {
+     "score": -1.0,
+     "title": "TD Cowen Maintains Hold on SoFi Technologies, Lowers Price Target to $17.5",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/news/26/10/62194608/td-cowen-maintains-hold-sofi-technologies-lowers-price-target-17-5",
+     "published": "2026-10-06T14:59:38Z"
+    }
+   ]
+  },
+  "LLY": {
+   "articles": 1,
+   "sentiment": 0.0,
+   "label": "中性",
+   "top": [
+    {
+     "score": 0.0,
+     "title": "Cathie Wood's $22M Biotech Shuffle, Dumps One Stock for 21st Straight Session While Other Bets Pile Up",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/etfs/sector-etfs/26/10/62196342/cathie-woods-22m-biotech-shuffle-one-stock-dumped-21st-straight-session-other-bets-keep-piling-up",
+     "published": "2026-10-06T15:46:16Z"
+    }
+   ]
+  },
+  "NOW": {
+   "articles": 5,
+   "sentiment": 0.8,
+   "label": "偏多",
+   "top": [
+    {
+     "score": 1.0,
+     "title": "UBS Maintains Neutral on ServiceNow, Raises Price Target to $150",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/news/26/10/62197147/ubs-maintains-neutral-servicenow-raises-price-target-150",
+     "published": "2026-10-06T16:06:29Z"
+    },
+    {
+     "score": 1.0,
+     "title": "Stifel Maintains Buy on ServiceNow, Raises Price Target to $160",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/news/26/10/62197220/stifel-maintains-buy-servicenow-raises-price-target-160",
+     "published": "2026-10-06T16:08:36Z"
+    },
+    {
+     "score": 1.0,
+     "title": "ServiceNow AI Adoption, Enterprise Spending Catches Analyst Attention",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/large-cap/26/10/62201590/servicenow-ai-adoption-enterprise-spending-catches-analyst-attention",
+     "published": "2026-10-06T18:21:22Z"
+    }
+   ]
+  },
+  "PG": {
+   "articles": 1,
+   "sentiment": 1.0,
+   "label": "偏多",
+   "top": [
+    {
+     "score": 1.0,
+     "title": "Evercore ISI Group Upgrades Procter & Gamble to Outperform, Raises Price Target to $166",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/news/26/10/62197666/evercore-isi-group-upgrades-procter-gamble-outperform-raises-price-target-166",
+     "published": "2026-10-06T16:19:33Z"
+    }
+   ]
+  },
+  "NOK": {
+   "articles": 2,
+   "sentiment": 0.5,
+   "label": "偏多",
+   "top": [
+    {
+     "score": 1.0,
+     "title": "What's Going On With Nokia Stock Tuesday?",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/trading-ideas/movers/26/10/62198787/whats-going-on-with-nokia-stock-tuesday-4",
+     "published": "2026-10-06T16:55:13Z"
+    },
+    {
+     "score": 0.0,
+     "title": "Reported Oct. 5: 'Nokia CEO says data centers would be built ‘2x faster’ without supply constraints' - CNBC",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/news/26/10/62203974/reported-oct-5-nokia-ceo-says-data-centers-would-be-built-2x-faster-without-supply-constraints-cnbc",
+     "published": "2026-10-06T19:52:20Z"
+    }
+   ]
+  },
+  "KLAC": {
+   "articles": 1,
+   "sentiment": -1.0,
+   "label": "偏空",
+   "top": [
+    {
+     "score": -1.0,
+     "title": "Morgan Stanley Maintains Overweight on KLA, Lowers Price Target to $227",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/news/26/10/62199735/morgan-stanley-maintains-overweight-kla-lowers-price-target-227",
+     "published": "2026-10-06T17:21:35Z"
+    }
+   ]
+  },
+  "NEE": {
+   "articles": 1,
+   "sentiment": 0.0,
+   "label": "中性",
+   "top": [
+    {
+     "score": 0.0,
+     "title": "NextEra Energy Says Derivative Suit Settlement Includes $15.5M Insurer Payment To Company, Governance Reforms; Court Hearing December 14",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/news/26/10/62205262/nextera-energy-says-derivative-suit-settlement-includes-15-5m-insurer-payment-company-governance-ref",
+     "published": "2026-10-06T20:18:55Z"
+    }
+   ]
+  },
+  "MS": {
+   "articles": 1,
+   "sentiment": -1.0,
+   "label": "偏空",
+   "top": [
+    {
+     "score": -1.0,
+     "title": "Seagate Technology Holdings (STX) Stock Is Trending After Hours: Here's Why",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/equities/26/10/62208375/seagate-technology-shares-after-hours-toshiba-hdd-expansion",
+     "published": "2026-10-07T03:58:28Z"
+    }
+   ]
+  },
+  "MRNA": {
+   "articles": 1,
+   "sentiment": 0.0,
+   "label": "中性",
+   "top": [
+    {
+     "score": 0.0,
+     "title": "Tempus Announces Expanded Collaboration With Merck And Moderna For Potential Commercialization Of Cancer Vaccine Intismeran Autogene; Terms Not Disclosed",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/quote/MRK",
+     "published": "2026-10-07T12:35:10Z"
+    }
+   ]
+  },
+  "ISRG": {
+   "articles": 1,
+   "sentiment": 0.0,
+   "label": "中性",
+   "top": [
+    {
+     "score": 0.0,
+     "title": "Barclays Initiates Coverage On Intuitive Surgical with Overweight Rating, Announces Price Target of $485",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/news/26/10/62215235/barclays-initiates-coverage-intuitive-surgical-overweight-rating-announces-price-target-485",
+     "published": "2026-10-07T12:53:38Z"
+    }
+   ]
+  },
+  "MDT": {
+   "articles": 1,
+   "sentiment": 0.0,
+   "label": "中性",
+   "top": [
+    {
+     "score": 0.0,
+     "title": "Barclays Initiates Coverage On Medtronic with Equal-Weight Rating, Announces Price Target of $95",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/news/26/10/62215353/barclays-initiates-coverage-medtronic-equal-weight-rating-announces-price-target-95",
+     "published": "2026-10-07T12:57:44Z"
+    }
+   ]
+  },
+  "UBER": {
+   "articles": 3,
+   "sentiment": 1.0,
+   "label": "偏多",
+   "top": [
+    {
+     "score": 1.0,
+     "title": "Uber Expands into Workplace Catering with $2.3 Billion ezCater Acquisition",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/m-a/26/10/62198681/uber-expands-into-workplace-catering-with-2-3-billion-ezcater-acquisition",
+     "published": "2026-10-06T16:50:41Z"
+    },
+    {
+     "score": 1.0,
+     "title": "BTIG Reiterates Buy on Uber Technologies, Maintains $100 Price Target",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/news/26/10/62210480/btig-reiterates-buy-uber-technologies-maintains-100-price-target",
+     "published": "2026-10-07T09:52:55Z"
+    },
+    {
+     "score": 1.0,
+     "title": "Citizens Reiterates Market Outperform on Uber Technologies, Maintains $100 Price Target",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/news/26/10/62216116/citizens-reiterates-market-outperform-uber-technologies-maintains-100-price-target",
+     "published": "2026-10-07T13:19:11Z"
+    }
+   ]
+  }
  },
- "attempts": 2
+ "news_window": "since 2026-10-06T09:40-04:00 (Alpaca/Benzinga, 213 articles, word-list score)",
+ "attempts": 2,
+ "news_attempts": 1
 }
