@@ -1,0 +1,47 @@
+{
+  "id": "s500_historical_quote_source_selection_v1",
+  "registered_at": "2026-10-07T13:33:05.390645+00:00",
+  "period": [
+    "2026-01-02",
+    "2026-10-05"
+  ],
+  "purpose": "Identify documented and authorized historical bidask acquisition route, preserve existing800 sample rows and predefine bounded pilot. No returns, orders or account reads.",
+  "prior_publication_commit": "40fdb6d51e45996d91e5de336fcf08109dc0ba36",
+  "prior_files_sha256": {
+    "study-design.json": "8b96476fda15df31c3e2a25b00fff6044e3bf11493f077bd0cce8567d7f5506c",
+    "selected-contracts.json": "0fc6b4bad0d8230e798f962eb619b0e821aee1d92c2a80c5ee731076793c0bd7",
+    "historical-option-events.json": "be44ca768a9cb6301ea586a618d63049bca63bf293a3abb72837e127efbd2502",
+    "run-summary.json": "f9e54806faf0f4ec3fef5a824a7064b1d0c3889986a1f8114276a0cbbfc7970c",
+    "audit-findings.json": "a414470237e8f7bd8d04f495906fa6f4284214847483f503c0a1358bc9df6b3f"
+  },
+  "vendor_scope": [
+    "Databento",
+    "Massive",
+    "ThetaData",
+    "Cboe DataShop"
+  ],
+  "selection_criteria_in_order": [
+    "official explicit historical US listedoption bidask and sizes, notbars/tradesalone",
+    "2026 period coverage and timestamp/condition semantics with dated source evidence",
+    "cloud compatible supported retrieval and historical contract identity/lifecycle support",
+    "access actually configured and licensed; mere publicdocumentation is not entitlement",
+    "bounded pilot cost explicitly verifiable before billable request; never infer free access from sample/coupon",
+    "limitations and rawlicense/distribution terms preserved"
+  ],
+  "known_credentials_names": [
+    "ALPACA_500_API_KEY",
+    "ALPACA_500_SECRET_KEY"
+  ],
+  "other_provider_credential_readiness": "No relevant environment variable names or runtimebindings observed; unknown if user has provideraccount elsewhere. Do not copy Alpaca credentials to another vendor.",
+  "authorization_boundary": "Public officialdocuments and offline plans only. No sign-up, purchase, agreement acceptance, active paiddata queries, scheduler or order deployment.",
+  "opra_current_denial_policy": "Prior403 agreementnot signed retained; no unchangedrepeat without evidence ofauthorizationstatechange.",
+  "data_capability_vs_execution": "Even actual historical exchange quotes do not prove receipt atdecision time, fillability, capitalavailability or strategyedge.",
+  "planned_artifacts": [
+    "official evidence manifests and vendor comparison",
+    "all800 retained historicalrequest plan rows andfixed20SPY pilot",
+    "cost/entitlement/quotequality gates and source limitations",
+    "independent audit and Chinese report, immutablepublicexchange/codex publication"
+  ],
+  "full_year_claim": "Prior190sessions indexed;10sampled,180notsampled. This pilot is not full-year strategy backtest.",
+  "tests_policy": "No strategyengine or newmirroringtests; independently rebuild request scope, priorhashes, timezones and costs-notknown gates."
+}

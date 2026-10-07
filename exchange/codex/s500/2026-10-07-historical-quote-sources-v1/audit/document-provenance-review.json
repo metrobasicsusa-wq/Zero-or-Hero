@@ -1,0 +1,64 @@
+{
+  "reviewed_at": "2026-10-07T13:40:55.856919+00:00",
+  "status": "document_provenance_and_quoted_passages_verified",
+  "vendors": [
+    {
+      "vendor_directory": "vendor-a/databento",
+      "captured_documents_hash_and_size_verified": 15,
+      "http_status_counts": {
+        "200": 15
+      },
+      "evidence_entries_verified": 36,
+      "exact_quotations_verified": 36
+    },
+    {
+      "vendor_directory": "vendor-a/massive",
+      "captured_documents_hash_and_size_verified": 15,
+      "http_status_counts": {
+        "200": 14,
+        "404": 1
+      },
+      "evidence_entries_verified": 19,
+      "exact_quotations_verified": 33
+    },
+    {
+      "vendor_directory": "vendor-b/theta",
+      "captured_documents_hash_and_size_verified": 16,
+      "http_status_counts": {
+        "200": 16
+      },
+      "evidence_entries_verified": 29,
+      "exact_quotations_verified": 29
+    },
+    {
+      "vendor_directory": "vendor-b/cboe",
+      "captured_documents_hash_and_size_verified": 14,
+      "http_status_counts": {
+        "200": 12,
+        "404": 2
+      },
+      "evidence_entries_verified": 31,
+      "exact_quotations_verified": 31
+    }
+  ],
+  "total_captured_documents": 60,
+  "total_evidence_entries": 115,
+  "total_exact_quotations": 129,
+  "scope": "Local source-body hash/size and exact quoted passage reconciliation. Does not authenticate access, establish license, validate data coverage or certify quote executability.",
+  "historical_quotes_acquired_by_audit": 0,
+  "sha256": {
+    "vendor-a/databento/manifest.json": "68ce3d8a1db292ca7259123b155e5d9fd1125d6242fc760dda2f98d11a76fc6e",
+    "vendor-a/databento/findings.json": "5d553fc6a53955d4668f0a91e2727fb702db37d50e16ac4904303670999aaf71",
+    "vendor-a/databento/findings.md": "087e6c89f6f430906c0f763fb9de2950a06183df955388c08b43398f5d073322",
+    "vendor-a/massive/evidence.json": "a913db61961ab9666b9913a4b768e9a709c79e2d204091eafcee3c7d2f612584",
+    "vendor-a/massive/manifest.json": "b7ac1066efa0ee8e5ccf49a3492ae6d93bc30a02b9ebd62655d3e05574061a94",
+    "vendor-a/massive/findings.json": "60168d70be0c118f6a330b72c2bb42c5cd2660cbd7e4af77f94d3471e11e3ae2",
+    "vendor-a/massive/findings.md": "a73d6b3315ff04b82e75e6dddebde9064ab416c44cf07a67dce86bec61c71d9f",
+    "vendor-b/theta/manifest.json": "0c3603fb67e2f99f0ae3de385506c61eddca6d1405eb5af37db474a0ec735599",
+    "vendor-b/theta/findings.json": "63e26c435cf6ed00da19df41b522a95c2243f18f414953efe225226486fe7173",
+    "vendor-b/theta/findings.md": "3b26976061c0aa88ad8c022ec7a9d9bc86c12053408d20d0f54c456bf3e3008a",
+    "vendor-b/cboe/manifest.json": "5d2dffb15a0345ec36e5fdd7a70bc30c41afbb6145cd59aca3d1cdc14348f073",
+    "vendor-b/cboe/findings.json": "d994b38f4e4078a4a49355b64b1ad3b195c9c4dbb000d24a6a2d1d749faf3ee7",
+    "vendor-b/cboe/findings.md": "da951356aad651d931c2898b91fffac27aa98d5b2c70bb6cbdb7d455a037d723"
+  }
+}

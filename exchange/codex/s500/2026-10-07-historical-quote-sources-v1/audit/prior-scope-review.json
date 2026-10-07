@@ -1,0 +1,47 @@
+{
+  "reviewed_at": "2026-10-07T13:33:54.809312+00:00",
+  "status": "prior_scope_independently_reconciled",
+  "scope": {
+    "historical_rows": 800,
+    "underlying_date_discovery_cells": 400,
+    "underlyings": 40,
+    "sample_dates": 10,
+    "calendar_sessions": 190,
+    "calendar_sessions_not_sampled": 180,
+    "unique_selected_contracts": 598
+  },
+  "selection_statuses": {
+    "selected": 598,
+    "unknown_or_unavailable": 202
+  },
+  "trade_window_statuses": {
+    "events_observed": 400,
+    "no_events_returned": 198,
+    "not_requested_no_selected_contract": 202
+  },
+  "historical_quote_rows_verified": 0,
+  "window": "10:00:00 through 10:00:59.999999999 America/New_York on ten month-first sessions; bars/trades only",
+  "source_interpretation": "No-event-in-one-minute is not evidence of no historical contract, no all-day liquidity, no quote, or no possible trade. Current retrieved contract metadata does not prove historical listing availability.",
+  "downstream_required_denominators": [
+    "all 400 discovery cells",
+    "all 800 call/put rows",
+    "all 598 selected contracts, including 198 without a trade in the old window",
+    "all 202 unresolved contract rows"
+  ],
+  "forbidden_inferences": [
+    "Only 400 rows with trades are the eligible research universe",
+    "One-minute quote probe supports exit simulation or full-year strategy performance",
+    "202 unresolved contracts prove no listing at that historical time",
+    "190 calendar sessions mean 190 sampled sessions",
+    "Historical provider documentation proves this account has access"
+  ],
+  "sha256": {
+    "study-design.json": "8b96476fda15df31c3e2a25b00fff6044e3bf11493f077bd0cce8567d7f5506c",
+    "selected-contracts.json": "0fc6b4bad0d8230e798f962eb619b0e821aee1d92c2a80c5ee731076793c0bd7",
+    "historical-option-events.json": "be44ca768a9cb6301ea586a618d63049bca63bf293a3abb72837e127efbd2502",
+    "historical-reference-results.json": "24992787bc85b81beff581a1af901c14f8723276133e342ddf8b7eced6a0c64b",
+    "session-coverage-plan.json": "4fafa8410b14422af04ff2c0edbead671bf1943a38a7cd2ef1b0ee69a3ae6d50"
+  },
+  "new_market_data_calls": 0,
+  "new_strategy_paths": 0
+}

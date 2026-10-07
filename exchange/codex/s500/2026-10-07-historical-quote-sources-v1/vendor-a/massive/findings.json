@@ -1,0 +1,180 @@
+{
+  "vendor": "Massive (formerly Polygon.io)",
+  "research_date_utc": "2026-10-07",
+  "research_method": "Public official documentation only. No login, account credentials, paid API calls, market-data downloads, subscriptions or installations were used.",
+  "target_window": {
+    "start_inclusive": "2026-01-02",
+    "end_inclusive": "2026-10-05"
+  },
+  "verdict": {
+    "classification": "Strong documented candidate; data availability and user-specific rights remain untested",
+    "historical_coverage": "REST historical quotes and quote flat files explicitly begin 2022-03-07 and include all history on qualifying plans. The requested 2026 interval lies within documented coverage, but individual contracts/days and completeness were not tested.",
+    "sources": [
+      "quotes_correct",
+      "flatfiles_md",
+      "options_overview"
+    ]
+  },
+  "quote_product": {
+    "rest_endpoint": "GET /v3/quotes/{optionsTicker}",
+    "bulk_dataset": "us_options_opra/quotes_v1",
+    "source_and_granularity": "Official overview describes OPRA consolidated quotes and official NBBO; business page advertises tick-by-tick data; bulk quote schema describes top-of-book quotes. These are event quotes, distinct from minute aggregates or snapshots. No sampling cadence is stated for historical quotes. Preservation of every raw OPRA message, filtering, conflation and exact NBBO update semantics are not established by the reviewed endpoint documentation.",
+    "coverage": "Official overview describes all 20 US options exchanges. Business page says equity and index options; overview additionally names ETFs and currencies. Specific contract coverage needs a later entitled check.",
+    "quote_fields": [
+      "ask_exchange",
+      "ask_price",
+      "ask_size",
+      "bid_exchange",
+      "bid_price",
+      "bid_size",
+      "sequence_number",
+      "sip_timestamp"
+    ],
+    "flat_file_additional_field": "ticker",
+    "size_units": "Number of contracts at the quoted price, not underlying shares.",
+    "timestamp": {
+      "field": "sip_timestamp",
+      "unit": "Unix nanoseconds",
+      "meaning": "When the SIP received the quote from the producing exchange",
+      "missing_from_reviewed_schema": [
+        "exchange participant timestamp",
+        "vendor receive timestamp",
+        "quote condition codes",
+        "quote flags"
+      ]
+    },
+    "sequence_number": "Increasing and unique per ticker, not necessarily consecutive. Flat-file docs explicitly say it resets after each trading session/day.",
+    "conditions_limitation": "The overview links a generic condition-code endpoint, but the historical options quote REST and flat-file schemas expose no conditions field. Do not assume quote-condition filtering can be reproduced from these schemas.",
+    "rest_query": "Per-contract timestamp/date filters, timestamp.gte/gt/lte/lt, sort, order; default page 1000 and maximum 50000 records; next_url pagination.",
+    "bulk_delivery": "Compressed CSV over S3-compatible HTTPS, files.massive.com endpoint, flatfiles bucket; previous trading day generally available around 11:00 AM ET the following day.",
+    "live_api_caveat": "WebSocket quote timestamps are Unix milliseconds and the live quote subscription limit is 1000 contracts per connection. WebSocket documentation expressly has no historical coverage; it is not the historical retrieval route.",
+    "sources": [
+      "quotes_correct",
+      "flatfiles",
+      "flatfiles_md",
+      "flatstart",
+      "websocket_quotes",
+      "options_overview",
+      "business_pricing"
+    ]
+  },
+  "point_in_time_contracts": {
+    "list_endpoint": "GET /v3/reference/options/contracts",
+    "detail_endpoint": "GET /v3/reference/options/contracts/{options_ticker}",
+    "historical_controls": "as_of=YYYY-MM-DD on list and detail; expired boolean on list defaults false; filters include underlying_ticker, expiration_date, contract_type and strike_price; pagination maximum 1000.",
+    "documented_history_start": "2014-06-02",
+    "relevant_fields": [
+      "ticker",
+      "underlying_ticker",
+      "contract_type",
+      "expiration_date",
+      "strike_price",
+      "exercise_style",
+      "shares_per_contract",
+      "additional_underlyings",
+      "correction",
+      "primary_exchange"
+    ],
+    "split_and_adjustment_handling": "shares_per_contract and additional_underlyings expose nonstandard deliverables, and the docs link split/merger/spinoff guidance. This supports excluding or explicitly modelling adjusted contracts. A complete point-in-time corporate-action lineage or guarantee that every historical adjustment is faithfully represented was not established. Do not assume 100 shares for every contract or mechanically split-adjust quote prices.",
+    "survivorship_caveat": "Use historical as_of plus expired-contract discovery and preserve contract metadata; a current active-contract list alone is insufficient. No guarantee of exact first-listing intraday time is documented.",
+    "sources": [
+      "contracts",
+      "contract"
+    ]
+  },
+  "pricing": {
+    "currency": "USD",
+    "retrieved_public_monthly_prices": [
+      {
+        "plan": "Options Basic",
+        "usd_per_month": 0,
+        "historical_quotes_included": false
+      },
+      {
+        "plan": "Options Starter",
+        "usd_per_month": 29,
+        "historical_quotes_included": false
+      },
+      {
+        "plan": "Options Developer",
+        "usd_per_month": 79,
+        "historical_quotes_included": false
+      },
+      {
+        "plan": "Options Advanced",
+        "usd_per_month": 199,
+        "historical_quotes_included": true,
+        "restriction": "Individual use; non-professionals only",
+        "historical_quote_access": "All history; real-time REST and end-of-day bulk files"
+      },
+      {
+        "plan": "Options Business",
+        "usd_per_month": 1999,
+        "historical_quotes_included": true,
+        "historical_quote_access": "All history with end-of-day REST and flat files"
+      }
+    ],
+    "business_expansions": [
+      {
+        "name": "Full Market Delayed",
+        "usd_per_month": 499,
+        "purpose": "15-minute delayed trades/quotes; not necessary solely for an already completed historical window"
+      },
+      {
+        "name": "Full Market",
+        "usd_per_month": 1999,
+        "purpose": "Real-time trades/quotes; not necessary solely for an already completed historical window"
+      }
+    ],
+    "price_limitations": "Public monthly list prices are known. Exact user-specific total remains unknown: eligibility, taxes, exchange/non-display rights, order-form exceptions, cloud storage/processing and permitted retention need resolution. No price quote or purchase was requested.",
+    "documentation_discrepancy": "Business pricing card says 2.5 Years Historical Quotes, while endpoint-specific docs explicitly say all history since 2022-03-07; both encompass the requested 2026 interval. Use endpoint-specific history for planning and confirm the commercial entitlement.",
+    "sources": [
+      "pricing",
+      "quotes_correct",
+      "flatfiles_md",
+      "business_pricing",
+      "individual_terms"
+    ]
+  },
+  "rights_and_restrictions": {
+    "individual": "Individuals terms section 2 grants use solely for personal, non-commercial and non-business purposes. Market Data Terms are incorporated by reference but were not fetched within the research cap; individual raw-data retention/redistribution and exchange/non-display details remain unresolved.",
+    "business": "Business terms section 2.2 permits receiving, processing, transmitting, storing and using purchased Information for internal business purposes, subject to entitlements and third-party agreements. Derived works may be used/displayed/distributed only if they do not contain Information as defined in those terms.",
+    "redistribution": "Business section 6.1(d) restricts raw-information dissemination, machine-readable feeds/files to edge users and substitute services. A business plan is not blanket redistribution permission.",
+    "retention": "Business section 11.3 ends use rights and requires deleting related Information, including downloaded files, when the relevant agreement, order form or subscription expires/terminates; deletion certification may be required. Qualifying derived works under 2.2(c) can be retained subject to third-party terms. Do not assume one paid month buys permanent raw-data rights.",
+    "ai_and_third_party_cloud": "Business sections 2.6 and 3.1 make the customer responsible for enabled third-party/AI services and automated requests. Section 6.1(j) prohibits training, fine-tuning or distilling ML/AI models without express order-form permission and prohibits third-party AI tools using the data for their own purposes. Ordinary cloud computation is technically supported but the precise user's cloud/non-display/AI workflow entitlement remains unconfirmed.",
+    "exchange_terms": "Applicable third-party agreements control their data; the business overview advertises no extra exchange fees/approvals for the base plan, but this does not establish rights beyond purchased entitlements.",
+    "sources": [
+      "terms",
+      "individual_terms",
+      "business_terms",
+      "business_pricing"
+    ]
+  },
+  "cloud_and_authentication": {
+    "rest": "HTTPS JSON API at api.massive.com; dashboard-issued API key accepted in Authorization: Bearer header or apiKey query parameter. Prefer header authentication for later implementation to avoid query-string logging.",
+    "sdk": "Official REST quickstart links Python, Go, JavaScript and JVM clients; contracts examples use Python from massive import RESTClient.",
+    "bulk": "S3-compatible HTTPS at files.massive.com with a separate S3 access key and secret key obtained from the dashboard, plus an entitled subscription. Official quickstart supports Python boto3 and common S3 clients.",
+    "desktop_requirement": "The documented REST/S3 access routes do not require a local desktop trading terminal; cloud executability follows from standard HTTPS and SDK delivery, not from a test performed here.",
+    "verification_status": "Documentation transport only was verified. No vendor API/S3 authentication, credential availability, market-data entitlement or SDK functionality was tested.",
+    "sources": [
+      "reststart",
+      "flatstart",
+      "contracts"
+    ]
+  },
+  "recommended_later_validation": [
+    "Confirm personal versus business/professional status and cloud/non-display use; obtain explicit retention and any AI/ML/redistribution terms before purchasing.",
+    "Use historical contract metadata for both active and expired contracts; explicitly handle adjusted deliverables, splits and symbol changes.",
+    "On an authorized small sample covering target-window edges, expiry and an adjusted contract, verify event counts, timestamps, duplicate/order behavior, empty days, quote validity, crossed/locked markets and gaps.",
+    "For narrow contract lists use paginated REST; estimate full-market flat-file storage/transfer before bulk acquisition. No target-universe byte estimate was obtained.",
+    "Ask the vendor whether historical quotes include every NBBO event, any conflation/filtering, and accessible condition/status information; keep unresolved semantics explicit."
+  ],
+  "evidence": {
+    "manifest": "manifest.json",
+    "requested_pages": 15,
+    "successful_pages": 14,
+    "failed_pages": 1,
+    "failure_summary": "Initial guessed quote URL returned HTTP 404; response body retained. Correct trades-quotes path succeeded. No network denial was observed.",
+    "exact_quotations": "evidence.json"
+  }
+}

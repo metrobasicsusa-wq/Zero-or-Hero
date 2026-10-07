@@ -1,0 +1,308 @@
+{
+  "vendor": "Massive",
+  "created_date_utc": "2026-10-07",
+  "scope": "Short exact quotations derived only from the 15 already-captured official public documentation responses; no new requests. HTML quotations use retained plain-text extraction and cite original body SHA-256.",
+  "evidence": [
+    {
+      "evidence_id": "history",
+      "claim": "Historical options quote history begins 2022-03-07.",
+      "document_id": "quotes_correct",
+      "url": "https://massive.com/docs/rest/options/trades-quotes/quotes.md",
+      "retrieved_at_utc": "2026-10-07T13:32:57.279488+00:00",
+      "http_status": 200,
+      "body_sha256": "ed6e1f7ce5cc2680415e44af727ffa9c5daac7a96ae9924da8c6a636531c0620",
+      "quotation_representation": "original Markdown body",
+      "section": "Plan History",
+      "exact_quotations": [
+        "**Plan History:** Records date back to March 7, 2022"
+      ]
+    },
+    {
+      "evidence_id": "quote_plan_individual",
+      "claim": "Historical quote endpoint includes Advanced and excludes lower individual plans.",
+      "document_id": "quotes_correct",
+      "url": "https://massive.com/docs/rest/options/trades-quotes/quotes.md",
+      "retrieved_at_utc": "2026-10-07T13:32:57.279488+00:00",
+      "http_status": 200,
+      "body_sha256": "ed6e1f7ce5cc2680415e44af727ffa9c5daac7a96ae9924da8c6a636531c0620",
+      "quotation_representation": "original Markdown body",
+      "section": "Plan Access / Individual Plans",
+      "exact_quotations": [
+        "| Options Basic | Not included |\n| Options Starter | Not included |\n| Options Developer | Not included |\n| Options Advanced | Included |"
+      ]
+    },
+    {
+      "evidence_id": "quote_plan_business",
+      "claim": "Business historical quote endpoint is included, EOD on base plan, with all history.",
+      "document_id": "quotes_correct",
+      "url": "https://massive.com/docs/rest/options/trades-quotes/quotes.md",
+      "retrieved_at_utc": "2026-10-07T13:32:57.279488+00:00",
+      "http_status": 200,
+      "body_sha256": "ed6e1f7ce5cc2680415e44af727ffa9c5daac7a96ae9924da8c6a636531c0620",
+      "quotation_representation": "original Markdown body",
+      "section": "Plan Access / Plan Recency / Plan History",
+      "exact_quotations": [
+        "| Options Business | Included |\n| Options Business + Expansion | Included |",
+        "| Options Business | End-of-day |",
+        "| Options Business | All history |"
+      ]
+    },
+    {
+      "evidence_id": "advanced_price_eligibility",
+      "claim": "Advanced public list price is $199/month, individual and non-professional only.",
+      "document_id": "pricing",
+      "url": "https://massive.com/pricing?product=options",
+      "retrieved_at_utc": "2026-10-07T13:32:17.200106+00:00",
+      "http_status": 200,
+      "body_sha256": "9472bebc47aae145520b97c91efcaed47574ec84af5e3fbcc89f944844bf08a3",
+      "quotation_representation": "HTML text extraction preserving text-segment line breaks",
+      "section": "Options Advanced pricing card",
+      "exact_quotations": [
+        "Options Advanced\nGreat for real-time data\n$199\n/month\nBilled monthly",
+        "Individual use\nNon-pros only"
+      ]
+    },
+    {
+      "evidence_id": "business_price",
+      "claim": "Options Business public list price is $1,999/month.",
+      "document_id": "business_pricing",
+      "url": "https://massive.com/business-options",
+      "retrieved_at_utc": "2026-10-07T13:32:57.513789+00:00",
+      "http_status": 200,
+      "body_sha256": "c0faaa4759c514960ad3c600cc1016ed532bd1534ab48dfcb6148d1a3855c0ab",
+      "quotation_representation": "HTML text extraction preserving text-segment line breaks",
+      "section": "Options Business pricing card",
+      "exact_quotations": [
+        "Options Business\nPerfect for getting up and running instantly.\n$1,999\n/month\nBilled monthly"
+      ]
+    },
+    {
+      "evidence_id": "sip_timestamp",
+      "claim": "Historical quotes document a nanosecond SIP receipt timestamp.",
+      "document_id": "quotes_correct",
+      "url": "https://massive.com/docs/rest/options/trades-quotes/quotes.md",
+      "retrieved_at_utc": "2026-10-07T13:32:57.279488+00:00",
+      "http_status": 200,
+      "body_sha256": "ed6e1f7ce5cc2680415e44af727ffa9c5daac7a96ae9924da8c6a636531c0620",
+      "quotation_representation": "original Markdown body",
+      "section": "Response Attributes / sip_timestamp",
+      "exact_quotations": [
+        "The nanosecond accuracy SIP Unix Timestamp. This is the timestamp of when the SIP received this quote from the exchange which produced it."
+      ]
+    },
+    {
+      "evidence_id": "quote_size_units",
+      "claim": "Bid/ask size represents contracts.",
+      "document_id": "quotes_correct",
+      "url": "https://massive.com/docs/rest/options/trades-quotes/quotes.md",
+      "retrieved_at_utc": "2026-10-07T13:32:57.279488+00:00",
+      "http_status": 200,
+      "body_sha256": "ed6e1f7ce5cc2680415e44af727ffa9c5daac7a96ae9924da8c6a636531c0620",
+      "quotation_representation": "original Markdown body",
+      "section": "Response Attributes / ask_size and bid_size",
+      "exact_quotations": [
+        "The ask size. This represents the number of contracts sellers are offering at the given ask price.",
+        "The bid size. This represents the number of contracts buyers are bidding for at the given bid price."
+      ]
+    },
+    {
+      "evidence_id": "top_of_book",
+      "claim": "Bulk dataset is top-of-book quotes with nanosecond timestamps.",
+      "document_id": "flatfiles_md",
+      "url": "https://massive.com/docs/flat-files/options/quotes.md",
+      "retrieved_at_utc": "2026-10-07T13:32:57.280579+00:00",
+      "http_status": 200,
+      "body_sha256": "6a0c88489c829fd4a92585e90c52bea3e6f5d0e85e9e37b49293133d2fd4beb7",
+      "quotation_representation": "original Markdown body",
+      "section": "Description",
+      "exact_quotations": [
+        "Top of book quotes with nanosecond timestamps from all U.S. options markets including CBOE, NYSE, and NASDAQ, made available as a daily downloadable S3 file."
+      ]
+    },
+    {
+      "evidence_id": "tick_data",
+      "claim": "Vendor advertises tick-by-tick granularity for the full options market.",
+      "document_id": "business_pricing",
+      "url": "https://massive.com/business-options",
+      "retrieved_at_utc": "2026-10-07T13:32:57.513789+00:00",
+      "http_status": 200,
+      "body_sha256": "c0faaa4759c514960ad3c600cc1016ed532bd1534ab48dfcb6148d1a3855c0ab",
+      "quotation_representation": "HTML text extraction preserving text-segment line breaks",
+      "section": "Access to individual trades & quotes",
+      "exact_quotations": [
+        "Tick by tick movements.\nGet advanced, granular insights with comprehensive exchange data."
+      ]
+    },
+    {
+      "evidence_id": "opra_nbbo",
+      "claim": "Official overview describes OPRA consolidated NBBO.",
+      "document_id": "options_overview",
+      "url": "https://massive.com/docs/rest/options/overview.md",
+      "retrieved_at_utc": "2026-10-07T13:32:57.710931+00:00",
+      "http_status": 200,
+      "body_sha256": "b41c29e333e229fe9b5cec84daa12947ed54d6058b1c008d83bf83c399fb53aa",
+      "quotation_representation": "original Markdown body",
+      "section": "Data sources",
+      "exact_quotations": [
+        "Exchanges provide their data to OPRA, which consolidates it into a single feed containing the official National Best Bid and Offer (NBBO) and trade information."
+      ]
+    },
+    {
+      "evidence_id": "contract_asof_expired",
+      "claim": "Historical contract lookup supports as_of and expired filters.",
+      "document_id": "contracts",
+      "url": "https://massive.com/docs/rest/options/contracts/all-contracts",
+      "retrieved_at_utc": "2026-10-07T13:32:17.200640+00:00",
+      "http_status": 200,
+      "body_sha256": "3d4a11d61d768b84fbf7ae18efde258f74df324117b1e1f659ed65fa056dfada",
+      "quotation_representation": "HTML text extraction preserving text-segment line breaks",
+      "section": "Query Parameters",
+      "exact_quotations": [
+        "Specify a point in time for contracts as of this date with format YYYY-MM-DD. Defaults to today's date.",
+        "Query for expired contracts. Default is false."
+      ]
+    },
+    {
+      "evidence_id": "adjusted_deliverables",
+      "claim": "Contract metadata documents shares_per_contract and additional deliverables.",
+      "document_id": "contract",
+      "url": "https://massive.com/docs/rest/options/contracts/contract-overview",
+      "retrieved_at_utc": "2026-10-07T13:32:17.201149+00:00",
+      "http_status": 200,
+      "body_sha256": "8d6187bfcfa85f7c91d9768a8f3f8eac230e85880837eaa191b7ea985811c6f4",
+      "quotation_representation": "HTML text extraction preserving text-segment line breaks",
+      "section": "Response Attributes",
+      "exact_quotations": [
+        "If an option contract has additional underlyings or deliverables associated with it, they will appear here.",
+        "The number of shares per contract for this contract."
+      ]
+    },
+    {
+      "evidence_id": "personal_only",
+      "claim": "Individual terms restrict use to personal non-commercial non-business purposes.",
+      "document_id": "individual_terms",
+      "url": "https://massive.com/legal/individuals-terms-of-service",
+      "retrieved_at_utc": "2026-10-07T13:32:57.281413+00:00",
+      "http_status": 200,
+      "body_sha256": "179bfa05bdb4b385cf383ca3d0b40c062fb32a904383b6c5c176ae2ea62070bb",
+      "quotation_representation": "HTML text extraction preserving text-segment line breaks",
+      "section": "2. Access Grant",
+      "exact_quotations": [
+        "solely for your own personal, non-commercial, and non-business\npurposes."
+      ]
+    },
+    {
+      "evidence_id": "business_internal_storage",
+      "claim": "Business information grant includes storing/processing within entitlements for internal business purposes.",
+      "document_id": "business_terms",
+      "url": "https://massive.com/legal/businesses-terms-of-service",
+      "retrieved_at_utc": "2026-10-07T13:32:57.282194+00:00",
+      "http_status": 200,
+      "body_sha256": "ed6f15fc8b191361e69bfdfdd1c37a840cda98a379bf4e47a7b5de9d4bf1069d",
+      "quotation_representation": "HTML text extraction preserving text-segment line breaks",
+      "section": "2.2 Information Access Grant",
+      "exact_quotations": [
+        "to access, receive, process, transmit, store, and use the Information available via the Services solely (a) for Customer's internal business purposes;"
+      ]
+    },
+    {
+      "evidence_id": "retention_deletion",
+      "claim": "Business terms require deletion of related information including downloads after relevant agreement/order/subscription termination.",
+      "document_id": "business_terms",
+      "url": "https://massive.com/legal/businesses-terms-of-service",
+      "retrieved_at_utc": "2026-10-07T13:32:57.282194+00:00",
+      "http_status": 200,
+      "body_sha256": "ed6f15fc8b191361e69bfdfdd1c37a840cda98a379bf4e47a7b5de9d4bf1069d",
+      "quotation_representation": "HTML text extraction preserving text-segment line breaks",
+      "section": "11.3 Effect of Termination",
+      "exact_quotations": [
+        "Upon expiration or termination of this Agreement, an Order Form, or a subscription for any reason",
+        "Customer must delete all related Information in its possession or control, including downloaded files, and certify the deletion on request"
+      ]
+    },
+    {
+      "evidence_id": "ml_permission",
+      "claim": "Model training/fine-tuning/distillation requires express Order Form permission.",
+      "document_id": "business_terms",
+      "url": "https://massive.com/legal/businesses-terms-of-service",
+      "retrieved_at_utc": "2026-10-07T13:32:57.282194+00:00",
+      "http_status": 200,
+      "body_sha256": "ed6f15fc8b191361e69bfdfdd1c37a840cda98a379bf4e47a7b5de9d4bf1069d",
+      "quotation_representation": "HTML text extraction preserving text-segment line breaks",
+      "section": "6.1(j) Use Restrictions",
+      "exact_quotations": [
+        "use the Information to train, fine-tune, or distill any machine-learning or artificial-intelligence model unless an Order Form expressly permits it"
+      ]
+    },
+    {
+      "evidence_id": "rest_auth",
+      "claim": "REST API accepts dashboard API key in query or Authorization Bearer header.",
+      "document_id": "reststart",
+      "url": "https://massive.com/docs/rest/quickstart",
+      "retrieved_at_utc": "2026-10-07T13:32:17.810802+00:00",
+      "http_status": 200,
+      "body_sha256": "0e4b8cca4e58df68acc35e38293689e850e43a4e2ecc1a19053f0ecb0a97fe22",
+      "quotation_representation": "HTML text extraction preserving text-segment line breaks",
+      "section": "Authenticate Your Request",
+      "exact_quotations": [
+        "You can include your API key in two ways:",
+        "?apiKey=YOUR_API_KEY",
+        "Authorization:\nBearer\nYOUR_API_KEY"
+      ]
+    },
+    {
+      "evidence_id": "s3_auth",
+      "claim": "Bulk delivery uses a subscription plus separate S3 access/secret credentials at HTTPS endpoint.",
+      "document_id": "flatstart",
+      "url": "https://massive.com/docs/flat-files/quickstart.md",
+      "retrieved_at_utc": "2026-10-07T13:32:57.587001+00:00",
+      "http_status": 200,
+      "body_sha256": "552bbff405009f74bf2b54be8493381473101e3312ac88db4c4003cf0f16d3da",
+      "quotation_representation": "original Markdown body",
+      "section": "Setting Up S3 Access",
+      "exact_quotations": [
+        "Obtain your unique S3 Access Key and Secret Key from your [Dashboard](https://massive.com/dashboard/keys).",
+        "**Endpoint:** `https://files.massive.com`",
+        "**Bucket Name:** `flatfiles`"
+      ]
+    },
+    {
+      "evidence_id": "bulk_history_plan",
+      "claim": "Quote bulk files have same history start, Advanced/Business entitlement, and next-day publication time.",
+      "document_id": "flatfiles_md",
+      "url": "https://massive.com/docs/flat-files/options/quotes.md",
+      "retrieved_at_utc": "2026-10-07T13:32:57.280579+00:00",
+      "http_status": 200,
+      "body_sha256": "6a0c88489c829fd4a92585e90c52bea3e6f5d0e85e9e37b49293133d2fd4beb7",
+      "quotation_representation": "original Markdown body",
+      "section": "Plan Access / Plan Recency / Plan History",
+      "exact_quotations": [
+        "**Plan History:** Records date back to March 7, 2022",
+        "| Options Advanced | Included |",
+        "| Options Business | Included |",
+        "**Plan Recency:** Updated at 11a ET to include the previous day"
+      ]
+    }
+  ],
+  "schema_inspections": [
+    {
+      "inspection_id": "quote_schema_absences",
+      "document_id": "quotes_correct",
+      "url": "https://massive.com/docs/rest/options/trades-quotes/quotes.md",
+      "retrieved_at_utc": "2026-10-07T13:32:57.279488+00:00",
+      "body_sha256": "ed6e1f7ce5cc2680415e44af727ffa9c5daac7a96ae9924da8c6a636531c0620",
+      "type": "schema inspection; not a vendor quotation",
+      "documented_quote_record_fields": [
+        "ask_exchange",
+        "ask_price",
+        "ask_size",
+        "bid_exchange",
+        "bid_price",
+        "bid_size",
+        "sequence_number",
+        "sip_timestamp"
+      ],
+      "observation": "No quote condition/flag, participant timestamp or vendor receive timestamp field is listed in this historical options quote response schema. This does not establish that the vendor cannot supply them through any other product."
+    }
+  ]
+}

@@ -1,0 +1,82 @@
+{
+  "registered_at": "2026-10-07T13:43:59.813001+00:00",
+  "purpose": "Provider-specific unresolved adaptations for existingfrozen800row historyplan; no requests executed andno sample/gate relaxed.",
+  "generic_request_plan_sha256": "dd94361f781d198c6397570814a5de2c8864eee6ddb506820c26015825a0d31a",
+  "evidence_sha256": {
+    "vendor-a/databento/findings.json": "5d553fc6a53955d4668f0a91e2727fb702db37d50e16ac4904303670999aaf71",
+    "vendor-a/massive/findings.json": "60168d70be0c118f6a330b72c2bb42c5cd2660cbd7e4af77f94d3471e11e3ae2",
+    "vendor-a/massive/evidence.json": "a913db61961ab9666b9913a4b768e9a709c79e2d204091eafcee3c7d2f612584",
+    "vendor-b/theta/findings.json": "63e26c435cf6ed00da19df41b522a95c2243f18f414953efe225226486fe7173",
+    "vendor-b/cboe/findings.json": "d994b38f4e4078a4a49355b64b1ad3b195c9c4dbb000d24a6a2d1d749faf3ee7"
+  },
+  "inherited_quality_gate": "Realhistoricalbidask/sizeconditionmapping andtimestampsemantics remainrequired; missingconditionsorunitmetadata isunknown, not an automaticpass.",
+  "provider_adaptations": [
+    {
+      "provider": "ThetaData",
+      "conditional_priority": "lowest_publicly_verified_monthly_tick_tier",
+      "documented_plan": "Options Standard",
+      "monthly_list_usd": 80,
+      "time_scope": "2016onward tier advertised; no actual2026dataobtained",
+      "quote_route": "/v3/option/history/quote; interval=tick explicitly, onehistoricaldate perrequest",
+      "trap": "Defaultinterval=1s; Value40/month minutequotes nottick. Recent7day minuteflatfile notwhole2026archive.",
+      "must_resolve_before_data": [
+        "Personal/professionalstatus and applicable storage/cloud/use terms",
+        "SDKgRPC orLinuxterminal supportedproxy/network/auth pathway; no currentTheta secret",
+        "Generalhistorytimestamp timezone/event-vs-grid semantics, sizeunits andconditionmappings",
+        "Activitybasedhistoricalchain isnotcompleteasoflisting master; multiplier/deliverables andadjustment lineage independentverification",
+        "Exactrequestendinclusivity andboundaryfilters; do not assumegeneric65secparams verbatim"
+      ]
+    },
+    {
+      "provider": "Massive",
+      "conditional_priority": "documented_HTTPS_historical_quote_route",
+      "documented_plan": "Options Advanced individual/nonprofessional ifqualified",
+      "monthly_list_usd": 199,
+      "time_scope": "Historicalquotes since2022-03-07; actual2026contractcoverageuntested",
+      "quote_route": "GET https://api.massive.com/v3/quotes/{optionsTicker}; documentedtimestamp.gte/lt, sorttimestamp, orderasc, boundedpagination",
+      "time_adapter": "sip_timestamp isSIPreceipt nanoseconds, notexchangeevent oruserreceipt. Do notrenameasgeneric eventtime; retaindistinctroles andbounds.",
+      "must_resolve_before_data": [
+        "Actualplaneligibility, properlicense/retention/cloudresearch rights andsecureMASSIVE_API_KEY binding ifselected",
+        "Historicalquotes have noquotecondition/flags; require documentedfiltering/nonfirm semantics or retainineligibility underexistinggate",
+        "Provideras_ofcontractmetadata, explicitpremium multiplier reconciliation andadditionalunderlyings; shares_per_contractnotautomaticallypremium multiplier",
+        "Pagination/completeness/sequence reset andsource cutoff; do notfollowunvalidatednext_url withcredentials",
+        "Actualall-incontractprice/taxes andbudget approvalbeforepurchase; Basic0/Starter29/Developer79 lackhistoricalquotes"
+      ]
+    },
+    {
+      "provider": "Databento",
+      "conditional_priority": "technical_candidate_pending_readable_product_and_license_evidence",
+      "monthly_list_usd": null,
+      "time_scope": "OPRA.PILLAR identifierverified; actualdatasetcoverage/schemaunknown",
+      "quote_route": "SupportedhistoricalSDK after legitimatelyconfiguredaccess; list_schemas/get_dataset_range/get_cost methods documented generically",
+      "time_adapter": "get_range bounds filterts_recv ifpresent else ts_event. Generic65s eventwindow isNOT directlyanAPIrequest. Need separatelyregisteredreceive-window anddelay/boundary policy; unboundedlatency means eventcompletenesscannotbeasserted.",
+      "must_resolve_before_data": [
+        "ReadableOPRA productscope,currentpricingandapplicablelicense; clientopensourcelicense doesnotgrantmarketdatarights",
+        "Account-entitleddataset/schema/range metadata; no keycurrentlyobserved",
+        "Metadatarequestchargingsemantics beforecallingcostendpoint; cost includesquotes,definitions,symbology andotherbillablecalls",
+        "Schema cmbp1 vs intervalcbbo vs trade-triggeredtcbbo; fullcondition/correctionmapping andtyped instrumentdefinitions",
+        "HTTPS BasicAuth/proxy credentialinjection compatibility andverifieddestination"
+      ]
+    },
+    {
+      "provider": "Cboe DataShop",
+      "conditional_priority": "minute_snapshot_comparison_only_not_tick_replacement",
+      "monthly_list_usd": null,
+      "time_scope": "Intervalsproduct2012onward;FAQ2010discrepancy;2026bracketedbutnotactuallyqueried",
+      "quote_route": "HistoricalOptionQuoteIntervalsfile order; tickrequiresseparatecontact/productspecification andquote",
+      "time_adapter": "quote_datetime is intervalend snapshot inUS Eastern, notper-updateeventtimestamp. No5sagefreshness inference.",
+      "must_resolve_before_data": [
+        "Finalhistoricalorderprice; unconfiguredsubtotal0.00 isnotfreequote; AllAccessAPItierpricing isdifferentproduct",
+        "Quotecondition/seq/corrections absent; standaloneintervalcannotpasscurrenttickqualitygate",
+        "June22 2026 NBBOsizesmethodchange: latermostrecentpricechangewithininterval vsolderlatestsize; segmentedanalysisneeded",
+        "Applicableinternaluse/orderexceptions/cloudaccess andretentionterms; no blanketclaimallpersonalbacktestingbanned",
+        "SupportedSFTPnetworkgrant/account plusdeliveryexpiry; currentTCPdestinationsunset",
+        "Completehistoricalidentity/multiplier/deliverables stillmissing"
+      ]
+    }
+  ],
+  "paid_request_or_purchase_authorized": false,
+  "vendor_credential_values_received": false,
+  "generic_window_plan_overwritten": false,
+  "primary_quality_gate_relaxed": false
+}

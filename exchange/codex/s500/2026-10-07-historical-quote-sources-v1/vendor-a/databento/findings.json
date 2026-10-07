@@ -1,0 +1,434 @@
+{
+  "vendor": "Databento",
+  "research_scope": "Read-only official public documentation for historical US options bid/ask, S500, 2026-01-02 through 2026-10-05 inclusive",
+  "generated_at_utc": "2026-10-07T13:36:36.696802Z",
+  "retrieval_count": 15,
+  "source_classes": {
+    "javascript_shells": 6,
+    "official_sdk_source_documents": 9
+  },
+  "claims": [
+    {
+      "id": "opra_dataset_identity",
+      "status": "partially_verified",
+      "finding": "The official SDK names the dataset OPRA.PILLAR. This confirms an identifier, not the historical start, end, availability or scope of U.S. options contracts.",
+      "evidence": [
+        {
+          "document_id": "publishers-sdk",
+          "url": "https://raw.githubusercontent.com/databento/databento-python/main/databento/common/publishers.py",
+          "retrieved_at_utc": "2026-10-07T13:33:30.753896Z",
+          "body_sha256": "9ff10e179995285f2821bfcc9e94b9d35035739a063ba38b1bb9f451ee652861",
+          "quote": "OPRA_PILLAR = \"OPRA.PILLAR\"",
+          "source_line": 825
+        },
+        {
+          "document_id": "metadata-sdk",
+          "url": "https://raw.githubusercontent.com/databento/databento-python/main/databento/historical/api/metadata.py",
+          "retrieved_at_utc": "2026-10-07T13:33:00.415557Z",
+          "body_sha256": "f6e0d1dac704b017597b270a6ef5c7f21d8b446b4bb3b35d4fceddfae524d890",
+          "quote": "Request the available range for the dataset given the user's",
+          "source_line": 245
+        }
+      ],
+      "limitations": [
+        "No authenticated metadata.get_dataset_range call was made.",
+        "2026-01-02 through 2026-10-05 coverage and completeness remain unverified."
+      ]
+    },
+    {
+      "id": "documentation_failure",
+      "status": "verified_observation",
+      "finding": "OPRA dataset, MBP-1, pricing, terms, and two text-documentation discovery URLs returned HTTP 200 JavaScript shells; their requested content is unknown.",
+      "evidence": [
+        {
+          "document_id": "opra",
+          "url": "https://databento.com/docs/venues-and-datasets/opra-pillar",
+          "retrieved_at_utc": "2026-10-07T13:31:59.956449Z",
+          "body_sha256": "8051ccd30c54fd0f51f9f4b317ca2412efb5312f59a5766eb5149c4ef4fc9493",
+          "quote": "You need to enable JavaScript to run this app",
+          "source_line": 1
+        }
+      ],
+      "limitations": [
+        "Repeated shell hashes are preserved in manifest.json; HTTP 200 is not evidence of product coverage or legal terms.",
+        "No browser execution, hidden API reconstruction, login, or bypass was attempted."
+      ]
+    },
+    {
+      "id": "quote_trade_sampling_distinction",
+      "status": "verified_generic_format",
+      "finding": "Generic DBN schemas distinguish cmbp-1 consolidated BBO, interval-sampled cbbo-1s/cbbo-1m, and tbbo/tcbbo observations at trade events. trades and OHLCV are trade-price products. The public source does not establish which schemas are available for OPRA.PILLAR or their date ranges.",
+      "evidence": [
+        {
+          "document_id": "enums-dbn",
+          "url": "https://raw.githubusercontent.com/databento/dbn/main/rust/dbn/src/enums.rs",
+          "retrieved_at_utc": "2026-10-07T13:33:00.780162Z",
+          "body_sha256": "5017ea98cc1a80a11b101b8c0e79badd34ef0cf45e0c1ecd204e9a0c837f5b38",
+          "quote": "/// Consolidated best bid and offer.",
+          "source_line": 760
+        },
+        {
+          "document_id": "enums-dbn",
+          "url": "https://raw.githubusercontent.com/databento/dbn/main/rust/dbn/src/enums.rs",
+          "retrieved_at_utc": "2026-10-07T13:33:00.780162Z",
+          "body_sha256": "5017ea98cc1a80a11b101b8c0e79badd34ef0cf45e0c1ecd204e9a0c837f5b38",
+          "quote": "/// Consolidated best bid and offer subsampled at one-second intervals, in addition to",
+          "source_line": 763
+        },
+        {
+          "document_id": "enums-dbn",
+          "url": "https://raw.githubusercontent.com/databento/dbn/main/rust/dbn/src/enums.rs",
+          "retrieved_at_utc": "2026-10-07T13:33:00.780162Z",
+          "body_sha256": "5017ea98cc1a80a11b101b8c0e79badd34ef0cf45e0c1ecd204e9a0c837f5b38",
+          "quote": "/// Consolidated best bid and offer subsampled at one-minute intervals, in addition to",
+          "source_line": 767
+        },
+        {
+          "document_id": "enums-dbn",
+          "url": "https://raw.githubusercontent.com/databento/dbn/main/rust/dbn/src/enums.rs",
+          "retrieved_at_utc": "2026-10-07T13:33:00.780162Z",
+          "body_sha256": "5017ea98cc1a80a11b101b8c0e79badd34ef0cf45e0c1ecd204e9a0c837f5b38",
+          "quote": "/// All trade events with the consolidated best bid and offer (CBBO) immediately **before**",
+          "source_line": 771
+        },
+        {
+          "document_id": "enums-dbn",
+          "url": "https://raw.githubusercontent.com/databento/dbn/main/rust/dbn/src/enums.rs",
+          "retrieved_at_utc": "2026-10-07T13:33:00.780162Z",
+          "body_sha256": "5017ea98cc1a80a11b101b8c0e79badd34ef0cf45e0c1ecd204e9a0c837f5b38",
+          "quote": "/// All trade events with the best bid and offer (BBO) immediately **before**",
+          "source_line": 725
+        }
+      ],
+      "limitations": [
+        "Use metadata.list_schemas for OPRA.PILLAR after account authorization, then validate whether quote-event completeness and venue scope meet S500 needs.",
+        "Sampled BBO or trade-event BBO cannot be assumed to preserve every intraday quote update."
+      ]
+    },
+    {
+      "id": "fields_timestamps_sizes",
+      "status": "verified_generic_format",
+      "finding": "Generic consolidated BBO records include bid/ask price, bid/ask size and best-bid/ask publisher IDs. RecordHeader has ts_event in nanoseconds, Cmbp1Msg has ts_recv in nanoseconds, and flags describe message characteristics and data quality. In CbboMsg, price/size are last-trade fields; quotes live in levels. This is format-level evidence only.",
+      "evidence": [
+        {
+          "document_id": "records-dbn",
+          "url": "https://raw.githubusercontent.com/databento/dbn/main/rust/dbn/src/record.rs",
+          "retrieved_at_utc": "2026-10-07T13:33:00.417609Z",
+          "body_sha256": "0658f5d38ae79f48768fe93cb71828a169947eaaff14aea72cd53972288fa744",
+          "quote": "pub bid_px: i64,",
+          "source_line": 142
+        },
+        {
+          "document_id": "records-dbn",
+          "url": "https://raw.githubusercontent.com/databento/dbn/main/rust/dbn/src/record.rs",
+          "retrieved_at_utc": "2026-10-07T13:33:00.417609Z",
+          "body_sha256": "0658f5d38ae79f48768fe93cb71828a169947eaaff14aea72cd53972288fa744",
+          "quote": "pub ask_px: i64,",
+          "source_line": 149
+        },
+        {
+          "document_id": "records-dbn",
+          "url": "https://raw.githubusercontent.com/databento/dbn/main/rust/dbn/src/record.rs",
+          "retrieved_at_utc": "2026-10-07T13:33:00.417609Z",
+          "body_sha256": "0658f5d38ae79f48768fe93cb71828a169947eaaff14aea72cd53972288fa744",
+          "quote": "pub bid_sz: u32,",
+          "source_line": 152
+        },
+        {
+          "document_id": "records-dbn",
+          "url": "https://raw.githubusercontent.com/databento/dbn/main/rust/dbn/src/record.rs",
+          "retrieved_at_utc": "2026-10-07T13:33:00.417609Z",
+          "body_sha256": "0658f5d38ae79f48768fe93cb71828a169947eaaff14aea72cd53972288fa744",
+          "quote": "pub ask_sz: u32,",
+          "source_line": 155
+        },
+        {
+          "document_id": "records-dbn",
+          "url": "https://raw.githubusercontent.com/databento/dbn/main/rust/dbn/src/record.rs",
+          "retrieved_at_utc": "2026-10-07T13:33:00.417609Z",
+          "body_sha256": "0658f5d38ae79f48768fe93cb71828a169947eaaff14aea72cd53972288fa744",
+          "quote": "/// The publisher ID indicating the venue containing the best bid.",
+          "source_line": 197
+        },
+        {
+          "document_id": "records-dbn",
+          "url": "https://raw.githubusercontent.com/databento/dbn/main/rust/dbn/src/record.rs",
+          "retrieved_at_utc": "2026-10-07T13:33:00.417609Z",
+          "body_sha256": "0658f5d38ae79f48768fe93cb71828a169947eaaff14aea72cd53972288fa744",
+          "quote": "/// The matching-engine-received timestamp expressed as the number of nanoseconds",
+          "source_line": 59
+        },
+        {
+          "document_id": "records-dbn",
+          "url": "https://raw.githubusercontent.com/databento/dbn/main/rust/dbn/src/record.rs",
+          "retrieved_at_utc": "2026-10-07T13:33:00.417609Z",
+          "body_sha256": "0658f5d38ae79f48768fe93cb71828a169947eaaff14aea72cd53972288fa744",
+          "quote": "/// The capture-server-received timestamp expressed as the number of nanoseconds",
+          "source_line": 108
+        },
+        {
+          "document_id": "records-dbn",
+          "url": "https://raw.githubusercontent.com/databento/dbn/main/rust/dbn/src/record.rs",
+          "retrieved_at_utc": "2026-10-07T13:33:00.417609Z",
+          "body_sha256": "0658f5d38ae79f48768fe93cb71828a169947eaaff14aea72cd53972288fa744",
+          "quote": "/// A bit field indicating event end, message characteristics, and data quality.",
+          "source_line": 91
+        },
+        {
+          "document_id": "records-dbn",
+          "url": "https://raw.githubusercontent.com/databento/dbn/main/rust/dbn/src/record.rs",
+          "retrieved_at_utc": "2026-10-07T13:33:00.417609Z",
+          "body_sha256": "0658f5d38ae79f48768fe93cb71828a169947eaaff14aea72cd53972288fa744",
+          "quote": "/// The last trade price price where every 1 unit corresponds to 1e-9, i.e. 1/1,000,000,000",
+          "source_line": 390
+        }
+      ],
+      "limitations": [
+        "Venue-specific OPRA timestamp semantics, quote-condition mappings, sequence guarantees and underlying feed normalization remain unverified.",
+        "Normalized flags are not proof that all raw OPRA quote-condition codes survive.",
+        "No sample quote records were downloaded or inspected."
+      ]
+    },
+    {
+      "id": "point_in_time_contracts",
+      "status": "partially_verified",
+      "finding": "The official client README advertises point-in-time instrument definitions without retroactive adjustment. The generic definition record includes activation, expiration, raw_symbol, underlying and strike fields. Symbology resolution accepts inclusive start_date and exclusive end_date.",
+      "evidence": [
+        {
+          "document_id": "python-readme",
+          "url": "https://raw.githubusercontent.com/databento/databento-python/main/README.md",
+          "retrieved_at_utc": "2026-10-07T13:32:38.291041Z",
+          "body_sha256": "5b494741354dc3f6aef08daffa1af1d4d3ddffc755b4b43543abb1141867a229",
+          "quote": "[Point-in-time]() instrument definitions, free of look-ahead bias and retroactive adjustments.",
+          "source_line": 17
+        },
+        {
+          "document_id": "records-dbn",
+          "url": "https://raw.githubusercontent.com/databento/dbn/main/rust/dbn/src/record.rs",
+          "retrieved_at_utc": "2026-10-07T13:33:00.417609Z",
+          "body_sha256": "0658f5d38ae79f48768fe93cb71828a169947eaaff14aea72cd53972288fa744",
+          "quote": "pub expiration: u64,",
+          "source_line": 682
+        },
+        {
+          "document_id": "records-dbn",
+          "url": "https://raw.githubusercontent.com/databento/dbn/main/rust/dbn/src/record.rs",
+          "retrieved_at_utc": "2026-10-07T13:33:00.417609Z",
+          "body_sha256": "0658f5d38ae79f48768fe93cb71828a169947eaaff14aea72cd53972288fa744",
+          "quote": "pub activation: u64,",
+          "source_line": 689
+        },
+        {
+          "document_id": "records-dbn",
+          "url": "https://raw.githubusercontent.com/databento/dbn/main/rust/dbn/src/record.rs",
+          "retrieved_at_utc": "2026-10-07T13:33:00.417609Z",
+          "body_sha256": "0658f5d38ae79f48768fe93cb71828a169947eaaff14aea72cd53972288fa744",
+          "quote": "pub raw_symbol: [c_char; SYMBOL_CSTR_LEN],",
+          "source_line": 822
+        },
+        {
+          "document_id": "symbology-sdk",
+          "url": "https://raw.githubusercontent.com/databento/databento-python/main/databento/historical/api/symbology.py",
+          "retrieved_at_utc": "2026-10-07T13:33:00.417058Z",
+          "body_sha256": "92d919e7d62381c00e06adf42215fb95d11a77740eec6d37f202661e43725ef4",
+          "quote": "The inclusive UTC start date of the request range.",
+          "source_line": 56
+        },
+        {
+          "document_id": "symbology-sdk",
+          "url": "https://raw.githubusercontent.com/databento/databento-python/main/databento/historical/api/symbology.py",
+          "retrieved_at_utc": "2026-10-07T13:33:00.417058Z",
+          "body_sha256": "92d919e7d62381c00e06adf42215fb95d11a77740eec6d37f202661e43725ef4",
+          "quote": "The exclusive UTC end date of the request range.",
+          "source_line": 58
+        }
+      ],
+      "limitations": [
+        "The generic fields do not confirm they are populated for OPRA.PILLAR.",
+        "Corporate-action/split deliverables, adjusted-option identifiers, nonstandard multipliers and expired-contract completeness for the S500 universe remain unverified.",
+        "Do not infer shares deliverable from a generic contract_multiplier field: its source comment refers to deliverable peak days and units hours/days.",
+        "No current-contract list should be substituted for a historical contract universe."
+      ]
+    },
+    {
+      "id": "cost_and_entitlement",
+      "status": "unknown_amount",
+      "finding": "No current dollar price, required subscription tier or complete task cost was confirmed. The official SDK exposes unit-price, available-range and cost metadata methods. get_cost is request-specific and respects discounts from flat-rate plans.",
+      "evidence": [
+        {
+          "document_id": "metadata-sdk",
+          "url": "https://raw.githubusercontent.com/databento/databento-python/main/databento/historical/api/metadata.py",
+          "retrieved_at_utc": "2026-10-07T13:33:00.415557Z",
+          "body_sha256": "f6e0d1dac704b017597b270a6ef5c7f21d8b446b4bb3b35d4fceddfae524d890",
+          "quote": "List unit prices for each feed mode and data schema in US dollars per",
+          "source_line": 171
+        },
+        {
+          "document_id": "metadata-sdk",
+          "url": "https://raw.githubusercontent.com/databento/databento-python/main/databento/historical/api/metadata.py",
+          "retrieved_at_utc": "2026-10-07T13:33:00.415557Z",
+          "body_sha256": "f6e0d1dac704b017597b270a6ef5c7f21d8b446b4bb3b35d4fceddfae524d890",
+          "quote": "Request the cost in US dollars for historical streaming or batched",
+          "source_line": 420
+        },
+        {
+          "document_id": "metadata-sdk",
+          "url": "https://raw.githubusercontent.com/databento/databento-python/main/databento/historical/api/metadata.py",
+          "retrieved_at_utc": "2026-10-07T13:33:00.415557Z",
+          "body_sha256": "f6e0d1dac704b017597b270a6ef5c7f21d8b446b4bb3b35d4fceddfae524d890",
+          "quote": "rate plans.",
+          "source_line": 422
+        }
+      ],
+      "limitations": [
+        "Public pricing returned a JavaScript shell.",
+        "No account, API key, authorized quote request or data purchase exists for this research.",
+        "The SDK get_cost docstring says GET but implementation uses _post; use the supported SDK method rather than inferring an HTTP verb from the docstring.",
+        "A cost result requires the exact symbol universe, schema, start/end, entitlement and request limit; no numeric estimate was invented."
+      ]
+    },
+    {
+      "id": "licensing_rights",
+      "status": "unknown",
+      "finding": "Market-data rights for individual/nonprofessional status, historical storage, cloud research, derived outputs and redistribution were not established. The README Apache 2.0 statement concerns the client software and is not a market-data license.",
+      "evidence": [
+        {
+          "document_id": "python-readme",
+          "url": "https://raw.githubusercontent.com/databento/databento-python/main/README.md",
+          "retrieved_at_utc": "2026-10-07T13:32:38.291041Z",
+          "body_sha256": "5b494741354dc3f6aef08daffa1af1d4d3ddffc755b4b43543abb1141867a229",
+          "quote": "Distributed under the [Apache 2.0 License]",
+          "source_line": 97
+        },
+        {
+          "document_id": "terms",
+          "url": "https://databento.com/terms",
+          "retrieved_at_utc": "2026-10-07T13:31:59.959497Z",
+          "body_sha256": "8b3554e3df6aa1a8ede3f1d121c5b4617b53fb61df6cf66b8ba337fe3ef3c5cb",
+          "quote": "You need to enable JavaScript to run this app",
+          "source_line": 311
+        }
+      ],
+      "limitations": [
+        "Obtain applicable Databento and OPRA historical-use terms before any acquisition.",
+        "Do not infer redistribution, public artifact inclusion, team sharing or indefinite storage rights."
+      ]
+    },
+    {
+      "id": "cloud_and_auth",
+      "status": "partially_verified",
+      "finding": "Databento supports a Python historical HTTP client and API-key authentication through DATABENTO_API_KEY. Its synchronous HTTP source uses requests with HTTP Basic auth, placing the key as username and an empty password. This suggests a normal HTTPS cloud workflow without a desktop terminal, but authenticated compatibility has not been tested.",
+      "evidence": [
+        {
+          "document_id": "python-readme",
+          "url": "https://raw.githubusercontent.com/databento/databento-python/main/README.md",
+          "retrieved_at_utc": "2026-10-07T13:32:38.291041Z",
+          "body_sha256": "5b494741354dc3f6aef08daffa1af1d4d3ddffc755b4b43543abb1141867a229",
+          "quote": "The official Python client library for [Databento]",
+          "source_line": 10
+        },
+        {
+          "document_id": "python-readme",
+          "url": "https://raw.githubusercontent.com/databento/databento-python/main/README.md",
+          "retrieved_at_utc": "2026-10-07T13:32:38.291041Z",
+          "body_sha256": "5b494741354dc3f6aef08daffa1af1d4d3ddffc755b4b43543abb1141867a229",
+          "quote": "- python = \"^3.10\"",
+          "source_line": 33
+        },
+        {
+          "document_id": "historical-client-sdk",
+          "url": "https://raw.githubusercontent.com/databento/databento-python/main/databento/historical/client.py",
+          "retrieved_at_utc": "2026-10-07T13:33:30.755448Z",
+          "body_sha256": "9fe714854b8bab2bc7feaa4c7e4c4f207d4d2ece5aaad68af1c1f5d4c0038248",
+          "quote": "If `None` then the `DATABENTO_API_KEY` environment variable is used.",
+          "source_line": 26
+        },
+        {
+          "document_id": "http-sdk",
+          "url": "https://raw.githubusercontent.com/databento/databento-python/main/databento/common/http.py",
+          "retrieved_at_utc": "2026-10-07T13:33:30.754757Z",
+          "body_sha256": "9762acbcac9bc74368157bb1851525c8e9229ea682ad81edce2d8241db8caf46",
+          "quote": "auth=HTTPBasicAuth(username=self._key, password=\"\") if basic_auth else None,",
+          "source_line": 65
+        }
+      ],
+      "limitations": [
+        "Only public documentation HTTPS through the inherited proxy was verified; no Databento API endpoint or authenticated call was tested.",
+        "Environment metadata contains no Databento credential binding. Existing Alpaca secrets were not read or reused.",
+        "Verify the selected gateway hostname and proxy credential-injection compatibility with encoded Basic auth before adding a destination-scoped secret.",
+        "Prefer the supported synchronous historical path when preserving inherited proxy behavior; asynchronous client code does not visibly set aiohttp trust_env in inspected source.",
+        "No SDK or terminal was installed and no environment configuration changed."
+      ]
+    },
+    {
+      "id": "time_range_filter",
+      "status": "verified_generic_api",
+      "finding": "timeseries.get_range start is inclusive and end exclusive, filtering ts_recv where present and otherwise ts_event; naive times are assumed UTC.",
+      "evidence": [
+        {
+          "document_id": "timeseries-sdk",
+          "url": "https://raw.githubusercontent.com/databento/databento-python/main/databento/historical/api/timeseries.py",
+          "retrieved_at_utc": "2026-10-07T13:33:00.416467Z",
+          "body_sha256": "c392df431654306eb50c66cacffacae48690443f182cfe7630848b7173a1bdda",
+          "quote": "The inclusive start of the request range.",
+          "source_line": 63
+        },
+        {
+          "document_id": "timeseries-sdk",
+          "url": "https://raw.githubusercontent.com/databento/databento-python/main/databento/historical/api/timeseries.py",
+          "retrieved_at_utc": "2026-10-07T13:33:00.416467Z",
+          "body_sha256": "c392df431654306eb50c66cacffacae48690443f182cfe7630848b7173a1bdda",
+          "quote": "The exclusive end of the request range.",
+          "source_line": 68
+        },
+        {
+          "document_id": "timeseries-sdk",
+          "url": "https://raw.githubusercontent.com/databento/databento-python/main/databento/historical/api/timeseries.py",
+          "retrieved_at_utc": "2026-10-07T13:33:00.416467Z",
+          "body_sha256": "c392df431654306eb50c66cacffacae48690443f182cfe7630848b7173a1bdda",
+          "quote": "Filters on `ts_recv` if it exists in the schema, otherwise `ts_event`.",
+          "source_line": 64
+        },
+        {
+          "document_id": "timeseries-sdk",
+          "url": "https://raw.githubusercontent.com/databento/databento-python/main/databento/historical/api/timeseries.py",
+          "retrieved_at_utc": "2026-10-07T13:33:00.416467Z",
+          "body_sha256": "c392df431654306eb50c66cacffacae48690443f182cfe7630848b7173a1bdda",
+          "quote": "Assumes UTC as timezone unless passed a tz-aware object.",
+          "source_line": 65
+        }
+      ],
+      "limitations": [
+        "Use explicit UTC instants converted from the intended exchange-local sessions; a UTC date interval is not itself proof of a complete U.S. trading session.",
+        "A whole-date target through 2026-10-05 nominally has exclusive end 2026-10-06, subject to verified session boundaries."
+      ]
+    }
+  ],
+  "recommendation": {
+    "decision": "Retain as a technically plausible conditional candidate; not procurement-ready from this evidence.",
+    "path": [
+      "After vendor selection, obtain readable applicable OPRA/Databento historical license, plan and current price terms.",
+      "Confirm OPRA.PILLAR availability, schema-specific date range and contract-definition population for 2026-01-02 through 2026-10-05.",
+      "Create a destination-scoped Databento credential binding only with user authorization; verify Basic-auth compatibility with the environment proxy.",
+      "Use metadata.list_schemas and metadata.get_dataset_range, then metadata.get_cost for an explicit historical contract universe and dates; do not request all symbols or download broad data merely to price it.",
+      "If coverage, rights and cost are accepted, validate one already-authorized narrowly scoped historical quote slice and accompanying point-in-time definition, then assess gaps, timestamps, condition treatment and split deliverables."
+    ],
+    "selection_caveat": "A competitor with readable 2026 coverage, quote-plan entitlement and historical license evidence can be advanced first; compare acquired sample quality only after authorization."
+  },
+  "actions_performed": {
+    "public_document_requests": 15,
+    "authenticated_vendor_requests": 0,
+    "market_data_downloads": 0,
+    "subscriptions_or_purchases": 0,
+    "account_signups_or_logins": 0,
+    "sdk_or_terminal_installations": 0,
+    "environment_config_mutations": 0
+  },
+  "manifest": "manifest.json",
+  "raw_response_policy": "Raw bodies and derived full text retained in private/ only; publish findings and manifest, not raw responses.",
+  "limitations": [
+    "No proof of source coverage completeness or specific S500 options availability.",
+    "No numeric dataset cost or market-data redistribution/storage grant confirmed.",
+    "Official main-branch source is mutable; body SHA-256 and UTC retrieval time pin the observed evidence."
+  ]
+}

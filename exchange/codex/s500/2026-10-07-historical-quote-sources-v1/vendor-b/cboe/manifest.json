@@ -1,0 +1,167 @@
+{
+  "schema_version": 1,
+  "provider": "Cboe DataShop",
+  "method": "Public official HTTPS documentation; Python urllib; inherited proxy; verified TLS; no authentication",
+  "sources": [
+    {
+      "id": "intervals",
+      "requested_url": "https://datashop.cboe.com/option-quote-intervals",
+      "final_url": "https://datashop.cboe.com/option-quote-intervals",
+      "retrieved_at_utc": "2026-10-07T13:32:27.736467+00:00",
+      "http_status": 200,
+      "content_type": "text/html; charset=utf-8",
+      "body_sha256": "c491756a7a50eae716070b5a188dcfcec17715c29624fe45f75077a9ee616875",
+      "body_bytes": 69997,
+      "error": null
+    },
+    {
+      "id": "tick",
+      "requested_url": "https://datashop.cboe.com/option-quote-tick-data",
+      "final_url": "https://datashop.cboe.com/option-quote-tick-data",
+      "retrieved_at_utc": "2026-10-07T13:32:27.737693+00:00",
+      "http_status": 404,
+      "content_type": "text/html",
+      "body_sha256": "e8529b461363c71b0f860803a15037d4ec66cd00c16eb7e28da2d5c03b14c2f6",
+      "body_bytes": 51586,
+      "error": "HTTP Error 404: Not Found"
+    },
+    {
+      "id": "faq",
+      "requested_url": "https://datashop.cboe.com/faqs",
+      "final_url": "https://datashop.cboe.com/faqs",
+      "retrieved_at_utc": "2026-10-07T13:32:27.738461+00:00",
+      "http_status": 200,
+      "content_type": "text/html; charset=utf-8",
+      "body_sha256": "ba857e23da893f65dd2c1321c6b8335501074a95db30d7fd8bec0d0dd91c7f92",
+      "body_bytes": 69993,
+      "error": null
+    },
+    {
+      "id": "terms",
+      "requested_url": "https://datashop.cboe.com/terms-and-conditions",
+      "final_url": "https://datashop.cboe.com/terms-and-conditions",
+      "retrieved_at_utc": "2026-10-07T13:32:27.739035+00:00",
+      "http_status": 404,
+      "content_type": "text/html",
+      "body_sha256": "49f3fa45d83541fb7064c49bc470df50440a5c4f79df9a1ab00111183173d314",
+      "body_bytes": 51582,
+      "error": "HTTP Error 404: Not Found"
+    },
+    {
+      "id": "layout",
+      "requested_url": "https://datashop.cboe.com/documents/Option_Quotes_Layout.pdf",
+      "final_url": "https://datashop.cboe.com/documents/Option_Quotes_Layout.pdf",
+      "retrieved_at_utc": "2026-10-07T13:32:56.639219+00:00",
+      "http_status": 200,
+      "content_type": "application/pdf",
+      "body_sha256": "467c0381a575f43cd158e5f9b3eca7a1b5f9f488080dde03097d8b1c0c9ade74",
+      "body_bytes": 213874,
+      "error": null
+    },
+    {
+      "id": "policies",
+      "requested_url": "https://datashop.cboe.com/data-policies",
+      "final_url": "https://datashop.cboe.com/data-policies",
+      "retrieved_at_utc": "2026-10-07T13:32:56.641119+00:00",
+      "http_status": 200,
+      "content_type": "text/html; charset=utf-8",
+      "body_sha256": "f6a67c20ff360fc43d75df86a57d8238ccd6df38b629c70f792f14a45e5ce505",
+      "body_bytes": 31950,
+      "error": null
+    },
+    {
+      "id": "sip",
+      "requested_url": "https://datashop.cboe.com/sip-fees",
+      "final_url": "https://datashop.cboe.com/sip-fees",
+      "retrieved_at_utc": "2026-10-07T13:32:56.642302+00:00",
+      "http_status": 200,
+      "content_type": "text/html; charset=utf-8",
+      "body_sha256": "54ce14a309725a3a46e89e10ba0befe79197f321f9cb13558ada831f0b76ac56",
+      "body_bytes": 38623,
+      "error": null
+    },
+    {
+      "id": "release",
+      "requested_url": "https://datashop.cboe.com/releasenotes",
+      "final_url": "https://datashop.cboe.com/releasenotes",
+      "retrieved_at_utc": "2026-10-07T13:32:56.643329+00:00",
+      "http_status": 200,
+      "content_type": "text/html; charset=utf-8",
+      "body_sha256": "194f9b5e60b2b71aceb1a5b583929ffdedac9ad7951b9d699c6f813118edef2c",
+      "body_bytes": 31458,
+      "error": null
+    },
+    {
+      "id": "catalog",
+      "requested_url": "https://datashop.cboe.com/data-products",
+      "final_url": "https://datashop.cboe.com/data-products",
+      "retrieved_at_utc": "2026-10-07T13:32:56.965917+00:00",
+      "http_status": 200,
+      "content_type": "text/html; charset=utf-8",
+      "body_sha256": "5e3828cc57bcdb4dd8589970bf9150afa1af800e529dac039e6c1d1c8020a107",
+      "body_bytes": 84920,
+      "error": null
+    },
+    {
+      "id": "content",
+      "requested_url": "https://www.cboe.com/use_of_content/",
+      "final_url": "https://www.cboe.com/use-of-content/",
+      "retrieved_at_utc": "2026-10-07T13:32:57.038225+00:00",
+      "http_status": 200,
+      "content_type": "text/html; charset=utf-8",
+      "body_sha256": "f661fe00c76655c1fc9d11a3e010564046ad7872681c48a577e943c84d5afefa",
+      "body_bytes": 345885,
+      "error": null
+    },
+    {
+      "id": "history_policy",
+      "requested_url": "https://datashop.cboe.com/documents/DataShop_Policies_for_Historical_Data_Services.pdf",
+      "final_url": "https://datashop.cboe.com/documents/DataShop_Policies_for_Historical_Data_Services.pdf",
+      "retrieved_at_utc": "2026-10-07T13:33:20.965045+00:00",
+      "http_status": 200,
+      "content_type": "application/pdf",
+      "body_sha256": "d4756f703ff1b095cbf5ad30155c51f66d6ee7cd5b9ce037402dbaa526c6205c",
+      "body_bytes": 226251,
+      "error": null
+    },
+    {
+      "id": "license",
+      "requested_url": "https://datashop.cboe.com/documents/Cboe_LiveVol_DataShop_License_Agreement.pdf",
+      "final_url": "https://datashop.cboe.com/documents/Cboe_LiveVol_DataShop_License_Agreement.pdf",
+      "retrieved_at_utc": "2026-10-07T13:33:20.966168+00:00",
+      "http_status": 200,
+      "content_type": "application/pdf",
+      "body_sha256": "cbacb6a0ecdeaf9efe340393e1ca982a5d90262271a8c3f4ad001ede36b063fa",
+      "body_bytes": 299518,
+      "error": null
+    },
+    {
+      "id": "allaccess",
+      "requested_url": "https://datashop.cboe.com/cboe-all-access-api",
+      "final_url": "https://datashop.cboe.com/cboe-all-access-api",
+      "retrieved_at_utc": "2026-10-07T13:33:20.967238+00:00",
+      "http_status": 200,
+      "content_type": "text/html; charset=utf-8",
+      "body_sha256": "b7a0769730b3b243ccf3236ba4969f765a9079825919f708c7db7aeac1a3b062",
+      "body_bytes": 59554,
+      "error": null
+    },
+    {
+      "id": "api_reference",
+      "requested_url": "https://www.livevol.com/apis/technical-reference",
+      "final_url": "https://www.livevol.com/apis/technical-reference/",
+      "retrieved_at_utc": "2026-10-07T13:33:56.784112+00:00",
+      "http_status": 200,
+      "content_type": "text/html",
+      "body_sha256": "5ef020557fd5a6ff9df2887be4e011395f9d7ea7725bd7be1ae82e76dd0fb294",
+      "body_bytes": 157152,
+      "error": null
+    }
+  ],
+  "notes": [
+    "Bodies and extracted text retained privately outside publishable report; public manifest contains no private absolute paths.",
+    "Two guessed public paths returned 404; no retries/bypass. No HTTP403 observed.",
+    "Document quotes in findings normalize whitespace only. PDF pages/sections identify locations.",
+    "No sample or licensed market data downloaded."
+  ]
+}

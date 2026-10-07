@@ -1,0 +1,366 @@
+{
+  "vendor": "ThetaData",
+  "research_date_utc": "2026-10-07",
+  "target_window": [
+    "2026-01-02",
+    "2026-10-05"
+  ],
+  "scope": "Read-only public official documentation. S500 is a project label, not an assumed market symbol.",
+  "status": "Documentation-qualified candidate; not procured, entitled, installed, or data-validated.",
+  "recommended_path": {
+    "conditional_tier": "Options Standard, published at $80/month for individuals, is the lowest documented tick tier if the intended use qualifies under the applicable personal/nonprofessional agreement. Otherwise obtain business terms and pricing. Value, published at $40/month, supplies one-minute snapshots if that granularity is acceptable.",
+    "quote_request": "Use /v3/option/history/quote with interval=tick, the actual underlying root, and one historical date. Discover quoted contracts for each date with /v3/option/list/contracts/quote, then verify available dates using /v3/option/list/dates/quote.",
+    "transport": "Python>=3.12 SDK with API-key support >=1.0.9 usesHTTPS auth/gRPC data without a terminal; REST docs require local v3 terminal+Java>=21. Neither transport tested.",
+    "coverage": "Published tierhistory includes requested 2026 period in principle only. Verify actualtarget symbols/dates after entitlement; no data retrieved."
+  },
+  "granularity": {
+    "tick": "Explicit interval=tick; default 1s. Standard/Pro tick entitlement.",
+    "interval": "Lastquote at intervaltimestamp. Value1-minute. Not complete quote events.",
+    "flatfile": "1-minute quotes, only most recent 7 calendar days self-service; historical bulk needs sales agreement."
+  },
+  "schema": {
+    "fields": [
+      "symbol",
+      "expiration",
+      "strike",
+      "right",
+      "timestamp",
+      "bid_size",
+      "bid_exchange",
+      "bid",
+      "bid_condition",
+      "ask_size",
+      "ask_exchange",
+      "ask",
+      "ask_condition"
+    ],
+    "timestamp": "YYYY-MM-DDTHH:mm:ss.SSS without offset. At-time input explicitlyAmerica/New_York. Confirm generalhistory output zone/DST and quote-event versus interval-grid timestamp.",
+    "conditions": "Published table includes REGULAR0, LOCKED5, CROSSED16, HALTED17, NON_FIRM21, DELETED35. Preserve codes; do not assume quotes firm.",
+    "unknown": [
+      "Bid/ask size units and aggregation rules",
+      "Quote correction, cancellation and revision handling, including as-known publication time",
+      "No sequence field in the published quote schema; ordering within equal millisecond timestamps is unconfirmed",
+      "For interval history, whether timestamp identifies the grid boundary or the original quote event; flat files separately expose both"
+    ]
+  },
+  "historical_contracts": {
+    "available": "All traded/quoted contracts forrequesteddate; symbol/expiration/strike/right. Quote dates available.",
+    "unknown": [
+      "All listed-but-inactive contracts",
+      "Intraday chain activation/as-of listing timestamps",
+      "Corporate action/adjusted contract lineage",
+      "Multipliers/deliverables/nonstandard settlements"
+    ],
+    "known_root_caveat": "Index option roots vary with settlement style, e.g.SPX/SPXW."
+  },
+  "prices": {
+    "published_individual_monthly_usd": {
+      "Value": 40,
+      "Standard": 80,
+      "Pro": 160
+    },
+    "unconfirmed": [
+      "Business/professional price",
+      "Applicable fees/taxes/exchangecertification",
+      "Userentitlement",
+      "Full-window bulkdelivery cost"
+    ]
+  },
+  "license": {
+    "confirmed": "The Individual pricing page says personal use only, no redistribution or business use. The reviewed general Terms grant a personal, noncommercial license; Section 2.1 includes archive/download/derivative-work restrictions. This records the clause, not a determination that every personal historical backtest is forbidden.",
+    "required_clarification": "Confirm the agreement applicable to the chosen API subscription and whether it authorizes the intended historical retention, personal research, managed-cloud processing and authorized users. General restriction language appears alongside documented API/download products; its application to the intended workflow remains unresolved."
+  },
+  "cloud": {
+    "documented": "Linux terminal Java 21+ or directPython 3.12+ SDK.",
+    "current_environment": "Only Alpaca credential bindings were observed; no Theta authentication is configured. The network snapshot is unrestricted, VPN is false and no TCP destinations are configured; current policy/credential readiness is unknown. No credentials were read or transferred.",
+    "unverified": [
+      "gRPC destination/proxy HTTP/2 support",
+      "Theta auth propagation compatibility with proxy-held secrets",
+      "Terminal proprietary transport required hosts/ports",
+      "Cloud processor permission"
+    ]
+  },
+  "blockers": [
+    "Applicable license/entitlement and intended use classification",
+    "Theta-only auth after separate authorization, neverAlpaca keys",
+    "Supported transport through managed proxy",
+    "Actualper-date/symbol2026 coverage",
+    "Corporate actions/deliverables and as-of chain completeness",
+    "Timezone/size/correction/order semantics"
+  ],
+  "validation": {
+    "documents_requested": 16,
+    "successful_http_200": 16,
+    "denials": [],
+    "authenticated_calls": 0,
+    "market_data_requests": 0,
+    "sample_files": 0,
+    "installed_software": false,
+    "examples_not_data": "Quote and contract documentation uses 2022/2024 examples; flat-file documentation contains a 2026-08-03 example URL. None was executed and none proves target coverage.",
+    "bounds": "16 official documents, including the documentation root and a redirect (approximately 15-document budget). Public HTTPS used the inherited proxy and TLS verification."
+  },
+  "evidence": [
+    {
+      "evidence_id": "feed",
+      "source_id": "theta-06",
+      "official_url": "https://thetadata.net/docs/operations/option_history_quote.html",
+      "retrieved_utc": "2026-10-07T13:32:33.092072+00:00",
+      "body_sha256": "926cacf85eeaca7cb8ad9e4f73bb0aa9e7cc2f9eb5b4aa0e9facad96d9a1ae99",
+      "quote": "Returns every NBBO quote reported by OPRA .",
+      "interpretation": "OPRA NBBO history, not depth."
+    },
+    {
+      "evidence_id": "sampled_quote",
+      "source_id": "theta-06",
+      "official_url": "https://thetadata.net/docs/operations/option_history_quote.html",
+      "retrieved_utc": "2026-10-07T13:32:33.092072+00:00",
+      "body_sha256": "926cacf85eeaca7cb8ad9e4f73bb0aa9e7cc2f9eb5b4aa0e9facad96d9a1ae99",
+      "quote": "If the interval parameter is specified, the quote for each interval represents the last quote at the interval's timestamp.",
+      "interpretation": "Sampled snapshots differ from full tick updates."
+    },
+    {
+      "evidence_id": "interval",
+      "source_id": "theta-06",
+      "official_url": "https://thetadata.net/docs/operations/option_history_quote.html",
+      "retrieved_utc": "2026-10-07T13:32:33.092072+00:00",
+      "body_sha256": "926cacf85eeaca7cb8ad9e4f73bb0aa9e7cc2f9eb5b4aa0e9facad96d9a1ae99",
+      "quote": "tick, 10ms, 100ms, 500ms, 1s, 5s, 10s, 15s, 30s, 1m, 5m, 10m, 15m, 30m, 1h",
+      "interpretation": "Explicit interval=tick needed for complete ticks; default = 1s."
+    },
+    {
+      "evidence_id": "chunking",
+      "source_id": "theta-06",
+      "official_url": "https://thetadata.net/docs/operations/option_history_quote.html",
+      "retrieved_utc": "2026-10-07T13:32:33.092072+00:00",
+      "body_sha256": "926cacf85eeaca7cb8ad9e4f73bb0aa9e7cc2f9eb5b4aa0e9facad96d9a1ae99",
+      "quote": "Multi-day requests are limited to 1 month of data, and must specify an expiration.",
+      "interpretation": "Subminute intervals single-day only."
+    },
+    {
+      "evidence_id": "timestamp",
+      "source_id": "theta-06",
+      "official_url": "https://thetadata.net/docs/operations/option_history_quote.html",
+      "retrieved_utc": "2026-10-07T13:32:33.092072+00:00",
+      "body_sha256": "926cacf85eeaca7cb8ad9e4f73bb0aa9e7cc2f9eb5b4aa0e9facad96d9a1ae99",
+      "quote": "The timestamp in YYYY-MM-DDTHH:mm:ss.SSS format.",
+      "interpretation": "History quote timestamp text includes milliseconds, no explicit offset."
+    },
+    {
+      "evidence_id": "size",
+      "source_id": "theta-06",
+      "official_url": "https://thetadata.net/docs/operations/option_history_quote.html",
+      "retrieved_utc": "2026-10-07T13:32:33.092072+00:00",
+      "body_sha256": "926cacf85eeaca7cb8ad9e4f73bb0aa9e7cc2f9eb5b4aa0e9facad96d9a1ae99",
+      "quote": "bid_size integer The last NBBO bid size.",
+      "interpretation": "Response also has bid_exchange,bid,bid_condition and corresponding ask fields; size units/aggregation not specified here."
+    },
+    {
+      "evidence_id": "timezone",
+      "source_id": "theta-11",
+      "official_url": "https://thetadata.net/docs/operations/option_at_time_quote.html",
+      "retrieved_utc": "2026-10-07T13:32:33.415522+00:00",
+      "body_sha256": "65726bb89178500d6b053153e07a7d52fbdc2827e2ac4dc68d82853d166c98e0",
+      "quote": "The time of the day to fetch data for; assumed to be America/New_York.",
+      "interpretation": "Explicit at_time input timezone; general history output localization/eventtime-versus-gridtime still needs confirmation."
+    },
+    {
+      "evidence_id": "contract_discovery",
+      "source_id": "theta-07",
+      "official_url": "https://thetadata.net/docs/operations/option_list_contracts.html",
+      "retrieved_utc": "2026-10-07T13:32:33.092724+00:00",
+      "body_sha256": "1b8332b5d64400fbf7ce25455bad75abda7b773d83adf8823bb6072f67897f29",
+      "quote": "Lists all contracts that were traded or quoted on a particular date.",
+      "interpretation": "Activity-based date-specific discovery, not guaranteed all listed inactive contracts or intraday as-of chain."
+    },
+    {
+      "evidence_id": "dates",
+      "source_id": "theta-13",
+      "official_url": "https://thetadata.net/docs/operations/option_list_dates.html",
+      "retrieved_utc": "2026-10-07T13:32:33.577377+00:00",
+      "body_sha256": "2e40a16ec689d0ff8f75372abfb1dbbbe2e0e6305f4addfed12b31beb6d826ec",
+      "quote": "Lists all dates of data that are available for an option with a given symbol, request type, and expiration.",
+      "interpretation": "Supports entitlement-side per-contract date coverage validation."
+    },
+    {
+      "evidence_id": "value_coverage",
+      "source_id": "theta-08",
+      "official_url": "https://thetadata.net/docs/Articles/Getting-Started/Subscriptions.html",
+      "retrieved_utc": "2026-10-07T13:32:33.093785+00:00",
+      "body_sha256": "6795437597ed9ed9f41e524b27a533440acca08d98779df13c36b40e597da602",
+      "quote": "VALUE 1 Minute 2020-01-01 2 Real time",
+      "interpretation": "Options Value: 1-minute, access since 2020-01-01,2 concurrent."
+    },
+    {
+      "evidence_id": "standard_coverage",
+      "source_id": "theta-08",
+      "official_url": "https://thetadata.net/docs/Articles/Getting-Started/Subscriptions.html",
+      "retrieved_utc": "2026-10-07T13:32:33.093785+00:00",
+      "body_sha256": "6795437597ed9ed9f41e524b27a533440acca08d98779df13c36b40e597da602",
+      "quote": "STANDARD Tick Level 2016-01-01 4 Real time",
+      "interpretation": "Options Standard: tick, access since 2016-01-01,4 concurrent."
+    },
+    {
+      "evidence_id": "pro_coverage",
+      "source_id": "theta-08",
+      "official_url": "https://thetadata.net/docs/Articles/Getting-Started/Subscriptions.html",
+      "retrieved_utc": "2026-10-07T13:32:33.093785+00:00",
+      "body_sha256": "6795437597ed9ed9f41e524b27a533440acca08d98779df13c36b40e597da602",
+      "quote": "PRO Tick Level 2012-06-01 8 Real time",
+      "interpretation": "Options Pro: tick, access since 2012-06-01,8 concurrent."
+    },
+    {
+      "evidence_id": "value_price",
+      "source_id": "theta-05",
+      "official_url": "https://www.thetadata.net/pricing",
+      "retrieved_utc": "2026-10-07T13:32:33.090997+00:00",
+      "body_sha256": "583944f6543c79c9357780064a8651c10a1fd9182d18e4c844f2df6b1540abd1",
+      "quote": "Options Value Best for beginners. $40 per month",
+      "interpretation": "Published individual monthly sticker price; checkout/fees not tested."
+    },
+    {
+      "evidence_id": "standard_price",
+      "source_id": "theta-05",
+      "official_url": "https://www.thetadata.net/pricing",
+      "retrieved_utc": "2026-10-07T13:32:33.090997+00:00",
+      "body_sha256": "583944f6543c79c9357780064a8651c10a1fd9182d18e4c844f2df6b1540abd1",
+      "quote": "Options Standard Best for research. $80 per month",
+      "interpretation": "Lowest published tick-tier price; intended use eligibility not verified."
+    },
+    {
+      "evidence_id": "pro_price",
+      "source_id": "theta-05",
+      "official_url": "https://www.thetadata.net/pricing",
+      "retrieved_utc": "2026-10-07T13:32:33.090997+00:00",
+      "body_sha256": "583944f6543c79c9357780064a8651c10a1fd9182d18e4c844f2df6b1540abd1",
+      "quote": "Options Pro Best for live trading. $160 per month",
+      "interpretation": "Not required solely for 2026 ticks according to tier table."
+    },
+    {
+      "evidence_id": "old_tick_exception",
+      "source_id": "theta-15",
+      "official_url": "https://thetadata.net/docs/Articles/Data-And-Requests/Data-Issues.html",
+      "retrieved_utc": "2026-10-07T13:33:28.753067+00:00",
+      "body_sha256": "c745d751a6af35aba95e7e4d1facd0e6fb7df6c58079186751296251d0f10750",
+      "quote": "Prior to 2018-12-03, the lowest resolution for option quotes is 1s .",
+      "interpretation": "Historical ticklabels have pre-2018 exception; outside target 2026."
+    },
+    {
+      "evidence_id": "flatfile_window",
+      "source_id": "theta-12",
+      "official_url": "https://thetadata.net/docs/operations/option_flat_file_quote.html",
+      "retrieved_utc": "2026-10-07T13:32:33.576841+00:00",
+      "body_sha256": "68ac1a25cff14df92d957de5b7ed4db026d4e1f3b5ed17085d5698ca17d85e58",
+      "quote": "Only the 7 most recent calendar days are available; data for the previous day is typically ready by 12:30-1am ET.",
+      "interpretation": "Selfservice quote flatfile cannot backfill full January\u2013October 2026 period."
+    },
+    {
+      "evidence_id": "flatfile_granularity",
+      "source_id": "theta-12",
+      "official_url": "https://thetadata.net/docs/operations/option_flat_file_quote.html",
+      "retrieved_utc": "2026-10-07T13:32:33.576841+00:00",
+      "body_sha256": "68ac1a25cff14df92d957de5b7ed4db026d4e1f3b5ed17085d5698ca17d85e58",
+      "quote": "Bulk download all option 1-minute quote intervals for a given date as a CSV stream.",
+      "interpretation": "Sampled minute quotes, not tick history."
+    },
+    {
+      "evidence_id": "python_transport",
+      "source_id": "theta-14",
+      "official_url": "https://thetadata.net/docs/Python-Library/Getting-Started.html",
+      "retrieved_utc": "2026-10-07T13:33:28.751980+00:00",
+      "body_sha256": "dde33069a19761e8ba99121e125d1aa08ddd30f52b6d198574b55b846a418b41",
+      "quote": "Python library provides direct access to Theta Data market data without requiring the Theta Terminal to be running. It authenticates over HTTPS, makes requests over gRPC, and returns Polars or Pandas dataframes.",
+      "interpretation": "No terminal option exists; managed proxy/gRPC compatibility untested."
+    },
+    {
+      "evidence_id": "python_version",
+      "source_id": "theta-14",
+      "official_url": "https://thetadata.net/docs/Python-Library/Getting-Started.html",
+      "retrieved_utc": "2026-10-07T13:33:28.751980+00:00",
+      "body_sha256": "dde33069a19761e8ba99121e125d1aa08ddd30f52b6d198574b55b846a418b41",
+      "quote": "Requires Python 3.12 or higher.",
+      "interpretation": "No SDK installed."
+    },
+    {
+      "evidence_id": "python_auth",
+      "source_id": "theta-14",
+      "official_url": "https://thetadata.net/docs/Python-Library/Getting-Started.html",
+      "retrieved_utc": "2026-10-07T13:33:28.751980+00:00",
+      "body_sha256": "dde33069a19761e8ba99121e125d1aa08ddd30f52b6d198574b55b846a418b41",
+      "quote": "API key authentication requires the Python library to be version 1.0.9 or later.",
+      "interpretation": "Theta-owned API key/entitlement required; no Alpaca credentials applicable."
+    },
+    {
+      "evidence_id": "terminal_linux",
+      "source_id": "theta-04",
+      "official_url": "https://thetadata.net/docs/Articles/Getting-Started/Getting-Started.html",
+      "retrieved_utc": "2026-10-07T13:31:59.422094+00:00",
+      "body_sha256": "df074cba642740964ac3bfeade40913bbbc181f84b7044a06629b80470dc4805",
+      "quote": "The Theta Terminal can be run from the command line on Windows, Mac, and Linux",
+      "interpretation": "Linux platform supported; cloud proprietary transport not validated."
+    },
+    {
+      "evidence_id": "terminal_java",
+      "source_id": "theta-04",
+      "official_url": "https://thetadata.net/docs/Articles/Getting-Started/Getting-Started.html",
+      "retrieved_utc": "2026-10-07T13:31:59.422094+00:00",
+      "body_sha256": "df074cba642740964ac3bfeade40913bbbc181f84b7044a06629b80470dc4805",
+      "quote": "Java 21 or higher is required to use the Theta Terminal .",
+      "interpretation": "No terminal downloaded/launched."
+    },
+    {
+      "evidence_id": "index_roots",
+      "source_id": "theta-09",
+      "official_url": "https://thetadata.net/docs/Articles/Data-And-Requests/Symbology.html",
+      "retrieved_utc": "2026-10-07T13:32:33.095436+00:00",
+      "body_sha256": "ecb0a1e7c2865a1408802eb2860ebb320f44db7b1e55202fe285c3c107163e40",
+      "quote": "Some index options are split up into multiple tickers to determine the settlement style.",
+      "interpretation": "Example SPX/SPXW matters; S500 is not an assumed ticker."
+    },
+    {
+      "evidence_id": "zero_quotes",
+      "source_id": "theta-15",
+      "official_url": "https://thetadata.net/docs/Articles/Data-And-Requests/Data-Issues.html",
+      "retrieved_utc": "2026-10-07T13:33:28.753067+00:00",
+      "body_sha256": "c745d751a6af35aba95e7e4d1facd0e6fb7df6c58079186751296251d0f10750",
+      "quote": "OPRA sends quotes with zero bid and or asks during premarket. This is a normal behavior with options quotes.",
+      "interpretation": "Not automatically executable quotes."
+    },
+    {
+      "evidence_id": "personal_license",
+      "source_id": "theta-03",
+      "official_url": "https://www.thetadata.net/terms-and-conditions",
+      "retrieved_utc": "2026-10-07T13:31:59.421399+00:00",
+      "body_sha256": "a68a6db40b3c8a0a4332d5c4bb513241ea1dd94359492d3ee45c0b21b052dc27",
+      "quote": "limited, revocable, non-exclusive, non-transferable right and license to access and use the Services solely for the personal, non-commercial use",
+      "interpretation": "Not general commercial or redistribution rights."
+    },
+    {
+      "evidence_id": "business_limit",
+      "source_id": "theta-03",
+      "official_url": "https://www.thetadata.net/terms-and-conditions",
+      "retrieved_utc": "2026-10-07T13:31:59.421399+00:00",
+      "body_sha256": "a68a6db40b3c8a0a4332d5c4bb513241ea1dd94359492d3ee45c0b21b052dc27",
+      "quote": "In any case, you shall not use the Services Data in connection with any trade, business, professional or other commercial activities.",
+      "interpretation": "Actual user/use classification requires confirmation."
+    },
+    {
+      "evidence_id": "archival_limit",
+      "source_id": "theta-03",
+      "official_url": "https://www.thetadata.net/terms-and-conditions",
+      "retrieved_utc": "2026-10-07T13:31:59.421399+00:00",
+      "body_sha256": "a68a6db40b3c8a0a4332d5c4bb513241ea1dd94359492d3ee45c0b21b052dc27",
+      "quote": "(i) archive, download, reproduce, distribute, modify, display, perform, publish, license, create derivative works of, or offer for sale the Services or any Content or information contained in or obtained from or through the Services;",
+      "interpretation": "Section 2.1 restriction text in the reviewed general Terms. Applicability to the documented historical API/download product and intended personal research requires agreement-specific clarification; this is not a blanket finding that personal backtests are forbidden."
+    },
+    {
+      "evidence_id": "individual_label",
+      "source_id": "theta-05",
+      "official_url": "https://www.thetadata.net/pricing",
+      "retrieved_utc": "2026-10-07T13:32:33.090997+00:00",
+      "body_sha256": "583944f6543c79c9357780064a8651c10a1fd9182d18e4c844f2df6b1540abd1",
+      "quote": "Personal use only, no redistribution or business use",
+      "interpretation": "Retail pricing scope; business pricing not established."
+    }
+  ],
+  "source_manifest": "manifest.json"
+}

@@ -1,0 +1,23 @@
+{
+  "reviewed_at": "2026-10-07T13:39:28.806561+00:00",
+  "status": "arithmetic_and_unverified_labels_pass",
+  "recomputed": {
+    "spread_over_midpoint": "0.5882352941176470588235294118",
+    "purchase_premium": "495.00",
+    "instant_bid_liquidation_value": "270.00",
+    "instant_loss_before_fees": "225.00",
+    "instant_loss_as_fraction_of_premium": "0.4545454545454545454545454545"
+  },
+  "maximum_contracts_at_assumed_ask_before_fees": 45,
+  "original_quote_and_actual_fill_verified": false,
+  "explanatory_limits": [
+    "The numbers are a peer-reported hypothetical example, not independently acquired quotes.",
+    "The assumed multiplier and capacity for 45 contracts are not established by this arithmetic.",
+    "Two-sided unchanged fill prices, no fees, no latency and no impact are explicit assumptions.",
+    "No acceptable spread threshold is established; midpoint limits do not imply fills.",
+    "Paper fills, if later observed, remain simulator evidence and do not guarantee live fills."
+  ],
+  "sha256": {
+    "peer-reply.json": "1aaa0df8b36d1932377e5da10a149665d898859e2c62118188e6413ea34f3d89"
+  }
+}

@@ -1,0 +1,56 @@
+{
+  "reviewed_at": "2026-10-07T13:45:31.761621+00:00",
+  "status": "pass_for_documented_source_research_and_unexecuted_plan",
+  "independent_reviews": {
+    "prior-scope-review.json": {
+      "status": "prior_scope_independently_reconciled",
+      "sha256": "31bdcb3e1eedab066a3b95982d446fb7c19ac3849a65d917bba014cb360f2a17"
+    },
+    "request-plan-review.json": {
+      "status": "pass_for_documentation_and_unexecuted_capability_request_plan_only",
+      "sha256": "3ff0d4a90451fc81e1731090ff17df94b9ff7c9fead0f26e7c7178b9a58ad8b5"
+    },
+    "document-provenance-review.json": {
+      "status": "document_provenance_and_quoted_passages_verified",
+      "sha256": "9bd82bb018a64f7409b08691676ba363890f5aa986066ddb13502ea4cc83bf8c"
+    },
+    "peer-arithmetic-review.json": {
+      "status": "arithmetic_and_unverified_labels_pass",
+      "sha256": "1f4ef51d361fe0df8813e40c4d4adff64f5318201f45bce42d34eb96005175e8"
+    }
+  },
+  "manual_review_conclusions": [
+    "Four providers are evidence-qualified conditional candidates, not verified user entitlements or data connections.",
+    "Databento generic SDK/DBN evidence is separated from unverified OPRA product schemas, dates, pricing and license; JavaScript shells remain unknown.",
+    "Massive historical fields and advertised coverage are supported; missing conditions/flags remain incompatible with an automatic pass under the inherited primary quote gate.",
+    "Theta tick tier and history are documented; default sampling, activity-based contract discovery, unknown size/timestamp semantics and untested gRPC/Terminal transport are preserved.",
+    "Cboe interval snapshots and June 22, 2026 size methodology change are separated from unverified tick products and unrelated All Access API pricing.",
+    "The generic event-time plan has not been silently mapped to Databento receive-time or Massive SIP-receipt filters.",
+    "800 prior rows, including 202 unresolved and 198 old no-trade windows, are retained; the 20 SPY pilot is a subset of 598 planned contract windows.",
+    "The October 5 cutoff, ten sampled sessions, 180 unsampled sessions and inability to simulate exits from 65-second windows remain explicit.",
+    "License excerpts are described as applicable-term questions rather than a blanket legal conclusion; public retail prices are conditional and not a project quote.",
+    "No new paid market-data request, account attestation, order or scheduler is represented as authorized or completed.",
+    "Peer spread arithmetic is correct under explicit unverified price, multiplier, capacity and no-fee assumptions; it is not actual fill or strategy evidence.",
+    "Public reproduction is limited: exact complete source documents and market inputs are private; hashes do not by themselves make those sources publicly reproducible.",
+    "The user's confirmation of no subscription to the four named vendors is retained; paid acquisition is deferred, and any subsequent underlying-stock signal study must remain separate from option-execution returns."
+  ],
+  "resolved_review_findings": [
+    "Provider-specific time-filter and missing-condition caveats added in a separate adapter plan without overwriting the frozen generic plan.",
+    "Pilot20 plus the full598 are not additive; final next-scope wording identifies all598 rather than remaining598.",
+    "First source-quotation audit needed the retained Theta .main.txt extraction; adding that reader path resolved the extraction-only failure without changing source hashes or quotes."
+  ],
+  "data_quality_or_execution_ready": false,
+  "historical_quote_rows_newly_acquired": 0,
+  "strategy_paths_run": 0,
+  "sha256": {
+    "source-study-design.json": "da4e6d1986d7913827182aa9f0de3bdc03d35a267a567d867bae6580bc36e2b2",
+    "historical-request-plan.json": "dd94361f781d198c6397570814a5de2c8864eee6ddb506820c26015825a0d31a",
+    "provider-adaptation-plan.json": "4104e3323ce61898294e8b09035141e9e35297392e8ffe69d3f5aadf46be1554",
+    "peer-reply.json": "1aaa0df8b36d1932377e5da10a149665d898859e2c62118188e6413ea34f3d89",
+    "stage-decision.json": "0485bef9ff2f693528cf64be1380bc25f6024ca309539fca1cadce48ad85aa7c",
+    "REPORT.zh-CN.md": "20a9c66e7ee5aa418f031301169e1861f56074e5166b78430e3373fb3d25e34d",
+    "REPRODUCE.md": "8d73f21c73bebe5ef3c14106f85b8e276aade17782d88be93818d947d9f2e4b6",
+    "prior-selected-contracts.json": "0fc6b4bad0d8230e798f962eb619b0e821aee1d92c2a80c5ee731076793c0bd7",
+    "user-subscription-status.json": "a42dffca07da668a7d7e97891e4aa36a09a9710f54ea24652ef59b36f2e5ae9d"
+  }
+}

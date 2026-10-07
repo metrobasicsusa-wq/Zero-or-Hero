@@ -1,0 +1,33 @@
+{
+  "reviewed_at": "2026-10-07T13:35:39.237000+00:00",
+  "status": "pass_for_documentation_and_unexecuted_capability_request_plan_only",
+  "independently_recomputed_counts": {
+    "all_rows": 800,
+    "plannable_contract_windows": 598,
+    "missing_contract_rows": 202,
+    "pilot_SPY_contract_windows": 20,
+    "pilot_unique_dates": 10,
+    "seconds_per_window": 65,
+    "pilot_contract_seconds": 1300,
+    "full_sample_contract_seconds": 38870
+  },
+  "timezone_offset_row_counts": {
+    "-1 day, 19:00:00": 240,
+    "-1 day, 20:00:00": 560
+  },
+  "rows_matched_to_original_contract_fields_and_missing_reasons": 800,
+  "historical_quotes_acquired_by_this_audit": 0,
+  "scope_limitations": [
+    "Retained source cohort ends October 5, 2026; not current-date full-year coverage.",
+    "SPY pilot is deliberately liquid for source compatibility diagnostics, not representative performance evidence.",
+    "65-second windows and four checkpoints do not contain full exits or whole trading days.",
+    "598 plannable contracts have not acquired historical point-in-time identity certification.",
+    "Original 202 missing rows are preserved, not classified as historically nonexistent.",
+    "No exact vendor cost, credential readiness or historical quote entitlement is established."
+  ],
+  "evidence_level": "Offline artifact consistency and manual scope review; not a downloaded-data or trading test.",
+  "sha256": {
+    "source-study-design.json": "da4e6d1986d7913827182aa9f0de3bdc03d35a267a567d867bae6580bc36e2b2",
+    "historical-request-plan.json": "dd94361f781d198c6397570814a5de2c8864eee6ddb506820c26015825a0d31a"
+  }
+}
