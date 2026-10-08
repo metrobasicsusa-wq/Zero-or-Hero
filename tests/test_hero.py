@@ -2048,6 +2048,19 @@ class ResearchMovers(unittest.TestCase):
         self.assertIn("涨得最多", r.markdown({"day": day, "names": 1, "rows": rows}))
 
 
+class ResearchChipNext(unittest.TestCase):
+    def test_groups_and_summary(self):
+        from hero import research_chipnext as r
+        c = [100, 99, 96, 95, 97, 98, 99, 100, 101]
+        rows = r.events(c, [f"d{i}" for i in range(len(c))])
+        two = r.pick(rows, "连跌两天、第二天跌 2.5% 以上")
+        self.assertEqual([x["day"] for x in two], ["d2"])               # 99 -> 96 after 100 -> 99
+        s = r.summary(two)
+        self.assertEqual((s["n"], s["down"]), (1, 1.0))                  # 96 -> 95 the next day
+        self.assertAlmostEqual(s["five"], 99 / 96 - 1, places=4)
+        self.assertEqual(r.summary([]), {"n": 0})
+
+
 class ResearchIronFly(unittest.TestCase):
     def test_credit_reaction_buyback_and_expiry(self):
         from hero import research_ironfly as r
