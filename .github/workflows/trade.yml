@@ -58,6 +58,12 @@ jobs:
           ALPACA_API_KEY: ${{ secrets.ALPACA_S500_API_KEY }}
           ALPACA_SECRET_KEY: ${{ secrets.ALPACA_S500_SECRET_KEY }}
         run: python -m hero --config config/s500.json --journal journal-s500 run ${{ inputs.dry_run && '--dry-run' || '' }}
+      - name: Notify Discord
+        # One-way push of fills, exits, results and errors since the last cycle; does nothing without DC_WEBHOOK.
+        continue-on-error: true
+        env:
+          DC_WEBHOOK: ${{ secrets.DC_WEBHOOK }}
+        run: python -m hero.notify journal journal-s500
       - name: Commit journal
         run: |
           git config user.name "zero-or-hero-bot"

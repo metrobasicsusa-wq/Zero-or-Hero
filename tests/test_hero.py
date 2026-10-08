@@ -2082,6 +2082,46 @@ class ResearchChipDipCall(unittest.TestCase):
         self.assertAlmostEqual(e[0]["drop"], 96 / 99 - 1)
 
 
+class Notify(unittest.TestCase):
+    def test_pushes_only_new_events_that_matter_and_keeps_the_cursor_on_failure(self):
+        from hero import notify
+        sent, ok = [], [True]
+        orig = notify.post
+        notify.post = lambda url, content: (sent.append(content), ok[0])[1]
+        try:
+            with tempfile.TemporaryDirectory() as d:
+                root = Path(d) / "journal-s500"
+                root.mkdir()
+                log = root / "trades.jsonl"
+                ev = lambda ts, **k: json.dumps({"ts": ts, **k}, ensure_ascii=False)
+                log.write_text(ev("2026-10-08T14:00:42+00:00", kind="zdte_fill", symbol="SPY261008C00781000",
+                                  why="末日买单成交：13 张 × $0.07") + "\n")
+                self.assertEqual(notify.push_journal(root, None), 0)          # no webhook: nothing at all
+                self.assertFalse((root / "notify_cursor.json").exists())
+                self.assertEqual(notify.push_journal(root, "u"), 0)           # first run: only sets the cursor
+                self.assertEqual(sent, [])
+                with log.open("a") as f:
+                    f.write(ev("2026-10-08T14:10:26+00:00", kind="order", reason="protective_stop", symbol="AAPL", why="止损") + "\n")
+                    f.write(ev("2026-10-08T14:20:00+00:00", kind="sleeve_plan", dry_run=True, why="演算") + "\n")
+                    f.write(ev("2026-10-08T19:30:35+00:00", kind="close", symbol="SPY261008C00781000",
+                               why="末日期权 15:30 前平仓，不留到收盘") + "\n")
+                ok[0] = False
+                self.assertEqual(notify.push_journal(root, "u"), 0)           # failed: cursor stays, retried later
+                ok[0] = True
+                self.assertEqual(notify.push_journal(root, "u"), 1)
+                self.assertIn("多账本 $50k", sent[-1])
+                self.assertIn("15:30 SPY261008C00781000：末日期权 15:30 前平仓", sent[-1])
+                self.assertNotIn("止损", sent[-1])                            # resting stops and plans stay quiet
+                self.assertEqual(notify.push_journal(root, "u"), 0)           # nothing new
+        finally:
+            notify.post = orig
+
+    def test_long_runs_split_under_the_discord_limit(self):
+        from hero import notify
+        msgs = notify.batches("主账户 $100k", ["x" * 500] * 9)
+        self.assertTrue(len(msgs) >= 3 and all(len(m) <= notify.LIMIT for m in msgs))
+
+
 class ResearchIronFly(unittest.TestCase):
     def test_credit_reaction_buyback_and_expiry(self):
         from hero import research_ironfly as r
