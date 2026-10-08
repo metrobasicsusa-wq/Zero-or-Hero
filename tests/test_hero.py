@@ -1841,6 +1841,29 @@ class ResearchZDTEFilter(unittest.TestCase):
         self.assertEqual(r.trades_for([row], "skip|0.001", 0.006), [])
 
 
+class ResearchPlanReview(unittest.TestCase):
+    def test_picks_and_each_sleeves_exit(self):
+        from hero import research_plan_review as r
+        ev = [{"kind": "sleeve_plan", "ts": "2026-10-08T14:00:36+00:00", "sleeve": "qqq0dte-500", "symbol": "QQQ261008P00748000",
+               "why": "qqq0dte-500（演算，不下单）：...；8 张 × $0.29"},
+              {"kind": "sleeve_plan", "ts": "2026-10-08T13:50:00+00:00", "sleeve": "gap-500", "symbol": "COHR261009C00330000",
+               "why": "gap-500：一张 $540.00 超过 $125.00，买不起"},
+              {"kind": "sleeve_plan", "ts": "2026-10-08T14:00:36+00:00", "sleeve": "tsla0dte-500", "why": "没有要买的"}]
+        ps = r.picks(ev, "2026-10-08")
+        self.assertEqual(ps, [{"sleeve": "qqq0dte-500", "symbol": "QQQ261008P00748000", "qty": 8, "limit": 0.29, "at": "10:00"}])
+        p = ps[0]
+        b = lambda h, c: {"h": h, "c": c}
+        hit = r.play({"10:00": b(0.3, 0.29), "13:05": b(0.90, 0.85), "15:30": b(1.5, 1.4)}, p, "zdte", 3)
+        self.assertEqual((hit["how"], hit["when"]), ("3 倍止盈", "13:05"))
+        self.assertAlmostEqual(hit["exit"], 0.87)
+        miss = r.play({"10:00": b(0.3, 0.29), "15:30": b(0.1, 0.05), "15:45": b(0.9, 0.9)}, p, "zdte", 3)
+        self.assertEqual((miss["exit"], miss["when"]), (0.05, "15:30"))     # nothing after 15:30 counts
+        gap = r.play({"10:01": b(0.6, 0.6), "11:00": b(0.9, 0.9), "12:00": b(0.5, 0.5)}, {**p, "at": "10:00"}, "gap", 3)
+        self.assertEqual((gap["how"], gap["exit"]), ("翻倍后回撤 40%", 0.5))
+        held = r.play({"15:59": b(0.4, 0.4)}, p, "weekly", 2)
+        self.assertEqual((held["exit"], held["how"]), (0.4, "还拿着（按收盘估值）"))
+
+
 class ResearchIronFly(unittest.TestCase):
     def test_credit_reaction_buyback_and_expiry(self):
         from hero import research_ironfly as r
