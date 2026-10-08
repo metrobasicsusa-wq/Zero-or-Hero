@@ -176,8 +176,9 @@ class Engine:
                 self._lottery(ledger, closes, today)
             core_equity = equity - (ledger.reserve() if ledger else 0.0)
             if state.get("last_rebalance") != today.isoformat():
-                self._rebalance(stocks, busy, closes, core_equity, halted)
-                state["last_rebalance"] = today.isoformat()
+                # False: a sale had to wait for a stop's cancel; the whole rebalance runs again next cycle
+                if self._rebalance(stocks, busy, closes, core_equity, halted) is not False:
+                    state["last_rebalance"] = today.isoformat()
             if self.cfg["options"]["enabled"] and not halted and not self.breaker:
                 self._option_entries(options, busy, closes, core_equity, today, stocks)
             self._reconcile_stops(stocks, busy, closes)
@@ -919,8 +920,12 @@ class Engine:
     def _bought_today(self, sym: str, today: date) -> bool:
         return any(f["symbol"] == sym and f["side"] == "buy" for f in self.j.fills(today.isoformat()))
 
-    def _rebalance(self, stocks: dict, busy: set, closes: dict, equity: float, halted: bool) -> None:
+    def _rebalance(self, stocks: dict, busy: set, closes: dict, equity: float, halted: bool) -> bool | None:
+        """Sells and trims first, then buys. If a sale could not go out because a protective stop's
+        cancel was still pending, nothing is bought this cycle (the buys would run on borrowed money)
+        and False is returned so the next cycle tries the whole rebalance again."""
         p, risk = self.cfg["stocks"], self.cfg["risk"]
+        deferred: list[str] = []
         held = frozenset(stocks)
         mc = getattr(self, "macro_closes", None)
         pool = getattr(self, "rank_closes", closes)
@@ -949,6 +954,7 @@ class Engine:
         for sym in stocks:
             if sym not in targets and sym not in busy:
                 if not self._cancel_stops(sym, "卖出前先撤销保护性止损单，释放被占用的股份"):
+                    deferred.append(sym)
                     continue
                 self._close(sym, "dropped_from_targets", {k: score.get(sym, {}).get(k) for k in
                                                           ("momentum", "above_trend", "rsi", "rank")},
@@ -983,12 +989,18 @@ class Engine:
                 why += f"；{macro.summary(gauges)}，总仓位再乘 {p['macro_scale']:.0%}"
             if want < have:
                 if not self._cancel_stops(sym, "减仓前先撤销保护性止损单，减仓后按新股数重挂"):
+                    deferred.append(sym)
                     continue
                 self._order("trim", ref, why, symbol=sym, **size, side="sell", type="market", time_in_force="day")
             else:
                 buys.append((sym, size, ref, why))
+        if deferred:
+            self.j.event("rebalance_deferred", dry_run=self.dry, symbols=deferred,
+                         why=f"{'、'.join(deferred)} 的止损单还没撤销完，卖不出去；这次先不买（"
+                             + "、".join(sym for sym, *_ in buys) + "），下一轮（约 10 分钟后）整套调仓重来，避免借钱买")
+            return False
         if halted:
-            return
+            return None
         breaker, cautious = getattr(self, "breaker", None), getattr(self, "cautious", {})
         for sym, size, ref, why in buys:
             if breaker or sym in cautious:

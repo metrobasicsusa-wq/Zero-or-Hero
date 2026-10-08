@@ -10,7 +10,7 @@ from pathlib import Path
 from hero import market
 
 TEMPLATE = Path(__file__).with_name("dashboard.html")
-EVENT_KINDS = {"order", "close", "halt", "option_skip", "attempt_end", "attempt_end_confirmed", "earnings_watch",
+EVENT_KINDS = {"order", "close", "rebalance_deferred", "halt", "option_skip", "attempt_end", "attempt_end_confirmed", "earnings_watch",
                "circuit", "news_alert", "stock_drop_alert", "buy_blocked",
                "lottery_pick", "lottery_skip", "lottery_result",
                "zdte_skip", "zdte_fill", "zdte_result", "zdte_switch", "zdte_attempt_end",

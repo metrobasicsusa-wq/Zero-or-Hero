@@ -203,6 +203,28 @@ class EngineTests(unittest.TestCase):
         Engine(c2, cfg(stocks={"rsi_max": 101}, options={"enabled": False}), self.j).run(today=TODAY)
         self.assertEqual(c2.orders, [])
 
+    def test_a_sale_stuck_behind_a_pending_stop_cancel_holds_the_buys_and_retries(self):
+        # 2026-10-08: SPY's and MSFT's stops were still "pending_cancel" at 9:30, so the sale and the trim
+        # were skipped while the buys went out -- the account ended about $10k on margin
+        from hero import stops
+        held = {"symbol": "DOWN", "asset_class": "us_equity", "qty": "50", "avg_entry_price": "100",
+                "current_price": "100", "market_value": "5000"}
+        stop = {"id": "s1", "symbol": "DOWN", "qty": "50", "side": "sell", "type": "stop", "status": "new",
+                "client_order_id": stops.PREFIX + "abc", "submitted_at": "2026-10-01T14:00:00Z"}
+        conf = cfg(stocks={"rsi_max": 101}, options={"enabled": False})
+        c = FakeClient(self.closes, positions=[held], open_orders=[stop])
+        c.cancel_result = "pending_cancel"
+        Engine(c, conf, self.j).run(today=TODAY)
+        self.assertEqual((c.closed, [o for o in c.orders if o["type"] == "market"]), ([], []))  # no sale, and no buys
+        self.assertNotIn("last_rebalance", self.j.state())                                     # the next cycle retries
+        logged = (Path(self.tmp.name) / "trades.jsonl").read_text()
+        self.assertIn("rebalance_deferred", logged)
+        c2 = FakeClient(self.closes, positions=[held], open_orders=[stop])                     # the cancel went through
+        Engine(c2, conf, self.j).run(today=TODAY)
+        self.assertIn("DOWN", c2.closed)
+        self.assertTrue([o for o in c2.orders if o["type"] == "market" and o["side"] == "buy"])
+        self.assertEqual(self.j.state()["last_rebalance"], TODAY.isoformat())
+
     def test_macro_cut_is_applied_and_explained(self):
         flat = [100.0] * 400
         stress = {"TLT": flat[:-20] + [100 - i * 0.4 for i in range(20)],
