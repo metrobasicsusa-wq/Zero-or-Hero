@@ -1,0 +1,29 @@
+{
+  "schema_version": "1.0-s500-repair",
+  "id": "s500-reliability-repair-20261008-v1",
+  "status": "repair_in_progress_not_completed",
+  "authorization": "User explicitly requested repairing the collection trigger and report publication faults in this conversation.",
+  "observed_at_et": "2026-10-08T10:37:10-04:00",
+  "observed_at_scope": "Time check at the beginning of this repair, not the eventual commit timestamp.",
+  "shared_branch_baseline": "0abe18346e470701f6e37def1695c574a826125b",
+  "collector_baseline_commit": "5b4d08e9f022668628ff053e2a118b5968eb2c28",
+  "findings": [
+    "The current collector has one preopen cron at 13:03 UTC.",
+    "The deployment manifest hashes the workflow: changing the workflow alone would fail deployment verification.",
+    "The existing runner reserves each date/phase permanently before market access and forbids reacquisition.",
+    "Earlier publication failures have no original rejection payload in the available context; their precise cause remains unknown."
+  ],
+  "planned_repair_scope": "Collector trigger reliability, matching operational deployment binding, offline checks, and sanitized publication diagnostics; no change to research economics or account operations.",
+  "unchanged": {
+    "ai_tasks": "Keep the existing three phase tasks; create no duplicate timers.",
+    "protocol_sha256": "2916ce06a0db24e18a754abae8943470ba9419e914b11d03d2f05d99f64e6d71",
+    "preopen_deadline_et": "09:20",
+    "sample_days": 59,
+    "variants": 36,
+    "orders_enabled": false,
+    "main_account_out_of_scope": true,
+    "credentials_accessed_or_copied": false,
+    "missed_day_backfilled": false
+  },
+  "publication_check": "This is one direct authorized create-file attempt through the existing GitHub connector. A successful commit would verify only this attempt, not scheduled-task publishing reliability or the cause of earlier refusals."
+}
