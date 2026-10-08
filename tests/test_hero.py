@@ -1814,6 +1814,33 @@ class ResearchReclaim(unittest.TestCase):
         self.assertAlmostEqual(t["trail"], t["hold"], places=3)                    # armed at 1.26 >= 0.44; 0.27 <= 0.6 x 1.26 only at 15:50
 
 
+class ResearchZDTEFilter(unittest.TestCase):
+    def test_2026_10_08_reads_as_too_small_to_call(self):
+        from hero import research_zdte_filter as r
+        bar = lambda o, c: {"o": o, "c": c}
+        m = {"09:30": bar(774.90, 774.95), "10:00": bar(775.3, 775.355), "10:30": bar(773.0, 772.9), "11:00": bar(773.5, 773.6)}
+        mv = r.moves(m, 777.15)
+        d = r.decisions(mv)
+        self.assertEqual(d["live"], ("10:00", "C"))                     # +0.06%: the live rule buys the call
+        self.assertEqual(d["bucket|0.0|0.001"], ("10:00", "C"))
+        self.assertIsNone(d["bucket|0.001|0.002"])
+        self.assertIsNone(d["skip|0.001"])                               # too small: sit out
+        self.assertEqual(d["wait|0.002"], ("10:30", "P"))                # -0.26% by 10:30: a put then
+        self.assertIsNone(d["wait|0.003"])                               # never 0.3% away at a check
+        self.assertEqual(d["prior"], ("10:00", "P"))                     # below yesterday's close
+        self.assertIsNone(d["agree"])                                    # open says up, prior close says down
+        self.assertIsNone(r.moves({"10:00": bar(1, 1)}, 1.0))            # no opening minute
+
+    def test_trades_for_picks_the_rules_contract(self):
+        from hero import research_zdte_filter as r
+        row = {"day": "2026-10-08", "move": {"10:00": 0.0006, "10:30": -0.0025, "11:00": -0.0017}, "prior": -0.0023,
+               "res": {"10:00|C|0.006": -0.7, "10:30|P|0.006": 2.0, "10:00|P|0.006": 0.5}}
+        self.assertEqual(r.trades_for([row], "live", 0.006), [("2026-10-08", -0.7)])
+        self.assertEqual(r.trades_for([row], "wait|0.002", 0.006), [("2026-10-08", 2.0)])
+        self.assertEqual(r.trades_for([row], "prior", 0.006), [("2026-10-08", 0.5)])
+        self.assertEqual(r.trades_for([row], "skip|0.001", 0.006), [])
+
+
 class ResearchIronFly(unittest.TestCase):
     def test_credit_reaction_buyback_and_expiry(self):
         from hero import research_ironfly as r
