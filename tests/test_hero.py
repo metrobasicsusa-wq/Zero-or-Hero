@@ -2410,6 +2410,43 @@ class SleeveRules(unittest.TestCase):
         slot, picks = sr.Gap().entries(r, {"n": 1}, {"slots": {}, "cash": 500.0})      # $250 a pick: AAA's $500 is too dear
         self.assertEqual([p["und"] for p in picks], ["CCC"])
 
+    def test_dip_call_only_the_day_after_a_one_percent_drop(self):
+        from hero import sleeve_rules as sr
+        spec = {"und": "SPY", "offset": 0.006, "take": 3, "side": "call", "after_drop": -0.01}
+        b = self.broker()
+        b.snaps["SPY"] = {"dailyBar": {"o": 100.0, "l": 99.0}, "latestTrade": {"p": 99.5}, "prevDailyBar": {"c": 100.0}}
+        b.bars["SPY"] = [{"t": "2026-10-06T04:00:00Z", "c": 102.0}, {"t": "2026-10-07T04:00:00Z", "c": 100.5}]   # -1.5%
+        slot, picks = sr.ZeroDTE().entries(self.run_at(date(2026, 10, 8), 10, 0, b), spec, {"slots": {}})
+        self.assertEqual(slot, "2026-10-08")
+        self.assertTrue(picks[0]["sym"].endswith("C101"))           # a call although SPY is under its open; 99.5 x 1.006
+        self.assertIn("昨天 SPY 收跌 -1.5%", picks[0]["why"])
+        b.bars["SPY"][-1]["c"] = 101.5                               # only -0.5%: sit the day out
+        self.assertEqual(sr.ZeroDTE().entries(self.run_at(date(2026, 10, 8), 10, 0, b), spec, {"slots": {}}), ("2026-10-08", []))
+
+    def test_plan_only_sleeves_stay_out_of_the_live_run(self):
+        from types import SimpleNamespace
+        from hero import engine, sleeves
+        seen, planned = [], []
+
+        class Runner:
+            def __init__(self, c, j, cfg, specs, book, rules, now, today):
+                seen.extend(x["id"] for x in specs)
+            def run(self):
+                pass
+        cfg = {"sleeves": {"list": [{"id": "a-500", "start": 500}, {"id": "dip-500", "start": 500, "plan_only": True}]}}
+        with tempfile.TemporaryDirectory() as tmp:
+            fake = SimpleNamespace(cfg=cfg, dry=False, c=None, now=None, j=SimpleNamespace(root=Path(tmp), event=lambda *a, **k: None),
+                                   _sleeves_plan=lambda today, only_plan_only=False: planned.append(only_plan_only))
+            old = sleeves.Runner
+            sleeves.Runner = Runner
+            try:
+                engine.Engine._sleeves(fake, date(2026, 10, 12))
+            finally:
+                sleeves.Runner = old
+            self.assertEqual(seen, ["a-500"])
+            self.assertEqual(planned, [True])
+            self.assertNotIn("dip-500", json.loads((Path(tmp) / "sleeves.json").read_text())["sleeves"])
+
     def test_flush_needs_two_percent_under_the_open(self):
         from hero import sleeve_rules as sr
         r = self.run_at(date(2026, 10, 8), 10, 0, self.broker())

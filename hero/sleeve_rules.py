@@ -150,25 +150,37 @@ def trend20(xs: list[float]) -> int:
 
 # ---------- the rules ----------
 class ZeroDTE:
-    """10:00, the option expiring today, with the trend since the open, `offset` beyond the price, a `take` x limit."""
+    """10:00, the option expiring today, with the trend since the open, `offset` beyond the price, a `take` x limit.
+    Optional: `side` "call" / "put" fixes the side; `after_drop` (e.g. -0.01) trades only the day after a close
+    at least that far below the one before it (research/2026-10-08-zdte-streak.md)."""
 
     def entries(self, run, spec, s):
         day = run.today.isoformat()
         if day in s["slots"] or not (spec.get("entry", "10:00") <= run.hhmm < "15:00"):
             return None
         und = spec["und"]
+        why_day = ""
+        if spec.get("after_drop") is not None:
+            xs = closes(run, [und], days=10).get(und) or []
+            if len(xs) < 2:
+                return None
+            prev = xs[-1] / xs[-2] - 1
+            if prev > spec["after_drop"]:
+                return (day, [])  # yesterday was not a big enough drop: sit out
+            why_day = f"昨天 {und} 收跌 {prev:.1%}，"
         snap = snaps(run, [und]).get(und) or {}
         spot, o, _, _ = spot_open(snap)
         if not spot or not o:
             return None
-        kind = "C" if spot >= o else "P"
+        kind = {"call": "C", "put": "P"}.get(spec.get("side"), "C" if spot >= o else "P")
         got = option_pick(run, und, kind, spot, spec["offset"], day, day)
         if not got:
             return (day, [])  # no expiry today for this name
         c, ask = got
+        how = "买" if spec.get("side") else "顺势买"
         return (day, [{"sym": c["symbol"], "asset": "option", "und": und, "ask": ask, "take": spec["take"], "expiry": day,
                        "exit_day": day, "exit_at": "15:30",
-                       "why": f"{und} 开盘 ${o:,.2f}、现在 ${spot:,.2f}，顺势买当天到期{'看涨' if kind == 'C' else '看跌'} "
+                       "why": f"{why_day}{und} 开盘 ${o:,.2f}、现在 ${spot:,.2f}，{how}当天到期{'看涨' if kind == 'C' else '看跌'} "
                               f"{float(c['strike_price']):g}（离现价 {abs(float(c['strike_price']) / spot - 1):.1%}），{spec['take']:g} 倍止盈，15:30 平仓"}])
 
 

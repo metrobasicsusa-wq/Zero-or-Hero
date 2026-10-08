@@ -460,7 +460,12 @@ class Engine:
         if self.dry:
             self.j.event("sleeve_skip", dry_run=True, why="演练模式：多账本不下单")
             return
-        specs = self.cfg["sleeves"]["list"]
+        specs = [s for s in self.cfg["sleeves"]["list"] if not s.get("plan_only")]  # plan-only sleeves never send orders
+        if len(specs) < len(self.cfg["sleeves"]["list"]):
+            try:
+                self._sleeves_plan(today, only_plan_only=True)
+            except Exception as e:
+                self.j.event("alert_error", source="sleeves_plan", error=str(e)[:200])
         carry = {}
         for spec in specs:  # a sleeve can continue an older book's money (the first 0DTE ledger)
             if spec.get("carry") == "zdte" and (self.j.root / "zdte.json").exists():
@@ -471,9 +476,9 @@ class Engine:
         finally:
             book.save()
 
-    def _sleeves_plan(self, today: date) -> None:
+    def _sleeves_plan(self, today: date, only_plan_only: bool = False) -> None:
         from hero import sleeve_rules, sleeves
-        specs = self.cfg["sleeves"]["list"]
+        specs = [s for s in self.cfg["sleeves"]["list"] if s.get("plan_only") or not only_plan_only]
         carry = {s["id"]: zd.Book(self.j.root / "zdte.json", float(s["start"])).live_cash()
                  for s in specs if s.get("carry") == "zdte" and (self.j.root / "zdte.json").exists()}
         book = sleeves.Book(self.j.root / "sleeves_plan.json", specs, carry)  # its own file: the real ledgers stay untouched
