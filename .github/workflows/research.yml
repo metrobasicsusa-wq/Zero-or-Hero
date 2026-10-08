@@ -8,7 +8,7 @@ on:
       study:
         description: "Which study to run"
         type: choice
-        options: [short, universe, s500, earnings, lottery, flow, 0dte, events, fly, tails, seller, net, gap, ironfly, today, flush, flush_stock, 0dte_names, weekly, weekly_news, lotto0dte, letf, reclaim, zdte_filter, plan_review, streak, zdte_streak, nvda_high, chase]
+        options: [short, universe, s500, earnings, lottery, flow, 0dte, events, fly, tails, seller, net, gap, ironfly, today, flush, flush_stock, 0dte_names, weekly, weekly_news, lotto0dte, letf, reclaim, zdte_filter, plan_review, streak, zdte_streak, nvda_high, chase, jump_dip]
         default: short
 
 # Its own queue per study: a long study must never hold up the trading runs (which share hero-journal),

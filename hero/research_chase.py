@@ -25,11 +25,11 @@ METRIC_ZH = {"gap": "第二天跳空", "close_next": "当天收盘买、拿到�
              "open_5": "第二天开盘追、拿 5 天", "open_20": "第二天开盘追、拿 20 天"}
 
 
-def bars_for(client, syms: list[str], end: str) -> dict[str, list[dict]]:
+def bars_for(client, syms: list[str], end: str, adjustment: str = "all") -> dict[str, list[dict]]:
     out: dict[str, list[dict]] = {}
     for i in range(0, len(syms), 50):
         params = {"symbols": ",".join(syms[i:i + 50]), "timeframe": "1Day", "start": START, "end": end,
-                  "adjustment": "all", "feed": FEED, "limit": 10000}
+                  "adjustment": adjustment, "feed": FEED, "limit": 10000}
         while True:
             page = client._d("/v2/stocks/bars", params)
             for s, bs in (page.get("bars") or {}).items():

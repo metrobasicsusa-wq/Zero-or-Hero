@@ -1956,6 +1956,35 @@ class ResearchChase(unittest.TestCase):
                                                "all": g, "since2024": g, "recent_big": []}))
 
 
+class ResearchJumpDip(unittest.TestCase):
+    def test_entries_candidates_and_outcome(self):
+        from hero import research_jump_dip as r
+        b = lambda o, h, c: {"o": o, "h": h, "c": c}
+        m = {"09:30": b(95, 96, 95.5), "09:45": b(95.5, 97, 96.5), "10:00": b(96.5, 96.8, 96.0),
+             "10:20": b(96, 97.5, 97.2), "11:00": b(97.2, 100.5, 100.2), "15:59": b(100, 101, 101)}
+        got = r.entries(m, 100.0)
+        self.assertEqual(got["open"], ("09:30", 95.0))
+        self.assertEqual(got["10:00"], ("10:00", 96.0))
+        self.assertEqual(got["green"], ("10:00", 96.0))                 # above the 95 open from 10:00 on
+        self.assertEqual(got["orb"], ("10:20", 97.2))                   # above the 97 high of 9:30-10:00
+        self.assertEqual(got["fill"], ("11:00", 100.2))                 # back at yesterday's 100
+        self.assertEqual(r.entries({"10:00": b(1, 1, 1)}, 1.0), {})
+
+        day = lambda i, o, c: {"t": f"2026-01-{i:02d}T05:00:00Z", "o": o, "c": c}
+        adj = [day(1, 90, 90), day(2, 91, 100), day(3, 95, 101)] + [day(4 + k, 101, 101 + k) for k in range(6)]
+        evs = r.candidates(adj, adj)
+        self.assertEqual(evs[0]["day"], "2026-01-03")
+        self.assertAlmostEqual(evs[0]["ret"], 100 / 90 - 1)
+        self.assertAlmostEqual(evs[0]["gap"], 95 / 100 - 1)
+        out = r.outcome(evs[0], {"open": ("09:30", 95.0)})
+        self.assertAlmostEqual(out["open"]["day"], 101 / 95 - 1)
+        self.assertAlmostEqual(out["open"]["five"], evs[0]["close5_adj"] / 95 - 1)
+        split = [dict(x) for x in adj]
+        raw = [dict(x) for x in adj]
+        raw[2] = {**raw[2], "c": 50.5}                                   # a 2:1 split between day 2 and day 3
+        self.assertNotIn("2026-01-03", [e["day"] for e in r.candidates(split, raw)])
+
+
 class ResearchIronFly(unittest.TestCase):
     def test_credit_reaction_buyback_and_expiry(self):
         from hero import research_ironfly as r
