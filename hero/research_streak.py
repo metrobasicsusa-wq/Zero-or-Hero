@@ -86,7 +86,7 @@ def run(client) -> dict:
     end = (date.today() - timedelta(days=1)).isoformat()
     out = {"generated": date.today().isoformat(), "start": START, "end": end, "names": {}}
     for und in NAMES:
-        bars = [b for b in daily(client, und, date.today().isoformat()) if b["t"][:10] <= end]  # end = today 00:00Z
+        bars = [b for b in daily(client, und, f"{end}T23:00:00Z") if b["t"][:10] <= end]  # a date alone counts as end of day
         c = [float(b["c"]) for b in bars]
         rows = outcomes(bars)
         out["names"][und] = {"last_day": bars[-1]["t"][:10] if bars else None, "last_streak": streaks(c)[-1] if c else 0,
