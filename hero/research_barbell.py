@@ -159,7 +159,7 @@ def markdown(rep: dict) -> str:
             cells.append(f"{w['x2']:.0%} / {w['hero']:.0%} / {w['zero']:.0%} / {w['median_end']:.2f} 倍（{w['worst_end']:.2f}～{w['best_end']:.2f}）"
                          if w.get("n") else "—")
         lot = LOT_ZH.get(r["lot"], "—")
-        out.append(f"| {core_zh[r['core']]} | {lot} | {r['share']:.0%} | {cells[0]} | {cells[1]} | {r['whole']['end']:.2f} 倍 | {r['whole']['max_dd']:.0%} |")
+        out.append(f"| {core_zh[r['core']]} | {lot} | {r['share'] * 100:g}% | {cells[0]} | {cells[1]} | {r['whole']['end']:.2f} 倍 | {r['whole']['max_dd']:.0%} |")
     n = rep["rows"][0]["w500"].get("n", 0)
     out += ["", f"每格的比例来自 {n} 个起点（每月一个，且后面要有满 12 个月），起点互相重叠，不是独立样本。"]
     return "\n".join(out) + "\n"
