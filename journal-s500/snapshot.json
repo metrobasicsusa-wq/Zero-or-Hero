@@ -8,12 +8,29 @@
     "portfolio_value": "49986.67"
   },
   "benchmark": {
-    "close": 613.53,
+    "close": 617.34,
     "date": "2026-10-08",
     "prev_close": 625.19,
     "symbol": "SMH"
   },
-  "open_orders": [],
+  "open_orders": [
+    {
+      "asset_class": "us_option",
+      "filled_at": null,
+      "filled_avg_price": null,
+      "filled_qty": "0",
+      "limit_price": "0.21",
+      "protective_stop": false,
+      "qty": "13",
+      "side": "sell",
+      "status": "new",
+      "stop_price": null,
+      "submitted_at": "2026-10-08T14:10:26.366158716Z",
+      "symbol": "SPY261008C00781000",
+      "time_in_force": "day",
+      "type": "limit"
+    }
+  ],
   "positions": [
     {
       "asset_class": "us_option",
@@ -30,5 +47,5 @@
       "unrealized_plpc": "-0.14286"
     }
   ],
-  "ts": "2026-10-08T14:00:42+00:00"
+  "ts": "2026-10-08T14:10:26+00:00"
 }
