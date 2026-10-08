@@ -111,7 +111,8 @@ def main() -> None:
             cal = earnings.load(EARNINGS)
             print(json.dumps(Engine(client, cfg, journal, args.dry_run, earnings=cal).run(force=args.force)))
         journal.snapshot({"account": client.account(), "positions": client.positions(),
-                          "open_orders": client.open_orders()})
+                          "open_orders": client.open_orders(),
+                          "benchmark": review.benchmark_quote(client, cfg["regime_symbol"])})
         print(f"fills: {journal.record_fills(client.fill_activities(et_today()))} new")
     elif args.cmd == "status":
         a = client.account()

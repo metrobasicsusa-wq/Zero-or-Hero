@@ -28,8 +28,12 @@ def _pick(obj: dict, fields: tuple) -> dict:
     return {k: obj.get(k) for k in fields}
 
 
+BENCHMARK_FIELDS = ("symbol", "date", "close", "prev_close")
+
+
 def sanitize(snapshot: dict) -> dict:
     return {
+        "benchmark": _pick(snapshot["benchmark"], BENCHMARK_FIELDS) if snapshot.get("benchmark") else None,
         "account": _pick(snapshot.get("account") or {}, ACCOUNT_FIELDS),
         "positions": [_pick(p, POSITION_FIELDS) for p in snapshot.get("positions") or []],
         "open_orders": [_pick({**o, "protective_stop": (o.get("client_order_id") or "").startswith("hero-stop-")},

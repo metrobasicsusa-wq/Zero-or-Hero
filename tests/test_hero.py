@@ -361,6 +361,33 @@ class Patrol(unittest.TestCase):
 
 
 class Publication(unittest.TestCase):
+    def test_experiment_book_and_broker_benchmark(self):
+        from hero import review as rv
+        row, prev = {"equity": "278.35", "cash": "278.35", "benchmark": "624.69"}, {"equity": "500", "cash": "500",
+                                                                                   "benchmark": "632.05"}
+        acct = {"equity": "50000", "last_equity": "50000", "cash": "50000"}
+        # A $500 experiment inside a $50,000 paper account reads its own book, never the broker totals.
+        eq, last, cash, basis = rv._equity({"attempt": {"start_capital": 500}}, acct, True, row, prev)
+        self.assertEqual((eq, last, cash), (278.35, 500.0, 278.35))
+        self.assertIn("experiment book", basis)
+        self.assertEqual(rv._equity({}, acct, True, row, prev)[:2], (50000.0, 50000.0))  # main account: broker
+        cfg = {"regime_symbol": "SPY"}
+        snap = {"benchmark": {"symbol": "SPY", "date": "2026-10-07", "close": 777.1, "prev_close": 779.09}}
+        self.assertEqual(rv._bench(cfg, "2026-10-07", snap, row, prev)[:2], (777.1, 779.09))
+        # Another day's quote, or another symbol, falls back to the journal column.
+        self.assertEqual(rv._bench(cfg, "2026-10-08", snap, row, prev)[:2], (624.69, 632.05))
+        self.assertEqual(rv._bench({"regime_symbol": "SMH"}, "2026-10-07", snap, row, prev)[:2], (624.69, 632.05))
+
+        class Client:
+            def stock_snapshots(self, symbols):
+                return {"SPY": {"dailyBar": {"t": "2026-10-07T04:00:00Z", "c": 777.1}, "prevDailyBar": {"c": 779.09}}}
+
+        class Broken:
+            def stock_snapshots(self, symbols):
+                raise RuntimeError("down")
+        self.assertEqual(rv.benchmark_quote(Client(), "SPY"), snap["benchmark"])
+        self.assertIsNone(rv.benchmark_quote(Broken(), "SPY"))
+
     def test_snapshot_drops_identifiers(self):
         with tempfile.TemporaryDirectory() as d:
             j = Journal(Path(d))

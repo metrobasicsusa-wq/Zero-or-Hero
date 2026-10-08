@@ -93,6 +93,41 @@ def rehearsal(journal: Path, cfg: dict, day: str) -> dict | None:
             "option_skips": len(skips), "last_option_skip": skips[-1] if skips else None}
 
 
+def benchmark_quote(client, symbol: str) -> dict | None:
+    """The benchmark's daily close and the close before it, from the broker's data feed (IEX), so a
+    review compares against the real prior close, not the journal's intraday benchmark column."""
+    try:
+        snap = client.stock_snapshots([symbol]).get(symbol) or {}
+    except Exception:
+        return None
+    bar, prev = snap.get("dailyBar") or {}, snap.get("prevDailyBar") or {}
+    if not bar.get("c") or not prev.get("c"):
+        return None
+    return {"symbol": symbol, "date": str(bar.get("t", ""))[:10], "close": float(bar["c"]), "prev_close": float(prev["c"])}
+
+
+def _bench(cfg: dict, day: str, snap: dict, row: dict, prev: dict | None) -> tuple:
+    """(today, previous, basis) for the benchmark: the broker's daily bars when the snapshot carries
+    them for this day, else the journal's equity.csv column (an intraday reading)."""
+    b = snap.get("benchmark") or {}
+    if b.get("symbol") == cfg["regime_symbol"] and b.get("date") == day and b.get("close") and b.get("prev_close"):
+        return b["close"], b["prev_close"], "broker daily bars (IEX)"
+    return (_f(row.get("benchmark")), _f(prev.get("benchmark")) if prev else None,
+            "journal equity.csv benchmark column (intraday reading)")
+
+
+def _equity(cfg: dict, acct: dict, fresh: bool, row: dict, prev: dict | None) -> tuple:
+    """(equity, previous, cash, basis). An experiment with its own start capital (attempt) keeps a
+    book inside a larger paper account, so its equity.csv is the truth, not the broker's totals."""
+    if cfg.get("attempt", {}).get("start_capital"):
+        return (_f(row["equity"]), _f(prev["equity"]) if prev else None, _f(row["cash"]),
+                "experiment book (journal equity.csv), not the shared broker account")
+    if fresh:
+        return (_f(acct.get("equity")), _f(acct.get("last_equity")), _f(acct.get("cash")),
+                "broker last_equity (prior close)")
+    return (_f(row["equity"]), _f(prev["equity"]) if prev else None, _f(row["cash"]), "journal equity.csv prior row")
+
+
 def option_label(sym: str) -> str:
     if len(sym) <= 15:
         return sym
@@ -113,13 +148,13 @@ def facts(journal: Path, cfg: dict, day: str) -> str | None:
     snap = json.loads(snap_path.read_text()) if snap_path.exists() else {}
     acct = snap.get("account") or {}
     fresh = snap.get("ts", "").startswith(day)
-    equity = _f(acct.get("equity")) if fresh else _f(row["equity"])
-    last = _f(acct.get("last_equity")) if fresh else (_f(prev["equity"]) if prev else None)
+    equity, last, cash, _ = _equity(cfg, acct, fresh, row, prev)
 
     def ret(a, b):
         return a / b - 1 if a is not None and b else None
 
-    bench, bench_prev, bench_first = _f(row.get("benchmark")), _f(prev.get("benchmark")) if prev else None, _f(first.get("benchmark"))
+    bench, bench_prev, _ = _bench(cfg, day, snap, row, prev)
+    bench_first = _f(first.get("benchmark"))
     lines = [
         f"# Facts for {day}",
         "",
@@ -128,7 +163,7 @@ def facts(journal: Path, cfg: dict, day: str) -> str | None:
         f"| Day | {_pct(ret(equity, last))} ({_usd(equity - last if equity and last else None)}) | {_pct(ret(bench, bench_prev))} |",
         f"| Since start ({first['date']}) | {_pct(ret(equity, _f(first['equity'])))} | {_pct(ret(bench, bench_first))} |",
         "",
-        f"Equity {_usd(equity)} · cash {_usd(_f(acct.get('cash')) if fresh else _f(row['cash']))} · "
+        f"Equity {_usd(equity)} · cash {_usd(cash)} · "
         f"generation {cfg['generation']}",
         "",
         f"Status: **{'FINAL (post-close)' if is_final(journal, day) else 'PRELIMINARY (intraday)'}** · "
@@ -225,12 +260,12 @@ def insights(journal: Path, cfg: dict, day: str) -> list[str]:
     snap_path = journal / "snapshot.json"
     snap = json.loads(snap_path.read_text()) if snap_path.exists() else {}
     acct = snap.get("account") or {}
-    equity = _f(acct.get("equity")) or _f(row["equity"])
-    last = _f(acct.get("last_equity")) or (_f(prev["equity"]) if prev else None)
+    fresh = snap.get("ts", "").startswith(day)
+    equity, last, _, _ = _equity(cfg, acct, fresh, row, prev)
     notes = []
 
     mine = equity / last - 1 if equity and last else None
-    b, bp = _f(row.get("benchmark")), _f(prev.get("benchmark")) if prev else None
+    b, bp, _ = _bench(cfg, day, snap, row, prev)
     spy = b / bp - 1 if b and bp else None
     if mine is not None and spy is not None:
         diff = mine - spy
@@ -318,8 +353,8 @@ def export(journal: Path, cfg: dict, day: str) -> dict | None:
     acct = snap.get("account") or {}
     as_of = snapshot_as_of(journal)
     fresh = bool(as_of) and as_of.date().isoformat() == day
-    equity = _f(acct.get("equity")) if fresh else _f(row["equity"])
-    previous = _f(acct.get("last_equity")) if fresh else (_f(prev["equity"]) if prev else None)
+    equity, previous, _, equity_basis = _equity(cfg, acct, fresh, row, prev)
+    bench, bench_prev, bench_basis = _bench(cfg, day, snap, row, prev)
     fills = Journal(journal).fills(day)
     return {
         "schema_version": "1.0",
@@ -336,14 +371,14 @@ def export(journal: Path, cfg: dict, day: str) -> dict | None:
         "equity": {
             "current_usd": equity,
             "previous_day_usd": previous,
-            "previous_day_basis": "broker last_equity (prior close)" if fresh else "journal equity.csv prior row",
+            "previous_day_basis": equity_basis,
             "day_return": equity / previous - 1 if equity and previous else None,
             "since_start_return": equity / _f(rows[0]["equity"]) - 1 if equity and rows else None,
             "start_date": rows[0]["date"] if rows else None,
             "external_cash_flows_usd": 0,
         },
-        "benchmark": {"symbol": cfg["regime_symbol"], "close": _f(row.get("benchmark")),
-                      "previous_close": _f(prev.get("benchmark")) if prev else None},
+        "benchmark": {"symbol": cfg["regime_symbol"], "close": bench, "previous_close": bench_prev,
+                      "basis": bench_basis},
         "orders": decisions(journal, day),
         "orders_basis": "decisions journaled before submission, with the quote/reference evidence they used, "
                         "joined to broker acks and fills via hashed order ids",
