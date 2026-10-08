@@ -25,6 +25,17 @@ def rehearsal(cfg: dict) -> bool:
     return "live_from" in cfg and cfg.get("launch_approved") is not True
 
 
+def sleeves_preview(cfg: dict, journal: Path) -> dict | None:
+    """Before the sleeves start trading there is no ledger file: show their starting state from the config."""
+    specs = (cfg.get("sleeves") or {}).get("list")
+    if not specs:
+        return None
+    from hero import sleeves, zero_dte
+    carry = {s["id"]: zero_dte.Book(journal / "zdte.json", float(s["start"])).live_cash()
+             for s in specs if s.get("carry") == "zdte" and (journal / "zdte.json").exists()}
+    return sleeves.Book(journal / "sleeves.preview-not-saved.json", specs, carry).d
+
+
 def collect(journal: Path, cfg: dict) -> dict:
     show_sim = rehearsal(cfg)
     equity_path = journal / "equity.csv"
@@ -62,7 +73,7 @@ def collect(journal: Path, cfg: dict) -> dict:
     zdte_path, net_path, sl_path = journal / "zdte.json", journal / "net.json", journal / "sleeves.json"
     return {
         "rehearsal": show_sim,
-        "sleeves": json.loads(sl_path.read_text()) if sl_path.exists() else None,
+        "sleeves": json.loads(sl_path.read_text()) if sl_path.exists() else sleeves_preview(cfg, journal),
         "zdte": json.loads(zdte_path.read_text()) if zdte_path.exists() else None,
         "net": json.loads(net_path.read_text()) if net_path.exists() else None,
         "generated": datetime.now(timezone.utc).isoformat(timespec="seconds"),
