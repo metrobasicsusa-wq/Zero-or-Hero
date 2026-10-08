@@ -1864,6 +1864,24 @@ class ResearchPlanReview(unittest.TestCase):
         self.assertEqual((held["exit"], held["how"]), (0.4, "还拿着（按收盘估值）"))
 
 
+class ResearchStreak(unittest.TestCase):
+    def test_streaks_and_what_followed(self):
+        from hero import research_streak as r
+        self.assertEqual(r.streaks([1, 2, 3, 3, 2, 1, 2]), [0, 1, 2, 0, -1, -2, 1])
+        closes = [100, 101, 102, 103, 101, 100, 99, 100, 101]
+        bars = [{"t": f"2026-01-{i + 1:02d}T05:00:00Z", "c": c, "l": c - 0.5} for i, c in enumerate(closes)]
+        rows = r.outcomes(bars)
+        self.assertEqual(len(rows), len(closes) - 5)
+        third = rows[3]                                     # the 3rd straight up close, at 103
+        self.assertEqual(third["streak"], 3)
+        self.assertAlmostEqual(third["next"], 101 / 103 - 1)
+        self.assertAlmostEqual(third["five"], 101 / 103 - 1)  # 5 days later: 101
+        self.assertTrue(third["dip0.01"] and third["dip0.02"])  # low 98.5 <= 103 x 0.98
+        g = r.groups(rows)
+        self.assertEqual(g["连涨 3 天"]["n"], 1)
+        self.assertEqual(g["全部日子"]["n"], 4)
+
+
 class ResearchIronFly(unittest.TestCase):
     def test_credit_reaction_buyback_and_expiry(self):
         from hero import research_ironfly as r
