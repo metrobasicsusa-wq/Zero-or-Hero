@@ -1985,6 +1985,23 @@ class ResearchJumpDip(unittest.TestCase):
         self.assertNotIn("2026-01-03", [e["day"] for e in r.candidates(split, raw)])
 
 
+class ResearchJumpPut(unittest.TestCase):
+    def test_pick_and_play(self):
+        from hero import research_jump_put as r
+        cs = [{"symbol": f"X{e}P{k}", "strike_price": str(k), "expiration_date": e, "type": "put"}
+              for e in ("2026-10-09", "2026-10-16", "2026-10-23") for k in (95, 97, 100, 102)]
+        self.assertEqual(r.pick_put(cs, 100.5, 0.0, "2026-10-08"), "X2026-10-16P100")    # a week out, at or under the price
+        self.assertEqual(r.pick_put(cs, 100.5, 0.03, "2026-10-08"), "X2026-10-16P97")
+        later = ["2026-10-09", "2026-10-12", "2026-10-13", "2026-10-14", "2026-10-15"]
+        daily = {"2026-10-09": {"h": 1.5, "c": 1.4}, "2026-10-12": {"h": 2.4, "c": 2.0}, "2026-10-15": {"h": 1.0, "c": 0.5}}
+        got = r.play(1.0, daily, later)                                     # cost 1.10
+        self.assertAlmostEqual(got["next"], 1.26 / 1.10 - 1)
+        self.assertAlmostEqual(got["five"], 0.45 / 1.10 - 1)
+        self.assertEqual(got["take2"], 1.0)                                  # 2.4 >= 2.2
+        self.assertIsNone(r.play(1.0, daily, []))
+        self.assertIsNone(r.play(1.0, {}, later))                            # never traded again: left out
+
+
 class ResearchIronFly(unittest.TestCase):
     def test_credit_reaction_buyback_and_expiry(self):
         from hero import research_ironfly as r
