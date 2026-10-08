@@ -1,0 +1,342 @@
+2026-10-08 美股正股PAPER盘后有限审核
+
+17条独立实际FILL；4笔平仓2赢2亏，毛损益-392.81美元。日内清空、5个波段仓隔夜。有限审核保留运行、保护单及估值缺口。
+证据：{"archive_event_sequence": 23947, "archive_at": "2026-10-08T20:11:07.607313+00:00", "session_start": "2026-10-08T09:30:00-04:00", "session_end": "2026-10-08T16:00:00-04:00", "method": "SQLite mode=ro BEGIN consistent read; FILL latest correction by activity identity; exclude unattributed/test executions"}
+
+账户：首个09:57:48观察99452.68；末次15:59:59观察99326.27，现金50673.55。对前日15:59:20观察99580.74变化-254.47美元（-0.25554%），首末变化-126.41。日内观察最大回撤0.80215%，系统峰值回撤最大1.41680%，未触及10%锁定阈值。
+波段跟踪净值49121.169983、对前日变化-163.49；日内50201.519984、变化-97.55。顺序估值不强行拼到账户收益。
+实际成交17条，8个已成交订单（7个本地订单意图，另1个券商止损NVDA），4笔平仓：DE -295.26、NVDA -252.44、AAPL +97.39、JPM +57.50；合计毛损益-392.81；波段-295.26、日内-97.55。买入59405.47、卖出58715.54、净现金-689.93不是收益。
+
+- 没有官方收盘净值/持仓估值；使用15:59:59.894879美东末次账户观察，持仓时点15:59:55.372979；official_close及closing_positions为null。
+- 启动进程无心跳，用户授权重启后09:57:48首次净值观察；开盘后27分48秒缺少交易轮次/净值证据，不能补造。此后观察间未发现超过120秒间隔。
+- 09:58:52.938863美东快照DE止损已撤、仓位仍在，09:58:53至54美东成交；15:41:03.109019美东快照AAPL/JPM止损已撤、仓位仍在，15:41:03.987至05.329完成退出。仅证明观察时空档，不能测定精确连续无保护时间。
+- 两轮completed_with_alerts为撤单等待/退出流程，随后消失，执行器当前连续错误为0；不重发不确定订单。
+- 4个买入订单的9条独立成交均不高于限价；相对下单前ask滑点ABBV -2.724、NVDA +0.691、AAPL +2.730、JPM -0.605基点。市场卖出前可比报价缺失，滑点不可计算。NVDA止损231.96，实际卖231.93：止损触发价并非保证成交价。
+- 顺序采集时间标签不统一：NVDA/AAPL的order_intent事件时间分别早于所载quote约0.072/0.084秒；报价早于实际成交，但无法仅凭事件时间证明所有输入在单一决策时点已可见。
+- 前日末次现金51364.38至今日首次51363.48少0.90美元；费用和非FILL现金流未查询，不归因为费用，也不声称资金流为零。
+- 19140条样本为319轮各60条；去重300条不等于独立机会；0条缺行情时间，30条未评估单列。
+
+逐笔买入与卖出核对（公开白名单）：
+[
+  {
+    "sequence": 20389,
+    "at": "2026-10-08T13:58:53.145605+00:00",
+    "sleeve": "swing",
+    "symbol": "DE",
+    "side": "sell",
+    "quantity": "14",
+    "type": "market",
+    "limit": null,
+    "strategy": {
+      "params": {
+        "momentum": 60,
+        "stop_pct": 0.05,
+        "top_n": 5,
+        "trend": 60
+      },
+      "stage": "baseline_paper_experiment"
+    },
+    "fill_count": 3,
+    "vwap": 655.1,
+    "limit_pass": null,
+    "ask_slippage_bps": null
+  },
+  {
+    "sequence": 20401,
+    "at": "2026-10-08T13:58:58.170670+00:00",
+    "sleeve": "swing",
+    "symbol": "ABBV",
+    "side": "buy",
+    "quantity": "36",
+    "type": "limit",
+    "limit": "271.42",
+    "strategy": {
+      "params": {
+        "momentum": 60,
+        "stop_pct": 0.05,
+        "top_n": 5,
+        "trend": 60
+      },
+      "stage": "baseline_paper_experiment"
+    },
+    "fill_count": 2,
+    "vwap": 271.2161111111111,
+    "limit_pass": true,
+    "ask_slippage_bps": -2.72361269818,
+    "pre_order": {
+      "account_available": 58534.88,
+      "budget": 50000,
+      "decision_clock": "2026-10-08T09:58:57.897573-04:00",
+      "limit": 271.42,
+      "quantity": 36,
+      "reserved": 0,
+      "signal": {
+        "price": 271.41,
+        "reason": "60-session momentum 10.85%; volatility 12.96%; above SMA60; SPY above SMA120",
+        "score": 0.83762076,
+        "symbol": "ABBV"
+      },
+      "sleeve_exposure": 39402.29,
+      "stop": 257.28,
+      "quote": {
+        "ap": 271.29,
+        "bp": 270.82,
+        "t": "2026-10-08T13:58:57.51382375Z"
+      }
+    },
+    "limit_notional_usd": 9771.12,
+    "budget_check_pass": true
+  },
+  {
+    "sequence": 21892,
+    "at": "2026-10-08T16:30:12.020425+00:00",
+    "sleeve": "intraday",
+    "symbol": "NVDA",
+    "side": "buy",
+    "quantity": "70",
+    "type": "limit",
+    "limit": "235.63",
+    "strategy": {
+      "params": {
+        "opening_range_minutes": 30,
+        "stop_pct": 0.015,
+        "top_n": 3,
+        "volume_ratio": 1.5
+      },
+      "stage": "baseline_paper_experiment"
+    },
+    "fill_count": 3,
+    "vwap": 235.53628571428573,
+    "limit_pass": true,
+    "ask_slippage_bps": 0.6914790372669621,
+    "pre_order": {
+      "account_available": 48771.1,
+      "budget": 50000,
+      "decision_clock": "2026-10-08T12:30:12.093808-04:00",
+      "limit": 235.63,
+      "quantity": 70,
+      "reserved": 0,
+      "signal": {
+        "price": 235.49,
+        "reason": "30m opening-range breakout; volume 1.69x; close above session VWAP 235.4892",
+        "score": 0.84301146,
+        "signal_time": "2026-10-08T12:30:00-04:00",
+        "stop_pct": 0.015,
+        "symbol": "NVDA",
+        "volume_ratio": 1.69169494,
+        "vwap": 235.48920071
+      },
+      "sleeve_exposure": 0,
+      "stop": 231.96,
+      "quote": {
+        "ap": 235.52,
+        "bp": 235.49,
+        "t": "2026-10-08T16:30:12.092604574Z"
+      }
+    },
+    "limit_notional_usd": 16494.1,
+    "budget_check_pass": true
+  },
+  {
+    "sequence": 22202,
+    "at": "2026-10-08T17:00:20.580716+00:00",
+    "sleeve": "intraday",
+    "symbol": "AAPL",
+    "side": "buy",
+    "quantity": "49",
+    "type": "limit",
+    "limit": "339.55",
+    "strategy": {
+      "params": {
+        "opening_range_minutes": 30,
+        "stop_pct": 0.015,
+        "top_n": 3,
+        "volume_ratio": 1.5
+      },
+      "stage": "baseline_paper_experiment"
+    },
+    "fill_count": 2,
+    "vwap": 339.48265306122454,
+    "limit_pass": true,
+    "ask_slippage_bps": 2.729987955583102,
+    "pre_order": {
+      "account_available": 32283.559999999998,
+      "budget": 50000,
+      "decision_clock": "2026-10-08T13:00:20.737965-04:00",
+      "limit": 339.55,
+      "quantity": 49,
+      "reserved": 0,
+      "signal": {
+        "price": 339.29,
+        "reason": "30m opening-range breakout; volume 1.85x; close above session VWAP 337.8069",
+        "score": 1.79147252,
+        "signal_time": "2026-10-08T13:00:00-04:00",
+        "stop_pct": 0.015,
+        "symbol": "AAPL",
+        "volume_ratio": 1.85483025,
+        "vwap": 337.8069374
+      },
+      "sleeve_exposure": 16487.54002,
+      "stop": 334.22,
+      "quote": {
+        "ap": 339.39,
+        "bp": 339.31,
+        "t": "2026-10-08T17:00:20.664762124Z"
+      }
+    },
+    "limit_notional_usd": 16637.95,
+    "budget_check_pass": true
+  },
+  {
+    "sequence": 22485,
+    "at": "2026-10-08T17:24:56.951816+00:00",
+    "sleeve": "intraday",
+    "symbol": "JPM",
+    "side": "buy",
+    "quantity": "50",
+    "type": "limit",
+    "limit": "330.57",
+    "strategy": {
+      "params": {
+        "opening_range_minutes": 30,
+        "stop_pct": 0.015,
+        "top_n": 3,
+        "volume_ratio": 1.5
+      },
+      "stage": "baseline_paper_experiment"
+    },
+    "fill_count": 2,
+    "vwap": 330.39,
+    "limit_pass": true,
+    "ask_slippage_bps": -0.6053085560375759,
+    "pre_order": {
+      "account_available": 31884.010000000002,
+      "budget": 50000,
+      "decision_clock": "2026-10-08T13:24:57.139372-04:00",
+      "limit": 330.57,
+      "quantity": 50,
+      "reserved": 0,
+      "signal": {
+        "price": 330.305,
+        "reason": "30m opening-range breakout; volume 2.42x; close above session VWAP 327.6013",
+        "score": 2.56692109,
+        "signal_time": "2026-10-08T13:15:00-04:00",
+        "stop_pct": 0.015,
+        "symbol": "JPM",
+        "volume_ratio": 2.4150864,
+        "vwap": 327.60125692
+      },
+      "sleeve_exposure": 16634.649997,
+      "stop": 325.21,
+      "quote": {
+        "ap": 330.41,
+        "bp": 330.16,
+        "t": "2026-10-08T17:24:54.540509Z"
+      }
+    },
+    "limit_notional_usd": 16528.5,
+    "budget_check_pass": true
+  },
+  {
+    "sequence": 23775,
+    "at": "2026-10-08T19:41:03.348708+00:00",
+    "sleeve": "intraday",
+    "symbol": "AAPL",
+    "side": "sell",
+    "quantity": "49",
+    "type": "market",
+    "limit": null,
+    "strategy": {
+      "params": {
+        "opening_range_minutes": 30,
+        "stop_pct": 0.015,
+        "top_n": 3,
+        "volume_ratio": 1.5
+      },
+      "stage": "baseline_paper_experiment"
+    },
+    "fill_count": 2,
+    "vwap": 341.4702040816327,
+    "limit_pass": null,
+    "ask_slippage_bps": null
+  },
+  {
+    "sequence": 23780,
+    "at": "2026-10-08T19:41:03.676227+00:00",
+    "sleeve": "intraday",
+    "symbol": "JPM",
+    "side": "sell",
+    "quantity": "50",
+    "type": "market",
+    "limit": null,
+    "strategy": {
+      "params": {
+        "opening_range_minutes": 30,
+        "stop_pct": 0.015,
+        "top_n": 3,
+        "volume_ratio": 1.5
+      },
+      "stage": "baseline_paper_experiment"
+    },
+    "fill_count": 1,
+    "vwap": 331.54,
+    "limit_pass": null,
+    "ask_slippage_bps": null
+  }
+]
+
+末次收盘前持仓（实际时点2026-10-08T15:59:55.372979909-04:00）：
+[
+  {
+    "symbol": "ABBV",
+    "qty": "36",
+    "avg_entry_price": "271.216111",
+    "current_price": "272.4",
+    "market_value": "9806.4",
+    "unrealized_pl": "42.620004"
+  },
+  {
+    "symbol": "CRM",
+    "qty": "44",
+    "avg_entry_price": "223.829773",
+    "current_price": "227.71",
+    "market_value": "10019.24",
+    "unrealized_pl": "170.729988"
+  },
+  {
+    "symbol": "MSFT",
+    "qty": "19",
+    "avg_entry_price": "519.691579",
+    "current_price": "522.585",
+    "market_value": "9929.115",
+    "unrealized_pl": "54.974999"
+  },
+  {
+    "symbol": "PFE",
+    "qty": "351",
+    "avg_entry_price": "28.44",
+    "current_price": "27.83",
+    "market_value": "9768.33",
+    "unrealized_pl": "-214.11"
+  },
+  {
+    "symbol": "TMO",
+    "qty": "14",
+    "avg_entry_price": "669.78",
+    "current_price": "651.735",
+    "market_value": "9124.29",
+    "unrealized_pl": "-252.63"
+  }
+]
+五个波段保护止损：PFE351@27.01、MSFT19@493.52、TMO14@634.72、CRM44@212.54、ABBV36@257.28，快照status=new；不证明观察间连续有效。
+15:40后首轮发起日内清仓，15:41:05最终完成，收盘前清空。JPM有8次价差门槛拒绝入场，非券商拒单；随后合规入场。已见订单无未解决拒单、累计成交重复或未知卖出；保护单未成交是正常挂单。
+
+预算与风险：最大总持仓81902.085，波段48672.595、日内33329.55；各买入意图限价金额+已用预算均符合50000上限及账户可用金额。没有观察到做空/杠杆/未知仓位/解除停机/策略升级。
+319个会话开始轮次全部归档并有daily/intraday输入及60行样本；317 completed、2 completed_with_alerts；事件截至16:00仅318 run_finished，最后一轮于收盘边界后完成，其样本已存。19140样本，波段15950/日内3190，去重50/250；30未评估，不将重复轮询视为独立机会。
+
+策略版本及分析方法：
+{"config_hash": {"0d4b9eafc05f60e2d5ca951544554407b90ba9c4385c0c058e7f4841a379e50c": 319}, "strategy_hash": {"d60a3b94fbbc0b0736568df026c2256bad1cf4b6cb40e0d047a8e024a1b62af2": 319}, "source_hash": {"5ea6dac3c06a260ce9cf7d7694c80409f3d7c8ac0ecf5117d2889017b2d7a0fa": 319}}
+分析代码SHA256 4a61d15c3851bf3d9125ca85c81bb0a74e124fd236ae249ede7db1a8fc1f1b04。全量私有原始输入保留，公开文件不能精确复跑。没有候选升级，周一10月12日才首次eligible；本次未进行新实验。
+
+盘后风险单列：16:11:07观察净值99331.89，不冒充收盘；仍为5个波段仓，日内为零，风险约束保持。
+待验证假设：统一事件/输入可见时间；收集更多退出时延样本与保护流程证据。均未实施或验证，不据一天亏损宣称策略失效或有效。
