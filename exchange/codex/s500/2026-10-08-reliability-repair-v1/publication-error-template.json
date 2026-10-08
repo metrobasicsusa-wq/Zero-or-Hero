@@ -1,0 +1,26 @@
+{
+  "schema_version": "1.0-publication-error-template",
+  "template_only": true,
+  "status": "not_an_observed_failure",
+  "phase": null,
+  "attempt_started_at": null,
+  "attempt_finished_at": null,
+  "tool_action": null,
+  "repository": null,
+  "branch": null,
+  "relative_versioned_path": null,
+  "content_sha256": null,
+  "returned_commit": null,
+  "tool_error_code": null,
+  "http_status": null,
+  "verbatim_error_redacted": null,
+  "failure_layer": "unknown_until_actual_evidence",
+  "write_outcome": "unknown",
+  "readback_outcome": null,
+  "safety_denial_stop": true,
+  "notes": [
+    "Never populate an error field by guessing from a later 404.",
+    "Remove credentials, raw account/order/activity IDs and private machine paths.",
+    "If writing is refused, retain this sanitized diagnostic in the same task reply; do not evade refusal."
+  ]
+}

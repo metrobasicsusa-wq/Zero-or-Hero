@@ -1,0 +1,89 @@
+{
+  "schema_version": "1.0-s500-repair-result",
+  "id": "s500-reliability-repair-20261008-v1",
+  "generated_at": "2026-10-08T14:55:12.489233+00:00",
+  "trigger": "explicit_user_repair_request",
+  "chat_message_id": null,
+  "source_cutoff": "2026-10-08T14:52:27Z",
+  "collector_deployment": {
+    "parent": "5b4d08e9f022668628ff053e2a118b5968eb2c28",
+    "commit": "d8623d338509c94dd003572f7565a727289fb45f",
+    "ref": "main",
+    "non_force_update": true,
+    "changed_files": {
+      "research/s500/trigger_gate.py": {
+        "git_blob_sha": "1c0e6652cb12ac25f7babf3f86f3762232fc947e",
+        "sha256": "7b5106aeed2187781f986104a0c42c5eff9a84e58b3e90091098fa3277871956",
+        "bytes": 2867
+      },
+      "research/s500/deployment.json": {
+        "git_blob_sha": "e656ca0c660b97b197b97c2261357a3c0e5e665e",
+        "sha256": "15ce530d917278c547f68cf1650c3ca551db02316f7dee3cd3641314b764f831",
+        "bytes": 6228
+      },
+      "research/s500/tests/test_trigger_gate.py": {
+        "git_blob_sha": "3d81d47003cbde6541fc156c669aa3f261d0f5c5",
+        "sha256": "c8ce86a0fbdc03922fb43d3df3f4caf325f84412d3f9f01f9e51e2690570ab70",
+        "bytes": 4506
+      },
+      ".github/workflows/research.yml": {
+        "git_blob_sha": "3ebb582ee6869851133a7dddb17c989b9697484f",
+        "sha256": "02b9b128ccc772453112a9af4beef408ec30196dc50ba72d7b63d5e4ab9239b0",
+        "bytes": 2566
+      }
+    },
+    "readback": "All four complete returned files matched the locally calculated Git blob SHA values."
+  },
+  "tests": {
+    "local_new_tests": 10,
+    "local_exit_code": 0,
+    "cloud_run_url": "https://github.com/metrobasicsusa-wq/codex-500-cloud/actions/runs/37795616889",
+    "cloud_event": "push",
+    "cloud_conclusion": "success",
+    "cloud_test_count": 279,
+    "cloud_test_seconds": 9.375,
+    "deployment_binding_verified": true,
+    "capture_step": "skipped",
+    "market_capture_performed_by_validation": false
+  },
+  "publication": {
+    "repair_start_commit": "a10dc08d275e8e4fe69237391133efa37d06dd26",
+    "repair_start_readback_blob": "5f9149f23fe528d8130f3e39528fc2774c212f78",
+    "this_user_session_write_verified": true,
+    "earlier_rejection_payload_available": false,
+    "earlier_failure_root_cause": "unknown",
+    "scheduled_ai_write_recovery_verified": false
+  },
+  "safety": {
+    "new_ai_timers": 0,
+    "ai_schedule_edits": 0,
+    "original_non_workflow_bindings_unchanged": 33,
+    "protocol_sha256": "2916ce06a0db24e18a754abae8943470ba9419e914b11d03d2f05d99f64e6d71",
+    "permanent_claims_preserved": true,
+    "preopen_cutoff_et": "09:20",
+    "backfill_performed": false,
+    "orders_or_fund_operations": 0,
+    "credentials_read_or_copied": false
+  },
+  "limitations": [
+    "Cloud push tests do not prove a future on-time capture.",
+    "Historical publication refusals have no original tool payload in the available context.",
+    "This repair does not audit whole-day account activities or formal hypothesis use by other stages."
+  ],
+  "report_sha256": "36334f2ec1ad1ca5e289b1b715d5f7e5191f0a1a696ff63864573001f300d862",
+  "next_checks": [
+    "Verify first valid next-trading-day preopen source and permanent claim before cutoff.",
+    "Verify each next AI phase adopts handoff and writes its own complete versioned report."
+  ],
+  "fallback_evidence": {
+    "run_url": "https://github.com/metrobasicsusa-wq/codex-500-cloud/actions/runs/37796018606",
+    "event": "workflow_run",
+    "created_at": "2026-10-08T14:52:18Z",
+    "finished_at": "2026-10-08T14:52:27Z",
+    "conclusion": "success",
+    "window_gate": "success",
+    "tests": "skipped",
+    "capture": "skipped",
+    "meaning": "Natural observer-completion wake-up verified outside capture window; not a market capture."
+  }
+}

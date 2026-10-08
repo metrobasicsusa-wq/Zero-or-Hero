@@ -1,0 +1,19 @@
+{
+  "schema_version": "1.0-s500-operations-memory",
+  "id": "s500-repair-memory-20261008-v1",
+  "as_of": "2026-10-08T14:54:09.636854+00:00",
+  "status": "operations_only_not_market_or_strategy_result",
+  "process": "exchange/codex/s500/2026-10-07-macro-process-v4/daily-process.md",
+  "handoff": "exchange/codex/s500/2026-10-08-reliability-repair-v1/handoff.md",
+  "collector_commit": "d8623d338509c94dd003572f7565a727289fb45f",
+  "formal_hypotheses_created_by_this_repair": 0,
+  "whole_day_hypothesis_budget_used": null,
+  "whole_day_budget_status": "restore_from_real_phase_records_do_not_invent",
+  "preserve": [
+    "The 2026-10-08 missed preopen cannot be backfilled.",
+    "Keep frozen protocol and every missing/failed date.",
+    "Do not infer account cash flows or actual fills from snapshots.",
+    "Earlier scheduled publishing refusals remain unexplained."
+  ],
+  "next_action": "Restore latest real stage memory and verify the next actual capture/publication receipts; repair diagnostics do not replace missing predecessor market research."
+}
