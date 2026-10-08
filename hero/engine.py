@@ -251,6 +251,19 @@ class Engine:
         sim = self.dry
         if not sim and book.d.get("mode") != "live":
             book.go_live(day)  # the first live cycle starts a fresh book; the rehearsal is kept inside it
+        old = book.d.get("today")
+        if old and old.get("status") == "open" and old["date"] < day:
+            # An earlier day's ticket never booked: with no bid the 15:30 sell cannot fill, and the
+            # contract expired. Book it now (at the bid it was sent at, $0 when there was none), or the
+            # loss would be lost when today's ticket replaces it and the book would bet money it lost.
+            bought = old.get("filled") or old.get("exit_sent")
+            done = book.close(old.get("exit_bid", 0.0) * 100 * old["qty"] if bought else old["paid"],
+                              "到期作废（15:30 卖单没有买家，按卖出时买价记）" if bought else "买单没有成交", now)
+            self.j.event("zdte_result", dry_run=sim, symbol=old["symbol"], ret=done["ret"],
+                         why=f"末日补记 {old['date']}：{old['symbol']} 收盘前没卖出，已到期，按 ${done['proceeds']:,.2f} 入账，"
+                             f"回报 {done['ret']:+.0%}")
+            if old["symbol"] in {x["symbol"] for x in self.c.positions()}:
+                self.j.event("alert_error", source="zdte", error=f"{old['symbol']} 到期后仍在持仓里，请人工查看")
         t = book.trade_today(day)
         if t and t["status"] == "open":
             try:

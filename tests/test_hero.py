@@ -2153,6 +2153,22 @@ class ZeroDTELive(unittest.TestCase):
         self.assertEqual(c.closed, [])
         self.assertEqual([e for e in log if e["kind"] == "zdte_result"][-1]["dry_run"], False)
 
+    def test_an_unsold_expired_ticket_is_booked_the_next_day(self):
+        # 2026-10-08: the bid was $0 at 15:30, the market sell found no buyer and the call expired;
+        # the next day's run must book the loss before a new ticket replaces it
+        book = json.loads((self.root / "zdte.json").read_text())
+        book.update(mode="live", history=[], today={
+            "date": (TODAY - timedelta(days=1)).isoformat(), "status": "open", "symbol": "SPY261008C00781000",
+            "qty": 13, "price": 0.07, "paid": 91.0, "filled": True, "take_price": 0.21, "take_order": True,
+            "exit_sent": True, "exit_bid": 0.0})
+        (self.root / "zdte.json").write_text(json.dumps(book))
+        self.fills = ["fill"]
+        c, book, log = self.cycle(10, 5)
+        first = book["history"][0]
+        self.assertEqual((first["status"], first["proceeds"], first["ret"]), ("closed", 0.0, -1.0))
+        self.assertIn("末日补记", [e for e in log if e["kind"] == "zdte_result"][0]["why"])
+        self.assertEqual(c.orders[0]["qty"], "25")                     # half of 500 - 91 = 204.50, at $0.08
+
     def test_unfilled_buy_is_requoted_once_at_the_new_ask(self):
         self.fills = ["none", "fill"]
         c, book, log = self.cycle(10, 5, asks=[0.07, 0.08])            # the ask moved up a cent
