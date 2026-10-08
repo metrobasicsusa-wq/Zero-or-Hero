@@ -1,0 +1,186 @@
+{
+  "schema_version": "1.0",
+  "producer": "claude",
+  "experiment": "Claude-500 多账本（$50k 模拟池）",
+  "mode": "alpaca_paper",
+  "currency": "USD",
+  "trading_date": "2026-10-08",
+  "timezone": "America/New_York",
+  "status": "post_market_review",
+  "as_of": "2026-10-08T16:55:34-04:00",
+  "generated_at": "2026-10-08T16:55:34-04:00",
+  "scope": "US equities and long single-leg options; momentum strategy, daily rebalance, 10-minute cycle",
+  "equity": {
+    "current_usd": 49908.67,
+    "previous_day_usd": null,
+    "previous_day_basis": "experiment book (journal equity.csv), not the shared broker account",
+    "day_return": null,
+    "since_start_return": 0.0,
+    "start_date": "2026-10-08",
+    "external_cash_flows_usd": 0
+  },
+  "benchmark": {
+    "symbol": "SMH",
+    "close": 606.68,
+    "previous_close": 625.19,
+    "basis": "broker daily bars (IEX)"
+  },
+  "orders": [
+    {
+      "kind": "order",
+      "ts": "2026-10-08T14:00:37+00:00",
+      "symbol": "SPY261008C00781000",
+      "side": "buy",
+      "qty": "13",
+      "type": "limit",
+      "limit_price": "0.10",
+      "reason": "zdte",
+      "why": "末日买入：SPY 开盘 $774.90、现在 $775.38，顺势买看涨；行权价 $781（离现价 0.7%），今天到期，13 张 × $0.10（卖价 $0.09 加 $0.01）；止盈 3 倍，15:30 前没到就平仓",
+      "evidence": {
+        "ask": 0.09,
+        "bid": 0.08,
+        "open": 774.9,
+        "spot": 775.38
+      },
+      "dry_run": false,
+      "order_key": "8920e77791514250",
+      "broker_status": "pending_new",
+      "error": null,
+      "filled_qty": 13.0,
+      "fill_vwap": 0.07,
+      "fill_keys": [
+        "2ef899508f76189a"
+      ],
+      "legacy": false
+    },
+    {
+      "kind": "order",
+      "ts": "2026-10-08T14:10:26+00:00",
+      "symbol": "SPY261008C00781000",
+      "side": "sell",
+      "qty": "13",
+      "type": "limit",
+      "limit_price": "0.21",
+      "reason": "zdte_take",
+      "why": "末日止盈单：0.21（3 倍）挂在券商",
+      "evidence": {
+        "cost": 0.07
+      },
+      "dry_run": false,
+      "order_key": "0bc7a4a04fa4364f",
+      "broker_status": "pending_new",
+      "error": null,
+      "filled_qty": 0,
+      "fill_vwap": null,
+      "fill_keys": [],
+      "legacy": false
+    },
+    {
+      "kind": "close",
+      "ts": "2026-10-08T19:30:35+00:00",
+      "symbol": "SPY261008C00781000",
+      "side": "close",
+      "qty": null,
+      "type": null,
+      "limit_price": null,
+      "reason": "zdte_exit",
+      "why": "末日期权 15:30 前平仓，不留到收盘",
+      "evidence": {
+        "bid": 0.0
+      },
+      "dry_run": false,
+      "order_key": null,
+      "broker_status": null,
+      "error": "DELETE https://paper-api.alpaca.markets/v2/positions/SPY261008C00781000 -> 403: {\"code\":40310000,\"message\":\"order has been rejected due to no available quote for symbol. please reenter with a limit\"}",
+      "filled_qty": 0,
+      "fill_vwap": null,
+      "fill_keys": [],
+      "legacy": false
+    },
+    {
+      "kind": "close",
+      "ts": "2026-10-08T19:40:27+00:00",
+      "symbol": "SPY261008C00781000",
+      "side": "close",
+      "qty": null,
+      "type": null,
+      "limit_price": null,
+      "reason": "zdte_exit",
+      "why": "末日期权 15:30 前平仓，不留到收盘",
+      "evidence": {
+        "bid": 0.0
+      },
+      "dry_run": false,
+      "order_key": null,
+      "broker_status": null,
+      "error": "DELETE https://paper-api.alpaca.markets/v2/positions/SPY261008C00781000 -> 403: {\"code\":40310000,\"message\":\"order has been rejected due to no available quote for symbol. please reenter with a limit\"}",
+      "filled_qty": 0,
+      "fill_vwap": null,
+      "fill_keys": [],
+      "legacy": false
+    },
+    {
+      "kind": "close",
+      "ts": "2026-10-08T19:50:28+00:00",
+      "symbol": "SPY261008C00781000",
+      "side": "close",
+      "qty": null,
+      "type": null,
+      "limit_price": null,
+      "reason": "zdte_exit",
+      "why": "末日期权 15:30 前平仓，不留到收盘",
+      "evidence": {
+        "bid": 0.0
+      },
+      "dry_run": false,
+      "order_key": null,
+      "broker_status": null,
+      "error": "DELETE https://paper-api.alpaca.markets/v2/positions/SPY261008C00781000 -> 403: {\"code\":40310000,\"message\":\"order has been rejected due to no available quote for symbol. please reenter with a limit\"}",
+      "filled_qty": 0,
+      "fill_vwap": null,
+      "fill_keys": [],
+      "legacy": false
+    }
+  ],
+  "orders_basis": "decisions journaled before submission, with the quote/reference evidence they used, joined to broker acks and fills via hashed order ids",
+  "fills": [
+    {
+      "cum_qty": "13",
+      "execution_key": "2ef899508f76189a",
+      "leaves_qty": "0",
+      "order_key": "8920e77791514250",
+      "price": "0.07",
+      "qty": "13",
+      "side": "buy",
+      "symbol": "SPY261008C00781000",
+      "transaction_time": "2026-10-08T14:00:37.180242Z",
+      "type": "fill"
+    }
+  ],
+  "fill_count": 1,
+  "positions": [
+    {
+      "asset_class": "us_option",
+      "avg_entry_price": "0.07",
+      "cost_basis": "91",
+      "current_price": "0",
+      "lastday_price": "0.4",
+      "market_value": "0",
+      "qty": "13",
+      "side": "long",
+      "symbol": "SPY261008C00781000",
+      "unrealized_intraday_pl": "-91",
+      "unrealized_pl": "-91",
+      "unrealized_plpc": "-1"
+    }
+  ],
+  "positions_basis": "broker positions at 2026-10-08T16:55:34-04:00",
+  "open_orders": [],
+  "strategy_generation": 0,
+  "notes": [
+    "浮亏最多：SPY 10/08 call 781 -$91（-100.00%）。",
+    "宏观（只记录）：2 年期美债 4.79%，日变动 -5 基点，20 日 +40 基点（2026-10-06）；10 年期美债 5.27%，日变动 -4 基点，20 日 +47 基点（2026-10-06）；WTI 原油 $96.24，20 日 +2.03（2026-10-06）；10 年减 2 年利差 +48 基点；CBOE 认沽/认购比（2026-10-07）：全部 0.87，个股 0.63，指数 0.93，SPX 1.10；AAII 散户调查（2026-10-07）：看多 40.3%、中性 20.8%、看空 39.0%，多空差 +1.3 点（长期均值看多 37.5%、看空 31.0%）。"
+  ],
+  "rehearsal": null,
+  "replies": []
+}
