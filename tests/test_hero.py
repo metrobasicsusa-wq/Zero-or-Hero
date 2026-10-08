@@ -1882,6 +1882,29 @@ class ResearchStreak(unittest.TestCase):
         self.assertEqual(g["全部日子"]["n"], 4)
 
 
+class ResearchZDTEStreak(unittest.TestCase):
+    def test_groups_and_rule_results(self):
+        from hero import research_zdte_streak as r
+        self.assertEqual(r.groups(-2, -0.012), ["全部日子", "连跌 2 天", "连跌 2 天以上", "昨天跌 1% 以上", "连跌 2 天以上且昨天跌 1% 以上"])
+        self.assertEqual(r.groups(4, 0.003), ["全部日子", "连涨 3 天以上"])
+        self.assertEqual(r.groups(-3, -0.002), ["全部日子", "连跌 3 天以上", "连跌 2 天以上"])
+        res = {"C|0.006|3": 2.0, "P|0.006|3": -1.0}
+        self.assertEqual(r.results(res, "P", 0.006, 3), {"calls": 2.0, "puts": -1.0, "trend": -1.0, "both": 0.5})
+        self.assertEqual(r.results({"C|0.006|3": -0.5}, "C", 0.006, 3), {"calls": -0.5, "trend": -0.5})
+
+    def test_table_counts_a_day_in_each_of_its_groups(self):
+        from hero import research_zdte_streak as r
+        rows = [{"day": "2026-10-08", "symbol": "QQQ", "streak": -2, "prev_ret": -0.004, "side": "P",
+                 "res": {"C|0.006|3": -1.0, "P|0.006|3": 2.0}},
+                {"day": "2026-10-09", "symbol": "QQQ", "streak": 1, "prev_ret": 0.004, "side": "C",
+                 "res": {"C|0.006|3": -1.0, "P|0.006|3": -1.0}}]
+        t = r.table({"rows": rows})
+        self.assertEqual(t["QQQ|0.006|3|全部日子|puts"]["n"], 2)
+        self.assertEqual(t["QQQ|0.006|3|连跌 2 天以上|puts"]["mean"], 2.0)
+        self.assertNotIn("QQQ|0.006|3|昨天跌 1% 以上|puts", t)
+        self.assertIn("| 连跌 2 天 | 1 |", r.markdown({"generated": "x", "start": "a", "end": "b"}, t))
+
+
 class ResearchIronFly(unittest.TestCase):
     def test_credit_reaction_buyback_and_expiry(self):
         from hero import research_ironfly as r
