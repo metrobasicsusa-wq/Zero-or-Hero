@@ -347,6 +347,12 @@
         "ma": 20,
         "fraction": 1.0
       },
+      {"id": "relay-500", "kind": "relay", "start": 500, "name": "接力：财报彩票全仓到 3 倍，再全仓 SOXL", "fraction": 1.0,
+       "switch_at": 3, "zero_line": 0.6
+      },
+      {"id": "relay-1000", "kind": "relay", "start": 1000, "name": "接力：财报彩票全仓到 3 倍，再全仓 SOXL", "fraction": 1.0,
+       "switch_at": 3, "zero_line": 0.6
+      },
       {"id": "spydip-500", "kind": "zdte", "start": 500, "name": "SPY 昨跌 1% 后买看涨（只演算）", "und": "SPY",
        "offset": 0.006, "take": 3, "side": "call", "after_drop": -0.01, "plan_only": true
       },

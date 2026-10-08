@@ -168,7 +168,7 @@ class Runner:
     def run(self) -> None:
         self.manage()
         for spec in self.specs:
-            msg = self.book.round_check(spec["id"], self.p)
+            msg = self.book.round_check(spec["id"], {**self.p, **{k: spec[k] for k in ("zero_line", "target") if k in spec}})
             if msg:
                 self.j.event("sleeve_round", dry_run=False, sleeve=spec["id"], why=msg)
         self.enter()

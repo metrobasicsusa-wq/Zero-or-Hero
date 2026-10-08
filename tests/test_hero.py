@@ -2582,6 +2582,53 @@ class SleeveRules(unittest.TestCase):
         # implied move = (0.50 + 0.50) / 100 = 1%: a call 2% above, at 102
         self.assertTrue(all(p["sym"].endswith("C102") for p in picks))
 
+    def test_relay_bets_the_weeks_strongest_reporter_then_switches_to_soxl(self):
+        from hero import sleeve_rules as sr
+        import hero.sleeve_rules as mod
+        b = self.broker()
+        days = [(date(2026, 1, 1) + timedelta(days=i)) for i in range(0, 300)]
+        days = [d for d in days if d.weekday() < 5 and d < date(2026, 10, 8)]
+        b.bars["AAA"] = [{"t": d.isoformat() + "T04:00:00Z", "c": 50.0 + i * 0.2} for i, d in enumerate(days)]   # strong
+        b.bars["BBB"] = [{"t": d.isoformat() + "T04:00:00Z", "c": 100.0} for d in days]                         # flat
+        orig = mod.ROOT
+        try:
+            mod.ROOT = Path(tempfile.mkdtemp())
+            (mod.ROOT / "data").mkdir()
+            (mod.ROOT / "data" / "earnings.json").write_text(json.dumps({"reports": {
+                "BBB": [{"date": "2026-10-08", "time": "post-market"}],      # today, but weaker
+                "AAA": [{"date": "2026-10-09", "time": "post-market"}]}}))   # tomorrow, stronger: wait for it
+            spec = {"id": "relay-500", "switch_at": 3}
+            s = {"slots": {}, "open": [], "cash": 500.0, "start": 500.0, "round": 1}
+            self.assertIsNone(sr.Relay().entries(self.run_at(date(2026, 10, 8), 15, 45, b), spec, s))
+            b.snaps["AAA"]["latestTrade"]["p"] = 99.9                     # 10% above: 109.89, the 110 strike
+            slot, picks = sr.Relay().entries(self.run_at(date(2026, 10, 9), 15, 45, b), spec, s)
+        finally:
+            mod.ROOT = orig
+        self.assertEqual(slot, "relay-2026-W41")
+        self.assertEqual((picks[0]["und"], picks[0]["exit_day"], picks[0]["exit_at"]), ("AAA", "2026-10-12", "09:35"))
+        self.assertTrue(picks[0]["sym"].endswith("C110"), picks[0])       # about 10% out of the money
+        self.assertEqual(s["relay_phase"], "lotto")
+        s["cash"] = 1600.0                                                 # tripled: from now on SOXL
+        self.assertEqual(sr.Relay().phase(spec, s), "trend")
+        s["round"], s["cash"] = 2, 500.0                                   # a new round starts with the lottery again
+        self.assertEqual(sr.Relay().phase(spec, s), "lotto")
+
+    def test_relay_trend_leg_holds_soxl_while_smh_is_above_its_200_day(self):
+        from hero import sleeve_rules as sr
+        b = self.broker()
+        days = [(date(2025, 6, 1) + timedelta(days=i)) for i in range(0, 495)]
+        days = [d for d in days if d.weekday() < 5 and d < date(2026, 10, 8)]
+        b.bars["SMH"] = [{"t": d.isoformat() + "T04:00:00Z", "c": 200.0 + i * 0.5} for i, d in enumerate(days)]
+        b.snaps["SMH"] = {"dailyBar": {"o": 400.0}, "latestTrade": {"p": 400.0}, "prevDailyBar": {"c": 400.0}}
+        b.snaps["SOXL"] = {"dailyBar": {"o": 40.0}, "latestTrade": {"p": 41.0}, "prevDailyBar": {"c": 40.0}}
+        s = {"slots": {}, "open": [], "cash": 1600.0, "start": 500.0, "round": 1, "relay_round": 1, "relay_phase": "trend"}
+        r = self.run_at(date(2026, 10, 8), 15, 50, b)
+        slot, picks = sr.Relay().entries(r, {"id": "relay-500"}, s)
+        self.assertEqual((picks[0]["sym"], picks[0]["asset"], picks[0]["ask"]), ("SOXL", "stock", 41.0))
+        r.specs = [{"id": "relay-500"}]
+        b.snaps["SMH"]["latestTrade"]["p"] = 150.0                          # below its 200-day average
+        self.assertIn("SMH 跌破 200 日均线", sr.Relay().should_exit(r, "relay-500", {"asset": "stock"}) or "")
+
     def test_net_waits_for_a_wild_week(self):
         from hero import sleeve_rules as sr
         b = self.broker()

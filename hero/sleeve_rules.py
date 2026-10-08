@@ -386,12 +386,13 @@ class EarningsLotto:
 
 
 class LETF:
-    """At 15:50: hold the fund (shares) while it closes above its moving average; sell when it does not."""
+    """At 15:50: hold the fund (shares) while it closes above its moving average; sell when it does not.
+    `signal` (optional) is the symbol whose average decides, e.g. SOXL held while SMH is above its 200-day."""
 
     def above(self, run, spec) -> tuple[bool, float, float] | None:
-        sym, n = spec["sym"], spec.get("ma", 20)
-        xs = closes(run, [sym], 90).get(sym, [])
-        px = spot_open(snaps(run, [sym]).get(sym) or {})[0]
+        sig, n = spec.get("signal", spec["sym"]), spec.get("ma", 20)
+        xs = closes(run, [sig], max(90, int(n * 1.6))).get(sig, [])
+        px = spot_open(snaps(run, [sig]).get(sig) or {})[0]
         if len(xs) < n or not px:
             return None
         ma = (sum(xs[-(n - 1):]) + px) / n
@@ -407,18 +408,97 @@ class LETF:
         up, px, ma = got
         if not up:
             return (day, [])
-        return (day, [{"sym": spec["sym"], "asset": "stock", "ask": px,
-                       "why": f"{spec['sym']} ${px:,.2f} 在 {spec.get('ma', 20)} 日均线 ${ma:,.2f} 上方，买入拿着"}])
+        sym, sig = spec["sym"], spec.get("signal", spec["sym"])
+        ask = px if sig == sym else spot_open(snaps(run, [sym]).get(sym) or {})[0]
+        if not ask:
+            return None
+        lead = f"{sig} ${px:,.2f} 在 {spec.get('ma', 20)} 日均线 ${ma:,.2f} 上方"
+        return (day, [{"sym": sym, "asset": "stock", "ask": ask,
+                       "why": f"{lead}，买入 {sym} 拿着" if sig != sym else f"{lead}，买入拿着"}])
 
-    def should_exit(self, run, sid, t):
+    def exit_check(self, run, spec) -> str | None:
         if not ("15:45" <= run.hhmm < "15:58"):
             return None
-        spec = next((x for x in run.specs if x["id"] == sid), None)
-        got = self.above(run, spec) if spec else None
+        got = self.above(run, spec)
         if got and not got[0]:
-            return f"跌破 {spec.get('ma', 20)} 日均线（${got[2]:,.2f}）"
+            return f"{spec.get('signal', spec['sym'])} 跌破 {spec.get('ma', 20)} 日均线（${got[2]:,.2f}）"
+        return None
+
+    def should_exit(self, run, sid, t):
+        spec = next((x for x in run.specs if x["id"] == sid), None)
+        return self.exit_check(run, spec) if spec else None
+
+
+class Relay:
+    """Zero-or-hero relay (research/2026-10-05-hero.md, "混合"): all of the sleeve on one earnings call a week --
+    the name reporting this week with the strongest 126-session momentum, about 10% out of the money, bought at
+    the close before the reaction and sold at the next open -- until the sleeve is at `switch_at` x its start;
+    then all of it in SOXL while SMH closes above its 200-day average. A new round starts with the lottery."""
+
+    TREND = {"sym": "SOXL", "signal": "SMH", "ma": 200}
+
+    def __init__(self):
+        self.letf = LETF()
+
+    def phase(self, spec, s) -> str:
+        if s.get("relay_round") != s["round"]:
+            s["relay_round"], s["relay_phase"] = s["round"], "lotto"
+        if s["relay_phase"] == "lotto" and not s["open"] and s["cash"] >= spec.get("switch_at", 3) * s["start"]:
+            s["relay_phase"] = "trend"
+        return s["relay_phase"]
+
+    def entries(self, run, spec, s):
+        if self.phase(spec, s) == "trend":
+            return self.letf.entries(run, {**spec, **self.TREND}, s)
+        return self.lotto(run, spec, s)
+
+    def lotto(self, run, spec, s):
+        wk = "relay-" + week_key(run.today)
+        if wk in s["slots"] or s["open"] or not ("15:40" <= run.hhmm < "15:56"):
+            return None
+        try:
+            reports = json.loads((ROOT / "data" / "earnings.json").read_text()).get("reports") or {}
+        except Exception:
+            reports = {}
+        names = set(pool(run))
+        cands = []  # (name, the session before its reaction) for entries left this week
+        for x, rs in reports.items():
+            if x not in names:
+                continue
+            for r in rs:
+                rd, when = date.fromisoformat(r["date"]), r.get("time", "")
+                entry = rd if "post" in when else (business_day_before(rd) if "pre" in when else None)
+                if entry and week_key(entry) == week_key(run.today) and entry >= run.today:
+                    cands.append((x, entry))
+        if not cands:
+            return None
+        cl = closes(run, sorted({x for x, _ in cands}), 260)
+        mom = {x: cl[x][-1] / cl[x][-127] - 1 for x, _ in cands if len(cl.get(x, [])) >= 127}
+        if not mom:
+            return None
+        und, entry = max(((x, e) for x, e in cands if x in mom), key=lambda c: mom[c[0]])
+        if entry != run.today:
+            return None  # the week's pick reports later: wait for its day
+        spot = spot_open(snaps(run, [und]).get(und) or {})[0]
+        if not spot:
+            return None
+        nxt = next_business_day(run.today).isoformat()
+        cs = contracts(run, und, nxt, (run.today + timedelta(days=10)).isoformat(), spot, spot * 1.3, "call")
+        exp = min((c["expiration_date"] for c in cs), default=None)
+        c = pick(cs, "C", spot, 0.10, exp) if exp else None
+        ask = ask_of(run, c["symbol"]) if c else 0
+        if not c or ask <= 0:
+            return (wk, [])
+        return (wk, [{"sym": c["symbol"], "asset": "option", "und": und, "ask": ask, "expiry": exp, "exit_day": nxt, "exit_at": "09:35",
+                      "why": f"接力第一段：本周财报里 126 日动量最强的 {und}（{mom[und]:+.0%}），全仓买价外约 10% 看涨 "
+                             f"{float(c['strike_price']):g}，第二天开盘卖；账本到起点 {spec.get('switch_at', 3):g} 倍就转 SOXL"}])
+
+    def should_exit(self, run, sid, t):
+        spec = next((x for x in run.specs if x["id"] == sid), None)
+        if t.get("asset") == "stock" and spec:
+            return self.letf.exit_check(run, {**spec, **self.TREND})
         return None
 
 
 RULES = {"zdte": ZeroDTE(), "weekly": Weekly(), "net": Net(), "gap": Gap(), "flush": Flush(), "earnings": EarningsLotto(),
-         "letf": LETF()}
+         "letf": LETF(), "relay": Relay()}
