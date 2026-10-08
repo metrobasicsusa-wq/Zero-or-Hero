@@ -2037,6 +2037,17 @@ class ResearchBarbell(unittest.TestCase):
         self.assertAlmostEqual(r.max_dd([1, 2, 1, 3]), -0.5)
 
 
+class ResearchMovers(unittest.TestCase):
+    def test_last_session_change_and_volume(self):
+        from hero import research_movers as r
+        b = lambda d, c, v=100: {"t": f"2026-10-0{d}T04:00:00Z", "o": c, "h": c * 1.02, "l": c * 0.98, "c": c, "v": v}
+        day, rows = r.rows_from({"AAA": [b(6, 100), b(7, 100), b(8, 110, 300)], "OLD": [b(6, 50), b(7, 51)]})
+        self.assertEqual((day, [x["symbol"] for x in rows]), ("2026-10-08", ["AAA"]))   # OLD has no bar that day
+        self.assertAlmostEqual(rows[0]["chg"], 0.10)
+        self.assertAlmostEqual(rows[0]["vol_x"], 3.0)
+        self.assertIn("涨得最多", r.markdown({"day": day, "names": 1, "rows": rows}))
+
+
 class ResearchIronFly(unittest.TestCase):
     def test_credit_reaction_buyback_and_expiry(self):
         from hero import research_ironfly as r
