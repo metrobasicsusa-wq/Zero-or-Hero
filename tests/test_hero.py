@@ -2061,6 +2061,27 @@ class ResearchChipNext(unittest.TestCase):
         self.assertEqual(r.summary([]), {"n": 0})
 
 
+class ResearchChipDipCall(unittest.TestCase):
+    def test_pick_play_and_entries(self):
+        from hero import research_chip_dipcall as r
+        cs = [{"symbol": f"X{e}C{k}", "strike_price": str(k), "expiration_date": e, "type": "call"}
+              for e in ("2026-10-09", "2026-10-16") for k in (98, 100, 102, 104)]
+        self.assertEqual(r.pick_call(cs, 99.5, 0.0, "2026-10-09")["symbol"], "X2026-10-09C100")
+        self.assertEqual(r.pick_call(cs, 99.5, 0.02, "2026-10-09")["symbol"], "X2026-10-09C102")
+        b = lambda h, c: {"h": h, "c": c}
+        mins = {"10:00": b(1.0, 1.0), "12:00": b(1.5, 1.4), "15:50": b(1.3, 1.2)}
+        got = r.play(mins, {"h": 2.4, "c": 0.5}, False)               # cost 1.10
+        self.assertAlmostEqual(got["day"], 1.08 / 1.10 - 1)
+        self.assertAlmostEqual(got["next"], 0.45 / 1.10 - 1)
+        self.assertEqual(got["take2"], 1.0)                            # 2.4 >= 2.2 the next day
+        same = r.play(mins, {"h": 9, "c": 9}, True)                     # expires that day: the next day never comes
+        self.assertEqual((same["next"], same["take2"]), (same["day"], same["day"]))
+        adj = [{"t": f"2026-10-0{i}T04:00:00Z", "c": c} for i, c in enumerate([100, 99, 96, 97, 98], start=1)]
+        e = r.entries(adj)
+        self.assertEqual((e[0]["day"], e[0]["next_day"]), ("2026-10-04", "2026-10-05"))
+        self.assertAlmostEqual(e[0]["drop"], 96 / 99 - 1)
+
+
 class ResearchIronFly(unittest.TestCase):
     def test_credit_reaction_buyback_and_expiry(self):
         from hero import research_ironfly as r
