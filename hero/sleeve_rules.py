@@ -136,6 +136,12 @@ def option_pick(run, und: str, kind: str, spot: float, off: float, gte: str, lte
     return (c, ask) if ask > 0 else None
 
 
+def budget(run, spec, s, n: int) -> float:
+    """What one pick may cost in this sleeve (its fraction of the sleeve's cash, split over n picks)."""
+    frac = spec.get("fraction", getattr(run, "p", {}).get("fraction", 0.5))
+    return frac * s["cash"] / max(n, 1)
+
+
 def trend20(xs: list[float]) -> int:
     if len(xs) < 21:
         return 0
@@ -283,10 +289,13 @@ class Gap:
             spot, o, _, prev = spot_open(v)
             if spot and o and prev and o / prev - 1 <= -0.02:
                 gaps.append((o / prev - 1, x, spot))
-        picks = []
-        for g, und, spot in sorted(gaps)[:spec.get("n", 2)]:
+        picks, n = [], spec.get("n", 2)
+        each = budget(run, spec, s, n)
+        for g, und, spot in sorted(gaps)[:12]:  # biggest gaps first; skip a contract this sleeve cannot afford
+            if len(picks) >= n:
+                break
             got = option_pick(run, und, "C", spot, 0.01, day, (run.today + timedelta(days=4)).isoformat())
-            if got:
+            if got and got[1] * 100 <= each:
                 c, ask = got
                 picks.append({"sym": c["symbol"], "asset": "option", "und": und, "ask": ask, "trail": True, "expiry": c["expiration_date"],
                               "exit_day": day, "exit_at": "15:50",
@@ -307,10 +316,13 @@ class Flush:
             spot, o, low, _ = spot_open(v)
             if spot and o and low and 1 - low / o >= 0.02:
                 drops.append((1 - low / o, x, spot))
-        picks = []
-        for d, und, spot in sorted(drops, reverse=True)[:spec.get("n", 2)]:
+        picks, n = [], spec.get("n", 2)
+        each = budget(run, spec, s, n)
+        for d, und, spot in sorted(drops, reverse=True)[:12]:
+            if len(picks) >= n:
+                break
             got = option_pick(run, und, "C", spot, 0.01, day, (run.today + timedelta(days=4)).isoformat())
-            if got:
+            if got and got[1] * 100 <= each:
                 c, ask = got
                 picks.append({"sym": c["symbol"], "asset": "option", "und": und, "ask": ask, "take": 2, "expiry": c["expiration_date"],
                               "exit_day": day, "exit_at": "15:50",

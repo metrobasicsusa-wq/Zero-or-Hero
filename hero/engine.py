@@ -474,7 +474,11 @@ class Engine:
     def _sleeves_plan(self, today: date) -> None:
         from hero import sleeve_rules, sleeves
         specs = self.cfg["sleeves"]["list"]
-        book = sleeves.Book(self.j.root / "sleeves_plan.json", specs)  # its own file: the real ledgers stay untouched
+        carry = {s["id"]: zd.Book(self.j.root / "zdte.json", float(s["start"])).live_cash()
+                 for s in specs if s.get("carry") == "zdte" and (self.j.root / "zdte.json").exists()}
+        book = sleeves.Book(self.j.root / "sleeves_plan.json", specs, carry)  # its own file: the real ledgers stay untouched
+        for sid, cash in carry.items():  # follow the live 0DTE ledger while the plan runs beside it
+            book.s(sid)["cash"] = cash
         sleeves.Runner(self.c, self.j, self.cfg, specs, book, sleeve_rules.RULES, self.now, today).plan()
         book.save()
 

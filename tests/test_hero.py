@@ -2274,18 +2274,27 @@ class SleeveRules(unittest.TestCase):
     def test_gap_picks_the_gap_down_with_a_trailing_call(self):
         from hero import sleeve_rules as sr
         r = self.run_at(date(2026, 10, 8), 9, 50, self.broker())
-        slot, picks = sr.Gap().entries(r, {"n": 2}, {"slots": {}})
+        slot, picks = sr.Gap().entries(r, {"n": 2}, {"slots": {}, "cash": 500.0})
         self.assertEqual([p["und"] for p in picks], ["AAA"])                         # 97 / 100: -3%
         self.assertTrue(picks[0]["trail"] and picks[0]["sym"].endswith("C101"))
-        self.assertIsNone(sr.Gap().entries(r, {"n": 2}, {"slots": {slot: "x"}}))       # once a day
+        self.assertIsNone(sr.Gap().entries(r, {"n": 2}, {"slots": {slot: "x"}, "cash": 500.0}))       # once a day
+
+    def test_gap_skips_a_contract_the_sleeve_cannot_afford(self):
+        from hero import sleeve_rules as sr
+        b = self.broker()
+        b.snaps["CCC"]["dailyBar"]["o"] = 98.0                                         # a smaller gap, -2%
+        b.option_snapshots = lambda syms: {x: {"latestQuote": {"bp": 1, "ap": 5.0 if x.startswith("AAA") else 0.5}} for x in syms}
+        r = self.run_at(date(2026, 10, 8), 9, 50, b)
+        slot, picks = sr.Gap().entries(r, {"n": 1}, {"slots": {}, "cash": 500.0})      # $250 a pick: AAA's $500 is too dear
+        self.assertEqual([p["und"] for p in picks], ["CCC"])
 
     def test_flush_needs_two_percent_under_the_open(self):
         from hero import sleeve_rules as sr
         r = self.run_at(date(2026, 10, 8), 10, 0, self.broker())
-        slot, picks = sr.Flush().entries(r, {"n": 2}, {"slots": {}})
+        slot, picks = sr.Flush().entries(r, {"n": 2}, {"slots": {}, "cash": 500.0})
         self.assertEqual([p["und"] for p in picks], ["NVDA"])                         # 97 / 100: 3% down
         self.assertEqual((picks[0]["take"], picks[0]["exit_at"]), (2, "15:50"))
-        self.assertIsNone(sr.Flush().entries(self.run_at(date(2026, 10, 8), 9, 50, self.broker()), {}, {"slots": {}}))
+        self.assertIsNone(sr.Flush().entries(self.run_at(date(2026, 10, 8), 9, 50, self.broker()), {}, {"slots": {}, "cash": 500.0}))
 
     def test_weekly_trend_and_momentum_buy_this_weeks_last_expiry(self):
         from hero import sleeve_rules as sr
