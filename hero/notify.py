@@ -9,7 +9,8 @@ open profit; the colour says how it is going. Once a day after 15:55 ET every ho
 Without DC_WEBHOOK it does nothing. The first run for a journal only sets the cursor, so the history is not
 replayed. It never raises: a failed push is printed (without the address) and the cursor stays put.
 `python -m hero.notify --test` sends one line to check the connection; `--replay [YYYY-MM-DD]` re-sends
-one day's events (and the holdings) as a preview without moving the cursor.
+one day's events (and the holdings) as a preview without moving the cursor; `--note` sends notes/discord.md
+as one card (a summary written by Claude while the owner is away).
 """
 
 from __future__ import annotations
@@ -286,6 +287,15 @@ def main(argv: list[str]) -> int:
         print("notify: test message sent" if ok else "notify: test message failed")
         return 0 if ok else 1
     root = Path(__file__).resolve().parent.parent
+    if "--note" in argv:  # a written summary (notes/discord.md) as one card, for when the owner is away
+        if not url:
+            print("notify: DC_WEBHOOK is not set")
+            return 1
+        text = (root / "notes" / "discord.md").read_text().strip()
+        title, _, rest = text.partition("\n")
+        ok = send(url, [{"title": title.lstrip("# ")[:250], "description": rest.strip()[:4000], "color": GREY}])
+        print("notify: note sent" if ok else "notify: note failed")
+        return 0 if ok else 1
     if "--replay" in argv:
         if not url:
             print("notify: DC_WEBHOOK is not set")

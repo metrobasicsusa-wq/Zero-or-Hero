@@ -1,4 +1,5 @@
 import json
+import os
 import math
 import random
 import tempfile
@@ -2176,6 +2177,20 @@ class Notify(unittest.TestCase):
             titles = [e["title"] for e in sent[0]["embeds"]]
             self.assertEqual(titles, ["【回放 2026-10-08】主账户 $100k", "AMD"])
             self.assertFalse((root / "notify_cursor.json").exists())
+
+    def test_note_goes_out_as_one_card(self):
+        notify, sent, _ = self.capture()
+        orig = os.environ.get("DC_WEBHOOK")
+        os.environ["DC_WEBHOOK"] = "u"
+        try:
+            self.assertEqual(notify.main(["--note"]), 0)
+        finally:
+            if orig is None:
+                os.environ.pop("DC_WEBHOOK", None)
+            else:
+                os.environ["DC_WEBHOOK"] = orig
+        self.assertEqual(len(sent[0]["embeds"]), 1)
+        self.assertTrue(sent[0]["embeds"][0]["title"] and sent[0]["embeds"][0]["description"])
 
     def test_messages_stay_under_discord_limits(self):
         from hero import notify
