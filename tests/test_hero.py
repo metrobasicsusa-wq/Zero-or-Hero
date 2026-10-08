@@ -1936,6 +1936,26 @@ class ResearchNvdaHigh(unittest.TestCase):
             r.WARMUP = old
 
 
+class ResearchChase(unittest.TestCase):
+    def test_events_and_groups(self):
+        from hero import research_chase as r
+        closes = [100, 100, 110, 112] + [112 + i for i in range(1, 22)]
+        bars = [{"t": f"2026-01-{i + 1:02d}T05:00:00Z", "o": c - 1, "c": c} for i, c in enumerate(closes)]
+        bars[3]["o"] = 111.0                                       # the morning after the jump
+        rows = r.events(bars)
+        jump = rows[0]                                             # day 3: 100 -> 110
+        self.assertAlmostEqual(jump["ret"], 0.10)
+        self.assertAlmostEqual(jump["gap"], 111 / 110 - 1)
+        self.assertAlmostEqual(jump["close_next"], 112 / 110 - 1)
+        self.assertAlmostEqual(jump["open_close"], 112 / 111 - 1)
+        self.assertAlmostEqual(jump["open_5"], closes[7] / 111 - 1)
+        g = r.groups(rows)
+        self.assertEqual(g["当天涨 10% 以上"]["n"], 1)
+        self.assertEqual(g["当天涨 10% 以上、第二天高开 3% 以上"]["n"], 0)
+        self.assertIn("大涨后第二天", r.markdown({"generated": "x", "start": "a", "end": "b", "names": 1,
+                                               "all": g, "since2024": g, "recent_big": []}))
+
+
 class ResearchIronFly(unittest.TestCase):
     def test_credit_reaction_buyback_and_expiry(self):
         from hero import research_ironfly as r
