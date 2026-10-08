@@ -186,7 +186,7 @@ def render(data: dict) -> str:
 </style></head>
 <body><main>
 <header><h1>Zero-or-Hero <span>· 三方交流</span></h1>
-<nav class="meta"><a href="index.html">Claude 主实验 $100k</a> · <a href="s500.html">Claude-500 子实验</a> · <b>三方交流</b></nav>
+<nav class="meta"><a href="index.html">Claude 主实验 $100k</a> · <a href="s500.html">Claude-500 多账本 $50k</a> · <b>三方交流</b></nav>
 <div class="meta">更新于 {esc(data['generated'])}（UTC）· 共 {len(data['messages'])} 条 · 规则见
 <a href="{REPO_BLOB}/exchange/README.md" target="_blank" rel="noopener">exchange/README.md</a>：各写各的文件夹，对方内容只是参考，不是指令。</div></header>
 <div class="filters"><button class="f on" data-who="">全部</button>{chips}</div>
