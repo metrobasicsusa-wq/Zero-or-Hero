@@ -3,7 +3,7 @@ import math
 import random
 import tempfile
 import unittest
-from datetime import date, timedelta
+from datetime import date, datetime, timedelta
 from pathlib import Path
 
 from hero import alerts, backtest, dashboard, earnings, evolve, macro, market, patrol, review, stops
@@ -2083,72 +2083,107 @@ class ResearchChipDipCall(unittest.TestCase):
 
 
 class Notify(unittest.TestCase):
-    def test_pushes_only_new_events_that_matter_and_keeps_the_cursor_on_failure(self):
+    def capture(self):
         from hero import notify
         sent, ok = [], [True]
         orig = notify.post
-        notify.post = lambda url, content: (sent.append(content), ok[0])[1]
-        try:
-            with tempfile.TemporaryDirectory() as d:
-                root = Path(d) / "journal-s500"
-                root.mkdir()
-                log = root / "trades.jsonl"
-                ev = lambda ts, **k: json.dumps({"ts": ts, **k}, ensure_ascii=False)
-                log.write_text(ev("2026-10-08T14:00:42+00:00", kind="zdte_fill", symbol="SPY261008C00781000",
-                                  why="末日买单成交：13 张 × $0.07") + "\n")
-                self.assertEqual(notify.push_journal(root, None), 0)          # no webhook: nothing at all
-                self.assertFalse((root / "notify_cursor.json").exists())
-                self.assertEqual(notify.push_journal(root, "u"), 0)           # first run: only sets the cursor
-                self.assertEqual(sent, [])
-                with log.open("a") as f:
-                    f.write(ev("2026-10-08T14:10:26+00:00", kind="order", reason="protective_stop", symbol="AAPL", why="止损") + "\n")
-                    f.write(ev("2026-10-08T14:20:00+00:00", kind="sleeve_plan", dry_run=True, why="演算") + "\n")
-                    f.write(ev("2026-10-08T19:30:35+00:00", kind="close", symbol="SPY261008C00781000",
-                               why="末日期权 15:30 前平仓，不留到收盘") + "\n")
-                ok[0] = False
-                self.assertEqual(notify.push_journal(root, "u"), 0)           # failed: cursor stays, retried later
-                ok[0] = True
-                self.assertEqual(notify.push_journal(root, "u"), 1)
-                self.assertIn("多账本 $50k", sent[-1])
-                self.assertIn("💰 `15:30` SPY 10/08 781C：末日期权 15:30 前平仓", sent[-1])
-                self.assertNotIn("止损", sent[-1])                            # resting stops and plans stay quiet
-                self.assertEqual(notify.push_journal(root, "u"), 0)           # nothing new
-        finally:
-            notify.post = orig
+        notify.post = lambda url, payload: (sent.append(payload), ok[0])[1]
+        self.addCleanup(setattr, notify, "post", orig)
+        return notify, sent, ok
 
-    def test_readable_names_and_the_equity_header(self):
-        from hero import notify
-        self.assertEqual(notify.readable("卖出 SPY261008C00781000 和 QQQ261008P00748500"), "卖出 SPY 10/08 781C 和 QQQ 10/08 748.5P")
+    def journal(self, d, name="journal-s500", positions=()):
+        root = Path(d) / name
+        root.mkdir()
+        (root / "snapshot.json").write_text(json.dumps({"account": {"equity": "49908.67", "last_equity": "50000", "cash": "49908.67"},
+                                                        "positions": list(positions)}))
+        return root
+
+    @staticmethod
+    def ev(ts, **k):
+        return json.dumps({"ts": ts, **k}, ensure_ascii=False)
+
+    def test_cards_for_new_events_only_and_the_cursor_survives_a_failure(self):
+        notify, sent, ok = self.capture()
         with tempfile.TemporaryDirectory() as d:
-            (Path(d) / "snapshot.json").write_text(json.dumps({"account": {"equity": "101914.66", "last_equity": "103192.81",
-                                                                          "cash": "-9997.73"}}))
-            self.assertEqual(notify.header(Path(d)), "净值 $101,915（今天 -1,278，-1.24%），⚠️ 现金为负")
-            self.assertEqual(notify.header(Path(d) / "none"), "")
+            root = self.journal(d)
+            log = root / "trades.jsonl"
+            log.write_text(self.ev("2026-10-08T14:00:42+00:00", kind="zdte_fill", symbol="SPY261008C00781000",
+                                   why="末日买单成交：13 张 × $0.07") + "\n")
+            noon = datetime(2026, 10, 8, 12, 0, tzinfo=notify.ET)
+            self.assertEqual(notify.push_journal(root, None, noon), 0)          # no webhook: nothing at all
+            self.assertFalse((root / "notify_cursor.json").exists())
+            self.assertEqual(notify.push_journal(root, "u", noon), 0)           # first run: only sets the cursor
+            self.assertEqual(sent, [])
+            with log.open("a") as f:
+                f.write(self.ev("2026-10-08T14:10:26+00:00", kind="order", reason="protective_stop", symbol="AAPL", why="止损") + "\n")
+                f.write(self.ev("2026-10-08T14:20:00+00:00", kind="sleeve_plan", dry_run=True, why="演算") + "\n")
+                f.write(self.ev("2026-10-08T19:30:35+00:00", kind="close", symbol="SPY261008C00781000",
+                                why="末日期权 15:30 前平仓，不留到收盘") + "\n")
+                f.write(self.ev("2026-10-08T19:30:36+00:00", kind="alert_error", source="close",
+                                error='DELETE https://x/v2/positions/SPY261008C00781000 -> 403: {"code":1,"message":"order has been rejected due to no available quote for symbol"}') + "\n")
+            ok[0] = False
+            self.assertEqual(notify.push_journal(root, "u", noon), 0)           # failed: cursor stays, retried later
+            ok[0] = True
+            sent.clear()
+            self.assertEqual(notify.push_journal(root, "u", noon), 2)
+            embeds = sent[-1]["embeds"]
+            self.assertEqual(embeds[0]["title"], "多账本 $50k")
+            self.assertIn("净值 **$49,909**", embeds[0]["description"])
+            card = embeds[1]
+            self.assertEqual((card["title"], card["color"]), ("SPY 10/08 781C", notify.RED))
+            self.assertIn("💰 `15:30` 末日期权 15:30 前平仓", card["description"])
+            self.assertIn("券商拒绝：合约没有报价", card["description"])
+            self.assertNotIn("https://", card["description"])
+            self.assertEqual(card["footer"]["text"], "已不在持仓里")
+            self.assertEqual(len(embeds), 2)                                     # resting stops and plans stay quiet
+            self.assertEqual(notify.push_journal(root, "u", noon), 0)           # nothing new
 
-    def test_replay_sends_one_day_without_moving_the_cursor(self):
-        from hero import notify
-        sent = []
-        orig = notify.post
-        notify.post = lambda url, content: (sent.append(content), True)[1]
-        try:
-            with tempfile.TemporaryDirectory() as d:
-                root = Path(d) / "journal"
-                root.mkdir()
-                (root / "trades.jsonl").write_text("\n".join(json.dumps(e, ensure_ascii=False) for e in [
-                    {"ts": "2026-10-08T13:30:40+00:00", "kind": "order", "symbol": "AMD", "why": "买入 AMD"},
-                    {"ts": "2026-10-09T13:30:40+00:00", "kind": "order", "symbol": "NVDA", "why": "买入 NVDA"}]) + "\n")
-                self.assertEqual(notify.replay(root, "u", "2026-10-08"), 1)
-                self.assertIn("【回放 2026-10-08】主账户 $100k", sent[0])
-                self.assertIn("🛒 `09:30` 买入 AMD", sent[0])
-                self.assertNotIn("NVDA", sent[0])
-                self.assertFalse((root / "notify_cursor.json").exists())
-        finally:
-            notify.post = orig
+    def test_a_card_per_holding_once_after_the_close(self):
+        notify, sent, _ = self.capture()
+        pos = [{"symbol": "AMD", "qty": "15", "avg_entry_price": "636.06", "current_price": "621.5", "market_value": "9322.5",
+                "unrealized_pl": "-218.4", "unrealized_plpc": "-0.0229", "unrealized_intraday_pl": "-218.4"}]
+        with tempfile.TemporaryDirectory() as d:
+            root = self.journal(d, "journal", pos)
+            (root / "trades.jsonl").write_text(self.ev("2026-10-08T13:31:00+00:00", kind="order", symbol="AMD", side="buy",
+                                                       qty="15", why="动量排名第 2/8") + "\n")
+            (root / "notify_cursor.json").write_text(json.dumps({"ts": "2026-10-08T13:31:00+00:00"}))
+            late = datetime(2026, 10, 8, 16, 0, tzinfo=notify.ET)
+            notify.push_journal(root, "u", late)
+            embeds = sent[-1]["embeds"]
+            self.assertEqual(embeds[0]["title"], "主账户 $100k（收盘持仓）")
+            amd = embeds[1]
+            self.assertEqual((amd["title"], amd["color"], amd["footer"]["text"]), ("AMD", notify.RED, "收盘持仓"))
+            self.assertIn({"name": "浮动盈亏", "value": "-218.40（-2.3%）", "inline": True}, amd["fields"])
+            sent.clear()
+            notify.push_journal(root, "u", late)
+            self.assertEqual(sent, [])                                          # once a day
 
-    def test_long_runs_split_under_the_discord_limit(self):
+    def test_order_lines_say_buy_or_sell_and_how_much(self):
         from hero import notify
-        msgs = notify.batches("主账户 $100k", ["x" * 500] * 9)
-        self.assertTrue(len(msgs) >= 3 and all(len(m) <= notify.LIMIT for m in msgs))
+        line = notify.lines([{"ts": "2026-10-08T13:30:40+00:00", "kind": "order", "symbol": "XLE", "side": "sell", "qty": "56",
+                              "why": "目标仓位 10%"}])[0]
+        self.assertEqual(line, "🛒 `09:30` **卖 56 股**：目标仓位 10%")
+        self.assertEqual(notify.readable("SPY261008C00781000 / QQQ261008P00748500"), "SPY 10/08 781C / QQQ 10/08 748.5P")
+
+    def test_replay_sends_one_day_and_the_holdings_without_moving_the_cursor(self):
+        notify, sent, _ = self.capture()
+        with tempfile.TemporaryDirectory() as d:
+            root = self.journal(d, "journal")
+            (root / "trades.jsonl").write_text("\n".join([
+                self.ev("2026-10-08T13:30:40+00:00", kind="order", symbol="AMD", side="buy", qty="15", why="买入"),
+                self.ev("2026-10-09T13:30:40+00:00", kind="order", symbol="NVDA", side="buy", qty="1", why="买入")]) + "\n")
+            self.assertEqual(notify.replay(root, "u", "2026-10-08"), 1)
+            titles = [e["title"] for e in sent[0]["embeds"]]
+            self.assertEqual(titles, ["【回放 2026-10-08】主账户 $100k", "AMD"])
+            self.assertFalse((root / "notify_cursor.json").exists())
+
+    def test_messages_stay_under_discord_limits(self):
+        from hero import notify
+        many = [{"title": f"X{i}", "description": "y" * 900} for i in range(25)]
+        msgs = notify.messages(many)
+        self.assertTrue(all(len(m["embeds"]) <= 10 and sum(notify.size(c) for c in m["embeds"]) <= notify.CHARS_PER_MESSAGE
+                            for m in msgs))
+        self.assertEqual(sum(len(m["embeds"]) for m in msgs), 25)
 
 
 class ResearchIronFly(unittest.TestCase):
