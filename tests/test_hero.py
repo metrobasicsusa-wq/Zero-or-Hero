@@ -2057,7 +2057,7 @@ class ResearchChipNext(unittest.TestCase):
         self.assertEqual([x["day"] for x in two], ["d2"])               # 99 -> 96 after 100 -> 99
         s = r.summary(two)
         self.assertEqual((s["n"], s["down"]), (1, 1.0))                  # 96 -> 95 the next day
-        self.assertAlmostEqual(s["five"], 99 / 96 - 1, places=4)
+        self.assertAlmostEqual(s["five"], 100 / 96 - 1, places=4)       # 5 sessions later: 100
         self.assertEqual(r.summary([]), {"n": 0})
 
 
