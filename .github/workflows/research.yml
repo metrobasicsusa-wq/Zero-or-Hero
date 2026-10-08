@@ -8,7 +8,7 @@ on:
       study:
         description: "Which study to run"
         type: choice
-        options: [short, universe, s500, earnings, lottery, flow, 0dte, events, fly, tails, seller, net, gap, ironfly, today, flush, flush_stock, 0dte_names, weekly, weekly_news, lotto0dte, letf, reclaim, zdte_filter, plan_review, streak, zdte_streak, nvda_high, chase, jump_dip, jump_put, barbell, movers, chipnext, chip_dipcall, notify_test]
+        options: [short, universe, s500, earnings, lottery, flow, 0dte, events, fly, tails, seller, net, gap, ironfly, today, flush, flush_stock, 0dte_names, weekly, weekly_news, lotto0dte, letf, reclaim, zdte_filter, plan_review, streak, zdte_streak, nvda_high, chase, jump_dip, jump_put, barbell, movers, chipnext, chip_dipcall, notify_test, notify_replay]
         default: short
 
 # Its own queue per study: a long study must never hold up the trading runs (which share hero-journal),
@@ -38,7 +38,7 @@ jobs:
           ALPACA_API_KEY: ${{ secrets.ALPACA_API_KEY }}
           ALPACA_SECRET_KEY: ${{ secrets.ALPACA_SECRET_KEY }}
           SEC_CONTACT_EMAIL: ${{ secrets.SEC_CONTACT_EMAIL }}
-          DC_WEBHOOK: ${{ inputs.study == 'notify_test' && secrets.DC_WEBHOOK || '' }}
+          DC_WEBHOOK: ${{ startsWith(inputs.study, 'notify_') && secrets.DC_WEBHOOK || '' }}
         run: python -m hero.research_${{ inputs.study }}
       - name: Commit results
         run: |

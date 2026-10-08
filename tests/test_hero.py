@@ -2110,9 +2110,38 @@ class Notify(unittest.TestCase):
                 ok[0] = True
                 self.assertEqual(notify.push_journal(root, "u"), 1)
                 self.assertIn("多账本 $50k", sent[-1])
-                self.assertIn("15:30 SPY261008C00781000：末日期权 15:30 前平仓", sent[-1])
+                self.assertIn("💰 `15:30` SPY 10/08 781C：末日期权 15:30 前平仓", sent[-1])
                 self.assertNotIn("止损", sent[-1])                            # resting stops and plans stay quiet
                 self.assertEqual(notify.push_journal(root, "u"), 0)           # nothing new
+        finally:
+            notify.post = orig
+
+    def test_readable_names_and_the_equity_header(self):
+        from hero import notify
+        self.assertEqual(notify.readable("卖出 SPY261008C00781000 和 QQQ261008P00748500"), "卖出 SPY 10/08 781C 和 QQQ 10/08 748.5P")
+        with tempfile.TemporaryDirectory() as d:
+            (Path(d) / "snapshot.json").write_text(json.dumps({"account": {"equity": "101914.66", "last_equity": "103192.81",
+                                                                          "cash": "-9997.73"}}))
+            self.assertEqual(notify.header(Path(d)), "净值 $101,915（今天 -1,278，-1.24%），⚠️ 现金为负")
+            self.assertEqual(notify.header(Path(d) / "none"), "")
+
+    def test_replay_sends_one_day_without_moving_the_cursor(self):
+        from hero import notify
+        sent = []
+        orig = notify.post
+        notify.post = lambda url, content: (sent.append(content), True)[1]
+        try:
+            with tempfile.TemporaryDirectory() as d:
+                root = Path(d) / "journal"
+                root.mkdir()
+                (root / "trades.jsonl").write_text("\n".join(json.dumps(e, ensure_ascii=False) for e in [
+                    {"ts": "2026-10-08T13:30:40+00:00", "kind": "order", "symbol": "AMD", "why": "买入 AMD"},
+                    {"ts": "2026-10-09T13:30:40+00:00", "kind": "order", "symbol": "NVDA", "why": "买入 NVDA"}]) + "\n")
+                self.assertEqual(notify.replay(root, "u", "2026-10-08"), 1)
+                self.assertIn("【回放 2026-10-08】主账户 $100k", sent[0])
+                self.assertIn("🛒 `09:30` 买入 AMD", sent[0])
+                self.assertNotIn("NVDA", sent[0])
+                self.assertFalse((root / "notify_cursor.json").exists())
         finally:
             notify.post = orig
 
