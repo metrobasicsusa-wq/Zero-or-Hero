@@ -2002,6 +2002,18 @@ class ResearchJumpPut(unittest.TestCase):
         self.assertIsNone(r.play(1.0, {}, later))                            # never traded again: left out
 
 
+class ResearchBarbell(unittest.TestCase):
+    def test_a_ticket_risks_its_share_and_the_rest_follows_the_core(self):
+        from hero import research_barbell as r
+        days = ["d0", "d1", "d2"]
+        growth = [1.0, 1.10, 1.0]                       # the core +10% on d1
+        p = r.path(days, growth, {"d1": 2.0}, 0.10, 1000.0, 0, 3)
+        self.assertAlmostEqual(p[1], 900 * 1.10 + 100 * 3.0)   # 10% in a ticket that tripled
+        self.assertAlmostEqual(p[2], p[1])
+        self.assertEqual(r.path(days, growth, {"d1": -1.0}, 0.0, 1000.0, 0, 3), [1000.0, 1100.0, 1100.0])
+        self.assertAlmostEqual(r.max_dd([1, 2, 1, 3]), -0.5)
+
+
 class ResearchIronFly(unittest.TestCase):
     def test_credit_reaction_buyback_and_expiry(self):
         from hero import research_ironfly as r
