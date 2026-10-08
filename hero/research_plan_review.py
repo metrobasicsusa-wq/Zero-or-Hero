@@ -2,7 +2,8 @@
 
 Plan mode (config/s500.json sleeves.plan_only) logs each pick as a sleeve_plan event but holds nothing,
 so nothing follows the pick afterwards. Here, after the close, each of that day's picks with a size is
-played through its own exit on one-minute bars (SIP, so run it 15+ minutes after the close):
+played through its own exit on one-minute bars (the day's option bars need the OPRA agreement until the
+day is over, so run it the next morning; with no date it reviews the last weekday before today):
   bought at the logged limit (the ask + $0.01), at the minute the plan was logged;
   same-day 0DTE sleeves: the resting take (spec take x the limit), else out at 15:30;
   flush: a 2x take, else 15:50; gap: once worth 2x, out 40% below the best, else 15:50;
@@ -16,13 +17,20 @@ from __future__ import annotations
 import json
 import re
 import sys
-from datetime import date, datetime
+from datetime import date, datetime, timedelta
 from pathlib import Path
 
 from hero.research_0dte import ET, et_minutes
 
 SIZE = re.compile(r"(\d+) 张 × \$([\d.]+)")
 OUT = {"zdte": "15:30", "flush": "15:50", "gap": "15:50"}
+
+
+def last_weekday(d: date) -> date:
+    d -= timedelta(days=1)
+    while d.weekday() > 4:
+        d -= timedelta(days=1)
+    return d
 
 
 def picks(events: list[dict], day: str) -> list[dict]:
@@ -105,7 +113,7 @@ def markdown(rep: dict) -> str:
 def main() -> None:
     from hero.alpaca import Alpaca
     root = Path(__file__).resolve().parent.parent
-    day = sys.argv[1] if len(sys.argv) > 1 else datetime.now(ET).date().isoformat()
+    day = sys.argv[1] if len(sys.argv) > 1 else last_weekday(datetime.now(ET).date()).isoformat()
     rep = run(Alpaca(), root, day)
     (root / "research" / f"{day}-plan-review.json").write_text(json.dumps(rep, ensure_ascii=False) + "\n")
     (root / "research" / f"{day}-plan-review.md").write_text(markdown(rep))

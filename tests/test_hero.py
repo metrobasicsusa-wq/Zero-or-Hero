@@ -1860,6 +1860,7 @@ class ResearchPlanReview(unittest.TestCase):
         self.assertEqual((miss["exit"], miss["when"]), (0.05, "15:30"))     # nothing after 15:30 counts
         gap = r.play({"10:01": b(0.6, 0.6), "11:00": b(0.9, 0.9), "12:00": b(0.5, 0.5)}, {**p, "at": "10:00"}, "gap", 3)
         self.assertEqual((gap["how"], gap["exit"]), ("翻倍后回撤 40%", 0.5))
+        self.assertEqual(r.last_weekday(date(2026, 10, 12)), date(2026, 10, 9))   # a Monday reviews Friday
         held = r.play({"15:59": b(0.4, 0.4)}, p, "weekly", 2)
         self.assertEqual((held["exit"], held["how"]), (0.4, "还拿着（按收盘估值）"))
 
