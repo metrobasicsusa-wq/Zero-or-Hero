@@ -1905,6 +1905,37 @@ class ResearchZDTEStreak(unittest.TestCase):
         self.assertIn("| 连跌 2 天 | 1 |", r.markdown({"generated": "x", "start": "a", "end": "b"}, t))
 
 
+class ResearchNvdaHigh(unittest.TestCase):
+    def test_highs_events_and_report(self):
+        from hero import research_nvda_high as r
+        old = r.WARMUP
+        r.WARMUP = 2
+        try:
+            self.assertEqual(r.new_highs([1, 2, 3, 2, 4]), [False, False, True, False, True])
+            nv = [False, False, True, True, False, False, False, False, False, False, False, False, False, False, True]
+            sp = [False, True, False, False, False, False, False, False, False, False, False, False, False, False, True]
+            self.assertEqual(r.events(nv, sp), [2, 14])      # day 3 is the same cluster; SPY's day-1 high counts for day 2
+
+            from datetime import date as _d, timedelta as _td
+            days = [(_d(2026, 1, 1) + _td(days=i)).isoformat() for i in range(40)]
+            closes = {"SPY": [100 + i for i in range(10)] + [109 - i for i in range(30)],
+                      "QQQ": [50.0] * 40, "NVDA": [10 + i for i in range(10)] + [19 - 0.1 * i for i in range(30)]}
+
+            class C:
+                def _d(self, path, params):
+                    s = params["symbols"]
+                    return {"bars": {s: [{"t": d + "T04:00:00Z", "c": c} for d, c in zip(days, closes[s])]}}
+            rep = r.run(C())
+            self.assertEqual([e["day"] for e in rep["events"]], ["2026-01-03"])   # first joint high after warm-up
+            first = rep["events"][0]
+            self.assertAlmostEqual(first["SPY_5"], 107 / 102 - 1)
+            self.assertEqual(rep["now"]["SPY"]["high_day"], "2026-01-10")
+            md = r.markdown(rep)
+            self.assertIn("2026-01-03", md)
+        finally:
+            r.WARMUP = old
+
+
 class ResearchIronFly(unittest.TestCase):
     def test_credit_reaction_buyback_and_expiry(self):
         from hero import research_ironfly as r
