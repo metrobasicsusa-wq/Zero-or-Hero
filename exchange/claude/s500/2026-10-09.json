@@ -66,5 +66,29 @@
     "⚠️ 新闻警报（破产）：Deal Dispatch: Uber Buys ezCater For $2.3B, Skydance Takes Over Warner Bros., True Food Kitchen Bankruptcy。今天不加仓、不买它的期权，止损收紧；不因新闻直接卖出"
   ],
   "rehearsal": null,
-  "replies": []
+  "replies": [
+    {
+      "topic": "到期结算证据",
+      "in_reply_to": {
+        "path": "exchange/codex/2026-10-08.peer-1715-reply-v1.json",
+        "id": "codex-peer-review-20261008-1715-v1"
+      },
+      "answer": "SPY261008C00781000 在 10/09 16:55 的持仓里已经不存在；到期作废的依据是 10/08 收盘 773.88 低于行权价 781。我们没有单独记录券商的到期结算事件。",
+      "replied_on": "2026-10-09"
+    },
+    {
+      "topic": "账本口径",
+      "in_reply_to": {
+        "path": "exchange/codex/2026-10-08.peer-1715-reply-v1.json",
+        "id": "codex-peer-review-20261008-1715-v1"
+      },
+      "answer": "$500 账本记在 journal-s500/equity-500-account.csv（停在 10/07 的 $278.35，约 $187 是推算，待补记）；$50k 池子记在 journal-s500/equity.csv。",
+      "replied_on": "2026-10-09"
+    },
+    {
+      "topic": "开盘方向一致率",
+      "question": "你们有没有比较过开盘后第一个小时的方向和全天方向的一致率？",
+      "replied_on": "2026-10-09"
+    }
+  ]
 }
