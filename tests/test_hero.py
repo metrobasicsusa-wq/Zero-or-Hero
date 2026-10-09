@@ -2602,6 +2602,35 @@ class Sleeves(unittest.TestCase):
         self.assertEqual(book.s("spy0dte-500")["cash"], round(279 - 132 + 12 * 2, 2))
         self.assertTrue(all(not s["open"] for s in book.d["sleeves"].values()))
 
+    def test_a_sell_rejected_for_no_quote_is_retried_then_booked_at_zero_once_expired(self):
+        from datetime import datetime
+        from hero import sleeve_rules, sleeves
+        b = SleeveBroker(lambda s: (0.08, 0.10))
+        self.cycle(b, 10, 0, self.specs[:1])
+        sym = next(iter(b.pos))
+        for o in b.orders.values():
+            if o["side"] == "sell":
+                o["status"] = "expired"                                              # the day's take never filled
+        b.quotes = lambda s: (0.0, 0.03)
+        real = b.submit_order
+
+        def no_quote(**o):
+            if o["side"] == "sell" and o["type"] == "market":
+                raise RuntimeError("403: order has been rejected due to no available quote for symbol")
+            return real(**o)
+        b.submit_order = no_quote
+        book, log = self.cycle(b, 15, 30, self.specs[:1])
+        book, log = self.cycle(b, 15, 40, self.specs[:1])
+        self.assertEqual(len([e for e in log if e["kind"] == "order_error"]), 2)      # tried again the next cycle
+        self.assertEqual(len(book.s("spy0dte-500")["open"]), 1)
+        b.pos[sym] = 0                                                               # expired worthless overnight
+        book = sleeves.Book(self.root / "sleeves.json", self.specs[:1])
+        sleeves.Runner(b, Journal(self.root), self.cfg, self.specs[:1], book, sleeve_rules.RULES, datetime(2026, 10, 9, 9, 30),
+                       date(2026, 10, 9), sleep=lambda s: None).run()
+        s = book.s("spy0dte-500")
+        self.assertEqual((s["open"], s["closed"][-1]["proceeds"], s["closed"][-1]["how"]), ([], 0.0, "券商已无持仓（到期作废）"))
+        self.assertEqual(s["cash"], round(279 - 12 * 11, 2))
+
     def test_a_round_ends_below_ten_percent_and_restarts(self):
         b = SleeveBroker(lambda s: (0.08, 0.10))
         book, _ = self.cycle(b, 10, 0, self.specs[:1])
@@ -2937,6 +2966,32 @@ class Safety(unittest.TestCase):
         with self.assertRaises(AlpacaError):
             Alpaca(base_url="https://api.alpaca.markets")
 
+
+
+class ResearchRelayVariants(unittest.TestCase):
+    def test_one_bet_a_week_by_the_pick_and_dropping_the_best_weeks(self):
+        from hero.research_relay_variants import stream
+        t = lambda sym, day, mom, r, cheap=1.0: {"symbol": sym, "reaction_day": day, "strategy": "价外 10%", "mom126": mom,
+                                                  "cheapness": cheap, "ret_open": r}
+        lot = {"trades": [t("A", "2026-10-06", 0.5, 3.0), t("B", "2026-10-07", 0.1, -1.0, 0.5),
+                          t("C", "2026-10-13", 0.2, 0.5), t("D", "2026-10-20", 0.3, -0.2)]}
+        self.assertEqual(stream(lot, "价外 10%"), [("2026-10-06", 3.0), ("2026-10-13", 0.5), ("2026-10-20", -0.2)])
+        self.assertEqual(stream(lot, "价外 10%", pick="cheap")[0], ("2026-10-07", -1.0))
+        self.assertEqual(stream(lot, "价外 10%", drop_best=1)[0], ("2026-10-06", -1.0))
+
+
+class ResearchSpydipRobust(unittest.TestCase):
+    def test_groups_split_the_dips_by_threshold_year_and_the_ten_oclock_side(self):
+        from hero.research_spydip_robust import calls, groups
+        r = lambda day, prev, side, c: {"day": day, "prev_ret": prev, "side": side, "res": {"C|0.006|3": c}}
+        rows = [r("2024-03-01", -0.012, "C", 2.0), r("2025-03-03", -0.02, "P", -1.0), r("2025-04-01", -0.006, "C", 0.5),
+                r("2026-01-02", 0.015, "C", -1.0)]
+        g = groups(rows)
+        self.assertEqual(calls(g["昨天跌 1.00% 以上"], "0.006", 3), [2.0, -1.0])
+        self.assertEqual(calls(g["昨天跌 0.5%–1%"], "0.006", 3), [0.5])
+        self.assertEqual(calls(g["跌 1% 以上，2025 年"], "0.006", 3), [-1.0])
+        self.assertEqual(calls(g["跌 1% 以上，10:00 已高于开盘"], "0.006", 3), [2.0])
+        self.assertEqual(calls(g["对照：昨天涨 1% 以上"], "0.006", 3), [-1.0])
 
 if __name__ == "__main__":
     unittest.main()
