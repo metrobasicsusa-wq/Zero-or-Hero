@@ -4,7 +4,7 @@
  "start": 500.0,
  "today": {
   "date": "2026-10-08",
-  "status": "open",
+  "status": "closed",
   "symbol": "SPY261008C00781000",
   "qty": 13,
   "price": 0.07,
@@ -15,7 +15,11 @@
   "simulated": false,
   "take_order": true,
   "exit_sent": true,
-  "exit_bid": 0.0
+  "exit_bid": 0.0,
+  "proceeds": 0.0,
+  "exit": "到期作废（15:30 卖单没有买家，按卖出时买价记）",
+  "closed_at": "09:30",
+  "ret": -1.0
  },
  "history": [
   {
@@ -36,6 +40,25 @@
    "exit": "收盘前平仓（按买价估算，以成交为准）",
    "closed_at": "15:40",
    "ret": -0.944
+  },
+  {
+   "date": "2026-10-08",
+   "status": "closed",
+   "symbol": "SPY261008C00781000",
+   "qty": 13,
+   "price": 0.07,
+   "paid": 91.0,
+   "filled": true,
+   "take_price": 0.21,
+   "opened_at": "10:00",
+   "simulated": false,
+   "take_order": true,
+   "exit_sent": true,
+   "exit_bid": 0.0,
+   "proceeds": 0.0,
+   "exit": "到期作废（15:30 卖单没有买家，按卖出时买价记）",
+   "closed_at": "09:30",
+   "ret": -1.0
   }
  ],
  "mode": "live",
