@@ -58,7 +58,7 @@
     "best_bid": 0.19
    },
    "AMZN": {
-    "status": "open",
+    "status": "closed",
     "contract": "AMZN261009C00260000",
     "kind": "C",
     "strike": 260.0,
@@ -68,7 +68,11 @@
     "ask": 0.5,
     "spread": 0.0202,
     "opened_at": "10:00",
-    "best_bid": 1.25
+    "best_bid": 1.53,
+    "exit": "take",
+    "exit_bid": 1.53,
+    "exit_at": "11:50",
+    "ret": 2
    },
    "SPY": {
     "status": "open",
