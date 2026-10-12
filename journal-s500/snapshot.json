@@ -1,19 +1,35 @@
 {
   "account": {
-    "buying_power": "190422.72",
-    "cash": "47605.68",
-    "equity": "47996.68",
+    "buying_power": "184352.96",
+    "cash": "46088.24",
+    "equity": "47865.24",
     "last_equity": "49908.46",
-    "long_market_value": "391",
-    "portfolio_value": "47996.68"
+    "long_market_value": "1777",
+    "portfolio_value": "47865.24"
   },
   "benchmark": {
-    "close": 591.1,
+    "close": 591.37,
     "date": "2026-10-12",
     "prev_close": 603.395,
     "symbol": "SMH"
   },
   "open_orders": [
+    {
+      "asset_class": "us_option",
+      "filled_at": null,
+      "filled_avg_price": null,
+      "filled_qty": "0",
+      "limit_price": "1.07",
+      "protective_stop": false,
+      "qty": "1",
+      "side": "buy",
+      "status": "new",
+      "stop_price": null,
+      "submitted_at": "2026-10-12T19:41:32.929462Z",
+      "symbol": "UNH261016C00427500",
+      "time_in_force": "day",
+      "type": "limit"
+    },
     {
       "asset_class": "us_option",
       "filled_at": null,
@@ -25,7 +41,7 @@
       "side": "sell",
       "status": "new",
       "stop_price": null,
-      "submitted_at": "2026-10-12T14:01:08.495402733Z",
+      "submitted_at": "2026-10-12T14:01:08.495403Z",
       "symbol": "XOM261016C00175000",
       "time_in_force": "day",
       "type": "limit"
@@ -41,7 +57,7 @@
       "side": "sell",
       "status": "new",
       "stop_price": null,
-      "submitted_at": "2026-10-12T14:01:08.467521366Z",
+      "submitted_at": "2026-10-12T14:01:08.467521Z",
       "symbol": "NFLX261016C00072000",
       "time_in_force": "day",
       "type": "limit"
@@ -57,7 +73,7 @@
       "side": "sell",
       "status": "new",
       "stop_price": null,
-      "submitted_at": "2026-10-12T14:01:08.430418839Z",
+      "submitted_at": "2026-10-12T14:01:08.430419Z",
       "symbol": "NFLX261016C00072000",
       "time_in_force": "day",
       "type": "limit"
@@ -73,7 +89,7 @@
       "side": "sell",
       "status": "new",
       "stop_price": null,
-      "submitted_at": "2026-10-12T14:01:08.395523731Z",
+      "submitted_at": "2026-10-12T14:01:08.395524Z",
       "symbol": "SMCI261016C00041000",
       "time_in_force": "day",
       "type": "limit"
@@ -89,13 +105,27 @@
       "side": "sell",
       "status": "new",
       "stop_price": null,
-      "submitted_at": "2026-10-12T14:01:08.356452934Z",
+      "submitted_at": "2026-10-12T14:01:08.356453Z",
       "symbol": "XOM261016C00175000",
       "time_in_force": "day",
       "type": "limit"
     }
   ],
   "positions": [
+    {
+      "asset_class": "us_option",
+      "avg_entry_price": "1.37",
+      "cost_basis": "137",
+      "current_price": "1.19",
+      "lastday_price": "2.83",
+      "market_value": "119",
+      "qty": "1",
+      "side": "long",
+      "symbol": "GS261016C00965000",
+      "unrealized_intraday_pl": "-18",
+      "unrealized_pl": "-18",
+      "unrealized_plpc": "-0.13139"
+    },
     {
       "asset_class": "us_option",
       "avg_entry_price": "0.35",
@@ -128,30 +158,58 @@
       "asset_class": "us_option",
       "avg_entry_price": "0.96",
       "cost_basis": "96",
-      "current_price": "0.73",
+      "current_price": "0.78",
       "lastday_price": "1.78",
-      "market_value": "73",
+      "market_value": "78",
       "qty": "1",
       "side": "long",
       "symbol": "SMCI261016C00041000",
-      "unrealized_intraday_pl": "-23",
-      "unrealized_pl": "-23",
-      "unrealized_plpc": "-0.23958"
+      "unrealized_intraday_pl": "-18",
+      "unrealized_pl": "-18",
+      "unrealized_plpc": "-0.1875"
+    },
+    {
+      "asset_class": "us_option",
+      "avg_entry_price": "2",
+      "cost_basis": "1200",
+      "current_price": "1.83",
+      "lastday_price": "2.24",
+      "market_value": "1098",
+      "qty": "6",
+      "side": "long",
+      "symbol": "UNH261016C00417500",
+      "unrealized_intraday_pl": "-102",
+      "unrealized_pl": "-102",
+      "unrealized_plpc": "-0.085"
+    },
+    {
+      "asset_class": "us_option",
+      "avg_entry_price": "0.18",
+      "cost_basis": "180",
+      "current_price": "0.17",
+      "lastday_price": "0.24",
+      "market_value": "170",
+      "qty": "10",
+      "side": "long",
+      "symbol": "WFC261016C00090000",
+      "unrealized_intraday_pl": "-10",
+      "unrealized_pl": "-10",
+      "unrealized_plpc": "-0.05556"
     },
     {
       "asset_class": "us_option",
       "avg_entry_price": "1.08",
       "cost_basis": "216",
-      "current_price": "0.81",
+      "current_price": "0.78",
       "lastday_price": "0.5",
-      "market_value": "162",
+      "market_value": "156",
       "qty": "2",
       "side": "long",
       "symbol": "XOM261016C00175000",
-      "unrealized_intraday_pl": "-54",
-      "unrealized_pl": "-54",
-      "unrealized_plpc": "-0.25"
+      "unrealized_intraday_pl": "-60",
+      "unrealized_pl": "-60",
+      "unrealized_plpc": "-0.27778"
     }
   ],
-  "ts": "2026-10-12T19:30:59+00:00"
+  "ts": "2026-10-12T19:42:34+00:00"
 }

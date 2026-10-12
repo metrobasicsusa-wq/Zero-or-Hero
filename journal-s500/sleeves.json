@@ -740,8 +740,8 @@
      "exit_at": "15:50",
      "trail": true,
      "best_bid": 0.32,
-     "sell_cid": "sl-gap-500-8c07e889b3-x9d69",
-     "sell_why": "到期日 15:30 卖出，不留到收盘"
+     "sell_why": "到期日 15:30 卖出，不留到收盘",
+     "sell_cid": "sl-gap-500-8c07e889b3-xa83e"
     }
    ],
    "closed": [],
@@ -774,8 +774,8 @@
      "exit_at": "15:50",
      "trail": true,
      "best_bid": 0.32,
-     "sell_cid": "sl-gap-1000-4f5d58950b-xcc8f",
-     "sell_why": "到期日 15:30 卖出，不留到收盘"
+     "sell_why": "到期日 15:30 卖出，不留到收盘",
+     "sell_cid": "sl-gap-1000-4f5d58950b-xb331"
     }
    ],
    "closed": [
@@ -841,25 +841,82 @@
   },
   "earn-500": {
    "start": 500.0,
-   "cash": 500.0,
+   "cash": 446.0,
    "round": 1,
    "heroes": 0,
    "zeros": 0,
-   "open": [],
+   "open": [
+    {
+     "tid": "cb160b6048",
+     "kind": "earnings",
+     "sym": "WFC261016C00090000",
+     "asset": "option",
+     "und": "WFC",
+     "qty": 3,
+     "cost": 0.18,
+     "paid": 54.0,
+     "opened": "2026-10-12 15:40",
+     "why": "WFC 财报（预期波动 4.2%），买 2 倍预期波动处看涨 90，第二天开盘卖",
+     "expiry": "2026-10-16",
+     "exit_day": "2026-10-13",
+     "exit_at": "09:35",
+     "trail": false,
+     "best_bid": 0.0
+    }
+   ],
    "closed": [],
-   "slots": {},
+   "slots": {
+    "2026-10-12": "2026-10-12T15:40-04:00"
+   },
    "best": 500.0,
    "created": null
   },
   "earn-1000": {
    "start": 1000.0,
-   "cash": 1000.0,
+   "cash": 737.0,
    "round": 1,
    "heroes": 0,
    "zeros": 0,
-   "open": [],
+   "open": [
+    {
+     "tid": "d19b87c9f4",
+     "kind": "earnings",
+     "sym": "WFC261016C00090000",
+     "asset": "option",
+     "und": "WFC",
+     "qty": 7,
+     "cost": 0.18,
+     "paid": 126.0,
+     "opened": "2026-10-12 15:40",
+     "why": "WFC 财报（预期波动 4.2%），买 2 倍预期波动处看涨 90，第二天开盘卖",
+     "expiry": "2026-10-16",
+     "exit_day": "2026-10-13",
+     "exit_at": "09:35",
+     "trail": false,
+     "best_bid": 0.0
+    },
+    {
+     "tid": "d89a7d7322",
+     "kind": "earnings",
+     "sym": "GS261016C00965000",
+     "asset": "option",
+     "und": "GS",
+     "qty": 1,
+     "cost": 1.37,
+     "paid": 137.0,
+     "opened": "2026-10-12 15:40",
+     "why": "GS 财报（预期波动 4.2%），买 2 倍预期波动处看涨 965，第二天开盘卖",
+     "expiry": "2026-10-16",
+     "exit_day": "2026-10-13",
+     "exit_at": "09:35",
+     "trail": false,
+     "best_bid": 0.0
+    }
+   ],
    "closed": [],
-   "slots": {},
+   "slots": {
+    "2026-10-12": "2026-10-12T15:40-04:00"
+   },
    "best": 1000.0,
    "created": null
   },
@@ -889,13 +946,33 @@
   },
   "relay-500": {
    "start": 500.0,
-   "cash": 500.0,
+   "cash": 100.0,
    "round": 1,
    "heroes": 0,
    "zeros": 0,
-   "open": [],
+   "open": [
+    {
+     "tid": "f62efc9b71",
+     "kind": "relay",
+     "sym": "UNH261016C00417500",
+     "asset": "option",
+     "und": "UNH",
+     "qty": 2,
+     "cost": 2.0,
+     "paid": 400.0,
+     "opened": "2026-10-12 15:40",
+     "why": "接力第一段：本周财报里 126 日动量最强的 UNH（+25%），全仓买价外约 10% 看涨 417.5，第二天开盘卖；账本到起点 3 倍就转 SOXL",
+     "expiry": "2026-10-16",
+     "exit_day": "2026-10-13",
+     "exit_at": "09:35",
+     "trail": false,
+     "best_bid": 0.0
+    }
+   ],
    "closed": [],
-   "slots": {},
+   "slots": {
+    "relay-2026-W42": "2026-10-12T15:40-04:00"
+   },
    "best": 500.0,
    "created": null,
    "relay_round": 1,
@@ -903,13 +980,33 @@
   },
   "relay-1000": {
    "start": 1000.0,
-   "cash": 1000.0,
+   "cash": 200.0,
    "round": 1,
    "heroes": 0,
    "zeros": 0,
-   "open": [],
+   "open": [
+    {
+     "tid": "1b723c0088",
+     "kind": "relay",
+     "sym": "UNH261016C00417500",
+     "asset": "option",
+     "und": "UNH",
+     "qty": 4,
+     "cost": 2.0,
+     "paid": 800.0,
+     "opened": "2026-10-12 15:40",
+     "why": "接力第一段：本周财报里 126 日动量最强的 UNH（+25%），全仓买价外约 10% 看涨 417.5，第二天开盘卖；账本到起点 3 倍就转 SOXL",
+     "expiry": "2026-10-16",
+     "exit_day": "2026-10-13",
+     "exit_at": "09:35",
+     "trail": false,
+     "best_bid": 0.0
+    }
+   ],
    "closed": [],
-   "slots": {},
+   "slots": {
+    "relay-2026-W42": "2026-10-12T15:40-04:00"
+   },
    "best": 1000.0,
    "created": null,
    "relay_round": 1,
