@@ -741,7 +741,7 @@
      "trail": true,
      "best_bid": 0.32,
      "sell_why": "到期日 15:30 卖出，不留到收盘",
-     "sell_cid": "sl-gap-500-8c07e889b3-xa83e"
+     "sell_cid": "sl-gap-500-8c07e889b3-xb4ef"
     }
    ],
    "closed": [],
@@ -775,7 +775,7 @@
      "trail": true,
      "best_bid": 0.32,
      "sell_why": "到期日 15:30 卖出，不留到收盘",
-     "sell_cid": "sl-gap-1000-4f5d58950b-xb331"
+     "sell_cid": "sl-gap-1000-4f5d58950b-xe018"
     }
    ],
    "closed": [
@@ -861,7 +861,7 @@
      "exit_day": "2026-10-13",
      "exit_at": "09:35",
      "trail": false,
-     "best_bid": 0.0
+     "best_bid": 0.18
     }
    ],
    "closed": [],
@@ -893,7 +893,7 @@
      "exit_day": "2026-10-13",
      "exit_at": "09:35",
      "trail": false,
-     "best_bid": 0.0
+     "best_bid": 0.18
     },
     {
      "tid": "d89a7d7322",
@@ -910,7 +910,7 @@
      "exit_day": "2026-10-13",
      "exit_at": "09:35",
      "trail": false,
-     "best_bid": 0.0
+     "best_bid": 1.18
     }
    ],
    "closed": [],
@@ -922,25 +922,59 @@
   },
   "tqqq-500": {
    "start": 500.0,
-   "cash": 500.0,
+   "cash": 0.01,
    "round": 1,
    "heroes": 0,
    "zeros": 0,
-   "open": [],
+   "open": [
+    {
+     "tid": "7d48412eeb",
+     "kind": "letf",
+     "sym": "TQQQ",
+     "asset": "stock",
+     "und": "TQQQ",
+     "qty": 6.278914981,
+     "cost": 79.63,
+     "paid": 499.99,
+     "opened": "2026-10-12 15:50",
+     "why": "TQQQ $79.59 在 20 日均线 $78.03 上方，买入拿着",
+     "exit_at": "15:50",
+     "best_bid": 0.0
+    }
+   ],
    "closed": [],
-   "slots": {},
+   "slots": {
+    "2026-10-12": "2026-10-12T15:50-04:00"
+   },
    "best": 500.0,
    "created": null
   },
   "tqqq-1000": {
    "start": 1000.0,
-   "cash": 1000.0,
+   "cash": 0.01,
    "round": 1,
    "heroes": 0,
    "zeros": 0,
-   "open": [],
+   "open": [
+    {
+     "tid": "182e318e75",
+     "kind": "letf",
+     "sym": "TQQQ",
+     "asset": "stock",
+     "und": "TQQQ",
+     "qty": 12.558709029,
+     "cost": 79.625222,
+     "paid": 999.99,
+     "opened": "2026-10-12 15:50",
+     "why": "TQQQ $79.59 在 20 日均线 $78.03 上方，买入拿着",
+     "exit_at": "15:50",
+     "best_bid": 0.0
+    }
+   ],
    "closed": [],
-   "slots": {},
+   "slots": {
+    "2026-10-12": "2026-10-12T15:50-04:00"
+   },
    "best": 1000.0,
    "created": null
   },
@@ -966,7 +1000,7 @@
      "exit_day": "2026-10-13",
      "exit_at": "09:35",
      "trail": false,
-     "best_bid": 0.0
+     "best_bid": 1.87
     }
    ],
    "closed": [],
@@ -1000,7 +1034,7 @@
      "exit_day": "2026-10-13",
      "exit_at": "09:35",
      "trail": false,
-     "best_bid": 0.0
+     "best_bid": 1.87
     }
    ],
    "closed": [],
