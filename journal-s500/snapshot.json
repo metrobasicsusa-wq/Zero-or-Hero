@@ -1,19 +1,48 @@
 {
   "account": {
-    "buying_power": "199633.84",
-    "cash": "49908.46",
-    "equity": "49908.46",
+    "buying_power": "196980.52",
+    "cash": "49245.13",
+    "equity": "49850.13",
     "last_equity": "49908.46",
-    "long_market_value": "0",
-    "portfolio_value": "49908.46"
+    "long_market_value": "605",
+    "portfolio_value": "49850.13"
   },
   "benchmark": {
-    "close": 595.3,
+    "close": 594.05,
     "date": "2026-10-12",
     "prev_close": 603.395,
     "symbol": "SMH"
   },
   "open_orders": [],
-  "positions": [],
-  "ts": "2026-10-12T13:40:25+00:00"
+  "positions": [
+    {
+      "asset_class": "us_option",
+      "avg_entry_price": "0.35",
+      "cost_basis": "420",
+      "current_price": "0.32",
+      "lastday_price": "2.43",
+      "market_value": "384",
+      "qty": "12",
+      "side": "long",
+      "symbol": "INTC261012C00103000",
+      "unrealized_intraday_pl": "-36",
+      "unrealized_pl": "-36",
+      "unrealized_plpc": "-0.08571"
+    },
+    {
+      "asset_class": "us_option",
+      "avg_entry_price": "2.43",
+      "cost_basis": "243",
+      "current_price": "2.16",
+      "lastday_price": "27.62",
+      "market_value": "216",
+      "qty": "1",
+      "side": "long",
+      "symbol": "MU261012C01005000",
+      "unrealized_intraday_pl": "-27",
+      "unrealized_pl": "-27",
+      "unrealized_plpc": "-0.11111"
+    }
+  ],
+  "ts": "2026-10-12T13:50:26+00:00"
 }

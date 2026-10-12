@@ -242,25 +242,82 @@
   },
   "gap-500": {
    "start": 500.0,
-   "cash": 500.0,
+   "cash": 290.0,
    "round": 1,
    "heroes": 0,
    "zeros": 0,
-   "open": [],
+   "open": [
+    {
+     "tid": "8c07e889b3",
+     "kind": "gap",
+     "sym": "INTC261012C00103000",
+     "asset": "option",
+     "und": "INTC",
+     "qty": 6,
+     "cost": 0.35,
+     "paid": 210.0,
+     "opened": "2026-10-12 09:50",
+     "why": "INTC 低开 -2.1%，买看涨 103（2026-10-12 到期），翻倍后回撤 40% 卖，最晚 15:50",
+     "expiry": "2026-10-12",
+     "exit_day": "2026-10-12",
+     "exit_at": "15:50",
+     "trail": true,
+     "best_bid": 0.0
+    }
+   ],
    "closed": [],
-   "slots": {},
+   "slots": {
+    "2026-10-12": "2026-10-12T09:50-04:00"
+   },
    "best": 500.0,
    "created": null
   },
   "gap-1000": {
    "start": 1000.0,
-   "cash": 1000.0,
+   "cash": 547.0,
    "round": 1,
    "heroes": 0,
    "zeros": 0,
-   "open": [],
+   "open": [
+    {
+     "tid": "be777037e1",
+     "kind": "gap",
+     "sym": "MU261012C01005000",
+     "asset": "option",
+     "und": "MU",
+     "qty": 1,
+     "cost": 2.43,
+     "paid": 243.0,
+     "opened": "2026-10-12 09:50",
+     "why": "MU 低开 -2.7%，买看涨 1005（2026-10-12 到期），翻倍后回撤 40% 卖，最晚 15:50",
+     "expiry": "2026-10-12",
+     "exit_day": "2026-10-12",
+     "exit_at": "15:50",
+     "trail": true,
+     "best_bid": 0.0
+    },
+    {
+     "tid": "4f5d58950b",
+     "kind": "gap",
+     "sym": "INTC261012C00103000",
+     "asset": "option",
+     "und": "INTC",
+     "qty": 6,
+     "cost": 0.35,
+     "paid": 210.0,
+     "opened": "2026-10-12 09:50",
+     "why": "INTC 低开 -2.1%，买看涨 103（2026-10-12 到期），翻倍后回撤 40% 卖，最晚 15:50",
+     "expiry": "2026-10-12",
+     "exit_day": "2026-10-12",
+     "exit_at": "15:50",
+     "trail": true,
+     "best_bid": 0.0
+    }
+   ],
    "closed": [],
-   "slots": {},
+   "slots": {
+    "2026-10-12": "2026-10-12T09:50-04:00"
+   },
    "best": 1000.0,
    "created": null
   },
