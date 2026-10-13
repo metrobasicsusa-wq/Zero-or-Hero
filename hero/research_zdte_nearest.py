@@ -7,7 +7,9 @@ weekday since 2024-02:
   the first strike at least 0.6% beyond the 10:00 price; a resting 3x / 5x take, else sold at 15:30 that day;
   pay 10% over to get in, get 10% under to get out (SIP stock minutes, option minute bars);
 grouped by how far the bought expiry is (same day; 1-2 days; 3+ days), against the same-day days, so the new
-days are judged against the old ones and against sitting out (0). Record only. Run: python -m hero.research_zdte_nearest
+days are judged against the old ones and against sitting out (0); then the lottery view (owner, 10-13: the rule is there
+to catch big moves): the best multiple the day reached, on all days and on days the stock ran 2% / 4% the right way,
+and holding the non-same-day ones to the next close. Record only. Run: python -m hero.research_zdte_nearest
 """
 
 from __future__ import annotations
@@ -19,7 +21,7 @@ import time
 from datetime import date, timedelta
 from pathlib import Path
 
-from hero.research_0dte import at_or_before, et_minutes, trade
+from hero.research_0dte import SLIP, at_or_after, at_or_before, et_minutes, trade
 from hero.research_0dte_names import minutes_by_day, pick
 
 START = "2024-02-01"
@@ -27,6 +29,20 @@ NAMES = ("TSLA", "NVDA", "META")
 ENTRY = "10:00"
 OFF = 0.006
 TAKES = (3, 5)
+
+
+def tails(opt: dict[str, dict], stock: dict[str, dict], spot: float, kind: str) -> dict | None:
+    """The day's best multiple of the cost (minute highs to 15:30) and the stock's move from 10:00 to 15:55, signed so
+    that a move the right way is positive."""
+    got = at_or_after(opt, ENTRY)
+    last = at_or_before(stock, "15:55")
+    if not got or not last:
+        return None
+    t0, bar = got
+    cost = float(bar["c"]) + max(float(bar["c"]) * SLIP, 0.01)
+    best = max((float(v["h"]) for k, v in opt.items() if t0 < k <= "15:30"), default=0.0)
+    move = float(last["c"]) / spot - 1
+    return {"cost": cost, "best_x": round(best / cost, 2), "move": round(move if kind == "C" else -move, 4)}
 
 
 def gap_group(days: int) -> str:
@@ -73,9 +89,21 @@ def run(client) -> dict:
             res = {str(t): trade(mins, ENTRY, t) for t in TAKES}
             if any(v is None for v in res.values()):
                 continue
-            rows.append({"und": und, "day": day, "kind": kind, "exp": exp,
-                         "dte": (date.fromisoformat(exp) - date.fromisoformat(day)).days,
-                         "res": {k: round(v, 4) for k, v in res.items()}})
+            tail = tails(mins, m, spot, kind)
+            dte = (date.fromisoformat(exp) - date.fromisoformat(day)).days
+            nxt = None
+            if dte > 0 and tail:
+                try:
+                    daily = client.option_bars([sym], (date.fromisoformat(day) + timedelta(days=1)).isoformat(),
+                                               f"{exp}T23:00:00Z", timeframe="1Day").get(sym, [])
+                except Exception:
+                    daily = []
+                if daily:
+                    px = float(daily[0]["c"])
+                    nxt = round(max(px - max(px * SLIP, 0.01), 0.0) / tail["cost"] - 1, 4)
+            rows.append({"und": und, "day": day, "kind": kind, "exp": exp, "dte": dte,
+                         "res": {k: round(v, 4) for k, v in res.items()},
+                         "best_x": tail["best_x"] if tail else None, "move": tail["move"] if tail else None, "next": nxt})
     return {"generated": date.today().isoformat(), "start": START, "end": end, "rows": rows}
 
 
@@ -119,6 +147,30 @@ def markdown(rep: dict, t: dict) -> str:
     return "\n".join(out)
 
 
+def tail_table(rep: dict) -> list[str]:
+    """The lottery view: how often the day's best price reached 2x / 3x / 5x / 10x the cost, overall and on days the
+    stock ran 2%+ (or 4%+) the right way after 10:00; and what holding the non-same-day ones to the next close gave."""
+    out = ["## 抓大涨的角度：当天最高摸到几倍", "",
+           "「最高几倍」= 10:00 买入后到 15:30 的分钟最高价 / 成本（只是摸到过，不一定卖得到）。"
+           "「对的方向大涨」= 股票从 10:00 到 15:55 朝买的方向走了 2% / 4% 以上。", "",
+           "| 情况 | 笔数 | 摸到 2 倍 | 3 倍 | 5 倍 | 10 倍 | 最高倍数中位数 | 拿到第二天收盘（平均） |", "|---|---|---|---|---|---|---|---|"]
+    rows = [r for r in rep["rows"] if r.get("best_x") is not None]
+    for label, keep in (("当天到期：全部", lambda r: r["dte"] == 0), ("最近到期（非当天）：全部", lambda r: r["dte"] > 0),
+                        ("当天到期：对的方向涨 2% 以上", lambda r: r["dte"] == 0 and r["move"] >= 0.02),
+                        ("最近到期：对的方向涨 2% 以上", lambda r: r["dte"] > 0 and r["move"] >= 0.02),
+                        ("当天到期：对的方向涨 4% 以上", lambda r: r["dte"] == 0 and r["move"] >= 0.04),
+                        ("最近到期：对的方向涨 4% 以上", lambda r: r["dte"] > 0 and r["move"] >= 0.04)):
+        sub = [r for r in rows if keep(r)]
+        if not sub:
+            continue
+        bx = [r["best_x"] for r in sub]
+        share = lambda k: f"{sum(x >= k for x in bx) / len(bx):.0%}"
+        nx = [r["next"] for r in sub if r.get("next") is not None]
+        out.append(f"| {label} | {len(sub)} | {share(2)} | {share(3)} | {share(5)} | {share(10)} | {statistics.median(bx):.2f} | "
+                   + (f"{statistics.mean(nx):+.0%}（{len(nx)}）" if nx else "—") + " |")
+    return out + [""]
+
+
 def main() -> None:
     from hero.alpaca import Alpaca
     root = Path(__file__).resolve().parent.parent
@@ -126,8 +178,9 @@ def main() -> None:
     t = table(rep)
     rep["table"] = t
     (root / "research" / f"{rep['generated']}-zdte-nearest.json").write_text(json.dumps(rep, ensure_ascii=False) + "\n")
-    (root / "research" / f"{rep['generated']}-zdte-nearest.md").write_text(markdown(rep, t))
-    print(markdown(rep, t))
+    text = markdown(rep, t) + "\n" + "\n".join(tail_table(rep))
+    (root / "research" / f"{rep['generated']}-zdte-nearest.md").write_text(text)
+    print(text)
 
 
 if __name__ == "__main__":
