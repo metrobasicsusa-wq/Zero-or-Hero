@@ -3026,5 +3026,17 @@ class ResearchSpydipRobust(unittest.TestCase):
         self.assertEqual(calls(g["跌 1% 以上，10:00 已高于开盘"], "0.006", 3), [2.0])
         self.assertEqual(calls(g["对照：昨天涨 1% 以上"], "0.006", 3), [-1.0])
 
+
+class ResearchZdteNearest(unittest.TestCase):
+    def test_days_without_a_same_day_expiry_are_grouped_apart(self):
+        from hero.research_zdte_nearest import gap_group, table
+        r = lambda und, day, dte, x: {"und": und, "day": day, "dte": dte, "res": {"3": x, "5": x}}
+        rep = {"rows": [r("TSLA", "2026-10-09", 0, 2.0), r("TSLA", "2026-10-13", 2, -1.0), r("NVDA", "2025-03-04", 3, -0.5)]}
+        t = table(rep)
+        self.assertEqual((gap_group(0), gap_group(2), gap_group(3)), ("当天到期", "1–2 天后到期", "3 天以上到期"))
+        self.assertEqual(t["TSLA|当天到期|3"]["mean"], 2.0)
+        self.assertEqual(t["合计|新规则补上的日子（非当天）|3"]["n"], 2)
+        self.assertEqual(t["合计|2026 年：新规则补上的日子|3"]["mean"], -1.0)
+
 if __name__ == "__main__":
     unittest.main()
