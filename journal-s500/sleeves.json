@@ -25,7 +25,8 @@
      "best_bid": 0.04,
      "take_x": 3,
      "take": 0.09,
-     "take_cid": "sl-spy0dte-500-b5ca7039bc-t4832"
+     "sell_cid": "sl-spy0dte-500-b5ca7039bc-xae77",
+     "sell_why": "2026-10-13 15:30 到时卖出"
     }
    ],
    "closed": [
@@ -89,7 +90,8 @@
      "best_bid": 0.04,
      "take_x": 3,
      "take": 0.09,
-     "take_cid": "sl-spy0dte-1000-f267602ee5-t217b"
+     "sell_cid": "sl-spy0dte-1000-f267602ee5-x5f9c",
+     "sell_why": "2026-10-13 15:30 到时卖出"
     }
    ],
    "closed": [
@@ -130,32 +132,11 @@
   },
   "qqq0dte-500": {
    "start": 500.0,
-   "cash": 172.0,
+   "cash": 178.0,
    "round": 1,
    "heroes": 0,
    "zeros": 0,
-   "open": [
-    {
-     "tid": "4eeb04fedb",
-     "kind": "zdte",
-     "sym": "QQQ261013C00748000",
-     "asset": "option",
-     "und": "QQQ",
-     "qty": 6,
-     "cost": 0.18,
-     "paid": 108.0,
-     "opened": "2026-10-13 10:00",
-     "why": "QQQ 开盘 $739.48、现在 $743.35，顺势买当天到期看涨 748（离现价 0.6%），3 倍止盈，15:30 平仓",
-     "expiry": "2026-10-13",
-     "exit_day": "2026-10-13",
-     "exit_at": "15:30",
-     "trail": false,
-     "best_bid": 0.17,
-     "take_x": 3,
-     "take": 0.54,
-     "take_cid": "sl-qqq0dte-500-4eeb04fedb-t7515"
-    }
-   ],
+   "open": [],
    "closed": [
     {
      "tid": "98e0212d34",
@@ -183,6 +164,33 @@
      "how": "2026-10-12 15:30 到时卖出",
      "closed": "2026-10-12 15:30",
      "ret": -0.88
+    },
+    {
+     "tid": "4eeb04fedb",
+     "kind": "zdte",
+     "sym": "QQQ261013C00748000",
+     "asset": "option",
+     "und": "QQQ",
+     "qty": 6,
+     "cost": 0.18,
+     "paid": 108.0,
+     "opened": "2026-10-13 10:00",
+     "why": "QQQ 开盘 $739.48、现在 $743.35，顺势买当天到期看涨 748（离现价 0.6%），3 倍止盈，15:30 平仓",
+     "expiry": "2026-10-13",
+     "exit_day": "2026-10-13",
+     "exit_at": "15:30",
+     "trail": false,
+     "best_bid": 0.17,
+     "take_x": 3,
+     "take": 0.54,
+     "sell_cid": "sl-qqq0dte-500-4eeb04fedb-x4b76",
+     "sell_why": "2026-10-13 15:30 到时卖出",
+     "state": "closed",
+     "exit_price": 0.01,
+     "proceeds": 6.0,
+     "how": "2026-10-13 15:30 到时卖出",
+     "closed": "2026-10-13 15:30",
+     "ret": -0.944
     }
    ],
    "slots": {
@@ -194,32 +202,11 @@
   },
   "qqq0dte-1000": {
    "start": 1000.0,
-   "cash": 324.0,
+   "cash": 336.0,
    "round": 1,
    "heroes": 0,
    "zeros": 0,
-   "open": [
-    {
-     "tid": "402abbbf12",
-     "kind": "zdte",
-     "sym": "QQQ261013C00748000",
-     "asset": "option",
-     "und": "QQQ",
-     "qty": 12,
-     "cost": 0.18,
-     "paid": 216.0,
-     "opened": "2026-10-13 10:00",
-     "why": "QQQ 开盘 $739.48、现在 $743.35，顺势买当天到期看涨 748（离现价 0.6%），3 倍止盈，15:30 平仓",
-     "expiry": "2026-10-13",
-     "exit_day": "2026-10-13",
-     "exit_at": "15:30",
-     "trail": false,
-     "best_bid": 0.17,
-     "take_x": 3,
-     "take": 0.54,
-     "take_cid": "sl-qqq0dte-1000-402abbbf12-t7099"
-    }
-   ],
+   "open": [],
    "closed": [
     {
      "tid": "9634fae7af",
@@ -247,6 +234,33 @@
      "how": "2026-10-12 15:30 到时卖出",
      "closed": "2026-10-12 15:30",
      "ret": -0.92
+    },
+    {
+     "tid": "402abbbf12",
+     "kind": "zdte",
+     "sym": "QQQ261013C00748000",
+     "asset": "option",
+     "und": "QQQ",
+     "qty": 12,
+     "cost": 0.18,
+     "paid": 216.0,
+     "opened": "2026-10-13 10:00",
+     "why": "QQQ 开盘 $739.48、现在 $743.35，顺势买当天到期看涨 748（离现价 0.6%），3 倍止盈，15:30 平仓",
+     "expiry": "2026-10-13",
+     "exit_day": "2026-10-13",
+     "exit_at": "15:30",
+     "trail": false,
+     "best_bid": 0.17,
+     "take_x": 3,
+     "take": 0.54,
+     "sell_cid": "sl-qqq0dte-1000-402abbbf12-x92f8",
+     "sell_why": "2026-10-13 15:30 到时卖出",
+     "state": "closed",
+     "exit_price": 0.01,
+     "proceeds": 12.0,
+     "how": "2026-10-13 15:30 到时卖出",
+     "closed": "2026-10-13 15:30",
+     "ret": -0.944
     }
    ],
    "slots": {
@@ -428,32 +442,11 @@
   },
   "spy0dte-near-500": {
    "start": 500.0,
-   "cash": 197.0,
+   "cash": 209.0,
    "round": 1,
    "heroes": 0,
    "zeros": 0,
-   "open": [
-    {
-     "tid": "a1801c9397",
-     "kind": "zdte",
-     "sym": "SPY261013C00781000",
-     "asset": "option",
-     "und": "SPY",
-     "qty": 12,
-     "cost": 0.09,
-     "paid": 108.0,
-     "opened": "2026-10-13 10:00",
-     "why": "SPY 开盘 $777.32、现在 $777.92，顺势买当天到期看涨 781（离现价 0.4%），3 倍止盈，15:30 平仓",
-     "expiry": "2026-10-13",
-     "exit_day": "2026-10-13",
-     "exit_at": "15:30",
-     "trail": false,
-     "best_bid": 0.06,
-     "take_x": 3,
-     "take": 0.27,
-     "take_cid": "sl-spy0dte-near-500-a1801c9397-tda68"
-    }
-   ],
+   "open": [],
    "closed": [
     {
      "tid": "271d9ed519",
@@ -481,6 +474,33 @@
      "how": "2026-10-12 15:30 到时卖出",
      "closed": "2026-10-12 15:30",
      "ret": -0.789
+    },
+    {
+     "tid": "a1801c9397",
+     "kind": "zdte",
+     "sym": "SPY261013C00781000",
+     "asset": "option",
+     "und": "SPY",
+     "qty": 12,
+     "cost": 0.09,
+     "paid": 108.0,
+     "opened": "2026-10-13 10:00",
+     "why": "SPY 开盘 $777.32、现在 $777.92，顺势买当天到期看涨 781（离现价 0.4%），3 倍止盈，15:30 平仓",
+     "expiry": "2026-10-13",
+     "exit_day": "2026-10-13",
+     "exit_at": "15:30",
+     "trail": false,
+     "best_bid": 0.06,
+     "take_x": 3,
+     "take": 0.27,
+     "sell_cid": "sl-spy0dte-near-500-a1801c9397-x06ac",
+     "sell_why": "2026-10-13 15:30 到时卖出",
+     "state": "closed",
+     "exit_price": 0.01,
+     "proceeds": 12.0,
+     "how": "2026-10-13 15:30 到时卖出",
+     "closed": "2026-10-13 15:30",
+     "ret": -0.889
     }
    ],
    "slots": {
@@ -492,32 +512,11 @@
   },
   "spy0dte-near-1000": {
    "start": 1000.0,
-   "cash": 385.0,
+   "cash": 410.0,
    "round": 1,
    "heroes": 0,
    "zeros": 0,
-   "open": [
-    {
-     "tid": "cc78a82735",
-     "kind": "zdte",
-     "sym": "SPY261013C00781000",
-     "asset": "option",
-     "und": "SPY",
-     "qty": 25,
-     "cost": 0.09,
-     "paid": 225.0,
-     "opened": "2026-10-13 10:00",
-     "why": "SPY 开盘 $777.32、现在 $777.92，顺势买当天到期看涨 781（离现价 0.4%），3 倍止盈，15:30 平仓",
-     "expiry": "2026-10-13",
-     "exit_day": "2026-10-13",
-     "exit_at": "15:30",
-     "trail": false,
-     "best_bid": 0.06,
-     "take_x": 3,
-     "take": 0.27,
-     "take_cid": "sl-spy0dte-near-1000-cc78a82735-t106b"
-    }
-   ],
+   "open": [],
    "closed": [
     {
      "tid": "a4cab2ccb2",
@@ -545,6 +544,33 @@
      "how": "2026-10-12 15:30 到时卖出",
      "closed": "2026-10-12 15:30",
      "ret": -0.789
+    },
+    {
+     "tid": "cc78a82735",
+     "kind": "zdte",
+     "sym": "SPY261013C00781000",
+     "asset": "option",
+     "und": "SPY",
+     "qty": 25,
+     "cost": 0.09,
+     "paid": 225.0,
+     "opened": "2026-10-13 10:00",
+     "why": "SPY 开盘 $777.32、现在 $777.92，顺势买当天到期看涨 781（离现价 0.4%），3 倍止盈，15:30 平仓",
+     "expiry": "2026-10-13",
+     "exit_day": "2026-10-13",
+     "exit_at": "15:30",
+     "trail": false,
+     "best_bid": 0.06,
+     "take_x": 3,
+     "take": 0.27,
+     "sell_cid": "sl-spy0dte-near-1000-cc78a82735-xfac8",
+     "sell_why": "2026-10-13 15:30 到时卖出",
+     "state": "closed",
+     "exit_price": 0.01,
+     "proceeds": 25.0,
+     "how": "2026-10-13 15:30 到时卖出",
+     "closed": "2026-10-13 15:30",
+     "ret": -0.889
     }
    ],
    "slots": {
@@ -877,7 +903,7 @@
      "exit_day": "2026-10-13",
      "exit_at": "15:50",
      "trail": true,
-     "best_bid": 1.54
+     "best_bid": 1.58
     }
    ],
    "closed": [
@@ -936,7 +962,7 @@
      "exit_day": "2026-10-13",
      "exit_at": "15:50",
      "trail": true,
-     "best_bid": 1.54
+     "best_bid": 1.58
     }
    ],
    "closed": [
