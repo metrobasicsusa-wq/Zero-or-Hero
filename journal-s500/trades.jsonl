@@ -340,3 +340,7 @@
 {"dry_run": false, "kind": "sleeve_result", "ret": -0.83, "sleeve": "relay-1000", "symbol": "UNH261016C00417500", "ts": "2026-10-13T13:40:34+00:00", "why": "relay-1000：UNH261016C00417500 2026-10-13 09:35 到时卖出，花 $800.00、收回 $136.00（-83%），账本 $336.00"}
 {"dry_run": false, "kind": "sleeve_round", "sleeve": "relay-500", "ts": "2026-10-13T13:40:34+00:00", "why": "relay-500 第 1 轮低于 $300，归零（$168.00），从 $500 重开第 2 轮"}
 {"dry_run": false, "kind": "sleeve_round", "sleeve": "relay-1000", "ts": "2026-10-13T13:40:34+00:00", "why": "relay-1000 第 1 轮低于 $600，归零（$336.00），从 $1,000 重开第 2 轮"}
+{"attempt": 1, "dry_run": false, "kind": "sleeve_buy", "sleeve": "gap-500", "symbol": "IREN261016C00034000", "ts": "2026-10-13T13:50:29+00:00", "why": "gap-500：IREN 低开 -4.3%，买看涨 34（2026-10-16 到期），翻倍后回撤 40% 卖，最晚 15:50；2 张 × $0.68（第 1 次挂单）"}
+{"attempt": 1, "dry_run": false, "kind": "sleeve_buy", "sleeve": "gap-1000", "symbol": "IREN261016C00034000", "ts": "2026-10-13T13:50:29+00:00", "why": "gap-1000：IREN 低开 -4.3%，买看涨 34（2026-10-16 到期），翻倍后回撤 40% 卖，最晚 15:50；4 张 × $0.68（第 1 次挂单）"}
+{"dry_run": false, "kind": "sleeve_fill", "price": 0.68, "qty": 2, "sleeve": "gap-500", "symbol": "IREN261016C00034000", "ts": "2026-10-13T13:50:39+00:00", "why": "gap-500：IREN261016C00034000 成交 2 张 × $0.68，花 $136.00"}
+{"dry_run": false, "kind": "sleeve_fill", "price": 0.68, "qty": 4, "sleeve": "gap-1000", "symbol": "IREN261016C00034000", "ts": "2026-10-13T13:50:39+00:00", "why": "gap-1000：IREN261016C00034000 成交 4 张 × $0.68，花 $272.00"}
