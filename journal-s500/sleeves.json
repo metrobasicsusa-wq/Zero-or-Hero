@@ -883,29 +883,11 @@
   },
   "gap-500": {
    "start": 500.0,
-   "cash": 154.0,
+   "cash": 456.0,
    "round": 1,
    "heroes": 0,
    "zeros": 0,
-   "open": [
-    {
-     "tid": "6eb1d86ba2",
-     "kind": "gap",
-     "sym": "IREN261016C00034000",
-     "asset": "option",
-     "und": "IREN",
-     "qty": 2,
-     "cost": 0.68,
-     "paid": 136.0,
-     "opened": "2026-10-13 09:50",
-     "why": "IREN 低开 -4.3%，买看涨 34（2026-10-16 到期），翻倍后回撤 40% 卖，最晚 15:50",
-     "expiry": "2026-10-16",
-     "exit_day": "2026-10-13",
-     "exit_at": "15:50",
-     "trail": true,
-     "best_bid": 1.58
-    }
-   ],
+   "open": [],
    "closed": [
     {
      "tid": "8c07e889b3",
@@ -931,6 +913,31 @@
      "how": "券商已无持仓（到期作废）",
      "closed": "2026-10-13 09:30",
      "ret": -1.0
+    },
+    {
+     "tid": "6eb1d86ba2",
+     "kind": "gap",
+     "sym": "IREN261016C00034000",
+     "asset": "option",
+     "und": "IREN",
+     "qty": 2,
+     "cost": 0.68,
+     "paid": 136.0,
+     "opened": "2026-10-13 09:50",
+     "why": "IREN 低开 -4.3%，买看涨 34（2026-10-16 到期），翻倍后回撤 40% 卖，最晚 15:50",
+     "expiry": "2026-10-16",
+     "exit_day": "2026-10-13",
+     "exit_at": "15:50",
+     "trail": true,
+     "best_bid": 1.58,
+     "sell_cid": "sl-gap-500-6eb1d86ba2-x4bf4",
+     "sell_why": "2026-10-13 15:50 到时卖出",
+     "state": "closed",
+     "exit_price": 1.51,
+     "proceeds": 302.0,
+     "how": "2026-10-13 15:50 到时卖出",
+     "closed": "2026-10-13 15:50",
+     "ret": 1.221
     }
    ],
    "slots": {
@@ -942,29 +949,11 @@
   },
   "gap-1000": {
    "start": 1000.0,
-   "cash": 276.0,
+   "cash": 880.0,
    "round": 1,
    "heroes": 0,
    "zeros": 0,
-   "open": [
-    {
-     "tid": "d66f04aeff",
-     "kind": "gap",
-     "sym": "IREN261016C00034000",
-     "asset": "option",
-     "und": "IREN",
-     "qty": 4,
-     "cost": 0.68,
-     "paid": 272.0,
-     "opened": "2026-10-13 09:50",
-     "why": "IREN 低开 -4.3%，买看涨 34（2026-10-16 到期），翻倍后回撤 40% 卖，最晚 15:50",
-     "expiry": "2026-10-16",
-     "exit_day": "2026-10-13",
-     "exit_at": "15:50",
-     "trail": true,
-     "best_bid": 1.58
-    }
-   ],
+   "open": [],
    "closed": [
     {
      "tid": "be777037e1",
@@ -1015,6 +1004,31 @@
      "how": "券商已无持仓（到期作废）",
      "closed": "2026-10-13 09:30",
      "ret": -1.0
+    },
+    {
+     "tid": "d66f04aeff",
+     "kind": "gap",
+     "sym": "IREN261016C00034000",
+     "asset": "option",
+     "und": "IREN",
+     "qty": 4,
+     "cost": 0.68,
+     "paid": 272.0,
+     "opened": "2026-10-13 09:50",
+     "why": "IREN 低开 -4.3%，买看涨 34（2026-10-16 到期），翻倍后回撤 40% 卖，最晚 15:50",
+     "expiry": "2026-10-16",
+     "exit_day": "2026-10-13",
+     "exit_at": "15:50",
+     "trail": true,
+     "best_bid": 1.58,
+     "sell_cid": "sl-gap-1000-d66f04aeff-x999a",
+     "sell_why": "2026-10-13 15:50 到时卖出",
+     "state": "closed",
+     "exit_price": 1.51,
+     "proceeds": 604.0,
+     "how": "2026-10-13 15:50 到时卖出",
+     "closed": "2026-10-13 15:50",
+     "ret": 1.221
     }
    ],
    "slots": {
@@ -1076,7 +1090,7 @@
      "exit_day": "2026-10-14",
      "exit_at": "09:35",
      "trail": false,
-     "best_bid": 0.0
+     "best_bid": 0.21
     },
     {
      "tid": "a27973d8cd",
@@ -1093,7 +1107,7 @@
      "exit_day": "2026-10-14",
      "exit_at": "09:35",
      "trail": false,
-     "best_bid": 0.0
+     "best_bid": 0.09
     }
    ],
    "closed": [
@@ -1152,7 +1166,7 @@
      "exit_day": "2026-10-14",
      "exit_at": "09:35",
      "trail": false,
-     "best_bid": 0.0
+     "best_bid": 0.21
     },
     {
      "tid": "8320d45070",
@@ -1169,7 +1183,7 @@
      "exit_day": "2026-10-14",
      "exit_at": "09:35",
      "trail": false,
-     "best_bid": 0.0
+     "best_bid": 0.09
     }
    ],
    "closed": [
