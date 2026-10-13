@@ -2602,7 +2602,7 @@ class Sleeves(unittest.TestCase):
         self.assertEqual(book.s("spy0dte-500")["cash"], round(279 - 132 + 12 * 2, 2))
         self.assertTrue(all(not s["open"] for s in book.d["sleeves"].values()))
 
-    def test_a_sell_rejected_for_no_quote_is_retried_then_booked_at_zero_once_expired(self):
+    def test_with_no_bid_the_sell_is_a_one_cent_limit_then_booked_at_zero_once_expired(self):
         from datetime import datetime
         from hero import sleeve_rules, sleeves
         b = SleeveBroker(lambda s: (0.08, 0.10))
@@ -2621,15 +2621,30 @@ class Sleeves(unittest.TestCase):
         b.submit_order = no_quote
         book, log = self.cycle(b, 15, 30, self.specs[:1])
         book, log = self.cycle(b, 15, 40, self.specs[:1])
-        self.assertEqual(len([e for e in log if e["kind"] == "order_error"]), 2)      # tried again the next cycle
-        self.assertEqual(len(book.s("spy0dte-500")["open"]), 1)
+        sells = [o for o in b.orders.values() if o["side"] == "sell" and o["status"] == "new"]
+        self.assertEqual([(o["type"], o["limit_price"], o["qty"]) for o in sells], [("limit", "0.01", "12")])  # once, not again
+        self.assertEqual([e for e in log if e["kind"] == "order_error"], [])
+        self.assertIn("挂 $0.01 限价卖", [e for e in log if e["kind"] == "sleeve_exit"][-1]["why"])
         b.pos[sym] = 0                                                               # expired worthless overnight
+        sells[0]["status"] = "expired"
         book = sleeves.Book(self.root / "sleeves.json", self.specs[:1])
         sleeves.Runner(b, Journal(self.root), self.cfg, self.specs[:1], book, sleeve_rules.RULES, datetime(2026, 10, 9, 9, 30),
                        date(2026, 10, 9), sleep=lambda s: None).run()
         s = book.s("spy0dte-500")
         self.assertEqual((s["open"], s["closed"][-1]["proceeds"], s["closed"][-1]["how"]), ([], 0.0, "券商已无持仓（到期作废）"))
         self.assertEqual(s["cash"], round(279 - 12 * 11, 2))
+
+    def test_a_one_cent_sell_that_fills_is_booked_at_a_cent(self):
+        b = SleeveBroker(lambda s: (0.08, 0.10))
+        self.cycle(b, 10, 0, self.specs[:1])
+        for o in b.orders.values():
+            if o["side"] == "sell":
+                o["status"] = "expired"
+        b.quotes = lambda s: (0.0, 0.03)
+        b.fill = lambda o: o["side"] == "buy" or o.get("limit_price") == "0.01"     # someone takes the cent
+        book, log = self.cycle(b, 15, 30, self.specs[:1])
+        s = book.s("spy0dte-500")
+        self.assertEqual((s["open"], s["closed"][-1]["proceeds"]), ([], 12.0))       # 12 contracts x $0.01 x 100
 
     def test_a_round_ends_below_ten_percent_and_restarts(self):
         b = SleeveBroker(lambda s: (0.08, 0.10))

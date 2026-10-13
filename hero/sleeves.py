@@ -190,8 +190,9 @@ class Runner:
                 elif o.get("status") in ("canceled", "expired", "rejected", None) and t["sym"] in held:
                     t.pop("sell_cid")  # the sell did not go through: try again below
                     to_exit.append((sid, t, t.get("sell_why", "重新卖出")))
-                elif t["sym"] not in held and o.get("status") is None:
-                    self.closed(sid, t, 0.0, "券商已无持仓（到期作废）")
+                elif t["sym"] not in held and o.get("status") in (None, "expired", "canceled", "rejected", "done_for_day"):
+                    part = float(o.get("filled_qty") or 0) * float(o.get("filled_avg_price") or 0)  # a $0.01 sell may fill in part
+                    self.closed(sid, t, round(part / t["qty"], 4), "券商已无持仓（到期作废）")
                 continue
             if t.get("take_cid"):
                 o = self.order(t["take_cid"])
@@ -207,7 +208,7 @@ class Runner:
             if why:
                 to_exit.append((sid, t, why))
         for sid, t, why in to_exit:
-            self.sell(sid, t, why)
+            self.sell(sid, t, why, quotes.get(t["sym"], (0.0, 0.0))[0])
 
     def exit_reason(self, sid: str, t: dict, bid: float) -> str | None:
         day = self.today.isoformat()
@@ -223,7 +224,7 @@ class Runner:
             return hook(self, sid, t)
         return None
 
-    def sell(self, sid: str, t: dict, why: str) -> None:
+    def sell(self, sid: str, t: dict, why: str, bid: float | None = None) -> None:
         if t.get("take_cid"):
             o = self.cancel(t["take_cid"])
             if o.get("status") == "filled":
@@ -238,8 +239,14 @@ class Runner:
         t["sell_cid"] = cid(sid, t["tid"], "x" + new_tid()[:4])
         t["sell_why"] = why
         qty = t["qty"]
-        ok = self.submit(symbol=t["sym"], qty=str(qty), side="sell", type="market", time_in_force="day",
-                         client_order_id=t["sell_cid"])
+        if t["asset"] == "option" and bid is not None and bid <= 0:
+            # no bid: the broker rejects a market sell ("no available quote ... please reenter with a limit"), so ask $0.01
+            ok = self.submit(symbol=t["sym"], qty=str(qty), side="sell", type="limit", limit_price="0.01", time_in_force="day",
+                             client_order_id=t["sell_cid"])
+            why += "（没有买价，挂 $0.01 限价卖）"
+        else:
+            ok = self.submit(symbol=t["sym"], qty=str(qty), side="sell", type="market", time_in_force="day",
+                             client_order_id=t["sell_cid"])
         self.j.event("sleeve_exit", dry_run=False, sleeve=sid, symbol=t["sym"], why=f"{sid}：{t['sym']} {why}，卖 {qty}")
         if ok:
             for _ in range(5):
