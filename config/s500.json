@@ -379,6 +379,12 @@
       {"id": "opengap-1000", "kind": "opengap", "start": 1000, "name": "开盘跳空且开盘后延续：09:35 顺势买，非当天到期留一晚（只演算）",
        "fraction": 0.5, "plan_only": true
       },
+      {"id": "oneshot-500", "kind": "oneshot", "start": 500, "name": "一把到：QQQ 当天到期、离现价 1%、全仓、不止盈，拿到 15:55（只演算）",
+       "und": "QQQ", "offset": 0.01, "fraction": 1.0, "plan_only": true
+      },
+      {"id": "oneshot-1000", "kind": "oneshot", "start": 1000, "name": "一把到：QQQ 当天到期、离现价 1%、全仓、不止盈，拿到 15:55（只演算）",
+       "und": "QQQ", "offset": 0.01, "fraction": 1.0, "plan_only": true
+      },
       {"id": "sniper-500", "kind": "sniper", "start": 500, "name": "开盘狙击：盘前判断的一只，09:30 起不逆向就买约 0.1 delta，翻倍后回撤 40% 卖",
        "fraction": 0.5
       },

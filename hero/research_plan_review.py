@@ -23,7 +23,7 @@ from pathlib import Path
 from hero.research_0dte import ET, et_minutes
 
 SIZE = re.compile(r"(\d+) 张 × \$([\d.]+)")
-OUT = {"zdte": "15:30", "flush": "15:50", "gap": "15:50"}
+OUT = {"zdte": "15:30", "flush": "15:50", "gap": "15:50", "oneshot": "15:55"}
 
 
 def last_weekday(d: date) -> date:

@@ -214,8 +214,8 @@ class Runner:
         day = self.today.isoformat()
         if t.get("exit_day") and (day > t["exit_day"] or (day == t["exit_day"] and self.hhmm >= t["exit_at"])):
             return f"{t['exit_day']} {t['exit_at']} 到时卖出"
-        if t.get("expiry") == day and self.hhmm >= "15:30":
-            return "到期日 15:30 卖出，不留到收盘"
+        if t.get("expiry") == day and self.hhmm >= (t.get("expiry_out") or "15:30"):
+            return f"到期日 {t.get('expiry_out') or '15:30'} 卖出，不留到收盘"
         if t.get("trail") and t["best_bid"] >= 2 * t["cost"] and bid <= 0.6 * t["best_bid"]:
             return f"翻倍后从最高 ${t['best_bid']:.2f} 回撤 40%"
         rule = self.rules.get(t["kind"])
@@ -397,7 +397,7 @@ class Runner:
         t = {"tid": o["tid"], "kind": spec["kind"], "sym": pk["sym"], "asset": "option", "und": pk.get("und"),
              "qty": qty, "cost": price, "paid": round(price * qty * 100, 2), "opened": f"{self.today.isoformat()} {self.hhmm}",
              "why": pk["why"], "expiry": pk.get("expiry"), "exit_day": pk.get("exit_day"), "exit_at": pk.get("exit_at", "15:30"),
-             "trail": pk.get("trail", False), "best_bid": 0.0}
+             "trail": pk.get("trail", False), "best_bid": 0.0, "expiry_out": pk.get("expiry_out")}
         runner = None
         if pk.get("take") and pk.get("half") and qty >= 2:
             # half rides the take, the other half is a runner: out after 2x on a 40% giveback, else at the time exit

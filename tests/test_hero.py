@@ -2663,6 +2663,19 @@ class Sleeves(unittest.TestCase):
         self.assertEqual([(t["qty"], t["trail"]) for t in s["open"]], [(6, False)])  # the take half still rests
         self.assertEqual(s["closed"][-1]["proceeds"], 90.0)                           # 6 x $0.15 x 100
 
+    def test_one_shot_goes_all_in_without_a_take_and_holds_to_1555(self):
+        spec = [{"id": "oneshot-500", "kind": "oneshot", "start": 500, "und": "SPY", "offset": 0.01, "fraction": 1.0}]
+        b = SleeveBroker(lambda s: (0.08, 0.10))
+        book, log = self.cycle(b, 10, 0, spec)
+        s = book.s("oneshot-500")
+        self.assertEqual([(t["qty"], bool(t.get("take_cid")), t["expiry_out"]) for t in s["open"]], [(45, False, "15:55")])
+        self.assertTrue(s["open"][0]["sym"].endswith("C710"))                         # 702 x 1.01 = 709.0 -> 710
+        self.assertIn("全仓、不止盈，拿到 15:55", s["open"][0]["why"])
+        book, _ = self.cycle(b, 15, 30, spec)
+        self.assertEqual(len(book.s("oneshot-500")["open"]), 1)                      # still held at 15:30
+        book, _ = self.cycle(b, 15, 55, spec)
+        self.assertEqual(book.s("oneshot-500")["open"], [])
+
     def test_a_round_ends_below_ten_percent_and_restarts(self):
         b = SleeveBroker(lambda s: (0.08, 0.10))
         book, _ = self.cycle(b, 10, 0, self.specs[:1])

@@ -189,6 +189,23 @@ class ZeroDTE:
                               f"{float(c['strike_price']):g}（离现价 {abs(float(c['strike_price']) / spot - 1):.1%}），{spec['take']:g} 倍止盈，15:30 平仓"}])
 
 
+class OneShot(ZeroDTE):
+    """One shot at the target (owner, 10-13: "with luck one ticket gets there"): the 0DTE pick, but all of the sleeve
+    (fraction 1.0 in the spec), further out (`offset`, 1% by default), no take and no trail, held to 15:55."""
+
+    def entries(self, run, spec, s):
+        got = super().entries(run, {**spec, "take": 0, "offset": spec.get("offset", 0.01)}, s)
+        if not got or not got[1]:
+            return got
+        day, picks = got
+        for pk in picks:
+            pk.pop("take", None)
+            pk["half"] = False
+            pk.update({"exit_at": "15:55", "expiry_out": "15:55",
+                       "why": pk["why"].split("，0 倍止盈")[0] + "，全仓、不止盈，拿到 15:55 赌一把到目标"})
+        return (day, picks)
+
+
 class Weekly:
     """First trading day of the week, 10:00: this week's last expiry, 1% beyond, a 2x take, out the day before expiry."""
 
@@ -592,4 +609,4 @@ class Relay:
 
 
 RULES = {"zdte": ZeroDTE(), "weekly": Weekly(), "net": Net(), "gap": Gap(), "flush": Flush(), "earnings": EarningsLotto(),
-         "letf": LETF(), "relay": Relay(), "opengap": OpenGap(), "sniper": Sniper()}
+         "letf": LETF(), "relay": Relay(), "opengap": OpenGap(), "sniper": Sniper(), "oneshot": OneShot()}
