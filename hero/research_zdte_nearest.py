@@ -21,7 +21,8 @@ import time
 from datetime import date, timedelta
 from pathlib import Path
 
-from hero.research_0dte import SLIP, at_or_after, at_or_before, et_minutes, trade
+from hero import research_hero as rh
+from hero.research_0dte import EXIT_AT, SLIP, at_or_after, at_or_before, et_minutes, trade
 from hero.research_0dte_names import minutes_by_day, pick
 
 START = "2024-02-01"
@@ -29,6 +30,32 @@ NAMES = ("TSLA", "NVDA", "META")
 ENTRY = "10:00"
 OFF = 0.006
 TAKES = (3, 5)
+
+
+def trade_strict(opt: dict[str, dict], take: float) -> float | None:
+    """As trade(), but the take counts only when a minute *closes* at take x cost (a lone print at the high is not a
+    fill a resting order can rely on)."""
+    got = at_or_after(opt, ENTRY)
+    if not got:
+        return None
+    t0, bar = got
+    cost = float(bar["c"]) + max(float(bar["c"]) * SLIP, 0.01)
+    for k in sorted(opt):
+        if t0 < k <= EXIT_AT and float(opt[k]["c"]) >= take * cost:
+            return take - 1
+    last = at_or_before({k: v for k, v in opt.items() if k > t0}, EXIT_AT)
+    px = float(last["c"]) if last else 0.0
+    return max(px - max(px * SLIP, 0.01), 0.0) / cost - 1
+
+
+def heroes(rows: list[dict], key: str, target: float, frac: float = 0.5, end_loss: float = 0.9) -> dict | None:
+    """The sleeve game on these trades: half the ledger each trade, a round ends below 10% of the start; back to back."""
+    s = sorted((r["day"], max(frac * r["res"][key], -1.0)) for r in rows if key in r["res"])
+    if not s:
+        return None
+    first = (date.fromisoformat(s[0][0]) - timedelta(days=1)).isoformat()
+    q = rh.sequential(s, first, target, end_loss)
+    return {"n": len(s), "heroes": q["heroes"], "zeros": q["zeros"]}
 
 
 def tails(opt: dict[str, dict], stock: dict[str, dict], spot: float, kind: str) -> dict | None:
@@ -41,8 +68,10 @@ def tails(opt: dict[str, dict], stock: dict[str, dict], spot: float, kind: str) 
     t0, bar = got
     cost = float(bar["c"]) + max(float(bar["c"]) * SLIP, 0.01)
     best = max((float(v["h"]) for k, v in opt.items() if t0 < k <= "15:30"), default=0.0)
+    best_c = max((float(v["c"]) for k, v in opt.items() if t0 < k <= "15:30"), default=0.0)
     move = float(last["c"]) / spot - 1
-    return {"cost": cost, "best_x": round(best / cost, 2), "move": round(move if kind == "C" else -move, 4)}
+    return {"cost": cost, "best_x": round(best / cost, 2), "best_cx": round(best_c / cost, 2),
+            "move": round(move if kind == "C" else -move, 4)}
 
 
 def gap_group(days: int) -> str:
@@ -86,7 +115,7 @@ def run(client) -> dict:
                 continue
             time.sleep(0.05)
             mins = et_minutes(bars.get(sym, []))
-            res = {str(t): trade(mins, ENTRY, t) for t in TAKES}
+            res = {str(t): trade(mins, ENTRY, t) for t in TAKES} | {f"{t}s": trade_strict(mins, t) for t in TAKES}
             if any(v is None for v in res.values()):
                 continue
             tail = tails(mins, m, spot, kind)
@@ -103,7 +132,8 @@ def run(client) -> dict:
                     nxt = round(max(px - max(px * SLIP, 0.01), 0.0) / tail["cost"] - 1, 4)
             rows.append({"und": und, "day": day, "kind": kind, "exp": exp, "dte": dte,
                          "res": {k: round(v, 4) for k, v in res.items()},
-                         "best_x": tail["best_x"] if tail else None, "move": tail["move"] if tail else None, "next": nxt})
+                         "best_x": tail["best_x"] if tail else None,
+                         "best_cx": tail["best_cx"] if tail else None, "move": tail["move"] if tail else None, "next": nxt})
     return {"generated": date.today().isoformat(), "start": START, "end": end, "rows": rows}
 
 
@@ -168,6 +198,22 @@ def tail_table(rep: dict) -> list[str]:
         nx = [r["next"] for r in sub if r.get("next") is not None]
         out.append(f"| {label} | {len(sub)} | {share(2)} | {share(3)} | {share(5)} | {share(10)} | {statistics.median(bx):.2f} | "
                    + (f"{statistics.mean(nx):+.0%}（{len(nx)}）" if nx else "—") + " |")
+    out += ["", "## 胜率是不是高估了：成交判断从宽到严", "",
+            "宽 = 分钟最高价摸到止盈就算卖到（原来的算法）；严 = 要某一分钟收盘价到止盈才算。"
+            "下面是账本玩法（每笔下一半，低于 $50 归零重开）连续跑下来：到 2 倍的成功 / 归零次数（每轮成功率），以及到 20 倍（$10,000）的成功次数。", "",
+            "| 情况 | 止盈 | 判断 | 笔数 | 碰到止盈 | 到 2 倍：成功 / 归零（每轮） | 到 20 倍成功 |", "|---|---|---|---|---|---|---|"]
+    for label, keep in (("只做当天到期", lambda r: r["dte"] == 0), ("当天 + 最近到期（新规则）", lambda r: True)):
+        for und in NAMES:
+            sub = [r for r in rep["rows"] if r["und"] == und and keep(r)]
+            for t in TAKES:
+                for key, how in ((str(t), "宽"), (f"{t}s", "严")):
+                    xs = [r["res"][key] for r in sub if key in r["res"]]
+                    h2, h20 = heroes(sub, key, 2), heroes(sub, key, 20)
+                    if not xs or not h2:
+                        continue
+                    rate = h2["heroes"] / max(h2["heroes"] + h2["zeros"], 1)
+                    out.append(f"| {label} {und} | {t} 倍 | {how} | {len(xs)} | {sum(x >= t - 1 for x in xs) / len(xs):.0%} | "
+                               f"{h2['heroes']} / {h2['zeros']}（{rate:.0%}） | {h20['heroes']} |")
     return out + [""]
 
 
