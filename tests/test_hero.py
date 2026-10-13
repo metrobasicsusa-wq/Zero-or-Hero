@@ -3068,5 +3068,23 @@ class ResearchZdteTiming(unittest.TestCase):
         self.assertAlmostEqual(r["hold"], (0.2 - 0.02) / 1.1 - 1, places=3)
         self.assertIsNone(play({"15:00": {"c": 1.0}}, "09:35"))
 
+
+class ResearchOpenCatalyst(unittest.TestCase):
+    def test_groups_daily_pick_and_report(self):
+        from hero.research_open_catalyst import daily_pick, groups, markdown, table, utc
+        self.assertEqual((utc("2026-10-12", "16:00"), utc("2026-01-12", "09:30")), ("2026-10-12T20:00:00Z", "2026-01-12T14:30:00Z"))
+        res = lambda x: {k: x for k in ("take3", "take5", "trail2", "trail15", "take3_trail", "hold")}
+        rows = [{"und": "META", "day": "2026-10-13", "gap": 0.03, "kind": "C", "with_gap": True, "news": 4, "headline": "Muse",
+                 "exp": "2026-10-16", "res": res(2.0), "next": 3.0},
+                {"und": "TSLA", "day": "2026-10-13", "gap": -0.02, "kind": "C", "with_gap": False, "news": 0, "headline": "",
+                 "exp": "2026-10-13", "res": res(-1.0), "next": None}]
+        g = groups(rows)
+        self.assertEqual(([r["und"] for r in g["　开盘前有新闻"]], [r["und"] for r in g["　没有新闻"]]), (["META"], ["TSLA"]))
+        self.assertEqual([r["und"] for r in daily_pick(rows)], ["META"])                 # the larger gap that day
+        t = table({"rows": rows})
+        self.assertEqual(t["跳空 2% 以上（全部）|take3"]["mean"], 0.5)
+        self.assertIn("| 2026-10-13 | META | +3.0% | 看涨 | 4 | +200% | Muse |",
+                      markdown({"generated": "x", "start": "a", "end": "b", "rows": rows}, t))
+
 if __name__ == "__main__":
     unittest.main()
