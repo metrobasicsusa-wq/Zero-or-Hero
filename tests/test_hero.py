@@ -3099,5 +3099,27 @@ class ResearchOpenCatalyst(unittest.TestCase):
         self.assertIn("| 2026-10-13 | META | +3.0% | 看涨 | 4 | +200% | Muse |",
                       markdown({"generated": "x", "start": "a", "end": "b", "rows": rows}, t))
 
+
+class ResearchAnalyst(unittest.TestCase):
+    def test_strict_pre_market_ratings_and_the_confirm_minute(self):
+        from types import SimpleNamespace
+        from hero.research_analyst import confirm_minute, events, markdown, table
+        news = [{"headline": "Melius Research Upgrades Microsoft to Buy, Announces $665 Price Target", "symbols": ["MSFT"],
+                 "created_at": "2026-10-05T11:02:00Z"},                                     # 07:02 ET: that morning
+                {"headline": "Citi Downgrades Microsoft to Neutral", "symbols": ["MSFT"], "created_at": "2026-10-09T21:30:00Z"},  # Fri 17:30
+                {"headline": "UBS Upgrades Microsoft to Buy", "symbols": ["MSFT"], "created_at": "2026-10-07T15:00:00Z"},        # in session
+                {"headline": "Microsoft's AI upgrade to Copilot", "symbols": ["MSFT"], "created_at": "2026-10-06T11:00:00Z"}]
+        ev = events(SimpleNamespace(news_range=lambda syms, a, b: news), "MSFT", "2026-10-01", "2026-10-12")
+        self.assertEqual({d: e["up"] for d, e in ev.items()}, {"2026-10-05": True, "2026-10-12": False})   # Friday night -> Monday
+        m = {"09:30": {"o": 100.0, "c": 100.0}, "09:50": {"c": 100.5}, "10:20": {"c": 101.2}, "11:00": {"c": 99.0}}
+        self.assertEqual((confirm_minute(m, True), confirm_minute(m, False)), ("10:20", "11:00"))   # 99 is -1%
+        res = {k: 2.0 for k in ("take3", "take5", "trail2", "trail15", "take3_trail", "hold")}
+        rep = {"generated": "x", "start": "a", "end": "b",
+               "rows": [{"und": "MSFT", "day": "2026-10-05", "up": True, "gap": 0.012, "headline": "Melius Research Upgrades Microsoft to Buy",
+                         "exp": "2026-10-09", "confirm_at": None, "res": {"open": res}, "next": {"open": 1.5}}]}
+        t = table(rep)
+        self.assertEqual((t["上调|open|take3"]["mean"], t["上调|open|next"]["mean"], t["上调|confirm|take3"]), (2.0, 1.5, None))
+        self.assertIn("| 2026-10-05 | MSFT | 上调 | +1.2% | +200% |", markdown(rep, t))
+
 if __name__ == "__main__":
     unittest.main()
