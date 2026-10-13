@@ -3038,5 +3038,18 @@ class ResearchZdteNearest(unittest.TestCase):
         self.assertEqual(t["合计|新规则补上的日子（非当天）|3"]["n"], 2)
         self.assertEqual(t["合计|2026 年：新规则补上的日子|3"]["mean"], -1.0)
 
+
+class ResearchZdteTiming(unittest.TestCase):
+    def test_exits_on_minute_closes(self):
+        from hero.research_zdte_timing import play
+        opt = {"09:35": {"c": 1.0}, "09:50": {"c": 2.3}, "10:10": {"c": 3.4}, "10:30": {"c": 5.6}, "11:00": {"c": 3.0},
+               "15:30": {"c": 0.2}}
+        r = play(opt, "09:35")                                                  # cost $1.10
+        self.assertEqual((r["take3"], r["take5"]), (2, 4))
+        self.assertAlmostEqual(r["trail2"], (3.0 - 0.3) / 1.1 - 1, places=3)    # 3.0 is 46% under the best 5.6
+        self.assertAlmostEqual(r["take3_trail"], (2 + r["trail2"]) / 2, places=3)
+        self.assertAlmostEqual(r["hold"], (0.2 - 0.02) / 1.1 - 1, places=3)
+        self.assertIsNone(play({"15:00": {"c": 1.0}}, "09:35"))
+
 if __name__ == "__main__":
     unittest.main()
