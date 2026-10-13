@@ -150,7 +150,8 @@ def trend20(xs: list[float]) -> int:
 
 # ---------- the rules ----------
 class ZeroDTE:
-    """10:00, the option expiring today, with the trend since the open, `offset` beyond the price, a `take` x limit.
+    """10:00, the option expiring today (or, when the name has none today, its nearest expiry within a week), with the
+    trend since the open, `offset` beyond the price, a `take` x limit, out at 15:30 the same day either way.
     Optional: `side` "call" / "put" fixes the side; `after_drop` (e.g. -0.01) trades only the day after a close
     at least that far below the one before it (research/2026-10-08-zdte-streak.md)."""
 
@@ -173,14 +174,16 @@ class ZeroDTE:
         if not spot or not o:
             return None
         kind = {"call": "C", "put": "P"}.get(spec.get("side"), "C" if spot >= o else "P")
-        got = option_pick(run, und, kind, spot, spec["offset"], day, day)
+        got = option_pick(run, und, kind, spot, spec["offset"], day, (run.today + timedelta(days=7)).isoformat())
         if not got:
-            return (day, [])  # no expiry today for this name
+            return (day, [])  # nothing listed within a week
         c, ask = got
+        exp = c["expiration_date"]
         how = "买" if spec.get("side") else "顺势买"
-        return (day, [{"sym": c["symbol"], "asset": "option", "und": und, "ask": ask, "take": spec["take"], "expiry": day,
+        when = "当天到期" if exp == day else f"最近到期（{exp[5:]}，今天没有当天到期的）"
+        return (day, [{"sym": c["symbol"], "asset": "option", "und": und, "ask": ask, "take": spec["take"], "expiry": exp,
                        "exit_day": day, "exit_at": "15:30",
-                       "why": f"{why_day}{und} 开盘 ${o:,.2f}、现在 ${spot:,.2f}，{how}当天到期{'看涨' if kind == 'C' else '看跌'} "
+                       "why": f"{why_day}{und} 开盘 ${o:,.2f}、现在 ${spot:,.2f}，{how}{when}{'看涨' if kind == 'C' else '看跌'} "
                               f"{float(c['strike_price']):g}（离现价 {abs(float(c['strike_price']) / spot - 1):.1%}），{spec['take']:g} 倍止盈，15:30 平仓"}])
 
 

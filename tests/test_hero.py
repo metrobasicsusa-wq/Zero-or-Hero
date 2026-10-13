@@ -2748,6 +2748,24 @@ class SleeveRules(unittest.TestCase):
         b.bars["SPY"][-1]["c"] = 101.5                               # only -0.5%: sit the day out
         self.assertEqual(sr.ZeroDTE().entries(self.run_at(date(2026, 10, 8), 10, 0, b), spec, {"slots": {}}), ("2026-10-08", []))
 
+    def test_zdte_takes_the_nearest_expiry_when_there_is_none_today_and_still_sells_at_half_past_three(self):
+        from hero import sleeve_rules as sr
+        spec = {"und": "NVDA", "offset": 0.006, "take": 3}
+        b = self.broker()
+        listed = {"NVDA": ["2026-10-15", "2026-10-17"]}                                # Tuesday: no same-day NVDA expiry
+
+        def contracts(und, **kw):
+            exps = [e for e in listed[und] if kw["expiration_date_gte"] <= e <= kw["expiration_date_lte"]]
+            return [{"symbol": f"{und}{e}P{k}", "strike_price": str(k), "expiration_date": e, "type": "put"} for e in exps for k in range(90, 100)]
+        b.option_contracts = contracts
+        slot, picks = sr.ZeroDTE().entries(self.run_at(date(2026, 10, 13), 10, 0, b), spec, {"slots": {}})
+        self.assertEqual(picks[0]["sym"], "NVDA2026-10-15P97")                         # 98 x 0.994 = 97.4 -> 97
+        self.assertEqual((picks[0]["expiry"], picks[0]["exit_day"], picks[0]["exit_at"]), ("2026-10-15", "2026-10-13", "15:30"))
+        self.assertIn("最近到期（10-15", picks[0]["why"])
+        listed["NVDA"] = ["2026-10-13", "2026-10-15"]                                  # a same-day expiry wins when there is one
+        slot, picks = sr.ZeroDTE().entries(self.run_at(date(2026, 10, 13), 10, 0, b), spec, {"slots": {}})
+        self.assertEqual((picks[0]["expiry"], "当天到期" in picks[0]["why"]), ("2026-10-13", True))
+
     def test_plan_only_sleeves_stay_out_of_the_live_run(self):
         from types import SimpleNamespace
         from hero import engine, sleeves
