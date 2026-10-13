@@ -3159,5 +3159,30 @@ class ResearchPremarket(unittest.TestCase):
         self.assertEqual([(r["symbol"], r["move"], r["news"]) for r in rep["rows"]], [("AAA", 0.05, ["AAA wins a contract"])])
         self.assertIn("| AAA | $105.00 | +5.0% | 是 | AAA wins a contract |", markdown(rep))
 
+
+class ResearchIdeas(unittest.TestCase):
+    def test_intraday_and_multiday_exits(self):
+        from hero.research_ideas import cell, intraday, multiday, report
+        m = {"15:25": {"c": 0.10}, "15:40": {"c": 0.25}, "15:50": {"c": 0.40}, "15:55": {"c": 0.20}, "15:58": {"c": 0.05}}
+        r = intraday(m, "15:25", "15:58")                                          # cost 0.11
+        self.assertEqual((r["take2"], r["take3"], r["take5"]), (1, 2, round((0.04) / 0.11 - 1, 4)))
+        self.assertAlmostEqual(r["trail2"], (0.18) / 0.11 - 1, places=3)           # 0.20 is half the best 0.40
+        d = [{"o": 1.5, "c": 2.4}, {"o": 2.4, "c": 1.2}, {"o": 1.2, "c": 1.0}]
+        x = multiday(1.1, d)
+        self.assertEqual((x["take2"], round(x["next_open"], 3)), (1.0, round(1.35 / 1.1 - 1, 3)))
+        self.assertAlmostEqual(x["trail2"], 1.08 / 1.1 - 1, places=3)               # 1.2 is half the best 2.4
+        rows = [{"day": "2026-10-13", "res": {"take2": 1.0}}, {"day": "2026-10-13", "res": {"take2": -1.0}}]
+        self.assertEqual(cell(rows, "take2")["n"], 2)
+        self.assertIn("| a | 2 | +0% / 50%", report("t", "i", {"a": rows}, {"take2": "x"})[1])
+
+    def test_overnight_signals_and_event_days(self):
+        from hero.research_eventday import kind_of
+        from hero.research_overnight import signals
+        flat = [{"t": f"2026-{m:02d}-{d:02d}T04:00:00Z", "o": 100, "h": 101, "l": 99, "c": 100.0} for m in (6, 7, 8) for d in range(1, 29)]
+        up = {"t": "2026-09-01T04:00:00Z", "o": 100, "h": 105, "l": 99.5, "c": 104.8}
+        sig = signals({"AAA": flat + [up]})
+        self.assertEqual([(s["und"], s["kind"], s["trend"]) for s in sig], [("AAA", "C", True)])
+        self.assertEqual((kind_of("2026-09-16"), kind_of("2024-02-13"), kind_of("2024-02-14")), ("Fed", "CPI", ""))
+
 if __name__ == "__main__":
     unittest.main()
