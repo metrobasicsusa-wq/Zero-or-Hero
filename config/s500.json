@@ -119,6 +119,7 @@
       {
         "id": "spy0dte-500",
         "kind": "zdte",
+        "half_take": true,
         "start": 500,
         "name": "SPY 末日单（现行规则）",
         "und": "SPY",
@@ -129,6 +130,7 @@
       {
         "id": "spy0dte-1000",
         "kind": "zdte",
+        "half_take": true,
         "start": 1000,
         "name": "SPY 末日单（现行规则）",
         "und": "SPY",
@@ -138,6 +140,8 @@
       {
         "id": "qqq0dte-500",
         "kind": "zdte",
+        "half_take": true,
+        "entry": "09:35",
         "start": 500,
         "name": "QQQ 末日单",
         "und": "QQQ",
@@ -147,6 +151,8 @@
       {
         "id": "qqq0dte-1000",
         "kind": "zdte",
+        "half_take": true,
+        "entry": "09:35",
         "start": 1000,
         "name": "QQQ 末日单",
         "und": "QQQ",
@@ -156,6 +162,7 @@
       {
         "id": "tsla0dte-500",
         "kind": "zdte",
+        "half_take": true,
         "start": 500,
         "name": "TSLA 末日单",
         "und": "TSLA",
@@ -165,6 +172,7 @@
       {
         "id": "tsla0dte-1000",
         "kind": "zdte",
+        "half_take": true,
         "start": 1000,
         "name": "TSLA 末日单",
         "und": "TSLA",
@@ -174,6 +182,7 @@
       {
         "id": "nvda0dte-500",
         "kind": "zdte",
+        "half_take": true,
         "start": 500,
         "name": "NVDA 末日单",
         "und": "NVDA",
@@ -183,6 +192,7 @@
       {
         "id": "nvda0dte-1000",
         "kind": "zdte",
+        "half_take": true,
         "start": 1000,
         "name": "NVDA 末日单",
         "und": "NVDA",
@@ -192,6 +202,7 @@
       {
         "id": "spy0dte-near-500",
         "kind": "zdte",
+        "half_take": true,
         "start": 500,
         "name": "SPY 末日单，离现价 0.3%",
         "und": "SPY",
@@ -201,6 +212,7 @@
       {
         "id": "spy0dte-near-1000",
         "kind": "zdte",
+        "half_take": true,
         "start": 1000,
         "name": "SPY 末日单，离现价 0.3%",
         "und": "SPY",
@@ -210,6 +222,7 @@
       {
         "id": "tsla0dte-5x-500",
         "kind": "zdte",
+        "half_take": true,
         "start": 500,
         "name": "TSLA 末日单，5 倍止盈",
         "und": "TSLA",
@@ -219,6 +232,7 @@
       {
         "id": "tsla0dte-5x-1000",
         "kind": "zdte",
+        "half_take": true,
         "start": 1000,
         "name": "TSLA 末日单，5 倍止盈",
         "und": "TSLA",
@@ -353,10 +367,10 @@
       {"id": "relay-1000", "kind": "relay", "start": 1000, "name": "接力：财报彩票全仓到 3 倍，再全仓 SOXL", "fraction": 1.0,
        "switch_at": 3, "zero_line": 0.6
       },
-      {"id": "spydip-500", "kind": "zdte", "start": 500, "name": "SPY 昨跌 1% 后买看涨（只演算）", "und": "SPY",
+      {"id": "spydip-500", "kind": "zdte", "half_take": true, "start": 500, "name": "SPY 昨跌 1% 后买看涨（只演算）", "und": "SPY",
        "offset": 0.006, "take": 3, "side": "call", "after_drop": -0.01, "plan_only": true
       },
-      {"id": "spydip-1000", "kind": "zdte", "start": 1000, "name": "SPY 昨跌 1% 后买看涨（只演算）", "und": "SPY",
+      {"id": "spydip-1000", "kind": "zdte", "half_take": true, "start": 1000, "name": "SPY 昨跌 1% 后买看涨（只演算）", "und": "SPY",
        "offset": 0.006, "take": 3, "side": "call", "after_drop": -0.01, "plan_only": true
       }
     ]

@@ -2646,6 +2646,23 @@ class Sleeves(unittest.TestCase):
         s = book.s("spy0dte-500")
         self.assertEqual((s["open"], s["closed"][-1]["proceeds"]), ([], 12.0))       # 12 contracts x $0.01 x 100
 
+    def test_half_take_splits_into_a_take_ticket_and_a_trailing_runner(self):
+        spec = [{**self.specs[0], "half_take": True}]
+        b = SleeveBroker(lambda s: (0.08, 0.10))
+        book, log = self.cycle(b, 10, 0, spec)
+        s = book.s("spy0dte-500")
+        self.assertEqual(sorted((t["qty"], bool(t.get("take_cid")), t["trail"]) for t in s["open"]), [(6, False, True), (6, True, False)])
+        self.assertEqual(round(sum(t["paid"] for t in s["open"]), 2), 132.0)
+        self.assertEqual([int(o["qty"]) for o in b.orders.values() if o["side"] == "sell"], [6])   # the take covers its half only
+        self.assertIn("另 6 张翻倍后回撤 40% 卖", [e for e in log if e["kind"] == "sleeve_fill"][-1]["why"])
+        b.quotes = lambda s: (0.30, 0.31)                                            # the runner's best bid: 0.30 > 2 x 0.11
+        book, log = self.cycle(b, 11, 0, spec)
+        b.quotes = lambda s: (0.15, 0.16)                                            # 50% off the best: the runner goes
+        book, log = self.cycle(b, 11, 10, spec)
+        s = book.s("spy0dte-500")
+        self.assertEqual([(t["qty"], t["trail"]) for t in s["open"]], [(6, False)])  # the take half still rests
+        self.assertEqual(s["closed"][-1]["proceeds"], 90.0)                           # 6 x $0.15 x 100
+
     def test_a_round_ends_below_ten_percent_and_restarts(self):
         b = SleeveBroker(lambda s: (0.08, 0.10))
         book, _ = self.cycle(b, 10, 0, self.specs[:1])

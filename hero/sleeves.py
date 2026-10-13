@@ -398,14 +398,24 @@ class Runner:
              "qty": qty, "cost": price, "paid": round(price * qty * 100, 2), "opened": f"{self.today.isoformat()} {self.hhmm}",
              "why": pk["why"], "expiry": pk.get("expiry"), "exit_day": pk.get("exit_day"), "exit_at": pk.get("exit_at", "15:30"),
              "trail": pk.get("trail", False), "best_bid": 0.0}
+        runner = None
+        if pk.get("take") and pk.get("half") and qty >= 2:
+            # half rides the take, the other half is a runner: out after 2x on a 40% giveback, else at the time exit
+            runner = {**t, "tid": new_tid(), "qty": qty - qty // 2, "trail": True}
+            runner["paid"] = round(price * runner["qty"] * 100, 2)
+            t["qty"] = qty // 2
+            t["paid"] = round(t["paid"] - runner["paid"], 2)
         if pk.get("take"):
             t["take_x"] = pk["take"]
             t["take"] = tick(price * pk["take"])
             self.place_take(spec["id"], t)
         self.book.open_ticket(spec["id"], t)
+        if runner:
+            self.book.open_ticket(spec["id"], runner)
         self.j.event("sleeve_fill", dry_run=False, sleeve=spec["id"], symbol=pk["sym"], qty=qty, price=price,
-                     why=f"{spec['id']}：{pk['sym']} 成交 {qty} 张 × ${price:.2f}，花 ${t['paid']:,.2f}"
-                         + (f"；{pk['take']:g} 倍止盈 ${t['take']:.2f} 挂在券商" if t.get("take_cid") else ""))
+                     why=f"{spec['id']}：{pk['sym']} 成交 {qty} 张 × ${price:.2f}，花 ${price * qty * 100:,.2f}"
+                         + (f"；{t['qty']} 张 {pk['take']:g} 倍止盈 ${t['take']:.2f} 挂在券商" if t.get("take_cid") else "")
+                         + (f"；另 {runner['qty']} 张翻倍后回撤 40% 卖，否则 {t['exit_at']} 卖" if runner else ""))
 
     def buy_stocks(self, orders: list[tuple]) -> None:
         for spec, pk, notional in orders:
