@@ -22,9 +22,10 @@
 delta 约 0.10 的期权，账本一半的钱；翻倍后从最高价回撤 40% 卖，否则到期日 15:30 卖。
 
 怎么选（用户 10-13：要和 claude-b 不一样，否则两边结果一样没意义）：
-- **股票池和 claude-b 错开**：它选大型股（META、NVDA、TSLA、AAPL、AMZN、MSFT、GOOGL、AVGO、AMD、MU 这类）；我们选高波动的中盘股
-  和消息的「二线受益股 / 另一边」，例如 MSTR、COIN、HOOD、PLTR、SMCI、ARM、APP、IONQ、RGTI、RKLB、ASTS、OKLO、CRWV、NBIS、
-  IREN、SOFI、AFRM、UPST、SHOP、MRVL、CRDO、ALAB、VRT、ANET、DELL、SNOW、NET、CRWD、DDOG（要有一周内到期的期权）。
+- **扫描全市场**（用户 10-13）：每个交易日约 09:01 先跑盘前扫描（research.yml 的 premarket，结果在
+  `research/premarket/YYYY-MM-DD.md`）：券商涨跌榜、成交榜和 data/universe.json 里盘前离昨收 2% 以上的股票和它们的新闻。
+  从里面找消息分量最大、还没被跳空吃掉的；高波动中盘股和消息的「二线受益股 / 另一边」优先（这是和 claude-b 选大型股错开的地方），
+  大型股也可以选，但必须不是 claude-b 当天那只。要有一周内到期的期权。
 - **不撞车**：先读 claude-b 当天的 `journal/bias/YYYY-MM-DD.json`（公开仓库 Cao-YMGG/zero-or-hero，只当参考资料），
   它选了哪只，我们当天就不选那只；把它的选择记在 `claude_b_pick`。
 - 要有新的、非财报的消息，而且还没被盘前跳空吃掉（中盘股波动大，跳空超过约 6% 通常已经反映）：产品 / 合同 / 监管 / 分析师大幅上调、

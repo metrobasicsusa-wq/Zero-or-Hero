@@ -3140,5 +3140,24 @@ class ResearchAnalyst(unittest.TestCase):
         self.assertEqual((t["上调|open|take3"]["mean"], t["上调|open|next"]["mean"], t["上调|confirm|take3"]), (2.0, 1.5, None))
         self.assertIn("| 2026-10-05 | MSFT | 上调 | +1.2% | +200% |", markdown(rep, t))
 
+
+class ResearchPremarket(unittest.TestCase):
+    def test_scan_keeps_todays_movers_with_their_headlines(self):
+        from datetime import datetime, timezone
+        from types import SimpleNamespace
+        from hero.research_premarket import markdown, run
+        snaps = {"AAA": {"latestTrade": {"p": 105.0, "t": "2026-10-14T12:50:00Z"}, "dailyBar": {"c": 100.0, "t": "2026-10-13T04:00:00Z"}},
+                 "BBB": {"latestTrade": {"p": 101.0, "t": "2026-10-14T12:50:00Z"}, "dailyBar": {"c": 100.0, "t": "2026-10-13T04:00:00Z"}},
+                 "CCC": {"latestTrade": {"p": 90.0, "t": "2026-10-13T19:59:00Z"}, "dailyBar": {"c": 100.0, "t": "2026-10-13T04:00:00Z"}},
+                 "DDD": {"latestTrade": {"p": 1.0, "t": "2026-10-14T12:50:00Z"}, "dailyBar": {"c": 2.0, "t": "2026-10-13T04:00:00Z"}}}
+
+        def d(path, params):
+            return {"gainers": [{"symbol": "AAA", "percent_change": 5.0}], "losers": []} if "movers" in path else {"most_actives": []}
+        c = SimpleNamespace(_d=d, stock_snapshots=lambda syms: {s: snaps[s] for s in syms if s in snaps},
+                            news=lambda syms, start, limit=50: [{"symbols": ["AAA"], "headline": "AAA wins a contract"}])
+        rep = run(c, datetime(2026, 10, 14, 12, 55, tzinfo=timezone.utc))
+        self.assertEqual([(r["symbol"], r["move"], r["news"]) for r in rep["rows"]], [("AAA", 0.05, ["AAA wins a contract"])])
+        self.assertIn("| AAA | $105.00 | +5.0% | 是 | AAA wins a contract |", markdown(rep))
+
 if __name__ == "__main__":
     unittest.main()
