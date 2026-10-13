@@ -2796,6 +2796,25 @@ class SleeveRules(unittest.TestCase):
         self.assertIn("留一晚", picks[0]["why"])
         self.assertIsNone(sr.OpenGap().entries(self.run_at(date(2026, 10, 13), 10, 0, b), {}, {"slots": {}, "cash": 500.0}))
 
+    def test_sniper_buys_the_pre_market_pick_once_the_open_agrees(self):
+        from hero import sleeve_rules as sr
+        with tempfile.TemporaryDirectory() as tmp:
+            spec = {"dir": tmp}
+            b = self.broker()
+            r = lambda hh, mm: self.run_at(date(2026, 10, 13), hh, mm, b)
+            self.assertEqual(sr.Sniper().entries(r(9, 30), spec, {"slots": {}}), ("2026-10-13", []))      # no file: no pick
+            (Path(tmp) / "2026-10-13.json").write_text(json.dumps({"sniper": {"symbol": "AAA", "direction": "put",
+                                                                              "catalyst": "a downgrade", "confidence": 0.4}}))
+            self.assertIsNone(sr.Sniper().entries(r(9, 30), spec, {"slots": {}}))     # AAA is above its open: wait
+            b.snaps["AAA"]["latestTrade"]["p"] = 96.0
+            b.option_snapshots = lambda syms: {x: {"latestQuote": {"ap": 0.3}, "greeks": {"delta": -(1 - abs(int(x[-2:]) - 96) / 10)}}
+                                               for x in syms}
+            slot, picks = sr.Sniper().entries(r(9, 40), spec, {"slots": {}})
+            self.assertTrue(picks[0]["sym"].endswith("P87") and picks[0]["trail"])    # delta -0.10, the closest to 0.10
+            self.assertEqual((picks[0]["exit_day"], picks[0]["exit_at"]), (picks[0]["expiry"], "15:30"))
+            self.assertIn("a downgrade", picks[0]["why"])
+            self.assertIsNone(sr.Sniper().entries(r(10, 0), spec, {"slots": {}}))     # past the cutoff
+
     def test_plan_only_sleeves_stay_out_of_the_live_run(self):
         from types import SimpleNamespace
         from hero import engine, sleeves

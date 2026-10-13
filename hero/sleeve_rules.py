@@ -354,6 +354,58 @@ class OpenGap:
         return (day, [])
 
 
+class Sniper:
+    """claude-b's catalyst_open, our form: a pre-market Claude session writes at most one pick a day to
+    journal-s500/sniper/YYYY-MM-DD.json ({"sniper": {"symbol", "direction", "catalyst", "confidence"} or null}).
+    From the first cycle at 09:30 until 10:00, once the stock is not going against the pick, buy the nearest expiry
+    (the day's if listed) nearest to `delta` (0.10; 3% out of the money when there are no greeks) and ride it on the
+    trail (after 2x, out on a 40% giveback), else out at 15:30 on its expiry day."""
+
+    def entries(self, run, spec, s):
+        day = run.today.isoformat()
+        if day in s["slots"] or not (spec.get("entry", "09:30") <= run.hhmm < spec.get("cutoff", "10:00")):
+            return None
+        path = ROOT / spec.get("dir", "journal-s500/sniper") / f"{day}.json"
+        try:
+            pk = (json.loads(path.read_text()) or {}).get("sniper")
+        except Exception:
+            pk = None
+        if not pk or pk.get("direction") not in ("call", "put") or not pk.get("symbol"):
+            return (day, [])  # no pick today
+        und, kind = pk["symbol"], "C" if pk["direction"] == "call" else "P"
+        spot, o, _, _ = spot_open(snaps(run, [und]).get(und) or {})
+        if not spot or not o or (spot < o if kind == "C" else spot > o):
+            return None  # going against the pick: wait for a later cycle, until the cutoff
+        lo, hi = (spot, spot * 1.15) if kind == "C" else (spot * 0.85, spot)
+        cs = contracts(run, und, day, (run.today + timedelta(days=7)).isoformat(), lo, hi, "call" if kind == "C" else "put")
+        if not cs:
+            return (day, [])
+        exp = min(c["expiration_date"] for c in cs)
+        near = [c for c in cs if c["expiration_date"] == exp]
+        quotes = run.c.option_snapshots([c["symbol"] for c in near]) or {}
+        target = spec.get("delta", 0.10)
+        scored = []
+        for c in near:
+            q = quotes.get(c["symbol"]) or {}
+            ask = float((q.get("latestQuote") or {}).get("ap") or 0)
+            d = (q.get("greeks") or {}).get("delta")
+            if ask > 0 and d is not None:
+                scored.append((abs(abs(float(d)) - target), c, ask, abs(float(d))))
+        if scored:
+            _, c, ask, d = min(scored, key=lambda x: x[0])
+            how = f"delta {d:.2f}"
+        else:
+            got = option_pick(run, und, kind, spot, spec.get("offset", 0.03), day, (run.today + timedelta(days=7)).isoformat())
+            if not got:
+                return (day, [])
+            (c, ask), how = got, "离现价约 3%"
+        exp = c["expiration_date"]
+        return (day, [{"sym": c["symbol"], "asset": "option", "und": und, "ask": ask, "trail": True, "expiry": exp,
+                       "exit_day": exp, "exit_at": "15:30",
+                       "why": f"开盘狙击 {und}{'看涨' if kind == 'C' else '看跌'} {float(c['strike_price']):g}（{exp} 到期，{how}）："
+                              f"{str(pk.get('catalyst', ''))[:120]}；翻倍后回撤 40% 卖，否则到期日 15:30 卖"}])
+
+
 class Flush:
     """By 10:00 a chip / Mag 7 name is 2% under its open: a call 1% above, nearest expiry, 2x take, out 15:50."""
 
@@ -540,4 +592,4 @@ class Relay:
 
 
 RULES = {"zdte": ZeroDTE(), "weekly": Weekly(), "net": Net(), "gap": Gap(), "flush": Flush(), "earnings": EarningsLotto(),
-         "letf": LETF(), "relay": Relay(), "opengap": OpenGap()}
+         "letf": LETF(), "relay": Relay(), "opengap": OpenGap(), "sniper": Sniper()}
