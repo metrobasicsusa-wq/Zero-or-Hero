@@ -372,6 +372,12 @@
       },
       {"id": "spydip-1000", "kind": "zdte", "half_take": true, "start": 1000, "name": "SPY 昨跌 1% 后买看涨（只演算）", "und": "SPY",
        "offset": 0.006, "take": 3, "side": "call", "after_drop": -0.01, "plan_only": true
+      },
+      {"id": "opengap-500", "kind": "opengap", "start": 500, "name": "开盘跳空且开盘后延续：09:35 顺势买，非当天到期留一晚（只演算）",
+       "fraction": 0.5, "plan_only": true
+      },
+      {"id": "opengap-1000", "kind": "opengap", "start": 1000, "name": "开盘跳空且开盘后延续：09:35 顺势买，非当天到期留一晚（只演算）",
+       "fraction": 0.5, "plan_only": true
       }
     ]
   },

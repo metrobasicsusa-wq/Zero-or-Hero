@@ -320,6 +320,40 @@ class Gap:
         return (day, picks)
 
 
+class OpenGap:
+    """research/2026-10-13-open-catalyst.md, the one group worth watching: a 2%+ gap that the first minutes keep going
+    the same way; the largest such gap, at the first cycle from 09:35, an option 0.6% beyond the price in the gap's
+    direction, the day's expiry else the nearest within a week. Same-day: half on a 3x take, half on a trail, out 15:30.
+    A later expiry is held overnight: out after 2x on a 40% giveback, else at 15:50 the next session."""
+
+    def entries(self, run, spec, s):
+        day = run.today.isoformat()
+        if day in s["slots"] or not (spec.get("entry", "09:35") <= run.hhmm < "10:00"):
+            return None
+        gaps = []
+        for x, v in snaps(run, pool(run)).items():
+            spot, o, _, prev = spot_open(v)
+            if spot and o and prev and abs(o / prev - 1) >= spec.get("gap", 0.02) and (spot >= o) == (o > prev):
+                gaps.append((abs(o / prev - 1), x, spot, o / prev - 1))
+        each = budget(run, spec, s, 1)
+        for _, und, spot, g in sorted(gaps, reverse=True)[:8]:
+            kind = "C" if g > 0 else "P"
+            got = option_pick(run, und, kind, spot, spec.get("offset", 0.006), day, (run.today + timedelta(days=7)).isoformat())
+            if not got or got[1] * 100 > each:
+                continue
+            c, ask = got
+            exp, side = c["expiration_date"], "看涨" if kind == "C" else "看跌"
+            head = f"{und} {'高' if g > 0 else '低'}开 {g:+.1%}、开盘后继续{'涨' if g > 0 else '跌'}，买{side} {float(c['strike_price']):g}（{exp} 到期）"
+            if exp == day:
+                return (day, [{"sym": c["symbol"], "asset": "option", "und": und, "ask": ask, "take": 3, "half": True, "expiry": exp,
+                               "exit_day": day, "exit_at": "15:30", "why": f"{head}，一半 3 倍止盈、一半翻倍后回撤 40% 卖，最晚 15:30"}])
+            out = min(next_business_day(run.today).isoformat(), exp)
+            return (day, [{"sym": c["symbol"], "asset": "option", "und": und, "ask": ask, "trail": True, "expiry": exp,
+                           "exit_day": out, "exit_at": "15:50" if out < exp else "15:30",
+                           "why": f"{head}，留一晚：翻倍后回撤 40% 卖，否则 {out[5:]} {'15:50' if out < exp else '15:30'} 卖"}])
+        return (day, [])
+
+
 class Flush:
     """By 10:00 a chip / Mag 7 name is 2% under its open: a call 1% above, nearest expiry, 2x take, out 15:50."""
 
@@ -506,4 +540,4 @@ class Relay:
 
 
 RULES = {"zdte": ZeroDTE(), "weekly": Weekly(), "net": Net(), "gap": Gap(), "flush": Flush(), "earnings": EarningsLotto(),
-         "letf": LETF(), "relay": Relay()}
+         "letf": LETF(), "relay": Relay(), "opengap": OpenGap()}

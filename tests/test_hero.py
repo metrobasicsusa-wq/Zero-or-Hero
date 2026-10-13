@@ -2783,6 +2783,19 @@ class SleeveRules(unittest.TestCase):
         slot, picks = sr.ZeroDTE().entries(self.run_at(date(2026, 10, 13), 10, 0, b), spec, {"slots": {}})
         self.assertEqual((picks[0]["expiry"], "当天到期" in picks[0]["why"]), ("2026-10-13", True))
 
+    def test_open_gap_takes_the_largest_gap_the_open_keeps_and_holds_a_later_expiry_overnight(self):
+        from hero import sleeve_rules as sr
+        b = self.broker()
+        b.snaps["AAA"] = {"dailyBar": {"o": 97.0, "l": 95.0}, "latestTrade": {"p": 96.0}, "prevDailyBar": {"c": 100.0}}    # -3%, still falling
+        b.snaps["BBB"] = {"dailyBar": {"o": 104.0, "l": 103.0}, "latestTrade": {"p": 103.5}, "prevDailyBar": {"c": 100.0}}  # +4% but fading
+        b.snaps["CCC"] = {"dailyBar": {"o": 102.0, "l": 101.9}, "latestTrade": {"p": 102.5}, "prevDailyBar": {"c": 100.0}}  # +2%, holding
+        slot, picks = sr.OpenGap().entries(self.run_at(date(2026, 10, 13), 9, 40, b), {}, {"slots": {}, "cash": 500.0})
+        self.assertEqual(picks[0]["und"], "AAA")                                         # BBB's gap fades: skipped
+        self.assertTrue(picks[0]["sym"].endswith("P95") and picks[0]["trail"])           # 96 x 0.994 = 95.4 -> 95
+        self.assertEqual((picks[0]["expiry"], picks[0]["exit_day"], picks[0]["exit_at"]), ("2026-10-20", "2026-10-14", "15:50"))
+        self.assertIn("留一晚", picks[0]["why"])
+        self.assertIsNone(sr.OpenGap().entries(self.run_at(date(2026, 10, 13), 10, 0, b), {}, {"slots": {}, "cash": 500.0}))
+
     def test_plan_only_sleeves_stay_out_of_the_live_run(self):
         from types import SimpleNamespace
         from hero import engine, sleeves
