@@ -142,11 +142,33 @@
   },
   "qqq0dte-500": {
    "start": 500.0,
-   "cash": 178.0,
+   "cash": 126.0,
    "round": 1,
    "heroes": 0,
    "zeros": 0,
-   "open": [],
+   "open": [
+    {
+     "tid": "0732140dfc",
+     "kind": "zdte",
+     "sym": "QQQ261014C00744000",
+     "asset": "option",
+     "und": "QQQ",
+     "qty": 1,
+     "cost": 0.52,
+     "paid": 52.0,
+     "opened": "2026-10-14 09:40",
+     "why": "QQQ 开盘 $737.96、现在 $739.39，顺势买当天到期看涨 744（离现价 0.6%），3 倍止盈，15:30 平仓",
+     "expiry": "2026-10-14",
+     "exit_day": "2026-10-14",
+     "exit_at": "15:30",
+     "trail": false,
+     "best_bid": 0.0,
+     "expiry_out": null,
+     "take_x": 3,
+     "take": 1.56,
+     "take_cid": "sl-qqq0dte-500-0732140dfc-t68eb"
+    }
+   ],
    "closed": [
     {
      "tid": "98e0212d34",
@@ -205,18 +227,59 @@
    ],
    "slots": {
     "2026-10-12": "2026-10-12T10:00-04:00",
-    "2026-10-13": "2026-10-13T10:00-04:00"
+    "2026-10-13": "2026-10-13T10:00-04:00",
+    "2026-10-14": "2026-10-14T09:40-04:00"
    },
    "best": 500.0,
    "created": null
   },
   "qqq0dte-1000": {
    "start": 1000.0,
-   "cash": 336.0,
+   "cash": 180.0,
    "round": 1,
    "heroes": 0,
    "zeros": 0,
-   "open": [],
+   "open": [
+    {
+     "tid": "f2ac7641c7",
+     "kind": "zdte",
+     "sym": "QQQ261014C00744000",
+     "asset": "option",
+     "und": "QQQ",
+     "qty": 1,
+     "cost": 0.52,
+     "paid": 52.0,
+     "opened": "2026-10-14 09:40",
+     "why": "QQQ 开盘 $737.96、现在 $739.39，顺势买当天到期看涨 744（离现价 0.6%），3 倍止盈，15:30 平仓",
+     "expiry": "2026-10-14",
+     "exit_day": "2026-10-14",
+     "exit_at": "15:30",
+     "trail": false,
+     "best_bid": 0.0,
+     "expiry_out": null,
+     "take_x": 3,
+     "take": 1.56,
+     "take_cid": "sl-qqq0dte-1000-f2ac7641c7-t3470"
+    },
+    {
+     "tid": "349d3d8ba4",
+     "kind": "zdte",
+     "sym": "QQQ261014C00744000",
+     "asset": "option",
+     "und": "QQQ",
+     "qty": 2,
+     "cost": 0.52,
+     "paid": 104.0,
+     "opened": "2026-10-14 09:40",
+     "why": "QQQ 开盘 $737.96、现在 $739.39，顺势买当天到期看涨 744（离现价 0.6%），3 倍止盈，15:30 平仓",
+     "expiry": "2026-10-14",
+     "exit_day": "2026-10-14",
+     "exit_at": "15:30",
+     "trail": true,
+     "best_bid": 0.0,
+     "expiry_out": null
+    }
+   ],
    "closed": [
     {
      "tid": "9634fae7af",
@@ -275,7 +338,8 @@
    ],
    "slots": {
     "2026-10-12": "2026-10-12T10:00-04:00",
-    "2026-10-13": "2026-10-13T10:00-04:00"
+    "2026-10-13": "2026-10-13T10:00-04:00",
+    "2026-10-14": "2026-10-14T09:40-04:00"
    },
    "best": 1000.0,
    "created": null
@@ -1080,28 +1144,11 @@
   },
   "earn-500": {
    "start": 500.0,
-   "cash": 341.0,
+   "cash": 343.0,
    "round": 1,
    "heroes": 0,
    "zeros": 0,
    "open": [
-    {
-     "tid": "1755180d61",
-     "kind": "earnings",
-     "sym": "MS261016C00202500",
-     "asset": "option",
-     "und": "MS",
-     "qty": 2,
-     "cost": 0.3,
-     "paid": 60.0,
-     "opened": "2026-10-13 15:40",
-     "why": "MS 财报（预期波动 3.5%），买 2 倍预期波动处看涨 202.5，第二天开盘卖",
-     "expiry": "2026-10-16",
-     "exit_day": "2026-10-14",
-     "exit_at": "09:35",
-     "trail": false,
-     "best_bid": 0.21
-    },
     {
      "tid": "a27973d8cd",
      "kind": "earnings",
@@ -1117,7 +1164,9 @@
      "exit_day": "2026-10-14",
      "exit_at": "09:35",
      "trail": false,
-     "best_bid": 0.09
+     "best_bid": 0.09,
+     "sell_cid": "sl-earn-500-a27973d8cd-x0a7b",
+     "sell_why": "2026-10-14 09:35 到时卖出"
     }
    ],
    "closed": [
@@ -1145,6 +1194,31 @@
      "how": "2026-10-13 09:35 到时卖出",
      "closed": "2026-10-13 09:40",
      "ret": -0.833
+    },
+    {
+     "tid": "1755180d61",
+     "kind": "earnings",
+     "sym": "MS261016C00202500",
+     "asset": "option",
+     "und": "MS",
+     "qty": 2,
+     "cost": 0.3,
+     "paid": 60.0,
+     "opened": "2026-10-13 15:40",
+     "why": "MS 财报（预期波动 3.5%），买 2 倍预期波动处看涨 202.5，第二天开盘卖",
+     "expiry": "2026-10-16",
+     "exit_day": "2026-10-14",
+     "exit_at": "09:35",
+     "trail": false,
+     "best_bid": 0.21,
+     "sell_cid": "sl-earn-500-1755180d61-x87c4",
+     "sell_why": "2026-10-14 09:35 到时卖出",
+     "state": "closed",
+     "exit_price": 0.01,
+     "proceeds": 2.0,
+     "how": "2026-10-14 09:35 到时卖出",
+     "closed": "2026-10-14 09:40",
+     "ret": -0.967
     }
    ],
    "slots": {
@@ -1156,28 +1230,11 @@
   },
   "earn-1000": {
    "start": 1000.0,
-   "cash": 605.0,
+   "cash": 609.0,
    "round": 1,
    "heroes": 0,
    "zeros": 0,
    "open": [
-    {
-     "tid": "0cfa41e0c4",
-     "kind": "earnings",
-     "sym": "MS261016C00202500",
-     "asset": "option",
-     "und": "MS",
-     "qty": 4,
-     "cost": 0.3,
-     "paid": 120.0,
-     "opened": "2026-10-13 15:40",
-     "why": "MS 财报（预期波动 3.5%），买 2 倍预期波动处看涨 202.5，第二天开盘卖",
-     "expiry": "2026-10-16",
-     "exit_day": "2026-10-14",
-     "exit_at": "09:35",
-     "trail": false,
-     "best_bid": 0.21
-    },
     {
      "tid": "8320d45070",
      "kind": "earnings",
@@ -1193,7 +1250,9 @@
      "exit_day": "2026-10-14",
      "exit_at": "09:35",
      "trail": false,
-     "best_bid": 0.09
+     "best_bid": 0.09,
+     "sell_cid": "sl-earn-1000-8320d45070-xd558",
+     "sell_why": "2026-10-14 09:35 到时卖出"
     }
    ],
    "closed": [
@@ -1246,6 +1305,31 @@
      "how": "2026-10-13 09:35 到时卖出",
      "closed": "2026-10-13 09:40",
      "ret": -0.518
+    },
+    {
+     "tid": "0cfa41e0c4",
+     "kind": "earnings",
+     "sym": "MS261016C00202500",
+     "asset": "option",
+     "und": "MS",
+     "qty": 4,
+     "cost": 0.3,
+     "paid": 120.0,
+     "opened": "2026-10-13 15:40",
+     "why": "MS 财报（预期波动 3.5%），买 2 倍预期波动处看涨 202.5，第二天开盘卖",
+     "expiry": "2026-10-16",
+     "exit_day": "2026-10-14",
+     "exit_at": "09:35",
+     "trail": false,
+     "best_bid": 0.21,
+     "sell_cid": "sl-earn-1000-0cfa41e0c4-x7f46",
+     "sell_why": "2026-10-14 09:35 到时卖出",
+     "state": "closed",
+     "exit_price": 0.01,
+     "proceeds": 4.0,
+     "how": "2026-10-14 09:35 到时卖出",
+     "closed": "2026-10-14 09:40",
+     "ret": -0.967
     }
    ],
    "slots": {
