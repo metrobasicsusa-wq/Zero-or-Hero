@@ -2828,6 +2828,54 @@ class SleeveRules(unittest.TestCase):
             self.assertIn("a downgrade", picks[0]["why"])
             self.assertIsNone(sr.Sniper().entries(r(10, 0), spec, {"slots": {}}))     # past the cutoff
 
+    def test_overnight_buys_the_biggest_strong_close_above_its_average_and_holds_three_sessions(self):
+        from hero import sleeve_rules as sr
+        b = self.broker()
+        b.snaps["AAA"] = {"dailyBar": {"o": 100.0, "l": 99.0, "h": 103.2}, "latestTrade": {"p": 103.0}, "prevDailyBar": {"c": 100.0}}  # +3%, top
+        b.snaps["BBB"] = {"dailyBar": {"o": 100.0, "l": 100.0, "h": 110.0}, "latestTrade": {"p": 105.0}, "prevDailyBar": {"c": 100.0}}  # +5%, mid-range
+        b.snaps["CCC"] = {"dailyBar": {"o": 100.0, "l": 100.0, "h": 106.0}, "latestTrade": {"p": 106.0}, "prevDailyBar": {"c": 100.0}}  # +6%, top
+        b.bars["CCC"] = [{**x, "c": 200.0} for x in b.bars["CCC"]]                       # but far under its 50-day average
+        r = lambda hh, mm: self.run_at(date(2026, 10, 13), hh, mm, b)
+        self.assertIsNone(sr.Overnight().entries(r(15, 40), {}, {"slots": {}, "open": [], "cash": 500.0}))
+        slot, picks = sr.Overnight().entries(r(15, 50), {}, {"slots": {}, "open": [], "cash": 500.0})
+        self.assertEqual(picks[0]["sym"], "AAA2026-10-25C107")                          # 103 x 1.03 = 106.1 -> 107, 12 days out
+        self.assertEqual((picks[0]["trail"], picks[0]["exit_day"], picks[0]["exit_at"]), (True, "2026-10-16", "15:50"))
+        self.assertEqual(sr.Overnight().entries(r(15, 50), {}, {"slots": {}, "open": [{"und": "AAA"}], "cash": 500.0}),
+                         ("2026-10-13", []))                                             # already holding AAA
+
+    def test_pead_remembers_reaction_days_and_buys_the_day_after_a_gap_that_held(self):
+        from hero import sleeve_rules as sr
+        with tempfile.TemporaryDirectory() as tmp:
+            cal = Path(tmp) / "earnings.json"
+            cal.write_text(json.dumps({"reports": {"AAA": [{"date": "2026-10-09", "time": "post-market"}],
+                                                   "BBB": [{"date": "2026-10-12", "time": "pre-market"}]}}))
+            spec, s = {"earnings": str(cal)}, {"slots": {}, "open": [], "cash": 500.0, "pead_watch": {"2026-09-01": ["OLD"]}}
+            b = self.broker()
+            self.assertIsNone(sr.Pead().entries(self.run_at(date(2026, 10, 9), 9, 30, b), spec, s))   # before 10:00: only remembers
+            self.assertEqual(s["pead_watch"], {"2026-10-12": ["AAA", "BBB"]})               # Friday after the close -> Monday
+            b.bars["AAA"] = [{"t": "2026-10-09T04:00:00Z", "o": 99.0, "c": 100.0}, {"t": "2026-10-12T04:00:00Z", "o": 106.0, "c": 107.0}]
+            b.bars["BBB"] = [{"t": "2026-10-09T04:00:00Z", "o": 99.0, "c": 100.0}, {"t": "2026-10-12T04:00:00Z", "o": 108.0, "c": 105.0}]
+            b.snaps["AAA"]["latestTrade"]["p"] = 108.0
+            slot, picks = sr.Pead().entries(self.run_at(date(2026, 10, 13), 10, 0, b), spec, s)
+            self.assertEqual([p["und"] for p in picks], ["AAA"])                            # BBB gapped 8% but faded
+            self.assertEqual((picks[0]["sym"], picks[0]["exit_day"]), ("AAA2026-10-25C112", "2026-10-16"))   # 108 x 1.03 = 111.2
+            b.bars["AAA"][-1]["c"] = 105.0
+            self.assertEqual(sr.Pead().entries(self.run_at(date(2026, 10, 13), 10, 0, b), spec, {**s, "slots": {}}),
+                             ("2026-10-13", []))
+
+    def test_vixspike_buys_a_spy_call_only_the_day_after_a_fear_day(self):
+        from hero import sleeve_rules as sr
+        b = self.broker()
+        b.snaps["SPY"] = {"dailyBar": {"o": 100.0, "l": 99.0}, "latestTrade": {"p": 99.5}, "prevDailyBar": {"c": 100.0}}
+        b.bars["SPY"] = [{"t": "2026-10-06T04:00:00Z", "c": 102.0}, {"t": "2026-10-07T04:00:00Z", "c": 100.0}]   # -2%
+        b.bars["VIXY"] = [{"t": "2026-10-06T04:00:00Z", "c": 20.0}, {"t": "2026-10-07T04:00:00Z", "c": 22.0}]    # +10%
+        slot, picks = sr.VixSpike().entries(self.run_at(date(2026, 10, 8), 10, 0, b), {}, {"slots": {}})
+        self.assertTrue(picks[0]["sym"].startswith("SPY") and picks[0]["sym"].endswith("C101"))   # under its open, a call anyway
+        self.assertEqual((picks[0]["take"], picks[0]["exit_at"]), (3, "15:30"))
+        self.assertIn("恐慌反弹", picks[0]["why"])
+        b.bars["VIXY"][-1]["c"] = 21.0                                                    # VIXY only +5%: sit out
+        self.assertEqual(sr.VixSpike().entries(self.run_at(date(2026, 10, 8), 10, 0, b), {}, {"slots": {}}), ("2026-10-08", []))
+
     def test_plan_only_sleeves_stay_out_of_the_live_run(self):
         from types import SimpleNamespace
         from hero import engine, sleeves

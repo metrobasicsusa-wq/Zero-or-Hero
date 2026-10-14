@@ -206,6 +206,146 @@ class OneShot(ZeroDTE):
         return (day, picks)
 
 
+def business_days_after(d: date, n: int) -> date:
+    for _ in range(n):
+        d = next_business_day(d)
+    return d
+
+
+def held_out(run, exp: str, days: int = 3) -> tuple[str, str]:
+    """(exit_day, exit_at) for a ticket held `days` sessions: 15:50 that day, or 15:30 on its expiry if sooner."""
+    out = business_days_after(run.today, days).isoformat()
+    return (out, "15:50") if out < exp else (exp, "15:30")
+
+
+class Overnight:
+    """research/2026-10-13-overnight.md (Lou, Polk & Skouras: momentum is earned overnight). At 15:50: the pool
+    names up `move` (3%) or more on the day, in the top 15% of the day's range and above their 50-day average; the
+    biggest mover gets next week's call (5 to 12 days out) 3% above the price; out after 2x on a 40% giveback, else
+    15:50 on the third session after."""
+
+    def entries(self, run, spec, s):
+        day = run.today.isoformat()
+        if day in s["slots"] or not (spec.get("entry", "15:45") <= run.hhmm < "15:58"):
+            return None
+        p = pool(run)
+        cl = closes(run, p, 120)
+        held = {t.get("und") for t in s["open"]}
+        found = []
+        for x, v in snaps(run, p).items():
+            spot, _, low, prev = spot_open(v)
+            hi = float((v.get("dailyBar") or {}).get("h") or 0)
+            xs = cl.get(x) or []
+            if not spot or not prev or hi <= low or len(xs) < 50 or x in held:
+                continue
+            r, pos, ma = spot / prev - 1, (spot - low) / (hi - low), sum(xs[-50:]) / 50
+            if r >= spec.get("move", 0.03) and pos >= 1 - spec.get("edge", 0.15) and spot > ma:
+                found.append((r, x, spot, pos))
+        each = budget(run, spec, s, 1)
+        for r, und, spot, pos in sorted(found, reverse=True)[:8]:
+            got = option_pick(run, und, "C", spot, spec.get("offset", 0.03), (run.today + timedelta(days=5)).isoformat(),
+                              (run.today + timedelta(days=12)).isoformat())
+            if not got or got[1] * 100 > each:
+                continue
+            c, ask = got
+            exp = c["expiration_date"]
+            out, at = held_out(run, exp)
+            return (day, [{"sym": c["symbol"], "asset": "option", "und": und, "ask": ask, "trail": True, "expiry": exp,
+                           "exit_day": out, "exit_at": at,
+                           "why": f"隔夜动量：{und} 今天涨 {r:+.1%}、收在当天区间 {pos:.0%} 处、在 50 日均线上方，买看涨 "
+                                  f"{float(c['strike_price']):g}（{exp} 到期）；翻倍后回撤 40% 卖，否则 {out[5:]} {at} 卖"}])
+        return (day, [])
+
+
+class Pead:
+    """research/2026-10-13-pead.md: post-earnings drift. data/earnings.json only lists reports still to come, so the
+    rule remembers each report's reaction day (s["pead_watch"]: the report day if before the open, else the next
+    session). The session after a reaction day that gapped up `gap` (5%) or more and closed at or above its open: at
+    10:00, next week's call (5 to 12 days out) 3% above the price; out after 2x on a 40% giveback, else 15:50 on the
+    third session after."""
+
+    def remember(self, run, spec, s) -> None:
+        try:
+            reports = json.loads(Path(spec.get("earnings") or ROOT / "data" / "earnings.json").read_text()).get("reports") or {}
+        except Exception:
+            reports = {}
+        w = s.setdefault("pead_watch", {})
+        for x, rs in reports.items():
+            for r in rs:
+                rd, when = date.fromisoformat(r["date"]), r.get("time", "")
+                react = rd if "pre" in when else next_business_day(rd) if "post" in when else None
+                if react and run.today <= react <= run.today + timedelta(days=7):
+                    w.setdefault(react.isoformat(), [])
+                    if x not in w[react.isoformat()]:
+                        w[react.isoformat()].append(x)
+        cut = (run.today - timedelta(days=10)).isoformat()
+        for k in [k for k in w if k < cut]:
+            del w[k]
+
+    def entries(self, run, spec, s):
+        self.remember(run, spec, s)
+        day = run.today.isoformat()
+        if day in s["slots"] or not (spec.get("entry", "10:00") <= run.hhmm < "15:00"):
+            return None
+        react = business_day_before(run.today).isoformat()
+        names = sorted(s["pead_watch"].get(react) or [])
+        if not names:
+            return (day, [])
+
+        def fetch():
+            start = (run.today - timedelta(days=10)).isoformat()
+            return run.c.daily_bars(names, start, adjustment="raw")
+        bars = cached(run, ("pead_bars", tuple(names)), fetch) or {}
+        found = []
+        for x in names:
+            bs = [b for b in bars.get(x, []) if b["t"][:10] < day]
+            if len(bs) < 2 or bs[-1]["t"][:10] != react:
+                continue
+            o, c, prev = float(bs[-1]["o"]), float(bs[-1]["c"]), float(bs[-2]["c"])
+            if prev and o / prev - 1 >= spec.get("gap", 0.05) and c >= o:
+                found.append((o / prev - 1, x, c / o - 1))
+        each = budget(run, spec, s, 1)
+        for g, und, held in sorted(found, reverse=True):
+            spot = spot_open(snaps(run, [und]).get(und) or {})[0]
+            if not spot:
+                continue
+            got = option_pick(run, und, "C", spot, spec.get("offset", 0.03), (run.today + timedelta(days=5)).isoformat(),
+                              (run.today + timedelta(days=12)).isoformat())
+            if not got or got[1] * 100 > each:
+                continue
+            c, ask = got
+            exp = c["expiration_date"]
+            out, at = held_out(run, exp)
+            return (day, [{"sym": c["symbol"], "asset": "option", "und": und, "ask": ask, "trail": True, "expiry": exp,
+                           "exit_day": out, "exit_at": at,
+                           "why": f"财报后漂移：{und} 昨天财报高开 {g:+.1%}、收盘比开盘 {held:+.1%} 守住，买看涨 "
+                                  f"{float(c['strike_price']):g}（{exp} 到期）；翻倍后回撤 40% 卖，否则 {out[5:]} {at} 卖"}])
+        return (day, [])
+
+
+class VixSpike(ZeroDTE):
+    """research/2026-10-13-vixspike.md: the session after a fear day (VIXY up `vix_up` 8%+ and SPY down 1.5%+ at the
+    close), at 10:00 the 0DTE call 0.6% above the price (`und`, SPY by default), a 3x take, out 15:30."""
+
+    def entries(self, run, spec, s):
+        day = run.today.isoformat()
+        if day in s["slots"] or not (spec.get("entry", "10:00") <= run.hhmm < "15:00"):
+            return None
+        cl = closes(run, ["SPY", "VIXY"], 10)
+        spy, vix = cl.get("SPY") or [], cl.get("VIXY") or []
+        if len(spy) < 2 or len(vix) < 2:
+            return None
+        r, v = spy[-1] / spy[-2] - 1, vix[-1] / vix[-2] - 1
+        if r > spec.get("spy_down", -0.015) or v < spec.get("vix_up", 0.08):
+            return (day, [])  # yesterday was no fear day: sit out
+        got = super().entries(run, {"und": "SPY", "offset": 0.006, "take": 3, **spec, "side": "call", "after_drop": None}, s)
+        if not got or not got[1]:
+            return got
+        for pk in got[1]:
+            pk["why"] = f"恐慌反弹：昨天 SPY {r:+.1%}、VIXY {v:+.1%}；" + pk["why"]
+        return got
+
+
 class Weekly:
     """First trading day of the week, 10:00: this week's last expiry, 1% beyond, a 2x take, out the day before expiry."""
 
@@ -609,4 +749,5 @@ class Relay:
 
 
 RULES = {"zdte": ZeroDTE(), "weekly": Weekly(), "net": Net(), "gap": Gap(), "flush": Flush(), "earnings": EarningsLotto(),
-         "letf": LETF(), "relay": Relay(), "opengap": OpenGap(), "sniper": Sniper(), "oneshot": OneShot()}
+         "letf": LETF(), "relay": Relay(), "opengap": OpenGap(), "sniper": Sniper(), "oneshot": OneShot(),
+         "overnight": Overnight(), "pead": Pead(), "vixspike": VixSpike()}

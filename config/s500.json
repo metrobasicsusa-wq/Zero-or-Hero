@@ -390,6 +390,24 @@
       },
       {"id": "sniper-1000", "kind": "sniper", "start": 1000, "name": "开盘狙击：盘前判断的一只，09:30 起不逆向就买约 0.1 delta，翻倍后回撤 40% 卖",
        "fraction": 0.5
+      },
+      {"id": "overnight-500", "kind": "overnight", "start": 500, "name": "隔夜动量：15:50 当天涨 3%+、收在高位、在 50 日均线上方的最强一只，买下周价外 3% 看涨，翻倍后回撤 40% 卖，否则第三天 15:50 卖",
+       "fraction": 0.5
+      },
+      {"id": "overnight-1000", "kind": "overnight", "start": 1000, "name": "隔夜动量：15:50 当天涨 3%+、收在高位、在 50 日均线上方的最强一只，买下周价外 3% 看涨，翻倍后回撤 40% 卖，否则第三天 15:50 卖",
+       "fraction": 0.5
+      },
+      {"id": "pead-500", "kind": "pead", "start": 500, "name": "财报后漂移：财报高开 5%+ 且守住，第二天 10:00 买下周价外 3% 看涨，翻倍后回撤 40% 卖，否则第三天 15:50 卖（只演算）",
+       "fraction": 0.5, "plan_only": true
+      },
+      {"id": "pead-1000", "kind": "pead", "start": 1000, "name": "财报后漂移：财报高开 5%+ 且守住，第二天 10:00 买下周价外 3% 看涨，翻倍后回撤 40% 卖，否则第三天 15:50 卖（只演算）",
+       "fraction": 0.5, "plan_only": true
+      },
+      {"id": "vixspike-500", "kind": "vixspike", "start": 500, "name": "恐慌反弹：VIXY 涨 8%+ 且 SPY 跌 1.5%+ 的第二天 10:00 买 SPY 当天到期价外 0.6% 看涨，3 倍止盈，15:30 平仓（只演算）",
+       "und": "SPY", "offset": 0.006, "take": 3, "fraction": 0.5, "plan_only": true
+      },
+      {"id": "vixspike-1000", "kind": "vixspike", "start": 1000, "name": "恐慌反弹：VIXY 涨 8%+ 且 SPY 跌 1.5%+ 的第二天 10:00 买 SPY 当天到期价外 0.6% 看涨，3 倍止盈，15:30 平仓（只演算）",
+       "und": "SPY", "offset": 0.006, "take": 3, "fraction": 0.5, "plan_only": true
       }
     ]
   },

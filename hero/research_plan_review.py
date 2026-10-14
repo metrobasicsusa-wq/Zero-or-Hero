@@ -5,7 +5,7 @@ so nothing follows the pick afterwards. Here, after the close, each of that day'
 played through its own exit on one-minute bars (the day's option bars need the OPRA agreement until the
 day is over, so run it the next morning; with no date it reviews the last weekday before today):
   bought at the logged limit (the ask + $0.01), at the minute the plan was logged;
-  same-day 0DTE sleeves: the resting take (spec take x the limit), else out at 15:30;
+  same-day 0DTE sleeves (and vixspike): the resting take (spec take x the limit), else out at 15:30;
   flush: a 2x take, else 15:50; gap: once worth 2x, out 40% below the best, else 15:50;
   anything held past today (weekly, earnings, net, TQQQ): marked at the day's last minute, "still open".
 Exits are at the minute close (no spread on the way out), so this flatters the result a little.
@@ -23,7 +23,7 @@ from pathlib import Path
 from hero.research_0dte import ET, et_minutes
 
 SIZE = re.compile(r"(\d+) 张 × \$([\d.]+)")
-OUT = {"zdte": "15:30", "flush": "15:50", "gap": "15:50", "oneshot": "15:55"}
+OUT = {"zdte": "15:30", "vixspike": "15:30", "flush": "15:50", "gap": "15:50", "oneshot": "15:55"}
 
 
 def last_weekday(d: date) -> date:
@@ -54,8 +54,8 @@ def play(bars: dict[str, dict], p: dict, kind: str, take: float) -> dict:
     end = OUT.get(kind)
     best = max((h for k, h, _ in later if not end or k <= end), default=0.0)
     res = {"best_x": round(best / cost, 2) if cost else 0.0}
-    if kind in ("zdte", "flush"):
-        tk = take if kind == "zdte" else 2.0
+    if kind in ("zdte", "vixspike", "flush"):
+        tk = 2.0 if kind == "flush" else take
         hit = next((k for k, h, _ in later if k <= end and h >= tk * cost), None)
         if hit:
             return {**res, "exit": tk * cost, "when": hit, "how": f"{tk:g} 倍止盈"}
