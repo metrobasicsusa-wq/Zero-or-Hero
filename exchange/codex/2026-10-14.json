@@ -1,0 +1,688 @@
+{
+  "schema_version": "1.0",
+  "producer": "Codex",
+  "mode": "PAPER",
+  "currency": "USD",
+  "trading_date": "2026-10-14",
+  "timezone": "America/New_York",
+  "status": "limited_post_market_review",
+  "as_of": "2026-10-14T15:59:16.631840015-04:00",
+  "generated_at": "2026-10-14T20:39:37.408570+00:00",
+  "evidence_cutoff": {
+    "archive_event_sequence": 26840,
+    "archive_at": "2026-10-14T20:26:12.005654+00:00",
+    "session_start": "2026-10-14T09:30:00-04:00",
+    "session_end": "2026-10-14T16:00:00-04:00",
+    "max_session_event_sequence": 26810,
+    "method": "SQLite mode=ro + query_only + BEGIN consistent read; no export/broker; FILL latest correction by activity_id through evidence cutoff, transaction_time within regular session",
+    "session_confirmation": [
+      {
+        "sequence": 24015,
+        "at": "2026-10-13T17:24:04.538812-04:00",
+        "clock": {
+          "is_open": false,
+          "next_close": "2026-10-14T16:00:00-04:00",
+          "next_open": "2026-10-14T09:30:00-04:00",
+          "timestamp": "2026-10-13T17:24:04.646416644-04:00"
+        }
+      },
+      {
+        "sequence": 24020,
+        "at": "2026-10-14T10:57:33.496602-04:00",
+        "clock": {
+          "is_open": true,
+          "next_close": "2026-10-14T16:00:00-04:00",
+          "next_open": "2026-10-15T09:30:00-04:00",
+          "timestamp": "2026-10-14T10:57:33.234660496-04:00"
+        }
+      }
+    ]
+  },
+  "scope": {
+    "instruments": "US equities only",
+    "capital_limit_usd": 100000,
+    "swing_budget_usd": 50000,
+    "intraday_budget_usd": 50000,
+    "drawdown_halt_fraction": 0.1,
+    "start_reference": {
+      "as_of": "2026-09-30T17:13:00-04:00",
+      "equity_usd": 100000,
+      "cash_usd": 100000,
+      "positions": []
+    }
+  },
+  "equity": {
+    "current_usd": 101117.01,
+    "as_of": "2026-10-14T15:59:16.631840015-04:00",
+    "source": "Last archived pre-close observation, 43.368 seconds before regular close; not official close.",
+    "official_open_usd": null,
+    "official_close_usd": null,
+    "previous_day_usd": null,
+    "previous_day_as_of": null,
+    "previous_day_basis": "Prior official close unavailable. See prior_day_observation for a distinct post-close observation baseline.",
+    "prior_day_observation": {
+      "as_of": "2026-10-13T17:24:04.646416644-04:00",
+      "equity_usd": 100635.75,
+      "cash_usd": 50672.33,
+      "source": "October 13 post-close observation only; not prior official close."
+    },
+    "cash_usd": 51111.21,
+    "external_cash_flows_usd": null,
+    "cash_flow_note": "External cash flows and complete fees were not independently queried; null does not mean verified zero.",
+    "first_observation": {
+      "as_of": "2026-10-14T10:57:33.234660496-04:00",
+      "equity_usd": 101045.68,
+      "cash_usd": 50672.33,
+      "source": "First available observation 87 minutes 33.235 seconds after regular open."
+    },
+    "post_session_observation": {
+      "as_of": "2026-10-14T16:26:11.911716987-04:00",
+      "equity_usd": 101039.94,
+      "cash_usd": 51111.21,
+      "source": "After-close observation, never substituted for regular-session closing value."
+    }
+  },
+  "fills": [
+    {
+      "execution_key": "ad181823218c9a93c102ff6b80ce30e3324fff78ffeda07d5c2f65db0b4a2642",
+      "at": "2026-10-14T14:58:52.906831Z",
+      "symbol": "ABBV",
+      "side": "sell",
+      "quantity": 36.0,
+      "quantity_unit": "shares",
+      "price_usd": 282.54,
+      "sleeve": "swing",
+      "asset_class": "us_equity"
+    },
+    {
+      "execution_key": "8284bc888fee6ed1c0cbe6b2c6bfb237c409a9412296569160a5e791f85fb123",
+      "at": "2026-10-14T14:58:57.48614Z",
+      "symbol": "NOW",
+      "side": "buy",
+      "quantity": 15.0,
+      "quantity_unit": "shares",
+      "price_usd": 139.15,
+      "sleeve": "swing",
+      "asset_class": "us_equity"
+    },
+    {
+      "execution_key": "f20003a3737f1456462dfa6a29e4771c4017037a60e294248ffcb7275c70f475",
+      "at": "2026-10-14T14:58:57.725092Z",
+      "symbol": "NOW",
+      "side": "buy",
+      "quantity": 35.0,
+      "quantity_unit": "shares",
+      "price_usd": 139.15,
+      "sleeve": "swing",
+      "asset_class": "us_equity"
+    },
+    {
+      "execution_key": "77f56e5b4876f66450fb8df866384098afbfda1ea803a2d24ca4355da810c294",
+      "at": "2026-10-14T14:58:58.604126Z",
+      "symbol": "NOW",
+      "side": "buy",
+      "quantity": 19.0,
+      "quantity_unit": "shares",
+      "price_usd": 139.14,
+      "sleeve": "swing",
+      "asset_class": "us_equity"
+    },
+    {
+      "execution_key": "ce9a9be78f512a47ebfbe8612c5725a9e0455175d057ef68531bd77346971f74",
+      "at": "2026-10-14T14:58:59.014976Z",
+      "symbol": "NOW",
+      "side": "buy",
+      "quantity": 1.0,
+      "quantity_unit": "shares",
+      "price_usd": 139.14,
+      "sleeve": "swing",
+      "asset_class": "us_equity"
+    },
+    {
+      "execution_key": "644c39b6c22f8fa97d7e6e42ee17e396675a551730dc827de1ebaa65d652abf6",
+      "at": "2026-10-14T15:46:32.047641Z",
+      "symbol": "JPM",
+      "side": "buy",
+      "quantity": 20.0,
+      "quantity_unit": "shares",
+      "price_usd": 334.01,
+      "sleeve": "intraday",
+      "asset_class": "us_equity"
+    },
+    {
+      "execution_key": "dd1bd71ffbea9c41e931599725d290a03a37b341d6719904fc8e1ce427ad958d",
+      "at": "2026-10-14T15:46:32.742915Z",
+      "symbol": "JPM",
+      "side": "buy",
+      "quantity": 17.0,
+      "quantity_unit": "shares",
+      "price_usd": 334.06,
+      "sleeve": "intraday",
+      "asset_class": "us_equity"
+    },
+    {
+      "execution_key": "ccf0e75511f73010b1cd5d055456cc75e1e6821746082fbbc6fdd5341535b509",
+      "at": "2026-10-14T15:46:33.182577Z",
+      "symbol": "JPM",
+      "side": "buy",
+      "quantity": 12.0,
+      "quantity_unit": "shares",
+      "price_usd": 334.07,
+      "sleeve": "intraday",
+      "asset_class": "us_equity"
+    },
+    {
+      "execution_key": "964768f81ef2f4e48def2d707419e83a41a2048213f95d0ce23244ddb359f9ad",
+      "at": "2026-10-14T19:40:59.990107Z",
+      "symbol": "JPM",
+      "side": "sell",
+      "quantity": 49.0,
+      "quantity_unit": "shares",
+      "price_usd": 334.2,
+      "sleeve": "intraday",
+      "asset_class": "us_equity"
+    }
+  ],
+  "fill_count": 9,
+  "positions": [
+    {
+      "symbol": "CRM",
+      "qty": "44",
+      "avg_entry_price": "223.829773",
+      "current_price": "236.03",
+      "market_value": "10385.32",
+      "unrealized_pl": "536.809988",
+      "sleeve": "swing",
+      "asset_class": "us_equity",
+      "quantity_unit": "shares"
+    },
+    {
+      "symbol": "MSFT",
+      "qty": "19",
+      "avg_entry_price": "519.691579",
+      "current_price": "533.19",
+      "market_value": "10130.61",
+      "unrealized_pl": "256.469999",
+      "sleeve": "swing",
+      "asset_class": "us_equity",
+      "quantity_unit": "shares"
+    },
+    {
+      "symbol": "NOW",
+      "qty": "70",
+      "avg_entry_price": "139.147142",
+      "current_price": "139.985",
+      "market_value": "9798.95",
+      "unrealized_pl": "58.65006",
+      "sleeve": "swing",
+      "asset_class": "us_equity",
+      "quantity_unit": "shares"
+    },
+    {
+      "symbol": "PFE",
+      "qty": "351",
+      "avg_entry_price": "28.44",
+      "current_price": "29.22",
+      "market_value": "10256.22",
+      "unrealized_pl": "273.78",
+      "sleeve": "swing",
+      "asset_class": "us_equity",
+      "quantity_unit": "shares"
+    },
+    {
+      "symbol": "TMO",
+      "qty": "14",
+      "avg_entry_price": "669.78",
+      "current_price": "674.07",
+      "market_value": "9436.98",
+      "unrealized_pl": "60.06",
+      "sleeve": "swing",
+      "asset_class": "us_equity",
+      "quantity_unit": "shares"
+    }
+  ],
+  "positions_basis": {
+    "as_of": "2026-10-14T15:59:16.631840015-04:00",
+    "archive_sequence": 26807,
+    "source": "Last pre-close sequential broker snapshot; not exact closing holdings or valuation."
+  },
+  "closing_positions": null,
+  "options_positions": [],
+  "performance": {
+    "day_pnl_usd": null,
+    "day_return": null,
+    "observed_change_from_previous_usd": null,
+    "observed_return_from_previous": null,
+    "first_to_last_observed_change_usd": 71.33,
+    "first_to_last_observed_return": 0.000705918352966739,
+    "observation_interval": {
+      "from": "2026-10-14T10:57:33.234660496-04:00",
+      "to": "2026-10-14T15:59:16.631840015-04:00"
+    },
+    "realized_gross_usd": 415.4,
+    "fees_usd": null,
+    "closed_trades": 2,
+    "wins": 2,
+    "losses": 0,
+    "closed_trade_details": [
+      {
+        "symbol": "ABBV",
+        "sleeve": "swing",
+        "quantity": 36.0,
+        "gross_pnl_usd": 407.66,
+        "exit_at": "2026-10-14T14:58:52.906831Z",
+        "basis": "Corrected historical actual FILL FIFO; ABBV entry occurred October 8, not all realized profit accrued today."
+      },
+      {
+        "symbol": "JPM",
+        "sleeve": "intraday",
+        "quantity": 49.0,
+        "gross_pnl_usd": 7.74,
+        "exit_at": "2026-10-14T19:40:59.990107Z",
+        "basis": "Corrected actual intraday FILL FIFO; fees unavailable."
+      }
+    ],
+    "buy_notional_usd": 26108.36,
+    "sell_notional_usd": 26547.24,
+    "observed_session_max_drawdown": 0.0019412919886230284,
+    "max_drawdown_from_system_peak_observed_today": 0.0019378424971702168,
+    "current_drawdown": 0.0017283681014350627,
+    "sleeve_observed_first_to_last_change_usd": {
+      "swing": 63.25865999999951,
+      "intraday": 7.739991000002192
+    },
+    "sleeves_last_observed": {
+      "intraday": {
+        "budget": 50000,
+        "market_value": 0,
+        "params": {
+          "opening_range_minutes": 30,
+          "stop_pct": 0.015,
+          "top_n": 3,
+          "volume_ratio": 1.5
+        },
+        "stage": "baseline_paper_experiment",
+        "tracked_equity": 50209.259975
+      },
+      "swing": {
+        "budget": 50000,
+        "market_value": 50005.47,
+        "params": {
+          "momentum": 60,
+          "stop_pct": 0.05,
+          "top_n": 5,
+          "trend": 60
+        },
+        "stage": "baseline_paper_experiment",
+        "tracked_equity": 50912.150043
+      }
+    },
+    "sleeve_valuation_note": "Sequential account, position marks and cumulative-fill accounting differ in timing. Sleeve changes sum to about 70.998651 versus account 71.33; do not force attribution. Missing opening interval prevents full-day return/drawdown conclusions."
+  },
+  "audit": {
+    "conclusion": "9笔独立FILL、4张订单、2个完成平仓回合，毛实现+$415.40；买入限价和下单前数量计算均通过。开盘记录缺失，整日收益未知。ABBV撤止损到退出成交约62.454秒，已明确披露。",
+    "issues": [
+      "09:30至10:57:33缺少运行/账户证据；正式开盘、精确收盘、前日正式收盘及整日收益均未知。",
+      "ABBV券商止损取消至退出成交62.453764秒；中间快照观察36股、止损覆盖0股。",
+      "波段浮动市值最高50373.3514美元，超过50000名义分配；新增买单遵守剩余额度，不能称所有观察市值始终低于5万。",
+      "两笔市价退出缺下单前报价，退出滑点不可计算。",
+      "NOW报价与决策/主机记录存在毫秒级时钟偏差；完整时间顺序的精度有限。",
+      "费用与非FILL资金流未独立查询；只有两笔平仓不能验证策略有效。"
+    ],
+    "fill_basis": "Latest known revision per activity_id through evidence cutoff, then actual transaction_time filtered to regular session; exclude connection test; submission and cumulative fill observations are not FILL.",
+    "fill_revision_rows": 9,
+    "known_deduplicated_fill_count": 9,
+    "fill_completeness": "Nine archived actual executions verified and matched to four orders; missing opening runtime evidence prevents a claim of uninterrupted collection.",
+    "order_checks": [
+      {
+        "sequence": 24037,
+        "at": "2026-10-14T10:58:52.096186-04:00",
+        "order_key": "a4d959e56ed79bcebf0115a71123383c9ffce6684b87309aeea2c0a4c8244538",
+        "symbol": "ABBV",
+        "side": "sell",
+        "sleeve": "swing",
+        "type": "market",
+        "quantity": 36.0,
+        "limit": null,
+        "fill_count": 1,
+        "filled_quantity": 36.0,
+        "vwap": 282.54,
+        "limit_pass": null,
+        "ask_slippage_bps": null,
+        "mid_slippage_bps": null,
+        "sizing_pass": null,
+        "decision_minus_quote_seconds": null,
+        "spread_fraction": null,
+        "signal": null,
+        "strategy": {
+          "params": {
+            "momentum": 60,
+            "stop_pct": 0.05,
+            "top_n": 5,
+            "trend": 60
+          },
+          "stage": "baseline_paper_experiment"
+        }
+      },
+      {
+        "sequence": 24048,
+        "at": "2026-10-14T10:58:56.882851-04:00",
+        "order_key": "9e1d816ed446561d6e287b5356d6883384580cae11262f6ad8ffc75ac4c75d0b",
+        "symbol": "NOW",
+        "side": "buy",
+        "sleeve": "swing",
+        "type": "limit",
+        "quantity": 70.0,
+        "limit": 139.21,
+        "fill_count": 4,
+        "filled_quantity": 70.0,
+        "vwap": 139.14714285714285,
+        "limit_pass": true,
+        "ask_slippage_bps": -0.20532826856989317,
+        "mid_slippage_bps": 4.467976930857542,
+        "sizing_pass": true,
+        "decision_minus_quote_seconds": -0.007943,
+        "spread_fraction": 0.0009346802315130708,
+        "signal": {
+          "price": 138.555,
+          "reason": "60-session momentum 32.28%; volatility 30.20%; above SMA60; SPY above SMA120",
+          "score": 1.06900706,
+          "symbol": "NOW"
+        },
+        "strategy": {
+          "params": {
+            "momentum": 60,
+            "stop_pct": 0.05,
+            "top_n": 5,
+            "trend": 60
+          },
+          "stage": "baseline_paper_experiment"
+        }
+      },
+      {
+        "sequence": 24446,
+        "at": "2026-10-14T11:46:31.060220-04:00",
+        "order_key": "831124f5f0380348fad623116bea4b26ad84db4a766dd189d0f1bcc9f392adcd",
+        "symbol": "JPM",
+        "side": "buy",
+        "sleeve": "intraday",
+        "type": "limit",
+        "quantity": 49.0,
+        "limit": 334.22,
+        "fill_count": 3,
+        "filled_quantity": 49.0,
+        "vwap": 334.0420408163265,
+        "limit_pass": true,
+        "ask_slippage_bps": -0.5376035344994978,
+        "mid_slippage_bps": 0.9592771571664827,
+        "sizing_pass": true,
+        "decision_minus_quote_seconds": 1.359513,
+        "spread_fraction": 0.0002993922337655242,
+        "signal": {
+          "price": 333.92,
+          "reason": "30m opening-range breakout; volume 3.09x; close above session VWAP 332.1389",
+          "score": 2.89716735,
+          "signal_time": "2026-10-14T11:45:00-04:00",
+          "stop_pct": 0.015,
+          "symbol": "JPM",
+          "volume_ratio": 3.08764807,
+          "vwap": 332.13889121
+        },
+        "strategy": {
+          "params": {
+            "opening_range_minutes": 30,
+            "stop_pct": 0.015,
+            "top_n": 3,
+            "volume_ratio": 1.5
+          },
+          "stage": "baseline_paper_experiment"
+        }
+      },
+      {
+        "sequence": 26668,
+        "at": "2026-10-14T15:40:58.617598-04:00",
+        "order_key": "87163c2e1f9b6940be786afb0ff4bc7a88e04218027eeb6ebe6467805b92970d",
+        "symbol": "JPM",
+        "side": "sell",
+        "sleeve": "intraday",
+        "type": "market",
+        "quantity": 49.0,
+        "limit": null,
+        "fill_count": 1,
+        "filled_quantity": 49.0,
+        "vwap": 334.2,
+        "limit_pass": null,
+        "ask_slippage_bps": null,
+        "mid_slippage_bps": null,
+        "sizing_pass": null,
+        "decision_minus_quote_seconds": null,
+        "spread_fraction": null,
+        "signal": null,
+        "strategy": {
+          "params": {
+            "opening_range_minutes": 30,
+            "stop_pct": 0.015,
+            "top_n": 3,
+            "volume_ratio": 1.5
+          },
+          "stage": "baseline_paper_experiment"
+        }
+      }
+    ],
+    "stop_snapshot_gaps": [
+      {
+        "sequence": 24035,
+        "at": "2026-10-14T10:58:51.918495-04:00",
+        "clock": "2026-10-14T10:58:51.664744627-04:00",
+        "positions": [
+          {
+            "symbol": "ABBV",
+            "position_qty": 36.0,
+            "confirmed_stop_qty": 0.0
+          }
+        ]
+      }
+    ],
+    "broker_timestamp_stop_intervals": [
+      {
+        "kind": "canceled_stop_to_exit_fill",
+        "symbol": "ABBV",
+        "evidence_sequence": 24034,
+        "stop_canceled_at": "2026-10-14T14:57:50.453067983Z",
+        "exit_fill_at": "2026-10-14T14:58:52.906831Z",
+        "seconds": 62.453764
+      },
+      {
+        "kind": "buy_fills_to_stop_submitted",
+        "symbol": "NOW",
+        "evidence_sequence": 24056,
+        "first_fill_at": "2026-10-14T14:58:57.48614Z",
+        "last_fill_at": "2026-10-14T14:58:59.014976Z",
+        "stop_submitted_at": "2026-10-14T14:58:59.024482645Z",
+        "first_fill_seconds": 1.538342,
+        "full_fill_seconds": 0.009506,
+        "observed_status": "new"
+      },
+      {
+        "kind": "buy_fills_to_stop_submitted",
+        "symbol": "JPM",
+        "evidence_sequence": 24452,
+        "first_fill_at": "2026-10-14T15:46:32.047641Z",
+        "last_fill_at": "2026-10-14T15:46:33.182577Z",
+        "stop_submitted_at": "2026-10-14T15:46:33.200389573Z",
+        "first_fill_seconds": 1.152748,
+        "full_fill_seconds": 0.017812,
+        "observed_status": "new"
+      },
+      {
+        "kind": "canceled_stop_to_exit_fill",
+        "symbol": "JPM",
+        "evidence_sequence": 26674,
+        "stop_canceled_at": "2026-10-14T19:40:58.921803835Z",
+        "exit_fill_at": "2026-10-14T19:40:59.990107Z",
+        "seconds": 1.068304
+      }
+    ],
+    "stop_coverage_note": "Stop submitted_at and observed new status are distinct evidence. Snapshots cannot guarantee continuous coverage between observations or during runtime gaps.",
+    "run_count": 252,
+    "run_counts": {
+      "status": 4,
+      "cycle": 248
+    },
+    "run_status_counts": {
+      "completed": 251,
+      "completed_with_alerts": 1
+    },
+    "runtime_gaps": {
+      "opening_to_first_observation_seconds": 5253.23466,
+      "last_observation_to_close_seconds": 43.36816,
+      "observation_gaps_over_120s": [
+        {
+          "from": "2026-10-14T11:12:47.011228615-04:00",
+          "to": "2026-10-14T11:17:03.789072698-04:00",
+          "seconds": 256.777844
+        },
+        {
+          "from": "2026-10-14T11:17:03.789072698-04:00",
+          "to": "2026-10-14T11:22:21.7464066-04:00",
+          "seconds": 317.957334
+        }
+      ]
+    },
+    "research_samples_summary": {
+      "observations": 14880,
+      "runs": 248,
+      "rows_per_run_distribution": {
+        "60": 248
+      },
+      "unique_strategy_symbol_market_time_params": 260,
+      "unique_by_sleeve": {
+        "swing": 50,
+        "intraday": 210
+      },
+      "observations_by_sleeve": {
+        "swing": 12400,
+        "intraday": 2480
+      },
+      "missing_market_time": 0,
+      "unevaluated": 10,
+      "decisions": {
+        "not_selected": 13517,
+        "selected": 1353,
+        "data_unavailable": 10
+      },
+      "max_sample_sequence": 137220,
+      "selection_runs_missing_inputs": 0,
+      "selection_runs_missing_samples": 0
+    },
+    "input_integrity_checks": {
+      "verified_dataset_blob_count": 496,
+      "unique_dataset_blob_count": 22,
+      "missing_universe_rows": [],
+      "future_or_unfinished_sample_bars": [],
+      "future_or_unfinished_input_bars": []
+    },
+    "max_gross_positions_usd": 66556.57,
+    "max_sleeve_market_value_usd": {
+      "swing": 50373.3514,
+      "intraday": 16462.04
+    },
+    "risk_checks": {
+      "buy_intents_budget_pass": true,
+      "total_observed_conservative_exposure_below_capital": true,
+      "every_swing_market_value_observation_below_budget": false,
+      "latched_drawdown_halt_observed": false,
+      "unmatched_sells": [],
+      "intraday_flat_by": "2026-10-14T15:40:59.990107-04:00",
+      "unknown_activity_observed": false,
+      "last_observed_stop_coverage": "Five swing holdings match quantities of new stop orders at the pre-close snapshot only."
+    },
+    "parameter_promotions": 0,
+    "version_hashes": {
+      "config_hash": {
+        "0d4b9eafc05f60e2d5ca951544554407b90ba9c4385c0c058e7f4841a379e50c": 252
+      },
+      "strategy_hash": {
+        "d60a3b94fbbc0b0736568df026c2256bad1cf4b6cb40e0d047a8e024a1b62af2": 252
+      },
+      "source_hash": {
+        "2a3093c17a1810a52a87f57d95132d45f5d71a51f6b5a2f2eaea8e3e8a9fb1cc": 15,
+        "62a839be19b22596a9a1d89a1a8c874dc8488879b611e2284967f4d33ec888e4": 237
+      }
+    },
+    "source_manifest_diff": {
+      "added_paths": [],
+      "removed_paths": [
+        "AlpacaPaper.psm1",
+        "Manage-Trader.ps1",
+        "Manage-TraderStartup.ps1",
+        "Run-Trader.ps1"
+      ],
+      "changed_common_paths": [],
+      "python_versions": {
+        "2a3093c17a1810a52a87f57d95132d45f5d71a51f6b5a2f2eaea8e3e8a9fb1cc": "3.12.14 (main, Aug 25 2026, 14:01:42) [MSC v.1944 64 bit (AMD64)]",
+        "62a839be19b22596a9a1d89a1a8c874dc8488879b611e2284967f4d33ec888e4": "3.12.14 (main, Aug 25 2026, 14:01:42) [MSC v.1944 64 bit (AMD64)]"
+      }
+    },
+    "analysis_code_sha256": "4c324e12b7b4008f18e90973240cc5e7ea082da0df5e45208dbebca2802be9bf",
+    "later_positions_observation": {
+      "as_of": "2026-10-14T16:26:11.911716987-04:00",
+      "positions": [
+        {
+          "symbol": "CRM",
+          "qty": "44",
+          "market_value": "10381.8",
+          "current_price": "235.95",
+          "sleeve": "swing"
+        },
+        {
+          "symbol": "MSFT",
+          "qty": "19",
+          "market_value": "10123.77",
+          "current_price": "532.83",
+          "sleeve": "swing"
+        },
+        {
+          "symbol": "NOW",
+          "qty": "70",
+          "market_value": "9766.4",
+          "current_price": "139.52",
+          "sleeve": "swing"
+        },
+        {
+          "symbol": "PFE",
+          "qty": "351",
+          "market_value": "10242.18",
+          "current_price": "29.18",
+          "sleeve": "swing"
+        },
+        {
+          "symbol": "TMO",
+          "qty": "14",
+          "market_value": "9414.58",
+          "current_price": "672.47",
+          "sleeve": "swing"
+        }
+      ],
+      "note": "After regular close; not closing holdings. No later FILL through cutoff, continued overnight swing risk."
+    },
+    "hypotheses": [
+      "后续核验启动后归档是否持续，并监测交接缺口。",
+      "研究撤止损到确认退出的时延分布；本次不改退出策略或重发订单。",
+      "明确本金/买入预算与浮动市值差异，继续披露波段市值超预算观察。"
+    ],
+    "comparison_limits": "Account start dates, equity/options scope, polling frequency and valuation timestamps differ. No same-close ranking is supportable. Codex remains equities only; no options enabled.",
+    "peer_read": {
+      "source_commit": "3c51478b236809bb5032ace0b6c26fe242d74208",
+      "latest_available_review": "2026-10-13",
+      "today_review_available": false,
+      "source_path": "exchange/claude/2026-10-13.json",
+      "source_blob": "a5e717f6e9a2f788fa7a6ec819ce70545a9a6118",
+      "source_content_sha256": "872c376211af9682456e9ba642b47a270def229f409340472888d9cd33422701",
+      "prior_reply": "exchange/codex/2026-10-13.peer-1715-reply-v1.json",
+      "changed_since_prior_reply": false,
+      "result": "Latest formal peer questions already answered; unchanged source receives no duplicate reply. October 14 research letter is addressed to claude-b, not a Codex instruction."
+    }
+  },
+  "replies": []
+}
