@@ -5,7 +5,9 @@ the events logged since the last push (a cursor in <journal>/notify_cursor.json)
 fills, exits, results, rounds, errors, halts, live orders other than the resting protective stops -- are
 sent to the webhook in DC_WEBHOOK as Discord embeds: one header card with the account's value, then one card
 per position (contract or stock) with what happened to it and, while it is held, its size, cost, price and
-open profit; the colour says how it is going. Once a day after 15:55 ET every holding gets a card.
+open profit; the colour says how it is going. Sleeve lines lead with the ledger's name (SPY 末日 $1k) and a
+result's percentage. Once a day after 15:55 ET: one card listing every holding, and for a journal with sleeves
+the ledgers' scoreboard (each at cost against its start, today's realized result).
 Without DC_WEBHOOK it does nothing. The first run for a journal only sets the cursor, so the history is not
 replayed. It never raises: a failed push is printed (without the address) and the cursor stays put.
 `python -m hero.notify --test` sends one line to check the connection; `--replay [YYYY-MM-DD]` re-sends
@@ -40,6 +42,11 @@ BLUE, GREEN, RED, ORANGE, GREY = 0x3498DB, 0x2ECC71, 0xE74C3C, 0xE67E22, 0x95A5A
 EMBEDS_PER_MESSAGE, CHARS_PER_MESSAGE = 10, 5500  # Discord: 10 embeds and 6,000 characters per message
 HOLDINGS_AFTER = "15:55"
 OCC = re.compile(r"\b([A-Z]{1,6})(\d{2})(\d{2})(\d{2})([CP])(\d{8})\b")
+SLEEVE = {"spy0dte": "SPY 末日", "qqq0dte": "QQQ 末日", "tsla0dte": "TSLA 末日", "nvda0dte": "NVDA 末日",
+          "spy0dte-near": "SPY 末日·近档", "tsla0dte-5x": "TSLA 末日·5 倍", "wk-trend": "周票·趋势", "wk-momo": "周票·动量",
+          "wk-news": "周票·新闻", "net": "撒网", "gap": "低开反弹", "flush": "急跌反弹", "earn": "财报彩票", "tqqq": "TQQQ 趋势",
+          "relay": "接力", "spydip": "SPY 昨跌", "opengap": "开盘跳空", "oneshot": "一把到", "sniper": "开盘狙击",
+          "overnight": "隔夜动量", "pead": "财报漂移", "vixspike": "恐慌反弹"}
 BROKER = {"no available quote": "合约没有报价（没人接手），市价单被拒",
           "insufficient": "资金或可卖数量不够", "market is closed": "市场已收盘",
           "potential wash trade": "可能构成对敲交易，被拒"}
@@ -69,6 +76,32 @@ def broker_error(text: str) -> str:
     return f"券商拒绝：{msg.strip()[:160]}"
 
 
+def sleeve_name(sid: str) -> str:
+    """spy0dte-1000 -> SPY 末日 $1k (unknown ids keep their own name)."""
+    m = re.fullmatch(r"(.+)-(\d+)", sid or "")
+    if not m:
+        return sid
+    amt = int(m.group(2))
+    return f"{SLEEVE.get(m.group(1), m.group(1))} ${amt // 1000}k" if amt >= 1000 and amt % 1000 == 0 else \
+        f"{SLEEVE.get(m.group(1), m.group(1))} ${amt:,}"
+
+
+def sleeve_text(e: dict, text: str) -> str:
+    """A sleeve event's sentence, led by the ledger's name; the contract (on the card's title) and the result's
+    percentage (moved to the front) are not repeated."""
+    sid, sym = e.get("sleeve") or "", e.get("symbol") or ""
+    for lead in (f"{sid}：{sym} ", f"{sid}：{sym}", f"{sid}："):
+        if sid and text.startswith(lead):
+            text = text[len(lead):]
+            break
+    text = text.replace("挂在券商", "已挂单")
+    name = f"**{sleeve_name(sid)}**" if sid else ""
+    if e.get("kind") == "sleeve_result" and isinstance(e.get("ret"), (int, float)):
+        text = re.sub(r"（[+-]?\d[\d,]*%）", "", text)
+        return f"{name} **{e['ret']:+.0%}** · {text}".strip()
+    return f"{name} {text}".strip()
+
+
 def action(e: dict) -> str:
     side, sym = e.get("side"), e.get("symbol") or ""
     if e.get("kind") != "order" or side not in ("buy", "sell"):
@@ -85,6 +118,8 @@ def body(e: dict) -> str:
         text = broker_error(text) if ("http" in text or '"message"' in text) else text
         if e.get("source") and not e.get("symbol"):
             text = f"出错（{e['source']}）：{text}"
+    if e.get("sleeve"):
+        text = sleeve_text(e, text)
     act = action(e)
     return readable(f"**{act}**：{text}" if act else text)
 
@@ -94,6 +129,14 @@ def hhmm(e: dict) -> str:
         return datetime.fromisoformat(e["ts"]).astimezone(ET).strftime("%H:%M")
     except Exception:
         return "?"
+
+
+def icon(kind: str, text: str) -> str:
+    if kind in ("sleeve_result", "zdte_result"):
+        m = re.search(r"\*\*([+-])\d", text) or re.search(r"（([+-])\d+%）", text)
+        if m:
+            return "🟢" if m.group(1) == "+" else "🔴"
+    return ICON.get(kind, "•")
 
 
 def lines(evs: list[dict]) -> list[str]:
@@ -107,7 +150,7 @@ def lines(evs: list[dict]) -> list[str]:
             seen[key][2] = t
         else:
             seen[key] = [t, 1, t]
-    return [(f"{ICON.get(k, '•')} `{t0}` {text}" + (f"（重复 {n} 次，到 {t1}）" if n > 1 else ""))[:700]
+    return [(f"{icon(k, text)} `{t0}` {text}" + (f"（重复 {n} 次，到 {t1}）" if n > 1 else ""))[:700]
             for (k, text), (t0, n, t1) in seen.items()]
 
 
@@ -187,11 +230,89 @@ def cards(root: Path, evs: list[dict], title: str, holdings: bool = False) -> li
             card["footer"] = {"text": "已不在持仓里"}
         out.append(card)
     if holdings:
-        rest = [p for s, p in held.items() if s not in by_sym]
-        for p in sorted(rest, key=lambda p: -abs(float(p.get("market_value") or 0))):
-            out.append({"title": readable(p["symbol"]), "color": colour([], p), "fields": position_fields(p),
-                        "footer": {"text": "收盘持仓"}})
+        for extra in (lambda: holdings_cards(list(held.values())), lambda: ledger_cards(root, today_of(evs))):
+            try:  # a summary card must never cost the events their push
+                out += extra()
+            except Exception as e:
+                print(f"notify: summary card skipped ({type(e).__name__})")
     return out
+
+
+def today_of(evs: list[dict]) -> str:
+    try:
+        return max(datetime.fromisoformat(e["ts"]).astimezone(ET).date().isoformat() for e in evs)
+    except Exception:
+        return datetime.now(ET).date().isoformat()
+
+
+def chunked(title: str, rows: list[str], color: int, footer: str = "") -> list[dict]:
+    """Rows as one card (or several, each under Discord's description limit)."""
+    out, cur = [], []
+    for r in rows:
+        if cur and len("\n".join(cur + [r])) > 3800:
+            out.append(cur)
+            cur = []
+        cur.append(r)
+    if cur:
+        out.append(cur)
+    cards_ = []
+    for i, rs in enumerate(out):
+        c = {"title": title if i == 0 else f"{title}（续）", "color": color, "description": "\n".join(rs)}
+        if footer:
+            c["footer"] = {"text": footer}
+        cards_.append(c)
+    return cards_
+
+
+def holdings_cards(pos: list[dict]) -> list[dict]:
+    """Every holding as one line in one card, the largest first, with the total open profit."""
+    if not pos:
+        return []
+    rows, total = [], 0.0
+    for p in sorted(pos, key=lambda p: -abs(float(p.get("market_value") or 0))):
+        unit = "张" if OCC.search(p.get("symbol", "")) else "股"
+        pl = float(p.get("unrealized_pl") or 0)
+        pct = float(p.get("unrealized_plpc") or 0)
+        total += pl
+        rows.append(f"{'🟢' if pl >= 0 else '🔴'} **{readable(p['symbol'])}** {float(p.get('qty', 0)):g} {unit} · "
+                    f"{money(p.get('avg_entry_price', 0))} → {money(p.get('current_price', 0))} · **{pl:+,.0f}**（{pct:+.0%}）")
+    return chunked(f"收盘持仓 {len(pos)} 个 · 浮动 {total:+,.0f}", rows, GREEN if total >= 0 else RED)
+
+
+def ledger_cards(root: Path, day: str) -> list[dict]:
+    """The sleeves' scoreboard (journal-s500/sleeves.json): each ledger at cost, today's realized result, rounds."""
+    try:
+        book = json.loads((root / "sleeves.json").read_text()).get("sleeves") or {}
+    except Exception:
+        return []
+    rows, sum_now, sum_start, sum_today = [], 0.0, 0.0, 0.0
+    scored = []
+    for sid, s in book.items():
+        held = sum(float(t.get("paid") or 0) for t in s.get("open") or [])
+        now, start = float(s.get("cash") or 0) + held, float(s.get("start") or 0)
+        today = sum(float(t.get("proceeds") or 0) - float(t.get("paid") or 0) for t in s.get("closed") or []
+                    if str(t.get("closed", "")).startswith(day))
+        sum_now, sum_start, sum_today = sum_now + now, sum_start + start, sum_today + today
+        scored.append((now / start if start else 0, sid, s, now, start, today, len(s.get("open") or [])))
+    idle = [sid for ratio, sid, s, now, start, today, n in scored
+            if abs(now - start) < 0.5 and not n and not today and int(s.get("round") or 1) == 1]
+    for ratio, sid, s, now, start, today, n in sorted(scored, key=lambda x: -x[0]):
+        if sid in idle:
+            continue
+        mark = "🏆" if ratio >= 2 else "🟢" if ratio >= 1 else "🔴"
+        extra = [f"今天 {today:+,.0f}" if today else "", f"持 {n} 笔" if n else "",
+                 f"第 {s['round']} 轮" if int(s.get("round") or 1) > 1 else ""]
+        rows.append(f"{mark} **{sleeve_name(sid)}** ${now:,.0f}（{ratio:.2f} 倍）" + "".join(f" · {x}" for x in extra if x))
+    if idle:
+        names: dict[str, list[str]] = {}
+        for sid in idle:
+            base, _, amt = sid.rpartition("-")
+            names.setdefault(SLEEVE.get(base, base), []).append(amt)
+        rows.append("⚪ 还没出手：" + "、".join(f"{k}（{'/'.join(v)}）" for k, v in names.items()))
+    if not rows:
+        return []
+    return chunked(f"账本榜 · 合计 ${sum_now:,.0f} / 起点 ${sum_start:,.0f} · 今天已实现 {sum_today:+,.0f}", rows,
+                   GREEN if sum_today >= 0 else RED, "持仓按成本算；🏆 = 到起点 2 倍以上")
 
 
 def size(card: dict) -> int:

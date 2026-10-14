@@ -2152,12 +2152,45 @@ class Notify(unittest.TestCase):
             notify.push_journal(root, "u", late)
             embeds = sent[-1]["embeds"]
             self.assertEqual(embeds[0]["title"], "主账户 $100k（收盘持仓）")
-            amd = embeds[1]
-            self.assertEqual((amd["title"], amd["color"], amd["footer"]["text"]), ("AMD", notify.RED, "收盘持仓"))
-            self.assertIn({"name": "浮动盈亏", "value": "-218.40（-2.3%）", "inline": True}, amd["fields"])
+            card = embeds[1]                                                    # all holdings in one card
+            self.assertEqual((card["title"], card["color"]), ("收盘持仓 1 个 · 浮动 -218", notify.RED))
+            self.assertEqual(card["description"], "🔴 **AMD** 15 股 · $636.06 → $621.50 · **-218**（-2%）")
+            self.assertEqual(len(embeds), 2)                                    # no ledgers in this journal
             sent.clear()
             notify.push_journal(root, "u", late)
             self.assertEqual(sent, [])                                          # once a day
+
+    def test_sleeve_lines_lead_with_the_ledger_and_the_result(self):
+        from hero import notify
+        res = notify.lines([{"ts": "2026-10-14T15:50:00+00:00", "kind": "sleeve_result", "sleeve": "spy0dte-1000",
+                             "symbol": "SPY261014P00768000", "ret": 2.0,
+                             "why": "spy0dte-1000：SPY261014P00768000 3 倍止盈（券商挂单成交），花 $98.00、收回 $294.00（+200%），账本 $610.00"}])
+        self.assertEqual(res, ["🟢 `11:50` **SPY 末日 $1k** **+200%** · 3 倍止盈（券商挂单成交），花 $98.00、收回 $294.00，账本 $610.00"])
+        fill = notify.lines([{"ts": "2026-10-14T14:00:00+00:00", "kind": "sleeve_fill", "sleeve": "tsla0dte-5x-500",
+                              "symbol": "TSLA261014P00362500", "why": "tsla0dte-5x-500：TSLA261014P00362500 成交 1 张 × $0.85，花 $85.00；"
+                                                                      "1 张 5 倍止盈 $4.25 挂在券商"}])
+        self.assertEqual(fill, ["✅ `10:00` **TSLA 末日·5 倍 $500** 成交 1 张 × $0.85，花 $85.00；1 张 5 倍止盈 $4.25 已挂单"])
+        lost = notify.lines([{"ts": "2026-10-14T13:30:00+00:00", "kind": "sleeve_result", "sleeve": "earn-500", "symbol": "X", "ret": -0.97,
+                              "why": "earn-500：X 到时卖出，花 $60.00、收回 $2.00（-97%），账本 $343.00"}])
+        self.assertTrue(lost[0].startswith("🔴 `09:30` **财报彩票 $500** **-97%** · 到时卖出"))
+
+    def test_ledger_scoreboard_after_the_close(self):
+        from hero import notify
+        with tempfile.TemporaryDirectory() as d:
+            root = self.journal(d)
+            led = lambda cash, start, **k: {"cash": cash, "start": start, "round": 1, "open": [], "closed": [], **k}
+            (root / "sleeves.json").write_text(json.dumps({"sleeves": {
+                "nvda0dte-500": led(1300.0, 500, open=[{"paid": 134.0}],
+                                    closed=[{"closed": "2026-10-14 11:00", "paid": 220.0, "proceeds": 660.0},
+                                            {"closed": "2026-10-13 15:30", "paid": 100.0, "proceeds": 0.0}]),
+                "relay-1000": led(1000.0, 1000, round=2),
+                "net-500": led(500.0, 500), "net-1000": led(1000.0, 1000)}}))
+            cards = notify.ledger_cards(root, "2026-10-14")
+            self.assertEqual(cards[0]["title"], "账本榜 · 合计 $3,934 / 起点 $3,000 · 今天已实现 +440")
+            rows = cards[0]["description"].split("\n")
+            self.assertEqual(rows[0], "🏆 **NVDA 末日 $500** $1,434（2.87 倍） · 今天 +440 · 持 1 笔")
+            self.assertEqual(rows[1], "🟢 **接力 $1k** $1,000（1.00 倍） · 第 2 轮")
+            self.assertEqual(rows[2], "⚪ 还没出手：撒网（500/1000）")
 
     def test_order_lines_say_buy_or_sell_and_how_much(self):
         from hero import notify
