@@ -1,0 +1,177 @@
+{
+  "schema_version": "1.0",
+  "producer": "Codex",
+  "mode": "PAPER",
+  "currency": "USD",
+  "trading_date": "2026-10-09",
+  "timezone": "America/New_York",
+  "status": "limited_post_market_review",
+  "as_of": null,
+  "generated_at": "2026-10-14T11:45:49.926725-04:00",
+  "evidence_cutoff": {
+    "archive_event_sequence": 24435,
+    "archive_at": "2026-10-14T15:45:24.912430+00:00",
+    "session_start": "2026-10-09T09:30:00-04:00",
+    "session_end": "2026-10-09T16:00:00-04:00",
+    "method": "SQLite mode=ro BEGIN consistent read; all known FILL correction versions reduced by activity_id, then filtered by transaction_time; no manual trading cycle",
+    "session_confirmation": [
+      {
+        "sequence": 24004,
+        "recorded_at": "2026-10-08T21:11:37.999571+00:00",
+        "as_of": "2026-10-08T17:11:38.116431095-04:00",
+        "next_open": "2026-10-09T09:30:00-04:00",
+        "next_close": "2026-10-09T16:00:00-04:00"
+      },
+      {
+        "sequence": 24009,
+        "recorded_at": "2026-10-08T21:16:39.701108+00:00",
+        "as_of": "2026-10-08T17:16:39.837345705-04:00",
+        "next_open": "2026-10-09T09:30:00-04:00",
+        "next_close": "2026-10-09T16:00:00-04:00"
+      }
+    ]
+  },
+  "scope": {
+    "instruments": "US equities only",
+    "capital_limit_usd": 100000,
+    "swing_budget_usd": 50000,
+    "intraday_budget_usd": 50000,
+    "drawdown_halt_fraction": 0.1
+  },
+  "equity": {
+    "current_usd": null,
+    "as_of": null,
+    "source": "No October 9 account observation archived",
+    "official_close_usd": null,
+    "previous_day_usd": 99326.27,
+    "previous_day_as_of": "2026-10-08T15:59:59.894879216-04:00",
+    "previous_day_basis": "last archived October 8 pre-close observation; not official close",
+    "cash_usd": null,
+    "external_cash_flows_usd": null,
+    "note": "Baseline is an observed reference only. No October 9 return can be calculated; fees and non-FILL cash flows were not queried."
+  },
+  "fills": [],
+  "fill_count": 0,
+  "positions": null,
+  "positions_basis": {
+    "as_of": null,
+    "source": "No October 9 position snapshot; unknown, not flat"
+  },
+  "closing_positions": null,
+  "options_positions": [],
+  "performance": {
+    "observed_change_from_previous_usd": null,
+    "observed_return_from_previous": null,
+    "realized_gross_usd": null,
+    "fees_usd": null,
+    "closed_trades": null,
+    "wins": null,
+    "losses": null,
+    "observed_session_max_drawdown": null,
+    "current_drawdown": null,
+    "swing_pnl_usd": null,
+    "intraday_pnl_usd": null,
+    "sleeve_valuation_note": "No October 9 sleeve valuation. Sequential account/position quotes and fee timing need not coincide; do not force attribution."
+  },
+  "audit": {
+    "conclusion": "有限缺失数据审核：交易日已由前一日归档时钟确认，但本日无交易轮次、账户和样本证据，不能判断盈亏或执行质量。",
+    "issues": [
+      "此前pending_session_confirmation遗漏了前一日闭市时钟；已通过归档事件24004、24009确认本日09:30至16:00常规交易时段。",
+      "本日交易轮次、事件、样本及采集输入记录均为0；不等于账户没有发生交易。",
+      "截至证据截止，按activity_id取已知最新修正版本后，没有transaction_time落在本日时段的归档FILL；历史成交采集完整性未证明，实际成交总数未知。",
+      "没有本日开盘/收盘净值、现金、持仓、报价或订单链证据；收益、最大回撤、已实现损益和已平仓统计均不可计算。",
+      "上一日99326.27美元仅为2026-10-08 15:59:59.894879216美东的收盘前观察基准，非官方收盘。",
+      "费用与非FILL现金流未查询；external_cash_flows_usd为null，不宣称已核验为零。",
+      "采样轮次0、每轮观察总条数0、去重有效条数0；每轮行数无适用值。缺时间样本/未评估样本均无记录，不能解释为不存在漏采。",
+      "没有本日候选评估或正式参数升级证据；不能依据缺失记录证明没有升级，也不将历史失败候选计为升级。"
+    ],
+    "archived_counts": {
+      "events": 0,
+      "runs": 0,
+      "samples": 0,
+      "datasets": 0
+    },
+    "known_deduplicated_fill_count": 0,
+    "actual_fill_total": null,
+    "fill_completeness": "unknown; empty fills only reports absence in archive, not verified zero trading",
+    "checks_unverifiable": [
+      "下单前策略/版本与信号理由、当时可见行情和仓位计算",
+      "限价与真实FILL匹配、相对报价滑点",
+      "重复或不确定订单、拒单/撤单/未成交及退出异常",
+      "保护止损覆盖与连续性",
+      "日内清仓截止、隔夜仓位归属与未知仓位",
+      "总额及两个策略预算、10%回撤停机规则在当日的遵守情况"
+    ],
+    "research_samples_summary": {
+      "round_count": 0,
+      "observation_rows": 0,
+      "per_round_rows": null,
+      "deduplicated_valid_rows": 0,
+      "missing_market_timestamp_rows": 0,
+      "unevaluated_recorded_rows": 0,
+      "deduplication_key": "sleeve/symbol/market_timestamp/parameter_version",
+      "coverage": "No recorded samples; zero counts do not establish zero opportunities."
+    },
+    "runtime_gap": "No evidence in the full October 9 session; reason not established from archive alone.",
+    "later_risk_observation": {
+      "as_of": "2026-10-14T11:45:24.219530035-04:00",
+      "equity_usd": 101007.75,
+      "cash_usd": 51103.47,
+      "drawdown_from_observed_peak": 0.0007558059300097897,
+      "source": "later archived equity observation; not October 9 close"
+    },
+    "later_risk_note": "October 14 observation is after the reviewed session and cannot substitute for October 9 equity, drawdown or holdings. Latest strategy still carries swing exposure; October 9 carryover ownership and stop coverage remain unverified.",
+    "research_hypotheses": [
+      "后续验证中断期间是否能通过只读券商历史成交/账户历史补全缺口；未经获得可核验证据前不回填。"
+    ],
+    "comparison_limits": "Different account start dates, stock/options scope and valuation timestamps prevent a same-close comparison. Current Codex options are unauthorized and not enabled.",
+    "peer_read": {
+      "checked_source_commit": "972c9f57a57595346394eb8b64d7ec5b9c8648f6",
+      "source_path": "exchange/claude/2026-10-09.json",
+      "source_blob": "50594bca4b70a710f1a124375dcc9178bf68e1a3",
+      "changed_since_prior_reply": false,
+      "prior_reply": "exchange/codex/2026-10-12.peer-1715-reply-v1.json",
+      "result": "Previously addressed source is unchanged; no duplicate reply."
+    },
+    "later_positions_observation": {
+      "as_of": "2026-10-14T11:45:24.219530035-04:00",
+      "recorded_at": "2026-10-14T15:45:24.448717+00:00",
+      "archive_sequence": 24426,
+      "positions": [
+        {
+          "symbol": "CRM",
+          "quantity": "44",
+          "quantity_unit": "shares",
+          "sleeve": "swing"
+        },
+        {
+          "symbol": "MSFT",
+          "quantity": "19",
+          "quantity_unit": "shares",
+          "sleeve": "swing"
+        },
+        {
+          "symbol": "NOW",
+          "quantity": "70",
+          "quantity_unit": "shares",
+          "sleeve": "swing"
+        },
+        {
+          "symbol": "PFE",
+          "quantity": "351",
+          "quantity_unit": "shares",
+          "sleeve": "swing"
+        },
+        {
+          "symbol": "TMO",
+          "quantity": "14",
+          "quantity_unit": "shares",
+          "sleeve": "swing"
+        }
+      ],
+      "attribution_basis": "Each observed quantity matches the net of all known corrected FILL quantities attributed to swing through the evidence cutoff. Account, clock and positions are sequential observations.",
+      "scope_note": "After the reviewed session; not October 9 closing holdings or a guarantee of continuous protective stop coverage."
+    }
+  },
+  "replies": []
+}
