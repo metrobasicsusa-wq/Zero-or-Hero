@@ -22,7 +22,7 @@
      "exit_day": "2026-10-14",
      "exit_at": "15:30",
      "trail": true,
-     "best_bid": 0.49,
+     "best_bid": 0.69,
      "expiry_out": null
     }
    ],
@@ -139,7 +139,7 @@
      "exit_day": "2026-10-14",
      "exit_at": "15:30",
      "trail": true,
-     "best_bid": 0.49,
+     "best_bid": 0.69,
      "expiry_out": null
     }
    ],
@@ -460,7 +460,7 @@
      "exit_day": "2026-10-14",
      "exit_at": "15:30",
      "trail": false,
-     "best_bid": 0.53,
+     "best_bid": 0.57,
      "expiry_out": null,
      "take_x": 3,
      "take": 2.55,
@@ -526,7 +526,7 @@
      "exit_day": "2026-10-14",
      "exit_at": "15:30",
      "trail": false,
-     "best_bid": 0.53,
+     "best_bid": 0.57,
      "expiry_out": null,
      "take_x": 3,
      "take": 2.55,
@@ -547,7 +547,7 @@
      "exit_day": "2026-10-14",
      "exit_at": "15:30",
      "trail": true,
-     "best_bid": 0.53,
+     "best_bid": 0.57,
      "expiry_out": null
     }
    ],
@@ -590,32 +590,11 @@
   },
   "nvda0dte-500": {
    "start": 500.0,
-   "cash": 554.0,
+   "cash": 1214.0,
    "round": 1,
    "heroes": 0,
    "zeros": 0,
    "open": [
-    {
-     "tid": "8cf35c0ab6",
-     "kind": "zdte",
-     "sym": "NVDA261014P00222500",
-     "asset": "option",
-     "und": "NVDA",
-     "qty": 5,
-     "cost": 0.44,
-     "paid": 220.0,
-     "opened": "2026-10-14 10:00",
-     "why": "NVDA 开盘 $225.54、现在 $224.44，顺势买当天到期看跌 222.5（离现价 0.9%），3 倍止盈，15:30 平仓",
-     "expiry": "2026-10-14",
-     "exit_day": "2026-10-14",
-     "exit_at": "15:30",
-     "trail": false,
-     "best_bid": 0.93,
-     "expiry_out": null,
-     "take_x": 3,
-     "take": 1.32,
-     "take_cid": "sl-nvda0dte-500-8cf35c0ab6-t2708"
-    },
     {
      "tid": "08931a9524",
      "kind": "zdte",
@@ -631,7 +610,7 @@
      "exit_day": "2026-10-14",
      "exit_at": "15:30",
      "trail": true,
-     "best_bid": 0.93,
+     "best_bid": 1.32,
      "expiry_out": null
     }
    ],
@@ -661,32 +640,16 @@
      "how": "3 倍止盈（券商挂单成交）",
      "closed": "2026-10-12 10:10",
      "ret": 2.0
-    }
-   ],
-   "slots": {
-    "2026-10-12": "2026-10-12T10:00-04:00",
-    "2026-10-13": "2026-10-13T10:00-04:00",
-    "2026-10-14": "2026-10-14T10:00-04:00"
-   },
-   "best": 994.0,
-   "created": null
-  },
-  "nvda0dte-1000": {
-   "start": 1000.0,
-   "cash": 1108.0,
-   "round": 1,
-   "heroes": 0,
-   "zeros": 0,
-   "open": [
+    },
     {
-     "tid": "07e90919f6",
+     "tid": "8cf35c0ab6",
      "kind": "zdte",
      "sym": "NVDA261014P00222500",
      "asset": "option",
      "und": "NVDA",
-     "qty": 10,
+     "qty": 5,
      "cost": 0.44,
-     "paid": 440.0,
+     "paid": 220.0,
      "opened": "2026-10-14 10:00",
      "why": "NVDA 开盘 $225.54、现在 $224.44，顺势买当天到期看跌 222.5（离现价 0.9%），3 倍止盈，15:30 平仓",
      "expiry": "2026-10-14",
@@ -697,8 +660,30 @@
      "expiry_out": null,
      "take_x": 3,
      "take": 1.32,
-     "take_cid": "sl-nvda0dte-1000-07e90919f6-td0f1"
-    },
+     "take_cid": "sl-nvda0dte-500-8cf35c0ab6-t2708",
+     "state": "closed",
+     "exit_price": 1.32,
+     "proceeds": 660.0,
+     "how": "3 倍止盈（券商挂单成交）",
+     "closed": "2026-10-14 12:22",
+     "ret": 2.0
+    }
+   ],
+   "slots": {
+    "2026-10-12": "2026-10-12T10:00-04:00",
+    "2026-10-13": "2026-10-13T10:00-04:00",
+    "2026-10-14": "2026-10-14T10:00-04:00"
+   },
+   "best": 1214.0,
+   "created": null
+  },
+  "nvda0dte-1000": {
+   "start": 1000.0,
+   "cash": 2428.0,
+   "round": 1,
+   "heroes": 0,
+   "zeros": 0,
+   "open": [
     {
      "tid": "cc40e6b791",
      "kind": "zdte",
@@ -714,7 +699,7 @@
      "exit_day": "2026-10-14",
      "exit_at": "15:30",
      "trail": true,
-     "best_bid": 0.93,
+     "best_bid": 1.32,
      "expiry_out": null
     }
    ],
@@ -744,6 +729,33 @@
      "how": "3 倍止盈（券商挂单成交）",
      "closed": "2026-10-12 10:10",
      "ret": 2.0
+    },
+    {
+     "tid": "07e90919f6",
+     "kind": "zdte",
+     "sym": "NVDA261014P00222500",
+     "asset": "option",
+     "und": "NVDA",
+     "qty": 10,
+     "cost": 0.44,
+     "paid": 440.0,
+     "opened": "2026-10-14 10:00",
+     "why": "NVDA 开盘 $225.54、现在 $224.44，顺势买当天到期看跌 222.5（离现价 0.9%），3 倍止盈，15:30 平仓",
+     "expiry": "2026-10-14",
+     "exit_day": "2026-10-14",
+     "exit_at": "15:30",
+     "trail": false,
+     "best_bid": 0.93,
+     "expiry_out": null,
+     "take_x": 3,
+     "take": 1.32,
+     "take_cid": "sl-nvda0dte-1000-07e90919f6-td0f1",
+     "state": "closed",
+     "exit_price": 1.32,
+     "proceeds": 1320.0,
+     "how": "3 倍止盈（券商挂单成交）",
+     "closed": "2026-10-14 12:22",
+     "ret": 2.0
     }
    ],
    "slots": {
@@ -751,7 +763,7 @@
     "2026-10-13": "2026-10-13T10:00-04:00",
     "2026-10-14": "2026-10-14T10:00-04:00"
    },
-   "best": 1988.0,
+   "best": 2428.0,
    "created": null
   },
   "spy0dte-near-500": {
@@ -776,7 +788,7 @@
      "exit_day": "2026-10-14",
      "exit_at": "15:30",
      "trail": true,
-     "best_bid": 1.64,
+     "best_bid": 2.14,
      "expiry_out": null
     }
    ],
@@ -893,7 +905,7 @@
      "exit_day": "2026-10-14",
      "exit_at": "15:30",
      "trail": true,
-     "best_bid": 1.64,
+     "best_bid": 2.14,
      "expiry_out": null
     }
    ],
@@ -1010,7 +1022,7 @@
      "exit_day": "2026-10-14",
      "exit_at": "15:30",
      "trail": false,
-     "best_bid": 0.53,
+     "best_bid": 0.57,
      "expiry_out": null,
      "take_x": 5,
      "take": 4.25,
@@ -1076,7 +1088,7 @@
      "exit_day": "2026-10-14",
      "exit_at": "15:30",
      "trail": false,
-     "best_bid": 0.53,
+     "best_bid": 0.57,
      "expiry_out": null,
      "take_x": 5,
      "take": 4.25,
@@ -1097,7 +1109,7 @@
      "exit_day": "2026-10-14",
      "exit_at": "15:30",
      "trail": true,
-     "best_bid": 0.53,
+     "best_bid": 0.57,
      "expiry_out": null
     }
    ],
