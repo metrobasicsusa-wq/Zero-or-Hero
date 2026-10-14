@@ -2174,6 +2174,18 @@ class Notify(unittest.TestCase):
                               "why": "earn-500：X 到时卖出，花 $60.00、收回 $2.00（-97%），账本 $343.00"}])
         self.assertTrue(lost[0].startswith("🔴 `09:30` **财报彩票 $500** **-97%** · 到时卖出"))
 
+    def test_a_held_position_opens_its_card_with_two_short_lines(self):
+        from hero import notify
+        pos = [{"symbol": "NVDA261014P00222500", "qty": "15", "avg_entry_price": "0.44", "current_price": "1.27",
+                "unrealized_pl": "1245", "unrealized_plpc": "1.886", "unrealized_intraday_pl": "1245"}]
+        with tempfile.TemporaryDirectory() as d:
+            root = self.journal(d, positions=pos)
+            card = notify.cards(root, [{"ts": "2026-10-14T14:00:00+00:00", "kind": "sleeve_fill", "sleeve": "nvda0dte-500",
+                                        "symbol": "NVDA261014P00222500", "qty": 10, "price": 0.44,
+                                        "why": "nvda0dte-500：NVDA261014P00222500 成交 10 张 × $0.44，花 $440.00"}], "多账本 $50k")[1]
+        self.assertNotIn("fields", card)
+        self.assertTrue(card["description"].startswith("持仓 15 张 · 成本 $0.44\n现价 $1.27 · 浮动 **+1,245**（+189%）\n\n✅"))
+
     def test_the_same_contract_across_ledgers_folds_into_one_line_each(self):
         from hero import notify
         sym = "TSLA261014P00362500"

@@ -5,7 +5,7 @@ the events logged since the last push (a cursor in <journal>/notify_cursor.json)
 fills, exits, results, rounds, errors, halts, live orders other than the resting protective stops -- are
 sent to the webhook in DC_WEBHOOK as Discord embeds: one header card with the account's value, then one card
 per position (contract or stock) with what happened to it and, while it is held, its size, cost, price and
-open profit; the colour says how it is going. Sleeve lines lead with the ledger's name (SPY 末日 $1k) and a
+open profit (two lines at the top, so a phone shows them 2 x 2); the colour says how it is going. Sleeve lines lead with the ledger's name (SPY 末日 $1k) and a
 result's percentage. Once a day after 15:55 ET: one card listing every holding, and for a journal with sleeves
 the ledgers' scoreboard (each at cost against its start, today's realized result).
 Without DC_WEBHOOK it does nothing. The first run for a journal only sets the cursor, so the history is not
@@ -228,17 +228,20 @@ def money(x) -> str:
     return f"${float(x):,.2f}"
 
 
-def position_fields(p: dict) -> list[dict]:
+def position_block(p: dict) -> str:
+    """A holding as two short lines (Discord stacks inline fields one per row on a phone):
+    持仓 9 张 · 成本 $0.14
+    现价 $0.67 · 浮动 **+477**（+379%）"""
     unit = "张" if OCC.search(p.get("symbol", "")) else "股"
-    fields = [{"name": "持仓", "value": f"{float(p.get('qty', 0)):g} {unit}", "inline": True},
-              {"name": "成本", "value": money(p.get("avg_entry_price", 0)), "inline": True},
-              {"name": "现价", "value": money(p.get("current_price", 0)), "inline": True}]
+    first = f"持仓 {float(p.get('qty', 0)):g} {unit} · 成本 {money(p.get('avg_entry_price', 0))}"
+    second = f"现价 {money(p.get('current_price', 0))}"
     if p.get("unrealized_pl") is not None:
         pl, pct = float(p["unrealized_pl"]), float(p.get("unrealized_plpc") or 0)
-        fields.append({"name": "浮动盈亏", "value": f"{pl:+,.2f}（{pct:+.1%}）", "inline": True})
-    if p.get("unrealized_intraday_pl") is not None:
-        fields.append({"name": "今天", "value": f"{float(p['unrealized_intraday_pl']):+,.2f}", "inline": True})
-    return fields
+        second += f" · 浮动 **{pl:+,.0f}**（{pct:+.0%}）"
+    if p.get("unrealized_intraday_pl") is not None and p.get("unrealized_pl") is not None \
+            and abs(float(p["unrealized_intraday_pl"]) - float(p["unrealized_pl"])) >= 0.5:
+        second += f" · 今天 {float(p['unrealized_intraday_pl']):+,.0f}"
+    return f"{first}\n{second}"
 
 
 def colour(evs: list[dict], pos: dict | None) -> int:
@@ -285,11 +288,10 @@ def cards(root: Path, evs: list[dict], title: str, holdings: bool = False) -> li
     out = [header_card(root, title)]
     for sym, es in by_sym.items():
         pos = held.get(sym)
+        text = "\n".join(lines(es))[:3600]
         card = {"title": readable(sym) if sym else "其他", "color": colour(es, pos),
-                "description": "\n".join(lines(es))[:3800]}
-        if pos:
-            card["fields"] = position_fields(pos)
-        elif sym:
+                "description": f"{position_block(pos)}\n\n{text}" if pos else text}
+        if not pos and sym:
             card["footer"] = {"text": "已不在持仓里"}
         out.append(card)
     if holdings:
