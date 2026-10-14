@@ -1576,30 +1576,11 @@
   },
   "gap-1000": {
    "start": 1000.0,
-   "cash": 870.0,
+   "cash": 982.0,
    "round": 1,
    "heroes": 0,
    "zeros": 0,
-   "open": [
-    {
-     "tid": "329d9e578e",
-     "kind": "gap",
-     "sym": "CRWV261016C00069000",
-     "asset": "option",
-     "und": "CRWV",
-     "qty": 1,
-     "cost": 1.9,
-     "paid": 190.0,
-     "opened": "2026-10-14 09:50",
-     "why": "CRWV 低开 -7.5%，买看涨 69（2026-10-16 到期），翻倍后回撤 40% 卖，最晚 15:50",
-     "expiry": "2026-10-16",
-     "exit_day": "2026-10-14",
-     "exit_at": "15:50",
-     "trail": true,
-     "best_bid": 1.48,
-     "expiry_out": null
-    }
-   ],
+   "open": [],
    "closed": [
     {
      "tid": "be777037e1",
@@ -1701,6 +1682,32 @@
      "how": "翻倍后从最高 $0.63 回撤 40%",
      "closed": "2026-10-14 13:10",
      "ret": 1.0
+    },
+    {
+     "tid": "329d9e578e",
+     "kind": "gap",
+     "sym": "CRWV261016C00069000",
+     "asset": "option",
+     "und": "CRWV",
+     "qty": 1,
+     "cost": 1.9,
+     "paid": 190.0,
+     "opened": "2026-10-14 09:50",
+     "why": "CRWV 低开 -7.5%，买看涨 69（2026-10-16 到期），翻倍后回撤 40% 卖，最晚 15:50",
+     "expiry": "2026-10-16",
+     "exit_day": "2026-10-14",
+     "exit_at": "15:50",
+     "trail": true,
+     "best_bid": 1.48,
+     "expiry_out": null,
+     "sell_cid": "sl-gap-1000-329d9e578e-x9225",
+     "sell_why": "2026-10-14 15:50 到时卖出",
+     "state": "closed",
+     "exit_price": 1.12,
+     "proceeds": 112.0,
+     "how": "2026-10-14 15:50 到时卖出",
+     "closed": "2026-10-14 15:50",
+     "ret": -0.411
     }
    ],
    "slots": {
@@ -1784,7 +1791,7 @@
      "exit_day": "2026-10-15",
      "exit_at": "09:35",
      "trail": false,
-     "best_bid": 0.0,
+     "best_bid": 0.53,
      "expiry_out": null
     }
    ],
@@ -1889,7 +1896,7 @@
      "exit_day": "2026-10-15",
      "exit_at": "09:35",
      "trail": false,
-     "best_bid": 0.0,
+     "best_bid": 0.53,
      "expiry_out": null
     }
    ],
@@ -1980,11 +1987,12 @@
   },
   "tqqq-500": {
    "start": 500.0,
-   "cash": 0.01,
+   "cash": 465.63,
    "round": 1,
    "heroes": 0,
    "zeros": 0,
-   "open": [
+   "open": [],
+   "closed": [
     {
      "tid": "7d48412eeb",
      "kind": "letf",
@@ -1997,23 +2005,32 @@
      "opened": "2026-10-12 15:50",
      "why": "TQQQ $79.59 在 20 日均线 $78.03 上方，买入拿着",
      "exit_at": "15:50",
-     "best_bid": 78.83
+     "best_bid": 78.83,
+     "sell_cid": "sl-tqqq-500-7d48412eeb-x7a25",
+     "sell_why": "TQQQ 跌破 20 日均线（$78.89）",
+     "state": "closed",
+     "exit_price": 74.156815,
+     "proceeds": 465.62,
+     "how": "TQQQ 跌破 20 日均线（$78.89）",
+     "closed": "2026-10-14 15:50",
+     "ret": -0.069
     }
    ],
-   "closed": [],
    "slots": {
-    "2026-10-12": "2026-10-12T15:50-04:00"
+    "2026-10-12": "2026-10-12T15:50-04:00",
+    "2026-10-14": "2026-10-14T15:50-04:00"
    },
    "best": 500.0,
    "created": null
   },
   "tqqq-1000": {
    "start": 1000.0,
-   "cash": 0.01,
+   "cash": 931.49,
    "round": 1,
    "heroes": 0,
    "zeros": 0,
-   "open": [
+   "open": [],
+   "closed": [
     {
      "tid": "182e318e75",
      "kind": "letf",
@@ -2026,12 +2043,20 @@
      "opened": "2026-10-12 15:50",
      "why": "TQQQ $79.59 在 20 日均线 $78.03 上方，买入拿着",
      "exit_at": "15:50",
-     "best_bid": 78.83
+     "best_bid": 78.83,
+     "sell_cid": "sl-tqqq-1000-182e318e75-x652f",
+     "sell_why": "TQQQ 跌破 20 日均线（$78.89）",
+     "state": "closed",
+     "exit_price": 74.17,
+     "proceeds": 931.48,
+     "how": "TQQQ 跌破 20 日均线（$78.89）",
+     "closed": "2026-10-14 15:50",
+     "ret": -0.069
     }
    ],
-   "closed": [],
    "slots": {
-    "2026-10-12": "2026-10-12T15:50-04:00"
+    "2026-10-12": "2026-10-12T15:50-04:00",
+    "2026-10-14": "2026-10-14T15:50-04:00"
    },
    "best": 1000.0,
    "created": null
@@ -2150,25 +2175,67 @@
   },
   "overnight-500": {
    "start": 500.0,
-   "cash": 500.0,
+   "cash": 265.0,
    "round": 1,
    "heroes": 0,
    "zeros": 0,
-   "open": [],
+   "open": [
+    {
+     "tid": "6ed92ba4fe",
+     "kind": "overnight",
+     "sym": "WMT261023C00120000",
+     "asset": "option",
+     "und": "WMT",
+     "qty": 5,
+     "cost": 0.47,
+     "paid": 235.0,
+     "opened": "2026-10-14 15:50",
+     "why": "隔夜动量：WMT 今天涨 +3.2%、收在当天区间 97% 处、在 50 日均线上方，买看涨 120（2026-10-23 到期）；翻倍后回撤 40% 卖，否则 10-19 15:50 卖",
+     "expiry": "2026-10-23",
+     "exit_day": "2026-10-19",
+     "exit_at": "15:50",
+     "trail": true,
+     "best_bid": 0.0,
+     "expiry_out": null
+    }
+   ],
    "closed": [],
-   "slots": {},
+   "slots": {
+    "2026-10-14": "2026-10-14T15:50-04:00"
+   },
    "best": 500.0,
    "created": null
   },
   "overnight-1000": {
    "start": 1000.0,
-   "cash": 1000.0,
+   "cash": 530.0,
    "round": 1,
    "heroes": 0,
    "zeros": 0,
-   "open": [],
+   "open": [
+    {
+     "tid": "016b6721f5",
+     "kind": "overnight",
+     "sym": "WMT261023C00120000",
+     "asset": "option",
+     "und": "WMT",
+     "qty": 10,
+     "cost": 0.47,
+     "paid": 470.0,
+     "opened": "2026-10-14 15:50",
+     "why": "隔夜动量：WMT 今天涨 +3.2%、收在当天区间 97% 处、在 50 日均线上方，买看涨 120（2026-10-23 到期）；翻倍后回撤 40% 卖，否则 10-19 15:50 卖",
+     "expiry": "2026-10-23",
+     "exit_day": "2026-10-19",
+     "exit_at": "15:50",
+     "trail": true,
+     "best_bid": 0.0,
+     "expiry_out": null
+    }
+   ],
    "closed": [],
-   "slots": {},
+   "slots": {
+    "2026-10-14": "2026-10-14T15:50-04:00"
+   },
    "best": 1000.0,
    "created": null
   }
