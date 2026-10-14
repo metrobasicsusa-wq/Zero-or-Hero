@@ -1,19 +1,35 @@
 {
   "account": {
-    "buying_power": "177560.73",
-    "cash": "44025.51",
-    "equity": "46080.2",
+    "buying_power": "175752.79",
+    "cash": "43575.15",
+    "equity": "45971.34",
     "last_equity": "46405.3631482281",
-    "long_market_value": "2054.69",
-    "portfolio_value": "46080.2"
+    "long_market_value": "2396.19",
+    "portfolio_value": "45971.34"
   },
   "benchmark": {
-    "close": 578.22,
+    "close": 577.66,
     "date": "2026-10-14",
     "prev_close": 588.19,
     "symbol": "SMH"
   },
   "open_orders": [
+    {
+      "asset_class": "us_option",
+      "filled_at": null,
+      "filled_avg_price": null,
+      "filled_qty": "0",
+      "limit_price": "1.01",
+      "protective_stop": false,
+      "qty": "1",
+      "side": "buy",
+      "status": "new",
+      "stop_price": null,
+      "submitted_at": "2026-10-14T13:51:24.792916Z",
+      "symbol": "HPE261016C00067000",
+      "time_in_force": "day",
+      "type": "limit"
+    },
     {
       "asset_class": "us_option",
       "filled_at": null,
@@ -25,7 +41,7 @@
       "side": "sell",
       "status": "new",
       "stop_price": null,
-      "submitted_at": "2026-10-14T13:40:52.563240946Z",
+      "submitted_at": "2026-10-14T13:40:52.563241Z",
       "symbol": "QQQ261014C00744000",
       "time_in_force": "day",
       "type": "limit"
@@ -41,7 +57,7 @@
       "side": "sell",
       "status": "new",
       "stop_price": null,
-      "submitted_at": "2026-10-14T13:40:52.50282634Z",
+      "submitted_at": "2026-10-14T13:40:52.502826Z",
       "symbol": "QQQ261014C00744000",
       "time_in_force": "day",
       "type": "limit"
@@ -57,7 +73,7 @@
       "side": "sell",
       "status": "new",
       "stop_price": null,
-      "submitted_at": "2026-10-14T13:40:36.917496886Z",
+      "submitted_at": "2026-10-14T13:40:36.917497Z",
       "symbol": "BAC261016C00057500",
       "time_in_force": "day",
       "type": "limit"
@@ -162,6 +178,20 @@
   "positions": [
     {
       "asset_class": "us_option",
+      "avg_entry_price": "0.2",
+      "cost_basis": "260",
+      "current_price": "0.17",
+      "lastday_price": "3.15",
+      "market_value": "221",
+      "qty": "13",
+      "side": "long",
+      "symbol": "BAC261016C00051000",
+      "unrealized_intraday_pl": "-39",
+      "unrealized_pl": "-39",
+      "unrealized_plpc": "-0.15"
+    },
+    {
+      "asset_class": "us_option",
       "avg_entry_price": "0.09",
       "cost_basis": "153",
       "current_price": "0",
@@ -176,74 +206,88 @@
     },
     {
       "asset_class": "us_option",
+      "avg_entry_price": "1.9",
+      "cost_basis": "190",
+      "current_price": "1.56",
+      "lastday_price": "8.55",
+      "market_value": "156",
+      "qty": "1",
+      "side": "long",
+      "symbol": "CRWV261016C00069000",
+      "unrealized_intraday_pl": "-34",
+      "unrealized_pl": "-34",
+      "unrealized_plpc": "-0.17895"
+    },
+    {
+      "asset_class": "us_option",
       "avg_entry_price": "0.65",
       "cost_basis": "195",
-      "current_price": "0.32",
+      "current_price": "0.4",
       "lastday_price": "0.34",
-      "market_value": "96",
+      "market_value": "120",
       "qty": "3",
       "side": "long",
       "symbol": "NFLX261016C00072000",
-      "unrealized_intraday_pl": "-6",
-      "unrealized_pl": "-99",
-      "unrealized_plpc": "-0.50769"
+      "unrealized_intraday_pl": "18",
+      "unrealized_pl": "-75",
+      "unrealized_plpc": "-0.38462"
     },
     {
       "asset_class": "us_option",
       "avg_entry_price": "0.52",
       "cost_basis": "208",
-      "current_price": "0.51",
+      "current_price": "0.28",
       "lastday_price": "3.12",
-      "market_value": "204",
+      "market_value": "112",
       "qty": "4",
       "side": "long",
       "symbol": "QQQ261014C00744000",
-      "unrealized_intraday_pl": "-4",
-      "unrealized_pl": "-4",
-      "unrealized_plpc": "-0.01923"
+      "unrealized_intraday_pl": "-96",
+      "unrealized_pl": "-96",
+      "unrealized_plpc": "-0.46154"
     },
     {
       "asset_class": "us_option",
       "avg_entry_price": "0.96",
       "cost_basis": "96",
-      "current_price": "0.08",
+      "current_price": "0.07",
       "lastday_price": "0.39",
-      "market_value": "8",
+      "market_value": "7",
       "qty": "1",
       "side": "long",
       "symbol": "SMCI261016C00041000",
-      "unrealized_intraday_pl": "-31",
-      "unrealized_pl": "-88",
-      "unrealized_plpc": "-0.91667"
+      "unrealized_intraday_pl": "-32",
+      "unrealized_pl": "-89",
+      "unrealized_plpc": "-0.92708"
     },
     {
       "asset_class": "us_equity",
       "avg_entry_price": "79.626815",
       "cost_basis": "1499.980002",
-      "current_price": "77.435",
+      "current_price": "77.09",
       "lastday_price": "78.81",
-      "market_value": "1458.691415",
+      "market_value": "1452.192435",
       "qty": "18.83762401",
       "side": "long",
       "symbol": "TQQQ",
-      "unrealized_intraday_pl": "-25.901733",
-      "unrealized_pl": "-41.288587",
-      "unrealized_plpc": "-0.02753"
+      "unrealized_intraday_pl": "-32.400713",
+      "unrealized_pl": "-47.787567",
+      "unrealized_plpc": "-0.03186"
     },
     {
       "asset_class": "us_option",
       "avg_entry_price": "1.08",
       "cost_basis": "216",
-      "current_price": "1.44",
+      "current_price": "1.64",
       "lastday_price": "1.45",
-      "market_value": "288",
+      "market_value": "328",
       "qty": "2",
       "side": "long",
       "symbol": "XOM261016C00175000",
-      "unrealized_intraday_pl": "-2",
-      "unrealized_pl": "72",
-      "unrealized_plpc": "0.33333"
+      "unrealized_intraday_pl": "38",
+      "unrealized_pl": "112",
+      "unrealized_plpc": "0.51852"
     }
   ],
-  "ts": "2026-10-14T13:40:52+00:00"
+  "ts": "2026-10-14T13:52:25+00:00"
 }
