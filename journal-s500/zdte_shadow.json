@@ -229,7 +229,7 @@
     "best_bid": 0.96
    },
    "NVDA": {
-    "status": "open",
+    "status": "closed",
     "contract": "NVDA261014P00222500",
     "kind": "P",
     "strike": 222.5,
@@ -239,7 +239,11 @@
     "ask": 0.47,
     "spread": 0.0215,
     "opened_at": "10:00",
-    "best_bid": 1.32
+    "best_bid": 1.51,
+    "exit": "take",
+    "exit_bid": 1.51,
+    "exit_at": "12:30",
+    "ret": 2
    },
    "AMZN": {
     "status": "closed",
