@@ -1130,31 +1130,11 @@
   },
   "wk-trend-1000": {
    "start": 1000.0,
-   "cash": 796.0,
+   "cash": 1021.0,
    "round": 1,
    "heroes": 0,
    "zeros": 0,
    "open": [
-    {
-     "tid": "fc29b774a1",
-     "kind": "weekly",
-     "sym": "XOM261016C00175000",
-     "asset": "option",
-     "und": "XOM",
-     "qty": 1,
-     "cost": 1.08,
-     "paid": 108.0,
-     "opened": "2026-10-12 10:00",
-     "why": "随机挑中 XOM，20 日涨；买 10-16 到期看涨 175，2 倍止盈，到期前一天 15:50 卖",
-     "expiry": "2026-10-16",
-     "exit_day": "2026-10-15",
-     "exit_at": "15:50",
-     "trail": false,
-     "best_bid": 2.0,
-     "take_x": 2,
-     "take": 2.16,
-     "take_cid": "sl-wk-trend-1000-fc29b774a1-t5a22"
-    },
     {
      "tid": "0c522615ae",
      "kind": "weekly",
@@ -1176,11 +1156,38 @@
      "take_cid": "sl-wk-trend-1000-0c522615ae-t056e"
     }
    ],
-   "closed": [],
+   "closed": [
+    {
+     "tid": "fc29b774a1",
+     "kind": "weekly",
+     "sym": "XOM261016C00175000",
+     "asset": "option",
+     "und": "XOM",
+     "qty": 1,
+     "cost": 1.08,
+     "paid": 108.0,
+     "opened": "2026-10-12 10:00",
+     "why": "随机挑中 XOM，20 日涨；买 10-16 到期看涨 175，2 倍止盈，到期前一天 15:50 卖",
+     "expiry": "2026-10-16",
+     "exit_day": "2026-10-15",
+     "exit_at": "15:50",
+     "trail": false,
+     "best_bid": 2.0,
+     "take_x": 2,
+     "take": 2.16,
+     "take_cid": "sl-wk-trend-1000-fc29b774a1-t5a22",
+     "state": "closed",
+     "exit_price": 2.25,
+     "proceeds": 225.0,
+     "how": "2 倍止盈（券商挂单成交）",
+     "closed": "2026-10-14 11:20",
+     "ret": 1.083
+    }
+   ],
    "slots": {
     "2026-W42": "2026-10-12T10:00-04:00"
    },
-   "best": 1000.0,
+   "best": 1021.0,
    "created": null
   },
   "wk-momo-500": {
@@ -1248,7 +1255,7 @@
   },
   "wk-news-1000": {
    "start": 1000.0,
-   "cash": 762.0,
+   "cash": 987.0,
    "round": 1,
    "heroes": 0,
    "zeros": 0,
@@ -1272,7 +1279,9 @@
      "take_x": 2,
      "take": 1.3,
      "take_cid": "sl-wk-news-1000-c4065441c8-t5f55"
-    },
+    }
+   ],
+   "closed": [
     {
      "tid": "9e4347b5cc",
      "kind": "weekly",
@@ -1291,10 +1300,15 @@
      "best_bid": 2.0,
      "take_x": 2,
      "take": 2.16,
-     "take_cid": "sl-wk-news-1000-9e4347b5cc-te4f4"
+     "take_cid": "sl-wk-news-1000-9e4347b5cc-te4f4",
+     "state": "closed",
+     "exit_price": 2.25,
+     "proceeds": 225.0,
+     "how": "2 倍止盈（券商挂单成交）",
+     "closed": "2026-10-14 11:20",
+     "ret": 1.083
     }
    ],
-   "closed": [],
    "slots": {
     "2026-W42": "2026-10-12T10:00-04:00"
    },
@@ -1351,7 +1365,7 @@
      "exit_day": "2026-10-14",
      "exit_at": "15:50",
      "trail": true,
-     "best_bid": 0.18,
+     "best_bid": 0.21,
      "expiry_out": null
     }
    ],
@@ -1437,7 +1451,7 @@
      "exit_day": "2026-10-14",
      "exit_at": "15:50",
      "trail": true,
-     "best_bid": 0.18,
+     "best_bid": 0.21,
      "expiry_out": null
     },
     {
