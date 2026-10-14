@@ -72,7 +72,15 @@ jobs:
           git config user.name "zero-or-hero-bot"
           git config user.email "zero-or-hero-bot@users.noreply.github.com"
           git add ${{ matrix.exp.journal }} ${{ matrix.exp.exchange }}
-          git diff --cached --quiet || (git commit -m "review: post-market $day ${{ matrix.exp.name }} (${{ steps.write.outputs.status }})" && git pull --rebase && git push)
+          if ! git diff --cached --quiet; then
+            git commit -m "review: post-market $day ${{ matrix.exp.name }} (${{ steps.write.outputs.status }})"
+            for i in 1 2 3 4; do
+              git pull --rebase && git push && break
+              git rebase --abort 2>/dev/null || true
+              [ "$i" = 4 ] && exit 1
+              sleep $((i * 5))
+            done
+          fi
           title="盘后复盘 $day（${{ matrix.exp.name }}）"
           num=$(gh issue list --state all --label post-market --search "$title in:title" --json number,title --jq ".[] | select(.title == \"$title\") | .number" | head -1)
           if [ -n "$num" ]; then

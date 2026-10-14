@@ -7,6 +7,11 @@ at $10,000 it is a hero; either way it starts again at its start from the shared
 count is kept. Every broker order carries a client_order_id naming the sleeve and the ticket, and
 every fill is booked from the broker's own fill price, so the ledgers add up to the real account.
 
+The ledger lives in the journal, which a cycle commits at its end; if that commit is lost, the broker still
+has the orders. So a buy's ticket id starts with its slot (sl-<sleeve>-<slot>-<random>-b1), and each cycle
+first reads the day's orders from the broker: a buy no ledger knows is booked from the broker's fills
+(recover), and a slot the broker already has a buy for is never bought again.
+
 Live entries (all of a cycle's buys at once): a limit buy_pad above the ask; after fill_wait_s, the
 unfilled are cancelled and re-quoted once at the new ask + buy_pad (never above chase_cap x the first
 ask); still unfilled -> cancelled, no trade for that slot. A take, when the rule has one, rests at the
@@ -19,10 +24,12 @@ from __future__ import annotations
 
 import json
 import math
+import re
 import time
 import uuid
-from datetime import date, datetime
+from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
+from zoneinfo import ZoneInfo
 
 DEFAULTS = {"enabled": False, "fraction": 0.5, "zero_line": 0.1, "target": 10_000.0, "buy_pad": 0.01,
             "fill_wait_s": 60, "chase_cap": 1.3, "cash_buffer": 1_000.0}
@@ -115,6 +122,26 @@ def cid(sid: str, tid: str, tag: str) -> str:
     return f"sl-{sid}-{tid}-{tag}"
 
 
+def slot_key(slot: str) -> str:
+    """A slot as it appears in a buy's ticket id: letters and digits only (2026-W42 -> 2026W42)."""
+    return "".join(ch for ch in slot if ch.isalnum())
+
+
+SLOT_TID = re.compile(r"[A-Za-z0-9]+-[0-9a-f]{6}")
+
+
+def entry_tid(slot: str) -> str:
+    return f"{slot_key(slot)}-{uuid.uuid4().hex[:6]}"
+
+
+def occ_expiry(sym: str) -> str | None:
+    """SPY261014P00768000 -> 2026-10-14."""
+    if len(sym) <= 15 or not sym[-15:-9].isdigit():
+        return None
+    d = sym[-15:-9]
+    return f"20{d[:2]}-{d[2:4]}-{d[4:]}"
+
+
 class Runner:
     """One cycle of every sleeve against the broker. `rules` maps a kind to a hero.sleeve_rules function."""
 
@@ -126,6 +153,28 @@ class Runner:
         self.hhmm = now.strftime("%H:%M")
 
     # ---- broker helpers ----
+    def broker_orders(self) -> list[dict] | None:
+        """The broker's orders (any status) since the start of the previous weekday -- a cycle late in the day whose
+        commit was lost is caught the next morning -- read once per cycle; None if they could not be read."""
+        if "_orders" not in self.__dict__:
+            start = self.now.replace(hour=0, minute=0, second=0, microsecond=0)
+            if start.tzinfo is None:
+                start = start.replace(tzinfo=ZoneInfo("America/New_York"))
+            start -= timedelta(days=1)
+            while start.weekday() >= 5:
+                start -= timedelta(days=1)
+            try:
+                self._orders = list(self.c.orders_since(start.astimezone(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")) or [])
+            except Exception as e:
+                self.j.event("alert_error", source="sleeves:orders", error=str(e)[:200])
+                self._orders = None
+        return self._orders
+
+    def bought_at_broker(self, sid: str, slot: str) -> bool:
+        """The broker already has a buy for this sleeve and slot (sent by a cycle whose ledger was not saved)."""
+        lead = f"sl-{sid}-{slot_key(slot)}-"
+        return any((o.get("client_order_id") or "").startswith(lead) and o.get("side") == "buy" for o in self.broker_orders() or [])
+
     def order(self, client_order_id: str) -> dict:
         try:
             return self.c.order_by_client_id(client_order_id) or {}
@@ -166,12 +215,63 @@ class Runner:
 
     # ---- the cycle ----
     def run(self) -> None:
+        self.recover()
         self.manage()
         for spec in self.specs:
             msg = self.book.round_check(spec["id"], {**self.p, **{k: spec[k] for k in ("zero_line", "target") if k in spec}})
             if msg:
                 self.j.event("sleeve_round", dry_run=False, sleeve=spec["id"], why=msg)
         self.enter()
+
+    def recover(self) -> None:
+        """Book the buys the broker has (since the previous weekday) that no ledger knows: a cycle sent them and filled them, but its
+        journal commit was lost. Open orders of such a ticket are cancelled; what was sold is booked as closed, what is
+        still held as an open ticket on the trail, out at 15:30 on its expiry (stock: the rule's own exit)."""
+        orders = self.broker_orders()
+        if not orders:
+            return
+        known = [t["tid"] for s in self.book.d["sleeves"].values() for t in s["open"] + s["closed"]]
+        specs = sorted(self.specs, key=lambda x: -len(x["id"]))
+        parsed = []
+        for o in orders:
+            c = o.get("client_order_id") or ""
+            spec = next((x for x in specs if c.startswith(f"sl-{x['id']}-")), None)
+            if spec and "-" in c[len(spec["id"]) + 4:]:
+                tid, _, tag = c[len(spec["id"]) + 4:].rpartition("-")
+                parsed.append((spec, tid, tag, o))
+        lost = {(spec["id"], tid): spec for spec, tid, tag, o in parsed  # only slot-keyed ids (older ids are left alone)
+                if tag.startswith("b") and o.get("side") == "buy" and SLOT_TID.fullmatch(tid) and not any(k.startswith(tid) for k in known)}
+        for (sid, tid), spec in lost.items():
+            family = [(tag, o) for sp, t2, tag, o in parsed if sp["id"] == sid and t2.startswith(tid)]
+            for tag, o in family:
+                if o.get("status") in ("new", "accepted", "pending_new", "partially_filled", "held"):
+                    o.update(self.cancel(o["client_order_id"]) or {})
+            buys = [o for tag, o in family if o.get("side") == "buy"]
+            sells = [o for tag, o in family if o.get("side") == "sell"]
+            bought = sum(float(o.get("filled_qty") or 0) for o in buys)
+            if not bought:
+                continue
+            cost = sum(float(o.get("filled_qty") or 0) * float(o.get("filled_avg_price") or 0) for o in buys) / bought
+            sold = sum(float(o.get("filled_qty") or 0) for o in sells)
+            got = sum(float(o.get("filled_qty") or 0) * float(o.get("filled_avg_price") or 0) for o in sells)
+            sym = buys[0]["symbol"]
+            option = len(sym) > 10
+            mult = 100 if option else 1
+            exp = occ_expiry(sym) if option else None
+            base = {"kind": spec["kind"], "sym": sym, "asset": "option" if option else "stock", "und": sym[:-15] if option else sym,
+                    "cost": round(cost, 4), "opened": f"{self.today.isoformat()} {self.hhmm}", "expiry": exp,
+                    "exit_day": exp or (self.today.isoformat() if option else None), "exit_at": "15:30" if option else "15:50", "trail": option, "best_bid": 0.0,
+                    "why": "从券商找回：这笔买入的账本没保存上（上一轮提交失败）"}
+            if sold:
+                t = {**base, "tid": tid + "s", "qty": sold, "paid": round(cost * sold * mult, 2)}
+                self.book.open_ticket(sid, t)
+                self.closed(sid, t, round(got / sold, 4), "找回：已在券商卖出")
+            if bought - sold > 0:
+                qty = bought - sold
+                self.book.open_ticket(sid, {**base, "tid": tid, "qty": int(qty) if option else qty, "paid": round(cost * qty * mult, 2)})
+            self.j.event("sleeve_recover", dry_run=False, sleeve=sid, symbol=sym,
+                         why=f"{sid}：券商有一笔账本里没有的买入（{bought:g} × ${cost:.2f}，上一轮的账本没保存上），已补记"
+                             + (f"；其中 {sold:g} 已卖出" if sold else "") + (f"；剩下 {bought - sold:g} 按翻倍后回撤卖、到期日 15:30 卖" if bought - sold > 0 and option else ""))
 
     def manage(self) -> None:
         """Open tickets: book a filled take or sell, then decide exits."""
@@ -312,10 +412,14 @@ class Runner:
             s["slots"][slot] = self.now.isoformat(timespec="minutes")
             if not picks:
                 continue
+            if self.bought_at_broker(spec["id"], slot):
+                self.j.event("sleeve_skip", dry_run=False, sleeve=spec["id"], symbol=picks[0]["sym"],
+                             why=f"{spec['id']}：券商已有 {slot} 这个时段的买单（上一轮的账本没保存上），不重复买")
+                continue
             fraction = spec.get("fraction", self.p["fraction"])
             each = fraction * s["cash"] / len(picks)
             for pk in picks:
-                intents.append((spec, pk, each))
+                intents.append((spec, pk, each, slot))
         if not intents:
             return
         try:
@@ -324,11 +428,11 @@ class Runner:
             cash = 0.0
         room = cash - self.p["cash_buffer"]
         opts, stocks = [], []
-        for spec, pk, each in intents:
+        for spec, pk, each, slot in intents:
             if pk["asset"] == "stock":
                 notional = math.floor(min(each, room) * 100) / 100
                 if notional >= 1:
-                    stocks.append((spec, pk, notional))
+                    stocks.append((spec, pk, notional, slot))
                     room -= notional
                 continue
             limit = tick(pk["ask"] + self.p["buy_pad"])
@@ -341,7 +445,7 @@ class Runner:
                 self.j.event("sleeve_skip", dry_run=False, sleeve=spec["id"], symbol=pk["sym"], why=f"{spec['id']}：账户现金不够，不买")
                 continue
             room -= qty * limit * 100
-            opts.append({"spec": spec, "pk": pk, "limit": limit, "qty": qty, "each": each, "tid": new_tid(), "first_ask": pk["ask"]})
+            opts.append({"spec": spec, "pk": pk, "limit": limit, "qty": qty, "each": each, "tid": entry_tid(slot), "first_ask": pk["ask"]})
         self.buy_options(opts)
         self.buy_stocks(stocks)
 
@@ -401,7 +505,7 @@ class Runner:
         runner = None
         if pk.get("take") and pk.get("half") and qty >= 2:
             # half rides the take, the other half is a runner: out after 2x on a 40% giveback, else at the time exit
-            runner = {**t, "tid": new_tid(), "qty": qty - qty // 2, "trail": True}
+            runner = {**t, "tid": t["tid"] + "r", "qty": qty - qty // 2, "trail": True}  # its orders share the buy's prefix
             runner["paid"] = round(price * runner["qty"] * 100, 2)
             t["qty"] = qty // 2
             t["paid"] = round(t["paid"] - runner["paid"], 2)
@@ -418,8 +522,8 @@ class Runner:
                          + (f"；另 {runner['qty']} 张翻倍后回撤 40% 卖，否则 {t['exit_at']} 卖" if runner else ""))
 
     def buy_stocks(self, orders: list[tuple]) -> None:
-        for spec, pk, notional in orders:
-            tid = new_tid()
+        for spec, pk, notional, slot in orders:
+            tid = entry_tid(slot)
             c = cid(spec["id"], tid, "b")
             self.j.event("sleeve_buy", dry_run=False, sleeve=spec["id"], symbol=pk["sym"], why=f"{spec['id']}：{pk['why']}；买 ${notional:,.2f}")
             if not self.submit(symbol=pk["sym"], notional=f"{notional:.2f}", side="buy", type="market", time_in_force="day",

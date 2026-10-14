@@ -31,12 +31,12 @@ ET = ZoneInfo("America/New_York")
 LABEL = {"journal": "主账户 $100k", "journal-s500": "多账本 $50k"}
 PUSH = {"order", "close", "zdte_fill", "zdte_result", "zdte_skip", "sleeve_fill", "sleeve_exit", "sleeve_result",
         "sleeve_round", "sleeve_skip", "alert_error", "halt", "attempt_end", "rebalance_deferred", "buy_blocked",
-        "news_alert", "order_error"}
+        "news_alert", "order_error", "sleeve_recover"}
 QUIET_REASONS = {"protective_stop"}  # re-placed every cycle; the fills that matter show up as closes
 ICON = {"zdte_fill": "✅", "sleeve_fill": "✅", "order": "🛒", "close": "💰", "sleeve_exit": "💰", "zdte_result": "📊",
         "sleeve_result": "📊", "sleeve_round": "🔁", "zdte_skip": "⏭️", "sleeve_skip": "⏭️", "alert_error": "⚠️",
         "order_error": "⚠️", "halt": "🛑", "attempt_end": "🛑", "rebalance_deferred": "⏳", "buy_blocked": "⏳",
-        "news_alert": "📰"}
+        "news_alert": "📰", "sleeve_recover": "🩹"}
 ERRORS = {"alert_error", "order_error", "halt", "attempt_end"}
 BLUE, GREEN, RED, ORANGE, GREY = 0x3498DB, 0x2ECC71, 0xE74C3C, 0xE67E22, 0x95A5A6
 EMBEDS_PER_MESSAGE, CHARS_PER_MESSAGE = 10, 5500  # Discord: 10 embeds and 6,000 characters per message

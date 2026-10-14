@@ -2566,6 +2566,7 @@ class SleeveBroker:
         self.pos[rec["symbol"]] = round(self.pos.get(rec["symbol"], 0) + sign * qty, 6)
 
     def order_by_client_id(self, c): return self.orders.get(c, {})
+    def orders_since(self, after): return [dict(o) for o in reversed(list(self.orders.values()))]
     def cancel_order(self, oid):
         for r in self.orders.values():
             if r["id"] == oid and r["status"] == "new":
@@ -2615,6 +2616,50 @@ class Sleeves(unittest.TestCase):
         self.assertEqual(b.pos["SPY2026-10-08C707"], 0)
         book, log = self.cycle(b, 12, 0)
         self.assertEqual(len([o for o in b.orders.values() if o["side"] == "buy"]), 2)  # one try a day
+
+    def test_a_lost_ledger_is_rebuilt_from_the_broker_and_the_slot_is_not_bought_again(self):
+        b = SleeveBroker(lambda s: (0.08, 0.10))
+        self.cycle(b, 10, 0, self.specs[:1])
+        buy = next(o for o in b.orders.values() if o["side"] == "buy")
+        self.assertTrue(buy["client_order_id"].startswith("sl-spy0dte-500-20261008-"))   # the slot is in the id
+        (self.root / "sleeves.json").unlink()                                            # the cycle's commit was lost
+        book, log = self.cycle(b, 10, 10, self.specs[:1])
+        self.assertEqual(len([o for o in b.orders.values() if o["side"] == "buy"]), 1)   # not bought again
+        s = book.s("spy0dte-500")
+        t = s["open"][0]
+        self.assertEqual((t["qty"], t["cost"], t["trail"], t["exit_at"]), (12, 0.11, True, "15:30"))
+        self.assertEqual(s["cash"], round(279 - 12 * 11, 2))
+        self.assertIn(next(o for o in b.orders.values() if o["side"] == "sell")["client_order_id"], b.cancelled)  # its take
+        self.assertTrue(any(e["kind"] == "sleeve_recover" for e in log))
+        self.assertTrue(any(e["kind"] == "sleeve_skip" and "不重复买" in e["why"] for e in log))
+        book, log = self.cycle(b, 10, 20, self.specs[:1])                                # known now: nothing more
+        self.assertEqual(len(book.s("spy0dte-500")["open"]), 1)
+
+    def test_a_lost_ticket_already_sold_at_the_broker_is_booked_closed(self):
+        b = SleeveBroker(lambda s: (0.08, 0.10))
+        self.cycle(b, 10, 0, self.specs[:1])
+        b._fill(next(o for o in b.orders.values() if o["side"] == "sell"), 0.33)          # the take filled
+        (self.root / "sleeves.json").unlink()
+        book, log = self.cycle(b, 11, 0, self.specs[:1])
+        s = book.s("spy0dte-500")
+        self.assertEqual(s["open"], [])
+        self.assertEqual((s["closed"][-1]["exit_price"], s["closed"][-1]["ret"]), (0.33, 2.0))
+        self.assertEqual(s["cash"], round(279 - 132 + 12 * 33, 2))
+
+    def test_orders_from_before_slot_keyed_ids_are_never_recovered(self):
+        b = SleeveBroker(lambda s: (0.08, 0.10))
+        b.submit_order(symbol="SPY2026-10-08C707", qty="3", side="buy", type="limit", limit_price="0.11", time_in_force="day",
+                       client_order_id="sl-spy0dte-500-0123456789-b1")                     # an old random ticket id
+        book, log = self.cycle(b, 9, 0, self.specs[:1])
+        self.assertEqual(book.s("spy0dte-500")["open"], [])
+        self.assertFalse(any(e["kind"] == "sleeve_recover" for e in log))
+
+    def test_the_runner_half_shares_the_buy_ticket_id(self):
+        b = SleeveBroker(lambda s: (0.08, 0.10))
+        book, _ = self.cycle(b, 10, 0, [{**self.specs[1], "half_take": True}])
+        tids = sorted(t["tid"] for t in book.s("spy0dte-1000")["open"])
+        self.assertEqual(len(tids), 2)
+        self.assertEqual(tids[1], tids[0] + "r")
 
     def test_unfilled_is_requoted_once_then_dropped(self):
         b = SleeveBroker(lambda s: (0.08, 0.10), fill=lambda o: False)

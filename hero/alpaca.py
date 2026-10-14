@@ -83,6 +83,10 @@ class Alpaca:
                 raise
             return self.order_by_client_id(order["client_order_id"])
 
+    def orders_since(self, after: str) -> list[dict]:
+        """Every order (any status) submitted after `after` (RFC 3339), newest first, up to 500."""
+        return self._t("GET", "/v2/orders", params={"status": "all", "after": after, "limit": 500, "direction": "desc"})
+
     def order_by_client_id(self, client_order_id: str) -> dict:
         return self._t("GET", "/v2/orders:by_client_order_id", params={"client_order_id": client_order_id})
 
