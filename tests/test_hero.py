@@ -2174,6 +2174,23 @@ class Notify(unittest.TestCase):
                               "why": "earn-500：X 到时卖出，花 $60.00、收回 $2.00（-97%），账本 $343.00"}])
         self.assertTrue(lost[0].startswith("🔴 `09:30` **财报彩票 $500** **-97%** · 到时卖出"))
 
+    def test_the_same_contract_across_ledgers_folds_into_one_line_each(self):
+        from hero import notify
+        sym = "TSLA261014P00362500"
+        ev = lambda ts, **k: {"ts": f"2026-10-14T{ts}:00+00:00", "symbol": sym, **k}
+        evs = [ev("14:00", kind="sleeve_fill", sleeve="tsla0dte-500", qty=1, price=0.85,
+                  why=f"tsla0dte-500：{sym} 成交 1 张 × $0.85，花 $85.00；1 张 3 倍止盈 $2.55 挂在券商"),
+               ev("14:00", kind="sleeve_fill", sleeve="tsla0dte-5x-1000", qty=3, price=0.85,
+                  why=f"tsla0dte-5x-1000：{sym} 成交 3 张 × $0.85，花 $255.00；1 张 5 倍止盈 $4.25 挂在券商"),
+               ev("19:30", kind="sleeve_exit", sleeve="tsla0dte-500", why=f"tsla0dte-500：{sym} 2026-10-14 15:30 到时卖出，卖 1"),
+               ev("19:30", kind="sleeve_result", sleeve="tsla0dte-500", ret=-0.965,
+                  why=f"tsla0dte-500：{sym} 2026-10-14 15:30 到时卖出，花 $85.00、收回 $3.00（-96%），账本 $250.00"),
+               ev("19:31", kind="sleeve_result", sleeve="tsla0dte-5x-1000", ret=-0.965,
+                  why=f"tsla0dte-5x-1000：{sym} 2026-10-14 15:30 到时卖出，花 $255.00、收回 $9.00（-96%），账本 $436.00")]
+        self.assertEqual(notify.lines(evs), [
+            "✅ `10:00` 成交 × $0.85：TSLA 末日 $500 1 张 · TSLA 末日·5 倍 $1k 3 张（共 4 张，花 $340）；挂 3/5 倍止盈",
+            "🔴 `15:30` **-96%** · 15:30 到时卖出：TSLA 末日 $500 · TSLA 末日·5 倍 $1k（花 $340、收回 $12）"])
+
     def test_ledger_scoreboard_after_the_close(self):
         from hero import notify
         with tempfile.TemporaryDirectory() as d:

@@ -139,19 +139,82 @@ def icon(kind: str, text: str) -> str:
     return ICON.get(kind, "•")
 
 
+MONEY = re.compile(r"花 \$([\d,.]+)、收回 \$([\d,.]+)")
+
+
+def who(sids: list[str], qty: dict[str, float] | None = None) -> str:
+    """Ledgers by direction: TSLA 末日 $500/$1k · TSLA 末日·5 倍 $500 (with each one's contracts if given)."""
+    groups: dict[str, list[str]] = {}
+    for sid in sids:
+        base, _, amt = sleeve_name(sid).rpartition(" ")
+        part = f"{amt} {qty[sid]:g} 张" if qty else amt
+        if part not in groups.setdefault(base or sid, []):
+            groups[base or sid].append(part)
+    return " · ".join(f"{b} {('、' if qty else '/').join(a)}" for b, a in groups.items())
+
+
+def folded(evs: list[dict]) -> tuple[list[dict], list[tuple[str, str, str]]]:
+    """Sleeve events of one contract folded across ledgers: a sell whose result is in the same push is not repeated;
+    fills at the same minute and price, and results at the same minute for the same reason and return, are one line
+    each. Returns (the events left as they are, [(ts, kind, line text)])."""
+    done = {(e.get("sleeve"), e.get("symbol")) for e in evs if e.get("kind") == "sleeve_result"}
+    rest, fills, results = [], {}, {}
+    for e in evs:
+        k, sid = e.get("kind"), e.get("sleeve")
+        if k == "sleeve_exit" and (sid, e.get("symbol")) in done:
+            continue
+        if k == "sleeve_fill" and sid and e.get("price") is not None and e.get("qty"):
+            fills.setdefault((hhmm(e), float(e["price"])), []).append(e)
+        elif k == "sleeve_result" and sid and isinstance(e.get("ret"), (int, float)) and MONEY.search(str(e.get("why"))):
+            why = str(e["why"]).split("：", 1)[-1]
+            why = why[len(e.get("symbol") or ""):].strip() if why.startswith(e.get("symbol") or "\0") else why
+            reason = re.sub(r"^\d{4}-\d{2}-\d{2} ", "", why.split("，花")[0])
+            results.setdefault((reason, round(e["ret"], 1)), []).append(e)  # one push is one cycle: the minute may differ
+        else:
+            rest.append(e)
+    out = []
+    for (t, px), es in fills.items():
+        if len(es) == 1:
+            rest += es
+            continue
+        qty: dict[str, float] = {}
+        for e in es:
+            qty[e["sleeve"]] = qty.get(e["sleeve"], 0) + float(e["qty"])
+        n = sum(qty.values())
+        takes = sorted({int(x) for e in es for x in re.findall(r"(\d+) 倍止盈", str(e.get("why")))})
+        unit = 100 if OCC.search(es[0].get("symbol") or "") else 1
+        out.append((min(e["ts"] for e in es), "sleeve_fill",
+                    f"成交 × ${px:.2f}：{who(list(qty), qty)}（共 {n:g} 张，花 ${n * px * unit:,.0f}）"
+                    + (f"；挂 {'/'.join(map(str, takes))} 倍止盈" if takes else "")))
+    for (reason, ret), es in results.items():
+        if len(es) == 1:
+            rest += es
+            continue
+        paid = sum(float(MONEY.search(e["why"]).group(1).replace(",", "")) for e in es)
+        back = sum(float(MONEY.search(e["why"]).group(2).replace(",", "")) for e in es)
+        out.append((min(e["ts"] for e in es), "sleeve_result",
+                    f"**{back / paid - 1 if paid else ret:+.0%}** · {reason}：{who([e['sleeve'] for e in es])}（花 ${paid:,.0f}、收回 ${back:,.0f}）"))
+    return rest, out
+
+
 def lines(evs: list[dict]) -> list[str]:
     """One line per distinct message, in the order first seen; a message repeated by retries in later
-    cycles is shown once with how many times and until when."""
+    cycles is shown once with how many times and until when. Sleeve events of the same contract are folded
+    across ledgers first (folded)."""
+    evs, extra = folded(evs)
     seen: dict[tuple, list] = {}
+    for ts, kind, text in extra:
+        seen[(kind, readable(text))] = [hhmm({"ts": ts}), 1, hhmm({"ts": ts}), ts]
     for e in sorted(evs, key=lambda e: e.get("ts", "")):
         key, t = (e.get("kind"), body(e)), hhmm(e)
         if key in seen:
             seen[key][1] += 1
             seen[key][2] = t
         else:
-            seen[key] = [t, 1, t]
+            seen[key] = [t, 1, t, e.get("ts", "")]
+    order = sorted(seen.items(), key=lambda kv: kv[1][3])
     return [(f"{icon(k, text)} `{t0}` {text}" + (f"（重复 {n} 次，到 {t1}）" if n > 1 else ""))[:700]
-            for (k, text), (t0, n, t1) in seen.items()]
+            for (k, text), (t0, n, t1, _) in order]
 
 
 def snapshot(root: Path) -> dict:
