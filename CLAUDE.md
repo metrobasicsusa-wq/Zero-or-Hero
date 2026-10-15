@@ -1,0 +1,15 @@
+# Zero-or-Hero：给 Claude 会话的约定
+
+- 用中文回复用户。
+- 两个 Alpaca 模拟盘：主账户 $100k（`journal/`、`config/strategy.json`），多账本 $50k（`journal-s500/`、`config/s500.json`）。
+- 钥匙只放 GitHub Secrets；公开仓库不放账户号、订单号；改实盘交易代码的推送在收盘后（或用户同意时）。
+
+## 报告盈亏（2026-10-15 的教训，见 notes/lessons.md）
+
+- 先给两个账户今天的总盈亏：券商净值对比券商昨收（`snapshot.json` 的 `equity` 对 `last_equity`），金额和百分比。
+- 再列赚得最多、亏得最多的几笔（金额为主，百分比为辅），不要只挑几笔。
+- 盘中数字注明时间；未实现的盈亏和已卖出的分开说。
+
+## 经验
+
+新的经验写进 `notes/lessons.md`（按日期倒序），改了规则的写明改了什么。
