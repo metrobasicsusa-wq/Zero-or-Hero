@@ -1291,7 +1291,7 @@
      "best_bid": 0.95,
      "take_x": 2,
      "take": 1.92,
-     "take_cid": "sl-wk-trend-1000-0c522615ae-t056e"
+     "take_cid": "sl-wk-trend-1000-0c522615ae-te95b"
     }
    ],
    "closed": [
@@ -1381,7 +1381,7 @@
      "best_bid": 0.74,
      "take_x": 2,
      "take": 1.3,
-     "take_cid": "sl-wk-news-500-24c4d60137-t153c"
+     "take_cid": "sl-wk-news-500-24c4d60137-t4c05"
     }
    ],
    "closed": [],
@@ -1416,7 +1416,7 @@
      "best_bid": 0.74,
      "take_x": 2,
      "take": 1.3,
-     "take_cid": "sl-wk-news-1000-c4065441c8-t5f55"
+     "take_cid": "sl-wk-news-1000-c4065441c8-t525a"
     }
    ],
    "closed": [
@@ -1773,8 +1773,8 @@
      "exit_at": "09:35",
      "trail": false,
      "best_bid": 0.09,
-     "sell_cid": "sl-earn-500-a27973d8cd-x0a7b",
-     "sell_why": "2026-10-14 09:35 到时卖出"
+     "sell_why": "2026-10-14 09:35 到时卖出",
+     "sell_cid": "sl-earn-500-a27973d8cd-x5324"
     },
     {
      "tid": "cb083f1cf9",
@@ -1878,8 +1878,8 @@
      "exit_at": "09:35",
      "trail": false,
      "best_bid": 0.09,
-     "sell_cid": "sl-earn-1000-8320d45070-xd558",
-     "sell_why": "2026-10-14 09:35 到时卖出"
+     "sell_why": "2026-10-14 09:35 到时卖出",
+     "sell_cid": "sl-earn-1000-8320d45070-xc675"
     },
     {
      "tid": "1a5ed421ab",
@@ -2147,28 +2147,68 @@
   },
   "sniper-500": {
    "start": 500.0,
-   "cash": 500.0,
+   "cash": 371.0,
    "round": 1,
    "heroes": 0,
    "zeros": 0,
-   "open": [],
+   "open": [
+    {
+     "tid": "20261015-eb4d57",
+     "kind": "sniper",
+     "sym": "CRWV261016P00057000",
+     "asset": "option",
+     "und": "CRWV",
+     "qty": 1,
+     "cost": 1.29,
+     "paid": 129.0,
+     "opened": "2026-10-15 09:30",
+     "why": "开盘狙击 CRWV看跌 57（2026-10-16 到期，delta 0.22）：AI 基建融资恐慌第三天：CoreWeave 2031 年到期债券收益率升到 16% 以上（Bernstein 称接近困境水平），昨天股价 -15%，盘前再 -3.7%（Benzinga「CoreWeave Stock Keeps Sink；翻倍后回撤 40% 卖，否则到期日 15:30 卖",
+     "expiry": "2026-10-16",
+     "exit_day": "2026-10-16",
+     "exit_at": "15:30",
+     "trail": true,
+     "best_bid": 0.0,
+     "expiry_out": null
+    }
+   ],
    "closed": [],
    "slots": {
-    "2026-10-14": "2026-10-14T09:30-04:00"
+    "2026-10-14": "2026-10-14T09:30-04:00",
+    "2026-10-15": "2026-10-15T09:30-04:00"
    },
    "best": 500.0,
    "created": null
   },
   "sniper-1000": {
    "start": 1000.0,
-   "cash": 1000.0,
+   "cash": 613.0,
    "round": 1,
    "heroes": 0,
    "zeros": 0,
-   "open": [],
+   "open": [
+    {
+     "tid": "20261015-41b7fe",
+     "kind": "sniper",
+     "sym": "CRWV261016P00057000",
+     "asset": "option",
+     "und": "CRWV",
+     "qty": 3,
+     "cost": 1.29,
+     "paid": 387.0,
+     "opened": "2026-10-15 09:30",
+     "why": "开盘狙击 CRWV看跌 57（2026-10-16 到期，delta 0.22）：AI 基建融资恐慌第三天：CoreWeave 2031 年到期债券收益率升到 16% 以上（Bernstein 称接近困境水平），昨天股价 -15%，盘前再 -3.7%（Benzinga「CoreWeave Stock Keeps Sink；翻倍后回撤 40% 卖，否则到期日 15:30 卖",
+     "expiry": "2026-10-16",
+     "exit_day": "2026-10-16",
+     "exit_at": "15:30",
+     "trail": true,
+     "best_bid": 0.0,
+     "expiry_out": null
+    }
+   ],
    "closed": [],
    "slots": {
-    "2026-10-14": "2026-10-14T09:30-04:00"
+    "2026-10-14": "2026-10-14T09:30-04:00",
+    "2026-10-15": "2026-10-15T09:30-04:00"
    },
    "best": 1000.0,
    "created": null
@@ -2195,7 +2235,7 @@
      "exit_day": "2026-10-19",
      "exit_at": "15:50",
      "trail": true,
-     "best_bid": 0.0,
+     "best_bid": 2.21,
      "expiry_out": null
     }
    ],
@@ -2228,7 +2268,7 @@
      "exit_day": "2026-10-19",
      "exit_at": "15:50",
      "trail": true,
-     "best_bid": 0.0,
+     "best_bid": 2.21,
      "expiry_out": null
     }
    ],
