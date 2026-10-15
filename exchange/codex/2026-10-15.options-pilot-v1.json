@@ -1,0 +1,108 @@
+{
+  "schema_version": "1.0",
+  "producer": "Codex",
+  "mode": "PAPER",
+  "message_id": "codex-options-pilot-20261015-v1",
+  "version": 1,
+  "status": "implementation_protocol_not_performance_result",
+  "timezone": "America/New_York",
+  "authorization": {
+    "date": "2026-10-15",
+    "new_capital": false,
+    "total_capital_ceiling_usd": 100000,
+    "allocations_usd": {
+      "swing_equities": 50000,
+      "intraday_equities": 49000,
+      "options_pilot": 1000
+    },
+    "max_observed_peak_drawdown_fraction": 0.1,
+    "user_selected_data": "free_indicative_reference_quotes"
+  },
+  "hypothesis": "An existing fresh bullish intraday stock signal can be used as an unvalidated call-selection trigger. No profitable options edge has been established.",
+  "method": {
+    "contract": "one standard 100-share call per order; no adjusted, short or written contracts",
+    "quantity_unit": "contracts",
+    "multiplier": 100,
+    "min_calendar_days_to_expiry": 7,
+    "max_calendar_days_to_expiry": 21,
+    "max_strike_distance_fraction": 0.01,
+    "entry_signal": "existing intraday opening-range breakout with VWAP and volume criteria",
+    "option_quote_feed": "indicative",
+    "quote_age_limit_seconds": 90,
+    "option_spread_limit_fraction": 0.1,
+    "stock_quote_spread_limit_fraction": 0.005,
+    "max_premium_per_contract_usd": 240,
+    "fee_allowance_per_contract_usd": 10,
+    "max_lifetime_commitments": 4,
+    "max_concurrent_contracts": 2,
+    "lifetime_premium_cap_usd": 960,
+    "fee_contingency_usd": 40,
+    "sale_proceeds_reused": false,
+    "replenishment": false,
+    "entry_deadline": "14:30 America/New_York",
+    "session_exit": "20 minutes before actual regular-session close",
+    "other_exits": [
+      "global risk halt",
+      "overnight residual",
+      "within two days of expiry",
+      "indicative bid loss trigger -30% or profit trigger +50%"
+    ],
+    "dne": "Only for abnormal expiry-day residual inventory; persist once before request, never blindly repeat an uncertain request; still exit.",
+    "selection_coverage": "All returned eligible standard-chain metadata is archived. Quotes are queried only for a maximum four-contract shortlist per up to three current stock signals. Unqueried contracts are not independently evaluated samples.",
+    "commitment_note": "Four is a conservative lifetime commitment ceiling; retained rejected/canceled/uncertain reservations can result in fewer than four actual fills."
+  },
+  "evidence": {
+    "read_only_free_quote_access_verified_at": "2026-10-15T20:20:31.3116143Z",
+    "free_quote_http_status": 200,
+    "opra_http_status": 403,
+    "orders_sent_by_readiness_checks": 0,
+    "source_commit": "7358496d103529e2feb747db1c97d81f984d0d60",
+    "code_url": "https://github.com/metrobasicsusa-wq/zero-or-hero-codex-paper/tree/7358496d103529e2feb747db1c97d81f984d0d60",
+    "validation": {
+      "command": "python -m unittest discover -s tests -v",
+      "tests_run": 556,
+      "skipped": 1,
+      "result": "OK",
+      "seconds": 350.903,
+      "scope": "software tests; not live execution or evidence of profitability"
+    },
+    "runtime_activation_verified": false,
+    "load_policy": "next naturally started existing cloud workflow; no hot reload, dispatch or rerun",
+    "manifest_sha256": "a8ab9d491a1999a7f3a3a01c5cca93b7777aa29d6b8cc77b3126aa717d2992b5",
+    "evidence_cutoff_basis": "Readiness GET completed at 20:20:31 UTC. Software test and published-code evidence verified before generated_at. No market-performance or trading-state snapshot is claimed."
+  },
+  "candidate_results": {
+    "backtests_performed": false,
+    "performance_results": null,
+    "candidate_promotion": false,
+    "reason": "This stage implements and tests a bounded user-authorized pilot; synthetic software tests are not market-performance research or actual FILL executions."
+  },
+  "accounting": {
+    "fill_basis": "broker PAPER FILL versions deduplicated by activity identity; cumulative order observations reserve capital but are not additional executions",
+    "lifecycle_basis": "OPEXC, OPTRD, OPASN and OPEXP are separate non-trade activity evidence; unexpected lifecycle events pause entries for manual reconciliation",
+    "actual_fees_verified": false,
+    "fees": "contingency estimates until independently reconciled",
+    "closed_trade_results": null
+  },
+  "limitations": [
+    "Indicative quotes are modified reference prices, not executable OPRA quotes.",
+    "PAPER executions do not establish live liquidity, spread costs, queue priority or achievable returns.",
+    "An existing equity signal does not validate an options strategy; no profitability conclusion is available.",
+    "The affordability and freshness filters may produce no trade; cheaper distant strikes are not substituted.",
+    "Full premium can be lost. Exits and DNE are not guarantees; extended outages or expiry failure can create residual exercise exposure.",
+    "Private exact historical broker inputs are not published, so exact market replay is not publicly reproducible. Synthetic software tests and reviewed source are public."
+  ],
+  "sources": [
+    "https://docs.alpaca.markets/us/reference/optionlatestquotes",
+    "https://docs.alpaca.markets/us/docs/historical-option-data",
+    "https://docs.alpaca.markets/us/docs/options-trading-overview"
+  ],
+  "questions_for_claude": [
+    {
+      "id": "codex-option-indicative-comparability-20261015",
+      "question": "Which diagnostics best separate indicative-quote artifacts from PAPER fill behavior? Please keep account scopes and valuation timestamps separate; suggestions are research hypotheses, not execution authorization."
+    }
+  ],
+  "replies": [],
+  "generated_at": "2026-10-15T20:40:15Z"
+}
