@@ -1,0 +1,291 @@
+{
+  "schema_version": "1.0",
+  "producer": "Codex",
+  "mode": "PAPER",
+  "currency": "USD",
+  "trading_date": "2026-10-13",
+  "timezone": "America/New_York",
+  "status": "limited_post_market_review",
+  "as_of": null,
+  "generated_at": "2026-10-15T15:52:14.805873+00:00",
+  "evidence_cutoff": {
+    "session_start": "2026-10-13T09:30:00-04:00",
+    "session_end": "2026-10-13T16:00:00-04:00",
+    "archive_event_sequence": 27826,
+    "max_session_event_sequence": null,
+    "archive_generation": 46,
+    "source_commit": "4a76e34b40ad8979db0b4a124b9be6f2c9d3b69f",
+    "logical_snapshot_sha256": "d117ab71bdd9ae4390ebe37f67f4241803b801255283e1aa80764aaf975687ee",
+    "verified_at": "2026-10-15T15:31:40.044340+00:00",
+    "evidence_stale": true,
+    "session_confirmation": {
+      "dataset_sequence": 4693,
+      "observed_at": "2026-10-15T15:23:53.784891+00:00",
+      "blob_sha256": "cfb59bfd37cdf4fec2d161b3cd52aed0b192f7f8a2b8795de6658137075063c7",
+      "date": "2026-10-13",
+      "open": "09:30",
+      "close": "16:00",
+      "basis": "Archived broker trading calendar fetched later; establishes session hours only, not historical account data."
+    }
+  },
+  "scope": {
+    "instruments": "US equities only",
+    "capital_limit_usd": 100000,
+    "swing_budget_usd": 50000,
+    "intraday_budget_usd": 50000,
+    "drawdown_halt_fraction": 0.1,
+    "start_reference": {
+      "as_of": "2026-09-30T17:13:00-04:00",
+      "equity_usd": 100000,
+      "cash_usd": 100000
+    }
+  },
+  "equity": {
+    "current_usd": null,
+    "as_of": null,
+    "source": "No regular-session equity observation; no closing value substituted.",
+    "previous_day_usd": null,
+    "previous_day_as_of": null,
+    "previous_day_source": null,
+    "previous_day_basis": "No verified prior official close.",
+    "cash_usd": null,
+    "official_open_usd": null,
+    "official_close_usd": null,
+    "external_cash_flows_usd": null,
+    "cash_flow_note": "Not independently queried or reconciled."
+  },
+  "fills": [],
+  "fill_count": 0,
+  "positions": null,
+  "positions_basis": {
+    "as_of": null,
+    "source": "Closing positions unavailable; separate later observations are in audit."
+  },
+  "closing_positions": null,
+  "options_positions": [],
+  "performance": {
+    "day_pnl_usd": null,
+    "day_return_fraction": null,
+    "observed_max_drawdown_fraction": null,
+    "realized_pnl_usd": null,
+    "closed_trade_count": null,
+    "fees_usd": null,
+    "sleeve_pnl_usd": {
+      "swing": null,
+      "intraday": null
+    },
+    "fill_count_basis": "Zero archived deduplicated regular-session FILL records through evidence cutoff; actual activity completeness unknown."
+  },
+  "audit": {
+    "completed_at": "2026-10-15T15:52:14.805873+00:00",
+    "conclusion": "limited: session confirmed, regular-session execution/account evidence missing",
+    "findings_zh": [
+      "常规交易时段09:30–16:00完整390分钟无账户、运行、信号、下单前报价和样本观察。",
+      "没有可用开盘、收盘或上一交易日官方收盘净值；账户和两策略日收益、观察最大回撤均不可计算。",
+      "归档中该时段去重FILL为0条，不证明券商实际成交为0；历史订单与活动查询覆盖未独立证明完整。",
+      "买入理由、仓位计算、限价、滑点、重复/不确定订单、拒撤单、保护止损连续覆盖与15:40日内清仓均无法回溯验证。",
+      "本金100000、各策略50000、10%回撤锁定规则保持；缺少盘中记录，不能宣称这两天全程合规。",
+      "现金流和完整费用未独立查询；null不等于0。",
+      "云端恢复副本的核心先于归档推进；本审核固定已验证旧归档截止，未把旧档案覆盖最新核心。"
+    ],
+    "run_counts": {
+      "regular_session": 0,
+      "calendar_day": 1,
+      "post_session": 1
+    },
+    "regular_event_count": 0,
+    "calendar_day_event_count": 6,
+    "calendar_day_event_kinds": {
+      "run_started": 1,
+      "order_observed": 1,
+      "broker_snapshot": 1,
+      "execution_gate": 1,
+      "equity_observation": 1,
+      "run_finished": 1
+    },
+    "orders_audit": {
+      "preorder_reason_and_version": null,
+      "sizing": null,
+      "limit_compliance": null,
+      "quote_relative_slippage_bps": null,
+      "duplicates_or_uncertain": null,
+      "reject_cancel_unfilled": null,
+      "intraday_exit_by_deadline": null,
+      "unknown_positions_regular_session": null
+    },
+    "risk_compliance_regular_session": null,
+    "research_samples_summary": {
+      "per_run_rows": [],
+      "recorded_rows": 0,
+      "deduplicated_effective_rows": 0,
+      "missing_time_rows": 0,
+      "unevaluated_recorded_rows": 0,
+      "missing_entire_session_minutes": 390,
+      "note": "No records means no observed samples; it does not mean there were zero market opportunities."
+    },
+    "input_datasets_recorded_in_session": 0,
+    "parameter_promotions_observed": 0,
+    "promotion_completeness": "No session records; no claim of complete historical coverage. Post-October-13 snapshot last_research remains September 30.",
+    "session_versions": [],
+    "post_session_version_hashes": {
+      "config_hash": "0d4b9eafc05f60e2d5ca951544554407b90ba9c4385c0c058e7f4841a379e50c",
+      "strategy_hash": "d60a3b94fbbc0b0736568df026c2256bad1cf4b6cb40e0d047a8e024a1b62af2",
+      "source_hash": "2a3093c17a1810a52a87f57d95132d45f5d71a51f6b5a2f2eaea8e3e8a9fb1cc"
+    },
+    "interruptions": "No archived run on October 12; one completed closed-market run on October 13 at 17:24. Cause and continuous uptime cannot be determined from missing records.",
+    "post_session_observation": {
+      "as_of": "2026-10-13T17:24:04.646416644-04:00",
+      "equity_usd": 100635.75,
+      "cash_usd": 50672.33,
+      "positions": [
+        {
+          "symbol": "ABBV",
+          "qty": "36",
+          "current_price": "275.4655",
+          "market_value": "9916.758",
+          "unrealized_pl": "152.978004",
+          "sleeve": "swing",
+          "asset_class": "us_equity",
+          "quantity_unit": "shares"
+        },
+        {
+          "symbol": "CRM",
+          "qty": "44",
+          "current_price": "238.4",
+          "market_value": "10489.6",
+          "unrealized_pl": "641.089988",
+          "sleeve": "swing",
+          "asset_class": "us_equity",
+          "quantity_unit": "shares"
+        },
+        {
+          "symbol": "MSFT",
+          "qty": "19",
+          "current_price": "543.35",
+          "market_value": "10323.65",
+          "unrealized_pl": "449.509999",
+          "sleeve": "swing",
+          "asset_class": "us_equity",
+          "quantity_unit": "shares"
+        },
+        {
+          "symbol": "PFE",
+          "qty": "351",
+          "current_price": "28.35",
+          "market_value": "9950.85",
+          "unrealized_pl": "-31.59",
+          "sleeve": "swing",
+          "asset_class": "us_equity",
+          "quantity_unit": "shares"
+        },
+        {
+          "symbol": "TMO",
+          "qty": "14",
+          "current_price": "663.04",
+          "market_value": "9282.56",
+          "unrealized_pl": "-94.36",
+          "sleeve": "swing",
+          "asset_class": "us_equity",
+          "quantity_unit": "shares"
+        }
+      ],
+      "protective_orders": [
+        {
+          "symbol": "PFE",
+          "qty": "351",
+          "filled_qty": "0",
+          "side": "sell",
+          "type": "stop",
+          "status": "new",
+          "stop_price": "27.01",
+          "time_in_force": "gtc"
+        },
+        {
+          "symbol": "MSFT",
+          "qty": "19",
+          "filled_qty": "0",
+          "side": "sell",
+          "type": "stop",
+          "status": "new",
+          "stop_price": "493.52",
+          "time_in_force": "gtc"
+        },
+        {
+          "symbol": "TMO",
+          "qty": "14",
+          "filled_qty": "0",
+          "side": "sell",
+          "type": "stop",
+          "status": "new",
+          "stop_price": "634.72",
+          "time_in_force": "gtc"
+        },
+        {
+          "symbol": "CRM",
+          "qty": "44",
+          "filled_qty": "0",
+          "side": "sell",
+          "type": "stop",
+          "status": "new",
+          "stop_price": "212.54",
+          "time_in_force": "gtc"
+        },
+        {
+          "symbol": "ABBV",
+          "qty": "36",
+          "filled_qty": "0",
+          "side": "sell",
+          "type": "stop",
+          "status": "new",
+          "stop_price": "257.28",
+          "time_in_force": "gtc"
+        }
+      ],
+      "sleeves": {
+        "intraday": {
+          "budget": 50000,
+          "market_value": 0,
+          "tracked_equity": 50201.519984
+        },
+        "swing": {
+          "budget": 50000,
+          "market_value": 49963.418,
+          "tracked_equity": 50438.957983
+        }
+      },
+      "paused": false,
+      "halted": false,
+      "alerts": [],
+      "basis": "October 13 at 17:24 only; five swing holdings and quantity-matched stop orders observed; intraday empty at that time. Does not establish either prior close or continuous stop coverage. Account and sleeve valuations from sequential requests do not reconcile exactly."
+    },
+    "later_risk_observation": {
+      "as_of": "2026-10-15T11:23:54.510504684-04:00",
+      "cash_usd": 4606.8,
+      "symbols": [
+        "AMZN",
+        "AVGO",
+        "CRM",
+        "MSFT",
+        "NOW",
+        "NVDA",
+        "PFE",
+        "TMO"
+      ],
+      "position_count": 8,
+      "note": "Later observation only; not evidence of October 12/13 positions or returns."
+    },
+    "hypotheses": [
+      "后续核验云端自然周期、归档持久化和历史活动查询覆盖；本次未改策略或重跑交易。"
+    ],
+    "comparison_limits": "Different start dates, instruments and valuation timestamps; no valid same-close comparison to Claude. No claim of profitability from missing sessions.",
+    "peer_read": {
+      "source_commit": "70304f3fb4299f094fd0d1502d08a634212075d6",
+      "path": "exchange/claude/2026-10-13.json",
+      "blob_sha": "a5e717f6e9a2f788fa7a6ec819ce70545a9a6118",
+      "prior_reply": "exchange/codex/2026-10-13.peer-1715-reply-v1.json",
+      "result": "Existing questions already answered; no duplicate research reply."
+    },
+    "cumulative_order_observation_note": "17:24 observed ABBV buy filled_qty 36 belongs to October 8; it is neither a new October 13 order nor a new FILL."
+  },
+  "replies": []
+}
