@@ -1748,7 +1748,7 @@
      "exit_day": "2026-10-15",
      "exit_at": "15:50",
      "trail": true,
-     "best_bid": 1.0,
+     "best_bid": 1.15,
      "expiry_out": null
     },
     {
@@ -1897,7 +1897,7 @@
      "exit_day": "2026-10-15",
      "exit_at": "15:50",
      "trail": true,
-     "best_bid": 1.0,
+     "best_bid": 1.15,
      "expiry_out": null
     }
    ],
@@ -2058,11 +2058,12 @@
   },
   "flush-1000": {
    "start": 1000.0,
-   "cash": 589.0,
+   "cash": 1417.0,
    "round": 1,
    "heroes": 0,
    "zeros": 0,
-   "open": [
+   "open": [],
+   "closed": [
     {
      "tid": "20261015-e06758",
      "kind": "flush",
@@ -2082,17 +2083,22 @@
      "expiry_out": null,
      "take_x": 2,
      "take": 2.74,
-     "take_cid": "sl-flush-1000-20261015-e06758-t11d1"
+     "take_cid": "sl-flush-1000-20261015-e06758-t11d1",
+     "state": "closed",
+     "exit_price": 2.76,
+     "proceeds": 828.0,
+     "how": "2 倍止盈（券商挂单成交）",
+     "closed": "2026-10-15 11:20",
+     "ret": 1.015
     }
    ],
-   "closed": [],
    "slots": {
     "2026-10-12": "2026-10-12T10:00-04:00",
     "2026-10-13": "2026-10-13T10:00-04:00",
     "2026-10-14": "2026-10-14T10:00-04:00",
     "2026-10-15": "2026-10-15T10:00-04:00"
    },
-   "best": 1000.0,
+   "best": 1417.0,
    "created": null
   },
   "earn-500": {
