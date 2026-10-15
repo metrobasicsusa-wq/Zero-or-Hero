@@ -1766,7 +1766,7 @@
      "exit_day": "2026-10-15",
      "exit_at": "15:50",
      "trail": true,
-     "best_bid": 1.22,
+     "best_bid": 1.32,
      "expiry_out": null
     }
    ],
@@ -2582,11 +2582,12 @@
   },
   "overnight-500": {
    "start": 500.0,
-   "cash": 265.0,
+   "cash": 950.0,
    "round": 1,
    "heroes": 0,
    "zeros": 0,
-   "open": [
+   "open": [],
+   "closed": [
     {
      "tid": "6ed92ba4fe",
      "kind": "overnight",
@@ -2603,23 +2604,31 @@
      "exit_at": "15:50",
      "trail": true,
      "best_bid": 2.26,
-     "expiry_out": null
+     "expiry_out": null,
+     "sell_cid": "sl-overnight-500-6ed92ba4fe-x0263",
+     "sell_why": "翻倍后从最高 $2.26 回撤 40%",
+     "state": "closed",
+     "exit_price": 1.37,
+     "proceeds": 685.0,
+     "how": "翻倍后从最高 $2.26 回撤 40%",
+     "closed": "2026-10-15 11:50",
+     "ret": 1.915
     }
    ],
-   "closed": [],
    "slots": {
     "2026-10-14": "2026-10-14T15:50-04:00"
    },
-   "best": 500.0,
+   "best": 950.0,
    "created": null
   },
   "overnight-1000": {
    "start": 1000.0,
-   "cash": 530.0,
+   "cash": 1900.0,
    "round": 1,
    "heroes": 0,
    "zeros": 0,
-   "open": [
+   "open": [],
+   "closed": [
     {
      "tid": "016b6721f5",
      "kind": "overnight",
@@ -2636,14 +2645,21 @@
      "exit_at": "15:50",
      "trail": true,
      "best_bid": 2.26,
-     "expiry_out": null
+     "expiry_out": null,
+     "sell_cid": "sl-overnight-1000-016b6721f5-x19c9",
+     "sell_why": "翻倍后从最高 $2.26 回撤 40%",
+     "state": "closed",
+     "exit_price": 1.37,
+     "proceeds": 1370.0,
+     "how": "翻倍后从最高 $2.26 回撤 40%",
+     "closed": "2026-10-15 11:50",
+     "ret": 1.915
     }
    ],
-   "closed": [],
    "slots": {
     "2026-10-14": "2026-10-14T15:50-04:00"
    },
-   "best": 1000.0,
+   "best": 1900.0,
    "created": null
   }
  },
