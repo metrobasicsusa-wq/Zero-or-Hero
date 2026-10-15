@@ -2970,10 +2970,28 @@ class SleeveRules(unittest.TestCase):
             b.option_snapshots = lambda syms: {x: {"latestQuote": {"ap": 0.3}, "greeks": {"delta": -(1 - abs(int(x[-2:]) - 96) / 10)}}
                                                for x in syms}
             slot, picks = sr.Sniper().entries(r(9, 40), spec, {"slots": {}})
-            self.assertTrue(picks[0]["sym"].endswith("P87") and picks[0]["trail"])    # delta -0.10, the closest to 0.10
+            self.assertTrue(picks[0]["sym"].endswith("P95") and picks[0]["trail"])    # a quiet stock: the first strike 0.3%+ out
             self.assertEqual((picks[0]["exit_day"], picks[0]["exit_at"]), (picks[0]["expiry"], "15:30"))
             self.assertIn("a downgrade", picks[0]["why"])
             self.assertIsNone(sr.Sniper().entries(r(10, 0), spec, {"slots": {}}))     # past the cutoff
+
+    def test_sniper_goes_half_a_daily_swing_out_but_not_past_a_0_30_delta(self):
+        from hero import sleeve_rules as sr
+        with tempfile.TemporaryDirectory() as tmp:
+            spec = {"dir": tmp}
+            b = self.broker()
+            b.bars["AAA"] = [{"t": f"2026-09-{d:02d}T04:00:00Z", "c": 100.0 * (1.05 if d % 2 else 1.0)} for d in range(1, 29)]  # ~5% a day
+            (Path(tmp) / "2026-10-13.json").write_text(json.dumps({"sniper": {"symbol": "AAA", "direction": "put", "catalyst": "x"}}))
+            b.snaps["AAA"]["latestTrade"]["p"] = 96.0
+            b.option_snapshots = lambda syms: {x: {"latestQuote": {"ap": 0.3}, "greeks": {"delta": -(1 - abs(int(x[-2:]) - 96) / 10)}}
+                                               for x in syms}
+            slot, picks = sr.Sniper().entries(self.run_at(date(2026, 10, 13), 9, 40, b), spec, {"slots": {}})
+            self.assertTrue(picks[0]["sym"].endswith("P93"))                          # 2.5% out: 96 x 0.975 = 93.6 -> 93
+            b.option_snapshots = lambda syms: {x: {"latestQuote": {"ap": 0.3}, "greeks": {"delta": -(1 - abs(int(x[-2:]) - 96) / 4)}}
+                                               for x in syms}
+            slot, picks = sr.Sniper().entries(self.run_at(date(2026, 10, 13), 9, 40, b), spec, {"slots": {}})
+            self.assertTrue(picks[0]["sym"].endswith("P94"))                          # 93 is only 0.25 delta: step in to 94 (0.50)
+            self.assertIn("delta 0.50", picks[0]["why"])
 
     def test_overnight_buys_the_biggest_strong_close_above_its_average_and_holds_three_sessions(self):
         from hero import sleeve_rules as sr

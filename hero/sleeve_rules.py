@@ -568,8 +568,10 @@ class Sniper:
     """claude-b's catalyst_open, our form: a pre-market Claude session writes at most one pick a day to
     journal-s500/sniper/YYYY-MM-DD.json ({"sniper": {"symbol", "direction", "catalyst", "confidence"} or null}).
     From the first cycle at 09:30 until 10:00, once the stock is not going against the pick, buy the nearest expiry
-    (the day's if listed) nearest to `delta` (0.10; 3% out of the money when there are no greeks) and ride it on the
-    trail (after 2x, out on a 40% giveback), else out at 15:30 on its expiry day."""
+    (the day's if listed), the first strike `swing_frac` (half) of the stock's average daily move (20 sessions) out of
+    the money -- never further out than `min_delta` (0.30): owner, 10-15, a fixed 0.10 delta is a lottery ticket on a
+    slow mega-cap (AAPL 355C at 345.5) -- and ride it on the trail (after 2x, out on a 40% giveback), else out at 15:30
+    on its expiry day."""
 
     def entries(self, run, spec, s):
         day = run.today.isoformat()
@@ -593,22 +595,29 @@ class Sniper:
         exp = min(c["expiration_date"] for c in cs)
         near = [c for c in cs if c["expiration_date"] == exp]
         quotes = run.c.option_snapshots([c["symbol"] for c in near]) or {}
-        target = spec.get("delta", 0.10)
-        scored = []
+        xs = (closes(run, [und], 60).get(und) or [])[-21:]
+        swing = statistics.mean(abs(xs[k] / xs[k - 1] - 1) for k in range(1, len(xs))) if len(xs) >= 6 else 0.02
+        dist = max(spec.get("swing_frac", 0.5) * swing, 0.003)
+        sign = 1 if kind == "C" else -1
+        priced = []  # (how far out, contract, ask, |delta| or None), nearest the money first
         for c in near:
             q = quotes.get(c["symbol"]) or {}
             ask = float((q.get("latestQuote") or {}).get("ap") or 0)
             d = (q.get("greeks") or {}).get("delta")
-            if ask > 0 and d is not None:
-                scored.append((abs(abs(float(d)) - target), c, ask, abs(float(d))))
-        if scored:
-            _, c, ask, d = min(scored, key=lambda x: x[0])
-            how = f"delta {d:.2f}"
-        else:
-            got = option_pick(run, und, kind, spot, spec.get("offset", 0.03), day, (run.today + timedelta(days=7)).isoformat())
-            if not got:
-                return (day, [])
-            (c, ask), how = got, "离现价约 3%"
+            out = sign * (float(c["strike_price"]) / spot - 1)
+            if ask > 0 and out >= 0:
+                priced.append((out, c, ask, abs(float(d)) if d is not None else None))
+        priced.sort(key=lambda x: x[0])
+        if not priced:
+            return (day, [])
+        # half the stock's usual daily move out of the money (AAPL ~0.5%, CRWV ~3%), never past min_delta
+        pick = next((x for x in priced if x[0] >= dist), priced[-1])
+        floor = spec.get("min_delta", 0.30)
+        if pick[3] is not None and pick[3] < floor:
+            closer = [x for x in priced if x[0] <= pick[0] and x[3] is not None and x[3] >= floor]
+            pick = closer[-1] if closer else priced[0]
+        _, c, ask, d = pick
+        how = f"离现价 {pick[0]:.1%}（平时一天波动 {swing:.1%} 的一半）" + (f"，delta {d:.2f}" if d is not None else "")
         exp = c["expiration_date"]
         return (day, [{"sym": c["symbol"], "asset": "option", "und": und, "ask": ask, "trail": True, "expiry": exp,
                        "exit_day": exp, "exit_at": "15:30",
