@@ -12,6 +12,10 @@
     "catalyst": "一句话：什么新消息、为什么还没反映在价格里",
     "confidence": 0.4
   },
+  "candidates": [                   // 用户 10-15：盘前看过的 3–5 只都打分排名，第 1 名就是 sniper（sniper 为 null 时也照样列）
+    {"rank": 1, "symbol": "META", "direction": "call", "confidence": 0.4, "why": "一句话"},
+    {"rank": 2, "symbol": "NBIS", "direction": "put", "confidence": 0.2, "why": "一句话"}
+  ],
   "claude_b_pick": "META call",     // claude-b 当天选的（我们不选同一只）
   "notes": ["盘前看过的其他候选和不选的原因"],
   "generated_at": "2026-10-14T09:05:00-04:00"
@@ -34,3 +38,11 @@ delta 约 0.10 的期权，账本一半的钱；翻倍后从最高价回撤 40% 
   优势只可能来自判断，所以没有把握就写 null。
 
 文件里另加一个字段：`"claude_b_pick": "META call"`（或 null / "未找到"），记录对方当天的选择，方便事后对比两边。
+
+## 信心分和记分卡（用户 10-15：以后按信心分排名）
+
+`confidence` 是盘前的主观把握（0–1），不是算出来的概率，目前也不影响下单（只下第 1 名、账本一半）。为了检验它，
+每天把看过的 3–5 只候选都写进 `candidates` 并打分；`python -m hero.research_sniper_score`（research.yml 的 sniper_score）
+按每只当天从开盘起朝所选方向走了多少记分（收盘方向对不对、当天有没有顺向 3% 以上——约 0.1 delta 期权能翻倍的位置），
+按信心分和排名分组，写到 `research/sniper/scorecard.md`。攒够几十个数据点后，再决定要不要让分数决定下注大小、或低于某个分数就写 null。
+

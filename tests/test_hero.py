@@ -2263,6 +2263,29 @@ class Notify(unittest.TestCase):
         self.assertEqual(sum(len(m["embeds"]) for m in msgs), 25)
 
 
+class SniperScore(unittest.TestCase):
+    def test_candidates_are_scored_by_the_day_in_their_direction_and_grouped_by_confidence(self):
+        from hero import research_sniper_score as rs
+        with tempfile.TemporaryDirectory() as d:
+            root = Path(d)
+            (root / "journal-s500" / "sniper").mkdir(parents=True)
+            (root / "journal-s500" / "sniper" / "2026-10-13.json").write_text(json.dumps({"date": "2026-10-13", "sniper": None}))
+            (root / "journal-s500" / "sniper" / "2026-10-15.json").write_text(json.dumps({"date": "2026-10-15",
+                "sniper": {"symbol": "CRWV", "direction": "put", "confidence": 0.3},
+                "candidates": [{"rank": 1, "symbol": "CRWV", "direction": "put", "confidence": 0.3},
+                               {"rank": 2, "symbol": "MU", "direction": "put", "confidence": 0.2}]}))
+            (root / "journal-s500" / "sleeves.json").write_text(json.dumps({"sleeves": {"sniper-500": {"closed": [
+                {"opened": "2026-10-15 09:40", "und": "CRWV", "paid": 100.0, "proceeds": 250.0}]}}}))
+            ps = rs.picks(root)
+            self.assertEqual([(p["symbol"], p["traded"]) for p in ps], [("CRWV", True), ("MU", False)])
+            rows = [rs.score(ps[0], {"o": 60, "h": 61, "l": 55.8, "c": 57}), rs.score(ps[1], {"o": 100, "h": 102, "l": 99, "c": 101})]
+            self.assertEqual((rows[0]["close_move"], rows[0]["best_move"], rows[0]["hit"]), (0.05, 0.07, True))
+            self.assertEqual((rows[1]["close_move"], rows[1]["hit"]), (-0.01, False))
+            md = rs.report(rows, rs.booked(root))
+            self.assertIn("| 0.3–0.4 | 1 | 100% | 100% | +5.0% | +7.0% |", md)
+            self.assertIn("| 2026-10-15 | 1 | CRWV | 看跌 | 0.30 | +5.0% | +7.0% | +150% |", md)
+
+
 class ResearchIronFly(unittest.TestCase):
     def test_credit_reaction_buyback_and_expiry(self):
         from hero import research_ironfly as r
