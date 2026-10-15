@@ -342,7 +342,8 @@
    "slots": {
     "2026-10-12": "2026-10-12T10:00-04:00",
     "2026-10-13": "2026-10-13T10:00-04:00",
-    "2026-10-14": "2026-10-14T09:40-04:00"
+    "2026-10-14": "2026-10-14T09:40-04:00",
+    "2026-10-15": "2026-10-15T09:40-04:00"
    },
    "best": 500.0,
    "created": null
@@ -467,7 +468,8 @@
    "slots": {
     "2026-10-12": "2026-10-12T10:00-04:00",
     "2026-10-13": "2026-10-13T10:00-04:00",
-    "2026-10-14": "2026-10-14T09:40-04:00"
+    "2026-10-14": "2026-10-14T09:40-04:00",
+    "2026-10-15": "2026-10-15T09:40-04:00"
    },
    "best": 1000.0,
    "created": null
@@ -1378,7 +1380,7 @@
      "exit_day": "2026-10-15",
      "exit_at": "15:50",
      "trail": false,
-     "best_bid": 0.74,
+     "best_bid": 0.86,
      "take_x": 2,
      "take": 1.3,
      "take_cid": "sl-wk-news-500-24c4d60137-t4c05"
@@ -1413,7 +1415,7 @@
      "exit_day": "2026-10-15",
      "exit_at": "15:50",
      "trail": false,
-     "best_bid": 0.74,
+     "best_bid": 0.86,
      "take_x": 2,
      "take": 1.3,
      "take_cid": "sl-wk-news-1000-c4065441c8-t525a"
@@ -1752,7 +1754,7 @@
   },
   "earn-500": {
    "start": 500.0,
-   "cash": 209.0,
+   "cash": 211.0,
    "round": 1,
    "heroes": 0,
    "zeros": 0,
@@ -1775,24 +1777,6 @@
      "best_bid": 0.09,
      "sell_why": "2026-10-14 09:35 到时卖出",
      "sell_cid": "sl-earn-500-a27973d8cd-x5324"
-    },
-    {
-     "tid": "cb083f1cf9",
-     "kind": "earnings",
-     "sym": "TSM261016C00462500",
-     "asset": "option",
-     "und": "TSM",
-     "qty": 2,
-     "cost": 0.67,
-     "paid": 134.0,
-     "opened": "2026-10-14 15:40",
-     "why": "TSM 财报（预期波动 3.5%），买 2 倍预期波动处看涨 462.5，第二天开盘卖",
-     "expiry": "2026-10-16",
-     "exit_day": "2026-10-15",
-     "exit_at": "09:35",
-     "trail": false,
-     "best_bid": 0.53,
-     "expiry_out": null
     }
    ],
    "closed": [
@@ -1845,6 +1829,32 @@
      "how": "2026-10-14 09:35 到时卖出",
      "closed": "2026-10-14 09:40",
      "ret": -0.967
+    },
+    {
+     "tid": "cb083f1cf9",
+     "kind": "earnings",
+     "sym": "TSM261016C00462500",
+     "asset": "option",
+     "und": "TSM",
+     "qty": 2,
+     "cost": 0.67,
+     "paid": 134.0,
+     "opened": "2026-10-14 15:40",
+     "why": "TSM 财报（预期波动 3.5%），买 2 倍预期波动处看涨 462.5，第二天开盘卖",
+     "expiry": "2026-10-16",
+     "exit_day": "2026-10-15",
+     "exit_at": "09:35",
+     "trail": false,
+     "best_bid": 0.53,
+     "expiry_out": null,
+     "sell_cid": "sl-earn-500-cb083f1cf9-xbf64",
+     "sell_why": "2026-10-15 09:35 到时卖出",
+     "state": "closed",
+     "exit_price": 0.01,
+     "proceeds": 2.0,
+     "how": "2026-10-15 09:35 到时卖出",
+     "closed": "2026-10-15 09:40",
+     "ret": -0.985
     }
    ],
    "slots": {
@@ -1857,7 +1867,7 @@
   },
   "earn-1000": {
    "start": 1000.0,
-   "cash": 341.0,
+   "cash": 345.0,
    "round": 1,
    "heroes": 0,
    "zeros": 0,
@@ -1880,24 +1890,6 @@
      "best_bid": 0.09,
      "sell_why": "2026-10-14 09:35 到时卖出",
      "sell_cid": "sl-earn-1000-8320d45070-xc675"
-    },
-    {
-     "tid": "1a5ed421ab",
-     "kind": "earnings",
-     "sym": "TSM261016C00462500",
-     "asset": "option",
-     "und": "TSM",
-     "qty": 4,
-     "cost": 0.67,
-     "paid": 268.0,
-     "opened": "2026-10-14 15:40",
-     "why": "TSM 财报（预期波动 3.5%），买 2 倍预期波动处看涨 462.5，第二天开盘卖",
-     "expiry": "2026-10-16",
-     "exit_day": "2026-10-15",
-     "exit_at": "09:35",
-     "trail": false,
-     "best_bid": 0.53,
-     "expiry_out": null
     }
    ],
    "closed": [
@@ -1975,6 +1967,32 @@
      "how": "2026-10-14 09:35 到时卖出",
      "closed": "2026-10-14 09:40",
      "ret": -0.967
+    },
+    {
+     "tid": "1a5ed421ab",
+     "kind": "earnings",
+     "sym": "TSM261016C00462500",
+     "asset": "option",
+     "und": "TSM",
+     "qty": 4,
+     "cost": 0.67,
+     "paid": 268.0,
+     "opened": "2026-10-14 15:40",
+     "why": "TSM 财报（预期波动 3.5%），买 2 倍预期波动处看涨 462.5，第二天开盘卖",
+     "expiry": "2026-10-16",
+     "exit_day": "2026-10-15",
+     "exit_at": "09:35",
+     "trail": false,
+     "best_bid": 0.53,
+     "expiry_out": null,
+     "sell_cid": "sl-earn-1000-1a5ed421ab-x861d",
+     "sell_why": "2026-10-15 09:35 到时卖出",
+     "state": "closed",
+     "exit_price": 0.01,
+     "proceeds": 4.0,
+     "how": "2026-10-15 09:35 到时卖出",
+     "closed": "2026-10-15 09:40",
+     "ret": -0.985
     }
    ],
    "slots": {
@@ -2167,7 +2185,7 @@
      "exit_day": "2026-10-16",
      "exit_at": "15:30",
      "trail": true,
-     "best_bid": 0.0,
+     "best_bid": 0.61,
      "expiry_out": null
     }
    ],
@@ -2201,7 +2219,7 @@
      "exit_day": "2026-10-16",
      "exit_at": "15:30",
      "trail": true,
-     "best_bid": 0.0,
+     "best_bid": 0.61,
      "expiry_out": null
     }
    ],
@@ -2235,7 +2253,7 @@
      "exit_day": "2026-10-19",
      "exit_at": "15:50",
      "trail": true,
-     "best_bid": 2.21,
+     "best_bid": 2.22,
      "expiry_out": null
     }
    ],
@@ -2268,7 +2286,7 @@
      "exit_day": "2026-10-19",
      "exit_at": "15:50",
      "trail": true,
-     "best_bid": 2.21,
+     "best_bid": 2.22,
      "expiry_out": null
     }
    ],
