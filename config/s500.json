@@ -408,6 +408,12 @@
       },
       {"id": "vixspike-1000", "kind": "vixspike", "start": 1000, "name": "恐慌反弹：VIXY 涨 8%+ 且 SPY 跌 1.5%+ 的第二天 10:00 买 SPY 当天到期价外 0.6% 看涨，3 倍止盈，15:30 平仓（只演算）",
        "und": "SPY", "offset": 0.006, "take": 3, "fraction": 0.5, "plan_only": true
+      },
+      {"id": "breakgap-500", "kind": "breakgap", "start": 500, "name": "突破大跳空：开盘跳空 2%+ 且达平时波动 3 倍、突破 20 日高 / 低点、开盘后不回头，09:35 买非当天到期价外 0.6%，拿到第二天 15:50（只演算）",
+       "fraction": 0.5, "plan_only": true
+      },
+      {"id": "breakgap-1000", "kind": "breakgap", "start": 1000, "name": "突破大跳空：开盘跳空 2%+ 且达平时波动 3 倍、突破 20 日高 / 低点、开盘后不回头，09:35 买非当天到期价外 0.6%，拿到第二天 15:50（只演算）",
+       "fraction": 0.5, "plan_only": true
       }
     ]
   },

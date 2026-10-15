@@ -477,6 +477,59 @@ class Gap:
         return (day, picks)
 
 
+class BreakGap:
+    """research/2026-10-15-sniper-factors3.md: an unusual gap that breaks out -- the open 2%+ from the prior close and
+    `swings` (3) times the stock's average daily move over 20 sessions, beyond its 20-session high (gap up) or low (gap
+    down), and the first minutes still going that way. From 09:35, the largest such gap of the pool: the nearest expiry
+    after today, 0.6% out, held to 15:50 the next session (15:30 if that is its expiry). 57 events since 2024-02 held to
+    the next close: +60% per $1 (2024 +49%, 2025-26 +69%), most of them earnings reactions."""
+
+    def entries(self, run, spec, s):
+        day = run.today.isoformat()
+        if day in s["slots"] or not (spec.get("entry", "09:35") <= run.hhmm < spec.get("cutoff", "10:00")):
+            return None
+        p = pool(run)
+
+        def fetch():
+            start = (run.today - timedelta(days=45)).isoformat()
+            out = {}
+            for i in range(0, len(p), 100):
+                for x, bs in run.c.daily_bars(p[i:i + 100], start, adjustment="raw").items():
+                    out[x] = [b for b in bs if b["t"][:10] < day]
+            return out
+        bars = cached(run, ("breakgap_bars", day), fetch) or {}
+        found = []
+        for x, v in snaps(run, p).items():
+            spot, o, _, prev = spot_open(v)
+            bs = bars.get(x) or []
+            if not spot or not o or not prev or len(bs) < 21:
+                continue
+            closes_ = [float(b["c"]) for b in bs[-21:]]
+            swing = statistics.mean(abs(closes_[k] / closes_[k - 1] - 1) for k in range(1, 21))
+            hi, lo = max(float(b["h"]) for b in bs[-20:]), min(float(b["l"]) for b in bs[-20:])
+            g = o / prev - 1
+            if not swing or abs(g) < spec.get("gap", 0.02) or abs(g) / swing < spec.get("swings", 3):
+                continue
+            if (g > 0 and o > hi and spot >= o) or (g < 0 and o < lo and spot <= o):
+                found.append((abs(g) / swing, x, spot, g, hi if g > 0 else lo))
+        each = budget(run, spec, s, 1)
+        for z, und, spot, g, level in sorted(found, reverse=True)[:8]:
+            kind = "C" if g > 0 else "P"
+            got = option_pick(run, und, kind, spot, spec.get("offset", 0.006), (run.today + timedelta(days=1)).isoformat(),
+                              (run.today + timedelta(days=8)).isoformat())
+            if not got or got[1] * 100 > each:
+                continue
+            c, ask = got
+            exp = c["expiration_date"]
+            out = min(next_business_day(run.today).isoformat(), exp)
+            at = "15:50" if out < exp else "15:30"
+            return (day, [{"sym": c["symbol"], "asset": "option", "und": und, "ask": ask, "expiry": exp, "exit_day": out, "exit_at": at,
+                           "why": f"突破大跳空：{und} {'高' if g > 0 else '低'}开 {g:+.1%}（平时一天波动的 {z:.1f} 倍），"
+                                  f"{'高于 20 日最高' if g > 0 else '低于 20 日最低'} {level:,.2f}，开盘后继续{'涨' if g > 0 else '跌'}；"
+                                  f"买{'看涨' if kind == 'C' else '看跌'} {float(c['strike_price']):g}（{exp} 到期），拿到 {out[5:]} {at} 卖"}])
+        return (day, [])
+
+
 class OpenGap:
     """research/2026-10-13-open-catalyst.md, the one group worth watching: a 2%+ gap that the first minutes keep going
     the same way; the largest such gap, at the first cycle from 09:35, an option 0.6% beyond the price in the gap's
@@ -750,4 +803,4 @@ class Relay:
 
 RULES = {"zdte": ZeroDTE(), "weekly": Weekly(), "net": Net(), "gap": Gap(), "flush": Flush(), "earnings": EarningsLotto(),
          "letf": LETF(), "relay": Relay(), "opengap": OpenGap(), "sniper": Sniper(), "oneshot": OneShot(),
-         "overnight": Overnight(), "pead": Pead(), "vixspike": VixSpike()}
+         "overnight": Overnight(), "pead": Pead(), "vixspike": VixSpike(), "breakgap": BreakGap()}

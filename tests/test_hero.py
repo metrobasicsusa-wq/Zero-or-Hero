@@ -2926,6 +2926,23 @@ class SleeveRules(unittest.TestCase):
         slot, picks = sr.ZeroDTE().entries(self.run_at(date(2026, 10, 13), 10, 0, b), spec, {"slots": {}})
         self.assertEqual((picks[0]["expiry"], "当天到期" in picks[0]["why"]), ("2026-10-13", True))
 
+    def test_breakgap_buys_an_unusual_gap_beyond_the_20_day_high_and_holds_one_night(self):
+        from hero import sleeve_rules as sr
+        b = self.broker()
+        quiet = [{"t": f"2026-09-{d:02d}T04:00:00Z", "o": 100.0, "h": 101.0, "l": 99.0, "c": 100.0 + (0.5 if d % 2 else -0.5)}
+                 for d in range(1, 29)] + [{"t": "2026-10-12T04:00:00Z", "o": 100.0, "h": 101.0, "l": 99.0, "c": 100.0}]
+        b.bars = {"AAA": quiet, "BBB": quiet, "CCC": quiet}                                  # ~1% a day, 20-day high 101
+        b.snaps["AAA"] = {"dailyBar": {"o": 104.0, "l": 103.5}, "latestTrade": {"p": 104.5}, "prevDailyBar": {"c": 100.0}}  # +4%: 4 swings, above 101
+        b.snaps["BBB"] = {"dailyBar": {"o": 102.0, "l": 101.5}, "latestTrade": {"p": 102.5}, "prevDailyBar": {"c": 100.0}}  # +2%: only 2 swings
+        b.snaps["CCC"] = {"dailyBar": {"o": 105.0, "l": 103.0}, "latestTrade": {"p": 103.5}, "prevDailyBar": {"c": 100.0}}  # +5% but fading
+        r = lambda hh, mm: self.run_at(date(2026, 10, 13), hh, mm, b)
+        self.assertIsNone(sr.BreakGap().entries(r(9, 30), {}, {"slots": {}, "cash": 500.0}))
+        slot, picks = sr.BreakGap().entries(r(9, 40), {}, {"slots": {}, "cash": 500.0})
+        self.assertEqual([p["und"] for p in picks], ["AAA"])
+        self.assertTrue(picks[0]["sym"].endswith("C106"))                                     # 104.5 x 1.006 = 105.1 -> 106
+        self.assertEqual((picks[0]["exit_day"], picks[0]["exit_at"]), ("2026-10-14", "15:50"))
+        self.assertIn("平时一天波动的 4.1 倍", picks[0]["why"])
+
     def test_open_gap_takes_the_largest_gap_the_open_keeps_and_holds_a_later_expiry_overnight(self):
         from hero import sleeve_rules as sr
         b = self.broker()
