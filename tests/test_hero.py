@@ -2955,6 +2955,26 @@ class SleeveRules(unittest.TestCase):
         self.assertEqual((picks[0]["exit_day"], picks[0]["exit_at"]), ("2026-10-14", "15:50"))
         self.assertIn("平时一天波动的 4.1 倍", picks[0]["why"])
 
+    def test_hikerally_records_a_month_out_put_after_a_fast_run_only_while_hiking(self):
+        from hero import sleeve_rules as sr
+        b = self.broker()
+        run_up = [{"t": f"2026-09-{d:02d}T04:00:00Z", "c": 100.0 if d <= 16 else 100.0 + (d - 16) * 0.8} for d in range(1, 31)]
+        b.bars = {"SMH": run_up, "QQQ": run_up}
+        b.snaps["SMH"] = {"dailyBar": {"o": 111.0, "l": 110.5}, "latestTrade": {"p": 112.0}, "prevDailyBar": {"c": 111.2}}  # +12% on 15 sessions
+        b.snaps["QQQ"] = {"dailyBar": {"o": 105.0, "l": 104.5}, "latestTrade": {"p": 105.0}, "prevDailyBar": {"c": 104.0}}  # +5%: under 7%
+        spec = {"hiking": True, "unds": {"SMH": 0.10, "QQQ": 0.07}}
+        s = {"slots": {}, "cash": 500.0, "open": []}
+        r = lambda d, hh, mm: self.run_at(d, hh, mm, b)
+        self.assertIsNone(sr.HikeRally().entries(r(date(2026, 10, 16), 10, 0), spec, s))           # 15:45 to 15:58 only
+        self.assertEqual(sr.HikeRally().entries(r(date(2026, 10, 16), 15, 50), {**spec, "hiking": False}, s), ("2026-10-16", []))
+        slot, picks = sr.HikeRally().entries(r(date(2026, 10, 16), 15, 50), spec, s)
+        self.assertEqual([p["und"] for p in picks], ["SMH"])
+        self.assertTrue(picks[0]["sym"].endswith("P112") and picks[0]["trail"])                    # the put nearest the price
+        self.assertEqual((picks[0]["expiry"], picks[0]["exit_day"], picks[0]["exit_at"]), ("2026-11-30", "2026-11-13", "15:50"))
+        self.assertIn("15 个交易日涨 +12.0%", picks[0]["why"])
+        self.assertEqual(s["hike_last"], {"SMH": "2026-10-16"})
+        self.assertEqual(sr.HikeRally().entries(r(date(2026, 10, 19), 15, 50), spec, s), ("2026-10-19", []))  # one ticket a run-up
+
     def test_open_gap_takes_the_largest_gap_the_open_keeps_and_holds_a_later_expiry_overnight(self):
         from hero import sleeve_rules as sr
         b = self.broker()

@@ -530,6 +530,53 @@ class BreakGap:
         return (day, [])
 
 
+class HikeRally:
+    """A fast run while the Fed is raising rates (owner, 10-16: "rising this fast, some news will knock it down").
+    SMH since 2011: after 15 sessions up 10%+, 20 sessions later it was lower 12 of 44 times outside hiking cycles but 5
+    of 10 inside them (2018, 2022-23), and 8%+ lower at some point 4 of 10. Only while `hiking` is set in the spec (the
+    Fed's first hike in this cycle was 2026-09-16; unset it when the Fed cuts). At 15:50, for each of `unds` (symbol ->
+    the 15-session rise, e.g. SMH 10%, QQQ 7%) that is up that much against its close 15 sessions ago: the put nearest
+    the price, 25-45 days out; out after 2x on a 40% giveback, else 15:50 on the 20th session (15:30 if it expires
+    first). Once a name fires it sits out 28 days (one ticket per run-up)."""
+
+    def entries(self, run, spec, s):
+        day = run.today.isoformat()
+        if day in s["slots"] or not (spec.get("entry", "15:45") <= run.hhmm < "15:58"):
+            return None
+        if not spec.get("hiking"):
+            return (day, [])
+        unds = spec.get("unds") or {"SMH": 0.10, "QQQ": 0.07}
+        last = s.setdefault("hike_last", {})
+        cl = closes(run, sorted(unds), 60)
+        held = {t.get("und") for t in s["open"]}
+        found = []
+        for und, rise in sorted(unds.items()):
+            xs = cl.get(und) or []
+            spot = spot_open(snaps(run, [und]).get(und) or {})[0]
+            if len(xs) < 15 or not spot or und in held:
+                continue
+            if last.get(und) and (run.today - date.fromisoformat(last[und])).days < spec.get("rest_days", 28):
+                continue
+            r = spot / xs[-15] - 1
+            if r >= rise:
+                found.append((und, spot, r))
+        picks = []
+        for und, spot, r in found:
+            got = option_pick(run, und, "P", spot, 0.0, (run.today + timedelta(days=25)).isoformat(),
+                              (run.today + timedelta(days=45)).isoformat())
+            if not got:
+                continue
+            c, ask = got
+            exp = c["expiration_date"]
+            out, at = held_out(run, exp, spec.get("hold", 20))
+            last[und] = day
+            picks.append({"sym": c["symbol"], "asset": "option", "und": und, "ask": ask, "trail": True, "expiry": exp,
+                          "exit_day": out, "exit_at": at,
+                          "why": f"加息期快涨：{und} 15 个交易日涨 {r:+.1%}（门槛 {unds[und]:.0%}），赌一个消息砸下来；买看跌 "
+                                 f"{float(c['strike_price']):g}（{exp} 到期），翻倍后回撤 40% 卖，否则 {out[5:]} {at} 卖"})
+        return (day, picks)
+
+
 class OpenGap:
     """research/2026-10-13-open-catalyst.md, the one group worth watching: a 2%+ gap that the first minutes keep going
     the same way; the largest such gap, at the first cycle from 09:35, an option 0.6% beyond the price in the gap's
@@ -812,4 +859,5 @@ class Relay:
 
 RULES = {"zdte": ZeroDTE(), "weekly": Weekly(), "net": Net(), "gap": Gap(), "flush": Flush(), "earnings": EarningsLotto(),
          "letf": LETF(), "relay": Relay(), "opengap": OpenGap(), "sniper": Sniper(), "oneshot": OneShot(),
-         "overnight": Overnight(), "pead": Pead(), "vixspike": VixSpike(), "breakgap": BreakGap()}
+         "overnight": Overnight(), "pead": Pead(), "vixspike": VixSpike(), "breakgap": BreakGap(),
+         "hikerally": HikeRally()}
