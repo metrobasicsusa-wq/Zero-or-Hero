@@ -2713,6 +2713,18 @@ class Sleeves(unittest.TestCase):
         self.assertEqual(len(tids), 2)
         self.assertEqual(tids[1], tids[0] + "r")
 
+    def test_stop_entries_keeps_selling_open_tickets_but_buys_nothing_new(self):
+        b = SleeveBroker(lambda s: (0.08, 0.10))
+        self.cycle(b, 10, 0, self.specs[:1])                                             # one open ticket
+        stopped = [{**self.specs[0], "stop_entries": True}]
+        b.quotes = lambda s: (0.02, 0.03)
+        book, log = self.cycle(b, 15, 30, stopped)
+        self.assertEqual(book.s("spy0dte-500")["open"], [])                              # still sold at its time exit
+        fresh = SleeveBroker(lambda s: (0.08, 0.10))
+        (self.root / "sleeves.json").unlink()
+        book, log = self.cycle(fresh, 10, 0, stopped)
+        self.assertEqual(fresh.orders, {})                                               # nothing new bought
+
     def test_unfilled_is_requoted_once_then_dropped(self):
         b = SleeveBroker(lambda s: (0.08, 0.10), fill=lambda o: False)
         book, log = self.cycle(b, 10, 0, self.specs[:1])

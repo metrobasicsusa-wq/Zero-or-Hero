@@ -399,7 +399,7 @@ class Runner:
         for spec in self.specs:
             rule = self.rules.get(spec["kind"])
             s = self.book.s(spec["id"])
-            if not rule:
+            if not rule or spec.get("stop_entries"):  # stop_entries: no new tickets, the open ones still run to their exits
                 continue
             try:  # one rule's bad data must not stop the other sleeves
                 got = rule.entries(self, spec, s)

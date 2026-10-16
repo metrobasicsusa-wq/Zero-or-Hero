@@ -391,11 +391,17 @@
       {"id": "sniper-1000", "kind": "sniper", "start": 1000, "name": "开盘狙击：盘前判断的一只，09:30 起不逆向就买约 0.1 delta，翻倍后回撤 40% 卖",
        "fraction": 0.5
       },
-      {"id": "overnight-500", "kind": "overnight", "start": 500, "name": "隔夜动量：15:50 当天涨 3%+、收在高位、在 50 日均线上方的最强一只，买下周价外 3% 看涨，翻倍后回撤 40% 卖，否则第三天 15:50 卖",
-       "fraction": 0.5
+      {"id": "overnight-500", "kind": "overnight", "start": 500, "name": "隔夜动量：15:50 当天涨 3%+、收在高位、在 50 日均线上方的最强一只，买下周价外 3% 看涨，翻倍后回撤 40% 卖，否则第三天 15:50 卖（10-16 起不再开新仓，只卖完已有的）",
+       "fraction": 0.5, "stop_entries": true
       },
-      {"id": "overnight-1000", "kind": "overnight", "start": 1000, "name": "隔夜动量：15:50 当天涨 3%+、收在高位、在 50 日均线上方的最强一只，买下周价外 3% 看涨，翻倍后回撤 40% 卖，否则第三天 15:50 卖",
-       "fraction": 0.5
+      {"id": "overnight-plan-500", "kind": "overnight", "start": 500, "name": "隔夜动量：同上规则（只演算，10-16 起）",
+       "fraction": 0.5, "plan_only": true
+      },
+      {"id": "overnight-1000", "kind": "overnight", "start": 1000, "name": "隔夜动量：15:50 当天涨 3%+、收在高位、在 50 日均线上方的最强一只，买下周价外 3% 看涨，翻倍后回撤 40% 卖，否则第三天 15:50 卖（10-16 起不再开新仓，只卖完已有的）",
+       "fraction": 0.5, "stop_entries": true
+      },
+      {"id": "overnight-plan-1000", "kind": "overnight", "start": 1000, "name": "隔夜动量：同上规则（只演算，10-16 起）",
+       "fraction": 0.5, "plan_only": true
       },
       {"id": "pead-500", "kind": "pead", "start": 500, "name": "财报后漂移：财报高开 5%+ 且守住，第二天 10:00 买下周价外 3% 看涨，翻倍后回撤 40% 卖，否则第三天 15:50 卖（只演算）",
        "fraction": 0.5, "plan_only": true
