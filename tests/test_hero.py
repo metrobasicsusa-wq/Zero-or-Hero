@@ -2955,6 +2955,24 @@ class SleeveRules(unittest.TestCase):
         self.assertEqual((picks[0]["exit_day"], picks[0]["exit_at"]), ("2026-10-14", "15:50"))
         self.assertIn("平时一天波动的 4.1 倍", picks[0]["why"])
 
+    def test_dipweek_buys_the_biggest_gap_down_a_call_3pct_out_for_a_week(self):
+        from hero import sleeve_rules as sr
+        b = self.broker()
+        b.snaps["AAA"] = {"dailyBar": {"o": 97.0, "l": 95.5}, "latestTrade": {"p": 96.0}, "prevDailyBar": {"c": 100.0}}   # -3%, still below
+        b.snaps["BBB"] = {"dailyBar": {"o": 97.5, "l": 97.0}, "latestTrade": {"p": 98.0}, "prevDailyBar": {"c": 100.0}}   # -2.5%, back above
+        b.snaps["CCC"] = {"dailyBar": {"o": 99.0, "l": 98.5}, "latestTrade": {"p": 99.0}, "prevDailyBar": {"c": 100.0}}   # -1%: no gap
+        r = lambda hh, mm: self.run_at(date(2026, 10, 16), hh, mm, b)
+        s = {"slots": {}, "cash": 500.0, "open": []}
+        self.assertIsNone(sr.DipWeek().entries(r(10, 0), {}, s))                                   # 15:45 to 15:58 only
+        slot, picks = sr.DipWeek().entries(r(15, 50), {}, s)
+        self.assertEqual([p["und"] for p in picks], ["AAA"])
+        self.assertTrue(picks[0]["sym"].endswith("C99") and picks[0]["trail"])                     # 96 x 1.03 = 98.9 -> 99
+        self.assertEqual((picks[0]["expiry"], picks[0]["exit_day"], picks[0]["exit_at"]), ("2026-10-28", "2026-10-23", "15:50"))
+        self.assertIn("买价 $0.40 / 卖价 $0.50（价差占中间价 22%）", picks[0]["why"])
+        self.assertIn("收盘前仍低于开盘", picks[0]["why"])
+        s["open"] = [{"und": "AAA"}]
+        self.assertEqual(sr.DipWeek().entries(r(15, 50), {}, s)[1][0]["und"], "BBB")               # AAA already held
+
     def test_hikerally_records_a_month_out_put_after_a_fast_run_only_while_hiking(self):
         from hero import sleeve_rules as sr
         b = self.broker()

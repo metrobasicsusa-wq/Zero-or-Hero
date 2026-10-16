@@ -577,6 +577,43 @@ class HikeRally:
         return (day, picks)
 
 
+class DipWeek:
+    """research/2026-10-16-dip-week.md: a dip given a week instead of a day. At 15:50, the pool name that opened the
+    most below its prior close (2%+, `gap`) gets the call `offset` (3%) out on the nearest expiry 5 to 12 days away;
+    out after 2x on a 40% giveback, else 15:50 on the fifth session (15:30 if it expires first). 1,772 gap-downs since
+    2024-02, 3% out, sold on the fifth close: +19% per $1 at 5% costs each way (2024 +8%, 2025-26 +23%, without the
+    best three +17%; median -70%), +8% at 10% costs -- so the bid and ask go into the why: the cost is the question."""
+
+    def entries(self, run, spec, s):
+        day = run.today.isoformat()
+        if day in s["slots"] or not (spec.get("entry", "15:45") <= run.hhmm < "15:58"):
+            return None
+        held = {t.get("und") for t in s["open"]}
+        gaps = []
+        for x, v in snaps(run, pool(run)).items():
+            spot, o, _, prev = spot_open(v)
+            if spot and o and prev and o / prev - 1 <= -spec.get("gap", 0.02) and x not in held:
+                gaps.append((o / prev - 1, x, spot, spot < o))
+        each = budget(run, spec, s, 1)
+        for g, und, spot, failed in sorted(gaps)[:8]:
+            got = option_pick(run, und, "C", spot, spec.get("offset", 0.03), (run.today + timedelta(days=5)).isoformat(),
+                              (run.today + timedelta(days=12)).isoformat())
+            if not got or got[1] * 100 > each:
+                continue
+            c, ask = got
+            q = (run.cache.get(("quote", c["symbol"])) or {}).get("latestQuote") or {}
+            bid = float(q.get("bp") or 0)
+            spread = f"，买价 ${bid:.2f} / 卖价 ${ask:.2f}（价差占中间价 {(ask - bid) / ((ask + bid) / 2):.0%}）" if bid > 0 else ""
+            exp = c["expiration_date"]
+            out, at = held_out(run, exp, spec.get("hold", 5))
+            k = float(c["strike_price"])
+            return (day, [{"sym": c["symbol"], "asset": "option", "und": und, "ask": ask, "trail": True, "expiry": exp,
+                           "exit_day": out, "exit_at": at,
+                           "why": f"抄底给一周：{und} 低开 {g:+.1%}，{'收盘前仍低于开盘' if failed else '已回到开盘之上'}；买看涨 {k:g}"
+                                  f"（{exp} 到期，离现价 {k / spot - 1:.1%}）{spread}；翻倍后回撤 40% 卖，否则 {out[5:]} {at} 卖"}])
+        return (day, [])
+
+
 class OpenGap:
     """research/2026-10-13-open-catalyst.md, the one group worth watching: a 2%+ gap that the first minutes keep going
     the same way; the largest such gap, at the first cycle from 09:35, an option 0.6% beyond the price in the gap's
@@ -860,4 +897,4 @@ class Relay:
 RULES = {"zdte": ZeroDTE(), "weekly": Weekly(), "net": Net(), "gap": Gap(), "flush": Flush(), "earnings": EarningsLotto(),
          "letf": LETF(), "relay": Relay(), "opengap": OpenGap(), "sniper": Sniper(), "oneshot": OneShot(),
          "overnight": Overnight(), "pead": Pead(), "vixspike": VixSpike(), "breakgap": BreakGap(),
-         "hikerally": HikeRally()}
+         "hikerally": HikeRally(), "dipweek": DipWeek()}

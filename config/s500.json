@@ -305,29 +305,65 @@
         "id": "gap-500",
         "kind": "gap",
         "start": 500,
-        "name": "低开反弹（claude-b 规则）",
-        "n": 2
+        "name": "低开反弹（claude-b 规则）；10-16 起停开新仓（当天到期抄底回测 -21% 到 -28%）",
+        "n": 2,
+        "stop_entries": true
       },
       {
         "id": "gap-1000",
         "kind": "gap",
         "start": 1000,
-        "name": "低开反弹（claude-b 规则）",
-        "n": 2
+        "name": "低开反弹（claude-b 规则）；10-16 起停开新仓（当天到期抄底回测 -21% 到 -28%）",
+        "n": 2,
+        "stop_entries": true
       },
       {
         "id": "flush-500",
         "kind": "flush",
         "start": 500,
-        "name": "急跌再拉（AMD 式）",
-        "n": 2
+        "name": "急跌再拉（AMD 式）；10-16 起停开新仓（当天到期抄底回测 -21% 到 -28%）",
+        "n": 2,
+        "stop_entries": true
       },
       {
         "id": "flush-1000",
         "kind": "flush",
         "start": 1000,
-        "name": "急跌再拉（AMD 式）",
-        "n": 2
+        "name": "急跌再拉（AMD 式）；10-16 起停开新仓（当天到期抄底回测 -21% 到 -28%）",
+        "n": 2,
+        "stop_entries": true
+      },
+      {
+        "id": "gap-plan-500",
+        "kind": "gap",
+        "start": 500,
+        "name": "低开反弹：同上规则（只演算，10-16 起）",
+        "n": 2,
+        "plan_only": true
+      },
+      {
+        "id": "gap-plan-1000",
+        "kind": "gap",
+        "start": 1000,
+        "name": "低开反弹：同上规则（只演算，10-16 起）",
+        "n": 2,
+        "plan_only": true
+      },
+      {
+        "id": "flush-plan-500",
+        "kind": "flush",
+        "start": 500,
+        "name": "急跌再拉：同上规则（只演算，10-16 起）",
+        "n": 2,
+        "plan_only": true
+      },
+      {
+        "id": "flush-plan-1000",
+        "kind": "flush",
+        "start": 1000,
+        "name": "急跌再拉：同上规则（只演算，10-16 起）",
+        "n": 2,
+        "plan_only": true
       },
       {
         "id": "earn-500",
@@ -421,6 +457,12 @@
       {"id": "breakgap-1000", "kind": "breakgap", "start": 1000, "name": "突破大跳空：开盘跳空 2%+ 且达平时波动 3 倍、突破 20 日高 / 低点、开盘后不回头，09:35 买非当天到期价外 0.6%，拿到第二天 15:50（只演算）",
        "fraction": 0.5, "plan_only": true
       },
+      {"id": "dipweek-500", "kind": "dipweek", "start": 500, "name": "抄底给一周：股票池里低开 2%+ 最多的一只，15:50 买 5–12 天到期、价外 3% 的看涨，翻倍后回撤 40% 卖，否则第 5 个交易日 15:50 卖（只演算，10-16 起；记下真实买卖价差）",
+       "gap": 0.02, "offset": 0.03, "hold": 5, "fraction": 0.5, "plan_only": true
+      },
+      {"id": "dipweek-1000", "kind": "dipweek", "start": 1000, "name": "抄底给一周：股票池里低开 2%+ 最多的一只，15:50 买 5–12 天到期、价外 3% 的看涨，翻倍后回撤 40% 卖，否则第 5 个交易日 15:50 卖（只演算，10-16 起；记下真实买卖价差）",
+       "gap": 0.02, "offset": 0.03, "hold": 5, "fraction": 0.5, "plan_only": true
+      },
       {"id": "hikerally-500", "kind": "hikerally", "start": 500, "name": "加息期快涨：美联储加息期间 SMH 15 天涨 10%+ 或 QQQ 涨 7%+，15:50 买约一个月到期、最接近现价的看跌，翻倍后回撤 40% 卖，否则第 20 天 15:50 卖；同一只 28 天内只记一次（只演算，10-16 起）",
        "unds": {"SMH": 0.10, "QQQ": 0.07}, "hiking": true,
        "hiking_note": "2026-09-16 起加息（2023 年以来第一次）；美联储开始降息时改成 false", "fraction": 0.5, "plan_only": true
@@ -441,12 +483,12 @@
     "note": "quotes only, never an order: the live same-day rule on TSLA / NVDA / AMZN (and SPY for comparison) with real bid/ask, to measure single-stock spreads (research/2026-10-07-0dte-names.md assumed 10% for every name)"
   },
   "net_shadow": {
-    "enabled": true,
+    "enabled": false,
     "net": 15,
     "otm": 0.2,
     "take": 20,
     "fraction": 0.5,
     "start_capital": 500,
-    "note": "simulated only, beside the live 0DTE phase; research/2026-10-06-net-pit.md"
+    "note": "simulated only, beside the live 0DTE phase; research/2026-10-06-net-pit.md. Off from 10-16: that phase is off, so it has logged nothing since 10-08; the net rule trades as the net-500 / net-1000 sleeves."
   }
 }
