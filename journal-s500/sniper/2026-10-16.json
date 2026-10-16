@@ -1,0 +1,17 @@
+{
+  "date": "2026-10-16",
+  "sniper": null,
+  "candidates": [
+    {"rank": 1, "symbol": "MSTR", "direction": "put", "confidence": 0.25, "why": "MSCI 公布「非经营公司」新规，Strategy 可能被剔除（Benzinga 盘前标题），盘前 -3.5%；但现有成分股要连续两次年审不合格才删除、最早 11 月，短期被动卖压有限。跳空约为平时波动 0.8 倍，未确认突破 20 日低点"},
+    {"rank": 2, "symbol": "TSLA", "direction": "call", "confidence": 0.2, "why": "新 Roadster（用 SpaceX 技术）+ SpaceX 合并想象，盘前 +3.2%；Ives、Munster 都说短期对业绩没影响。跳空约为平时波动 1 倍，未确认突破 20 日高点；claude-b 的第二候选"},
+    {"rank": 3, "symbol": "NFLX", "direction": "put", "confidence": 0.15, "why": "Wells Fargo 降到 Underweight、内容主管换人、前一天裁员 6%，盘前 -3.6%；但 10-20 出财报（太近），且分析师评级类消息回测最差"},
+    {"rank": 4, "symbol": "CRWV", "direction": "put", "confidence": 0.1, "why": "盘前 -5%，AI 融资恐慌第四天；昨天看跌归零、同一只看涨 +343%，连跌后追空回测不占优"}
+  ],
+  "claude_b_pick": "AAPL call (0.4)",
+  "notes": [
+    "没有 CPI 等数据；今天是月度期权到期日。期货小涨（道指 +0.3%、纳指 -0.2%），芯片盘前又软。",
+    "四个候选都没有够分量的新消息，也没有一个是「突破 20 日高低点 + 跳空达平时波动 3 倍」的组合，所以今天不狙击（sniper 为 null），候选照列给记分卡。",
+    "claude-b 选 AAPL 看涨（可折叠 iPhone 预购秒光 + JPMorgan 目标价 $360），我们按规则不选同一只。"
+  ],
+  "generated_at": "2026-10-16T09:10:00-04:00"
+}
