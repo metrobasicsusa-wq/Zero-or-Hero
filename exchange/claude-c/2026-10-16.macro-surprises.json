@@ -1,0 +1,1662 @@
+{
+ "source": "Moomoo OpenD get_economic_calendar, market US, importance HIGH",
+ "exported": "2026-10-16T09:58:36-04:00",
+ "range": [
+  "2024-01-01",
+  "2026-10-16"
+ ],
+ "class_rule": "CPI: sum of CPI MoM + Core CPI MoM surprises, >+0.05 HOT, <-0.05 COOL; NFP: payrolls surprise >+40K HOT, <-40K COOL",
+ "caveats": [
+  "A print with no consensus is unclassed (class null).",
+  "2025-12-18 carries only a YoY CPI row (shutdown-delayed Nov CPI) and is classed on YoY.",
+  "The Oct-2025 CPI was never published; no row exists for it."
+ ],
+ "counts": {
+  "CPI": 33,
+  "NFP": 33
+ },
+ "events": [
+  {
+   "date": "2024-01-05",
+   "time_et": "09:30",
+   "event": "NFP",
+   "class": "HOT",
+   "surprise_sum": 46.0,
+   "prints": [
+    {
+     "kind": "NFP",
+     "title": "Nonfarm Payrolls",
+     "previous": 173.0,
+     "consensus": 170.0,
+     "actual": 216.0,
+     "surprise": 46.0
+    }
+   ]
+  },
+  {
+   "date": "2024-01-11",
+   "time_et": "09:30",
+   "event": "CPI",
+   "class": "HOT",
+   "surprise_sum": 0.1,
+   "prints": [
+    {
+     "kind": "CPI_MOM",
+     "title": "CPI (MoM)",
+     "previous": 0.2,
+     "consensus": 0.2,
+     "actual": 0.3,
+     "surprise": 0.1
+    },
+    {
+     "kind": "CPI_YOY",
+     "title": "CPI (YoY)",
+     "previous": 3.1,
+     "consensus": 3.2,
+     "actual": 3.4,
+     "surprise": 0.2
+    },
+    {
+     "kind": "CORE_CPI_MOM",
+     "title": "Core CPI (MoM)",
+     "previous": 0.3,
+     "consensus": 0.3,
+     "actual": 0.3,
+     "surprise": 0.0
+    }
+   ]
+  },
+  {
+   "date": "2024-02-02",
+   "time_et": "09:30",
+   "event": "NFP",
+   "class": "HOT",
+   "surprise_sum": 166.0,
+   "prints": [
+    {
+     "kind": "NFP",
+     "title": "Nonfarm Payrolls",
+     "previous": 333.0,
+     "consensus": 187.0,
+     "actual": 353.0,
+     "surprise": 166.0
+    }
+   ]
+  },
+  {
+   "date": "2024-02-13",
+   "time_et": "09:30",
+   "event": "CPI",
+   "class": "HOT",
+   "surprise_sum": 0.2,
+   "prints": [
+    {
+     "kind": "CPI_MOM",
+     "title": "CPI (MoM)",
+     "previous": 0.2,
+     "consensus": 0.2,
+     "actual": 0.3,
+     "surprise": 0.1
+    },
+    {
+     "kind": "CORE_CPI_MOM",
+     "title": "Core CPI (MoM)",
+     "previous": 0.3,
+     "consensus": 0.3,
+     "actual": 0.4,
+     "surprise": 0.1
+    },
+    {
+     "kind": "CPI_YOY",
+     "title": "CPI (YoY)",
+     "previous": 3.4,
+     "consensus": 2.9,
+     "actual": 3.1,
+     "surprise": 0.2
+    }
+   ]
+  },
+  {
+   "date": "2024-03-08",
+   "time_et": "09:30",
+   "event": "NFP",
+   "class": "HOT",
+   "surprise_sum": 77.0,
+   "prints": [
+    {
+     "kind": "NFP",
+     "title": "Nonfarm Payrolls",
+     "previous": 229.0,
+     "consensus": 198.0,
+     "actual": 275.0,
+     "surprise": 77.0
+    }
+   ]
+  },
+  {
+   "date": "2024-03-12",
+   "time_et": "08:30",
+   "event": "CPI",
+   "class": "HOT",
+   "surprise_sum": 0.1,
+   "prints": [
+    {
+     "kind": "CPI_MOM",
+     "title": "CPI (MoM)",
+     "previous": 0.3,
+     "consensus": 0.4,
+     "actual": 0.4,
+     "surprise": 0.0
+    },
+    {
+     "kind": "CORE_CPI_MOM",
+     "title": "Core CPI (MoM)",
+     "previous": 0.4,
+     "consensus": 0.3,
+     "actual": 0.4,
+     "surprise": 0.1
+    },
+    {
+     "kind": "CPI_YOY",
+     "title": "CPI (YoY)",
+     "previous": 3.1,
+     "consensus": 3.1,
+     "actual": 3.2,
+     "surprise": 0.1
+    }
+   ]
+  },
+  {
+   "date": "2024-04-05",
+   "time_et": "08:30",
+   "event": "NFP",
+   "class": "HOT",
+   "surprise_sum": 91.0,
+   "prints": [
+    {
+     "kind": "NFP",
+     "title": "Nonfarm Payrolls",
+     "previous": 270.0,
+     "consensus": 212.0,
+     "actual": 303.0,
+     "surprise": 91.0
+    }
+   ]
+  },
+  {
+   "date": "2024-04-10",
+   "time_et": "08:30",
+   "event": "CPI",
+   "class": "HOT",
+   "surprise_sum": 0.2,
+   "prints": [
+    {
+     "kind": "CPI_MOM",
+     "title": "CPI (MoM)",
+     "previous": 0.4,
+     "consensus": 0.3,
+     "actual": 0.4,
+     "surprise": 0.1
+    },
+    {
+     "kind": "CPI_YOY",
+     "title": "CPI (YoY)",
+     "previous": 3.2,
+     "consensus": 3.4,
+     "actual": 3.5,
+     "surprise": 0.1
+    },
+    {
+     "kind": "CORE_CPI_MOM",
+     "title": "Core CPI (MoM)",
+     "previous": 0.4,
+     "consensus": 0.3,
+     "actual": 0.4,
+     "surprise": 0.1
+    }
+   ]
+  },
+  {
+   "date": "2024-05-03",
+   "time_et": "08:30",
+   "event": "NFP",
+   "class": "COOL",
+   "surprise_sum": -63.0,
+   "prints": [
+    {
+     "kind": "NFP",
+     "title": "Nonfarm Payrolls",
+     "previous": 315.0,
+     "consensus": 238.0,
+     "actual": 175.0,
+     "surprise": -63.0
+    }
+   ]
+  },
+  {
+   "date": "2024-05-15",
+   "time_et": "08:30",
+   "event": "CPI",
+   "class": "COOL",
+   "surprise_sum": -0.1,
+   "prints": [
+    {
+     "kind": "CPI_MOM",
+     "title": "CPI (MoM)",
+     "previous": 0.4,
+     "consensus": 0.4,
+     "actual": 0.3,
+     "surprise": -0.1
+    },
+    {
+     "kind": "CORE_CPI_MOM",
+     "title": "Core CPI (MoM)",
+     "previous": 0.4,
+     "consensus": 0.3,
+     "actual": 0.3,
+     "surprise": 0.0
+    },
+    {
+     "kind": "CPI_YOY",
+     "title": "CPI (YoY)",
+     "previous": 3.5,
+     "consensus": 3.4,
+     "actual": 3.4,
+     "surprise": 0.0
+    }
+   ]
+  },
+  {
+   "date": "2024-06-07",
+   "time_et": "08:30",
+   "event": "NFP",
+   "class": "HOT",
+   "surprise_sum": 90.0,
+   "prints": [
+    {
+     "kind": "NFP",
+     "title": "Nonfarm Payrolls",
+     "previous": 165.0,
+     "consensus": 182.0,
+     "actual": 272.0,
+     "surprise": 90.0
+    }
+   ]
+  },
+  {
+   "date": "2024-06-12",
+   "time_et": "08:30",
+   "event": "CPI",
+   "class": "COOL",
+   "surprise_sum": -0.2,
+   "prints": [
+    {
+     "kind": "CPI_MOM",
+     "title": "CPI (MoM)",
+     "previous": 0.3,
+     "consensus": 0.1,
+     "actual": 0.0,
+     "surprise": -0.1
+    },
+    {
+     "kind": "CPI_YOY",
+     "title": "CPI (YoY)",
+     "previous": 3.4,
+     "consensus": 3.4,
+     "actual": 3.3,
+     "surprise": -0.1
+    },
+    {
+     "kind": "CORE_CPI_MOM",
+     "title": "Core CPI (MoM)",
+     "previous": 0.3,
+     "consensus": 0.3,
+     "actual": 0.2,
+     "surprise": -0.1
+    }
+   ]
+  },
+  {
+   "date": "2024-07-05",
+   "time_et": "08:30",
+   "event": "NFP",
+   "class": "INLINE",
+   "surprise_sum": 16.0,
+   "prints": [
+    {
+     "kind": "NFP",
+     "title": "Nonfarm Payrolls",
+     "previous": 218.0,
+     "consensus": 190.0,
+     "actual": 206.0,
+     "surprise": 16.0
+    }
+   ]
+  },
+  {
+   "date": "2024-07-11",
+   "time_et": "08:30",
+   "event": "CPI",
+   "class": "COOL",
+   "surprise_sum": -0.3,
+   "prints": [
+    {
+     "kind": "CPI_MOM",
+     "title": "CPI (MoM)",
+     "previous": 0.0,
+     "consensus": 0.1,
+     "actual": -0.1,
+     "surprise": -0.2
+    },
+    {
+     "kind": "CPI_YOY",
+     "title": "CPI (YoY)",
+     "previous": 3.3,
+     "consensus": 3.1,
+     "actual": 3.0,
+     "surprise": -0.1
+    },
+    {
+     "kind": "CORE_CPI_MOM",
+     "title": "Core CPI (MoM)",
+     "previous": 0.2,
+     "consensus": 0.2,
+     "actual": 0.1,
+     "surprise": -0.1
+    }
+   ]
+  },
+  {
+   "date": "2024-08-02",
+   "time_et": "08:30",
+   "event": "NFP",
+   "class": "COOL",
+   "surprise_sum": -61.0,
+   "prints": [
+    {
+     "kind": "NFP",
+     "title": "Nonfarm Payrolls",
+     "previous": 179.0,
+     "consensus": 175.0,
+     "actual": 114.0,
+     "surprise": -61.0
+    }
+   ]
+  },
+  {
+   "date": "2024-08-14",
+   "time_et": "08:30",
+   "event": "CPI",
+   "class": "INLINE",
+   "surprise_sum": 0.0,
+   "prints": [
+    {
+     "kind": "CPI_MOM",
+     "title": "CPI (MoM)",
+     "previous": -0.1,
+     "consensus": 0.2,
+     "actual": 0.2,
+     "surprise": 0.0
+    },
+    {
+     "kind": "CORE_CPI_MOM",
+     "title": "Core CPI (MoM)",
+     "previous": 0.1,
+     "consensus": 0.2,
+     "actual": 0.2,
+     "surprise": 0.0
+    },
+    {
+     "kind": "CPI_YOY",
+     "title": "CPI (YoY)",
+     "previous": 3.0,
+     "consensus": 3.0,
+     "actual": 2.9,
+     "surprise": -0.1
+    }
+   ]
+  },
+  {
+   "date": "2024-09-06",
+   "time_et": "08:30",
+   "event": "NFP",
+   "class": "INLINE",
+   "surprise_sum": -18.0,
+   "prints": [
+    {
+     "kind": "NFP",
+     "title": "Nonfarm Payrolls",
+     "previous": 89.0,
+     "consensus": 160.0,
+     "actual": 142.0,
+     "surprise": -18.0
+    }
+   ]
+  },
+  {
+   "date": "2024-09-11",
+   "time_et": "08:30",
+   "event": "CPI",
+   "class": "HOT",
+   "surprise_sum": 0.1,
+   "prints": [
+    {
+     "kind": "CPI_MOM",
+     "title": "CPI (MoM)",
+     "previous": 0.2,
+     "consensus": 0.2,
+     "actual": 0.2,
+     "surprise": 0.0
+    },
+    {
+     "kind": "CPI_YOY",
+     "title": "CPI (YoY)",
+     "previous": 2.9,
+     "consensus": 2.5,
+     "actual": 2.5,
+     "surprise": 0.0
+    },
+    {
+     "kind": "CORE_CPI_MOM",
+     "title": "Core CPI (MoM)",
+     "previous": 0.2,
+     "consensus": 0.2,
+     "actual": 0.3,
+     "surprise": 0.1
+    }
+   ]
+  },
+  {
+   "date": "2024-10-04",
+   "time_et": "08:30",
+   "event": "NFP",
+   "class": "HOT",
+   "surprise_sum": 107.0,
+   "prints": [
+    {
+     "kind": "NFP",
+     "title": "Nonfarm Payrolls",
+     "previous": 159.0,
+     "consensus": 147.0,
+     "actual": 254.0,
+     "surprise": 107.0
+    }
+   ]
+  },
+  {
+   "date": "2024-10-10",
+   "time_et": "08:30",
+   "event": "CPI",
+   "class": "HOT",
+   "surprise_sum": 0.2,
+   "prints": [
+    {
+     "kind": "CPI_MOM",
+     "title": "CPI (MoM)",
+     "previous": 0.2,
+     "consensus": 0.1,
+     "actual": 0.2,
+     "surprise": 0.1
+    },
+    {
+     "kind": "CORE_CPI_MOM",
+     "title": "Core CPI (MoM)",
+     "previous": 0.3,
+     "consensus": 0.2,
+     "actual": 0.3,
+     "surprise": 0.1
+    },
+    {
+     "kind": "CPI_YOY",
+     "title": "CPI (YoY)",
+     "previous": 2.5,
+     "consensus": 2.3,
+     "actual": 2.4,
+     "surprise": 0.1
+    }
+   ]
+  },
+  {
+   "date": "2024-11-01",
+   "time_et": "08:30",
+   "event": "NFP",
+   "class": "COOL",
+   "surprise_sum": -101.0,
+   "prints": [
+    {
+     "kind": "NFP",
+     "title": "Nonfarm Payrolls",
+     "previous": 223.0,
+     "consensus": 113.0,
+     "actual": 12.0,
+     "surprise": -101.0
+    }
+   ]
+  },
+  {
+   "date": "2024-11-13",
+   "time_et": "09:30",
+   "event": "CPI",
+   "class": "INLINE",
+   "surprise_sum": 0.0,
+   "prints": [
+    {
+     "kind": "CPI_YOY",
+     "title": "CPI (YoY)",
+     "previous": 2.4,
+     "consensus": 2.6,
+     "actual": 2.6,
+     "surprise": 0.0
+    },
+    {
+     "kind": "CPI_MOM",
+     "title": "CPI (MoM)",
+     "previous": 0.2,
+     "consensus": 0.2,
+     "actual": 0.2,
+     "surprise": 0.0
+    },
+    {
+     "kind": "CORE_CPI_MOM",
+     "title": "Core CPI (MoM)",
+     "previous": 0.3,
+     "consensus": 0.3,
+     "actual": 0.3,
+     "surprise": 0.0
+    }
+   ]
+  },
+  {
+   "date": "2024-12-06",
+   "time_et": "09:30",
+   "event": "NFP",
+   "class": "INLINE",
+   "surprise_sum": 27.0,
+   "prints": [
+    {
+     "kind": "NFP",
+     "title": "Nonfarm Payrolls",
+     "previous": 36.0,
+     "consensus": 200.0,
+     "actual": 227.0,
+     "surprise": 27.0
+    }
+   ]
+  },
+  {
+   "date": "2024-12-11",
+   "time_et": "09:30",
+   "event": "CPI",
+   "class": "INLINE",
+   "surprise_sum": 0.0,
+   "prints": [
+    {
+     "kind": "CPI_MOM",
+     "title": "CPI (MoM)",
+     "previous": 0.2,
+     "consensus": 0.3,
+     "actual": 0.3,
+     "surprise": 0.0
+    },
+    {
+     "kind": "CPI_YOY",
+     "title": "CPI (YoY)",
+     "previous": 2.6,
+     "consensus": 2.7,
+     "actual": 2.7,
+     "surprise": 0.0
+    },
+    {
+     "kind": "CORE_CPI_MOM",
+     "title": "Core CPI (MoM)",
+     "previous": 0.3,
+     "consensus": 0.3,
+     "actual": 0.3,
+     "surprise": 0.0
+    }
+   ]
+  },
+  {
+   "date": "2025-01-10",
+   "time_et": "09:30",
+   "event": "NFP",
+   "class": "HOT",
+   "surprise_sum": 96.0,
+   "prints": [
+    {
+     "kind": "NFP",
+     "title": "Nonfarm Payrolls",
+     "previous": 212.0,
+     "consensus": 160.0,
+     "actual": 256.0,
+     "surprise": 96.0
+    }
+   ]
+  },
+  {
+   "date": "2025-01-15",
+   "time_et": "09:30",
+   "event": "CPI",
+   "class": "COOL",
+   "surprise_sum": -0.1,
+   "prints": [
+    {
+     "kind": "CORE_CPI_MOM",
+     "title": "Core CPI (MoM)",
+     "previous": 0.3,
+     "consensus": 0.3,
+     "actual": 0.2,
+     "surprise": -0.1
+    },
+    {
+     "kind": "CPI_MOM",
+     "title": "CPI (MoM)",
+     "previous": 0.3,
+     "consensus": 0.4,
+     "actual": 0.4,
+     "surprise": 0.0
+    },
+    {
+     "kind": "CPI_YOY",
+     "title": "CPI (YoY)",
+     "previous": 2.7,
+     "consensus": 2.9,
+     "actual": 2.9,
+     "surprise": 0.0
+    }
+   ]
+  },
+  {
+   "date": "2025-02-07",
+   "time_et": "09:30",
+   "event": "NFP",
+   "class": "INLINE",
+   "surprise_sum": -27.0,
+   "prints": [
+    {
+     "kind": "NFP",
+     "title": "Nonfarm Payrolls",
+     "previous": 307.0,
+     "consensus": 170.0,
+     "actual": 143.0,
+     "surprise": -27.0
+    }
+   ]
+  },
+  {
+   "date": "2025-02-12",
+   "time_et": "09:30",
+   "event": "CPI",
+   "class": "HOT",
+   "surprise_sum": 0.3,
+   "prints": [
+    {
+     "kind": "CPI_YOY",
+     "title": "CPI (YoY)",
+     "previous": 2.9,
+     "consensus": 2.9,
+     "actual": 3.0,
+     "surprise": 0.1
+    },
+    {
+     "kind": "CORE_CPI_MOM",
+     "title": "Core CPI (MoM)",
+     "previous": 0.2,
+     "consensus": 0.3,
+     "actual": 0.4,
+     "surprise": 0.1
+    },
+    {
+     "kind": "CPI_MOM",
+     "title": "CPI (MoM)",
+     "previous": 0.4,
+     "consensus": 0.3,
+     "actual": 0.5,
+     "surprise": 0.2
+    }
+   ]
+  },
+  {
+   "date": "2025-03-07",
+   "time_et": "09:30",
+   "event": "NFP",
+   "class": "INLINE",
+   "surprise_sum": -8.0,
+   "prints": [
+    {
+     "kind": "NFP",
+     "title": "Nonfarm Payrolls",
+     "previous": 125.0,
+     "consensus": 159.0,
+     "actual": 151.0,
+     "surprise": -8.0
+    }
+   ]
+  },
+  {
+   "date": "2025-03-12",
+   "time_et": "08:30",
+   "event": "CPI",
+   "class": "COOL",
+   "surprise_sum": -0.2,
+   "prints": [
+    {
+     "kind": "CPI_MOM",
+     "title": "CPI (MoM)",
+     "previous": 0.5,
+     "consensus": 0.3,
+     "actual": 0.2,
+     "surprise": -0.1
+    },
+    {
+     "kind": "CORE_CPI_MOM",
+     "title": "Core CPI (MoM)",
+     "previous": 0.4,
+     "consensus": 0.3,
+     "actual": 0.2,
+     "surprise": -0.1
+    },
+    {
+     "kind": "CPI_YOY",
+     "title": "CPI (YoY)",
+     "previous": 3.0,
+     "consensus": 2.9,
+     "actual": 2.8,
+     "surprise": -0.1
+    }
+   ]
+  },
+  {
+   "date": "2025-04-04",
+   "time_et": "08:30",
+   "event": "NFP",
+   "class": "HOT",
+   "surprise_sum": 91.0,
+   "prints": [
+    {
+     "kind": "NFP",
+     "title": "Nonfarm Payrolls",
+     "previous": 117.0,
+     "consensus": 137.0,
+     "actual": 228.0,
+     "surprise": 91.0
+    }
+   ]
+  },
+  {
+   "date": "2025-04-10",
+   "time_et": "08:30",
+   "event": "CPI",
+   "class": "COOL",
+   "surprise_sum": -0.4,
+   "prints": [
+    {
+     "kind": "CPI_MOM",
+     "title": "CPI (MoM)",
+     "previous": 0.2,
+     "consensus": 0.1,
+     "actual": -0.1,
+     "surprise": -0.2
+    },
+    {
+     "kind": "CPI_YOY",
+     "title": "CPI (YoY)",
+     "previous": 2.8,
+     "consensus": 2.5,
+     "actual": 2.4,
+     "surprise": -0.1
+    },
+    {
+     "kind": "CORE_CPI_MOM",
+     "title": "Core CPI (MoM)",
+     "previous": 0.2,
+     "consensus": 0.3,
+     "actual": 0.1,
+     "surprise": -0.2
+    }
+   ]
+  },
+  {
+   "date": "2025-05-02",
+   "time_et": "08:30",
+   "event": "NFP",
+   "class": "INLINE",
+   "surprise_sum": 39.0,
+   "prints": [
+    {
+     "kind": "NFP",
+     "title": "Nonfarm Payrolls",
+     "previous": 185.0,
+     "consensus": 138.0,
+     "actual": 177.0,
+     "surprise": 39.0
+    }
+   ]
+  },
+  {
+   "date": "2025-05-13",
+   "time_et": "08:30",
+   "event": "CPI",
+   "class": "COOL",
+   "surprise_sum": -0.2,
+   "prints": [
+    {
+     "kind": "CPI_MOM",
+     "title": "CPI (MoM)",
+     "previous": -0.1,
+     "consensus": 0.3,
+     "actual": 0.2,
+     "surprise": -0.1
+    },
+    {
+     "kind": "CORE_CPI_MOM",
+     "title": "Core CPI (MoM)",
+     "previous": 0.1,
+     "consensus": 0.3,
+     "actual": 0.2,
+     "surprise": -0.1
+    },
+    {
+     "kind": "CPI_YOY",
+     "title": "CPI (YoY)",
+     "previous": 2.4,
+     "consensus": 2.4,
+     "actual": 2.3,
+     "surprise": -0.1
+    }
+   ]
+  },
+  {
+   "date": "2025-06-06",
+   "time_et": "08:30",
+   "event": "NFP",
+   "class": "INLINE",
+   "surprise_sum": 13.0,
+   "prints": [
+    {
+     "kind": "NFP",
+     "title": "Nonfarm Payrolls",
+     "previous": 177.0,
+     "consensus": 126.0,
+     "actual": 139.0,
+     "surprise": 13.0
+    }
+   ]
+  },
+  {
+   "date": "2025-06-11",
+   "time_et": "08:30",
+   "event": "CPI",
+   "class": "COOL",
+   "surprise_sum": -0.3,
+   "prints": [
+    {
+     "kind": "CPI_MOM",
+     "title": "CPI (MoM)",
+     "previous": 0.2,
+     "consensus": 0.2,
+     "actual": 0.1,
+     "surprise": -0.1
+    },
+    {
+     "kind": "CPI_YOY",
+     "title": "CPI (YoY)",
+     "previous": 2.3,
+     "consensus": 2.5,
+     "actual": 2.4,
+     "surprise": -0.1
+    },
+    {
+     "kind": "CORE_CPI_MOM",
+     "title": "Core CPI (MoM)",
+     "previous": 0.2,
+     "consensus": 0.3,
+     "actual": 0.1,
+     "surprise": -0.2
+    }
+   ]
+  },
+  {
+   "date": "2025-07-03",
+   "time_et": "08:30",
+   "event": "NFP",
+   "class": "INLINE",
+   "surprise_sum": 36.0,
+   "prints": [
+    {
+     "kind": "NFP",
+     "title": "Nonfarm Payrolls",
+     "previous": 139.0,
+     "consensus": 111.0,
+     "actual": 147.0,
+     "surprise": 36.0
+    }
+   ]
+  },
+  {
+   "date": "2025-07-15",
+   "time_et": "08:30",
+   "event": "CPI",
+   "class": "COOL",
+   "surprise_sum": -0.1,
+   "prints": [
+    {
+     "kind": "CPI_MOM",
+     "title": "CPI (MoM)",
+     "previous": 0.1,
+     "consensus": 0.3,
+     "actual": 0.3,
+     "surprise": 0.0
+    },
+    {
+     "kind": "CORE_CPI_MOM",
+     "title": "Core CPI (MoM)",
+     "previous": 0.1,
+     "consensus": 0.3,
+     "actual": 0.2,
+     "surprise": -0.1
+    },
+    {
+     "kind": "CPI_YOY",
+     "title": "CPI (YoY)",
+     "previous": 2.4,
+     "consensus": 2.6,
+     "actual": 2.7,
+     "surprise": 0.1
+    }
+   ]
+  },
+  {
+   "date": "2025-08-01",
+   "time_et": "08:30",
+   "event": "NFP",
+   "class": "INLINE",
+   "surprise_sum": -33.0,
+   "prints": [
+    {
+     "kind": "NFP",
+     "title": "Nonfarm Payrolls",
+     "previous": 147.0,
+     "consensus": 106.0,
+     "actual": 73.0,
+     "surprise": -33.0
+    }
+   ]
+  },
+  {
+   "date": "2025-08-12",
+   "time_et": "08:30",
+   "event": "CPI",
+   "class": "INLINE",
+   "surprise_sum": 0.0,
+   "prints": [
+    {
+     "kind": "CORE_CPI_MOM",
+     "title": "Core CPI (MoM)",
+     "previous": 0.2,
+     "consensus": 0.3,
+     "actual": 0.3,
+     "surprise": 0.0
+    },
+    {
+     "kind": "CPI_MOM",
+     "title": "CPI (MoM)",
+     "previous": 0.3,
+     "consensus": 0.2,
+     "actual": 0.2,
+     "surprise": 0.0
+    },
+    {
+     "kind": "CPI_YOY",
+     "title": "CPI (YoY)",
+     "previous": 2.7,
+     "consensus": 2.8,
+     "actual": 2.7,
+     "surprise": -0.1
+    }
+   ]
+  },
+  {
+   "date": "2025-09-05",
+   "time_et": "08:30",
+   "event": "NFP",
+   "class": "COOL",
+   "surprise_sum": -53.0,
+   "prints": [
+    {
+     "kind": "NFP",
+     "title": "Nonfarm Payrolls",
+     "previous": 73.0,
+     "consensus": 75.0,
+     "actual": 22.0,
+     "surprise": -53.0
+    }
+   ]
+  },
+  {
+   "date": "2025-09-11",
+   "time_et": "08:30",
+   "event": "CPI",
+   "class": "HOT",
+   "surprise_sum": 0.1,
+   "prints": [
+    {
+     "kind": "CORE_CPI_MOM",
+     "title": "Core CPI (MoM)",
+     "previous": 0.3,
+     "consensus": 0.3,
+     "actual": 0.3,
+     "surprise": 0.0
+    },
+    {
+     "kind": "CPI_MOM",
+     "title": "CPI (MoM)",
+     "previous": 0.2,
+     "consensus": 0.3,
+     "actual": 0.4,
+     "surprise": 0.1
+    },
+    {
+     "kind": "CPI_YOY",
+     "title": "CPI (YoY)",
+     "previous": 2.7,
+     "consensus": 2.9,
+     "actual": 2.9,
+     "surprise": 0.0
+    }
+   ]
+  },
+  {
+   "date": "2025-10-24",
+   "time_et": "08:30",
+   "event": "CPI",
+   "class": "COOL",
+   "surprise_sum": -0.2,
+   "prints": [
+    {
+     "kind": "CPI_MOM",
+     "title": "CPI (MoM)",
+     "previous": 0.4,
+     "consensus": 0.4,
+     "actual": 0.3,
+     "surprise": -0.1
+    },
+    {
+     "kind": "CORE_CPI_MOM",
+     "title": "Core CPI (MoM)",
+     "previous": 0.3,
+     "consensus": 0.3,
+     "actual": 0.2,
+     "surprise": -0.1
+    },
+    {
+     "kind": "CPI_YOY",
+     "title": "CPI (YoY)",
+     "previous": 2.9,
+     "consensus": 3.1,
+     "actual": 3.0,
+     "surprise": -0.1
+    }
+   ]
+  },
+  {
+   "date": "2025-11-20",
+   "time_et": "09:30",
+   "event": "NFP",
+   "class": "HOT",
+   "surprise_sum": 66.0,
+   "prints": [
+    {
+     "kind": "NFP",
+     "title": "Nonfarm Payrolls",
+     "previous": 22.0,
+     "consensus": 53.0,
+     "actual": 119.0,
+     "surprise": 66.0
+    }
+   ]
+  },
+  {
+   "date": "2025-12-16",
+   "time_et": "09:29",
+   "event": "NFP",
+   "class": null,
+   "surprise_sum": null,
+   "prints": [
+    {
+     "kind": "NFP",
+     "title": "Nonfarm Payrolls  (Oct)",
+     "previous": 108.0,
+     "consensus": null,
+     "actual": -105.0,
+     "surprise": null
+    },
+    {
+     "kind": "NFP",
+     "title": "Nonfarm Payrolls  (Nov)",
+     "previous": -105.0,
+     "consensus": 51.0,
+     "actual": 64.0,
+     "surprise": 13.0
+    }
+   ]
+  },
+  {
+   "date": "2025-12-18",
+   "time_et": "09:30",
+   "event": "CPI",
+   "class": "COOL",
+   "surprise_sum": -0.4,
+   "prints": [
+    {
+     "kind": "CPI_YOY",
+     "title": "CPI (YoY)  (Nov)",
+     "previous": 3.0,
+     "consensus": 3.1,
+     "actual": 2.7,
+     "surprise": -0.4
+    }
+   ]
+  },
+  {
+   "date": "2026-01-09",
+   "time_et": "09:30",
+   "event": "NFP",
+   "class": "INLINE",
+   "surprise_sum": -16.0,
+   "prints": [
+    {
+     "kind": "NFP",
+     "title": "Nonfarm Payrolls  (Dec)",
+     "previous": 56.0,
+     "consensus": 66.0,
+     "actual": 50.0,
+     "surprise": -16.0
+    }
+   ]
+  },
+  {
+   "date": "2026-01-13",
+   "time_et": "09:30",
+   "event": "CPI",
+   "class": "COOL",
+   "surprise_sum": -0.1,
+   "prints": [
+    {
+     "kind": "CPI_MOM",
+     "title": "CPI (MoM)  (Dec)",
+     "previous": 0.3,
+     "consensus": 0.3,
+     "actual": 0.3,
+     "surprise": 0.0
+    },
+    {
+     "kind": "CPI_YOY",
+     "title": "CPI (YoY)  (Dec)",
+     "previous": 2.7,
+     "consensus": 2.7,
+     "actual": 2.7,
+     "surprise": 0.0
+    },
+    {
+     "kind": "CORE_CPI_MOM",
+     "title": "Core CPI (MoM)  (Dec)",
+     "previous": 0.2,
+     "consensus": 0.3,
+     "actual": 0.2,
+     "surprise": -0.1
+    }
+   ]
+  },
+  {
+   "date": "2026-02-11",
+   "time_et": "09:30",
+   "event": "NFP",
+   "class": "HOT",
+   "surprise_sum": 64.0,
+   "prints": [
+    {
+     "kind": "NFP",
+     "title": "Nonfarm Payrolls  (Jan)",
+     "previous": 48.0,
+     "consensus": 66.0,
+     "actual": 130.0,
+     "surprise": 64.0
+    }
+   ]
+  },
+  {
+   "date": "2026-02-13",
+   "time_et": "09:30",
+   "event": "CPI",
+   "class": "COOL",
+   "surprise_sum": -0.1,
+   "prints": [
+    {
+     "kind": "CPI_MOM",
+     "title": "CPI (MoM)  (Jan)",
+     "previous": 0.3,
+     "consensus": 0.3,
+     "actual": 0.2,
+     "surprise": -0.1
+    },
+    {
+     "kind": "CPI_YOY",
+     "title": "CPI (YoY)  (Jan)",
+     "previous": 2.7,
+     "consensus": 2.5,
+     "actual": 2.4,
+     "surprise": -0.1
+    },
+    {
+     "kind": "CORE_CPI_MOM",
+     "title": "Core CPI (MoM)  (Jan)",
+     "previous": 0.2,
+     "consensus": 0.3,
+     "actual": 0.3,
+     "surprise": 0.0
+    }
+   ]
+  },
+  {
+   "date": "2026-03-06",
+   "time_et": "09:30",
+   "event": "NFP",
+   "class": "COOL",
+   "surprise_sum": -150.0,
+   "prints": [
+    {
+     "kind": "NFP",
+     "title": "Nonfarm Payrolls  (Feb)",
+     "previous": 126.0,
+     "consensus": 58.0,
+     "actual": -92.0,
+     "surprise": -150.0
+    }
+   ]
+  },
+  {
+   "date": "2026-03-11",
+   "time_et": "08:30",
+   "event": "CPI",
+   "class": "INLINE",
+   "surprise_sum": 0.0,
+   "prints": [
+    {
+     "kind": "CPI_MOM",
+     "title": "CPI (MoM)  (Feb)",
+     "previous": 0.2,
+     "consensus": 0.3,
+     "actual": 0.3,
+     "surprise": 0.0
+    },
+    {
+     "kind": "CPI_YOY",
+     "title": "CPI (YoY)  (Feb)",
+     "previous": 2.4,
+     "consensus": 2.4,
+     "actual": 2.4,
+     "surprise": 0.0
+    },
+    {
+     "kind": "CORE_CPI_MOM",
+     "title": "Core CPI (MoM)  (Feb)",
+     "previous": 0.3,
+     "consensus": 0.2,
+     "actual": 0.2,
+     "surprise": 0.0
+    }
+   ]
+  },
+  {
+   "date": "2026-04-03",
+   "time_et": "08:30",
+   "event": "NFP",
+   "class": "HOT",
+   "surprise_sum": 113.0,
+   "prints": [
+    {
+     "kind": "NFP",
+     "title": "Nonfarm Payrolls  (Mar)",
+     "previous": -133.0,
+     "consensus": 65.0,
+     "actual": 178.0,
+     "surprise": 113.0
+    }
+   ]
+  },
+  {
+   "date": "2026-04-10",
+   "time_et": "08:30",
+   "event": "CPI",
+   "class": "COOL",
+   "surprise_sum": -0.2,
+   "prints": [
+    {
+     "kind": "CPI_MOM",
+     "title": "CPI (MoM)  (Mar)",
+     "previous": 0.3,
+     "consensus": 1.0,
+     "actual": 0.9,
+     "surprise": -0.1
+    },
+    {
+     "kind": "CPI_YOY",
+     "title": "CPI (YoY)  (Mar)",
+     "previous": 2.4,
+     "consensus": 3.4,
+     "actual": 3.3,
+     "surprise": -0.1
+    },
+    {
+     "kind": "CORE_CPI_MOM",
+     "title": "Core CPI (MoM)  (Mar)",
+     "previous": 0.2,
+     "consensus": 0.3,
+     "actual": 0.2,
+     "surprise": -0.1
+    }
+   ]
+  },
+  {
+   "date": "2026-05-08",
+   "time_et": "08:30",
+   "event": "NFP",
+   "class": "HOT",
+   "surprise_sum": 50.0,
+   "prints": [
+    {
+     "kind": "NFP",
+     "title": "Nonfarm Payrolls  (Apr)",
+     "previous": 185.0,
+     "consensus": 65.0,
+     "actual": 115.0,
+     "surprise": 50.0
+    }
+   ]
+  },
+  {
+   "date": "2026-05-12",
+   "time_et": "08:30",
+   "event": "CPI",
+   "class": "HOT",
+   "surprise_sum": 0.1,
+   "prints": [
+    {
+     "kind": "CPI_MOM",
+     "title": "CPI (MoM)  (Apr)",
+     "previous": 0.9,
+     "consensus": 0.6,
+     "actual": 0.6,
+     "surprise": 0.0
+    },
+    {
+     "kind": "CORE_CPI_MOM",
+     "title": "Core CPI (MoM)  (Apr)",
+     "previous": 0.2,
+     "consensus": 0.3,
+     "actual": 0.4,
+     "surprise": 0.1
+    },
+    {
+     "kind": "CPI_YOY",
+     "title": "CPI (YoY)  (Apr)",
+     "previous": 3.3,
+     "consensus": 3.7,
+     "actual": 3.8,
+     "surprise": 0.1
+    }
+   ]
+  },
+  {
+   "date": "2026-06-05",
+   "time_et": "08:30",
+   "event": "NFP",
+   "class": "HOT",
+   "surprise_sum": 87.0,
+   "prints": [
+    {
+     "kind": "NFP",
+     "title": "Nonfarm Payrolls  (May)",
+     "previous": 179.0,
+     "consensus": 85.0,
+     "actual": 172.0,
+     "surprise": 87.0
+    }
+   ]
+  },
+  {
+   "date": "2026-06-10",
+   "time_et": "08:30",
+   "event": "CPI",
+   "class": "COOL",
+   "surprise_sum": -0.1,
+   "prints": [
+    {
+     "kind": "CPI_MOM",
+     "title": "CPI (MoM)  (May)",
+     "previous": 0.6,
+     "consensus": 0.5,
+     "actual": 0.5,
+     "surprise": 0.0
+    },
+    {
+     "kind": "CORE_CPI_MOM",
+     "title": "Core CPI (MoM)  (May)",
+     "previous": 0.4,
+     "consensus": 0.3,
+     "actual": 0.2,
+     "surprise": -0.1
+    },
+    {
+     "kind": "CPI_YOY",
+     "title": "CPI (YoY)  (May)",
+     "previous": 3.8,
+     "consensus": 4.2,
+     "actual": 4.2,
+     "surprise": 0.0
+    }
+   ]
+  },
+  {
+   "date": "2026-07-02",
+   "time_et": "08:30",
+   "event": "NFP",
+   "class": "COOL",
+   "surprise_sum": -57.0,
+   "prints": [
+    {
+     "kind": "NFP",
+     "title": "Nonfarm Payrolls  (Jun)",
+     "previous": 129.0,
+     "consensus": 114.0,
+     "actual": 57.0,
+     "surprise": -57.0
+    }
+   ]
+  },
+  {
+   "date": "2026-07-14",
+   "time_et": "08:30",
+   "event": "CPI",
+   "class": "COOL",
+   "surprise_sum": -0.5,
+   "prints": [
+    {
+     "kind": "CPI_YOY",
+     "title": "CPI (YoY)",
+     "previous": 4.2,
+     "consensus": 3.8,
+     "actual": 3.5,
+     "surprise": -0.3
+    },
+    {
+     "kind": "CPI_MOM",
+     "title": "CPI (MoM)",
+     "previous": 0.5,
+     "consensus": -0.1,
+     "actual": -0.4,
+     "surprise": -0.3
+    },
+    {
+     "kind": "CORE_CPI_MOM",
+     "title": "Core CPI (MoM)",
+     "previous": 0.2,
+     "consensus": 0.2,
+     "actual": 0.0,
+     "surprise": -0.2
+    }
+   ]
+  },
+  {
+   "date": "2026-08-07",
+   "time_et": "08:30",
+   "event": "NFP",
+   "class": "COOL",
+   "surprise_sum": -108.0,
+   "prints": [
+    {
+     "kind": "NFP",
+     "title": "Nonfarm Payrolls",
+     "previous": 20.0,
+     "consensus": 85.0,
+     "actual": -23.0,
+     "surprise": -108.0
+    }
+   ]
+  },
+  {
+   "date": "2026-08-12",
+   "time_et": "08:30",
+   "event": "CPI",
+   "class": "INLINE",
+   "surprise_sum": 0.0,
+   "prints": [
+    {
+     "kind": "CPI_MOM",
+     "title": "CPI (MoM)",
+     "previous": -0.4,
+     "consensus": 0.1,
+     "actual": 0.1,
+     "surprise": 0.0
+    },
+    {
+     "kind": "CPI_YOY",
+     "title": "CPI (YoY)",
+     "previous": 3.5,
+     "consensus": 3.4,
+     "actual": 3.4,
+     "surprise": 0.0
+    },
+    {
+     "kind": "CORE_CPI_MOM",
+     "title": "Core CPI (MoM)",
+     "previous": 0.0,
+     "consensus": 0.2,
+     "actual": 0.2,
+     "surprise": 0.0
+    }
+   ]
+  },
+  {
+   "date": "2026-09-04",
+   "time_et": "08:30",
+   "event": "NFP",
+   "class": "HOT",
+   "surprise_sum": 107.0,
+   "prints": [
+    {
+     "kind": "NFP",
+     "title": "Nonfarm Payrolls",
+     "previous": 21.0,
+     "consensus": 55.0,
+     "actual": 162.0,
+     "surprise": 107.0
+    }
+   ]
+  },
+  {
+   "date": "2026-09-11",
+   "time_et": "08:30",
+   "event": "CPI",
+   "class": "HOT",
+   "surprise_sum": 0.1,
+   "prints": [
+    {
+     "kind": "CORE_CPI_MOM",
+     "title": "Core CPI (MoM)",
+     "previous": 0.2,
+     "consensus": 0.2,
+     "actual": 0.3,
+     "surprise": 0.1
+    },
+    {
+     "kind": "CPI_MOM",
+     "title": "CPI (MoM)",
+     "previous": 0.1,
+     "consensus": 0.4,
+     "actual": 0.4,
+     "surprise": 0.0
+    },
+    {
+     "kind": "CPI_YOY",
+     "title": "CPI (YoY)",
+     "previous": 3.4,
+     "consensus": 3.4,
+     "actual": 3.4,
+     "surprise": 0.0
+    }
+   ]
+  },
+  {
+   "date": "2026-10-02",
+   "time_et": "08:30",
+   "event": "NFP",
+   "class": "COOL",
+   "surprise_sum": -60.0,
+   "prints": [
+    {
+     "kind": "NFP",
+     "title": "Nonfarm Payrolls",
+     "previous": 133.0,
+     "consensus": 89.0,
+     "actual": 29.0,
+     "surprise": -60.0
+    }
+   ]
+  },
+  {
+   "date": "2026-10-14",
+   "time_et": "08:30",
+   "event": "CPI",
+   "class": "HOT",
+   "surprise_sum": 0.1,
+   "prints": [
+    {
+     "kind": "CORE_CPI_MOM",
+     "title": "Core CPI (MoM)",
+     "previous": 0.3,
+     "consensus": 0.2,
+     "actual": 0.3,
+     "surprise": 0.1
+    },
+    {
+     "kind": "CPI_MOM",
+     "title": "CPI (MoM)",
+     "previous": 0.4,
+     "consensus": 0.6,
+     "actual": 0.6,
+     "surprise": 0.0
+    },
+    {
+     "kind": "CPI_YOY",
+     "title": "CPI (YoY)",
+     "previous": 3.4,
+     "consensus": 3.6,
+     "actual": 3.7,
+     "surprise": 0.1
+    }
+   ]
+  }
+ ]
+}
