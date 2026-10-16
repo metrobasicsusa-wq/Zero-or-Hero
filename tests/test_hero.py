@@ -3611,5 +3611,30 @@ class ResearchSniperFactors(unittest.TestCase):
         self.assertTrue(tag(dict(row, gap=-0.12, kind="P"), st, mins, [], None)["breakout"])   # 88 < 90
 
 
+class ResearchCpiOpex(unittest.TestCase):
+    def test_expiry_is_the_third_friday_or_the_day_before_a_holiday(self):
+        from hero.research_cpi_opex import expiries
+        days = [d.isoformat() for d in (date(2025, 4, 1) + timedelta(days=k) for k in range(80))
+                if d.weekday() < 5 and d.isoformat() not in ("2025-04-18", "2025-05-26", "2025-06-19")]
+        self.assertEqual(expiries(days), ["2025-04-17", "2025-05-16"])        # Good Friday -> Thursday
+        self.assertEqual(expiries(days + ["2025-06-20"]), ["2025-04-17", "2025-05-16", "2025-06-20"])
+        # data ending 2025-06-18: June's expiry (the 20th) has not come, so no Thursday stands in for it
+        self.assertNotIn("2025-06-18", expiries(days))
+
+    def test_cpi_week_rows_and_groups(self):
+        from hero import research_cpi_opex as co
+        self.assertEqual(co.cpi_in_week("2024-02-16", ["2024-02-13", "2024-03-12"]), "2024-02-13")
+        self.assertIsNone(co.cpi_in_week("2024-01-19", ["2024-01-11"]))           # the week before
+        days = [d for d in (date(2024, 1, 1) + timedelta(days=k) for k in range(70)) if d.weekday() < 5]
+        bars = {d.isoformat(): {"o": 100.0, "c": 100.0 + (-1 if d.isoformat() == "2024-02-16" else 0.5) * (k % 2),
+                                "div": 0.0} for k, d in enumerate(days)}
+        rows = co.rows_for(bars, ["2024-02-13", "2024-03-12"], "2024-03-10")
+        g = co.groups(rows)
+        self.assertEqual([r["day"] for r in g["CPI 周的到期日：全部"]], ["2024-02-16"])
+        self.assertEqual([r["day"] for r in g["对照：其他到期日"]], ["2024-01-19"])   # March's expiry is past "today"
+        self.assertAlmostEqual(co.binom_tail(8, 13, 0.5), sum(math.comb(13, j) for j in range(8, 14)) / 2 ** 13)
+        self.assertEqual(co.binom_tail(0, 4000, 0.45), 1.0)
+
+
 if __name__ == "__main__":
     unittest.main()
