@@ -361,7 +361,7 @@
     "best_bid": 0.16
    },
    "SPY": {
-    "status": "open",
+    "status": "closed",
     "contract": "SPY261016P00766000",
     "kind": "P",
     "strike": 766.0,
@@ -371,7 +371,11 @@
     "ask": 0.2,
     "spread": 0.0513,
     "opened_at": "10:00",
-    "best_bid": 0.32
+    "best_bid": 0.83,
+    "exit": "take",
+    "exit_bid": 0.83,
+    "exit_at": "12:00",
+    "ret": 2
    }
   }
  }
