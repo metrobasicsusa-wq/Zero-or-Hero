@@ -3422,5 +3422,74 @@ class ResearchIdeas(unittest.TestCase):
         self.assertEqual([(s["und"], s["kind"], s["trend"]) for s in sig], [("AAA", "C", True)])
         self.assertEqual((kind_of("2026-09-16"), kind_of("2024-02-13"), kind_of("2024-02-14")), ("Fed", "CPI", ""))
 
+
+class ResearchEventTurn(unittest.TestCase):
+    DAYS = [(date(2026, 8, 3) + timedelta(days=k)).isoformat() for k in range(40)]
+
+    def closes(self):
+        xs = [100.0] * 40
+        for k, c in zip(range(19, 25), (100, 98, 97, 96, 95, 94)):   # a 6% slide into the event on day 25
+            xs[k] = float(c)
+        xs[25], xs[26] = 93.0, 95.0                                    # down on the event day, up the day after
+        for k in range(27, 40):
+            xs[k] = 95.0 + (k - 26)
+        return xs
+
+    def test_signals_take_the_first_close_each_way_after_the_event(self):
+        from hero import research_event_turn as et
+        xs = self.closes()
+        sig = et.signals(self.DAYS, xs, {self.DAYS[25]: "Fed", self.DAYS[5]: "CPI"})   # day 5 is too early for a 20-day average
+        got = {(s["kind"], s["day"]) for s in sig}
+        self.assertEqual(got, {("P", self.DAYS[25]), ("C", self.DAYS[26])})
+        c = next(s for s in sig if s["kind"] == "C")
+        self.assertEqual((c["pre"], c["below"], c["ev"]), (round(94 / 100 - 1, 4), True, "Fed"))
+        self.assertEqual(et.stock_moves(xs, 26, "C")["s5"], round(100 / 95 - 1, 4))
+        plain = et.ordinary(self.DAYS, xs, {self.DAYS[25]: "Fed"})
+        self.assertNotIn(self.DAYS[26], {s["day"] for s in plain})            # the event's sessions are left out
+        self.assertIn(("P", self.DAYS[21]), {(s["kind"], s["day"]) for s in plain})
+
+    def test_exits_on_daily_closes(self):
+        from hero.research_event_turn import exits
+        path = [1.5, 2.4, 3.3, 3.5, 1.9] + [1.0] * 15
+        r = exits(1.0, path)
+        self.assertAlmostEqual(r["trail2"], 1.9 * 0.95 - 1, places=4)          # 1.9 is below 60% of the best 3.5
+        self.assertAlmostEqual(r["take3_trail"], 0.5 * (3.3 * 0.95 - 1) + 0.5 * (1.9 * 0.95 - 1), places=4)
+        self.assertAlmostEqual(r["d20"], 0.95 - 1, places=4)
+        self.assertEqual(set(exits(1.0, [1.2, 1.4, 1.1])), set())              # still open, no day reached
+        self.assertEqual(set(exits(1.0, [1.2] * 7)), {"d5"})
+
+    def test_run_buys_the_month_out_option_nearest_the_price(self):
+        from unittest import mock
+        from hero import research_event_turn as et
+        xs = self.closes()
+        bars = [{"t": d + "T04:00:00Z", "c": c} for d, c in zip(self.DAYS, xs)]
+
+        class Client:
+            def daily_bars(self, syms, start, adjustment="all", feed="iex"):
+                return {s: bars for s in syms}
+
+            def option_contracts(self, und, status, type, **kw):
+                if status != "inactive":
+                    return []
+                return [{"symbol": f"{und}-{type}-{e}-{k}", "expiration_date": e, "strike_price": str(k)}
+                        for e in ("2026-09-25", "2026-10-02") for k in (90, 95, 100)]
+
+            def option_bars(self, syms, start, end, timeframe="1Day"):
+                return {syms[0]: [{"t": d + "T04:00:00Z", "c": 1.0 + 0.1 * k} for k, d in enumerate(self.days) if d >= start]}
+
+        cl = Client()
+        cl.days = self.DAYS
+        with mock.patch.object(et, "EVENTS", {self.DAYS[25]: "Fed"}), mock.patch.object(et, "START", self.DAYS[0]), \
+                mock.patch.object(et, "latest", lambda name: {"rows": [{"und": "AAA"}]}), mock.patch.object(et.time, "sleep"):
+            rep = et.run(cl)
+        c = next(r for r in rep["rows"] if r["und"] == "SMH" and r["kind"] == "C")
+        self.assertEqual(c["option"], "SMH-call-2026-09-25-95")              # 27 days out beats 34; strike nearest 95
+        self.assertAlmostEqual(c["cost"], (1.0 + 0.1 * 26) * 1.05, places=4)
+        self.assertIn("d5", c["res"])
+        gs = et.rules(rep["rows"])
+        self.assertEqual(len(gs["反弹：事件前 5 天跌 5%+"]), 3)                  # SMH, QQQ, AAA
+        self.assertEqual(len(gs["　反弹 5%+：个股"]), 1)
+        self.assertIn(" / ", et.spread(gs["反弹：事件前 5 天跌 3%+，之后第一个收涨买看涨"], "d5", rep["end"]))
+
 if __name__ == "__main__":
     unittest.main()
