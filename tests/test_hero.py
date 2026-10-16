@@ -3491,5 +3491,62 @@ class ResearchEventTurn(unittest.TestCase):
         self.assertEqual(len(gs["　反弹 5%+：个股"]), 1)
         self.assertIn(" / ", et.spread(gs["反弹：事件前 5 天跌 3%+，之后第一个收涨买看涨"], "d5", rep["end"]))
 
+
+class ResearchDipWeek(unittest.TestCase):
+    def test_events_are_gap_downs_split_by_whether_the_bounce_held(self):
+        from hero.research_dip_week import events
+        days = [f"2026-09-{d:02d}" for d in range(1, 31)]
+        closes = [100.0] * 30
+        opens = [100.0] * 30
+        opens[22], closes[22] = 97.0, 96.0        # -3% open, closed lower: failed
+        opens[25], closes[25] = 97.5, 99.0        # -2.5% open (from 100), closed above it: held
+        closes[27:] = [104.0] * 3
+        opens[28:] = [104.0] * 2                  # no gap after it
+        ev = events(days, opens, closes)
+        self.assertEqual([(e["day"], e["failed"]) for e in ev], [(days[22], True), (days[25], False)])
+        self.assertEqual(ev[0]["stock"]["s5"], round(104 / 96 - 1, 4))
+
+    def test_option_path_fills_quiet_days_and_values_expiry_from_the_stock(self):
+        from hero.research_dip_week import exits, option_path
+        sessions = ["2026-10-13", "2026-10-14", "2026-10-15", "2026-10-16", "2026-10-19"]
+        marks = {"2026-10-13": 2.5, "2026-10-15": 1.0}
+        path, done = option_path(1.0, marks, sessions, "2026-10-16", 100.0, {"2026-10-16": 103.0})
+        self.assertEqual((path, done), ([2.5, 2.5, 1.0, 3.0], True))           # 10-14 keeps 2.5; expiry worth 103 - 100
+        r = exits(1.0, path, done, 0.05)
+        self.assertAlmostEqual(r["take2"], 2.5 * 0.95 - 1, places=4)
+        self.assertAlmostEqual(r["trail2"], 1.0 * 0.95 - 1, places=4)           # 1.0 is under 60% of the best 2.5
+        self.assertAlmostEqual(r["d5"], 3.0 * 0.95 - 1, places=4)               # expiry before the 5th session
+        path, done = option_path(1.0, {}, sessions[:2], "2026-10-23", 100.0, {})
+        self.assertEqual((path, done), ([1.0, 1.0], False))
+        self.assertEqual(set(exits(1.0, path, done, 0.05)), {"d1"})
+
+    def test_run_buys_the_week_out_calls_at_the_close(self):
+        from unittest import mock
+        from hero import research_dip_week as dw
+        days = [(date(2026, 8, 3) + timedelta(days=k)).isoformat() for k in range(40)]
+        bars = [{"t": d + "T04:00:00Z", "o": 100.0, "c": 100.0} for d in days]
+        bars[30] = {**bars[30], "o": 96.0, "c": 95.0}
+
+        class Client:
+            def daily_bars(self, syms, start, adjustment="all", feed="iex"):
+                return {s: bars for s in syms}
+
+            def option_contracts(self, und, status, type, **kw):
+                if status != "inactive":
+                    return []
+                return [{"symbol": f"{und}-{e}-{k}", "expiration_date": e, "strike_price": str(k)}
+                        for e in (days[36], days[38]) for k in (95, 97.5, 100)]
+
+            def option_bars(self, syms, start, end, timeframe="1Day"):
+                return {s: [{"t": d + "T04:00:00Z", "c": 1.0 + 0.2 * k} for k, d in enumerate(days[30:])] for s in syms}
+
+        with mock.patch.object(dw, "START", days[0]), mock.patch.object(dw, "EXTRA", ()), \
+                mock.patch.object(dw, "latest", lambda name: {"rows": [{"und": "AAA"}]}), mock.patch.object(dw.time, "sleep"):
+            rep = dw.run(Client())
+        got = {r["leg"]: r for r in rep["rows"]}
+        self.assertEqual((got["atm"]["option"], got["otm3"]["option"]), (f"AAA-{days[36]}-95", f"AAA-{days[36]}-100"))   # 95 x 1.03 = 97.85 -> 100
+        self.assertAlmostEqual(got["atm"]["res"]["d1"], 1.2 * 0.95 / 1.05 - 1, places=4)
+        self.assertEqual(len(dw.groups(rep["rows"])["抄底失败（低开 2%+、收盘低于开盘）· 平值"]), 1)
+
 if __name__ == "__main__":
     unittest.main()
