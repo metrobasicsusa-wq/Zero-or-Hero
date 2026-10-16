@@ -482,7 +482,7 @@ class BreakGap:
     `swings` (3) times the stock's average daily move over 20 sessions, beyond its 20-session high (gap up) or low (gap
     down), and the first minutes still going that way. From 09:35, the largest such gap of the pool: the nearest expiry
     after today, 0.6% out, held to 15:50 the next session (15:30 if that is its expiry). 57 events since 2024-02 held to
-    the next close: +60% per $1 (2024 +49%, 2025-26 +69%), most of them earnings reactions."""
+    the next close: +53% per $1 (2024 +34%, 2025-26 +67%; 10-16 split fix, was +60%), most of them earnings reactions."""
 
     def entries(self, run, spec, s):
         day = run.today.isoformat()

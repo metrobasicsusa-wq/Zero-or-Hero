@@ -3597,5 +3597,19 @@ class ResearchDipWeek(unittest.TestCase):
         self.assertAlmostEqual(got["atm"]["res"]["d1"], 1.2 * 0.95 / 1.05 - 1, places=4)
         self.assertEqual(len(dw.groups(rep["rows"])["抄底失败（低开 2%+、收盘低于开盘）· 平值"]), 1)
 
+
+class ResearchSniperFactors(unittest.TestCase):
+    def test_breakout_compares_the_open_on_the_split_adjusted_scale(self):
+        from hero.research_sniper_factors2 import tag
+        st = {"swing20": 0.02, "swing120": 0.02, "adv20": 1e6, "ma50": 95.0, "hi20": 104.0, "lo20": 90.0,
+              "prev_close": 100.0, "prev_day": "2024-03-04"}
+        # a 10:1 split comes later: the raw minute open is ten times the adjusted daily scale
+        mins = {"09:30": {"o": 970.0, "c": 975.0, "v": 1000}, "09:34": {"o": 975.0, "c": 980.0, "v": 1000}}
+        row = {"und": "AAA", "day": "2024-03-05", "gap": -0.03, "kind": "C", "res": {}}
+        self.assertFalse(tag(row, st, mins, [], None)["breakout"])                      # 97 adjusted, below the high
+        self.assertTrue(tag(dict(row, gap=0.05), st, mins, [], None)["breakout"])       # 105 > 104
+        self.assertTrue(tag(dict(row, gap=-0.12, kind="P"), st, mins, [], None)["breakout"])   # 88 < 90
+
+
 if __name__ == "__main__":
     unittest.main()

@@ -2,7 +2,7 @@
 sample? (owner, 10-15: keep going.)
 
 Part 2 (research/2026-10-15-sniper-factors2.md): held to the next close, an open beyond the 20-session high / low
-(+9% per $1, 447 events) and a gap of 3+ times the stock's average daily swing (+2%, 247) were the only groups not
+(+10% per $1, 334 events after the 10-16 split fix; 447 before) and a gap of 3+ times the stock's average daily swing (+2%, 247) were the only groups not
 losing; heavy pre-market volume helped. Here, on the same events and tags (hero.research_sniper_factors2.tag):
   the combinations (breakout and big gap, with heavy pre-market volume, either one, ...), and
   each split in two: 2024 (where a rule would have been found) and 2025-26 (whether it still held).

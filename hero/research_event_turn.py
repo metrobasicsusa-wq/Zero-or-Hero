@@ -2,7 +2,7 @@
 
 The chip run of 2026-09: SMH fell about 5% into the 09-16 Fed hike, closed up the next day and ran +17% in three
 weeks; then, already below its 20-day average, it closed down on the 10-14 CPI and kept falling. Two rules from
-that, on every CPI and Fed day since 2024-02 (hero.research_eventday dates, plus the 2026-07..10 CPI days):
+that, on every CPI and Fed day since 2024-02 (hero.research_eventday dates; 2026-10-16 the 2026-02 CPI moved to 02-13):
   rebound:   the stock fell 3%+ (and 5%+) over the 5 sessions before the event; the first close up on the event
              day or the next -> buy a call at that close;
   breakdown: the stock closed below its 20-day average the session before the event; the first close down on the
@@ -28,8 +28,7 @@ from hero.research_ideas import report, save
 from hero.research_sniper_factors import latest
 
 START = "2024-02-01"
-CPI_LATE = ["2026-07-14", "2026-08-12", "2026-09-11", "2026-10-14"]  # as reported from the BLS schedule; 07-14 unchecked
-EVENTS = {**{d: "CPI" for d in CPI + CPI_LATE}, **{d: "Fed" for d in FED}}
+EVENTS = {**{d: "CPI" for d in CPI}, **{d: "Fed" for d in FED}}
 ETFS = ("SMH", "QQQ")
 SLIP_M = 0.05
 HOLD = 20

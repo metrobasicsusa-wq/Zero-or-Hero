@@ -72,10 +72,14 @@ def tag(r: dict, st: dict, mins: dict, heads: list[str], spy_vol: float | None) 
     res = dict(r["res"])
     if r.get("next") is not None:
         res["next"] = r["next"]
+    # The minute bars are raw and the daily stats split-adjusted: compare the open on the daily scale (the gap is a
+    # raw / raw ratio). Before 2026-10-16 this used the raw open, and every call on a stock before its split read
+    # as a breakout (129 of 3395 rows wrong).
+    o_adj = st["prev_close"] * (1 + r["gap"])
     return {**r, "res": res, "gap_z": abs(r["gap"]) / st["swing20"], "rvol_pre": pre / st["adv20"] if mins else None,
             "f5": f5, "v5": v5, "dear": st["swing20"] / st["swing120"],
             "trend": (st["prev_close"] > st["ma50"]) == (sign > 0),
-            "breakout": (o > st["hi20"]) if sign > 0 else (o < st["lo20"]),
+            "breakout": (o_adj > st["hi20"]) if sign > 0 else (o_adj < st["lo20"]),
             "news_kind": kind_of(heads), "spy_vol": spy_vol}
 
 
