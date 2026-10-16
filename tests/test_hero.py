@@ -3493,6 +3493,17 @@ class ResearchEventTurn(unittest.TestCase):
 
 
 class ResearchDipWeek(unittest.TestCase):
+    def test_pace_goes_slow_while_the_market_is_open(self):
+        from unittest import mock
+        from hero.research_event_turn import Pace
+
+        class Open:
+            def clock(self): return {"is_open": True}
+        with mock.patch("time.sleep") as slept:
+            Pace(Open()).wait()
+            Pace(object()).wait()                                   # no clock: the quick pace
+        self.assertEqual([c.args[0] for c in slept.call_args_list], [2.0, 0.1])
+
     def test_events_are_gap_downs_split_by_whether_the_bounce_held(self):
         from hero.research_dip_week import events
         days = [f"2026-09-{d:02d}" for d in range(1, 31)]
@@ -3541,7 +3552,7 @@ class ResearchDipWeek(unittest.TestCase):
                 return {s: [{"t": d + "T04:00:00Z", "c": 1.0 + 0.2 * k} for k, d in enumerate(days[30:])] for s in syms}
 
         with mock.patch.object(dw, "START", days[0]), mock.patch.object(dw, "EXTRA", ()), \
-                mock.patch.object(dw, "latest", lambda name: {"rows": [{"und": "AAA"}]}), mock.patch.object(dw.time, "sleep"):
+                mock.patch.object(dw, "latest", lambda name: {"rows": [{"und": "AAA"}]}), mock.patch("time.sleep"):
             rep = dw.run(Client())
         got = {r["leg"]: r for r in rep["rows"]}
         self.assertEqual((got["atm"]["option"], got["otm3"]["option"]), (f"AAA-{days[36]}-95", f"AAA-{days[36]}-100"))   # 95 x 1.03 = 97.85 -> 100

@@ -38,6 +38,25 @@ EXITS = {"d5": "第 5 天收盘卖", "d10": "第 10 天收盘卖", "d20": "第 2
          "trail2": "翻倍后回撤 40% 卖（否则第 20 天）", "take3_trail": "一半 3 倍、其余回撤卖"}
 
 
+class Pace:
+    """Research runs on the main account's key, so while the market is open a study shares that key's request quota
+    with the trading runs: wait 2s between signals then (about 60 requests a minute), 0.1s otherwise. The clock is
+    asked again every five minutes."""
+
+    def __init__(self, client):
+        self.c, self.until, self.gap = client, 0.0, 0.1
+
+    def wait(self) -> None:
+        now = time.time()
+        if now >= self.until:
+            try:
+                self.gap = 2.0 if self.c.clock().get("is_open") else 0.1
+            except Exception:
+                self.gap = 0.1
+            self.until = now + 300
+        time.sleep(self.gap)
+
+
 def signals(days: list[str], closes: list[float], events: dict[str, str]) -> list[dict]:
     """One call and one put signal per event at most: the first close up (call) / down (put) on the event day or the
     session after, with what was known before the event: the 5-session move and whether it closed below its 20-day
@@ -137,6 +156,7 @@ def run(client) -> dict:
     raw = client.daily_bars(names, "2023-11-01", adjustment="raw", feed="sip")      # strikes: the price that day
     events = {d: k for d, k in EVENTS.items() if START <= d <= end}
     rows, plain, missing = [], [], 0
+    pace = Pace(client)
     for und in names:
         bs = [b for b in split.get(und, []) if b["t"][:10] <= end]
         if len(bs) < 30:
@@ -150,7 +170,7 @@ def run(client) -> dict:
                 missing += 1
             rows.append({**s, "und": und, "etf": und in ETFS, "stock": stock_moves(closes, s["i"], s["kind"]),
                          **({"option": leg["option"], "expiry": leg["expiry"], "cost": leg["cost"], "res": leg["res"]} if leg else {"res": {}})})
-            time.sleep(0.1)
+            pace.wait()
         plain += [{**s, "und": und, "etf": und in ETFS, "stock": stock_moves(closes, s["i"], s["kind"])}
                   for s in ordinary(days, closes, events) if s["day"] >= START]
     return {"start": START, "end": end, "names": names, "events": len(events), "missing_options": missing,

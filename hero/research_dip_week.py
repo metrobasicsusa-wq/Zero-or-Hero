@@ -15,10 +15,9 @@ from __future__ import annotations
 
 import statistics
 import sys
-import time
 from datetime import date, timedelta
 
-from hero.research_event_turn import spread
+from hero.research_event_turn import Pace, spread
 from hero.research_ideas import report, save
 from hero.research_sniper_factors import latest
 
@@ -122,6 +121,7 @@ def run(client) -> dict:
     split = client.daily_bars(names, "2023-12-01", adjustment="split", feed="sip")
     raw = client.daily_bars(names, "2023-12-01", adjustment="raw", feed="sip")
     rows, missing = [], 0
+    pace = Pace(client)
     for und in names:
         bs = [b for b in split.get(und, []) if b["t"][:10] <= end]
         if len(bs) < 30:
@@ -138,7 +138,7 @@ def run(client) -> dict:
                 rows.append({**e, "und": und, "leg": name, **leg})
             if not got:
                 rows.append({**e, "und": und, "leg": None, "res": {}})
-            time.sleep(0.1)
+            pace.wait()
     return {"start": START, "end": end, "names": names, "rows": rows, "missing": missing}
 
 
