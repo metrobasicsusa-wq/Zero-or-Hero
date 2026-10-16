@@ -1261,7 +1261,7 @@
      "exit_day": "2026-10-16",
      "exit_at": "15:30",
      "trail": true,
-     "best_bid": 2.34,
+     "best_bid": 2.37,
      "expiry_out": null
     }
    ],
@@ -1487,7 +1487,7 @@
      "exit_day": "2026-10-16",
      "exit_at": "15:30",
      "trail": true,
-     "best_bid": 2.34,
+     "best_bid": 2.37,
      "expiry_out": null
     }
    ],
@@ -1767,33 +1767,11 @@
   },
   "tsla0dte-5x-1000": {
    "start": 1000.0,
-   "cash": 299.0,
+   "cash": 984.0,
    "round": 1,
    "heroes": 0,
    "zeros": 0,
-   "open": [
-    {
-     "tid": "20261016-59bb0e",
-     "kind": "zdte",
-     "sym": "TSLA261016P00362500",
-     "asset": "option",
-     "und": "TSLA",
-     "qty": 1,
-     "cost": 1.37,
-     "paid": 137.0,
-     "opened": "2026-10-16 10:00",
-     "why": "TSLA 开盘 $369.35、现在 $366.47，顺势买当天到期看跌 362.5（离现价 1.1%），5 倍止盈，15:30 平仓",
-     "expiry": "2026-10-16",
-     "exit_day": "2026-10-16",
-     "exit_at": "15:30",
-     "trail": false,
-     "best_bid": 6.69,
-     "expiry_out": null,
-     "take_x": 5,
-     "take": 6.85,
-     "take_cid": "sl-tsla0dte-5x-1000-20261016-59bb0e-t755f"
-    }
-   ],
+   "open": [],
    "closed": [
     {
      "tid": "c66f6b3868",
@@ -1875,6 +1853,33 @@
      "how": "2026-10-14 15:30 到时卖出",
      "closed": "2026-10-14 15:30",
      "ret": -0.965
+    },
+    {
+     "tid": "20261016-59bb0e",
+     "kind": "zdte",
+     "sym": "TSLA261016P00362500",
+     "asset": "option",
+     "und": "TSLA",
+     "qty": 1,
+     "cost": 1.37,
+     "paid": 137.0,
+     "opened": "2026-10-16 10:00",
+     "why": "TSLA 开盘 $369.35、现在 $366.47，顺势买当天到期看跌 362.5（离现价 1.1%），5 倍止盈，15:30 平仓",
+     "expiry": "2026-10-16",
+     "exit_day": "2026-10-16",
+     "exit_at": "15:30",
+     "trail": false,
+     "best_bid": 6.69,
+     "expiry_out": null,
+     "take_x": 5,
+     "take": 6.85,
+     "take_cid": "sl-tsla0dte-5x-1000-20261016-59bb0e-t755f",
+     "state": "closed",
+     "exit_price": 6.85,
+     "proceeds": 685.0,
+     "how": "5 倍止盈（券商挂单成交）",
+     "closed": "2026-10-16 13:00",
+     "ret": 4.0
     }
    ],
    "slots": {
