@@ -3636,5 +3636,51 @@ class ResearchCpiOpex(unittest.TestCase):
         self.assertEqual(co.binom_tail(0, 4000, 0.45), 1.0)
 
 
+class ResearchZdteMinMove(unittest.TestCase):
+    def test_run_records_the_move_and_groups_by_it(self):
+        from unittest import mock
+        from hero import research_zdte_minmove as mm
+
+        def minute(day, hhmm, px):   # an ET minute on a 2026-10 day (EDT, UTC-4)
+            h, m = map(int, hhmm.split(":"))
+            return {"t": f"{day}T{h + 4:02d}:{m:02d}:00Z", "o": px, "h": px, "l": px, "c": px, "v": 100}
+
+        class Client:
+            def clock(self): return {"is_open": False}
+
+            def stock_bars(self, syms, start, end, feed=None):
+                out = {}
+                for s, day, ten in (("NVDA", "2026-10-14", 99.88), ("NVDA", "2026-10-15", 101.0)):
+                    if start[:10] <= day < end[:10] and s in syms:
+                        out.setdefault(s, []).extend([minute(day, "09:30", 100.0), minute(day, "09:35", ten),
+                                                      minute(day, "10:00", ten), minute(day, "15:30", ten)])
+                return out
+
+            def option_contracts(self, und, status, expiration_date_gte, **kw):
+                return [{"symbol": f"{und}{expiration_date_gte}{t}{k}", "expiration_date": expiration_date_gte,
+                         "strike_price": str(k), "type": t} for k in (97, 98, 99, 100, 101, 102, 103) for t in ("call", "put")]
+
+            def option_bars(self, syms, start, end, timeframe=None):
+                day = start[:10]
+                path = [("09:35", 1.0), ("10:00", 1.0), ("10:30", 4.0), ("11:00", 2.0), ("15:30", 1.5)]
+                return {s: [minute(day, t, px) for t, px in path] for s in syms}
+
+        with mock.patch.object(mm, "START", "2026-10-01"), mock.patch.object(mm, "NAMES", ("NVDA",)), \
+                mock.patch("time.sleep"):
+            rep = mm.run(Client())
+        got = {r["day"]: r for r in rep["rows"]}
+        self.assertAlmostEqual(got["2026-10-14"]["move"]["10:00"], -0.0012, places=5)   # like 10-16: 0.12% below
+        r = got["2026-10-14"]["res"]["10:00|0.006"]
+        self.assertAlmostEqual(r["take3"], 2.0)
+        self.assertAlmostEqual(r["take5_trail"], r["trail2"])          # 5x never came: all on the trail
+        self.assertEqual(mm.with_take5({"take5": 4, "trail2": 1.0})["take5_trail"], 2.5)
+        g = mm.groups(rep["rows"], "NVDA", "10:00", 0.006, "take3_trail")
+        self.assertEqual(len(g["现行：每天都做"]), 2)
+        self.assertEqual([d for d, _ in g["不到 0.5% 就不做"]], ["2026-10-15"])    # 1.0% up
+        self.assertEqual([d for d, _ in g["　开盘到 10:00 走了 0.1%–0.2%"]], ["2026-10-14"])
+        table, md = mm.report(rep)
+        self.assertIn("NVDA 末日单", md)
+
+
 if __name__ == "__main__":
     unittest.main()
