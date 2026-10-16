@@ -318,7 +318,7 @@
   },
   "2026-10-16": {
    "TSLA": {
-    "status": "open",
+    "status": "closed",
     "contract": "TSLA261016P00362500",
     "kind": "P",
     "strike": 362.5,
@@ -328,7 +328,11 @@
     "ask": 1.42,
     "spread": 0.0214,
     "opened_at": "10:00",
-    "best_bid": 4.19
+    "best_bid": 4.26,
+    "exit": "take",
+    "exit_bid": 4.26,
+    "exit_at": "11:20",
+    "ret": 2
    },
    "NVDA": {
     "status": "open",
