@@ -3622,6 +3622,55 @@ class ResearchDipWeek(unittest.TestCase):
         self.assertEqual(len(dw.groups(rep["rows"])["抄底失败（低开 2%+、收盘低于开盘）· 平值"]), 1)
 
 
+class EarningsForecast(unittest.TestCase):
+    def test_due_reports_implied_move_baseline_and_scoring(self):
+        from unittest import mock
+        from hero import research_earnings_forecast as ef
+        rows = [{"symbol": "NFLX", "reportDate": "2026-10-20", "timeOfTheDay": "post-market"},
+                {"symbol": "TMO", "reportDate": "2026-10-21", "timeOfTheDay": "pre-market"},
+                {"symbol": "TSLA", "reportDate": "2026-10-21", "timeOfTheDay": "post-market"},   # tomorrow after the close
+                {"symbol": "PENY", "reportDate": "2026-10-20", "timeOfTheDay": "post-market"},
+                {"symbol": "NOOPT", "reportDate": "2026-10-20", "timeOfTheDay": "post-market"}]
+        due = ef.due(rows, date(2026, 10, 20))
+        self.assertEqual([(r["symbol"], r["reaction_day"]) for r in due],
+                         [("NFLX", "2026-10-21"), ("TMO", "2026-10-21"), ("PENY", "2026-10-21"), ("NOOPT", "2026-10-21")])
+
+        class Client:
+            def stock_snapshots(self, syms):
+                px = {"NFLX": 70.0, "TMO": 690.0, "PENY": 3.0, "NOOPT": 50.0}
+                return {s: {"latestTrade": {"p": px[s]}} for s in syms if s in px}
+
+            def option_contracts(self, und, **kw):
+                if und == "NOOPT":
+                    return []
+                spot = {"NFLX": 70.0, "TMO": 690.0}[und]
+                return [{"symbol": f"{und}{t[0]}{k}", "type": t, "strike_price": str(k), "expiration_date": "2026-10-23"}
+                        for k in (round(spot * 0.98), round(spot)) for t in ("call", "put")]
+
+            def option_snapshots(self, syms):
+                return {s: {"latestQuote": {"bp": 3.0, "ap": 3.2}} for s in syms}
+
+        with mock.patch.object(ef, "history", lambda: {"NFLX": [0.15] * 8}):
+            rep = ef.forecast(Client(), rows, date(2026, 10, 20))
+        got = {r["symbol"]: r for r in rep["reports"]}
+        self.assertEqual(set(got), {"NFLX", "TMO"})
+        self.assertEqual(rep["skipped"], {"no_price": 0, "under_5": 1, "no_options": 1})
+        self.assertAlmostEqual(got["NFLX"]["implied_move"], round(6.2 / 70, 4))
+        self.assertEqual((got["NFLX"]["p_big"], got["TMO"]["p_big"]), (0.51, 0.40))   # its own reactions run hot
+        bars = [{"t": "2026-10-20T04:00:00Z", "o": 70, "c": 70}, {"t": "2026-10-21T04:00:00Z", "o": 63, "c": 61.6}]
+        res = ef.score_row(got["NFLX"], bars)
+        self.assertEqual((res["gap"], res["move"], res["big"], res["up"]), (-0.1, -0.12, True, False))
+        with tempfile.TemporaryDirectory() as d:
+            root = Path(d)
+            got["NFLX"]["result"] = res
+            (root / "2026-10-20.json").write_text(json.dumps({"date": "2026-10-20", "reports": [got["NFLX"]]}))
+            (root / "2026-10-20.judgment.json").write_text(json.dumps({"date": "2026-10-20", "calls": [
+                {"symbol": "NFLX", "direction": "down", "big": True, "confidence": 0.6, "why": "x"}]}))
+            md = ef.scorecard(root)
+            self.assertIn("| 方向（涨 / 跌） | 1 | 100% |", md)
+            self.assertIn("| 全部 | 1 | 100% | 51% |", md)
+
+
 class ResearchSniperFactors(unittest.TestCase):
     def test_breakout_compares_the_open_on_the_split_adjusted_scale(self):
         from hero.research_sniper_factors2 import tag
