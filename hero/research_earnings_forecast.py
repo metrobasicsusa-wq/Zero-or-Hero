@@ -22,7 +22,7 @@ from __future__ import annotations
 import json
 import statistics
 import sys
-from datetime import date, datetime, timedelta, timezone
+from datetime import date, datetime, time, timedelta, timezone
 from pathlib import Path
 from zoneinfo import ZoneInfo
 
@@ -159,8 +159,53 @@ def forecast(client, rows: list[dict], today: date, wait=lambda: None) -> dict:
             "skipped_symbols": {k: v for k, v in skipped_symbols.items() if v}, "reports": out}
 
 
-def score_row(row: dict, bars: list[dict]) -> dict | None:
-    """The reaction day against the session before it."""
+ET = ZoneInfo("America/New_York")
+PRE_LAG = timedelta(minutes=30)   # an 8-K can trail the press release: the price before is taken this much earlier
+AFTER = timedelta(minutes=60)     # the reference price after the report
+
+
+def business_before(d: date) -> date:
+    d -= timedelta(days=1)
+    while d.weekday() >= 5:
+        d -= timedelta(days=1)
+    return d
+
+
+def _t(bar: dict) -> datetime:
+    return datetime.fromisoformat(bar["t"].replace("Z", "+00:00")).astimezone(ET)
+
+
+def release_time(row: dict, accepted: list[datetime]) -> datetime | None:
+    """The report's 8-K (item 2.02) filing time: the first one after the previous session's 09:30 and before the
+    reaction day's open."""
+    react = date.fromisoformat(row["reaction_day"])
+    lo, hi = datetime.combine(business_before(react), time(9, 30), ET), datetime.combine(react, time(9, 30), ET)
+    xs = [t for t in accepted if lo <= t < hi]
+    return min(xs) if xs else None
+
+
+def around(row: dict, mins: list[dict], prev_close: float, rel: datetime | None) -> dict:
+    """Owner, 10-19: shares trade 24/5, so the price to beat is the last one before the report, not the last close.
+    After-close reports land after 16:00, so that is the regular close. Before-open ones (some in the small hours)
+    trade into the release: the last minute bar more than PRE_LAG before the 8-K filing (the SIP tape covers
+    04:00-20:00 ET; overnight 20:00-04:00 trades are not in it), else the previous close. Also the price an hour
+    after the filing, for reference."""
+    before, src = prev_close, "前收"
+    if row.get("time") == "pre-market" and rel:
+        lo = datetime.combine(business_before(date.fromisoformat(row["reaction_day"])), time(16, 0), ET)
+        xs = [b for b in mins if lo <= _t(b) < rel - PRE_LAG]
+        if xs:
+            before, src = float(xs[-1]["c"]), f"财报前最后成交 {_t(xs[-1]):%m-%d %H:%M}"
+    after = None
+    if rel:
+        ys = [b for b in mins if rel + AFTER <= _t(b) < rel + AFTER + timedelta(minutes=30)]
+        after = float(ys[0]["c"]) if ys else None
+    return {"before": before, "before_src": src, "release": rel.isoformat(timespec="minutes") if rel else None,
+            "after_1h": after}
+
+
+def score_row(row: dict, bars: list[dict], mins: list[dict] | None = None, rel: datetime | None = None) -> dict | None:
+    """The reaction day against the session before it, and the open against the last price before the report."""
     days = {b["t"][:10]: b for b in bars}
     order = sorted(days)
     if row["reaction_day"] not in days:
@@ -171,11 +216,32 @@ def score_row(row: dict, bars: list[dict]) -> dict | None:
     prev, b = float(days[order[i - 1]]["c"]), days[row["reaction_day"]]
     gap, move = float(b["o"]) / prev - 1, float(b["c"]) / prev - 1
     imp = row.get("implied_move")
+    a = around(row, mins or [], prev, rel)
+    gap_pre = float(b["o"]) / a["before"] - 1
     return {"gap": round(gap, 4), "move": round(move, 4), "big": (abs(move) > imp) if imp else None,
-            "up": gap > 0, "up_close": move > 0}   # direction is judged at the open; the close is for reference
+            "before": a["before"], "before_src": a["before_src"], "release": a["release"],
+            "gap_pre": round(gap_pre, 4),
+            "after_1h": round(a["after_1h"] / a["before"] - 1, 4) if a["after_1h"] else None,
+            "up": gap_pre > 0, "up_close": move > 0}   # direction: the open against the price before the report
 
 
-def score_due(client, today: date, root: Path = OUT) -> list[str]:
+def releases_for(symbols: list[str], since: str) -> dict[str, list[datetime]]:
+    """symbol -> 8-K item 2.02 filing times (ET) from SEC EDGAR; empty when SEC cannot be reached."""
+    try:
+        from hero import research_earnings as rer
+        ciks = rer.cik_map()
+    except Exception:
+        return {}
+    out = {}
+    for s in symbols:
+        try:
+            out[s] = rer.releases(ciks[s], since) if s in ciks else []
+        except Exception:
+            out[s] = []
+    return out
+
+
+def score_due(client, today: date, root: Path = OUT, sec=releases_for) -> list[str]:
     """Fill in results for every forecast file whose reaction days have closed; returns the files changed."""
     changed = []
     for f in sorted(root.glob("20??-??-??.json")):
@@ -183,16 +249,31 @@ def score_due(client, today: date, root: Path = OUT) -> list[str]:
         open_rows = [r for r in rep.get("reports", []) if "result" not in r and r["reaction_day"] < today.isoformat()]
         if not open_rows:
             continue
-        start = (date.fromisoformat(min(r["reaction_day"] for r in open_rows)) - timedelta(days=7)).isoformat()
+        first = date.fromisoformat(min(r["reaction_day"] for r in open_rows))
         syms = sorted({r["symbol"] for r in open_rows})
         bars: dict[str, list[dict]] = {}
         for i in range(0, len(syms), 100):
             try:
-                bars.update(client.daily_bars(syms[i:i + 100], start, adjustment="raw", feed="sip"))
+                bars.update(client.daily_bars(syms[i:i + 100], (first - timedelta(days=7)).isoformat(),
+                                              adjustment="raw", feed="sip"))
             except Exception:
                 pass
+        rel = sec(syms, (first - timedelta(days=5)).isoformat())
+        mins: dict[str, list[dict]] = {}
+        for day in sorted({r["reaction_day"] for r in open_rows}):
+            ds = sorted({r["symbol"] for r in open_rows if r["reaction_day"] == day})
+            lo = datetime.combine(business_before(date.fromisoformat(day)), time(15, 59), ET)
+            hi = datetime.combine(date.fromisoformat(day), time(9, 31), ET)
+            for i in range(0, len(ds), 100):
+                try:
+                    got = client.stock_bars(ds[i:i + 100], lo.isoformat(), hi.isoformat(), feed="sip")
+                except Exception:
+                    got = {}
+                for k, v in got.items():
+                    mins.setdefault((day, k), []).extend(v)
         for r in open_rows:
-            res = score_row(r, bars.get(r["symbol"], []))
+            res = score_row(r, bars.get(r["symbol"], []), mins.get((r["reaction_day"], r["symbol"]), []),
+                            release_time(r, rel.get(r["symbol"], [])))
             if res:
                 r["result"] = res
         f.write_text(json.dumps(rep, ensure_ascii=False) + "\n")
@@ -238,7 +319,7 @@ def scorecard(root: Path = OUT) -> str:
     md = [f"# 财报预测记分卡 {date.today().isoformat()}", "",
           "每个交易日 15:10 ET 前后，对当晚盘后、次日盘前发财报的美股（$5 以上、有期权）记下期权隐含的涨跌幅（平值跨式 / 股价），"
           "基线给每只「超过隐含幅度」的概率（历史 40%；自身过去平均反应比隐含高 25% 以上的 51%）；方向的判断只在判断文件里。"
-          "判断在预测日 16:00 ET 前写好（财报之前，包括凌晨发的盘前财报）。反应日收盘后记分：方向按反应日开盘对前收（10-19 起，和『第二天开盘卖』的做法一致），收盘另列一栏参考；"
+          "判断在预测日 16:00 ET 前写好（财报之前，包括凌晨发的盘前财报）。反应日收盘后记分：方向按反应日开盘对财报前最后一笔（24 小时交易，盘前财报用 8-K 提交前的盘前价，盘后财报就是收盘）（10-19 起，和『第二天开盘卖』的做法一致），收盘另列一栏参考；"
           "幅度（有没有超过隐含）按收盘对前收，和基线的统计口径一致。只记录，不交易。", ""]
     if not rows:
         return "\n".join(md + ["还没有可记分的财报。", ""])
@@ -279,10 +360,11 @@ def scorecard(root: Path = OUT) -> str:
             md.append(f"| 方向按开盘，信心 0.6 以上 | {len(hi)} | "
                       f"{sum((r['judgment']['direction'] == 'up') == r['result']['up'] for r in hi) / len(hi):.0%} |")
     md += share_trades(rows, jr)
-    md += ["", "## 明细（最近 40 条）", "", "| 预测日 | 股票 | 时间 | 隐含 | 跳空 | 收盘 | 超过隐含 | 判断 | 方向对不对（开盘 / 收盘） |",
-           "|---|---|---|---|---|---|---|---|---|"]
+    md += ["", "## 明细（最近 40 条）", "", "| 预测日 | 股票 | 时间 | 隐含 | 财报后 1 小时 | 开盘 | 收盘（对前收） | 超过隐含 | 判断 | 方向对不对（开盘 / 收盘） |",
+           "|---|---|---|---|---|---|---|---|---|---|"]
     for r in sorted(rows, key=lambda r: (r["day"], r["symbol"]))[-40:]:
         j, res = r["judgment"], r["result"]
+        a1h = f"{res['after_1h']:+.1%}" if res.get("after_1h") is not None else "—"
         jtxt = f"{'涨' if j.get('direction') == 'up' else '跌' if j.get('direction') == 'down' else '—'} / " \
                f"{'大' if j.get('big') is True else '小' if j.get('big') is False else '—'} / {float(j.get('confidence') or 0):.1f}" if j else ""
         ok = ""
@@ -291,31 +373,36 @@ def scorecard(root: Path = OUT) -> str:
             if "up_close" in res:
                 ok += " / " + ("对" if (j["direction"] == "up") == res["up_close"] else "错")
         md.append(f"| {r['day']} | {r['symbol']} | {'盘后' if r['time'] == 'post-market' else '盘前'} | "
-                  f"{(r.get('implied_move') or 0):.1%}{'（月）' if r.get('weekly') is False else ''} | {res['gap']:+.1%} | {res['move']:+.1%} | "
+                  f"{(r.get('implied_move') or 0):.1%}{'（月）' if r.get('weekly') is False else ''} | "
+                  f"{a1h} | {res.get('gap_pre', res['gap']):+.1%} | {res['move']:+.1%} | "
                   f"{'是' if res['big'] else '否' if res['big'] is not None else '—'} | {jtxt} | {ok} |")
     return "\n".join(md) + "\n"
 
 
 def share_trades(rows: list[dict], jr: list[dict]) -> list[str]:
-    """Owner, 10-19: earnings only in shares or 2x ETFs (option IV collapses after the report). What the judgment
-    would have made that way: bought at the close before the report, sold at the next open (the gap); a down call
-    is a short or an inverse fund. 2x is twice the gap (a daily-reset fund over one night). No costs."""
-    def line(name, rs, sign):
+    """Owner, 10-19: earnings only in shares or 2x ETFs (option IV collapses after the report), and shares trade
+    24/5. What the judgment would have made that way: bought at the last price before the report, sold at the
+    reaction day's open; also bought at the close before (what our ledgers do at 15:40). A down call is a short or
+    an inverse fund. 2x is twice the move (a daily-reset fund over one night). No costs."""
+    def line(name, rs, sign, key="gap_pre"):
         if not rs:
             return None
-        g = [sign(r) * r["result"]["gap"] for r in rs]
+        g = [sign(r) * r["result"].get(key, r["result"]["gap"]) for r in rs]
         return (f"| {name} | {len(g)} | {sum(x > 0 for x in g) / len(g):.0%} | {statistics.mean(g):+.2%} | "
                 f"{statistics.median(g):+.2%} | {2 * statistics.mean(g):+.2%} |")
     d = lambda r: 1 if r["judgment"]["direction"] == "up" else -1
     dirs = [r for r in jr if r["judgment"].get("direction") in ("up", "down")]
-    out = ["", "## 按判断做正股 / 两倍 ETF（财报前收盘买，第二天开盘卖）", "",
-           "看跌的判断要做空或买反向基金；两倍按一晚跳空的 2 倍算。不算买卖价差。", "",
+    out = ["", "## 按判断做正股 / 两倍 ETF（财报前最后一笔买，反应日开盘卖）", "",
+           "周一到周五 24 小时能交易，所以买价用财报前最后一笔：盘后财报就是当天收盘；盘前（包括凌晨）财报是 8-K "
+           "提交前 30 分钟以前的最后一笔（数据只有 04:00–20:00，夜盘 20:00–04:00 的成交拿不到，那时用前一天盘后最后一笔）。"
+           "看跌的判断要做空或买反向基金；两倍按 2 倍算。不算买卖价差。", "",
            "| 组 | 次数 | 赚钱比例 | 正股平均 | 正股中位数 | 两倍平均 |", "|---|---|---|---|---|---|"]
     out += [x for x in (
         line("按判断方向，全部", dirs, d),
         line("只做看涨的判断", [r for r in dirs if d(r) > 0], d),
         line("只做看跌的判断", [r for r in dirs if d(r) < 0], d),
         line("判断信心 0.6 以上", [r for r in dirs if float(r["judgment"].get("confidence") or 0) >= 0.6], d),
+        line("按判断方向，前一天 15:40 买（我们账本的做法）", dirs, d, "gap"),
         line("对照：全部财报都买（不看判断）", rows, lambda r: 1)) if x]
     return out
 

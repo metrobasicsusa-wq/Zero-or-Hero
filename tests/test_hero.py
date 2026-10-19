@@ -3710,6 +3710,65 @@ class EarningsForecast(unittest.TestCase):
         self.assertFalse(ef.on_time("2026-10-21T06:30-04:00", "2026-10-20"))     # after a 06:00 pre-market report
 
 
+class EarningsForecastAroundTheReport(unittest.TestCase):
+    def test_before_open_report_is_judged_against_the_last_trade_before_it(self):
+        from datetime import datetime as dt
+        from zoneinfo import ZoneInfo
+        from hero import research_earnings_forecast as ef
+        et = ZoneInfo("America/New_York")
+        row = {"symbol": "GE", "time": "pre-market", "report_date": "2026-10-20", "reaction_day": "2026-10-20",
+               "implied_move": 0.06}
+        # 8-K filings: last quarter's, and this one at 06:31 ET
+        filed = [dt(2026, 7, 17, 6, 30, tzinfo=et), dt(2026, 10, 20, 6, 31, tzinfo=et)]
+        rel = ef.release_time(row, filed)
+        self.assertEqual(rel, dt(2026, 10, 20, 6, 31, tzinfo=et))
+        utc = lambda h, m, d=20: f"2026-10-{d:02d}T{h + 4:02d}:{m:02d}:00Z"   # EDT -> UTC
+        mins = [{"t": utc(19, 50, 19), "c": 101.0},        # 10-19 after hours
+                {"t": utc(4, 10), "c": 103.0},             # 10-20 pre-market drift, before the report
+                {"t": utc(5, 59), "c": 104.0},             # the last trade more than 30 minutes before the filing
+                {"t": utc(6, 20), "c": 104.5},             # inside the 30 minutes (the release may already be out)
+                {"t": utc(7, 31), "c": 108.0}]             # an hour after
+        daily = [{"t": "2026-10-19T04:00:00Z", "o": 99, "c": 100.0}, {"t": "2026-10-20T04:00:00Z", "o": 103.0, "c": 97.0}]
+        res = ef.score_row(row, daily, mins, rel)
+        self.assertEqual((res["before"], res["gap"], res["gap_pre"], res["after_1h"]), (104.0, 0.03, -0.0096, 0.0385))
+        self.assertFalse(res["up"])          # opened above Friday's close but below the price right before the report
+        self.assertIn("财报前最后成交 10-20 05:59", res["before_src"])
+        # an after-close report lands after 16:00: the price to beat is the regular close
+        post = {**row, "time": "post-market", "report_date": "2026-10-19"}
+        res = ef.score_row(post, daily, mins, dt(2026, 10, 19, 16, 5, tzinfo=et))
+        self.assertEqual((res["before"], res["before_src"], res["gap_pre"]), (100.0, "前收", 0.03))
+        self.assertTrue(res["up"])
+        # no filing time found: the previous close
+        self.assertEqual(ef.score_row(row, daily, mins, None)["before"], 100.0)
+
+    def test_score_due_reads_filings_and_minute_bars(self):
+        from datetime import datetime as dt
+        from zoneinfo import ZoneInfo
+        from hero import research_earnings_forecast as ef
+        et = ZoneInfo("America/New_York")
+        asked = []
+
+        class Client:
+            def daily_bars(self, syms, start, **kw):
+                return {"GE": [{"t": "2026-10-19T04:00:00Z", "o": 99, "c": 100.0},
+                               {"t": "2026-10-20T04:00:00Z", "o": 103.0, "c": 97.0}]}
+
+            def stock_bars(self, syms, start, end, **kw):
+                asked.append((syms, start, end, kw.get("feed")))
+                return {"GE": [{"t": "2026-10-20T09:59:00Z", "c": 104.0}]}
+
+        with tempfile.TemporaryDirectory() as d:
+            root = Path(d)
+            (root / "2026-10-19.json").write_text(json.dumps({"date": "2026-10-19", "reports": [
+                {"symbol": "GE", "time": "pre-market", "report_date": "2026-10-20", "reaction_day": "2026-10-20",
+                 "implied_move": 0.06}]}))
+            ef.score_due(Client(), date(2026, 10, 21), root,
+                         sec=lambda syms, since: {"GE": [dt(2026, 10, 20, 6, 31, tzinfo=et)]})
+            r = json.loads((root / "2026-10-19.json").read_text())["reports"][0]["result"]
+        self.assertEqual(asked, [(["GE"], "2026-10-19T15:59:00-04:00", "2026-10-20T09:31:00-04:00", "sip")])
+        self.assertEqual((r["before"], r["release"], r["up"]), (104.0, "2026-10-20T06:31-04:00", False))
+
+
 class ResearchSniperFactors(unittest.TestCase):
     def test_breakout_compares_the_open_on_the_split_adjusted_scale(self):
         from hero.research_sniper_factors2 import tag
