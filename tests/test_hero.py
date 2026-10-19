@@ -624,7 +624,9 @@ class ProtectiveStops(unittest.TestCase):
         self.assertTrue(CFG["risk"]["stop_min_pct"] - 0.001 <= pct <= CFG["risk"]["stop_max_pct"] + 0.001, pct)
 
     def test_existing_matching_stop_is_kept_and_does_not_block_rebalance(self):
-        c = FakeClient(self.closes, positions=[self.pos("UP1")], open_orders=[self.stop_order("UP1", "10")])
+        # Held at its 20% target (68 x $294 of $100k), so there is no add-on buy to clear the stop for.
+        c = FakeClient(self.closes, positions=[self.pos("UP1", qty="68", cur="294")],
+                       open_orders=[self.stop_order("UP1", "68")])
         self.run_engine(c)
         self.assertFalse([o for o in c.orders if o["type"] == "stop"])
         self.assertFalse(getattr(c, "cancelled", []))
@@ -634,10 +636,31 @@ class ProtectiveStops(unittest.TestCase):
         self.assertIn("UP1", targets[0]["weights"])
 
     def test_quantity_change_replaces_stop(self):
-        c = FakeClient(self.closes, positions=[self.pos("UP1", qty="12")], open_orders=[self.stop_order("UP1", "10")])
+        c = FakeClient(self.closes, positions=[self.pos("UP1", qty="68", cur="294")],
+                       open_orders=[self.stop_order("UP1", "60")])
         self.run_engine(c)
         self.assertEqual(c.cancelled, ["s1"])
-        self.assertEqual([o["qty"] for o in c.orders if o["type"] == "stop"], ["12"])
+        self.assertEqual([o["qty"] for o in c.orders if o["type"] == "stop"], ["68"])
+
+    def test_add_on_buy_cancels_the_stop_first(self):
+        # 2026-10-19: an AAPL add-on buy was rejected as a potential wash trade because our GTC sell
+        # stop was still resting. Cancel the stop, buy, and re-place the stop next cycle.
+        c = self.run_engine(FakeClient(self.closes, positions=[self.pos("UP1")],
+                                       open_orders=[self.stop_order("UP1", "10")]))
+        self.assertEqual(c.cancelled, ["s1"])
+        self.assertTrue([o for o in c.orders if o["symbol"] == "UP1" and o["side"] == "buy"])
+        self.assertFalse([o for o in c.orders if o["type"] == "stop" and o["symbol"] == "UP1"])
+        kinds = [json.loads(l)["kind"] for l in (Path(self.tmp.name) / "trades.jsonl").read_text().splitlines()
+                 if '"UP1"' in l and '"targets"' not in l]
+        self.assertLess(kinds.index("cancel"), kinds.index("order"))
+
+    def test_add_on_buy_waits_while_the_stop_cancel_is_pending(self):
+        c = FakeClient(self.closes, positions=[self.pos("UP1")], open_orders=[self.stop_order("UP1", "10")])
+        c.cancel_result = "pending_cancel"
+        self.run_engine(c)
+        self.assertFalse([o for o in c.orders if o["symbol"] == "UP1" and o["side"] == "buy"])
+        self.assertIn("buy_deferred", (Path(self.tmp.name) / "trades.jsonl").read_text())
+        self.assertNotIn("last_rebalance", self.j.state())  # the next cycle retries the add-on
 
     def test_stop_cancelled_before_closing_position(self):
         down = {**self.pos("DOWN"), "current_price": "50"}

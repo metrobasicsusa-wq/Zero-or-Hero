@@ -923,7 +923,8 @@ class Engine:
     def _rebalance(self, stocks: dict, busy: set, closes: dict, equity: float, halted: bool) -> bool | None:
         """Sells and trims first, then buys. If a sale could not go out because a protective stop's
         cancel was still pending, nothing is bought this cycle (the buys would run on borrowed money)
-        and False is returned so the next cycle tries the whole rebalance again."""
+        and False is returned so the next cycle tries the whole rebalance again. An add-on buy whose
+        stop cancel is still pending is skipped the same way and also returns False."""
         p, risk = self.cfg["stocks"], self.cfg["risk"]
         deferred: list[str] = []
         held = frozenset(stocks)
@@ -1002,12 +1003,24 @@ class Engine:
         if halted:
             return None
         breaker, cautious = getattr(self, "breaker", None), getattr(self, "cautious", {})
+        waiting = False
         for sym, size, ref, why in buys:
             if breaker or sym in cautious:
                 self.j.event("buy_blocked", symbol=sym, dry_run=self.dry,
                              why=f"本该买入（{why}），但{'市场熔断：' + breaker if breaker else cautious[sym]}，今天不买")
                 continue
+            # The broker rejects a buy while our sell stop rests on the same stock ("potential wash
+            # trade", AAPL 2026-10-19). Cancel it first; the next cycle re-places it for the new quantity.
+            if self.stops.get(sym) and not self._cancel_stops(
+                    sym, "加仓前先撤销保护性止损单（同一只股票有卖出止损单时，券商会把买单当成对敲拒掉），"
+                         "下一轮按新股数重挂"):
+                self.j.event("buy_deferred", symbol=sym, dry_run=self.dry,
+                             why=f"本该加仓（{why}），但止损单还没撤销完，这次不买，下一轮整套调仓重来")
+                waiting = True
+                continue
             self._order("rebalance", ref, why, symbol=sym, **size, side="buy", type="market", time_in_force="day")
+        if waiting:
+            return False
 
     def _option_entries(self, options: dict, busy: set, closes: dict, equity: float, today: date,
                         stocks: dict | None = None) -> None:
