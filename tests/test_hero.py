@@ -1006,10 +1006,15 @@ class Earnings(unittest.TestCase):
 
     def test_refresh_calls_api_once_per_day(self):
         from datetime import datetime
+        from unittest import mock
         calls = []
         orig = earnings.fetch
         earnings.fetch = lambda key: calls.append(key) or self.ROWS
+        nas = {"2026-10-06": [{"symbol": "UP1", "reportDate": "2026-10-06", "timeOfTheDay": "post-market", "estimate": None}]}
         try:
+          with mock.patch.object(earnings, "fetch_nasdaq", lambda day, get=None: nas.get(day, [])), \
+                mock.patch.object(earnings._time, "sleep", lambda s: None), \
+                mock.patch.object(earnings, "yahoo_dates", lambda syms, **k: {"UP1": {"date": "2026-10-06", "confirmed": True}}):
             with tempfile.TemporaryDirectory() as d:
                 path = Path(d) / "earnings.json"
                 now = datetime(2026, 10, 1, 9, 35)
@@ -1018,8 +1023,60 @@ class Earnings(unittest.TestCase):
                 self.assertTrue((Path(d) / "earnings" / "2026-10-01.json").exists())  # point-in-time archive
                 earnings.refresh(path, {"UP1"}, "k", datetime(2026, 10, 2, 9, 35))
                 self.assertEqual(len(calls), 2)
+                data = json.loads(path.read_text())
+                # Nasdaq moved UP1 to 10-06 after the close; Yahoo says the company confirmed that date
+                self.assertEqual(data["reports"]["UP1"], [{"date": "2026-10-06", "time": "post-market", "estimate": "1.0",
+                                                          "fiscal_end": "2026-09-30", "checked": "nasdaq", "confirmed": True}])
+                self.assertEqual(data["cross_check"]["yahoo"]["confirmed"], 1)
         finally:
             earnings.fetch = orig
+
+    def test_nasdaq_overlay_moves_fills_disputes_and_adds(self):
+        av = [{"symbol": "AMZN", "reportDate": "2026-10-29", "timeOfTheDay": "", "estimate": "2.0"},
+              {"symbol": "MAT", "reportDate": "2026-10-20", "timeOfTheDay": "", "estimate": "0.9"},       # stale
+              {"symbol": "NOC", "reportDate": "2026-10-26", "timeOfTheDay": "pre-market", "estimate": "7"},  # moved up
+              {"symbol": "NOC", "reportDate": "2027-01-27", "timeOfTheDay": "pre-market", "estimate": "8"},  # next quarter
+              {"symbol": "FAR", "reportDate": "2026-12-01", "timeOfTheDay": "post-market", "estimate": None}]
+        row = lambda s, d, t: {"symbol": s, "reportDate": d, "timeOfTheDay": t, "estimate": None, "fiscalDateEnding": None}
+        nas = {"2026-10-20": [row("NOC", "2026-10-20", "pre-market"), row("GE", "2026-10-20", "pre-market")],
+               "2026-10-29": [row("AMZN", "2026-10-29", "post-market")],
+               "2026-10-30": None}                                     # Nasdaq did not answer that day
+        out, ch = earnings.overlay(av, nas)
+        by = {(r["symbol"], r["reportDate"]): r for r in out}
+        self.assertEqual(by[("AMZN", "2026-10-29")]["timeOfTheDay"], "post-market")
+        self.assertTrue(by[("MAT", "2026-10-20")]["disputed"])
+        self.assertEqual(by[("NOC", "2026-10-20")]["timeOfTheDay"], "pre-market")
+        self.assertIn(("NOC", "2027-01-27"), by)                       # the later quarter stays
+        self.assertNotIn(("NOC", "2026-10-26"), by)
+        self.assertIn(("GE", "2026-10-20"), by)                        # only Nasdaq had it
+        self.assertNotIn("checked", by[("FAR", "2026-12-01")])
+        self.assertEqual((ch["moved"], ch["time_filled"], ch["disputed"], ch["added"]),
+                         ([["NOC", "2026-10-26", "2026-10-20"]], [["AMZN", "unknown", "post-market"]], ["MAT"], 1))
+
+    def test_nasdaq_rows_and_yahoo_confirmation(self):
+        class R:
+            def __init__(self, j):
+                self.j = j
+            def raise_for_status(self):
+                pass
+            def json(self):
+                return self.j
+        got = earnings.fetch_nasdaq("2026-10-20", get=lambda *a, **k: R({"data": {"rows": [
+            {"symbol": "GE", "time": "time-pre-market", "epsForecast": "$2.02"},
+            {"symbol": "OMC", "time": "time-not-supplied", "epsForecast": ""}]}}))
+        self.assertEqual([(r["symbol"], r["timeOfTheDay"], r["estimate"]) for r in got],
+                         [("GE", "pre-market", "2.02"), ("OMC", "", None)])
+        self.assertIsNone(earnings.fetch_nasdaq("2026-10-20", get=lambda *a, **k: 1 / 0))
+        data = {"reports": {"GE": [{"date": "2026-10-20", "time": "pre-market"}],
+                            "NOC": [{"date": "2026-10-26", "time": "pre-market"}],
+                            "AAPL": [{"date": "2026-12-30", "time": "post-market"}]}}
+        asked = []
+        ys = {"GE": {"date": "2026-10-20", "confirmed": True}, "NOC": {"date": "2026-10-20", "confirmed": True}}
+        sm = earnings.confirm(data, date(2026, 10, 19), lookup=lambda syms: asked.extend(syms) or ys)
+        self.assertEqual(asked, ["GE", "NOC"])                         # AAPL is beyond 30 days
+        self.assertTrue(data["reports"]["GE"][0]["confirmed"])
+        self.assertEqual((data["reports"]["NOC"][0]["confirmed"], data["reports"]["NOC"][0]["yahoo_date"]), (False, "2026-10-20"))
+        self.assertEqual(sm["conflicts"], [["NOC", "2026-10-26", "2026-10-20"]])
 
     def engine(self, d, cal, positions=()):
         closes = {"SPY": series(0.001, seed=5), "UP1": series(0.002, seed=1)}
@@ -3710,6 +3767,41 @@ class EarningsForecast(unittest.TestCase):
         self.assertFalse(ef.on_time("2026-10-21T06:30-04:00", "2026-10-20"))     # after a 06:00 pre-market report
 
 
+class EarningsForecastCalendarChecks(unittest.TestCase):
+    def test_disputed_rows_are_left_out_and_confirmed_dates_marked(self):
+        from hero import research_earnings_forecast as ef
+        rows = [{"symbol": "GE", "reportDate": "2026-10-20", "timeOfTheDay": "pre-market", "checked": "nasdaq"},
+                {"symbol": "NOC", "reportDate": "2026-10-20", "timeOfTheDay": "pre-market"},
+                {"symbol": "MAT", "reportDate": "2026-10-20", "timeOfTheDay": "", "disputed": True}]
+
+        class Client:
+            def stock_snapshots(self, syms):
+                return {s: {"latestTrade": {"p": 100.0}} for s in syms}
+
+            def option_contracts(self, und, **kw):
+                return [{"symbol": f"{und}{t[0]}", "type": t, "strike_price": "100", "expiration_date": "2026-10-23"}
+                        for t in ("call", "put")]
+
+            def option_snapshots(self, syms):
+                return {s: {"latestQuote": {"bp": 2.0, "ap": 2.2}} for s in syms}
+
+        ys = {"GE": {"date": "2026-10-20", "confirmed": True}, "NOC": {"date": "2026-10-26", "confirmed": True}}
+        rep = ef.forecast(Client(), rows, date(2026, 10, 19), confirmed=lambda syms: ys)
+        got = {r["symbol"]: r for r in rep["reports"]}
+        self.assertEqual(set(got), {"GE", "NOC"})
+        self.assertEqual(rep["calendar_disputed"], ["MAT"])
+        self.assertEqual(rep["calendar_no_time"], [])
+        self.assertTrue(got["GE"]["confirmed"])
+        self.assertEqual((got["NOC"]["confirmed"], got["NOC"]["yahoo_date"]), (False, "2026-10-26"))
+        md = ef.markdown(rep)
+        self.assertIn("| GE | 盘前 | 2026-10-20 | ✓ |", md)
+        self.assertIn("估计（Yahoo：2026-10-26）", md)
+        self.assertIn("Nasdaq 没有的（日期可能过时，没记）：MAT", md)
+        # Yahoo unreachable: nothing marked, nothing breaks
+        rep = ef.forecast(Client(), rows, date(2026, 10, 19), confirmed=lambda syms: 1 / 0)
+        self.assertNotIn("confirmed", rep["reports"][0])
+
+
 class EarningsForecastAroundTheReport(unittest.TestCase):
     def test_before_open_report_is_judged_against_the_last_trade_before_it(self):
         from datetime import datetime as dt
@@ -3810,7 +3902,8 @@ class EarningsPage(unittest.TestCase):
             for sub in ("data", "journal", "journal-s500", "research/earnings-forecast"):
                 (root / sub).mkdir(parents=True)
             (root / "data" / "earnings.json").write_text(json.dumps({"fetched_at": "2026-10-19T09:00", "reports": {
-                "META": [{"date": "2026-10-21", "time": "post-market"}], "GE": [{"date": "2026-10-20", "time": "pre-market"}],
+                "META": [{"date": "2026-10-21", "time": "post-market", "confirmed": True}],
+                "GE": [{"date": "2026-10-20", "time": "pre-market", "disputed": True}],
                 "AMZN": [{"date": "2026-10-29", "time": "unknown"}], "OLD": [{"date": "2026-10-01", "time": "post-market"}],
                 "FAR": [{"date": "2026-12-20", "time": "post-market"}]}}))
             (root / "journal" / "snapshot.json").write_text(json.dumps({"positions": [{"symbol": "META"}]}))
@@ -3829,7 +3922,8 @@ class EarningsPage(unittest.TestCase):
             self.assertEqual(data["hold"], {"META": ["主账户"], "GE": ["多账本"]})
             self.assertEqual([r["date"] for r in data["pool"]], ["2026-10-20", "2026-10-21", "2026-10-29"])
             page = ep.render(data)
-        self.assertIn("META★", page)
+        self.assertIn("META✓★", page)                                  # confirmed and held
+        self.assertIn("GE⚠★", page)
         self.assertIn("10-20 周二", page)
         self.assertIn("涨 · 超过定价不会 · 信心 0.50", page)
         self.assertIn("开盘 -1.0% · 收盘 -2.0% · 方向错", page)       # judged at the open against the price before

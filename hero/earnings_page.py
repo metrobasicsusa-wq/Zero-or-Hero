@@ -55,7 +55,8 @@ def upcoming(root: Path, today: date, days: int = 21) -> tuple[list[dict], str]:
             if today.isoformat() <= r["date"] <= end:
                 t = r.get("time") or ""
                 slot = "pre" if "pre" in t else "post" if "post" in t else "unknown"
-                by.setdefault(r["date"], {"pre": [], "post": [], "unknown": []})[slot].append(sym)
+                mark = "✓" if r.get("confirmed") else "⚠" if r.get("disputed") or r.get("yahoo_date") else ""
+                by.setdefault(r["date"], {"pre": [], "post": [], "unknown": []})[slot].append(sym + mark)
     return [{"date": d, **{k: sorted(v) for k, v in by[d].items()}} for d in sorted(by)], cal.get("fetched_at", "")
 
 
@@ -79,9 +80,14 @@ def day_label(d: str) -> str:
 
 
 def chips(syms: list[str], hold: dict[str, list[str]]) -> str:
+    """Names with their marks (✓ company-confirmed, ⚠ sources disagree); held ones in bold with ★."""
     if not syms:
         return '<span class="muted">—</span>'
-    return " ".join(f'<b title="{esc("、".join(hold[s]))}持有">{esc(s)}★</b>' if s in hold else esc(s) for s in syms)
+    out = []
+    for s in syms:
+        base = s.rstrip("✓⚠")
+        out.append(f'<b title="{esc("、".join(hold[base]))}持有">{esc(s)}★</b>' if base in hold else esc(s))
+    return " ".join(out)
 
 
 def forecast_table(rep: dict | None, calls: dict, hold: dict[str, list[str]]) -> str:
@@ -107,7 +113,8 @@ def forecast_table(rep: dict | None, calls: dict, hold: dict[str, list[str]]) ->
             if c and c.get("direction") in ("up", "down"):
                 ok = " · 方向" + ("对" if (c["direction"] == "up") == res["up"] else "错")
             out = f"开盘 {g:+.1%} · 收盘 {res['move']:+.1%}{' · 超过定价' if res.get('big') else ''}{ok}"
-        name = f"<b>{esc(r['symbol'])}★</b>" if r["symbol"] in hold else esc(r["symbol"])
+        mark = "✓" if r.get("confirmed") else "⚠" if r.get("yahoo_date") else ""
+        name = f"<b>{esc(r['symbol'] + mark)}★</b>" if r["symbol"] in hold else esc(r["symbol"] + mark)
         when = f"{r['report_date'][5:]} {'盘后' if r['time'] == 'post-market' else '盘前'}"
         rows.append(f"<tr><td>{name}</td><td>{esc(when)}</td>"
                     f"<td>{esc(r['reaction_day'][5:])}</td><td>${r['spot']:,.2f}</td><td>{imp}</td><td>{prior}</td>"
@@ -152,10 +159,10 @@ td, th {{ vertical-align: top; }}
 <body><main>
 <header><h1>Zero-or-Hero <span>· 财报</span></h1>
 <nav class="meta"><a href="index.html">Claude 主实验 $100k</a> · <a href="s500.html">Claude-500 多账本 $50k</a> · <a href="exchange.html">三方交流</a> · <b>财报</b></nav>
-<div class="meta">更新于 {esc(data['generated'])}（UTC）· ★ = 两个账户里正拿着（正股或期权）· 模拟盘，参考记录，不是投资建议</div></header>
+<div class="meta">更新于 {esc(data['generated'])}（UTC）· ★ = 两个账户里正拿着（正股或期权）· ✓ = 公司已公布日期（Yahoo）· ⚠ = 日历来源不一致，待核对 · 模拟盘，参考记录，不是投资建议</div></header>
 <section class="card"><h2>今晚盘后 · 明早盘前（全美股）</h2>{forecast_table(data['forecast'], data['calls'], hold)}</section>
 <section class="card"><h2>我们股票池接下来三周</h2>
-<div class="meta">data/earnings.json（Alpha Vantage，{esc(data['fetched'] or '—')} 更新）。有些日期是数据商按往年推算的，以公司公告为准。</div>
+<div class="meta">data/earnings.json（Alpha Vantage，用 Nasdaq 修正日期和盘前盘后，Yahoo 标出公司已确认的；{esc(data['fetched'] or '—')} 更新）。没有 ✓ 的日期可能是按往年推算的。</div>
 <div class="table-wrap"><table><tr><th>日期</th><th>盘前</th><th>盘后</th><th>时间未知</th></tr>{pool or '<tr><td colspan=4>没有</td></tr>'}</table></div></section>
 <section class="card"><h2>记分卡</h2><div class="md">{md(data['scorecard']) or '还没有'}</div></section>
 <footer>由 hero/earnings_page.py 从 data/earnings.json 和 research/earnings-forecast/ 生成，每次推送后更新。</footer>

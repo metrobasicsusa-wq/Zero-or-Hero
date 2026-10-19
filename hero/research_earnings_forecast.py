@@ -49,6 +49,8 @@ def due(rows: list[dict], today: date) -> list[dict]:
     nxt = business_after(today)
     out = []
     for r in rows:
+        if r.get("disputed"):   # Alpha Vantage places it here, Nasdaq does not: probably a stale date
+            continue
         when = (r.get("timeOfTheDay") or "").strip()
         if r.get("reportDate") == today.isoformat() and when == "post-market":
             out.append({"symbol": r["symbol"], "report_date": r["reportDate"], "time": when, "reaction_day": nxt.isoformat(),
@@ -105,11 +107,13 @@ def legs(client, und: str, spot: float, react: str) -> dict | None:
     return {"expiry": exp, "strike": k, "days": days, **got} if set(got) >= {"call", "put"} else None
 
 
-def forecast(client, rows: list[dict], today: date, wait=lambda: None) -> dict:
+def forecast(client, rows: list[dict], today: date, wait=lambda: None, confirmed=lambda syms: {}) -> dict:
+    """`confirmed`: symbols -> {"date", "confirmed"} (Yahoo; the company has announced the date)."""
     reports = due(rows, today)
     days = {today.isoformat(), business_after(today).isoformat()}
-    no_time = sorted({r["symbol"] for r in rows if r.get("reportDate") in days
+    no_time = sorted({r["symbol"] for r in rows if r.get("reportDate") in days and not r.get("disputed")
                       and (r.get("timeOfTheDay") or "").strip() not in ("pre-market", "post-market")})
+    disputed = sorted({r["symbol"] for r in rows if r.get("reportDate") in days and r.get("disputed")})
     syms = sorted({r["symbol"] for r in reports})
     snaps: dict[str, dict] = {}
     for i in range(0, len(syms), 100):
@@ -154,8 +158,18 @@ def forecast(client, rows: list[dict], today: date, wait=lambda: None) -> dict:
                     "expiry_days": lg["days"], "weekly": lg["days"] <= WEEKLY, "call_mid": c, "put_mid": p,
                     "implied_move": implied, **baseline(implied, past.get(r["symbol"], []))})
     out.sort(key=lambda x: -x["dollar_volume"])   # the most traded first: the judgment file covers the top of the list
+    try:
+        conf = confirmed([r["symbol"] for r in out[:60]]) or {}
+    except Exception:
+        conf = {}
+    for r in out:
+        y = conf.get(r["symbol"])
+        if y:   # True: the company announced this date; False: still an estimate, or Yahoo has another date
+            r["confirmed"] = bool(y["confirmed"] and y["date"] == r["report_date"])
+            if y["confirmed"] and y["date"] != r["report_date"]:
+                r["yahoo_date"] = y["date"]
     return {"date": today.isoformat(), "generated": datetime.now(timezone.utc).isoformat(timespec="seconds"),
-            "calendar_rows_due": len(reports), "calendar_no_time": no_time, "skipped": skipped,
+            "calendar_rows_due": len(reports), "calendar_no_time": no_time, "calendar_disputed": disputed, "skipped": skipped,
             "skipped_symbols": {k: v for k, v in skipped_symbols.items() if v}, "reports": out}
 
 
@@ -416,17 +430,20 @@ def markdown(rep: dict) -> str:
           "隐含幅度 = 反应日当天或之后第一个到期的平值跨式 / 股价；到期离反应日超过一周的（多是只有月度期权的）标『月』，"
           "那个跨式还包含财报以外的日子，隐含偏大，记分时分开算。成交额来自 IEX（只占全市场一小部分），只用来排序。"
           "基线概率见记分卡说明；方向判断在同日的 judgment 文件里。只记录，不交易。", "",
-          "| 股票 | 时间 | 反应日 | 股价 | 前一天 IEX 成交额 | 隐含幅度 | 过去平均反应 | 超过隐含的基线概率 |", "|---|---|---|---|---|---|---|---|"]
+          "| 股票 | 时间 | 反应日 | 公司确认 | 股价 | 前一天 IEX 成交额 | 隐含幅度 | 过去平均反应 | 超过隐含的基线概率 |", "|---|---|---|---|---|---|---|---|---|"]
     for r in rep["reports"]:
         prior = f"{r['prior_avg_abs']:.1%}（{r['prior_n']} 次）" if r.get("prior_avg_abs") else "—"
         imp = f"{r['implied_move']:.1%}" if r.get("implied_move") else "—"
         if r.get("implied_move") and r.get("weekly") is False:
             imp += f"（月，{r['expiry']}）"
-        md.append(f"| {r['symbol']} | {'盘后' if r['time'] == 'post-market' else '盘前'} | {r['reaction_day']} | "
+        ok = {True: "✓", False: "估计"}.get(r.get("confirmed"), "—") + (f"（Yahoo：{r['yahoo_date']}）" if r.get("yahoo_date") else "")
+        md.append(f"| {r['symbol']} | {'盘后' if r['time'] == 'post-market' else '盘前'} | {r['reaction_day']} | {ok} | "
                   f"${r['spot']:,.2f} | ${r.get('dollar_volume', 0) / 1e6:,.1f}M | {imp} | {prior} | {r['p_big']:.0%} |")
     for why, label in (("no_options", f"{WINDOW} 天内没有期权"), ("error", "查期权出错"), ("under_5", "股价不到 $5"), ("no_price", "没有价格")):
         if rep.get("skipped_symbols", {}).get(why):
             md += ["", f"{label}：{'、'.join(rep['skipped_symbols'][why])}"]
+    if rep.get("calendar_disputed"):
+        md += ["", f"Alpha Vantage 放在今明两天、Nasdaq 没有的（日期可能过时，没记）：{'、'.join(rep['calendar_disputed'])}"]
     if rep.get("calendar_no_time"):
         md += ["", f"今明两天发、日历没写盘前盘后（没记）：{'、'.join(rep['calendar_no_time'])}"]
     return "\n".join(md) + "\n"
@@ -440,8 +457,10 @@ def main() -> None:
     today = datetime.now(ZoneInfo("America/New_York")).date()
     OUT.mkdir(parents=True, exist_ok=True)
     changed = score_due(client, today)
-    rows = earn.fetch(os.environ["ALPHAVANTAGE_API_KEY"])
-    rep = forecast(client, rows, today, wait=Pace(client).wait)  # the main account's key: slow while the market is open
+    rows, check = earn.cross_check(earn.fetch(os.environ["ALPHAVANTAGE_API_KEY"]), today, days=4)   # Nasdaq fixes dates / times
+    rep = forecast(client, rows, today, wait=Pace(client).wait,  # the main account's key: slow while the market is open
+                   confirmed=earn.yahoo_dates)
+    rep["cross_check"] = {k: check.get(k) for k in ("days", "moved", "time_filled", "disputed", "added", "error") if k in check}
     (OUT / f"{today.isoformat()}.json").write_text(json.dumps(rep, ensure_ascii=False) + "\n")
     (OUT / f"{today.isoformat()}.md").write_text(markdown(rep))
     (OUT / "scorecard.md").write_text(scorecard())
