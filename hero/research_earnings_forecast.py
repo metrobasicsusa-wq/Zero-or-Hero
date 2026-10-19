@@ -247,6 +247,7 @@ def scorecard(root: Path = OUT) -> str:
         if hi:
             md.append(f"| 方向，信心 0.6 以上 | {len(hi)} | "
                       f"{sum((r['judgment']['direction'] == 'up') == r['result']['up'] for r in hi) / len(hi):.0%} |")
+    md += share_trades(rows, jr)
     md += ["", "## 明细（最近 40 条）", "", "| 预测日 | 股票 | 时间 | 隐含 | 跳空 | 收盘 | 超过隐含 | 判断 | 判断对不对 |",
            "|---|---|---|---|---|---|---|---|---|"]
     for r in sorted(rows, key=lambda r: (r["day"], r["symbol"]))[-40:]:
@@ -260,6 +261,30 @@ def scorecard(root: Path = OUT) -> str:
                   f"{(r.get('implied_move') or 0):.1%}{'（月）' if r.get('weekly') is False else ''} | {res['gap']:+.1%} | {res['move']:+.1%} | "
                   f"{'是' if res['big'] else '否' if res['big'] is not None else '—'} | {jtxt} | {ok} |")
     return "\n".join(md) + "\n"
+
+
+def share_trades(rows: list[dict], jr: list[dict]) -> list[str]:
+    """Owner, 10-19: earnings only in shares or 2x ETFs (option IV collapses after the report). What the judgment
+    would have made that way: bought at the close before the report, sold at the next open (the gap); a down call
+    is a short or an inverse fund. 2x is twice the gap (a daily-reset fund over one night). No costs."""
+    def line(name, rs, sign):
+        if not rs:
+            return None
+        g = [sign(r) * r["result"]["gap"] for r in rs]
+        return (f"| {name} | {len(g)} | {sum(x > 0 for x in g) / len(g):.0%} | {statistics.mean(g):+.2%} | "
+                f"{statistics.median(g):+.2%} | {2 * statistics.mean(g):+.2%} |")
+    d = lambda r: 1 if r["judgment"]["direction"] == "up" else -1
+    dirs = [r for r in jr if r["judgment"].get("direction") in ("up", "down")]
+    out = ["", "## 按判断做正股 / 两倍 ETF（财报前收盘买，第二天开盘卖）", "",
+           "看跌的判断要做空或买反向基金；两倍按一晚跳空的 2 倍算。不算买卖价差。", "",
+           "| 组 | 次数 | 赚钱比例 | 正股平均 | 正股中位数 | 两倍平均 |", "|---|---|---|---|---|---|"]
+    out += [x for x in (
+        line("按判断方向，全部", dirs, d),
+        line("只做看涨的判断", [r for r in dirs if d(r) > 0], d),
+        line("只做看跌的判断", [r for r in dirs if d(r) < 0], d),
+        line("判断信心 0.6 以上", [r for r in dirs if float(r["judgment"].get("confidence") or 0) >= 0.6], d),
+        line("对照：全部财报都买（不看判断）", rows, lambda r: 1)) if x]
+    return out
 
 
 def markdown(rep: dict) -> str:

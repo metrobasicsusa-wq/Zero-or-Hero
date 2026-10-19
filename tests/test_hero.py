@@ -3690,6 +3690,8 @@ class EarningsForecast(unittest.TestCase):
             self.assertIn("| 方向（涨 / 跌） | 1 | 100% |", md)
             self.assertIn("| 一周内到期的全部 | 1 | 100% | 51% |", md)   # the monthly straddle is kept apart
             self.assertIn("| 月度到期（隐含偏大，只作参考） | 1 | ", md)
+            self.assertIn("| 按判断方向，全部 | 1 | 100% | +10.00% | +10.00% | +20.00% |", md)   # a down call, -10% gap
+            self.assertIn("| 对照：全部财报都买（不看判断） | 2 | 50% | +0.00% |", md)             # -10% and +10%
 
 
 class ResearchSniperFactors(unittest.TestCase):
