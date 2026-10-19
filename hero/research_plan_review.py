@@ -8,7 +8,9 @@ day is over, so run it the next morning; with no date it reviews the last weekda
   same-day 0DTE sleeves (and vixspike): the resting take (spec take x the limit), else out at 15:30;
   flush: a 2x take, else 15:50; gap: once worth 2x, out 40% below the best, else 15:50;
   anything held past today (weekly, earnings, net, TQQQ): marked at the day's last minute, "still open".
-Exits are at the minute close (no spread on the way out), so this flatters the result a little.
+Exits are at the minute close (no spread on the way out), so this flatters the result a little. Also the live
+sleeves' shadows (owner, 10-19): tickets a rule picked but its ledger could not pay for (the sleeve_skip "一张 $X，
+超过这笔可用" events, since 10-12), followed as one contract at that price and marked as such.
 Record only. Run: python -m hero.research_plan_review [YYYY-MM-DD]
 """
 
@@ -23,6 +25,7 @@ from pathlib import Path
 from hero.research_0dte import ET, et_minutes
 
 SIZE = re.compile(r"(\d+) 张 × \$([\d.]+)")
+UNAFFORDABLE = re.compile(r"一张 \$([\d,.]+)，超过这笔可用")
 OUT = {"zdte": "15:30", "vixspike": "15:30", "flush": "15:50", "gap": "15:50", "oneshot": "15:55"}
 
 
@@ -44,6 +47,14 @@ def picks(events: list[dict], day: str) -> list[dict]:
         at = datetime.fromisoformat(e["ts"]).astimezone(ET).strftime("%H:%M")
         out.append({"sleeve": e["sleeve"], "symbol": e["symbol"], "qty": int(m.group(1)),
                     "limit": float(m.group(2)), "at": at})
+    for e in events:  # the live sleeves' tickets a ledger could not pay for: followed as one contract (owner, 10-19)
+        if e.get("kind") != "sleeve_skip" or not e.get("symbol") or not e["ts"].startswith(day):
+            continue
+        m = UNAFFORDABLE.search(e.get("why", ""))
+        if m:
+            at = datetime.fromisoformat(e["ts"]).astimezone(ET).strftime("%H:%M")
+            out.append({"sleeve": e["sleeve"], "symbol": e["symbol"], "qty": 1,
+                        "limit": round(float(m.group(1).replace(",", "")) / 100, 2), "at": at, "shadow": "买不起一张"})
     return out
 
 
@@ -103,7 +114,7 @@ def markdown(rep: dict) -> str:
            "| 账本 | 合约 | 买入 | 张数 × 限价 | 花费 | 当天最高倍数 | 怎么出 | 时间 | 卖价 | 回收 | 盈亏 |",
            "|---|---|---|---|---|---|---|---|---|---|---|"]
     for r in rep["rows"]:
-        out.append(f"| {r['sleeve']} | {r['symbol']} | {r['at']} | {r['qty']} × ${r['limit']:.2f} | ${r['paid']:,.2f} | {r['best_x']:.1f} 倍 | "
+        out.append(f"| {r['sleeve']}{'（影子：' + r['shadow'] + '）' if r.get('shadow') else ''} | {r['symbol']} | {r['at']} | {r['qty']} × ${r['limit']:.2f} | ${r['paid']:,.2f} | {r['best_x']:.1f} 倍 | "
                    f"{r['how']} | {r['when']} | ${r['exit']:.2f} | ${r['got']:,.2f} | {r['pnl']:+,.2f} |")
     if not rep["rows"]:
         out.append("| （这天没有带张数的选单） |  |  |  |  |  |  |  |  |  |  |")

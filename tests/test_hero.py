@@ -2854,6 +2854,10 @@ class Sleeves(unittest.TestCase):
         book, log = self.cycle(b, 10, 0, self.specs[:1])
         self.assertEqual([o for o in b.orders.values()], [])
         self.assertIn("超过这笔可用", [e for e in log if e["kind"] == "sleeve_skip"][-1]["why"])
+        from hero import research_plan_review as r                                   # owner, 10-19: follow it anyway
+        skip = [e for e in log if e["kind"] == "sleeve_skip"]
+        got = r.picks(skip, skip[-1]["ts"][:10])
+        self.assertEqual((got[0]["qty"], got[0]["limit"], got[0]["shadow"]), (1, 3.0, "买不起一张"))
 
     def test_plan_only_logs_what_it_would_buy_and_sends_nothing(self):
         from datetime import datetime
