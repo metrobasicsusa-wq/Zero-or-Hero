@@ -4,6 +4,11 @@
 
 ## 2026-10-19
 
+- **一条没有 intent_key 的拒单记录，让 Claude-500 的盘后复盘连续 6 个交易日报错。** 10-12 子账本卖 INTC 当天到期 call 被拒（没有报价），
+  order_error 事件里没有 intent_key；review.py 用 `e["intent_key"]` 建索引，读到它就 KeyError，而且这条记录一直留在 trades.jsonl 里，
+  之后每天都失败，复盘和 Issue 只能手动补。改了：review.py、research_fills.py 跳过没有 intent_key 的事件，加了回归测试。
+  教训：日志读取代码要容忍字段缺失；同一个错误第二天还在，就当天修，不要连续手动补。
+
 0. **研究的稳健性检查做成公共模块。** 10-15、10-16 几次只看全期平均（漏了去掉最好几笔、最近 3 个月、更早年份，还有拆股口径），
    每个研究脚本又各写一份统计。改了：新增 hero/robust.py（去掉最好 3 笔、中位数、各年份、最近 3 个月、买卖再各多 5% 成本，
    自动给出提醒；price_basis 查分钟线和日线口径），research_ideas.report 自动附上；CLAUDE.md 加了「研究」一节。

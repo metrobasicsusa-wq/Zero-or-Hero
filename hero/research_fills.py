@@ -79,7 +79,7 @@ def logged_mids(root: Path = ROOT) -> dict[str, dict]:
     if not path.exists():
         return {}
     ev = [json.loads(line) for line in path.read_text().splitlines() if line.strip()]
-    ack = {e["intent_key"]: e["order_key"] for e in ev if e.get("kind") == "order_ack" and e.get("order_key")}
+    ack = {e["intent_key"]: e["order_key"] for e in ev if e.get("kind") == "order_ack" and e.get("intent_key") and e.get("order_key")}
     out = {}
     for e in ev:
         q = e.get("evidence") or {}

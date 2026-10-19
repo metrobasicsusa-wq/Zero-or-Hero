@@ -50,7 +50,9 @@ def decisions(journal: Path, day: str) -> list[dict]:
     if not path.exists():
         return []
     events = [json.loads(line) for line in open(path)]
-    acks = {e["intent_key"]: e for e in events if e["kind"] in ("order_ack", "order_error")}
+    # Sleeve order errors are journaled without an intent_key; only keyed events can be joined.
+    acks = {e["intent_key"]: e for e in events
+            if e["kind"] in ("order_ack", "order_error") and e.get("intent_key")}
     fills = Journal(journal).fills(day)
     out = []
     for e in events:

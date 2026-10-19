@@ -349,6 +349,15 @@ class Review(unittest.TestCase):
             self.assertIn("| Day | +1.00% ($1,000) | +1.00% |", text)
             self.assertIn("buy 2 NVDA 11/20 call 235 @ 11.40 (call on NVDA)", text)
 
+    def test_unkeyed_order_error(self):
+        # Sleeve order errors carry no intent_key; the review must skip them, not crash.
+        with tempfile.TemporaryDirectory() as d:
+            Journal(Path(d)).equity("2026-10-12", 50_000, 50_000, 0, 600.0)
+            (Path(d) / "trades.jsonl").write_text(json.dumps(
+                {"ts": "2026-10-12T19:30:56+00:00", "kind": "order_error", "reason": "sleeve",
+                 "symbol": "INTC261012C00103000", "error": "403 no available quote"}) + "\n")
+            self.assertEqual(review.decisions(Path(d), "2026-10-12"), [])
+
 
 class Patrol(unittest.TestCase):
     def test_checks(self):
