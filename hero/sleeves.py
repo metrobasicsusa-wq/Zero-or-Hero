@@ -31,6 +31,8 @@ from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 from zoneinfo import ZoneInfo
 
+ROOT = Path(__file__).resolve().parent.parent
+
 DEFAULTS = {"enabled": False, "fraction": 0.5, "zero_line": 0.1, "target": 10_000.0, "buy_pad": 0.01,
             "fill_wait_s": 60, "chase_cap": 1.3, "cash_buffer": 1_000.0}
 
@@ -151,6 +153,28 @@ class Runner:
         self.p = settings(cfg)
         self.now, self.today, self.sleep = now, today, sleep
         self.hhmm = now.strftime("%H:%M")
+
+    # ---- earnings guard (owner, 10-19: earnings only in shares or 2x funds; option IV collapses after the report) ----
+    def report_inside(self, und: str | None, until: str | None) -> dict | None:
+        """The underlying's report whose reaction falls after today and on or before `until` (the day an option
+        ticket would be sold), from data/earnings.json; None when there is none (or no calendar)."""
+        if not und or not until:
+            return None
+        if "_cal" not in self.__dict__:
+            try:
+                self._cal = (json.loads((ROOT / "data" / "earnings.json").read_text()).get("reports") or {})
+            except Exception:
+                self._cal = {}
+        for r in self._cal.get(und, []):
+            d = date.fromisoformat(r["date"])
+            react = d
+            if "post" in (r.get("time") or ""):
+                react = d + timedelta(days=1)
+                while react.weekday() >= 5:
+                    react += timedelta(days=1)
+            if self.today < react and react.isoformat() <= until:
+                return r
+        return None
 
     # ---- broker helpers ----
     def broker_orders(self) -> list[dict] | None:
@@ -339,6 +363,8 @@ class Runner:
         t["sell_cid"] = cid(sid, t["tid"], "x" + new_tid()[:4])
         t["sell_why"] = why
         qty = t["qty"]
+        if isinstance(qty, float) and qty.is_integer():
+            qty = int(qty)   # "8", not "8.0": a fund that is not fractionable takes whole shares only
         if t["asset"] == "option" and bid is not None and bid <= 0:
             # no bid: the broker rejects a market sell ("no available quote ... please reenter with a limit"), so ask $0.01
             ok = self.submit(symbol=t["sym"], qty=str(qty), side="sell", type="limit", limit_price="0.01", time_in_force="day",
@@ -420,6 +446,13 @@ class Runner:
             fraction = spec.get("fraction", self.p["fraction"])
             each = fraction * s["cash"] / len(picks)
             for pk in picks:
+                r = self.report_inside(pk.get("und"), pk.get("exit_day") or pk.get("expiry")) if pk["asset"] == "option" else None
+                if r:
+                    self.j.event("sleeve_skip", dry_run=False, sleeve=spec["id"], symbol=pk["sym"],
+                                 why=f"{spec['id']}：{pk.get('und')} {r['date']}"
+                                     f"{'盘后' if 'post' in r.get('time', '') else '盘前' if 'pre' in r.get('time', '') else ''}"
+                                     f"发财报，这张期权会拿过财报（隐含波动财报后掉得太快），财报前不拿期权，不买")
+                    continue
                 intents.append((spec, pk, each, slot))
         if not intents:
             return
@@ -527,9 +560,17 @@ class Runner:
         for spec, pk, notional, slot in orders:
             tid = entry_tid(slot)
             c = cid(spec["id"], tid, "b")
-            self.j.event("sleeve_buy", dry_run=False, sleeve=spec["id"], symbol=pk["sym"], why=f"{spec['id']}：{pk['why']}；买 ${notional:,.2f}")
-            if not self.submit(symbol=pk["sym"], notional=f"{notional:.2f}", side="buy", type="market", time_in_force="day",
-                               client_order_id=c):
+            if pk.get("whole"):   # not fractionable at the broker (some 2x funds): whole shares only
+                qty = int(notional // (pk.get("ask") or 0)) if pk.get("ask") else 0
+                if qty < 1:
+                    self.j.event("sleeve_skip", dry_run=False, sleeve=spec["id"], symbol=pk["sym"],
+                                 why=f"{spec['id']}：{pk['sym']} 不能买零股，一股约 ${pk.get('ask') or 0:,.2f}，超过这笔可用的 ${notional:,.2f}，不买")
+                    continue
+                size, size_txt = {"qty": str(qty)}, f"买 {qty} 股（约 ${qty * pk['ask']:,.2f}）"
+            else:
+                size, size_txt = {"notional": f"{notional:.2f}"}, f"买 ${notional:,.2f}"
+            self.j.event("sleeve_buy", dry_run=False, sleeve=spec["id"], symbol=pk["sym"], why=f"{spec['id']}：{pk['why']}；{size_txt}")
+            if not self.submit(symbol=pk["sym"], **size, side="buy", type="market", time_in_force="day", client_order_id=c):
                 continue
             st = {}
             for _ in range(10):
@@ -542,9 +583,10 @@ class Runner:
                 self.cancel(c)
                 continue
             price = float(st.get("filled_avg_price") or 0)
-            t = {"tid": tid, "kind": spec["kind"], "sym": pk["sym"], "asset": "stock", "und": pk["sym"], "qty": qty,
+            t = {"tid": tid, "kind": spec["kind"], "sym": pk["sym"], "asset": "stock", "und": pk.get("und") or pk["sym"], "qty": qty,
                  "cost": price, "paid": round(price * qty, 2), "opened": f"{self.today.isoformat()} {self.hhmm}", "why": pk["why"],
-                 "exit_at": "15:50", "best_bid": 0.0}
+                 "exit_at": pk.get("exit_at") or "15:50", "best_bid": 0.0,
+                 **({"exit_day": pk["exit_day"]} if pk.get("exit_day") else {})}   # earnings shares: sold at the next 09:35
             self.book.open_ticket(spec["id"], t)
             self.j.event("sleeve_fill", dry_run=False, sleeve=spec["id"], symbol=pk["sym"], qty=qty, price=price,
                          why=f"{spec['id']}：{pk['sym']} 买入 {qty:g} 股 × ${price:.2f}")

@@ -145,6 +145,10 @@ class Alpaca:
     def assets(self) -> list[dict]:
         return self._t("GET", "/v2/assets", params={"status": "active", "asset_class": "us_equity"})
 
+    def asset(self, symbol: str) -> dict:
+        """One asset: tradable, fractionable (notional orders need it), status."""
+        return self._t("GET", f"/v2/assets/{symbol}")
+
     def stock_bars(self, symbols: list[str], start: str, end: str, timeframe: str = "1Min",
                    feed: str = "iex") -> dict[str, list[dict]]:
         """Intraday stock bars, raw prices, for a date range. feed "iex" (one exchange, always allowed) or

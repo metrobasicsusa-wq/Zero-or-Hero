@@ -2690,7 +2690,9 @@ class SleeveBroker:
         self.orders, self.pos, self.cancelled = {}, {}, []
         self.snaps = {"SPY": {"dailyBar": {"o": 700.0, "l": 699.0}, "latestTrade": {"p": 702.0}, "prevDailyBar": {"c": 700.0}}}
         self.bars = {}
+        self.untradable, self.whole_only = set(), set()   # assets Alpaca does not trade / will not split
 
+    def asset(self, sym): return {"symbol": sym, "tradable": sym not in self.untradable, "fractionable": sym not in self.whole_only}
     def account(self): return {"cash": str(self.cash), "equity": str(self.cash), "last_equity": str(self.cash)}
     def positions(self): return [{"symbol": k, "qty": str(v)} for k, v in self.pos.items() if v]
     def open_orders(self): return [o for o in self.orders.values() if o["status"] == "new"]
@@ -2968,6 +2970,121 @@ class Sleeves(unittest.TestCase):
         sleeves.Runner(b, Journal(self.root), self.cfg, spec, book, sleeve_rules.RULES, datetime(2026, 10, 9, 15, 50),
                        date(2026, 10, 9), sleep=lambda s: None).run()
         self.assertEqual(book.s("tqqq-500")["cash"], 400.0)                           # sold 5 at $80
+
+
+class EarningsShares(unittest.TestCase):
+    """Owner, 10-19: earnings only in shares or 2x funds; no option held through a report."""
+
+    def setUp(self):
+        self.tmp = tempfile.TemporaryDirectory()
+        self.root = Path(self.tmp.name)
+        (self.root / "data").mkdir()
+
+    def tearDown(self):
+        self.tmp.cleanup()
+
+    def calendar(self, reports):
+        (self.root / "data" / "earnings.json").write_text(json.dumps({"reports": reports}))
+
+    def run_rule(self, broker, day, hh, mm, pool, spec):
+        from types import SimpleNamespace
+        from unittest import mock
+        from hero import sleeve_rules as sr
+        events = []
+        r = SimpleNamespace(c=broker, today=day, hhmm=f"{hh:02d}:{mm:02d}", specs=[], cache={"pool": list(pool)},
+                            j=SimpleNamespace(event=lambda kind, **k: events.append((kind, k))))
+        with mock.patch.object(sr, "ROOT", self.root):
+            got = sr.EarningsLotto().entries(r, spec, {"slots": {}})
+        return got, events
+
+    def broker(self):
+        b = SleeveBroker(lambda s: (0.95, 1.05))
+        b.snaps = {s: {"dailyBar": {"o": 100.0}, "latestTrade": {"p": p}, "prevDailyBar": {"c": 100.0}}
+                   for s, p in (("NVDA", 180.0), ("NVDL", 30.0), ("AAA", 100.0), ("BBB", 50.0))}
+        b.option_contracts = lambda und, **kw: [
+            {"symbol": f"{und}X{t[0].upper()}{k}", "strike_price": str(k), "expiration_date": kw["expiration_date_lte"], "type": t}
+            for k in range(20, 260, 5) for t in ("call", "put")]
+        b.option_snapshots = lambda syms: {s: {"latestQuote": {"ap": 2.0, "bp": 1.9}} for s in syms}
+        return b
+
+    def test_2x_fund_when_tradable_else_shares_and_unverified_dates_skipped(self):
+        self.calendar({"NVDA": [{"date": "2026-10-08", "time": "post-market", "confirmed": True}],
+                       "AAA": [{"date": "2026-10-09", "time": "pre-market"}],
+                       "BBB": [{"date": "2026-10-08", "time": "post-market", "disputed": True}]})
+        b = self.broker()
+        (slot, picks), ev = self.run_rule(b, date(2026, 10, 8), 15, 45, ("NVDA", "AAA", "BBB"), {"id": "earn-500", "n": 3})
+        got = {p["und"]: p for p in picks}
+        self.assertEqual(set(got), {"NVDA", "AAA"})                                    # BBB's date is disputed
+        self.assertEqual((got["NVDA"]["sym"], got["NVDA"]["ask"], got["NVDA"]["asset"]), ("NVDL", 30.0, "stock"))
+        self.assertEqual((got["AAA"]["sym"], got["NVDA"]["exit_day"], got["NVDA"]["exit_at"]), ("AAA", "2026-10-09", "09:35"))
+        self.assertIn("两倍 ETF NVDL", got["NVDA"]["why"])
+        self.assertTrue(any(k == "sleeve_skip" and "没核实" in e["why"] and e["symbol"] == "BBB" for k, e in ev))
+        b.untradable.add("NVDL")                                                       # not on Alpaca: the stock
+        b.whole_only.add("NVDA")
+        (slot, picks), ev = self.run_rule(b, date(2026, 10, 8), 15, 45, ("NVDA",), {"id": "earn-500", "n": 3})
+        self.assertEqual((picks[0]["sym"], picks[0]["whole"]), ("NVDA", True))
+
+    def runner(self, broker, specs, rules, now, day):
+        from hero import sleeves
+        book = sleeves.Book(self.root / "sleeves.json", specs)
+        j = Journal(self.root)
+        sleeves.Runner(broker, j, {"sleeves": {"enabled": True, "fill_wait_s": 0}}, specs, book, rules, now, day,
+                       sleep=lambda s: None).run()
+        book.save()
+        log = [json.loads(l) for l in (self.root / "trades.jsonl").read_text().splitlines()] if (self.root / "trades.jsonl").exists() else []
+        return book, log
+
+    def test_whole_shares_bought_at_the_close_and_sold_at_the_next_0935(self):
+        from datetime import datetime
+        from unittest import mock
+        from hero import sleeves
+
+        class Rule:
+            def entries(self, run, spec, s):
+                if s["slots"]:
+                    return None
+                return ("d1", [{"sym": "NVDL", "asset": "stock", "und": "NVDA", "ask": 30.0, "whole": True,
+                                "exit_day": "2026-10-09", "exit_at": "09:35", "why": "NVDA 财报"}])
+        b = self.broker()
+        specs = [{"id": "earn-500", "kind": "fake", "start": 500, "fraction": 0.5}]
+        self.calendar({})
+        with mock.patch.object(sleeves, "ROOT", self.root):
+            book, log = self.runner(b, specs, {"fake": Rule()}, datetime(2026, 10, 8, 15, 45), date(2026, 10, 8))
+            buy = [o for o in b.orders.values() if o["side"] == "buy"][0]
+            self.assertEqual((buy["symbol"], buy.get("qty"), buy.get("notional")), ("NVDL", "8", None))   # $250 // $30
+            t = book.s("earn-500")["open"][0]
+            self.assertEqual((t["exit_day"], t["exit_at"], t["und"]), ("2026-10-09", "09:35", "NVDA"))
+            book, log = self.runner(b, specs, {"fake": Rule()}, datetime(2026, 10, 8, 15, 55), date(2026, 10, 8))
+            self.assertFalse([o for o in b.orders.values() if o["side"] == "sell"])                # not the same day
+            book, log = self.runner(b, specs, {"fake": Rule()}, datetime(2026, 10, 9, 9, 40), date(2026, 10, 9))
+            sells = [o for o in b.orders.values() if o["side"] == "sell"]
+            self.assertEqual((sells[0]["symbol"], sells[0]["qty"]), ("NVDL", "8"))
+
+    def test_no_option_held_through_a_report(self):
+        from datetime import datetime
+        from unittest import mock
+        from hero import sleeves
+
+        class Rule:
+            def __init__(self, exit_day):
+                self.exit_day = exit_day
+            def entries(self, run, spec, s):
+                if s["slots"]:
+                    return None
+                return ("d1", [{"sym": "AAA261009C00105000", "asset": "option", "und": "AAA", "ask": 1.0,
+                                "expiry": "2026-10-09", "exit_day": self.exit_day, "exit_at": "15:30", "why": "x"}])
+        specs = [{"id": "snipe-500", "kind": "fake", "start": 500}]
+        self.calendar({"AAA": [{"date": "2026-10-08", "time": "post-market"}]})       # reacts 10-09
+        with mock.patch.object(sleeves, "ROOT", self.root):
+            b = self.broker()
+            book, log = self.runner(b, specs, {"fake": Rule("2026-10-09")}, datetime(2026, 10, 8, 10, 0), date(2026, 10, 8))
+            self.assertFalse(b.orders)
+            self.assertTrue(any(e["kind"] == "sleeve_skip" and "财报前不拿期权" in e["why"] for e in log))
+            (self.root / "sleeves.json").unlink()
+            (self.root / "trades.jsonl").unlink()
+            b = self.broker()                                                          # sold the same day: allowed
+            book, log = self.runner(b, specs, {"fake": Rule("2026-10-08")}, datetime(2026, 10, 8, 10, 0), date(2026, 10, 8))
+            self.assertTrue([o for o in b.orders.values() if o["side"] == "buy"])
 
 
 class SleeveRules(unittest.TestCase):
@@ -3256,8 +3373,8 @@ class SleeveRules(unittest.TestCase):
             mod.ROOT = orig
         self.assertEqual(sorted(p["und"] for p in picks), ["AAA", "BBB"])
         self.assertEqual((picks[0]["exit_day"], picks[0]["exit_at"]), ("2026-10-09", "09:35"))
-        # implied move = (0.50 + 0.50) / 100 = 1%: a call 2% above, at 102
-        self.assertTrue(all(p["sym"].endswith("C102") for p in picks))
+        # owner, 10-19: shares (no 2x fund for these names), not a call
+        self.assertEqual({(p["sym"], p["asset"], p["ask"]) for p in picks}, {("AAA", "stock", 100.0), ("BBB", "stock", 100.0)})
 
     def test_relay_bets_the_weeks_strongest_reporter_then_switches_to_soxl(self):
         from hero import sleeve_rules as sr
@@ -3283,7 +3400,7 @@ class SleeveRules(unittest.TestCase):
             mod.ROOT = orig
         self.assertEqual(slot, "relay-2026-W41")
         self.assertEqual((picks[0]["und"], picks[0]["exit_day"], picks[0]["exit_at"]), ("AAA", "2026-10-12", "09:35"))
-        self.assertTrue(picks[0]["sym"].endswith("C110"), picks[0])       # about 10% out of the money
+        self.assertEqual((picks[0]["sym"], picks[0]["asset"]), ("AAA", "stock"))     # shares since 10-19, not a call
         self.assertEqual(s["relay_phase"], "lotto")
         s["cash"] = 1600.0                                                 # tripled: from now on SOXL
         self.assertEqual(sr.Relay().phase(spec, s), "trend")
@@ -3304,7 +3421,8 @@ class SleeveRules(unittest.TestCase):
         self.assertEqual((picks[0]["sym"], picks[0]["asset"], picks[0]["ask"]), ("SOXL", "stock", 41.0))
         r.specs = [{"id": "relay-500"}]
         b.snaps["SMH"]["latestTrade"]["p"] = 150.0                          # below its 200-day average
-        self.assertIn("SMH 跌破 200 日均线", sr.Relay().should_exit(r, "relay-500", {"asset": "stock"}) or "")
+        self.assertIn("SMH 跌破 200 日均线", sr.Relay().should_exit(r, "relay-500", {"asset": "stock", "sym": "SOXL"}) or "")
+        self.assertIsNone(sr.Relay().should_exit(r, "relay-500", {"asset": "stock", "sym": "AAA"}))   # the lotto's shares: 09:35
 
     def test_net_waits_for_a_wild_week(self):
         from hero import sleeve_rules as sr

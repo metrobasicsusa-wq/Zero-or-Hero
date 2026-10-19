@@ -136,6 +136,53 @@ def option_pick(run, und: str, kind: str, spot: float, off: float, gte: str, lte
     return (c, ask) if ask > 0 else None
 
 
+# Owner, 10-19: earnings only in shares or 2x funds (option IV collapses after the report). The most traded 2x long
+# single-stock fund per name; names, fund names and 3-month average volumes checked on Yahoo 2026-10-19, funds under
+# ~200k shares a day left out (BOEU, CRWL, QCMU, ASMG, SNOU, MRVU, SHPU, ANEL). Alpaca's asset is checked before
+# each buy; anything not tradable there falls back to the stock itself.
+LEVERED_2X = {"NVDA": "NVDL", "TSLA": "TSLL", "AAPL": "AAPU", "AMZN": "AMZU", "MSFT": "MSFU", "META": "METU",
+              "GOOGL": "GGLL", "AMD": "AMDL", "COIN": "CONL", "MSTR": "MSTU", "PLTR": "PTIR", "MU": "MUU",
+              "AVGO": "AVL", "NFLX": "NFXL", "TSM": "TSMX", "SMCI": "SMCX", "ARM": "ARMG", "HOOD": "ROBN",
+              "UBER": "UBRL", "LLY": "LLYX", "IONQ": "IONX", "RKLB": "RKLX", "SOFI": "SOFX", "APP": "APPX",
+              "ORCL": "ORCX", "CRWV": "CWVX", "NBIS": "NBIL", "INTC": "INTW", "BABA": "BABX", "NOW": "NOWL"}
+
+
+def levered(run, und: str) -> tuple[str, bool] | None:
+    """The 2x long fund for `und` when Alpaca trades it, else the stock; and whether only whole shares can be bought.
+    None when neither is tradable."""
+    for sym in ([LEVERED_2X[und]] if und in LEVERED_2X else []) + [und]:
+        a = cached(run, ("asset", sym), lambda sym=sym: run.c.asset(sym)) or {}
+        if a.get("tradable"):
+            return sym, not a.get("fractionable", False)
+    return None
+
+
+def verified(r: dict) -> bool:
+    """A report date both calendars agree on (hero/earnings.py marks the others)."""
+    return not r.get("disputed") and not r.get("yahoo_date")
+
+
+def share_pick(run, und: str, spot: float, nxt: str, why: str) -> dict | None:
+    """Shares or the 2x fund, bought now and sold at the next session's 09:35."""
+    got = levered(run, und)
+    if not got:
+        return None
+    sym, whole = got
+    ask = spot if sym == und else spot_open(snaps(run, [sym]).get(sym) or {})[0]
+    if not ask:
+        return None
+    what = f"两倍 ETF {sym}" if sym != und else "正股"
+    return {"sym": sym, "asset": "stock", "und": und, "ask": ask, "whole": whole, "exit_day": nxt, "exit_at": "09:35",
+            "why": f"{why}，买{what}，第二天 09:35 卖（10-19 起财报只做正股 / 两倍）"}
+
+
+def unverified_skip(run, spec, und: str, r: dict) -> None:
+    run.j.event("sleeve_skip", dry_run=bool(spec.get("plan_only")), sleeve=spec["id"], symbol=und,
+                why=f"{spec['id']}：{und} {r['date']} 的财报日期没核实（"
+                    + ("Alpha Vantage 和 Nasdaq 对不上" if r.get("disputed") else f"Yahoo 的公司确认日期是 {r.get('yahoo_date')}")
+                    + "），不买")
+
+
 def budget(run, spec, s, n: int) -> float:
     """What one pick may cost in this sleeve (its fraction of the sleeve's cash, split over n picks)."""
     frac = spec.get("fraction", getattr(run, "p", {}).get("fraction", 0.5))
@@ -737,7 +784,10 @@ class Flush:
 
 
 class EarningsLotto:
-    """The close before a report's reaction: a call about 2x the implied move above; sold at the next open."""
+    """The close before a report's reaction: the stock's 2x long fund (or the stock), sold at the next open.
+    Until 10-19 it bought a call about 2x the implied move above; option IV collapsing after the report took
+    earn-500 from $500 to $211 in a week, so (owner, 10-19) shares or 2x funds only. The names are still the
+    pool's reports with the largest implied moves (at-the-money straddle), now only to choose."""
 
     def entries(self, run, spec, s):
         day = run.today.isoformat()
@@ -748,12 +798,17 @@ class EarningsLotto:
         except Exception:
             reports = {}
         nxt = next_business_day(run.today).isoformat()
+        inpool = set(pool(run))
         names = []
         for x, rs in reports.items():
             for r in rs:
                 if (r["date"] == day and "post" in r.get("time", "")) or (r["date"] == nxt and "pre" in r.get("time", "")):
+                    if x not in inpool:
+                        continue
+                    if not verified(r):
+                        unverified_skip(run, spec, x, r)
+                        continue
                     names.append(x)
-        names = [x for x in names if x in set(pool(run))]
         picks = []
         for und in names:
             spot = spot_open(snaps(run, [und]).get(und) or {})[0]
@@ -770,12 +825,9 @@ class EarningsLotto:
             move = (ask_of(run, atm_c["symbol"]) + ask_of(run, atm_p["symbol"])) / spot
             if move <= 0:
                 continue
-            c = pick(cs, "C", spot, 2 * move, exp)
-            ask = ask_of(run, c["symbol"]) if c else 0
-            if c and ask > 0:
-                picks.append((move, {"sym": c["symbol"], "asset": "option", "und": und, "ask": ask, "expiry": exp,
-                                     "exit_day": nxt, "exit_at": "09:35",
-                                     "why": f"{und} 财报（预期波动 {move:.1%}），买 2 倍预期波动处看涨 {float(c['strike_price']):g}，第二天开盘卖"}))
+            pk = share_pick(run, und, spot, nxt, f"{und} 财报（期权定价的波动 {move:.1%}）")
+            if pk:
+                picks.append((move, pk))
         return (day, [pk for _, pk in sorted(picks, key=lambda x: -x[0])[:spec.get("n", 3)]])
 
 
@@ -824,9 +876,10 @@ class LETF:
 
 
 class Relay:
-    """Zero-or-hero relay (research/2026-10-05-hero.md, "混合"): all of the sleeve on one earnings call a week --
-    the name reporting this week with the strongest 126-session momentum, about 10% out of the money, bought at
-    the close before the reaction and sold at the next open -- until the sleeve is at `switch_at` x its start;
+    """Zero-or-hero relay (research/2026-10-05-hero.md, "混合"): all of the sleeve on one earnings play a week --
+    the name reporting this week with the strongest 126-session momentum, bought at the close before the reaction
+    and sold at the next open; since 10-19 (owner) its 2x long fund or the stock, not a call about 10% out of
+    the money -- until the sleeve is at `switch_at` x its start;
     then all of it in SOXL while SMH closes above its 200-day average. A new round starts with the lottery."""
 
     TREND = {"sym": "SOXL", "signal": "SMH", "ma": 200}
@@ -860,6 +913,8 @@ class Relay:
             if x not in names:
                 continue
             for r in rs:
+                if not verified(r):
+                    continue
                 rd, when = date.fromisoformat(r["date"]), r.get("time", "")
                 entry = rd if "post" in when else (business_day_before(rd) if "pre" in when else None)
                 if entry and week_key(entry) == week_key(run.today) and entry >= run.today:
@@ -877,19 +932,15 @@ class Relay:
         if not spot:
             return None
         nxt = next_business_day(run.today).isoformat()
-        cs = contracts(run, und, nxt, (run.today + timedelta(days=10)).isoformat(), spot, spot * 1.3, "call")
-        exp = min((c["expiration_date"] for c in cs), default=None)
-        c = pick(cs, "C", spot, 0.10, exp) if exp else None
-        ask = ask_of(run, c["symbol"]) if c else 0
-        if not c or ask <= 0:
+        pk = share_pick(run, und, spot, nxt, f"接力第一段：本周财报里 126 日动量最强的 {und}（{mom[und]:+.0%}），全仓")
+        if not pk:
             return (wk, [])
-        return (wk, [{"sym": c["symbol"], "asset": "option", "und": und, "ask": ask, "expiry": exp, "exit_day": nxt, "exit_at": "09:35",
-                      "why": f"接力第一段：本周财报里 126 日动量最强的 {und}（{mom[und]:+.0%}），全仓买价外约 10% 看涨 "
-                             f"{float(c['strike_price']):g}，第二天开盘卖；账本到起点 {spec.get('switch_at', 3):g} 倍就转 SOXL"}])
+        pk["why"] += f"；账本到起点 {spec.get('switch_at', 3):g} 倍就转 SOXL"
+        return (wk, [pk])
 
     def should_exit(self, run, sid, t):
         spec = next((x for x in run.specs if x["id"] == sid), None)
-        if t.get("asset") == "stock" and spec:
+        if t.get("asset") == "stock" and t.get("sym") == self.TREND["sym"] and spec:   # the lotto's shares leave at 09:35
             return self.letf.exit_check(run, {**spec, **self.TREND})
         return None
 

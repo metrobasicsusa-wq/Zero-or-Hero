@@ -369,17 +369,17 @@
         "id": "earn-500",
         "kind": "earnings",
         "start": 500,
-        "name": "财报彩票",
+        "name": "财报正股 / 两倍（前 3 只）",
         "n": 3,
-        "stop_entries": true, "stop_note": "10-19 用户：财报只做正股或两倍 ETF（期权财报后隐含波动掉得太快）。先停开新仓，正股 / 两倍版收盘后换上"
+        "note": "10-19 用户：财报只做正股或两倍 ETF（期权财报后隐含波动掉得太快；彩票看涨一周 $500 → $211）。财报前 15:40 买两倍做多 ETF（有而且 Alpaca 可交易时）或正股，第二天 09:35 卖；按期权定价的波动挑前 3 只；日期没核实（disputed / yahoo_date）的跳过"
       },
       {
         "id": "earn-1000",
         "kind": "earnings",
         "start": 1000,
-        "name": "财报彩票",
+        "name": "财报正股 / 两倍（前 3 只）",
         "n": 3,
-        "stop_entries": true, "stop_note": "10-19 用户：财报只做正股或两倍 ETF（期权财报后隐含波动掉得太快）。先停开新仓，正股 / 两倍版收盘后换上"
+        "note": "10-19 用户：财报只做正股或两倍 ETF（期权财报后隐含波动掉得太快；彩票看涨一周 $500 → $211）。财报前 15:40 买两倍做多 ETF（有而且 Alpaca 可交易时）或正股，第二天 09:35 卖；按期权定价的波动挑前 3 只；日期没核实（disputed / yahoo_date）的跳过"
       },
       {
         "id": "tqqq-500",
@@ -399,13 +399,13 @@
         "ma": 20,
         "fraction": 1.0
       },
-      {"id": "relay-500", "kind": "relay", "start": 500, "name": "接力：财报彩票全仓到 3 倍，再全仓 SOXL", "fraction": 1.0,
+      {"id": "relay-500", "kind": "relay", "start": 500, "name": "接力：财报两倍 / 正股全仓到 3 倍，再全仓 SOXL", "fraction": 1.0,
        "switch_at": 3, "zero_line": 0.6,
-       "stop_entries": true, "stop_note": "10-19 用户：财报只做正股或两倍 ETF（期权财报后隐含波动掉得太快）。先停开新仓，正股 / 两倍版收盘后换上"
+       "note": "10-19 用户：第一段不再买价外看涨，改成本周财报里 126 日动量最强那只的两倍做多 ETF（或正股），财报前 15:40 全仓买，第二天 09:35 卖；日期没核实的不选"
       },
-      {"id": "relay-1000", "kind": "relay", "start": 1000, "name": "接力：财报彩票全仓到 3 倍，再全仓 SOXL", "fraction": 1.0,
+      {"id": "relay-1000", "kind": "relay", "start": 1000, "name": "接力：财报两倍 / 正股全仓到 3 倍，再全仓 SOXL", "fraction": 1.0,
        "switch_at": 3, "zero_line": 0.6,
-       "stop_entries": true, "stop_note": "10-19 用户：财报只做正股或两倍 ETF（期权财报后隐含波动掉得太快）。先停开新仓，正股 / 两倍版收盘后换上"
+       "note": "10-19 用户：第一段不再买价外看涨，改成本周财报里 126 日动量最强那只的两倍做多 ETF（或正股），财报前 15:40 全仓买，第二天 09:35 卖；日期没核实的不选"
       },
       {"id": "spydip-500", "kind": "zdte", "half_take": true, "start": 500, "name": "SPY 昨跌 1% 后买看涨（只演算）", "und": "SPY",
        "offset": 0.006, "take": 3, "side": "call", "after_drop": -0.01, "plan_only": true
