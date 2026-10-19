@@ -2,7 +2,8 @@ name: post
 
 # Owner, 10-19: send a page Claude wrote (posts/<channel>/*.md) to one of the owner's Discord channels.
 # One-way: the webhook addresses are repository secrets and never leave this job. A channel whose secret is
-# not set yet is skipped without failing. Reads the repository only; commits nothing.
+# not set yet is skipped without failing. Sending a page again edits the messages it became; action=delete
+# removes them. The message ids (not secret) are committed under posts/.sent/ and nothing else.
 on:
   workflow_dispatch:
     inputs:
@@ -14,9 +15,14 @@ on:
         description: "The page to send, e.g. posts/earnings/2026-10-19.md"
         type: string
         required: true
+      action:
+        description: "send (first time) / edit (sent before) happen automatically; delete removes the page's messages"
+        type: choice
+        options: [send, delete]
+        default: send
 
 permissions:
-  contents: read
+  contents: write
 
 concurrency:
   group: hero-post-${{ inputs.channel }}
@@ -38,8 +44,23 @@ jobs:
         env:
           CHANNEL: ${{ inputs.channel }}
           FILE: ${{ inputs.file }}
+          ACTION: ${{ inputs.action }}
           DC_WEBHOOK_FOLLOW: ${{ inputs.channel == 'follow' && secrets.DC_WEBHOOK_FOLLOW || '' }}
           DC_WEBHOOK_EARNINGS: ${{ inputs.channel == 'earnings' && secrets.DC_WEBHOOK_EARNINGS || '' }}
           DC_WEBHOOK_DAILY: ${{ inputs.channel == 'daily' && secrets.DC_WEBHOOK_DAILY || '' }}
           DC_WEBHOOK_RESEARCH: ${{ inputs.channel == 'research' && secrets.DC_WEBHOOK_RESEARCH || '' }}
-        run: python -m hero.discord_post "$CHANNEL" "$FILE"
+        run: |
+          if [ "$ACTION" = "delete" ]; then python -m hero.discord_post --delete "$CHANNEL" "$FILE"
+          else python -m hero.discord_post "$CHANNEL" "$FILE"; fi
+      - name: Keep the message ids
+        env:
+          CHANNEL: ${{ inputs.channel }}
+          FILE: ${{ inputs.file }}
+        run: |
+          git config user.name "zero-or-hero-bot"
+          git config user.email "zero-or-hero-bot@users.noreply.github.com"
+          git add -A posts/.sent
+          git diff --cached --quiet && exit 0
+          git commit -m "post: $CHANNEL $FILE (Discord message ids)"
+          for i in 1 2 3 4; do git pull --rebase -q && git push -q && exit 0; sleep $((i * 5)); done
+          exit 1

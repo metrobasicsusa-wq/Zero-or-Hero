@@ -11,19 +11,30 @@ The first "# " line is the title; each "## " section becomes its own card; markd
 draw) become "a · b · c" lines. Every card carries the paper-account footer. A page is refused when it holds
 anything that looks like a key, an order / account id or a webhook address. A channel whose secret is not set is
 skipped without an error, so the routines can post before the owner has made every channel.
+
+Owner, 10-19: a webhook can edit and delete the messages it sent, so each send keeps the message ids in
+posts/.sent/<channel>/<file>.json (ids are not secret; the webhook address stays a secret). Sending the same page
+again edits those messages in place (a longer page adds messages, a shorter one deletes the extra);
+`--delete <channel> <file>` removes them.
 """
 
 from __future__ import annotations
 
+import json
 import os
 import re
 import sys
+from datetime import datetime, timezone
 from pathlib import Path
+from urllib.parse import parse_qsl, urlencode, urlsplit, urlunsplit
 
-from hero.notify import GREY, chunked, send
+import requests
+
+from hero.notify import GREY, chunked, messages
 
 ROOT = Path(__file__).resolve().parent.parent
 POSTS = ROOT / "posts"
+SENT = ".sent"   # posts/.sent/<channel>/<file>.json: the ids of the messages a page became
 CHANNELS = {"follow": "DC_WEBHOOK_FOLLOW", "earnings": "DC_WEBHOOK_EARNINGS", "daily": "DC_WEBHOOK_DAILY",
             "research": "DC_WEBHOOK_RESEARCH", "trades": "DC_WEBHOOK"}
 COLOR = {"follow": 0x2E86DE, "earnings": 0x8E44AD, "daily": 0x16A085, "research": 0xD35400}
@@ -87,26 +98,106 @@ def cards(text: str, color: int = GREY) -> list[dict]:
     return out
 
 
+def _url(base: str, mid: str | None = None, **query) -> str:
+    """The webhook address, or one of its messages, with extra query parameters (thread_id is kept)."""
+    u = urlsplit(base)
+    path = u.path.rstrip("/") + (f"/messages/{mid}" if mid else "")
+    q = dict(parse_qsl(u.query))
+    q.update({k: v for k, v in query.items() if v is not None})
+    return urlunsplit((u.scheme, u.netloc, path, urlencode(q), ""))
+
+
+def create(url: str, payload: dict) -> str | None:
+    """Post one message and return its id (wait=true makes Discord answer with the message)."""
+    try:
+        r = requests.post(_url(url, wait="true"), json=payload, timeout=15)
+        return str(r.json()["id"]) if r.status_code < 300 else None
+    except Exception:
+        return None
+
+
+def edit(url: str, mid: str, payload: dict) -> bool | None:
+    """Replace a message; None when Discord no longer has it (deleted by hand)."""
+    try:
+        r = requests.patch(_url(url, mid), json={"content": None, **payload}, timeout=15)
+        return None if r.status_code == 404 else r.status_code < 300
+    except Exception:
+        return False
+
+
+def delete(url: str, mid: str) -> bool:
+    try:
+        r = requests.delete(_url(url, mid), timeout=15)
+        return r.status_code < 300 or r.status_code == 404
+    except Exception:
+        return False
+
+
+def record_path(path: Path) -> Path:
+    return POSTS / SENT / path.relative_to(POSTS.resolve()).with_suffix(path.suffix + ".json")
+
+
+def sync(url: str, payloads: list[dict], ids: list[str]) -> tuple[list[str], bool]:
+    """Make the channel show `payloads`: edit the messages already sent, add or delete the difference."""
+    out, ok = [], True
+    for i, pl in enumerate(payloads):
+        mid = ids[i] if i < len(ids) else None
+        done = edit(url, mid, pl) if mid else None
+        if done:
+            out.append(mid)
+            continue
+        if done is False:
+            ok = False
+            out.append(mid)
+            continue
+        new = create(url, pl)          # never sent, or deleted by hand: post it again
+        if new:
+            out.append(new)
+        else:
+            ok = False
+    for mid in ids[len(payloads):]:
+        ok = delete(url, mid) and ok
+    return out, ok
+
+
 def main(argv: list[str]) -> int:
+    remove = "--delete" in argv
+    argv = [a for a in argv if a != "--delete"]
     if len(argv) != 2 or argv[0] not in CHANNELS:
-        print(f"usage: python -m hero.discord_post <{'|'.join(CHANNELS)}> posts/<channel>/<file>.md")
+        print(f"usage: python -m hero.discord_post [--delete] <{'|'.join(CHANNELS)}> posts/<channel>/<file>.md")
         return 2
     channel, rel = argv
     path = (ROOT / rel).resolve()
-    if POSTS.resolve() not in path.parents or path.suffix != ".md" or not path.exists():
-        print(f"discord_post: only existing posts/**/*.md pages can be sent, not {rel}")
+    if POSTS.resolve() not in path.parents or path.suffix != ".md" or SENT in path.parts or not (path.exists() or remove):
+        print(f"discord_post: only posts/**/*.md pages can be sent, not {rel}")
         return 2
+    url = os.environ.get(CHANNELS[channel], "").strip()
+    if not url:
+        print(f"discord_post: {CHANNELS[channel]} is not set; {channel} skipped")
+        return 0
+    rec_path = record_path(path)
+    rec = json.loads(rec_path.read_text()) if rec_path.exists() else {}
+    ids = rec.get("ids", []) if rec.get("channel") == channel else []
+    if remove:
+        ok = all([delete(url, mid) for mid in ids])
+        if ok and rec_path.exists():
+            rec_path.unlink()
+        print(f"discord_post: {rel} <- {channel}: {len(ids)} message(s) {'deleted' if ok else 'not all deleted'}")
+        return 0 if ok else 1
     text = path.read_text()
     bad = unsafe(text)
     if bad:
         print(f"discord_post: refused, the page looks like it holds a {bad}")
         return 1
-    url = os.environ.get(CHANNELS[channel], "").strip()
-    if not url:
-        print(f"discord_post: {CHANNELS[channel]} is not set; {channel} skipped")
-        return 0
-    ok = send(url, cards(text, COLOR.get(channel, GREY)))
-    print(f"discord_post: {rel} -> {channel}: {'sent' if ok else 'failed'}")
+    payloads = messages(cards(text, COLOR.get(channel, GREY)))
+    new_ids, ok = sync(url, payloads, ids)
+    now = datetime.now(timezone.utc).isoformat(timespec="seconds")
+    if new_ids:
+        rec_path.parent.mkdir(parents=True, exist_ok=True)
+        rec_path.write_text(json.dumps({"channel": channel, "page": rel, "ids": new_ids,
+                                        "sent": rec.get("sent") or now, **({"edited": now} if ids else {})}, indent=1) + "\n")
+    print(f"discord_post: {rel} -> {channel}: {'edited' if ids else 'sent'} {len(new_ids)} message(s)"
+          + ("" if ok else " (some failed)"))
     return 0 if ok else 1
 
 

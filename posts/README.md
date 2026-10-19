@@ -14,3 +14,7 @@ Pages Claude writes for the owner's Discord channels (10-19: webhooks only, one-
 写法：第一行 `# 标题`，每个 `## 小标题` 一张卡片；表格会变成「a · b · c」行；每张卡片底部自动加
 「Alpaca 模拟盘，参考记录，不是投资建议」。页面里像钥匙、订单 / 账户 ID、webhook 地址的内容会被拒发。
 密钥没设的频道自动跳过。
+
+修改和删除（10-19 起）：同一个页面再发一次就是修改原来那几条消息（页面变长就补发，变短就删掉多余的）；
+post.yml 的 action=delete 删掉这一页发出的消息。消息编号记在 `posts/.sent/<频道>/<文件>.json`（编号不是秘密），
+由发送工作流提交。只能改 / 删同一个 webhook 发的消息；10-19 晚上以前发的没有记编号，改不了。

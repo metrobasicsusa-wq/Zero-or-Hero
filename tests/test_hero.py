@@ -3972,7 +3972,6 @@ class EarningsForecastAroundTheReport(unittest.TestCase):
 
 class DiscordPost(unittest.TestCase):
     def test_page_to_cards_tables_footer_and_refusals(self):
-        from unittest import mock
         from hero import discord_post as dp
         page = ("# 财报预测 10-19\n\n今晚和明早。\n\n## 判断\n\n| 股票 | 定价 | 方向 |\n|---|---|---|\n"
                 "| GE | 6.0% | 涨 |\n| HAL | 5.2% | 不判 |\n\n## 记分\n\n还没有。\n")
@@ -3984,23 +3983,67 @@ class DiscordPost(unittest.TestCase):
             self.assertIsNone(dp.unsafe(ok))
         for bad in ("https://discord.com/api/webhooks/1/x", "6157ff3f-1623-47fc-8139-97d6feb1982a", "PKABCDEFGHIJ12345678"):
             self.assertTrue(dp.unsafe(bad))
+        self.assertEqual(dp._url("https://h.invalid/api/webhooks/1/t?thread_id=5", "9"),
+                         "https://h.invalid/api/webhooks/1/t/messages/9?thread_id=5")
+
+    def test_send_then_edit_in_place_then_delete(self):
+        from unittest import mock
+        from hero import discord_post as dp
+        server, calls = {}, []
+
+        def create(url, pl):
+            mid = str(len(server) + 100)
+            server[mid] = pl
+            calls.append(("create", mid))
+            return mid
+
+        def edit(url, mid, pl):
+            calls.append(("edit", mid))
+            if mid not in server:
+                return None                              # deleted by hand in Discord
+            server[mid] = pl
+            return True
+
+        def delete(url, mid):
+            calls.append(("delete", mid))
+            server.pop(mid, None)
+            return True
+
+        long_page = "# 长页\n\n" + "\n\n".join(f"## 段 {i}\n\n" + "x" * 3000 for i in range(4))
         with tempfile.TemporaryDirectory() as d:
             root = Path(d)
             (root / "posts" / "earnings").mkdir(parents=True)
-            (root / "posts" / "earnings" / "a.md").write_text(page)
-            (root / "posts" / "earnings" / "b.md").write_text(page + "\n6157ff3f-1623-47fc-8139-97d6feb1982a\n")
-            (root / "notes.md").write_text(page)
-            sent = []
+            page = root / "posts" / "earnings" / "a.md"
+            page.write_text(long_page)
+            (root / "posts" / "earnings" / "b.md").write_text("# b\n\n6157ff3f-1623-47fc-8139-97d6feb1982a\n")
+            (root / "notes.md").write_text("# n\n")
+            rec = root / "posts" / ".sent" / "earnings" / "a.md.json"
             with mock.patch.object(dp, "ROOT", root), mock.patch.object(dp, "POSTS", root / "posts"), \
-                    mock.patch.object(dp, "send", lambda url, cs: sent.append((url, len(cs))) or True), \
-                    mock.patch.dict(os.environ, {"DC_WEBHOOK_EARNINGS": "https://example.invalid/hook"}, clear=False):
+                    mock.patch.object(dp, "create", create), mock.patch.object(dp, "edit", edit), \
+                    mock.patch.object(dp, "delete", delete), \
+                    mock.patch.dict(os.environ, {"DC_WEBHOOK_EARNINGS": "https://h.invalid/hook"}, clear=False):
                 self.assertEqual(dp.main(["earnings", "posts/earnings/a.md"]), 0)
+                first = json.loads(rec.read_text())["ids"]
+                self.assertGreater(len(first), 1)                                 # long cards: several messages
+                calls.clear()
+                page.write_text("# 短页\n\n改过了。\n")
+                self.assertEqual(dp.main(["earnings", "posts/earnings/a.md"]), 0)   # same page again: edit in place
+                self.assertEqual(calls, [("edit", first[0])] + [("delete", m) for m in first[1:]])
+                self.assertEqual(json.loads(rec.read_text())["ids"], [first[0]])
+                self.assertIn("edited", json.loads(rec.read_text()))
+                server.clear()                                                     # someone deleted it in Discord
+                calls.clear()
+                self.assertEqual(dp.main(["earnings", "posts/earnings/a.md"]), 0)
+                self.assertEqual([c[0] for c in calls], ["edit", "create"])
+                self.assertEqual(dp.main(["--delete", "earnings", "posts/earnings/a.md"]), 0)
+                self.assertFalse(rec.exists())
+                self.assertEqual(server, {})
                 self.assertEqual(dp.main(["earnings", "posts/earnings/b.md"]), 1)      # holds an id: refused
                 self.assertEqual(dp.main(["earnings", "notes.md"]), 2)                 # only pages under posts/
                 self.assertEqual(dp.main(["earnings", "posts/../notes.md"]), 2)
+                self.assertEqual(dp.main(["earnings", "posts/.sent/earnings/x.md"]), 2)
                 os.environ.pop("DC_WEBHOOK_DAILY", None)
                 self.assertEqual(dp.main(["daily", "posts/earnings/a.md"]), 0)        # no secret yet: skipped
-            self.assertEqual(sent, [("https://example.invalid/hook", 3)])
 
 
 class EarningsPage(unittest.TestCase):
