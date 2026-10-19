@@ -3688,8 +3688,9 @@ class EarningsForecast(unittest.TestCase):
             got["NFLX"]["result"] = res
             got["MNTH"]["result"] = mres
             (root / "2026-10-20.json").write_text(json.dumps({"date": "2026-10-20", "reports": [got["NFLX"], got["MNTH"]]}))
-            (root / "2026-10-20.judgment.json").write_text(json.dumps({"date": "2026-10-20", "calls": [
-                {"symbol": "NFLX", "direction": "down", "big": True, "confidence": 0.6, "why": "x"}]}))
+            (root / "2026-10-20.judgment.json").write_text(json.dumps({"date": "2026-10-20", "written": "2026-10-20T15:40-04:00",
+                                                                     "calls": [{"symbol": "NFLX", "direction": "down", "big": True,
+                                                                                "confidence": 0.6, "why": "x"}]}))
             md = ef.scorecard(root)
             self.assertIn("| 方向（按开盘） | 1 | 100% |", md)
             self.assertIn("| 方向（按收盘，参考） | 1 | 100% |", md)
@@ -3698,6 +3699,15 @@ class EarningsForecast(unittest.TestCase):
             self.assertIn("| 月度到期（隐含偏大，只作参考） | 1 | ", md)
             self.assertIn("| 按判断方向，全部 | 1 | 100% | +10.00% | +10.00% | +20.00% |", md)   # a down call, -10% gap
             self.assertIn("| 对照：全部财报都买（不看判断） | 2 | 50% | +0.00% |", md)             # -10% and +10%
+            # in after the 16:00 ET cutoff (or with no time): kept on file, not scored
+            for written in ("2026-10-20T16:05-04:00", None):
+                (root / "2026-10-20.judgment.json").write_text(json.dumps({"date": "2026-10-20", "written": written, "calls": [
+                    {"symbol": "NFLX", "direction": "down", "big": True, "confidence": 0.6, "why": "x"}]}))
+                md = ef.scorecard(root)
+                self.assertIn("这次有 1 条晚交，没算。", md)
+                self.assertNotIn("| 方向（按开盘） |", md)
+        self.assertTrue(ef.on_time("2026-10-20T19:59:00+00:00", "2026-10-20"))    # 15:59 ET
+        self.assertFalse(ef.on_time("2026-10-21T06:30-04:00", "2026-10-20"))     # after a 06:00 pre-market report
 
 
 class ResearchSniperFactors(unittest.TestCase):

@@ -200,13 +200,31 @@ def score_due(client, today: date, root: Path = OUT) -> list[str]:
     return changed
 
 
+CUTOFF = "16:00"   # ET on the forecast date: before tonight's after-close reports and tomorrow's early-morning ones
+
+
+def on_time(written: str | None, day: str) -> bool:
+    """Owner, 10-19: judge before the report. Some before-open reports land in the small hours, so every call must be
+    in by 16:00 ET on the forecast date (the session before the reaction); a missing or later time does not count."""
+    try:
+        w = datetime.fromisoformat(str(written))
+    except ValueError:
+        return False
+    et = ZoneInfo("America/New_York")
+    w = w.replace(tzinfo=et) if w.tzinfo is None else w
+    return w <= datetime.fromisoformat(f"{day}T{CUTOFF}").replace(tzinfo=et)
+
+
 def judged(root: Path = OUT) -> dict[tuple[str, str], dict]:
-    """(forecast date, symbol) -> Claude's judgment for it, from YYYY-MM-DD.judgment.json."""
+    """(forecast date, symbol) -> Claude's judgment for it, from YYYY-MM-DD.judgment.json; `late` when it came in after
+    the cutoff (kept for the record, left out of the score)."""
     out = {}
     for f in sorted(root.glob("20??-??-??.judgment.json")):
         d = json.loads(f.read_text())
+        day = d.get("date") or f.name[:10]
+        late = not on_time(d.get("written"), day)
         for j in d.get("calls") or []:
-            out[(d.get("date") or f.name[:10], j["symbol"])] = j
+            out[(day, j["symbol"])] = {**j, "late": late}
     return out
 
 
@@ -220,7 +238,7 @@ def scorecard(root: Path = OUT) -> str:
     md = [f"# 财报预测记分卡 {date.today().isoformat()}", "",
           "每个交易日 15:10 ET 前后，对当晚盘后、次日盘前发财报的美股（$5 以上、有期权）记下期权隐含的涨跌幅（平值跨式 / 股价），"
           "基线给每只「超过隐含幅度」的概率（历史 40%；自身过去平均反应比隐含高 25% 以上的 51%）；方向的判断只在判断文件里。"
-          "反应日收盘后记分：方向按反应日开盘对前收（10-19 起，和『第二天开盘卖』的做法一致），收盘另列一栏参考；"
+          "判断在预测日 16:00 ET 前写好（财报之前，包括凌晨发的盘前财报）。反应日收盘后记分：方向按反应日开盘对前收（10-19 起，和『第二天开盘卖』的做法一致），收盘另列一栏参考；"
           "幅度（有没有超过隐含）按收盘对前收，和基线的统计口径一致。只记录，不交易。", ""]
     if not rows:
         return "\n".join(md + ["还没有可记分的财报。", ""])
@@ -233,8 +251,13 @@ def scorecard(root: Path = OUT) -> str:
         if rs:
             md.append(f"| {name} | {len(rs)} | {sum(r['result']['big'] for r in rs) / len(rs):.0%} | "
                       f"{statistics.mean(r['p_big'] for r in rs):.0%} |")
+    late = [r for r in rows if r["judgment"] and r["judgment"].get("late")]
+    for r in late:
+        r["judgment"] = None   # judged after the cutoff: not scored
     jr = [r for r in rows if r["judgment"]]
-    md += ["", "## 判断（Claude 挑出来细看的）", ""]
+    md += ["", "## 判断（Claude 挑出来细看的）", "",
+           f"判断必须在预测日 {CUTOFF} ET 前写好（盘后财报之前；明天盘前、凌晨发的财报也在这之前），晚了不算分。"
+           + (f"这次有 {len(late)} 条晚交，没算。" if late else ""), ""]
     if not jr:
         md.append("还没有带判断、而且已经记分的财报。")
     else:
