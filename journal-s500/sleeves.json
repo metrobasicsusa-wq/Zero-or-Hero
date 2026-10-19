@@ -856,30 +856,11 @@
   },
   "tsla0dte-1000": {
    "start": 1000.0,
-   "cash": 812.0,
+   "cash": 1026.0,
    "round": 1,
    "heroes": 0,
    "zeros": 0,
-   "open": [
-    {
-     "tid": "20261019-4b7c81r",
-     "kind": "zdte",
-     "sym": "TSLA261019C00365000",
-     "asset": "option",
-     "und": "TSLA",
-     "qty": 1,
-     "cost": 1.19,
-     "paid": 119.0,
-     "opened": "2026-10-19 10:00",
-     "why": "TSLA 开盘 $357.45、现在 $361.66，顺势买当天到期看涨 365（离现价 0.9%），3 倍止盈，15:30 平仓",
-     "expiry": "2026-10-19",
-     "exit_day": "2026-10-19",
-     "exit_at": "15:30",
-     "trail": true,
-     "best_bid": 4.29,
-     "expiry_out": null
-    }
-   ],
+   "open": [],
    "closed": [
     {
      "tid": "6a5c203de5",
@@ -1015,6 +996,32 @@
      "how": "3 倍止盈（券商挂单成交）",
      "closed": "2026-10-19 11:10",
      "ret": 1.983
+    },
+    {
+     "tid": "20261019-4b7c81r",
+     "kind": "zdte",
+     "sym": "TSLA261019C00365000",
+     "asset": "option",
+     "und": "TSLA",
+     "qty": 1,
+     "cost": 1.19,
+     "paid": 119.0,
+     "opened": "2026-10-19 10:00",
+     "why": "TSLA 开盘 $357.45、现在 $361.66，顺势买当天到期看涨 365（离现价 0.9%），3 倍止盈，15:30 平仓",
+     "expiry": "2026-10-19",
+     "exit_day": "2026-10-19",
+     "exit_at": "15:30",
+     "trail": true,
+     "best_bid": 4.29,
+     "expiry_out": null,
+     "sell_cid": "sl-tsla0dte-1000-20261019-4b7c81r-x82e2",
+     "sell_why": "翻倍后从最高 $4.29 回撤 40%",
+     "state": "closed",
+     "exit_price": 2.14,
+     "proceeds": 214.0,
+     "how": "翻倍后从最高 $4.29 回撤 40%",
+     "closed": "2026-10-19 14:30",
+     "ret": 0.798
     }
    ],
    "slots": {
@@ -1025,7 +1032,7 @@
     "2026-10-16": "2026-10-16T10:00-04:00",
     "2026-10-19": "2026-10-19T10:00-04:00"
    },
-   "best": 1000.0,
+   "best": 1026.0,
    "created": null
   },
   "nvda0dte-500": {
@@ -2169,7 +2176,7 @@
   },
   "tsla0dte-5x-1000": {
    "start": 1000.0,
-   "cash": 627.0,
+   "cash": 1055.0,
    "round": 1,
    "heroes": 0,
    "zeros": 0,
@@ -2194,24 +2201,6 @@
      "take_x": 5,
      "take": 5.95,
      "take_cid": "sl-tsla0dte-5x-1000-20261019-33a9c2-t69eb"
-    },
-    {
-     "tid": "20261019-33a9c2r",
-     "kind": "zdte",
-     "sym": "TSLA261019C00365000",
-     "asset": "option",
-     "und": "TSLA",
-     "qty": 2,
-     "cost": 1.19,
-     "paid": 238.0,
-     "opened": "2026-10-19 10:00",
-     "why": "TSLA 开盘 $357.45、现在 $361.66，顺势买当天到期看涨 365（离现价 0.9%），5 倍止盈，15:30 平仓",
-     "expiry": "2026-10-19",
-     "exit_day": "2026-10-19",
-     "exit_at": "15:30",
-     "trail": true,
-     "best_bid": 4.29,
-     "expiry_out": null
     }
    ],
    "closed": [
@@ -2322,6 +2311,32 @@
      "how": "5 倍止盈（券商挂单成交）",
      "closed": "2026-10-16 13:00",
      "ret": 4.0
+    },
+    {
+     "tid": "20261019-33a9c2r",
+     "kind": "zdte",
+     "sym": "TSLA261019C00365000",
+     "asset": "option",
+     "und": "TSLA",
+     "qty": 2,
+     "cost": 1.19,
+     "paid": 238.0,
+     "opened": "2026-10-19 10:00",
+     "why": "TSLA 开盘 $357.45、现在 $361.66，顺势买当天到期看涨 365（离现价 0.9%），5 倍止盈，15:30 平仓",
+     "expiry": "2026-10-19",
+     "exit_day": "2026-10-19",
+     "exit_at": "15:30",
+     "trail": true,
+     "best_bid": 4.29,
+     "expiry_out": null,
+     "sell_cid": "sl-tsla0dte-5x-1000-20261019-33a9c2r-xa8c5",
+     "sell_why": "翻倍后从最高 $4.29 回撤 40%",
+     "state": "closed",
+     "exit_price": 2.14,
+     "proceeds": 428.0,
+     "how": "翻倍后从最高 $4.29 回撤 40%",
+     "closed": "2026-10-19 14:30",
+     "ret": 0.798
     }
    ],
    "slots": {
@@ -2332,7 +2347,7 @@
     "2026-10-16": "2026-10-16T10:00-04:00",
     "2026-10-19": "2026-10-19T10:00-04:00"
    },
-   "best": 1000.0,
+   "best": 1055.0,
    "created": null
   },
   "wk-trend-500": {
@@ -2590,7 +2605,7 @@
      "exit_day": "2026-10-22",
      "exit_at": "15:50",
      "trail": false,
-     "best_bid": 1.24,
+     "best_bid": 1.31,
      "expiry_out": null,
      "take_x": 2,
      "take": 2.3,
