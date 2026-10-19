@@ -3802,6 +3802,41 @@ class DiscordPost(unittest.TestCase):
             self.assertEqual(sent, [("https://example.invalid/hook", 3)])
 
 
+class EarningsPage(unittest.TestCase):
+    def test_calendar_forecast_and_holdings(self):
+        from hero import earnings_page as ep
+        with tempfile.TemporaryDirectory() as d:
+            root = Path(d)
+            for sub in ("data", "journal", "journal-s500", "research/earnings-forecast"):
+                (root / sub).mkdir(parents=True)
+            (root / "data" / "earnings.json").write_text(json.dumps({"fetched_at": "2026-10-19T09:00", "reports": {
+                "META": [{"date": "2026-10-21", "time": "post-market"}], "GE": [{"date": "2026-10-20", "time": "pre-market"}],
+                "AMZN": [{"date": "2026-10-29", "time": "unknown"}], "OLD": [{"date": "2026-10-01", "time": "post-market"}],
+                "FAR": [{"date": "2026-12-20", "time": "post-market"}]}}))
+            (root / "journal" / "snapshot.json").write_text(json.dumps({"positions": [{"symbol": "META"}]}))
+            (root / "journal-s500" / "snapshot.json").write_text(json.dumps({"positions": [{"symbol": "GE261023C00320000"}]}))
+            fc = root / "research" / "earnings-forecast"
+            (fc / "2026-10-19.json").write_text(json.dumps({"date": "2026-10-19", "reports": [
+                {"symbol": "GE", "time": "pre-market", "report_date": "2026-10-20", "reaction_day": "2026-10-20", "spot": 313.2,
+                 "implied_move": 0.06, "weekly": True, "prior_avg_abs": 0.053, "p_big": 0.4,
+                 "result": {"gap": 0.03, "gap_pre": -0.01, "move": -0.02, "big": False, "up": False}},
+                {"symbol": "CBSH", "time": "pre-market", "report_date": "2026-10-20", "reaction_day": "2026-10-20", "spot": 55.2,
+                 "implied_move": None, "weekly": False, "prior_avg_abs": None, "p_big": 0.4}]}))
+            (fc / "2026-10-19.judgment.json").write_text(json.dumps({"date": "2026-10-19", "calls": [
+                {"symbol": "GE", "direction": "up", "big": False, "confidence": 0.5}]}))
+            (fc / "scorecard.md").write_text("# 记分卡\n\n| 组 | 次数 |\n|---|---|\n| 全部 | 1 |\n")
+            data = ep.collect(root, date(2026, 10, 19))
+            self.assertEqual(data["hold"], {"META": ["主账户"], "GE": ["多账本"]})
+            self.assertEqual([r["date"] for r in data["pool"]], ["2026-10-20", "2026-10-21", "2026-10-29"])
+            page = ep.render(data)
+        self.assertIn("META★", page)
+        self.assertIn("10-20 周二", page)
+        self.assertIn("涨 · 超过定价不会 · 信心 0.50", page)
+        self.assertIn("开盘 -1.0% · 收盘 -2.0% · 方向错", page)       # judged at the open against the price before
+        self.assertNotIn("—（月）", page)
+        self.assertIn("<td>全部</td>", page)
+
+
 class ResearchSniperFactors(unittest.TestCase):
     def test_breakout_compares_the_open_on_the_split_adjusted_scale(self):
         from hero.research_sniper_factors2 import tag
