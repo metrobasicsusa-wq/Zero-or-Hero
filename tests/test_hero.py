@@ -624,7 +624,9 @@ class ProtectiveStops(unittest.TestCase):
         self.assertTrue(CFG["risk"]["stop_min_pct"] - 0.001 <= pct <= CFG["risk"]["stop_max_pct"] + 0.001, pct)
 
     def test_existing_matching_stop_is_kept_and_does_not_block_rebalance(self):
-        c = FakeClient(self.closes, positions=[self.pos("UP1")], open_orders=[self.stop_order("UP1", "10")])
+        # Held at its 20% target (68 x $294 of $100k), so there is no add-on buy to clear the stop for.
+        c = FakeClient(self.closes, positions=[self.pos("UP1", qty="68", cur="294")],
+                       open_orders=[self.stop_order("UP1", "68")])
         self.run_engine(c)
         self.assertFalse([o for o in c.orders if o["type"] == "stop"])
         self.assertFalse(getattr(c, "cancelled", []))
@@ -634,10 +636,31 @@ class ProtectiveStops(unittest.TestCase):
         self.assertIn("UP1", targets[0]["weights"])
 
     def test_quantity_change_replaces_stop(self):
-        c = FakeClient(self.closes, positions=[self.pos("UP1", qty="12")], open_orders=[self.stop_order("UP1", "10")])
+        c = FakeClient(self.closes, positions=[self.pos("UP1", qty="68", cur="294")],
+                       open_orders=[self.stop_order("UP1", "60")])
         self.run_engine(c)
         self.assertEqual(c.cancelled, ["s1"])
-        self.assertEqual([o["qty"] for o in c.orders if o["type"] == "stop"], ["12"])
+        self.assertEqual([o["qty"] for o in c.orders if o["type"] == "stop"], ["68"])
+
+    def test_add_on_buy_cancels_the_stop_first(self):
+        # 2026-10-19: an AAPL add-on buy was rejected as a potential wash trade because our GTC sell
+        # stop was still resting. Cancel the stop, buy, and re-place the stop next cycle.
+        c = self.run_engine(FakeClient(self.closes, positions=[self.pos("UP1")],
+                                       open_orders=[self.stop_order("UP1", "10")]))
+        self.assertEqual(c.cancelled, ["s1"])
+        self.assertTrue([o for o in c.orders if o["symbol"] == "UP1" and o["side"] == "buy"])
+        self.assertFalse([o for o in c.orders if o["type"] == "stop" and o["symbol"] == "UP1"])
+        kinds = [json.loads(l)["kind"] for l in (Path(self.tmp.name) / "trades.jsonl").read_text().splitlines()
+                 if '"UP1"' in l and '"targets"' not in l]
+        self.assertLess(kinds.index("cancel"), kinds.index("order"))
+
+    def test_add_on_buy_waits_while_the_stop_cancel_is_pending(self):
+        c = FakeClient(self.closes, positions=[self.pos("UP1")], open_orders=[self.stop_order("UP1", "10")])
+        c.cancel_result = "pending_cancel"
+        self.run_engine(c)
+        self.assertFalse([o for o in c.orders if o["symbol"] == "UP1" and o["side"] == "buy"])
+        self.assertIn("buy_deferred", (Path(self.tmp.name) / "trades.jsonl").read_text())
+        self.assertNotIn("last_rebalance", self.j.state())  # the next cycle retries the add-on
 
     def test_stop_cancelled_before_closing_position(self):
         down = {**self.pos("DOWN"), "current_price": "50"}
@@ -3542,6 +3565,91 @@ class ResearchIdeas(unittest.TestCase):
         self.assertEqual((kind_of("2026-09-16"), kind_of("2024-02-13"), kind_of("2024-02-14")), ("Fed", "CPI", ""))
 
 
+class Robust(unittest.TestCase):
+    def test_a_mean_carried_by_three_big_wins_is_flagged(self):
+        from hero import robust
+        xs = [(f"2025-{m:02d}-01", -0.5) for m in range(1, 13)] + [("2024-06-01", 9.0), ("2024-07-01", 8.0), ("2024-08-01", 7.0),
+                                                                    ("2024-09-01", -0.5), ("2024-10-01", -0.5)]
+        s = robust.summary(xs, end="2025-12-31")
+        self.assertGreater(s["mean"], 0)
+        self.assertEqual((s["n"], s["trim"], s["median"]), (17, -0.5, -0.5))
+        self.assertEqual(s["years"]["2025"], (-0.5, 12))
+        self.assertEqual(s["recent"], (-0.5, 3))                                  # Oct, Nov, Dec 2025
+        text = "；".join(s["flags"])
+        for part in ("样本少", "去掉最好 3 笔就不赚", "中位数", "各年份不一致"):
+            self.assertIn(part, text)
+        self.assertTrue(robust.fragile(s))
+        self.assertIn("| a | 17 |", robust.table({"a": s, "b": None}))
+        self.assertIn("| b | 0 |", robust.table({"a": s, "b": None}))
+
+    def test_extra_cost_and_a_steady_edge(self):
+        from hero import robust
+        self.assertAlmostEqual(robust.with_cost(0.0, 0.05), 0.95 / 1.05 - 1)
+        self.assertEqual(robust.with_cost(-1.0, 0.05), -1.0)
+        thin = robust.summary([(f"2025-01-{d:02d}", 0.05 if d % 2 else 0.03) for d in range(1, 31)])
+        self.assertIn("买卖再各多 5% 成本就不赚", "；".join(thin["flags"]))
+        steady = robust.summary([(f"2025-{m:02d}-{d:02d}", 0.3) for m in range(1, 13) for d in (1, 10, 20)])
+        self.assertEqual(steady["flags"], [])
+        self.assertFalse(robust.fragile(steady))
+        self.assertIsNone(robust.summary([]))
+
+    def test_price_basis_catches_a_split(self):
+        from hero import robust
+        pairs = [("2024-05-01", "NVDA", 850.0, 85.0), ("2025-05-01", "NVDA", 110.0, 110.5)]
+        self.assertEqual([b["day"] for b in robust.price_basis(pairs)], ["2024-05-01"])
+
+
+class ResearchFills(unittest.TestCase):
+    def test_fills_against_the_last_bar_before_them(self):
+        from hero import research_fills as rf
+        from unittest import mock
+        with tempfile.TemporaryDirectory() as d:
+            root = Path(d)
+            (root / "journal").mkdir()
+            (root / "journal-s500").mkdir()
+            fill = lambda key, sym, side, qty, px, t: json.dumps({"order_key": key, "execution_key": key + t[-3:], "symbol": sym,
+                                                                    "side": side, "qty": qty, "price": px, "transaction_time": t})
+            (root / "journal-s500" / "fills.jsonl").write_text("\n".join([
+                fill("b1", "SPY261019P00762000", "buy", "2", "0.40", "2026-10-19T14:00:05Z"),    # 10:00 ET, two parts
+                fill("b1", "SPY261019P00762000", "buy", "2", "0.44", "2026-10-19T14:00:06Z"),
+                fill("s1", "SPY261019P00762000", "sell", "4", "0.90", "2026-10-19T19:30:02Z"),   # 15:30 ET
+                fill("x1", "SPY", "buy", "1", "700", "2026-10-19T14:00:05Z")]) + "\n")         # a stock: left out
+            (root / "journal" / "fills.jsonl").write_text(fill("m1", "XLV261120C00175000", "buy", "5", "6.20", "2026-10-16T13:30:40Z") + "\n")
+            (root / "journal" / "trades.jsonl").write_text("\n".join(json.dumps(e) for e in [
+                {"kind": "order", "intent_key": "i1", "evidence": {"bid": 6.08, "ask": 6.43, "mid": 6.255}},
+                {"kind": "order_ack", "intent_key": "i1", "order_key": "m1"}]) + "\n")
+
+            orders = rf.load_orders(root)
+            self.assertEqual([(o["order_key"], o["qty"], o["price"]) for o in orders],
+                             [("m1", 5.0, 6.2), ("b1", 4.0, 0.42), ("s1", 4.0, 0.9)])
+
+            def bar(day, hhmm, c):
+                h, m = map(int, hhmm.split(":"))
+                return {"t": f"{day}T{h + 4:02d}:{m:02d}:00Z", "c": c}
+
+            class Client:
+                def clock(self): return {"is_open": False}
+
+                def option_bars(self, syms, start, end, timeframe=None):
+                    day = start[:10]
+                    return {"SPY261019P00762000": [bar(day, "09:58", 0.38), bar(day, "09:59", 0.40), bar(day, "10:00", 0.42),
+                                                   bar(day, "15:00", 1.20)]} if day == "2026-10-19" else {}
+
+            with mock.patch("time.sleep"):
+                rep = rf.run(Client(), root)
+        rows = {r["order_key"]: r for r in rep["rows"]}
+        self.assertEqual((rows["b1"]["ref"], rows["b1"]["age"]), (0.40, 1))         # 09:59, not its own 10:00 minute
+        self.assertAlmostEqual(rows["b1"]["cost"], 0.05)                            # paid 0.42 against 0.40
+        self.assertEqual((rows["b1"]["horizon"], rows["b1"]["bucket"]), ("当天到期", "$0.10–0.50"))
+        self.assertNotIn("cost", rows["s1"])                                        # last bar 15:00 is 30 minutes old
+        self.assertAlmostEqual(rows["m1"]["vs_mid"], 6.2 / 6.255 - 1, places=4)     # a buy below the mid: negative cost
+        self.assertEqual(rows["m1"]["horizon"], "8 天以上到期")
+        md = rf.report(rep)
+        self.assertIn("| 买入 | 当天到期 | 1 | +5.0%", md)
+        self.assertIn("XLV261120C00175000", md)
+        self.assertAlmostEqual(rf.side_cost("sell", 0.9, 1.0), 0.1)
+
+
 class ResearchEventTurn(unittest.TestCase):
     DAYS = [(date(2026, 8, 3) + timedelta(days=k)).isoformat() for k in range(40)]
 
@@ -3608,7 +3716,8 @@ class ResearchEventTurn(unittest.TestCase):
         gs = et.rules(rep["rows"])
         self.assertEqual(len(gs["反弹：事件前 5 天跌 5%+"]), 3)                  # SMH, QQQ, AAA
         self.assertEqual(len(gs["　反弹 5%+：个股"]), 1)
-        self.assertIn(" / ", et.spread(gs["反弹：事件前 5 天跌 3%+，之后第一个收涨买看涨"], "d5", rep["end"]))
+        from hero.research_ideas import checks
+        self.assertIn("稳健性检查：第 5 天收盘卖", checks(gs, et.EXITS, rep["end"]))
 
 
 class ResearchDipWeek(unittest.TestCase):

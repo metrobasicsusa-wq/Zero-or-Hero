@@ -347,7 +347,8 @@ class Runner:
         else:
             ok = self.submit(symbol=t["sym"], qty=str(qty), side="sell", type="market", time_in_force="day",
                              client_order_id=t["sell_cid"])
-        self.j.event("sleeve_exit", dry_run=False, sleeve=sid, symbol=t["sym"], why=f"{sid}：{t['sym']} {why}，卖 {qty}")
+        self.j.event("sleeve_exit", dry_run=False, sleeve=sid, symbol=t["sym"], bid=bid,  # bid: for hero.research_fills
+                     why=f"{sid}：{t['sym']} {why}，卖 {qty}")
         if ok:
             for _ in range(5):
                 o = self.order(t["sell_cid"])
@@ -455,6 +456,7 @@ class Runner:
             for o in orders:
                 o["cid"] = cid(o["spec"]["id"], o["tid"], f"b{attempt}")
                 self.j.event("sleeve_buy", dry_run=False, sleeve=o["spec"]["id"], symbol=o["pk"]["sym"], attempt=attempt,
+                             ask=o["pk"].get("ask") if attempt == 1 else o.get("ask"), limit=o["limit"],  # for hero.research_fills
                              why=f"{o['spec']['id']}：{o['pk']['why']}；{o['qty']} 张 × ${o['limit']:.2f}（第 {attempt} 次挂单）")
                 if self.submit(symbol=o["pk"]["sym"], qty=str(o["qty"]), side="buy", type="limit",
                                limit_price=f"{o['limit']:.2f}", time_in_force="day", client_order_id=o["cid"]):
@@ -487,7 +489,7 @@ class Runner:
                                  why=f"{o['spec']['id']}：{o['pk']['sym']} 没成交、已撤单；新卖价 "
                                      + (f"${ask:.2f}，超过追价上限" if ask else "取不到") + "，这次不做")
                     continue
-                orders.append({**o, "limit": limit, "qty": qty})
+                orders.append({**o, "limit": limit, "qty": qty, "ask": ask})
 
     def place_take(self, sid: str, t: dict) -> None:
         """The take as a resting sell limit for this ticket's own quantity (a day order, as options require)."""

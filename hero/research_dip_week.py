@@ -17,7 +17,7 @@ import statistics
 import sys
 from datetime import date, timedelta
 
-from hero.research_event_turn import Pace, spread
+from hero.research_event_turn import Pace
 from hero.research_ideas import report, save
 from hero.research_sniper_factors import latest
 
@@ -163,10 +163,7 @@ def main() -> None:
                        f"{rep['start']} 至 {rep['end']}，{len(rep['names'])} 只（25 只活跃股加 TSM、NBIS、CRWV）开盘比昨收低 2% 以上的日子，"
                        "当天收盘买最近的 5–12 天到期看涨（平值 / 价外 3%），按期权每日收盘价卖（没成交的日子沿用上一个收盘价，到期日用股价算价值），"
                        f"买卖各算 5% 成本。没有期权数据的事件 {rep['missing']} 个。最近还没走满的只计已过去的天数。",
-                       gs, EXITS)
-    md += ("\n## 每 $1 的分布\n\n每格「平均 / 去掉最好 3 笔 / 中位数 / 2024（笔数） / 2025–26 / 最近 3 个月」。\n\n"
-           "| 情况 | " + " | ".join(EXITS.values()) + " |\n|---|" + "---|" * len(EXITS) + "\n" +
-           "\n".join(f"| {g} | " + " | ".join(spread(rs, x, rep["end"]) for x in EXITS) + " |" for g, rs in gs.items()) + "\n")
+                       gs, EXITS, rep["end"])
     md += "\n## 成本改成买卖各 10%\n\n| 情况 | " + " | ".join(EXITS.values()) + " |\n|---|" + "---|" * len(EXITS) + "\n"
     for g, rs in gs.items():
         cells = []
