@@ -3542,6 +3542,57 @@ class Robust(unittest.TestCase):
         self.assertEqual([b["day"] for b in robust.price_basis(pairs)], ["2024-05-01"])
 
 
+class ResearchFills(unittest.TestCase):
+    def test_fills_against_the_last_bar_before_them(self):
+        from hero import research_fills as rf
+        from unittest import mock
+        with tempfile.TemporaryDirectory() as d:
+            root = Path(d)
+            (root / "journal").mkdir()
+            (root / "journal-s500").mkdir()
+            fill = lambda key, sym, side, qty, px, t: json.dumps({"order_key": key, "execution_key": key + t[-3:], "symbol": sym,
+                                                                    "side": side, "qty": qty, "price": px, "transaction_time": t})
+            (root / "journal-s500" / "fills.jsonl").write_text("\n".join([
+                fill("b1", "SPY261019P00762000", "buy", "2", "0.40", "2026-10-19T14:00:05Z"),    # 10:00 ET, two parts
+                fill("b1", "SPY261019P00762000", "buy", "2", "0.44", "2026-10-19T14:00:06Z"),
+                fill("s1", "SPY261019P00762000", "sell", "4", "0.90", "2026-10-19T19:30:02Z"),   # 15:30 ET
+                fill("x1", "SPY", "buy", "1", "700", "2026-10-19T14:00:05Z")]) + "\n")         # a stock: left out
+            (root / "journal" / "fills.jsonl").write_text(fill("m1", "XLV261120C00175000", "buy", "5", "6.20", "2026-10-16T13:30:40Z") + "\n")
+            (root / "journal" / "trades.jsonl").write_text("\n".join(json.dumps(e) for e in [
+                {"kind": "order", "intent_key": "i1", "evidence": {"bid": 6.08, "ask": 6.43, "mid": 6.255}},
+                {"kind": "order_ack", "intent_key": "i1", "order_key": "m1"}]) + "\n")
+
+            orders = rf.load_orders(root)
+            self.assertEqual([(o["order_key"], o["qty"], o["price"]) for o in orders],
+                             [("m1", 5.0, 6.2), ("b1", 4.0, 0.42), ("s1", 4.0, 0.9)])
+
+            def bar(day, hhmm, c):
+                h, m = map(int, hhmm.split(":"))
+                return {"t": f"{day}T{h + 4:02d}:{m:02d}:00Z", "c": c}
+
+            class Client:
+                def clock(self): return {"is_open": False}
+
+                def option_bars(self, syms, start, end, timeframe=None):
+                    day = start[:10]
+                    return {"SPY261019P00762000": [bar(day, "09:58", 0.38), bar(day, "09:59", 0.40), bar(day, "10:00", 0.42),
+                                                   bar(day, "15:00", 1.20)]} if day == "2026-10-19" else {}
+
+            with mock.patch("time.sleep"):
+                rep = rf.run(Client(), root)
+        rows = {r["order_key"]: r for r in rep["rows"]}
+        self.assertEqual((rows["b1"]["ref"], rows["b1"]["age"]), (0.40, 1))         # 09:59, not its own 10:00 minute
+        self.assertAlmostEqual(rows["b1"]["cost"], 0.05)                            # paid 0.42 against 0.40
+        self.assertEqual((rows["b1"]["horizon"], rows["b1"]["bucket"]), ("当天到期", "$0.10–0.50"))
+        self.assertNotIn("cost", rows["s1"])                                        # last bar 15:00 is 30 minutes old
+        self.assertAlmostEqual(rows["m1"]["vs_mid"], 6.2 / 6.255 - 1, places=4)     # a buy below the mid: negative cost
+        self.assertEqual(rows["m1"]["horizon"], "8 天以上到期")
+        md = rf.report(rep)
+        self.assertIn("| 买入 | 当天到期 | 1 | +5.0%", md)
+        self.assertIn("XLV261120C00175000", md)
+        self.assertAlmostEqual(rf.side_cost("sell", 0.9, 1.0), 0.1)
+
+
 class ResearchEventTurn(unittest.TestCase):
     DAYS = [(date(2026, 8, 3) + timedelta(days=k)).isoformat() for k in range(40)]
 
