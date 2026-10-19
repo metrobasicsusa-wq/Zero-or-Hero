@@ -4029,6 +4029,26 @@ class EarningsForecastCalendarChecks(unittest.TestCase):
         self.assertNotIn("confirmed", rep["reports"][0])
 
 
+class EarningsForecastEveryCall(unittest.TestCase):
+    def test_from_10_20_every_report_needs_a_call_and_missing_ones_count_as_wrong(self):
+        from hero import research_earnings_forecast as ef
+        res = lambda up: {"gap": 0.01 if up else -0.01, "move": 0.0, "big": False, "up": up, "up_close": up}
+        rep = {"date": "2026-10-20", "reports": [
+            {"symbol": s, "time": "pre-market", "implied_move": 0.05, "weekly": True, "p_big": 0.4, "result": res(up)}
+            for s, up in (("AAA", True), ("BBB", False), ("CCC", True), ("DDD", True))]}
+        with tempfile.TemporaryDirectory() as d:
+            root = Path(d)
+            (root / "2026-10-20.json").write_text(json.dumps(rep))
+            (root / "2026-10-20.judgment.json").write_text(json.dumps({"date": "2026-10-20", "written": "2026-10-20T15:30-04:00",
+                "calls": [{"symbol": "AAA", "direction": "up", "big": False, "confidence": 0.6},
+                          {"symbol": "BBB", "direction": "up", "big": False, "confidence": 0.5},
+                          {"symbol": "CCC", "direction": "none", "big": False, "confidence": 0.3}]}))   # DDD: no call
+            md = ef.scorecard(root)
+        self.assertIn("| 方向按开盘，全部财报（没给或晚交算错） | 4 | 25% |", md)   # AAA right; BBB wrong; CCC, DDD missing
+        self.assertIn("| 给了涨跌的比例 | 4 | 50% |", md)
+        self.assertIn("| 方向（按开盘） | 2 | 50% |", md)
+
+
 class EarningsForecastAroundTheReport(unittest.TestCase):
     def test_before_open_report_is_judged_against_the_last_trade_before_it(self):
         from datetime import datetime as dt

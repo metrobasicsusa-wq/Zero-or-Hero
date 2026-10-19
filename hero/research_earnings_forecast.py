@@ -296,6 +296,7 @@ def score_due(client, today: date, root: Path = OUT, sec=releases_for) -> list[s
 
 
 CUTOFF = "16:00"   # ET on the forecast date: before tonight's after-close reports and tomorrow's early-morning ones
+EVERY_FROM = "2026-10-20"   # owner, 10-19: from this forecast day every report gets an up / down call
 
 
 def on_time(written: str | None, day: str) -> bool:
@@ -350,15 +351,22 @@ def scorecard(root: Path = OUT) -> str:
     for r in late:
         r["judgment"] = None   # judged after the cutoff: not scored
     jr = [r for r in rows if r["judgment"]]
-    md += ["", "## 判断（Claude 挑出来细看的）", "",
+    every = [r for r in rows if r["day"] >= EVERY_FROM]
+    md += ["", "## 判断", "",
            f"判断必须在预测日 {CUTOFF} ET 前写好（盘后财报之前；明天盘前、凌晨发的财报也在这之前），晚了不算分。"
+           f"{EVERY_FROM} 起每个财报都要给涨或跌（用户 10-19），没给或晚交的在「全部财报」那行算错。"
            + (f"这次有 {len(late)} 条晚交，没算。" if late else ""), ""]
-    if not jr:
+    if not jr and not every:
         md.append("还没有带判断、而且已经记分的财报。")
     else:
         dirs = [r for r in jr if r["judgment"].get("direction") in ("up", "down")]
         bigs = [r for r in jr if r["judgment"].get("big") in (True, False) and r["result"]["big"] is not None]
         md += ["| 项目 | 次数 | 对的比例 |", "|---|---|---|"]
+        if every:
+            called = [r for r in every if r["judgment"] and r["judgment"].get("direction") in ("up", "down")]
+            right = sum((r["judgment"]["direction"] == "up") == r["result"]["up"] for r in called)
+            md.append(f"| 方向按开盘，全部财报（没给或晚交算错） | {len(every)} | {right / len(every):.0%} |")
+            md.append(f"| 给了涨跌的比例 | {len(every)} | {len(called) / len(every):.0%} |")
         if dirs:
             md.append(f"| 方向（按开盘） | {len(dirs)} | "
                       f"{sum((r['judgment']['direction'] == 'up') == r['result']['up'] for r in dirs) / len(dirs):.0%} |")
