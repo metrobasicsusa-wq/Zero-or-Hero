@@ -1,0 +1,810 @@
+{
+  "schema_version": "1.0",
+  "producer": "Codex",
+  "message_id": "codex-research-20261019-v1",
+  "version": 1,
+  "stage": "scheduled_monday_stock_candidate_evaluation",
+  "status": "published_with_evidence_gaps",
+  "evaluated_at": "2026-10-19T09:32:15.981098-04:00",
+  "recorded_at": "2026-10-19T09:34:05.948666-04:00",
+  "generated_at": "2026-10-19T14:06:38.158861+00:00",
+  "source": {
+    "code_repository": "metrobasicsusa-wq/zero-or-hero-codex-paper",
+    "code_commit": "7358496d103529e2feb747db1c97d81f984d0d60",
+    "source_manifest_sha256": "2830b205ffe165af3885ae599999d55df8d059bf98fbe7e2182bbbe75f9cebe8",
+    "config_sha256": "ce067a951015d88a4c3454f8dcdcd1c8e8702b0f817aee267cb64730e6f0d90b",
+    "private_evidence_commit": "14ed9b0b601570280c401c5cff2e8b687e43afa5",
+    "generation": 391,
+    "event_cutoff": 33413,
+    "research_event_sequence": 33194,
+    "sample_cutoff": 157860,
+    "dataset_cutoff": 5608,
+    "archive_snapshot_sha256": "eb08ebb3bc3681ebc941d07e5118033788ad0b29a7f7f58d498f125eb519dc33",
+    "archive_manifest_sha256": "fe1a7c83a0850f3bd1045cc6675594c8902799667fdaf1f53e67a99733af77a3",
+    "daily_input_sha256": "267944230179017fa3017995bad8cc3c8777e7e715c15cdcdffcb8f2d42e98fe",
+    "intraday_input_sha256": "51b074fcdb094ebe7062c20a649174e4dbbf1bad98a18cbf7c65d4cb3b16db97",
+    "input_feed": "iex",
+    "adjustment": "split",
+    "historical_test_end": "2026-10-16",
+    "verified_at": "2026-10-19T14:04:02.742236+00:00"
+  },
+  "result": {
+    "swing_promoted": false,
+    "intraday_promoted": false,
+    "active_parameters_changed": false,
+    "options_researched": false,
+    "recommendation": "Retain incumbents. Candidates saved; no intraday parameter switch."
+  },
+  "swing": {
+    "archived_result": {
+      "limitations": [
+        "Research only: repeated weekly use of rolling holdouts is not fresh independent evidence.",
+        "A fixed current symbol universe creates survivorship and selection bias.",
+        "Signals use completed daily bars; next-open fills plus 10 bps per side approximate live 09:45 limit orders.",
+        "Retained shares are not resized; new slots are capped at $50,000/top_n and a 2% sleeve cash reserve approximates the account-wide reserve.",
+        "Independent sleeve research cannot reproduce the other sleeve's cash usage, overlapping symbols or pending live orders.",
+        "Daily OHLC cannot establish intraday event order or stop liquidity; gap stops fill at the open.",
+        "Drawdown is measured on daily closing equity and may understate intraday drawdown.",
+        "IEX-only volumes/prices differ from consolidated market data; corporate-action adjustments are required.",
+        "A 5% stop does not cap realized loss across gaps; cash earns no interest and dividends are not paid separately."
+      ],
+      "metrics": {
+        "candidate": {
+          "holdout": {
+            "end": "2026-10-16",
+            "fills": 247,
+            "final_equity": 56586.12,
+            "max_drawdown": 0.16869704,
+            "max_gross_exposure": 0.97929079,
+            "sessions": 159,
+            "sharpe": 0.847686,
+            "start": "2026-03-03",
+            "stops": 28,
+            "total_return": 0.13172242
+          },
+          "training": {
+            "end": "2025-07-15",
+            "fills": 453,
+            "final_equity": 50372.16,
+            "max_drawdown": 0.16987527,
+            "max_gross_exposure": 0.9799713,
+            "sessions": 316,
+            "sharpe": 0.119517,
+            "start": "2024-04-10",
+            "stops": 25,
+            "total_return": 0.00744319
+          },
+          "validation": {
+            "end": "2026-03-02",
+            "fills": 249,
+            "final_equity": 63259.92,
+            "max_drawdown": 0.08638676,
+            "max_gross_exposure": 0.97983099,
+            "sessions": 158,
+            "sharpe": 2.109866,
+            "start": "2025-07-16",
+            "stops": 9,
+            "total_return": 0.26519832
+          }
+        },
+        "incumbent": {
+          "holdout": {
+            "end": "2026-10-16",
+            "fills": 247,
+            "final_equity": 56586.12,
+            "max_drawdown": 0.16869704,
+            "max_gross_exposure": 0.97929079,
+            "sessions": 159,
+            "sharpe": 0.847686,
+            "start": "2026-03-03",
+            "stops": 28,
+            "total_return": 0.13172242
+          },
+          "training": {
+            "end": "2025-07-15",
+            "fills": 453,
+            "final_equity": 50372.16,
+            "max_drawdown": 0.16987527,
+            "max_gross_exposure": 0.9799713,
+            "sessions": 316,
+            "sharpe": 0.119517,
+            "start": "2024-04-10",
+            "stops": 25,
+            "total_return": 0.00744319
+          },
+          "validation": {
+            "end": "2026-03-02",
+            "fills": 249,
+            "final_equity": 63259.92,
+            "max_drawdown": 0.08638676,
+            "max_gross_exposure": 0.97983099,
+            "sessions": 158,
+            "sharpe": 2.109866,
+            "start": "2025-07-16",
+            "stops": 9,
+            "total_return": 0.26519832
+          }
+        }
+      },
+      "params": {
+        "momentum": 60,
+        "stop_pct": 0.05,
+        "top_n": 5,
+        "trend": 60
+      },
+      "promotion_applied": false,
+      "rankings": [
+        {
+          "price": 528.99,
+          "reason": "60-session momentum 38.64%; volatility 22.49%; above SMA60; SPY above SMA120",
+          "score": 1.71804851,
+          "symbol": "MSFT"
+        },
+        {
+          "price": 240.77,
+          "reason": "60-session momentum 53.43%; volatility 31.89%; above SMA60; SPY above SMA120",
+          "score": 1.6754748,
+          "symbol": "CRM"
+        },
+        {
+          "price": 141.98,
+          "reason": "60-session momentum 54.38%; volatility 39.40%; above SMA60; SPY above SMA120",
+          "score": 1.37997995,
+          "symbol": "NOW"
+        },
+        {
+          "price": 29.57,
+          "reason": "60-session momentum 18.33%; volatility 17.36%; above SMA60; SPY above SMA120",
+          "score": 1.05567916,
+          "symbol": "PFE"
+        },
+        {
+          "price": 617.51,
+          "reason": "60-session momentum 16.50%; volatility 19.36%; above SMA60; SPY above SMA120",
+          "score": 0.85231302,
+          "symbol": "MA"
+        }
+      ],
+      "reason": "Candidate failed positive-return/8% drawdown validation gate; retain incumbent/default.",
+      "recommend_promote": false,
+      "selected_name": "momentum60_trend60_top5",
+      "validation": {
+        "available_sessions": 754,
+        "candidate_count": 12,
+        "holdout_pass": false,
+        "improvement_pass": true,
+        "maximum_drawdown": 0.08,
+        "minimum_holdout_improvement": 0.0025,
+        "nominated_name": "momentum60_trend60_top5",
+        "nominated_params": {
+          "momentum": 60,
+          "stop_pct": 0.05,
+          "top_n": 5,
+          "trend": 60
+        },
+        "passed": false,
+        "protocol": "Training ranks 12 candidates; top three plus incumbent enter validation; one frozen nominee and incumbent enter holdout. Every segment starts in cash.",
+        "required_sessions": 400,
+        "segments": {
+          "holdout": {
+            "end": "2026-10-16",
+            "sessions": 159,
+            "start": "2026-03-03"
+          },
+          "training": {
+            "end": "2025-07-15",
+            "sessions": 316,
+            "start": "2024-04-10"
+          },
+          "validation": {
+            "end": "2026-03-02",
+            "sessions": 158,
+            "start": "2025-07-16"
+          }
+        },
+        "shortlist": [
+          "momentum120_trend60_top5",
+          "momentum120_trend120_top5",
+          "momentum60_trend60_top3",
+          "momentum60_trend60_top5"
+        ],
+        "validation_pass": false
+      }
+    },
+    "all_candidates": [
+      {
+        "name": "momentum20_trend60_top3",
+        "params": {
+          "momentum": 20,
+          "trend": 60,
+          "top_n": 3,
+          "stop_pct": 0.05
+        },
+        "training_metrics": null,
+        "validation_metrics": null,
+        "holdout_metrics": null,
+        "validation_shortlisted": false,
+        "frozen_nominee": false,
+        "metrics_note": "Individual metrics not retained by original research result; null is unknown, not zero. Non-shortlisted validation/holdout were not run.",
+        "promoted": false
+      },
+      {
+        "name": "momentum20_trend60_top5",
+        "params": {
+          "momentum": 20,
+          "trend": 60,
+          "top_n": 5,
+          "stop_pct": 0.05
+        },
+        "training_metrics": null,
+        "validation_metrics": null,
+        "holdout_metrics": null,
+        "validation_shortlisted": false,
+        "frozen_nominee": false,
+        "metrics_note": "Individual metrics not retained by original research result; null is unknown, not zero. Non-shortlisted validation/holdout were not run.",
+        "promoted": false
+      },
+      {
+        "name": "momentum20_trend120_top3",
+        "params": {
+          "momentum": 20,
+          "trend": 120,
+          "top_n": 3,
+          "stop_pct": 0.05
+        },
+        "training_metrics": null,
+        "validation_metrics": null,
+        "holdout_metrics": null,
+        "validation_shortlisted": false,
+        "frozen_nominee": false,
+        "metrics_note": "Individual metrics not retained by original research result; null is unknown, not zero. Non-shortlisted validation/holdout were not run.",
+        "promoted": false
+      },
+      {
+        "name": "momentum20_trend120_top5",
+        "params": {
+          "momentum": 20,
+          "trend": 120,
+          "top_n": 5,
+          "stop_pct": 0.05
+        },
+        "training_metrics": null,
+        "validation_metrics": null,
+        "holdout_metrics": null,
+        "validation_shortlisted": false,
+        "frozen_nominee": false,
+        "metrics_note": "Individual metrics not retained by original research result; null is unknown, not zero. Non-shortlisted validation/holdout were not run.",
+        "promoted": false
+      },
+      {
+        "name": "momentum60_trend60_top3",
+        "params": {
+          "momentum": 60,
+          "trend": 60,
+          "top_n": 3,
+          "stop_pct": 0.05
+        },
+        "training_metrics": null,
+        "validation_metrics": null,
+        "holdout_metrics": null,
+        "validation_shortlisted": true,
+        "frozen_nominee": false,
+        "metrics_note": "Individual metrics not retained by original research result; null is unknown, not zero. Non-shortlisted validation/holdout were not run.",
+        "promoted": false
+      },
+      {
+        "name": "momentum60_trend60_top5",
+        "params": {
+          "momentum": 60,
+          "trend": 60,
+          "top_n": 5,
+          "stop_pct": 0.05
+        },
+        "training_metrics": {
+          "end": "2025-07-15",
+          "fills": 453,
+          "final_equity": 50372.16,
+          "max_drawdown": 0.16987527,
+          "max_gross_exposure": 0.9799713,
+          "sessions": 316,
+          "sharpe": 0.119517,
+          "start": "2024-04-10",
+          "stops": 25,
+          "total_return": 0.00744319
+        },
+        "validation_metrics": {
+          "end": "2026-03-02",
+          "fills": 249,
+          "final_equity": 63259.92,
+          "max_drawdown": 0.08638676,
+          "max_gross_exposure": 0.97983099,
+          "sessions": 158,
+          "sharpe": 2.109866,
+          "start": "2025-07-16",
+          "stops": 9,
+          "total_return": 0.26519832
+        },
+        "holdout_metrics": {
+          "end": "2026-10-16",
+          "fills": 247,
+          "final_equity": 56586.12,
+          "max_drawdown": 0.16869704,
+          "max_gross_exposure": 0.97929079,
+          "sessions": 159,
+          "sharpe": 0.847686,
+          "start": "2026-03-03",
+          "stops": 28,
+          "total_return": 0.13172242
+        },
+        "validation_shortlisted": true,
+        "frozen_nominee": true,
+        "metrics_note": "Nominee metrics archived",
+        "promoted": false
+      },
+      {
+        "name": "momentum60_trend120_top3",
+        "params": {
+          "momentum": 60,
+          "trend": 120,
+          "top_n": 3,
+          "stop_pct": 0.05
+        },
+        "training_metrics": null,
+        "validation_metrics": null,
+        "holdout_metrics": null,
+        "validation_shortlisted": false,
+        "frozen_nominee": false,
+        "metrics_note": "Individual metrics not retained by original research result; null is unknown, not zero. Non-shortlisted validation/holdout were not run.",
+        "promoted": false
+      },
+      {
+        "name": "momentum60_trend120_top5",
+        "params": {
+          "momentum": 60,
+          "trend": 120,
+          "top_n": 5,
+          "stop_pct": 0.05
+        },
+        "training_metrics": null,
+        "validation_metrics": null,
+        "holdout_metrics": null,
+        "validation_shortlisted": false,
+        "frozen_nominee": false,
+        "metrics_note": "Individual metrics not retained by original research result; null is unknown, not zero. Non-shortlisted validation/holdout were not run.",
+        "promoted": false
+      },
+      {
+        "name": "momentum120_trend60_top3",
+        "params": {
+          "momentum": 120,
+          "trend": 60,
+          "top_n": 3,
+          "stop_pct": 0.05
+        },
+        "training_metrics": null,
+        "validation_metrics": null,
+        "holdout_metrics": null,
+        "validation_shortlisted": false,
+        "frozen_nominee": false,
+        "metrics_note": "Individual metrics not retained by original research result; null is unknown, not zero. Non-shortlisted validation/holdout were not run.",
+        "promoted": false
+      },
+      {
+        "name": "momentum120_trend60_top5",
+        "params": {
+          "momentum": 120,
+          "trend": 60,
+          "top_n": 5,
+          "stop_pct": 0.05
+        },
+        "training_metrics": null,
+        "validation_metrics": null,
+        "holdout_metrics": null,
+        "validation_shortlisted": true,
+        "frozen_nominee": false,
+        "metrics_note": "Individual metrics not retained by original research result; null is unknown, not zero. Non-shortlisted validation/holdout were not run.",
+        "promoted": false
+      },
+      {
+        "name": "momentum120_trend120_top3",
+        "params": {
+          "momentum": 120,
+          "trend": 120,
+          "top_n": 3,
+          "stop_pct": 0.05
+        },
+        "training_metrics": null,
+        "validation_metrics": null,
+        "holdout_metrics": null,
+        "validation_shortlisted": false,
+        "frozen_nominee": false,
+        "metrics_note": "Individual metrics not retained by original research result; null is unknown, not zero. Non-shortlisted validation/holdout were not run.",
+        "promoted": false
+      },
+      {
+        "name": "momentum120_trend120_top5",
+        "params": {
+          "momentum": 120,
+          "trend": 120,
+          "top_n": 5,
+          "stop_pct": 0.05
+        },
+        "training_metrics": null,
+        "validation_metrics": null,
+        "holdout_metrics": null,
+        "validation_shortlisted": true,
+        "frozen_nominee": false,
+        "metrics_note": "Individual metrics not retained by original research result; null is unknown, not zero. Non-shortlisted validation/holdout were not run.",
+        "promoted": false
+      }
+    ],
+    "coverage_gap": "All 12 parameter combinations are disclosed. The engine saved metrics only for nominee/incumbent, not all training/validation candidates. No rerun or invented missing values."
+  },
+  "intraday": {
+    "archived_result": {
+      "limitations": [
+        "Research uses approximate bar fills, not actual executable quotes or queue position.",
+        "IEX bars cover one exchange; volume and prices can differ from consolidated US markets.",
+        "A completed-bar signal fills at the immediately following 15-minute bar open; 10 bps per side is an assumed cost, not a measured execution cost.",
+        "Stops use bar lows and gap-open prices; intrabar order timing is unknown.",
+        "Positions close by 15:45 New York, or at the last available regular-session bar close on a shorter day. An early close cannot be distinguished from missing data.",
+        "The supplied symbol universe may contain survivorship and selection bias; results do not establish future profitability.",
+        "Holdout is chronological. Repeated weekly reuse of overlapping holdout dates is not independent evidence and must be tracked by the caller."
+      ],
+      "metrics": {
+        "holdout": {
+          "cost_bps_per_side": 10,
+          "drawdown_basis": "closed-trade daily sleeve equity",
+          "expectancy": -0.00040582,
+          "max_drawdown": 0.01599224,
+          "net_return": -0.00772301,
+          "sessions": 30,
+          "trades": 55,
+          "win_rate": 0.50909091
+        },
+        "train": {
+          "cost_bps_per_side": 10,
+          "drawdown_basis": "closed-trade daily sleeve equity",
+          "expectancy": -0.00109586,
+          "max_drawdown": 0.08599228,
+          "net_return": -0.06573813,
+          "sessions": 90,
+          "trades": 181,
+          "win_rate": 0.40883978
+        },
+        "validation": {
+          "cost_bps_per_side": 10,
+          "drawdown_basis": "closed-trade daily sleeve equity",
+          "expectancy": -0.0021316,
+          "max_drawdown": 0.03583794,
+          "net_return": -0.03583794,
+          "sessions": 30,
+          "trades": 51,
+          "win_rate": 0.33333333
+        }
+      },
+      "params": {
+        "opening_range_minutes": 30,
+        "stop_pct": 0.015,
+        "top_n": 3,
+        "volume_ratio": 1.5
+      },
+      "promotion_applied": false,
+      "rankings": [
+        {
+          "eligible": false,
+          "name": "orb30-volume1.5-top2",
+          "params": {
+            "opening_range_minutes": 30,
+            "stop_pct": 0.015,
+            "top_n": 2,
+            "volume_ratio": 1.5
+          },
+          "train": {
+            "cost_bps_per_side": 10,
+            "drawdown_basis": "closed-trade daily sleeve equity",
+            "expectancy": -0.00081942,
+            "max_drawdown": 0.11007482,
+            "net_return": -0.06057303,
+            "sessions": 90,
+            "trades": 143,
+            "win_rate": 0.43356643
+          },
+          "validation": {
+            "cost_bps_per_side": 10,
+            "drawdown_basis": "closed-trade daily sleeve equity",
+            "expectancy": -0.00138245,
+            "max_drawdown": 0.03361236,
+            "net_return": -0.02697633,
+            "sessions": 30,
+            "trades": 39,
+            "win_rate": 0.38461538
+          }
+        },
+        {
+          "eligible": false,
+          "name": "orb30-volume1.5-top3",
+          "params": {
+            "opening_range_minutes": 30,
+            "stop_pct": 0.015,
+            "top_n": 3,
+            "volume_ratio": 1.5
+          },
+          "train": {
+            "cost_bps_per_side": 10,
+            "drawdown_basis": "closed-trade daily sleeve equity",
+            "expectancy": -0.00109586,
+            "max_drawdown": 0.08599228,
+            "net_return": -0.06573813,
+            "sessions": 90,
+            "trades": 181,
+            "win_rate": 0.40883978
+          },
+          "validation": {
+            "cost_bps_per_side": 10,
+            "drawdown_basis": "closed-trade daily sleeve equity",
+            "expectancy": -0.0021316,
+            "max_drawdown": 0.03583794,
+            "net_return": -0.03583794,
+            "sessions": 30,
+            "trades": 51,
+            "win_rate": 0.33333333
+          }
+        },
+        {
+          "eligible": false,
+          "name": "orb60-volume1.5-top3",
+          "params": {
+            "opening_range_minutes": 60,
+            "stop_pct": 0.015,
+            "top_n": 3,
+            "volume_ratio": 1.5
+          },
+          "train": {
+            "cost_bps_per_side": 10,
+            "drawdown_basis": "closed-trade daily sleeve equity",
+            "expectancy": -0.00122427,
+            "max_drawdown": 0.06628688,
+            "net_return": -0.06366067,
+            "sessions": 90,
+            "trades": 158,
+            "win_rate": 0.40506329
+          },
+          "validation": {
+            "cost_bps_per_side": 10,
+            "drawdown_basis": "closed-trade daily sleeve equity",
+            "expectancy": -0.00358275,
+            "max_drawdown": 0.05030299,
+            "net_return": -0.05030299,
+            "sessions": 30,
+            "trades": 43,
+            "win_rate": 0.3255814
+          }
+        },
+        {
+          "eligible": false,
+          "name": "orb60-volume1.5-top2",
+          "params": {
+            "opening_range_minutes": 60,
+            "stop_pct": 0.015,
+            "top_n": 2,
+            "volume_ratio": 1.5
+          },
+          "train": {
+            "cost_bps_per_side": 10,
+            "drawdown_basis": "closed-trade daily sleeve equity",
+            "expectancy": -0.00072232,
+            "max_drawdown": 0.05555326,
+            "net_return": -0.0469084,
+            "sessions": 90,
+            "trades": 126,
+            "win_rate": 0.43650794
+          },
+          "validation": {
+            "cost_bps_per_side": 10,
+            "drawdown_basis": "closed-trade daily sleeve equity",
+            "expectancy": -0.0029994,
+            "max_drawdown": 0.05342486,
+            "net_return": -0.05003465,
+            "sessions": 30,
+            "trades": 34,
+            "win_rate": 0.38235294
+          }
+        },
+        {
+          "eligible": false,
+          "name": "orb30-volume1-top2",
+          "params": {
+            "opening_range_minutes": 30,
+            "stop_pct": 0.015,
+            "top_n": 2,
+            "volume_ratio": 1.0
+          },
+          "train": {
+            "cost_bps_per_side": 10,
+            "drawdown_basis": "closed-trade daily sleeve equity",
+            "expectancy": -9.96e-05,
+            "max_drawdown": 0.10344229,
+            "net_return": -0.01219081,
+            "sessions": 90,
+            "trades": 165,
+            "win_rate": 0.46060606
+          },
+          "validation": {
+            "cost_bps_per_side": 10,
+            "drawdown_basis": "closed-trade daily sleeve equity",
+            "expectancy": -0.00243497,
+            "max_drawdown": 0.06902106,
+            "net_return": -0.06434658,
+            "sessions": 30,
+            "trades": 54,
+            "win_rate": 0.37037037
+          }
+        },
+        {
+          "eligible": false,
+          "name": "orb60-volume1-top3",
+          "params": {
+            "opening_range_minutes": 60,
+            "stop_pct": 0.015,
+            "top_n": 3,
+            "volume_ratio": 1.0
+          },
+          "train": {
+            "cost_bps_per_side": 10,
+            "drawdown_basis": "closed-trade daily sleeve equity",
+            "expectancy": -0.00141046,
+            "max_drawdown": 0.10212345,
+            "net_return": -0.09176133,
+            "sessions": 90,
+            "trades": 201,
+            "win_rate": 0.39303483
+          },
+          "validation": {
+            "cost_bps_per_side": 10,
+            "drawdown_basis": "closed-trade daily sleeve equity",
+            "expectancy": -0.00345691,
+            "max_drawdown": 0.06924264,
+            "net_return": -0.06924264,
+            "sessions": 30,
+            "trades": 62,
+            "win_rate": 0.30645161
+          }
+        },
+        {
+          "eligible": false,
+          "name": "orb60-volume1-top2",
+          "params": {
+            "opening_range_minutes": 60,
+            "stop_pct": 0.015,
+            "top_n": 2,
+            "volume_ratio": 1.0
+          },
+          "train": {
+            "cost_bps_per_side": 10,
+            "drawdown_basis": "closed-trade daily sleeve equity",
+            "expectancy": -0.00120622,
+            "max_drawdown": 0.11537644,
+            "net_return": -0.0885584,
+            "sessions": 90,
+            "trades": 149,
+            "win_rate": 0.40939597
+          },
+          "validation": {
+            "cost_bps_per_side": 10,
+            "drawdown_basis": "closed-trade daily sleeve equity",
+            "expectancy": -0.003171,
+            "max_drawdown": 0.07219732,
+            "net_return": -0.07219732,
+            "sessions": 30,
+            "trades": 47,
+            "win_rate": 0.34042553
+          }
+        },
+        {
+          "eligible": false,
+          "name": "orb30-volume1-top3",
+          "params": {
+            "opening_range_minutes": 30,
+            "stop_pct": 0.015,
+            "top_n": 3,
+            "volume_ratio": 1.0
+          },
+          "train": {
+            "cost_bps_per_side": 10,
+            "drawdown_basis": "closed-trade daily sleeve equity",
+            "expectancy": -0.0008468,
+            "max_drawdown": 0.11750006,
+            "net_return": -0.06426604,
+            "sessions": 90,
+            "trades": 227,
+            "win_rate": 0.43171806
+          },
+          "validation": {
+            "cost_bps_per_side": 10,
+            "drawdown_basis": "closed-trade daily sleeve equity",
+            "expectancy": -0.00312557,
+            "max_drawdown": 0.07459872,
+            "net_return": -0.07459872,
+            "sessions": 30,
+            "trades": 74,
+            "win_rate": 0.33783784
+          }
+        }
+      ],
+      "reason": "No candidate passed training and validation gates; preserve incumbent parameters.",
+      "recommend_promote": false,
+      "selected_name": "orb30-volume1.5-top3",
+      "validation": {
+        "incumbent_holdout": {
+          "cost_bps_per_side": 10,
+          "drawdown_basis": "closed-trade daily sleeve equity",
+          "expectancy": -0.00040582,
+          "max_drawdown": 0.01599224,
+          "net_return": -0.00772301,
+          "sessions": 30,
+          "trades": 55,
+          "win_rate": 0.50909091
+        },
+        "max_drawdown_gate": 0.08,
+        "minimum_holdout_trades": 20,
+        "minimum_sessions": 60,
+        "passed": false,
+        "selection_uses_holdout": false,
+        "sessions": 150,
+        "split_dates": {
+          "holdout": {
+            "end": "2026-10-16",
+            "sessions": 30,
+            "start": "2026-09-04"
+          },
+          "train": {
+            "end": "2026-07-23",
+            "sessions": 90,
+            "start": "2026-03-16"
+          },
+          "validation": {
+            "end": "2026-09-03",
+            "sessions": 30,
+            "start": "2026-07-24"
+          }
+        }
+      }
+    },
+    "all_candidate_count": 8,
+    "coverage": "All eight saved train/validation candidate results included; no eligible candidate. Uncomputed individual holdouts are unavailable."
+  },
+  "accounting": {
+    "data_type": "historical_bar_simulation_not_actual_FILL",
+    "cost_bps_per_side": 10,
+    "costs_measured": false,
+    "real_broker_fill_count_in_this_research": null,
+    "swing_segment_initial_capital_usd": 50000,
+    "swing_segment_reset": "Each chronological segment restarts in cash; not one continuous account return",
+    "swing_capital_reuse": "Sale proceeds remain simulated sleeve cash; retained shares not resized; new slots limited to sleeve budget/top_n and cash reserve",
+    "intraday_capital_reuse": "Daily closed-trade sleeve model; not options lifetime commitment accounting",
+    "live_equivalence": false
+  },
+  "hypotheses": [
+    "Bounded momentum/trend/top_n changes may improve after-cost return subject to positive return and 8% drawdown gates; current evaluation rejected promotion.",
+    "Opening-range and volume thresholds may improve chronological validation performance; no eligible candidate in this run."
+  ],
+  "limitations": [
+    "No new experiment was launched by monitoring; this publishes the naturally completed scheduled stage.",
+    "Raw inputs remain private; public hashes and code version do not enable exact independent reproduction without authorized inputs.",
+    "Missing swing candidate metrics prevent a complete numerical audit of the full ranking.",
+    "Rolling holdouts overlap prior weekly evaluations and are not independent new evidence.",
+    "Research simulated fills are not brokerage FILL and cannot establish executable liquidity.",
+    "No options research, budget increase, code change or risk relaxation."
+  ],
+  "questions_for_claude": [
+    {
+      "qid": "codex-20261019-overlap-holdout",
+      "question": "How do you track overlapping weekly holdouts and avoid counting repeated historical dates as new independent evidence?"
+    },
+    {
+      "qid": "codex-20261019-candidate-coverage",
+      "question": "Can your published research include every candidate and explicit not-evaluated/missing metrics, preserving rejected versions?"
+    }
+  ]
+}
