@@ -3769,6 +3769,39 @@ class EarningsForecastAroundTheReport(unittest.TestCase):
         self.assertEqual((r["before"], r["release"], r["up"]), (104.0, "2026-10-20T06:31-04:00", False))
 
 
+class DiscordPost(unittest.TestCase):
+    def test_page_to_cards_tables_footer_and_refusals(self):
+        from unittest import mock
+        from hero import discord_post as dp
+        page = ("# 财报预测 10-19\n\n今晚和明早。\n\n## 判断\n\n| 股票 | 定价 | 方向 |\n|---|---|---|\n"
+                "| GE | 6.0% | 涨 |\n| HAL | 5.2% | 不判 |\n\n## 记分\n\n还没有。\n")
+        cs = dp.cards(page, 1)
+        self.assertEqual([c["title"] for c in cs], ["财报预测 10-19", "判断", "记分"])
+        self.assertEqual(cs[1]["description"], "**股票 · 定价 · 方向**\nGE · 6.0% · 涨\nHAL · 5.2% · 不判\n")
+        self.assertTrue(all(c["footer"]["text"] == dp.FOOTER for c in cs))
+        for ok in ("PANW261023C00200000", "SPY261019P00762000", "AKAM261023P00050000"):
+            self.assertIsNone(dp.unsafe(ok))
+        for bad in ("https://discord.com/api/webhooks/1/x", "6157ff3f-1623-47fc-8139-97d6feb1982a", "PKABCDEFGHIJ12345678"):
+            self.assertTrue(dp.unsafe(bad))
+        with tempfile.TemporaryDirectory() as d:
+            root = Path(d)
+            (root / "posts" / "earnings").mkdir(parents=True)
+            (root / "posts" / "earnings" / "a.md").write_text(page)
+            (root / "posts" / "earnings" / "b.md").write_text(page + "\n6157ff3f-1623-47fc-8139-97d6feb1982a\n")
+            (root / "notes.md").write_text(page)
+            sent = []
+            with mock.patch.object(dp, "ROOT", root), mock.patch.object(dp, "POSTS", root / "posts"), \
+                    mock.patch.object(dp, "send", lambda url, cs: sent.append((url, len(cs))) or True), \
+                    mock.patch.dict(os.environ, {"DC_WEBHOOK_EARNINGS": "https://example.invalid/hook"}, clear=False):
+                self.assertEqual(dp.main(["earnings", "posts/earnings/a.md"]), 0)
+                self.assertEqual(dp.main(["earnings", "posts/earnings/b.md"]), 1)      # holds an id: refused
+                self.assertEqual(dp.main(["earnings", "notes.md"]), 2)                 # only pages under posts/
+                self.assertEqual(dp.main(["earnings", "posts/../notes.md"]), 2)
+                os.environ.pop("DC_WEBHOOK_DAILY", None)
+                self.assertEqual(dp.main(["daily", "posts/earnings/a.md"]), 0)        # no secret yet: skipped
+            self.assertEqual(sent, [("https://example.invalid/hook", 3)])
+
+
 class ResearchSniperFactors(unittest.TestCase):
     def test_breakout_compares_the_open_on_the_split_adjusted_scale(self):
         from hero.research_sniper_factors2 import tag

@@ -1,0 +1,45 @@
+name: post
+
+# Owner, 10-19: send a page Claude wrote (posts/<channel>/*.md) to one of the owner's Discord channels.
+# One-way: the webhook addresses are repository secrets and never leave this job. A channel whose secret is
+# not set yet is skipped without failing. Reads the repository only; commits nothing.
+on:
+  workflow_dispatch:
+    inputs:
+      channel:
+        description: "Which Discord channel"
+        type: choice
+        options: [follow, earnings, daily, research]
+      file:
+        description: "The page to send, e.g. posts/earnings/2026-10-19.md"
+        type: string
+        required: true
+
+permissions:
+  contents: read
+
+concurrency:
+  group: hero-post-${{ inputs.channel }}
+  cancel-in-progress: false
+
+jobs:
+  post:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install -r requirements.txt
+      - name: Post
+        env:
+          CHANNEL: ${{ inputs.channel }}
+          FILE: ${{ inputs.file }}
+          DC_WEBHOOK_FOLLOW: ${{ inputs.channel == 'follow' && secrets.DC_WEBHOOK_FOLLOW || '' }}
+          DC_WEBHOOK_EARNINGS: ${{ inputs.channel == 'earnings' && secrets.DC_WEBHOOK_EARNINGS || '' }}
+          DC_WEBHOOK_DAILY: ${{ inputs.channel == 'daily' && secrets.DC_WEBHOOK_DAILY || '' }}
+          DC_WEBHOOK_RESEARCH: ${{ inputs.channel == 'research' && secrets.DC_WEBHOOK_RESEARCH || '' }}
+        run: python -m hero.discord_post "$CHANNEL" "$FILE"
