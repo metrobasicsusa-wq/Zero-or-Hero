@@ -370,14 +370,16 @@
         "kind": "earnings",
         "start": 500,
         "name": "财报彩票",
-        "n": 3
+        "n": 3,
+        "stop_entries": true, "stop_note": "10-19 用户：财报只做正股或两倍 ETF（期权财报后隐含波动掉得太快）。先停开新仓，正股 / 两倍版收盘后换上"
       },
       {
         "id": "earn-1000",
         "kind": "earnings",
         "start": 1000,
         "name": "财报彩票",
-        "n": 3
+        "n": 3,
+        "stop_entries": true, "stop_note": "10-19 用户：财报只做正股或两倍 ETF（期权财报后隐含波动掉得太快）。先停开新仓，正股 / 两倍版收盘后换上"
       },
       {
         "id": "tqqq-500",
@@ -398,10 +400,12 @@
         "fraction": 1.0
       },
       {"id": "relay-500", "kind": "relay", "start": 500, "name": "接力：财报彩票全仓到 3 倍，再全仓 SOXL", "fraction": 1.0,
-       "switch_at": 3, "zero_line": 0.6
+       "switch_at": 3, "zero_line": 0.6,
+       "stop_entries": true, "stop_note": "10-19 用户：财报只做正股或两倍 ETF（期权财报后隐含波动掉得太快）。先停开新仓，正股 / 两倍版收盘后换上"
       },
       {"id": "relay-1000", "kind": "relay", "start": 1000, "name": "接力：财报彩票全仓到 3 倍，再全仓 SOXL", "fraction": 1.0,
-       "switch_at": 3, "zero_line": 0.6
+       "switch_at": 3, "zero_line": 0.6,
+       "stop_entries": true, "stop_note": "10-19 用户：财报只做正股或两倍 ETF（期权财报后隐含波动掉得太快）。先停开新仓，正股 / 两倍版收盘后换上"
       },
       {"id": "spydip-500", "kind": "zdte", "half_take": true, "start": 500, "name": "SPY 昨跌 1% 后买看涨（只演算）", "und": "SPY",
        "offset": 0.006, "take": 3, "side": "call", "after_drop": -0.01, "plan_only": true
