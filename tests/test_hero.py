@@ -2285,6 +2285,26 @@ class SniperScore(unittest.TestCase):
             self.assertIn("| 0.3–0.4 | 1 | 100% | 100% | +5.0% | +7.0% |", md)
             self.assertIn("| 2026-10-15 | 1 | CRWV | 看跌 | 0.30 | +5.0% | +7.0% | +150% |", md)
 
+    def test_skipped_names_are_scored_apart_from_the_candidates(self):
+        from hero import research_sniper_score as rs
+        with tempfile.TemporaryDirectory() as d:
+            root = Path(d)
+            (root / "journal-s500" / "sniper").mkdir(parents=True)
+            (root / "journal-s500" / "sniper" / "2026-10-20.json").write_text(json.dumps({"date": "2026-10-20",
+                "sniper": {"symbol": "CLF", "direction": "call", "confidence": 0.3},
+                "candidates": [{"rank": 1, "symbol": "CLF", "direction": "call", "confidence": 0.3}],
+                "skipped": [{"symbol": "AMZN", "direction": "call", "reason": "分析师评级", "why_not": "首选名单"},
+                            {"symbol": "XYZ", "why_not": "no direction: not scored"}]}))
+            ps = rs.picks(root)
+            self.assertEqual([(p["symbol"], p["skipped"]) for p in ps], [("CLF", False), ("AMZN", True)])
+            rows = [rs.score(ps[0], {"o": 14.2, "h": 14.58, "l": 13.32, "c": 13.55}),
+                    rs.score(ps[1], {"o": 255.34, "h": 260.0, "l": 255.2, "c": 259.76})]
+            md = rs.report(rows, {})
+            self.assertIn("| 0.3–0.4 | 1 |", md)                                  # the skipped one stays out of the buckets
+            self.assertIn("| 看过没选（全部） | 1 | 100% |", md)
+            self.assertIn("| 　没选：分析师评级 | 1 |", md)
+            self.assertIn("| 2026-10-20 | 没选（分析师评级） | AMZN | 看涨 | 0.00 |", md)
+
 
 class ResearchIronFly(unittest.TestCase):
     def test_credit_reaction_buyback_and_expiry(self):

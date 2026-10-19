@@ -5,7 +5,10 @@ before 10-15 only have the one pick). For each candidate whose day has closed: t
 picked direction -- the close (open -> close), the best point (high for a call, low for a put) and whether it moved
 3% or more the right way at some point (roughly where a 0.10-delta option can double) -- and, for the one traded,
 the sniper ledgers' booked result. Grouped by confidence and by rank. Stock moves stand in for option prices, which
-for the untraded candidates are not known. Written to research/sniper/scorecard.md. Run: python -m hero.research_sniper_score
+for the untraded candidates are not known. From 10-20 the files also list `skipped`: every scanned name with news that
+was looked at and not made a candidate, in the direction of its gap, with a reason tag (owner, 10-19, after AMZN ran
++3.9% from a 2% gap we set aside as "analyst news"): they are scored the same way and set against the candidates, so
+the names we pass over are measured too. Written to research/sniper/scorecard.md. Run: python -m hero.research_sniper_score
 """
 
 from __future__ import annotations
@@ -31,7 +34,11 @@ def picks(root: Path = ROOT) -> list[dict]:
         for c in cands:
             if c.get("symbol") and c.get("direction") in ("call", "put"):
                 out.append({"day": day, "symbol": c["symbol"], "direction": c["direction"], "rank": int(c.get("rank") or 0),
-                            "confidence": float(c.get("confidence") or 0), "traded": c["symbol"] == traded})
+                            "confidence": float(c.get("confidence") or 0), "traded": c["symbol"] == traded, "skipped": False})
+        for c in d.get("skipped") or []:
+            if c.get("symbol") and c.get("direction") in ("call", "put"):
+                out.append({"day": day, "symbol": c["symbol"], "direction": c["direction"], "rank": 0, "confidence": 0.0,
+                            "traded": False, "skipped": True, "reason": c.get("reason") or "其他"})
     return out
 
 
@@ -75,12 +82,19 @@ def report(rows: list[dict], real: dict) -> str:
           "「当天曾顺向 3%+」大约是 0.1 delta 的期权能翻倍的位置。只有排第一的那只真下单。股价代替期权价，只是粗看。", ""]
     if not rows:
         return "\n".join(md + ["还没有可记分的候选。", ""])
-    md += table(rows, "信心分", [(n, [r for r in rows if lo <= r["confidence"] < hi]) for lo, hi, n in BUCKETS]) + [""]
-    md += table(rows, "排名", [(f"第 {k} 名", [r for r in rows if r["rank"] == k]) for k in sorted({r["rank"] for r in rows})]) + [""]
+    cands, skipped = [r for r in rows if not r.get("skipped")], [r for r in rows if r.get("skipped")]
+    md += table(cands, "信心分", [(n, [r for r in cands if lo <= r["confidence"] < hi]) for lo, hi, n in BUCKETS]) + [""]
+    md += table(cands, "排名", [(f"第 {k} 名", [r for r in cands if r["rank"] == k]) for k in sorted({r["rank"] for r in cands})]) + [""]
+    if skipped:
+        days = {r["day"] for r in skipped}   # set against the candidates of the same days only
+        md += ["看过但没进候选的（按跳空方向记分，10-20 起）：", ""]
+        md += table(rows, "分组", [("进了候选（同一批日子）", [r for r in cands if r["day"] in days]), ("看过没选（全部）", skipped)]
+                    + [(f"　没选：{k}", [r for r in skipped if r["reason"] == k]) for k in sorted({r["reason"] for r in skipped})]) + [""]
     md += ["| 日期 | 排名 | 股票 | 方向 | 信心 | 开盘到收盘 | 最好点 | 真下单结果 |", "|---|---|---|---|---|---|---|---|"]
-    for r in sorted(rows, key=lambda r: (r["day"], r["rank"])):
+    for r in sorted(rows, key=lambda r: (r["day"], r.get("skipped", False), r["rank"])):
         res = real.get((r["day"], r["symbol"]))
-        md.append(f"| {r['day']} | {r['rank']} | {r['symbol']} | {'看涨' if r['direction'] == 'call' else '看跌'} | {r['confidence']:.2f} | "
+        rank = f"没选（{r['reason']}）" if r.get("skipped") else r["rank"]
+        md.append(f"| {r['day']} | {rank} | {r['symbol']} | {'看涨' if r['direction'] == 'call' else '看跌'} | {r['confidence']:.2f} | "
                   f"{r['close_move']:+.1%} | {r['best_move']:+.1%} | {'' if not r['traded'] else (f'{res:+.0%}' if res is not None else '没买或还拿着')} |")
     return "\n".join(md) + "\n"
 
