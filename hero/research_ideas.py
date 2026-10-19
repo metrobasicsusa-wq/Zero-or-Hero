@@ -14,6 +14,7 @@ import statistics
 from datetime import date, timedelta
 from pathlib import Path
 
+from hero import robust
 from hero.research_0dte import SLIP, at_or_after, et_minutes
 from hero.research_0dte_names import pick
 from hero.research_zdte_timing import game
@@ -129,7 +130,21 @@ def cell(rows: list[dict], key: str) -> dict | None:
             "h2": g2["heroes"], "z2": g2["zeros"], "h20": g20["heroes"]}
 
 
-def report(title: str, intro: str, groups: dict[str, list[dict]], exits: dict[str, str]) -> tuple[dict, str]:
+def checks(groups: dict[str, list[dict]], exits: dict[str, str], end: str | None = None) -> str:
+    """hero.robust tables, one per exit: without the best 3, median, years, last 3 months, extra cost."""
+    out = []
+    end = end or max((r["day"] for rs in groups.values() for r in rs), default=None)  # one "last 3 months" for all
+    for x, label in exits.items():
+        rows = {g: robust.summary([(r["day"], r["res"][x]) for r in rs if x in r.get("res", {})], end)
+                for g, rs in groups.items()}
+        if any(rows.values()):
+            out.append(robust.table(rows, f"稳健性检查：{label}"))
+    return "\n".join(out)
+
+
+def report(title: str, intro: str, groups: dict[str, list[dict]], exits: dict[str, str],
+           end: str | None = None) -> tuple[dict, str]:
+    """The per-exit table, then the robustness checks for every exit (hero.robust)."""
     table = {f"{g}|{x}": cell(rs, x) for g, rs in groups.items() for x in exits}
     out = [f"# {title}", "", intro, "", "每格「平均每 $1 / 收在 2 倍以上 / 账本到 2 倍 成功·归零·到 20 倍」（账本每天只做一笔）。只研究，不改交易。", "",
            "| 情况 | 笔数 | " + " | ".join(exits.values()) + " |", "|---|---|" + "---|" * len(exits)]
@@ -138,7 +153,9 @@ def report(title: str, intro: str, groups: dict[str, list[dict]], exits: dict[st
         n = next((c["n"] for c in cs if c), 0)
         out.append(f"| {g} | {n} | " + " | ".join(f"{c['mean']:+.0%} / {c['x2']:.0%} / {c['h2']}·{c['z2']}·{c['h20']}" if c else "—"
                                                 for c in cs) + " |")
-    return table, "\n".join(out) + "\n"
+    md = "\n".join(out) + "\n"
+    rob = checks(groups, exits, end)
+    return table, md + ("\n" + rob if rob else "")
 
 
 def save(name: str, rep: dict, md: str) -> None:

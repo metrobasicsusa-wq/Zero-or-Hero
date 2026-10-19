@@ -3508,6 +3508,40 @@ class ResearchIdeas(unittest.TestCase):
         self.assertEqual((kind_of("2026-09-16"), kind_of("2024-02-13"), kind_of("2024-02-14")), ("Fed", "CPI", ""))
 
 
+class Robust(unittest.TestCase):
+    def test_a_mean_carried_by_three_big_wins_is_flagged(self):
+        from hero import robust
+        xs = [(f"2025-{m:02d}-01", -0.5) for m in range(1, 13)] + [("2024-06-01", 9.0), ("2024-07-01", 8.0), ("2024-08-01", 7.0),
+                                                                    ("2024-09-01", -0.5), ("2024-10-01", -0.5)]
+        s = robust.summary(xs, end="2025-12-31")
+        self.assertGreater(s["mean"], 0)
+        self.assertEqual((s["n"], s["trim"], s["median"]), (17, -0.5, -0.5))
+        self.assertEqual(s["years"]["2025"], (-0.5, 12))
+        self.assertEqual(s["recent"], (-0.5, 3))                                  # Oct, Nov, Dec 2025
+        text = "；".join(s["flags"])
+        for part in ("样本少", "去掉最好 3 笔就不赚", "中位数", "各年份不一致"):
+            self.assertIn(part, text)
+        self.assertTrue(robust.fragile(s))
+        self.assertIn("| a | 17 |", robust.table({"a": s, "b": None}))
+        self.assertIn("| b | 0 |", robust.table({"a": s, "b": None}))
+
+    def test_extra_cost_and_a_steady_edge(self):
+        from hero import robust
+        self.assertAlmostEqual(robust.with_cost(0.0, 0.05), 0.95 / 1.05 - 1)
+        self.assertEqual(robust.with_cost(-1.0, 0.05), -1.0)
+        thin = robust.summary([(f"2025-01-{d:02d}", 0.05 if d % 2 else 0.03) for d in range(1, 31)])
+        self.assertIn("买卖再各多 5% 成本就不赚", "；".join(thin["flags"]))
+        steady = robust.summary([(f"2025-{m:02d}-{d:02d}", 0.3) for m in range(1, 13) for d in (1, 10, 20)])
+        self.assertEqual(steady["flags"], [])
+        self.assertFalse(robust.fragile(steady))
+        self.assertIsNone(robust.summary([]))
+
+    def test_price_basis_catches_a_split(self):
+        from hero import robust
+        pairs = [("2024-05-01", "NVDA", 850.0, 85.0), ("2025-05-01", "NVDA", 110.0, 110.5)]
+        self.assertEqual([b["day"] for b in robust.price_basis(pairs)], ["2024-05-01"])
+
+
 class ResearchEventTurn(unittest.TestCase):
     DAYS = [(date(2026, 8, 3) + timedelta(days=k)).isoformat() for k in range(40)]
 
@@ -3574,7 +3608,8 @@ class ResearchEventTurn(unittest.TestCase):
         gs = et.rules(rep["rows"])
         self.assertEqual(len(gs["反弹：事件前 5 天跌 5%+"]), 3)                  # SMH, QQQ, AAA
         self.assertEqual(len(gs["　反弹 5%+：个股"]), 1)
-        self.assertIn(" / ", et.spread(gs["反弹：事件前 5 天跌 3%+，之后第一个收涨买看涨"], "d5", rep["end"]))
+        from hero.research_ideas import checks
+        self.assertIn("稳健性检查：第 5 天收盘卖", checks(gs, et.EXITS, rep["end"]))
 
 
 class ResearchDipWeek(unittest.TestCase):

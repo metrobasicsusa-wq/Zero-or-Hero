@@ -19,7 +19,8 @@ from datetime import date, timedelta
 
 from hero.research_0dte import at_or_before, et_minutes
 from hero.research_0dte_names import minutes_by_day, pick
-from hero.research_event_turn import RECENT, Pace
+from hero import robust
+from hero.research_event_turn import Pace
 from hero.research_ideas import save
 from hero.research_zdte_timing import OUT, game, play
 
@@ -117,15 +118,11 @@ def groups(rows: list[dict], und: str, entry: str, off: float, ex: str) -> dict[
 def stats(xs: list[tuple[str, float]], end: str) -> dict | None:
     if not xs:
         return None
-    v = sorted(x for _, x in xs)
-    cut = (date.fromisoformat(end) - timedelta(days=RECENT)).isoformat()
-    part = lambda f: [x for d, x in xs if f(d)]
-    a, b, c = part(lambda d: d < "2025-01-01"), part(lambda d: d >= "2025-01-01"), part(lambda d: d >= cut)
+    s = robust.summary(xs, end)
+    part = lambda f: (lambda p: (statistics.mean(p), len(p)) if p else None)([x for d, x in xs if f(d)])
     g2, g20 = game(xs, 2), game(xs, 20)
-    return {"n": len(v), "mean": statistics.mean(v), "trim": statistics.mean(v[:-3]) if len(v) > 3 else None,
-            "median": statistics.median(v), "x2": sum(x >= 1 for x in v) / len(v),
-            "y24": (statistics.mean(a), len(a)) if a else None, "y2526": (statistics.mean(b), len(b)) if b else None,
-            "recent": (statistics.mean(c), len(c)) if c else None, "h2": g2["heroes"], "z2": g2["zeros"], "h20": g20["heroes"]}
+    return {**s, "y24": part(lambda d: d < "2025-01-01"), "y2526": part(lambda d: d >= "2025-01-01"),
+            "h2": g2["heroes"], "z2": g2["zeros"], "h20": g20["heroes"]}
 
 
 def fmt(s: dict | None, key: str) -> str:
@@ -140,8 +137,8 @@ def report(rep: dict) -> tuple[dict, str]:
     for und, entry, off, live, title in SLEEVES:
         out += [f"## {title}：{und} {entry} 进场，离现价 {off:.1%}", "",
                 f"现行出场（{EXITS.get(live, '一半 5 倍、其余回撤（现行）')}）：", "",
-                "| 情况 | 笔数 | 平均每 $1 | 去掉最好 3 笔 | 中位数 | 收在 2 倍以上 | 2024 | 2025–26 | 最近 3 个月 | 账本到 2 倍：成功 / 归零 / 到 20 倍 |",
-                "|---|---|---|---|---|---|---|---|---|---|"]
+                "| 情况 | 笔数 | 平均每 $1 | 去掉最好 3 笔 | 中位数 | 收在 2 倍以上 | 2024 | 2025–26 | 最近 3 个月 | 账本到 2 倍：成功 / 归零 / 到 20 倍 | 提醒 |",
+                "|---|---|---|---|---|---|---|---|---|---|---|"]
         g = groups(rep["rows"], und, entry, off, live)
         for name, xs in g.items():
             s = stats(xs, end)
@@ -149,7 +146,8 @@ def report(rep: dict) -> tuple[dict, str]:
             if not s:
                 continue
             out.append(f"| {name} | {s['n']} | {fmt(s, 'mean')} | {fmt(s, 'trim')} | {fmt(s, 'median')} | {s['x2']:.0%} | "
-                       f"{fmt(s, 'y24')} | {fmt(s, 'y2526')} | {fmt(s, 'recent')} | {s['h2']} / {s['z2']} / {s['h20']} |")
+                       f"{fmt(s, 'y24')} | {fmt(s, 'y2526')} | {fmt(s, 'recent')} | {s['h2']} / {s['z2']} / {s['h20']} | "
+                       f"{'；'.join(s['flags']) or '—'} |")
         others = [x for x in EXITS if x != live]
         out += ["", "其他出场（平均每 $1 / 中位数）：", "", "| 情况 | " + " | ".join(EXITS[x] for x in others) + " |",
                 "|---|" + "---|" * len(others)]

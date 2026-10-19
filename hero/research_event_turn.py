@@ -32,7 +32,6 @@ EVENTS = {**{d: "CPI" for d in CPI}, **{d: "Fed" for d in FED}}
 ETFS = ("SMH", "QQQ")
 SLIP_M = 0.05
 HOLD = 20
-RECENT = 92  # "the last three months", in calendar days
 EXITS = {"d5": "第 5 天收盘卖", "d10": "第 10 天收盘卖", "d20": "第 20 天收盘卖",
          "trail2": "翻倍后回撤 40% 卖（否则第 20 天）", "take3_trail": "一半 3 倍、其余回撤卖"}
 
@@ -192,19 +191,6 @@ def rules(rows: list[dict]) -> dict[str, list[dict]]:
     return out
 
 
-def spread(rows: list[dict], key: str, end: str) -> str:
-    """mean / without the best 3 / median / 2024 / 2025-26 / last three months, for one exit."""
-    xs = sorted(((r["day"], r["res"][key]) for r in rows if key in r.get("res", {})), key=lambda x: x[1])
-    if not xs:
-        return "—"
-    v = [x for _, x in xs]
-    cut = (date.fromisoformat(end) - timedelta(days=RECENT)).isoformat()
-    part = lambda f: (lambda p: f"{statistics.mean(p):+.0%}（{len(p)}）" if p else "—")([x for d, x in xs if f(d)])
-    trim = f"{statistics.mean(v[:-3]):+.0%}" if len(v) > 3 else "—"
-    return (f"{statistics.mean(v):+.0%} / {trim} / {statistics.median(v):+.0%} / "
-            f"{part(lambda d: d < '2025-01-01')} / {part(lambda d: d >= '2025-01-01')} / {part(lambda d: d >= cut)}")
-
-
 def stock_table(groups: dict[str, list[dict]]) -> list[str]:
     out = ["| 情况 | 次数 | 5 天后（朝所选方向）平均 / 对的比例 | 10 天后 | 20 天后 |", "|---|---|---|---|---|"]
     for name, rs in groups.items():
@@ -224,10 +210,7 @@ def main() -> None:
                        f"{rep['start']} 至 {rep['end']}，{rep['events']} 个 CPI / Fed 日，SMH、QQQ 和 25 只活跃股。事件当天或第二天的第一个收涨（收跌）"
                        "按收盘价买约一个月到期（25–45 天里最接近 30 天）、行权价最接近现价的看涨（看跌），按期权每日收盘价卖，买卖各算 5% 成本。"
                        f"没有期权数据的信号 {rep['missing_options']} 个（只算股价）。最近的信号还没走满 20 天，只计已经过去的天数。",
-                       gs, EXITS)
-    md += ("\n## 每 $1 的分布\n\n每格「平均 / 去掉最好 3 笔 / 中位数 / 2024（笔数） / 2025–26 / 最近 3 个月」。\n\n"
-           "| 情况 | " + " | ".join(EXITS.values()) + " |\n|---|" + "---|" * len(EXITS) + "\n" +
-           "\n".join(f"| {g} | " + " | ".join(spread(rs, x, rep["end"]) for x in EXITS) + " |" for g, rs in gs.items()) + "\n")
+                       gs, EXITS, rep["end"])
     plain = {"平日：前 5 天跌 3%+、当天收涨（看涨方向）": [r for r in rep["plain"] if r["kind"] == "C"],
              "平日：前一天在 20 日均线下、当天收跌（看跌方向）": [r for r in rep["plain"] if r["kind"] == "P"]}
     md += ("\n## 只看股价：事件日对平日\n\n期权只算了事件日；这里用股价比较同样的信号在事件日和平日有没有差别"
