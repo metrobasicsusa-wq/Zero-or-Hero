@@ -31,6 +31,8 @@ OUT = ROOT / "research" / "earnings-forecast"
 HIST = ROOT / "research" / "2026-10-02-earnings-reactions.json"
 MIN_PRICE = 5.0
 P_BIG, P_BIG_HOT, HOT = 0.40, 0.51, 1.25   # P(|move| > implied): base; when own average reaction / implied >= HOT
+WINDOW = 45          # days past the reaction day to look for an expiry
+WEEKLY = 7           # an expiry this close to the reaction day prices mostly the report itself
 
 
 def business_after(d: date) -> date:
@@ -81,24 +83,31 @@ def mid(snap: dict) -> float | None:
 
 
 def legs(client, und: str, spot: float, react: str) -> dict | None:
-    """The at-the-money call and put of the first expiry on or after the reaction day."""
+    """The at-the-money call and put of the first expiry on or after the reaction day (up to WINDOW days out).
+
+    Names with only monthly options get that month's straddle: it also prices the ordinary days before expiry,
+    so `days` says how far past the reaction day it runs and the scorecard keeps those apart."""
     try:
         cs = client.option_contracts(und, status="active", expiration_date_gte=react,
-                                     expiration_date_lte=(date.fromisoformat(react) + timedelta(days=10)).isoformat(),
+                                     expiration_date_lte=(date.fromisoformat(react) + timedelta(days=WINDOW)).isoformat(),
                                      strike_price_gte=f"{spot * 0.9:.2f}", strike_price_lte=f"{spot * 1.1:.2f}")
     except Exception:
-        return None
+        return {"error": True}
     if not cs:
         return None
     exp = min(c["expiration_date"] for c in cs)
     cs = [c for c in cs if c["expiration_date"] == exp]
     k = min({float(c["strike_price"]) for c in cs}, key=lambda x: abs(x - spot))
     got = {c["type"]: c["symbol"] for c in cs if float(c["strike_price"]) == k}
-    return {"expiry": exp, "strike": k, **got} if set(got) >= {"call", "put"} else None
+    days = (date.fromisoformat(exp) - date.fromisoformat(react)).days
+    return {"expiry": exp, "strike": k, "days": days, **got} if set(got) >= {"call", "put"} else None
 
 
 def forecast(client, rows: list[dict], today: date, wait=lambda: None) -> dict:
     reports = due(rows, today)
+    days = {today.isoformat(), business_after(today).isoformat()}
+    no_time = sorted({r["symbol"] for r in rows if r.get("reportDate") in days
+                      and (r.get("timeOfTheDay") or "").strip() not in ("pre-market", "post-market")})
     syms = sorted({r["symbol"] for r in reports})
     snaps: dict[str, dict] = {}
     for i in range(0, len(syms), 100):
@@ -107,21 +116,26 @@ def forecast(client, rows: list[dict], today: date, wait=lambda: None) -> dict:
         except Exception:
             pass
     past = history()
-    out, skipped = [], {"no_price": 0, "under_5": 0, "no_options": 0}
+    out, skipped = [], {"no_price": 0, "under_5": 0, "no_options": 0, "error": 0}
+    skipped_symbols: dict[str, list[str]] = {k: [] for k in skipped}
     pending = []
     for r in reports:
         s = snaps.get(r["symbol"]) or {}
         spot = float(((s.get("latestTrade") or {}).get("p")) or ((s.get("dailyBar") or {}).get("c")) or 0)
         if not spot:
             skipped["no_price"] += 1
+            skipped_symbols["no_price"].append(r["symbol"])
             continue
         if spot < MIN_PRICE:
             skipped["under_5"] += 1
+            skipped_symbols["under_5"].append(r["symbol"])
             continue
         wait()
         lg = legs(client, r["symbol"], spot, r["reaction_day"])
-        if not lg:
-            skipped["no_options"] += 1
+        if not lg or lg.get("error"):
+            why = "error" if lg else "no_options"
+            skipped[why] += 1
+            skipped_symbols[why].append(r["symbol"])
             continue
         prev = s.get("prevDailyBar") or {}
         pending.append(({**r, "dollar_volume": round(float(prev.get("v") or 0) * float(prev.get("c") or 0))}, spot, lg))
@@ -134,11 +148,13 @@ def forecast(client, rows: list[dict], today: date, wait=lambda: None) -> dict:
     for r, spot, lg in pending:
         c, p = mid(quotes.get(lg["call"])), mid(quotes.get(lg["put"]))
         implied = round((c + p) / spot, 4) if c and p else None
-        out.append({**r, "spot": round(spot, 2), "expiry": lg["expiry"], "strike": lg["strike"], "call_mid": c, "put_mid": p,
+        out.append({**r, "spot": round(spot, 2), "expiry": lg["expiry"], "strike": lg["strike"],
+                    "expiry_days": lg["days"], "weekly": lg["days"] <= WEEKLY, "call_mid": c, "put_mid": p,
                     "implied_move": implied, **baseline(implied, past.get(r["symbol"], []))})
     out.sort(key=lambda x: -x["dollar_volume"])   # the most traded first: the judgment file covers the top of the list
     return {"date": today.isoformat(), "generated": datetime.now(timezone.utc).isoformat(timespec="seconds"),
-            "calendar_rows_due": len(reports), "skipped": skipped, "reports": out}
+            "calendar_rows_due": len(reports), "calendar_no_time": no_time, "skipped": skipped,
+            "skipped_symbols": {k: v for k, v in skipped_symbols.items() if v}, "reports": out}
 
 
 def score_row(row: dict, bars: list[dict]) -> dict | None:
@@ -204,10 +220,12 @@ def scorecard(root: Path = OUT) -> str:
           "反应日收盘后按收盘对前收记分。只记录，不交易。", ""]
     if not rows:
         return "\n".join(md + ["还没有可记分的财报。", ""])
-    big = [r for r in rows if r["result"]["big"] is not None]
+    allbig = [r for r in rows if r["result"]["big"] is not None]
+    big = [r for r in allbig if r.get("weekly", True)]   # files from before 10-19 noon had only weekly expiries
     md += ["## 基线：涨跌幅有没有超过期权定价", "", "| 组 | 次数 | 实际超过隐含 | 基线预计 |", "|---|---|---|---|"]
-    for name, rs in (("全部", big), ("自身平均反应偏大（基线 51%）", [r for r in big if r["p_big"] >= P_BIG_HOT]),
-                     ("其他（基线 40%）", [r for r in big if r["p_big"] < P_BIG_HOT])):
+    for name, rs in (("一周内到期的全部", big), ("自身平均反应偏大（基线 51%）", [r for r in big if r["p_big"] >= P_BIG_HOT]),
+                     ("其他（基线 40%）", [r for r in big if r["p_big"] < P_BIG_HOT]),
+                     ("月度到期（隐含偏大，只作参考）", [r for r in allbig if r.get("weekly") is False])):
         if rs:
             md.append(f"| {name} | {len(rs)} | {sum(r['result']['big'] for r in rs) / len(rs):.0%} | "
                       f"{statistics.mean(r['p_big'] for r in rs):.0%} |")
@@ -239,23 +257,31 @@ def scorecard(root: Path = OUT) -> str:
         if j and j.get("direction") in ("up", "down"):
             ok = "对" if (j["direction"] == "up") == res["up"] else "错"
         md.append(f"| {r['day']} | {r['symbol']} | {'盘后' if r['time'] == 'post-market' else '盘前'} | "
-                  f"{r['implied_move']:.1%} | {res['gap']:+.1%} | {res['move']:+.1%} | "
+                  f"{(r.get('implied_move') or 0):.1%}{'（月）' if r.get('weekly') is False else ''} | {res['gap']:+.1%} | {res['move']:+.1%} | "
                   f"{'是' if res['big'] else '否' if res['big'] is not None else '—'} | {jtxt} | {ok} |")
     return "\n".join(md) + "\n"
 
 
 def markdown(rep: dict) -> str:
     md = [f"# 财报预测 {rep['date']}", "",
-          f"当晚盘后、下一个交易日盘前发财报：日历里 {rep['calendar_rows_due']} 只，记下 {len(rep['reports'])} 只"
+          f"当晚盘后、下一个交易日盘前发财报：日历里 {rep['calendar_rows_due']} 只"
+          f"（另有 {len(rep.get('calendar_no_time', []))} 只今明两天发、但日历没写盘前盘后，没算进来），记下 {len(rep['reports'])} 只"
           f"（跳过：没有价格 {rep['skipped']['no_price']}、股价不到 $5 {rep['skipped']['under_5']}、"
-          f"没有期权 {rep['skipped']['no_options']}）。隐含幅度 = 反应日当天或之后第一个到期的平值跨式 / 股价。"
+          f"{WINDOW} 天内没有期权 {rep['skipped']['no_options']}、查期权出错 {rep['skipped'].get('error', 0)}）。"
+          "隐含幅度 = 反应日当天或之后第一个到期的平值跨式 / 股价；到期离反应日超过一周的（多是只有月度期权的）标『月』，"
+          "那个跨式还包含财报以外的日子，隐含偏大，记分时分开算。成交额来自 IEX（只占全市场一小部分），只用来排序。"
           "基线概率见记分卡说明；方向判断在同日的 judgment 文件里。只记录，不交易。", "",
-          "| 股票 | 时间 | 反应日 | 股价 | 前一天成交额 | 隐含幅度 | 过去平均反应 | 超过隐含的基线概率 |", "|---|---|---|---|---|---|---|---|"]
+          "| 股票 | 时间 | 反应日 | 股价 | 前一天 IEX 成交额 | 隐含幅度 | 过去平均反应 | 超过隐含的基线概率 |", "|---|---|---|---|---|---|---|---|"]
     for r in rep["reports"]:
         prior = f"{r['prior_avg_abs']:.1%}（{r['prior_n']} 次）" if r.get("prior_avg_abs") else "—"
         imp = f"{r['implied_move']:.1%}" if r.get("implied_move") else "—"
+        if r.get("implied_move") and r.get("weekly") is False:
+            imp += f"（月，{r['expiry']}）"
         md.append(f"| {r['symbol']} | {'盘后' if r['time'] == 'post-market' else '盘前'} | {r['reaction_day']} | "
-                  f"${r['spot']:,.2f} | ${r.get('dollar_volume', 0) / 1e6:,.0f}M | {imp} | {prior} | {r['p_big']:.0%} |")
+                  f"${r['spot']:,.2f} | ${r.get('dollar_volume', 0) / 1e6:,.1f}M | {imp} | {prior} | {r['p_big']:.0%} |")
+    for why, label in (("no_options", f"{WINDOW} 天内没有期权"), ("error", "查期权出错"), ("under_5", "股价不到 $5"), ("no_price", "没有价格")):
+        if rep.get("skipped_symbols", {}).get(why):
+            md += ["", f"{label}：{'、'.join(rep['skipped_symbols'][why])}"]
     return "\n".join(md) + "\n"
 
 

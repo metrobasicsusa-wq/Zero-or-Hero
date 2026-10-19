@@ -3630,21 +3630,30 @@ class EarningsForecast(unittest.TestCase):
                 {"symbol": "TMO", "reportDate": "2026-10-21", "timeOfTheDay": "pre-market"},
                 {"symbol": "TSLA", "reportDate": "2026-10-21", "timeOfTheDay": "post-market"},   # tomorrow after the close
                 {"symbol": "PENY", "reportDate": "2026-10-20", "timeOfTheDay": "post-market"},
-                {"symbol": "NOOPT", "reportDate": "2026-10-20", "timeOfTheDay": "post-market"}]
+                {"symbol": "NOOPT", "reportDate": "2026-10-20", "timeOfTheDay": "post-market"},
+                {"symbol": "MNTH", "reportDate": "2026-10-21", "timeOfTheDay": "pre-market"},    # monthly options only
+                {"symbol": "BOOM", "reportDate": "2026-10-20", "timeOfTheDay": "post-market"},    # the lookup fails
+                {"symbol": "WHEN", "reportDate": "2026-10-20", "timeOfTheDay": ""}]               # no time given
         due = ef.due(rows, date(2026, 10, 20))
         self.assertEqual([(r["symbol"], r["reaction_day"]) for r in due],
-                         [("NFLX", "2026-10-21"), ("TMO", "2026-10-21"), ("PENY", "2026-10-21"), ("NOOPT", "2026-10-21")])
+                         [("NFLX", "2026-10-21"), ("TMO", "2026-10-21"), ("PENY", "2026-10-21"), ("NOOPT", "2026-10-21"),
+                          ("MNTH", "2026-10-21"), ("BOOM", "2026-10-21")])
+        asked = {}
 
         class Client:
             def stock_snapshots(self, syms):
-                px = {"NFLX": 70.0, "TMO": 690.0, "PENY": 3.0, "NOOPT": 50.0}
+                px = {"NFLX": 70.0, "TMO": 690.0, "PENY": 3.0, "NOOPT": 50.0, "MNTH": 40.0, "BOOM": 20.0}
                 return {s: {"latestTrade": {"p": px[s]}} for s in syms if s in px}
 
             def option_contracts(self, und, **kw):
+                asked[und] = kw
                 if und == "NOOPT":
                     return []
-                spot = {"NFLX": 70.0, "TMO": 690.0}[und]
-                return [{"symbol": f"{und}{t[0]}{k}", "type": t, "strike_price": str(k), "expiration_date": "2026-10-23"}
+                if und == "BOOM":
+                    raise RuntimeError("429")
+                spot = {"NFLX": 70.0, "TMO": 690.0, "MNTH": 40.0}[und]
+                exp = "2026-11-20" if und == "MNTH" else "2026-10-23"
+                return [{"symbol": f"{und}{t[0]}{k}", "type": t, "strike_price": str(k), "expiration_date": exp}
                         for k in (round(spot * 0.98), round(spot)) for t in ("call", "put")]
 
             def option_snapshots(self, syms):
@@ -3653,22 +3662,33 @@ class EarningsForecast(unittest.TestCase):
         with mock.patch.object(ef, "history", lambda: {"NFLX": [0.15] * 8}):
             rep = ef.forecast(Client(), rows, date(2026, 10, 20))
         got = {r["symbol"]: r for r in rep["reports"]}
-        self.assertEqual(set(got), {"NFLX", "TMO"})
-        self.assertEqual(rep["skipped"], {"no_price": 0, "under_5": 1, "no_options": 1})
+        self.assertEqual(set(got), {"NFLX", "TMO", "MNTH"})
+        self.assertEqual(asked["MNTH"]["expiration_date_lte"], "2026-12-05")   # looks 45 days past the reaction day
+        self.assertEqual(rep["skipped"], {"no_price": 0, "under_5": 1, "no_options": 1, "error": 1})
+        self.assertEqual(rep["skipped_symbols"], {"under_5": ["PENY"], "no_options": ["NOOPT"], "error": ["BOOM"]})
+        self.assertEqual(rep["calendar_no_time"], ["WHEN"])
+        self.assertEqual((got["NFLX"]["weekly"], got["MNTH"]["weekly"], got["MNTH"]["expiry_days"]), (True, False, 30))
         self.assertAlmostEqual(got["NFLX"]["implied_move"], round(6.2 / 70, 4))
         self.assertEqual((got["NFLX"]["p_big"], got["TMO"]["p_big"]), (0.51, 0.40))   # its own reactions run hot
+        md = ef.markdown(rep)
+        self.assertIn("（月，2026-11-20）", md)
+        self.assertIn("45 天内没有期权：NOOPT", md)
         bars = [{"t": "2026-10-20T04:00:00Z", "o": 70, "c": 70}, {"t": "2026-10-21T04:00:00Z", "o": 63, "c": 61.6}]
         res = ef.score_row(got["NFLX"], bars)
         self.assertEqual((res["gap"], res["move"], res["big"], res["up"]), (-0.1, -0.12, True, False))
+        mres = ef.score_row(got["MNTH"], [{"t": "2026-10-20T04:00:00Z", "o": 40, "c": 40},
+                                          {"t": "2026-10-21T04:00:00Z", "o": 44, "c": 44}])
         with tempfile.TemporaryDirectory() as d:
             root = Path(d)
             got["NFLX"]["result"] = res
-            (root / "2026-10-20.json").write_text(json.dumps({"date": "2026-10-20", "reports": [got["NFLX"]]}))
+            got["MNTH"]["result"] = mres
+            (root / "2026-10-20.json").write_text(json.dumps({"date": "2026-10-20", "reports": [got["NFLX"], got["MNTH"]]}))
             (root / "2026-10-20.judgment.json").write_text(json.dumps({"date": "2026-10-20", "calls": [
                 {"symbol": "NFLX", "direction": "down", "big": True, "confidence": 0.6, "why": "x"}]}))
             md = ef.scorecard(root)
             self.assertIn("| 方向（涨 / 跌） | 1 | 100% |", md)
-            self.assertIn("| 全部 | 1 | 100% | 51% |", md)
+            self.assertIn("| 一周内到期的全部 | 1 | 100% | 51% |", md)   # the monthly straddle is kept apart
+            self.assertIn("| 月度到期（隐含偏大，只作参考） | 1 | ", md)
 
 
 class ResearchSniperFactors(unittest.TestCase):
