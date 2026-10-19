@@ -1,0 +1,267 @@
+{
+  "schema_version": "1.0",
+  "producer": "Codex",
+  "mode": "PAPER",
+  "currency": "USD",
+  "trading_date": "2026-10-16",
+  "timezone": "America/New_York",
+  "status": "limited_post_market_review",
+  "as_of": "2026-10-16T15:58:16.599982481-04:00",
+  "generated_at": "2026-10-19T13:24:52.920455+00:00",
+  "evidence_cutoff": {
+    "source_commit": "3dfae323e26a6fbc511a0982c13c3eb014dbdbee",
+    "generation": 375,
+    "archive_snapshot_sha256": "2c96cae84b71f456cba887446c1bd132693277a3b8098158fa5ba6d8a05ae213",
+    "archive_manifest_sha256": "23c43760f666e6579f6ab0d53eeb30f020d6664b90735c935423ac80ec876f48",
+    "archive_event_sequence": 33188,
+    "sample_sequence": 157080,
+    "dataset_sequence": 5569,
+    "verified_at": "2026-10-19T13:15:45.096783+00:00",
+    "evidence_stale": false,
+    "session_start": "2026-10-16T09:30:00-04:00",
+    "session_end": "2026-10-16T16:00:00-04:00",
+    "max_session_event_sequence": 33044,
+    "method": "Verified full archive/account binding; readonly consistent SQLite transaction; FILL correction deduplication and connection-test exclusion."
+  },
+  "scope": {
+    "capital_limit_usd": 100000,
+    "swing_budget_usd": 50000,
+    "intraday_budget_usd": 49000,
+    "options_budget_usd": 1000,
+    "drawdown_halt_fraction": 0.1,
+    "options_feed": "indicative",
+    "options_multiplier": 100
+  },
+  "equity": {
+    "current_usd": 102103.89,
+    "as_of": "2026-10-16T15:58:16.599982481-04:00",
+    "source": "Last pre-close archived observation, 103.4 seconds before close; not official close",
+    "official_open_usd": null,
+    "official_close_usd": null,
+    "previous_day_usd": null,
+    "previous_day_as_of": null,
+    "previous_day_basis": "Official prior close unavailable; separate observation only",
+    "prior_day_observation": {
+      "as_of": "2026-10-15T17:26:06.43630704-04:00",
+      "equity_usd": 102931.36,
+      "cash_usd": 51482.65,
+      "source": "Post-close observation, not official close"
+    },
+    "first_observation": {
+      "as_of": "2026-10-16T10:27:10.366422093-04:00",
+      "equity_usd": 102502.98,
+      "cash_usd": 51481.67,
+      "source": "First end-of-cycle observation, not open"
+    },
+    "post_session_observation": {
+      "as_of": "2026-10-16T17:26:29.408079814-04:00",
+      "equity_usd": 101996.88,
+      "cash_usd": 51481.67,
+      "source": "Post-close only, not current Monday state"
+    },
+    "cash_usd": 51481.67,
+    "external_cash_flows_usd": null,
+    "fees_usd": null,
+    "cash_flow_note": "Fees/flows not independently reconciled; $1000 sleeve reallocation is not a loss."
+  },
+  "fills": [],
+  "fill_count": 0,
+  "positions": [
+    {
+      "symbol": "CRM",
+      "qty": "44",
+      "avg_entry_price": "223.829773",
+      "current_price": "241.08",
+      "market_value": "10607.52",
+      "unrealized_pl": "759.009988",
+      "side": "long",
+      "asset_class": "us_equity",
+      "quantity_unit": "shares",
+      "multiplier": 1,
+      "sleeve": "swing"
+    },
+    {
+      "symbol": "MSFT",
+      "qty": "19",
+      "avg_entry_price": "519.691579",
+      "current_price": "529.01",
+      "market_value": "10051.19",
+      "unrealized_pl": "177.049999",
+      "side": "long",
+      "asset_class": "us_equity",
+      "quantity_unit": "shares",
+      "multiplier": 1,
+      "sleeve": "swing"
+    },
+    {
+      "symbol": "NOW",
+      "qty": "70",
+      "avg_entry_price": "139.147143",
+      "current_price": "141.9",
+      "market_value": "9933",
+      "unrealized_pl": "192.69999",
+      "side": "long",
+      "asset_class": "us_equity",
+      "quantity_unit": "shares",
+      "multiplier": 1,
+      "sleeve": "swing"
+    },
+    {
+      "symbol": "PFE",
+      "qty": "351",
+      "avg_entry_price": "28.44",
+      "current_price": "29.55",
+      "market_value": "10372.05",
+      "unrealized_pl": "389.61",
+      "side": "long",
+      "asset_class": "us_equity",
+      "quantity_unit": "shares",
+      "multiplier": 1,
+      "sleeve": "swing"
+    },
+    {
+      "symbol": "TMO",
+      "qty": "14",
+      "avg_entry_price": "669.78",
+      "current_price": "689.445",
+      "market_value": "9652.23",
+      "unrealized_pl": "275.31",
+      "side": "long",
+      "asset_class": "us_equity",
+      "quantity_unit": "shares",
+      "multiplier": 1,
+      "sleeve": "swing"
+    }
+  ],
+  "positions_basis": {
+    "as_of": "2026-10-16T15:58:16.599982481-04:00",
+    "source": "Last pre-close snapshot, not exact close"
+  },
+  "closing_positions": null,
+  "options_positions": [],
+  "performance": {
+    "official_day_pnl_usd": null,
+    "observed_window_change_usd": -399.09,
+    "observed_window_return_fraction": -0.003893447780737692,
+    "from": "2026-10-16T10:27:10.366422093-04:00",
+    "to": "2026-10-16T15:58:16.599982481-04:00",
+    "sleeve_observed_window_change_usd": {
+      "intraday": 0.0,
+      "options": 0.0,
+      "swing": -403.549
+    },
+    "attribution_note": "Sequential marks differ; do not force reconciliation",
+    "observed_session_drawdown_fraction": 0.0072071075397027486,
+    "max_account_peak_drawdown_observed_fraction": 0.014197255618314197,
+    "closed_trades": 0,
+    "gross_realized_trading_pnl_usd": 0,
+    "fees_usd": null
+  },
+  "audit": {
+    "conclusion": "Limited audit: zero FILL; one NVDA buy limit canceled unfilled; options initialized but candidate validation errors observed. Missing open/exact close and execution gaps.",
+    "orders": [
+      {
+        "symbol": "NVDA",
+        "side": "buy",
+        "quantity": 75,
+        "quantity_unit": "shares",
+        "multiplier": 1,
+        "sleeve": "intraday",
+        "limit_price_usd": 217.6,
+        "status": "canceled",
+        "filled_quantity": 0,
+        "submitted_at": "2026-10-16T10:32:17.358855-04:00",
+        "canceled_at": "2026-10-16T10:47:25.630603-04:00",
+        "signal_reason": "30m opening-range breakout, relative volume 1.5735x, above VWAP",
+        "sizing_check": "matched",
+        "fill_slippage_bps": null
+      }
+    ],
+    "options": {
+      "initialized_at": "2026-10-16T10:26:19.852417-04:00",
+      "version": "2026-10-15.1",
+      "lifetime_commitments": 0,
+      "premium_reserved_usd": 0,
+      "fee_reserved_usd": 0,
+      "order_count": 0,
+      "fill_count": 0,
+      "lifecycle_activity_count": 0,
+      "candidate_validation_error_count": 21,
+      "error_type": "ValueError",
+      "error_detail": "Unavailable; do not infer exact cause",
+      "candidate_input_observations": 2,
+      "quotes_per_observation": 4,
+      "minimum_reference_premium_usd": [
+        420,
+        401.9
+      ],
+      "maximum_premium_usd": 240,
+      "unqueried_contracts_evaluated": false,
+      "limitations": [
+        "Indicative modified reference quotes are not executable OPRA",
+        "PAPER fills are not evidence of live liquidity",
+        "Fee contingency is not reconciled fees"
+      ]
+    },
+    "sample_coverage": {
+      "observations": 9480,
+      "runs": 158,
+      "rows_per_run_distribution": {
+        "60": 158
+      },
+      "unique_strategy_symbol_market_time_params": 270,
+      "unique_by_sleeve": {
+        "swing": 50,
+        "intraday": 220
+      },
+      "observations_by_sleeve": {
+        "swing": 7900,
+        "intraday": 1580
+      },
+      "missing_market_time": 0,
+      "unevaluated": 10,
+      "decisions": {
+        "not_selected": 8657,
+        "selected": 813,
+        "data_unavailable": 10
+      },
+      "selection_runs_missing_inputs": 0,
+      "selection_runs_missing_samples": 0
+    },
+    "run_count": 158,
+    "run_status_counts": {
+      "completed": 157,
+      "completed_with_alerts": 1
+    },
+    "risk_observations": {
+      "minimum_cash": "51481.67",
+      "max_gross_conservative_exposure": "51073.715",
+      "unknown_position_observations": 0,
+      "unknown_order_observations_against_prior_lineage": 0,
+      "short_position_observations": 0,
+      "account_blocked_observations": 0,
+      "duplicate_intent_rows": 0
+    },
+    "stop_snapshot_gaps": 0,
+    "stop_note": "316 snapshots only; no continuous coverage guarantee",
+    "strategy_promotions": 0,
+    "code_commit": "7358496d103529e2feb747db1c97d81f984d0d60",
+    "source_manifest_sha256": "2830b205ffe165af3885ae599999d55df8d059bf98fbe7e2182bbbe75f9cebe8",
+    "config_sha256": "ce067a951015d88a4c3454f8dcdcd1c8e8702b0f817aee267cb64730e6f0d90b",
+    "analysis_method_sha256": "bf7a8a5bbc6c7700e8d3458958c60e3293eb678734f81e999b8d097b34e068c0",
+    "gaps": [
+      "No archived execution from open until 10:26:17",
+      "15:10:27 completed cycle to 15:37:31 next start: approximately 27m05s",
+      "No exact close observation",
+      "10 stale-signal samples at 13:00:01 excluded",
+      "Fees and cash flows not independently reconciled"
+    ],
+    "report_path": "exchange/codex/2026-10-16.review.txt"
+  },
+  "replies": [
+    {
+      "message_id": "codex-peer-20261016-catchup-v1",
+      "path": "exchange/codex/2026-10-16.peer-reply-v1.json"
+    }
+  ]
+}
