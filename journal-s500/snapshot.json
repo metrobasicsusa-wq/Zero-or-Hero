@@ -1,14 +1,14 @@
 {
   "account": {
-    "buying_power": "179932.68",
-    "cash": "44983.17",
-    "equity": "47842.17",
+    "buying_power": "181531.72",
+    "cash": "45382.93",
+    "equity": "47850.93",
     "last_equity": "50214.38",
-    "long_market_value": "2859",
-    "portfolio_value": "47842.17"
+    "long_market_value": "2468",
+    "portfolio_value": "47850.93"
   },
   "benchmark": {
-    "close": 550.12,
+    "close": 549.49,
     "date": "2026-10-19",
     "prev_close": 539.84,
     "symbol": "SMH"
@@ -43,38 +43,6 @@
       "stop_price": null,
       "submitted_at": "2026-10-19T14:01:51.830611Z",
       "symbol": "IREN261023P00027500",
-      "time_in_force": "day",
-      "type": "limit"
-    },
-    {
-      "asset_class": "us_option",
-      "filled_at": null,
-      "filled_avg_price": null,
-      "filled_qty": "0",
-      "limit_price": "0.4",
-      "protective_stop": false,
-      "qty": "7",
-      "side": "sell",
-      "status": "new",
-      "stop_price": null,
-      "submitted_at": "2026-10-19T14:01:51.71197Z",
-      "symbol": "BAC261023P00050000",
-      "time_in_force": "day",
-      "type": "limit"
-    },
-    {
-      "asset_class": "us_option",
-      "filled_at": null,
-      "filled_avg_price": null,
-      "filled_qty": "0",
-      "limit_price": "0.4",
-      "protective_stop": false,
-      "qty": "3",
-      "side": "sell",
-      "status": "new",
-      "stop_price": null,
-      "submitted_at": "2026-10-19T14:01:51.349346Z",
-      "symbol": "BAC261023P00050000",
       "time_in_force": "day",
       "type": "limit"
     },
@@ -210,31 +178,17 @@
   "positions": [
     {
       "asset_class": "us_option",
-      "avg_entry_price": "0.2",
-      "cost_basis": "200",
-      "current_price": "0.38",
-      "lastday_price": "0.27",
-      "market_value": "380",
-      "qty": "10",
-      "side": "long",
-      "symbol": "BAC261023P00050000",
-      "unrealized_intraday_pl": "180",
-      "unrealized_pl": "180",
-      "unrealized_plpc": "0.9"
-    },
-    {
-      "asset_class": "us_option",
       "avg_entry_price": "0.62",
       "cost_basis": "372",
-      "current_price": "0.35",
+      "current_price": "0.34",
       "lastday_price": "0.15",
-      "market_value": "210",
+      "market_value": "204",
       "qty": "6",
       "side": "long",
       "symbol": "CLF261023C00014500",
-      "unrealized_intraday_pl": "-162",
-      "unrealized_pl": "-162",
-      "unrealized_plpc": "-0.43548"
+      "unrealized_intraday_pl": "-168",
+      "unrealized_pl": "-168",
+      "unrealized_plpc": "-0.45161"
     },
     {
       "asset_class": "us_option",
@@ -268,29 +222,29 @@
       "asset_class": "us_option",
       "avg_entry_price": "1.15",
       "cost_basis": "115",
-      "current_price": "1.14",
+      "current_price": "1.15",
       "lastday_price": "1.79",
-      "market_value": "114",
+      "market_value": "115",
       "qty": "1",
       "side": "long",
       "symbol": "IREN261023P00027500",
-      "unrealized_intraday_pl": "-1",
-      "unrealized_pl": "-1",
-      "unrealized_plpc": "-0.0087"
+      "unrealized_intraday_pl": "0",
+      "unrealized_pl": "0",
+      "unrealized_plpc": "0"
     },
     {
       "asset_class": "us_option",
       "avg_entry_price": "2.36",
       "cost_basis": "472",
-      "current_price": "0.69",
+      "current_price": "0.61",
       "lastday_price": "0.63",
-      "market_value": "138",
+      "market_value": "122",
       "qty": "2",
       "side": "long",
       "symbol": "NOW261023C00155000",
-      "unrealized_intraday_pl": "12",
-      "unrealized_pl": "-334",
-      "unrealized_plpc": "-0.70763"
+      "unrealized_intraday_pl": "-4",
+      "unrealized_pl": "-350",
+      "unrealized_plpc": "-0.74153"
     },
     {
       "asset_class": "us_option",
@@ -338,16 +292,16 @@
       "asset_class": "us_option",
       "avg_entry_price": "1.19",
       "cost_basis": "595",
-      "current_price": "2.98",
+      "current_price": "3",
       "lastday_price": "1.1",
-      "market_value": "1490",
+      "market_value": "1500",
       "qty": "5",
       "side": "long",
       "symbol": "TSLA261019C00365000",
-      "unrealized_intraday_pl": "895",
-      "unrealized_pl": "895",
-      "unrealized_plpc": "1.5042"
+      "unrealized_intraday_pl": "905",
+      "unrealized_pl": "905",
+      "unrealized_plpc": "1.52101"
     }
   ],
-  "ts": "2026-10-19T18:00:33+00:00"
+  "ts": "2026-10-19T18:10:23+00:00"
 }

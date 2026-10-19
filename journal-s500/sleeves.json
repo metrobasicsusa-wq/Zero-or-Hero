@@ -2337,11 +2337,12 @@
   },
   "wk-trend-500": {
    "start": 500.0,
-   "cash": 440.0,
+   "cash": 560.0,
    "round": 1,
    "heroes": 0,
    "zeros": 0,
-   "open": [
+   "open": [],
+   "closed": [
     {
      "tid": "2026W43-79e5bb",
      "kind": "weekly",
@@ -2361,45 +2362,29 @@
      "expiry_out": null,
      "take_x": 2,
      "take": 0.4,
-     "take_cid": "sl-wk-trend-500-2026W43-79e5bb-t6a6b"
+     "take_cid": "sl-wk-trend-500-2026W43-79e5bb-t6a6b",
+     "state": "closed",
+     "exit_price": 0.4,
+     "proceeds": 120.0,
+     "how": "2 倍止盈（券商挂单成交）",
+     "closed": "2026-10-19 14:10",
+     "ret": 1.0
     }
    ],
-   "closed": [],
    "slots": {
     "2026-W42": "2026-10-12T10:00-04:00",
     "2026-W43": "2026-10-19T10:00-04:00"
    },
-   "best": 500.0,
+   "best": 560.0,
    "created": null
   },
   "wk-trend-1000": {
    "start": 1000.0,
-   "cash": 752.0,
+   "cash": 1032.0,
    "round": 1,
    "heroes": 0,
    "zeros": 0,
    "open": [
-    {
-     "tid": "2026W43-5fda62",
-     "kind": "weekly",
-     "sym": "BAC261023P00050000",
-     "asset": "option",
-     "und": "BAC",
-     "qty": 7,
-     "cost": 0.2,
-     "paid": 140.0,
-     "opened": "2026-10-19 10:00",
-     "why": "随机挑中 BAC，20 日跌；买 10-23 到期看跌 50，2 倍止盈，到期前一天 15:50 卖",
-     "expiry": "2026-10-23",
-     "exit_day": "2026-10-22",
-     "exit_at": "15:50",
-     "trail": false,
-     "best_bid": 0.4,
-     "expiry_out": null,
-     "take_x": 2,
-     "take": 0.4,
-     "take_cid": "sl-wk-trend-1000-2026W43-5fda62-t4e91"
-    },
     {
      "tid": "2026W43-0bd0e5",
      "kind": "weekly",
@@ -2475,13 +2460,40 @@
      "how": "2026-10-15 15:50 到时卖出",
      "closed": "2026-10-15 15:50",
      "ret": -0.99
+    },
+    {
+     "tid": "2026W43-5fda62",
+     "kind": "weekly",
+     "sym": "BAC261023P00050000",
+     "asset": "option",
+     "und": "BAC",
+     "qty": 7,
+     "cost": 0.2,
+     "paid": 140.0,
+     "opened": "2026-10-19 10:00",
+     "why": "随机挑中 BAC，20 日跌；买 10-23 到期看跌 50，2 倍止盈，到期前一天 15:50 卖",
+     "expiry": "2026-10-23",
+     "exit_day": "2026-10-22",
+     "exit_at": "15:50",
+     "trail": false,
+     "best_bid": 0.4,
+     "expiry_out": null,
+     "take_x": 2,
+     "take": 0.4,
+     "take_cid": "sl-wk-trend-1000-2026W43-5fda62-t4e91",
+     "state": "closed",
+     "exit_price": 0.4,
+     "proceeds": 280.0,
+     "how": "2 倍止盈（券商挂单成交）",
+     "closed": "2026-10-19 14:10",
+     "ret": 1.0
     }
    ],
    "slots": {
     "2026-W42": "2026-10-12T10:00-04:00",
     "2026-W43": "2026-10-19T10:00-04:00"
    },
-   "best": 1022.0,
+   "best": 1032.0,
    "created": null
   },
   "wk-momo-500": {
