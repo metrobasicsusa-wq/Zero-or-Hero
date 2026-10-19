@@ -3,7 +3,9 @@
 Owner, 10-19: forecast every US company's earnings (direction and size), record and score them first; nothing trades
 on them. Run each trading day around 15:10 ET (python -m hero.research_earnings_forecast; research.yml earnings_forecast):
   1. score every earlier forecast whose reaction day has closed: the gap (open / prior close) and the move (close /
-     prior close), whether the move beat the options' implied move, and whether the direction call was right;
+     prior close), whether the move beat the options' implied move, and whether the direction call was right --
+     judged at the reaction day's open (owner, 10-19: the trade is shares or a 2x fund sold at that open), with
+     the close kept as a second column;
   2. forecast tonight's after-close and tomorrow's before-open reports from the Alpha Vantage calendar (every US
      listing in it), keeping the ones with a price of $5+ and listed options: the implied move is the at-the-money
      straddle of the first expiry on or after the reaction day (mid of the latest quotes) over the price.
@@ -169,7 +171,8 @@ def score_row(row: dict, bars: list[dict]) -> dict | None:
     prev, b = float(days[order[i - 1]]["c"]), days[row["reaction_day"]]
     gap, move = float(b["o"]) / prev - 1, float(b["c"]) / prev - 1
     imp = row.get("implied_move")
-    return {"gap": round(gap, 4), "move": round(move, 4), "big": (abs(move) > imp) if imp else None, "up": move > 0}
+    return {"gap": round(gap, 4), "move": round(move, 4), "big": (abs(move) > imp) if imp else None,
+            "up": gap > 0, "up_close": move > 0}   # direction is judged at the open; the close is for reference
 
 
 def score_due(client, today: date, root: Path = OUT) -> list[str]:
@@ -217,7 +220,8 @@ def scorecard(root: Path = OUT) -> str:
     md = [f"# 财报预测记分卡 {date.today().isoformat()}", "",
           "每个交易日 15:10 ET 前后，对当晚盘后、次日盘前发财报的美股（$5 以上、有期权）记下期权隐含的涨跌幅（平值跨式 / 股价），"
           "基线给每只「超过隐含幅度」的概率（历史 40%；自身过去平均反应比隐含高 25% 以上的 51%）；方向的判断只在判断文件里。"
-          "反应日收盘后按收盘对前收记分。只记录，不交易。", ""]
+          "反应日收盘后记分：方向按反应日开盘对前收（10-19 起，和『第二天开盘卖』的做法一致），收盘另列一栏参考；"
+          "幅度（有没有超过隐含）按收盘对前收，和基线的统计口径一致。只记录，不交易。", ""]
     if not rows:
         return "\n".join(md + ["还没有可记分的财报。", ""])
     allbig = [r for r in rows if r["result"]["big"] is not None]
@@ -238,17 +242,21 @@ def scorecard(root: Path = OUT) -> str:
         bigs = [r for r in jr if r["judgment"].get("big") in (True, False) and r["result"]["big"] is not None]
         md += ["| 项目 | 次数 | 对的比例 |", "|---|---|---|"]
         if dirs:
-            md.append(f"| 方向（涨 / 跌） | {len(dirs)} | "
+            md.append(f"| 方向（按开盘） | {len(dirs)} | "
                       f"{sum((r['judgment']['direction'] == 'up') == r['result']['up'] for r in dirs) / len(dirs):.0%} |")
+            cl = [r for r in dirs if "up_close" in r["result"]]
+            if cl:
+                md.append(f"| 方向（按收盘，参考） | {len(cl)} | "
+                          f"{sum((r['judgment']['direction'] == 'up') == r['result']['up_close'] for r in cl) / len(cl):.0%} |")
         if bigs:
             md.append(f"| 幅度（会不会超过隐含） | {len(bigs)} | "
                       f"{sum(r['judgment']['big'] == r['result']['big'] for r in bigs) / len(bigs):.0%} |")
         hi = [r for r in dirs if float(r["judgment"].get("confidence") or 0) >= 0.6]
         if hi:
-            md.append(f"| 方向，信心 0.6 以上 | {len(hi)} | "
+            md.append(f"| 方向按开盘，信心 0.6 以上 | {len(hi)} | "
                       f"{sum((r['judgment']['direction'] == 'up') == r['result']['up'] for r in hi) / len(hi):.0%} |")
     md += share_trades(rows, jr)
-    md += ["", "## 明细（最近 40 条）", "", "| 预测日 | 股票 | 时间 | 隐含 | 跳空 | 收盘 | 超过隐含 | 判断 | 判断对不对 |",
+    md += ["", "## 明细（最近 40 条）", "", "| 预测日 | 股票 | 时间 | 隐含 | 跳空 | 收盘 | 超过隐含 | 判断 | 方向对不对（开盘 / 收盘） |",
            "|---|---|---|---|---|---|---|---|---|"]
     for r in sorted(rows, key=lambda r: (r["day"], r["symbol"]))[-40:]:
         j, res = r["judgment"], r["result"]
@@ -257,6 +265,8 @@ def scorecard(root: Path = OUT) -> str:
         ok = ""
         if j and j.get("direction") in ("up", "down"):
             ok = "对" if (j["direction"] == "up") == res["up"] else "错"
+            if "up_close" in res:
+                ok += " / " + ("对" if (j["direction"] == "up") == res["up_close"] else "错")
         md.append(f"| {r['day']} | {r['symbol']} | {'盘后' if r['time'] == 'post-market' else '盘前'} | "
                   f"{(r.get('implied_move') or 0):.1%}{'（月）' if r.get('weekly') is False else ''} | {res['gap']:+.1%} | {res['move']:+.1%} | "
                   f"{'是' if res['big'] else '否' if res['big'] is not None else '—'} | {jtxt} | {ok} |")

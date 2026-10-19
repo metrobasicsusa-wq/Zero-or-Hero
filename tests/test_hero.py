@@ -3676,7 +3676,11 @@ class EarningsForecast(unittest.TestCase):
         self.assertIn("日历没写盘前盘后（没记）：WHEN", md)
         bars = [{"t": "2026-10-20T04:00:00Z", "o": 70, "c": 70}, {"t": "2026-10-21T04:00:00Z", "o": 63, "c": 61.6}]
         res = ef.score_row(got["NFLX"], bars)
-        self.assertEqual((res["gap"], res["move"], res["big"], res["up"]), (-0.1, -0.12, True, False))
+        self.assertEqual((res["gap"], res["move"], res["big"], res["up"], res["up_close"]), (-0.1, -0.12, True, False, False))
+        # direction is judged at the open: a gap up that closes red counts as up
+        flip = ef.score_row(got["NFLX"], [{"t": "2026-10-20T04:00:00Z", "o": 70, "c": 70},
+                                          {"t": "2026-10-21T04:00:00Z", "o": 72, "c": 69}])
+        self.assertEqual((flip["up"], flip["up_close"]), (True, False))
         mres = ef.score_row(got["MNTH"], [{"t": "2026-10-20T04:00:00Z", "o": 40, "c": 40},
                                           {"t": "2026-10-21T04:00:00Z", "o": 44, "c": 44}])
         with tempfile.TemporaryDirectory() as d:
@@ -3687,7 +3691,9 @@ class EarningsForecast(unittest.TestCase):
             (root / "2026-10-20.judgment.json").write_text(json.dumps({"date": "2026-10-20", "calls": [
                 {"symbol": "NFLX", "direction": "down", "big": True, "confidence": 0.6, "why": "x"}]}))
             md = ef.scorecard(root)
-            self.assertIn("| 方向（涨 / 跌） | 1 | 100% |", md)
+            self.assertIn("| 方向（按开盘） | 1 | 100% |", md)
+            self.assertIn("| 方向（按收盘，参考） | 1 | 100% |", md)
+            self.assertIn("| 对 / 对 |", md)
             self.assertIn("| 一周内到期的全部 | 1 | 100% | 51% |", md)   # the monthly straddle is kept apart
             self.assertIn("| 月度到期（隐含偏大，只作参考） | 1 | ", md)
             self.assertIn("| 按判断方向，全部 | 1 | 100% | +10.00% | +10.00% | +20.00% |", md)   # a down call, -10% gap
