@@ -4058,6 +4058,34 @@ class EarningsForecastEveryCall(unittest.TestCase):
         self.assertIn("| 方向（按开盘） | 2 | 50% |", md)
 
 
+class ResearchEarningsControl(unittest.TestCase):
+    def test_picks_controls_and_blocked_nights(self):
+        from hero import research_earnings_control as rc
+        days = [(date(2025, 1, 1) + timedelta(days=i)).isoformat() for i in range(500)]
+        days = [d for d in days if date.fromisoformat(d).weekday() < 5]
+        flat = lambda gap_day=None, gap=0.0: {d: {"o": 100.0 * (1 + (gap if d == gap_day else 0)), "c": 100.0} for d in days}
+        r_day = days[300]                                       # AAA reacts here: +10% at the open
+        bars = {"AAA": flat(r_day, 0.10), "BBB": flat(r_day, 0.02), "CCC": flat()}
+        bars["CCC"] = {d: {"o": 100.0 + i, "c": 100.0 + i} for i, d in enumerate(days)}   # strong momentum, no report
+        events = [{"symbol": "AAA", "reaction_day": r_day, "timing": "after close", "mom126": 0.5},
+                  {"symbol": "BBB", "reaction_day": r_day, "timing": "after close", "mom126": 0.1}]
+        picks = rc.weekly_picks(events, bars)
+        self.assertEqual([(p["symbol"], p["entry"], round(p["ret"], 4)) for p in picks], [("AAA", days[299], 0.1)])
+        block = {s: rc.blocked([e for e in events if e["symbol"] == s], sorted(b)) for s, b in bars.items()}
+        self.assertEqual(block["AAA"], {days[298], days[299], days[300]})
+        before = rc.same_name(picks, bars, block, -5)
+        self.assertEqual((before[0]["entry"], before[0]["ret"]), (days[294], 0.0))
+        self.assertEqual(rc.same_name(picks, bars, block, 1), [])          # the reaction day's night is blocked
+        mom = rc.momentum_pick(picks, bars, block)
+        self.assertEqual(mom[0]["symbol"], "CCC")                           # AAA / BBB are blocked that night
+        v, dd = rc.compound([0.1, -0.5, 0.2], 2)
+        self.assertAlmostEqual(v, 0.0)                                      # a -50% night at 2x wipes the ledger
+        self.assertEqual(dd, 1.0)
+        v, dd = rc.compound([0.1, -0.05], 1)
+        self.assertAlmostEqual(v, 500 * 1.1 * 0.95)
+        self.assertAlmostEqual(dd, 0.05)
+
+
 class EarningsForecastAroundTheReport(unittest.TestCase):
     def test_before_open_report_is_judged_against_the_last_trade_before_it(self):
         from datetime import datetime as dt
