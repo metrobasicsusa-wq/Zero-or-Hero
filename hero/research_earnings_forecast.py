@@ -282,6 +282,8 @@ def markdown(rep: dict) -> str:
     for why, label in (("no_options", f"{WINDOW} 天内没有期权"), ("error", "查期权出错"), ("under_5", "股价不到 $5"), ("no_price", "没有价格")):
         if rep.get("skipped_symbols", {}).get(why):
             md += ["", f"{label}：{'、'.join(rep['skipped_symbols'][why])}"]
+    if rep.get("calendar_no_time"):
+        md += ["", f"今明两天发、日历没写盘前盘后（没记）：{'、'.join(rep['calendar_no_time'])}"]
     return "\n".join(md) + "\n"
 
 

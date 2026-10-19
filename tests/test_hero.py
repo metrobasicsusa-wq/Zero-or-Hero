@@ -3673,6 +3673,7 @@ class EarningsForecast(unittest.TestCase):
         md = ef.markdown(rep)
         self.assertIn("（月，2026-11-20）", md)
         self.assertIn("45 天内没有期权：NOOPT", md)
+        self.assertIn("日历没写盘前盘后（没记）：WHEN", md)
         bars = [{"t": "2026-10-20T04:00:00Z", "o": 70, "c": 70}, {"t": "2026-10-21T04:00:00Z", "o": 63, "c": 61.6}]
         res = ef.score_row(got["NFLX"], bars)
         self.assertEqual((res["gap"], res["move"], res["big"], res["up"]), (-0.1, -0.12, True, False))
