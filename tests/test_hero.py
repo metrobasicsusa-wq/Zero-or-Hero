@@ -4364,6 +4364,19 @@ class ResearchZdteCost(unittest.TestCase):
         cheap = et_minutes([self.minute(day, t, px) for t, px in (("10:00", 0.05), ("15:30", 0.05))])
         self.assertAlmostEqual(play_cost(cheap, "10:00", 0.10, 0.10)["hold"], 0.04 / 0.06 - 1, places=4)   # a cent each way
 
+    def test_minutes_by_day_keeps_the_current_month(self):
+        from hero.research_0dte_names import minutes_by_day
+        minute = self.minute
+
+        class Client:     # like SIP: a request that runs past "now" (10-20) is refused
+            def stock_bars(self, syms, start, end, feed=None):
+                if end[:10] > "2026-10-20":
+                    raise RuntimeError("subscription does not permit querying recent SIP data")
+                return {"SPY": [minute(d, "10:00", 1.0) for d in ("2026-09-30", "2026-10-19") if start[:10] <= d < end[:10]]}
+
+        got = minutes_by_day(Client(), "SPY", "2026-09-01", "2026-10-19")
+        self.assertEqual(sorted(got), ["2026-09-30", "2026-10-19"])
+
     def test_run_and_report_with_live_trades(self):
         import tempfile
         from unittest import mock

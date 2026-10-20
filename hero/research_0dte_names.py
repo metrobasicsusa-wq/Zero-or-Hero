@@ -41,10 +41,14 @@ FEED = "sip"
 def minutes_by_day(client, und: str, start: str, end: str) -> dict[str, dict[str, dict]]:
     out: dict[str, dict[str, dict]] = {}
     d = date.fromisoformat(start).replace(day=1)
-    while d <= date.fromisoformat(end):
+    last = date.fromisoformat(end)
+    while d <= last:
         nxt = (d.replace(day=28) + timedelta(days=4)).replace(day=1)
+        # Stop the request at the end of `end`: asking past "now" for SIP bars is refused, which used to
+        # leave the current month empty (owner, 10-20: the 10-16 0DTE study had no October).
+        stop = min(nxt, last + timedelta(days=1))
         try:
-            bars = client.stock_bars([und], f"{d.isoformat()}T13:00:00Z", f"{nxt.isoformat()}T00:00:00Z", feed=FEED).get(und, [])
+            bars = client.stock_bars([und], f"{d.isoformat()}T13:00:00Z", f"{stop.isoformat()}T00:00:00Z", feed=FEED).get(und, [])
         except Exception:
             bars = []
         for b in bars:
