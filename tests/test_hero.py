@@ -4385,7 +4385,7 @@ class ResearchZdteCost(unittest.TestCase):
 
         class Client:
             def stock_bars(self, syms, start, end, feed=None):
-                day = "2026-10-20"
+                day = "2026-10-16"
                 if not (start[:10] <= day < end[:10]):
                     return {}
                 return {"SPY": [minute(day, "09:30", 765.67), minute(day, "10:00", 767.58), minute(day, "15:30", 769.0)]}
@@ -4412,12 +4412,12 @@ class ResearchZdteCost(unittest.TestCase):
         with tempfile.TemporaryDirectory() as d:
             (Path(d) / "journal-s500").mkdir()
             (Path(d) / "journal-s500" / "sleeves.json").write_text(json.dumps({"sleeves": {"spy0dte-near-1000": {"closed": [
-                {"kind": "zdte", "opened": "2026-10-20 10:00", "paid": 260.0, "ret": 2.0},
-                {"kind": "zdte", "opened": "2026-10-20 10:00", "paid": 260.0, "ret": 1.38}]}}}))
-            self.assertAlmostEqual(zc.live_trades(Path(d), "spy0dte-near-1000")["2026-10-20"], 1.69)
+                {"kind": "zdte", "opened": "2026-10-16 10:00", "paid": 260.0, "ret": 2.0},
+                {"kind": "zdte", "opened": "2026-10-16 10:00", "paid": 260.0, "ret": 1.38}]}}}))
+            self.assertAlmostEqual(zc.live_trades(Path(d), "spy0dte-near-1000")["2026-10-16"], 1.69)
             table, md = zc.report(json.loads(json.dumps(rep)), Path(d))
         self.assertIn("SPY 末日单 0.3%", md)
-        self.assertIn("| 2026-10-20 | +0.25% | SPY770C | +169% |", md)
+        self.assertIn("| 2026-10-16 | +0.25% | SPY770C | +169% |", md)
 
 
 if __name__ == "__main__":
