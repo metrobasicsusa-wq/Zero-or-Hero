@@ -22,7 +22,7 @@
      "exit_day": "2026-10-20",
      "exit_at": "15:30",
      "trail": true,
-     "best_bid": 0.33,
+     "best_bid": 1.15,
      "expiry_out": null
     }
    ],
@@ -331,7 +331,7 @@
      "exit_day": "2026-10-20",
      "exit_at": "15:30",
      "trail": true,
-     "best_bid": 0.33,
+     "best_bid": 1.15,
      "expiry_out": null
     }
    ],
@@ -1749,32 +1749,11 @@
   },
   "spy0dte-near-500": {
    "start": 500.0,
-   "cash": 390.0,
+   "cash": 858.0,
    "round": 1,
    "heroes": 0,
    "zeros": 0,
    "open": [
-    {
-     "tid": "20261020-5b0b05",
-     "kind": "zdte",
-     "sym": "SPY261020C00770000",
-     "asset": "option",
-     "und": "SPY",
-     "qty": 3,
-     "cost": 0.52,
-     "paid": 156.0,
-     "opened": "2026-10-20 10:00",
-     "why": "SPY 开盘 $765.67、现在 $767.58，顺势买当天到期看涨 770（离现价 0.3%），3 倍止盈，15:30 平仓",
-     "expiry": "2026-10-20",
-     "exit_day": "2026-10-20",
-     "exit_at": "15:30",
-     "trail": false,
-     "best_bid": 1.29,
-     "expiry_out": null,
-     "take_x": 3,
-     "take": 1.56,
-     "take_cid": "sl-spy0dte-near-500-20261020-5b0b05-t7840"
-    },
     {
      "tid": "20261020-5b0b05r",
      "kind": "zdte",
@@ -1790,7 +1769,7 @@
      "exit_day": "2026-10-20",
      "exit_at": "15:30",
      "trail": true,
-     "best_bid": 1.29,
+     "best_bid": 2.85,
      "expiry_out": null
     }
    ],
@@ -2062,6 +2041,33 @@
      "how": "2026-10-19 15:30 到时卖出",
      "closed": "2026-10-19 15:30",
      "ret": -0.985
+    },
+    {
+     "tid": "20261020-5b0b05",
+     "kind": "zdte",
+     "sym": "SPY261020C00770000",
+     "asset": "option",
+     "und": "SPY",
+     "qty": 3,
+     "cost": 0.52,
+     "paid": 156.0,
+     "opened": "2026-10-20 10:00",
+     "why": "SPY 开盘 $765.67、现在 $767.58，顺势买当天到期看涨 770（离现价 0.3%），3 倍止盈，15:30 平仓",
+     "expiry": "2026-10-20",
+     "exit_day": "2026-10-20",
+     "exit_at": "15:30",
+     "trail": false,
+     "best_bid": 1.29,
+     "expiry_out": null,
+     "take_x": 3,
+     "take": 1.56,
+     "take_cid": "sl-spy0dte-near-500-20261020-5b0b05-t7840",
+     "state": "closed",
+     "exit_price": 1.56,
+     "proceeds": 468.0,
+     "how": "3 倍止盈（券商挂单成交）",
+     "closed": "2026-10-20 10:30",
+     "ret": 2.0
     }
    ],
    "slots": {
@@ -2078,32 +2084,11 @@
   },
   "spy0dte-near-1000": {
    "start": 1000.0,
-   "cash": 629.0,
+   "cash": 1409.0,
    "round": 1,
    "heroes": 0,
    "zeros": 0,
    "open": [
-    {
-     "tid": "20261020-ee1127",
-     "kind": "zdte",
-     "sym": "SPY261020C00770000",
-     "asset": "option",
-     "und": "SPY",
-     "qty": 5,
-     "cost": 0.52,
-     "paid": 260.0,
-     "opened": "2026-10-20 10:00",
-     "why": "SPY 开盘 $765.67、现在 $767.58，顺势买当天到期看涨 770（离现价 0.3%），3 倍止盈，15:30 平仓",
-     "expiry": "2026-10-20",
-     "exit_day": "2026-10-20",
-     "exit_at": "15:30",
-     "trail": false,
-     "best_bid": 1.29,
-     "expiry_out": null,
-     "take_x": 3,
-     "take": 1.56,
-     "take_cid": "sl-spy0dte-near-1000-20261020-ee1127-te9ff"
-    },
     {
      "tid": "20261020-ee1127r",
      "kind": "zdte",
@@ -2119,7 +2104,7 @@
      "exit_day": "2026-10-20",
      "exit_at": "15:30",
      "trail": true,
-     "best_bid": 1.29,
+     "best_bid": 2.85,
      "expiry_out": null
     }
    ],
@@ -2391,6 +2376,33 @@
      "how": "2026-10-19 15:30 到时卖出",
      "closed": "2026-10-19 15:30",
      "ret": -0.985
+    },
+    {
+     "tid": "20261020-ee1127",
+     "kind": "zdte",
+     "sym": "SPY261020C00770000",
+     "asset": "option",
+     "und": "SPY",
+     "qty": 5,
+     "cost": 0.52,
+     "paid": 260.0,
+     "opened": "2026-10-20 10:00",
+     "why": "SPY 开盘 $765.67、现在 $767.58，顺势买当天到期看涨 770（离现价 0.3%），3 倍止盈，15:30 平仓",
+     "expiry": "2026-10-20",
+     "exit_day": "2026-10-20",
+     "exit_at": "15:30",
+     "trail": false,
+     "best_bid": 1.29,
+     "expiry_out": null,
+     "take_x": 3,
+     "take": 1.56,
+     "take_cid": "sl-spy0dte-near-1000-20261020-ee1127-te9ff",
+     "state": "closed",
+     "exit_price": 1.56,
+     "proceeds": 780.0,
+     "how": "3 倍止盈（券商挂单成交）",
+     "closed": "2026-10-20 10:30",
+     "ret": 2.0
     }
    ],
    "slots": {
