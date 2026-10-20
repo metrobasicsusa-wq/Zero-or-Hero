@@ -1,0 +1,107 @@
+{
+ "date": "2026-10-20",
+ "sniper": null,
+ "candidates": [
+  {
+   "rank": 1,
+   "symbol": "CRWV",
+   "direction": "put",
+   "confidence": 0.2,
+   "why": "AI 债务担心继续（10-14 无担保债收益率到 15%，Benzinga 标题：HSBC 看还有下跌、52 周新低），盘前 -3.3%；在 52 周 / 20 日低点下方，但跳空只有平时单日波动（约 5%）的 0.6 倍、不到 3 倍；10-16 我们的 CRWV 看跌作废，超跌反弹风险大"
+  },
+  {
+   "rank": 2,
+   "symbol": "NBIS",
+   "direction": "put",
+   "confidence": 0.15,
+   "why": "同一个 AI 债务主题被带着跌，盘前 -4.0%（Benzinga：Nebius Group Stock Is Falling Tuesday），没有自己的新消息；跳空约为平时波动 0.8 倍，没有突破加分"
+  },
+  {
+   "rank": 3,
+   "symbol": "TSM",
+   "direction": "call",
+   "confidence": 0.12,
+   "why": "claude-b 选的 NVDA 看涨（路透：字节、阿里、腾讯下单超 350 亿美元）的二线受益（代工）；但这条报道我们独立搜不到，芯片盘前在跌（SMH -1.3%），TSM 10-15 刚发完财报"
+  },
+  {
+   "rank": 4,
+   "symbol": "MU",
+   "direction": "put",
+   "confidence": 0.1,
+   "why": "盘前 -2.6%，跟着存储芯片回吐周一的反弹；『30 亿美元投资计划里投关键矿产』消息分量小，跳空约为平时波动 0.7 倍"
+  }
+ ],
+ "skipped": [
+  {
+   "symbol": "NVDA",
+   "direction": "call",
+   "gap": -0.005,
+   "reason": "claude-b 已选",
+   "why_not": "claude-b 今天狙击 NVDA 看涨（中国订单报道），按规则不选同一只"
+  },
+  {
+   "symbol": "GE",
+   "direction": "put",
+   "gap": -0.031,
+   "reason": "其他",
+   "why_not": "财报当天的反应（超预期并上调指引但盘前 -3.1%），狙击只做非财报消息"
+  },
+  {
+   "symbol": "NOK",
+   "direction": "put",
+   "gap": -0.023,
+   "reason": "财报临近",
+   "why_not": "10-22 盘前发财报，盘前 -2.3% 没有自己的新闻"
+  },
+  {
+   "symbol": "WORX",
+   "direction": "call",
+   "gap": 0.47,
+   "reason": "没有一周内期权",
+   "why_not": "$3.94 的小盘股盘前 +47%，只出现在异动名单里，没有实质新闻，期权也不够"
+  },
+  {
+   "symbol": "SVRN",
+   "direction": "call",
+   "gap": 0.118,
+   "reason": "消息太弱",
+   "why_not": "盘前 +11.8%，扫描里没有任何新闻"
+  },
+  {
+   "symbol": "AAPL",
+   "direction": "put",
+   "gap": -0.011,
+   "reason": "分析师评级",
+   "why_not": "Loop 下调到持有，只有评级、跳空 -1.1%"
+  },
+  {
+   "symbol": "WMT",
+   "direction": "call",
+   "gap": null,
+   "reason": "分析师评级",
+   "why_not": "Evercore 目标价上调到 $130，只是目标价"
+  },
+  {
+   "symbol": "AMZN",
+   "direction": "call",
+   "gap": null,
+   "reason": "跳空已吃掉",
+   "why_not": "德国 180 亿美元投资，但周一已经 +5%（摩根士丹利上调目标价），连续第 2 天追减分"
+  },
+  {
+   "symbol": "CRM",
+   "direction": "put",
+   "gap": null,
+   "reason": "其他",
+   "why_not": "56.6 亿美元收购 Braze，收购方通常走弱但消息方向不明确"
+  }
+ ],
+ "claude_b_pick": "NVDA call (0.35)",
+ "notes": [
+  "盘前扫描（research/premarket/2026-10-20.md）只有 11 只离昨收 2% 以上，多数是杠杆 ETF；WebSearch 搜不到今天的盘前异动名单。",
+  "大盘：SPY 盘前约 -0.1%、QQQ -0.4%、SMH -1.3%（芯片回吐周一反弹）；油价涨（伊朗），长债涨；今天没有 08:30 数据。",
+  "今天财报（盘前）：GE、RTX、GM、MMM、HAL、NOC 等；盘后 NFLX、ISRG。财报股不进狙击，由财报预测和财报账本处理。",
+  "没有够分量、还没被跳空吃掉的非财报消息：狙击写 null，候选照常打分。"
+ ],
+ "generated_at": "2026-10-20T09:07:05-04:00"
+}
