@@ -4480,6 +4480,33 @@ class EarningsReasons(unittest.TestCase):
             self.assertIn("| 成本 | 1 | 0% |", md)
 
 
+class EarningsProfiles(unittest.TestCase):
+    def test_page_joins_the_history_scored_reports_and_notes(self):
+        from hero import earnings_profiles as ep
+        with tempfile.TemporaryDirectory() as d:
+            root = Path(d)
+            (root / "research" / "earnings-forecast").mkdir(parents=True)
+            ev = [{"symbol": "NFLX", "reaction_day": day, "timing": "after close", "gap": g, "move": g / 2, "implied_move": 0.08}
+                  for day, g in (("2026-01-21", -0.054), ("2026-04-17", -0.106), ("2026-07-17", -0.125), ("2025-10-22", 0.03))]
+            (root / "research" / "2026-10-02-earnings-reactions.json").write_text(json.dumps({"events": ev}))
+            (root / "research" / "earnings-forecast" / "2026-10-20.json").write_text(json.dumps({"date": "2026-10-20", "reports": [
+                {"symbol": "NFLX", "time": "post-market", "reaction_day": "2026-10-21", "implied_move": 0.096,
+                 "result": {"gap_pre": -0.04, "move": -0.05}},
+                {"symbol": "ISRG", "time": "post-market", "reaction_day": "2026-10-21", "implied_move": 0.076}]}))
+            (root / "research" / "earnings-forecast" / "companies.json").write_text(json.dumps(
+                {"NFLX": {"watch": "收入对自己的预测", "habit": "常常只是符合", "notes": [{"date": "10-20", "text": "x"}]}}, ensure_ascii=False))
+            (root / "research" / "earnings-forecast" / "reasons.jsonl").write_text(
+                json.dumps({"date": "2026-10-20", "symbol": "NFLX", "reason": "全年落在下沿"}, ensure_ascii=False) + "\n")
+            self.assertEqual(ep.top_symbols("2026-10-20", root), ["NFLX", "ISRG"])
+            md = ep.render(["NFLX", "ISRG"], "2026-10-21", root)
+        self.assertIn("市场盯什么：收入对自己的预测", md)
+        self.assertIn("最近 5 次：开盘涨 1 次、跌 4 次；最近连续 4 次跌", md)       # the scored 10-21 report joins the history
+        self.assertIn("| 2026-10-21 | 盘后 | -4.0% | -5.0% | 9.6% |", md)
+        self.assertIn("复盘 2026-10-20：全年落在下沿", md)
+        self.assertIn("还没有手写的档案", md.split("## ISRG")[1])
+        self.assertIn("没有过去的反应数据", md.split("## ISRG")[1])
+
+
 class ResearchZdteConfirm(unittest.TestCase):
     def test_gauges_are_signed_by_spy_and_split_in_and_out_of_sample(self):
         from unittest import mock
