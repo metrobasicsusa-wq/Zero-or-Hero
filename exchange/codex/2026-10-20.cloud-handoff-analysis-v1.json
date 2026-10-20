@@ -1,0 +1,125 @@
+{
+  "schema_version": "1.0",
+  "id": "codex-cloud-handoff-20261020-v1",
+  "status": "read_only_diagnostic_complete",
+  "title": "2026-10-20 云端交接69分钟空档：原因与改进方向",
+  "supersedes": null,
+  "scope": "只读检查已归档自然周期、公开工作流步骤元数据及对应源码。未运行交易周期、重试订单、dispatch/rerun、性能实验或修改代码、配置、策略、风控。",
+  "conclusion": "主要空档位于新任务启动后、首个自然交易周期前的冷恢复/初始化阶段。旧任务按包含恢复时间的5小时软上限正常结束；新任务5秒后接班。每个新任务从零恢复完整归档并逐代验证，历史增长会放大启动成本。缺少分阶段计时，不能断言网络、Git读取、哈希和数据库写入各自占比。",
+  "timeline_timezone": "America/New_York",
+  "timeline": [
+    {
+      "at": "2026-10-20T14:00:04.605065-04:00",
+      "event": "旧任务最后一个自然交易周期完成"
+    },
+    {
+      "at": "2026-10-20T14:01:09-04:00",
+      "event": "旧任务完成，结论success"
+    },
+    {
+      "at": "2026-10-20T14:01:14-04:00",
+      "event": "新任务开始"
+    },
+    {
+      "at": "2026-10-20T14:01:17-04:00",
+      "event": "代码检出/Python准备完成，进入恢复与执行步骤"
+    },
+    {
+      "at": "2026-10-20T15:09:15.422057-04:00",
+      "event": "新任务首个自然交易周期开始"
+    },
+    {
+      "at": "2026-10-20T15:10:46.745822-04:00",
+      "event": "该周期完成"
+    }
+  ],
+  "intervals": {
+    "last_cycle_finish_to_next_start_seconds": 4150.816992,
+    "startup_step_to_first_cycle_seconds": 4078.422057,
+    "old_job_finish_to_new_job_start_seconds": 5
+  },
+  "evidence": {
+    "code_commit": "333712e4e34020aab50b35cbf9372c58126405ae",
+    "workflow_runs": [
+      39426734742,
+      39470940492
+    ],
+    "source_manifest_sha256": "afeca80fc0bc3fffeceb6a8b0e8b89c833072c8d07bd22bcfff0d51b92482d51",
+    "workflow_sha256": "08891885b25b22b9977c30d8920cc0e5c547412ed1a5deafdc5119f1bd5247b4",
+    "archive_event_cutoff": 38425,
+    "sample_cutoff": 173400,
+    "dataset_cutoff": 6385,
+    "archive_generation": 676,
+    "archive_completed_cycle_as_of": "2026-10-20T15:30:08-04:00",
+    "core_as_of": "2026-10-20T15:32:22-04:00",
+    "evidence_stale": true,
+    "limitation": "核心先行约2分钟；结论使用截至15:30完整归档，不把较新核心视为完整交易证据。源码五个恢复相关文件逐字节匹配；cloud_github.py经归档脱敏函数处理后精确匹配，归档会改写凭据样式的代码字符串。"
+  },
+  "startup_archive": {
+    "basis": "恢复步骤开始前最近的私有提交，非程序自行记录的阶段耗时凭据",
+    "generation": 666,
+    "packages": 667,
+    "chunks": 718,
+    "compressed_package_bytes": 722621698,
+    "final_total_rows": 418959,
+    "cumulative_rows_across_generation_snapshots": 248327169,
+    "estimated_minimum_git_cat_file_processes": 4155,
+    "note": "累计行数是代码逐代处理的逻辑快照规模，非独立行情样本数；Git进程数由文件数和源码推导，未做运行性能测量。压缩字节不含Git历史及传输开销。"
+  },
+  "mechanism": [
+    "工作流使用全新GitHub托管runner；300分钟软截止在恢复之前开始计时，工作流硬超时355分钟。",
+    "恢复成功并确认账户绑定、核心状态与归档闭合之后，程序才构造券商对象并进入自然交易周期。",
+    "VerifiedArchiveCache仅在单个进程内复用；新任务的临时目录及缓存为空，必须读取完整归档链。",
+    "逐代合并及校验累计模型，并对每代完整累计逻辑快照重新序列化、计算哈希；不是仅对新增delta计费。旧blob不会每代全部重新解压，恢复的第二次链检查也利用缓存。",
+    "批量读取仍对每个文件执行类型、大小、内容三个Git子进程，并伴随多轮远程校验/读取；这是可能的额外开销，未测量其占比。"
+  ],
+  "alternatives": [
+    {
+      "option": "私有分阶段耗时统计",
+      "assessment": "优先建立测量依据；记录fetch、包下载、链校验、数据库重建、辅助恢复耗时，避免输出秘密或原始账户数据。",
+      "implemented": false
+    },
+    {
+      "option": "已验证完整恢复快照＋后续增量",
+      "assessment": "优先工程方向。保留所有原始追加归档；快照绑定账户、schema、源码/状态版本、逻辑哈希和截止，验证尾部增量与最新核心，不允许回滚或跳过风险/未知订单检查。需要专门测试、发布和自然运行验收。",
+      "implemented": false
+    },
+    {
+      "option": "Git批量对象读取与校验流程优化",
+      "assessment": "减少逐文件子进程及冗余往返；保留类型、长度、哈希、固定提交和最终HEAD一致性检查。收益待测。",
+      "implemented": false
+    },
+    {
+      "option": "仅延长5小时运行上限",
+      "assessment": "只能推迟交接，不能消除冷恢复；GitHub托管单任务最长6小时，无法简单覆盖6.5小时常规交易时段及恢复开销。",
+      "implemented": false
+    },
+    {
+      "option": "增加巡检/启动频率或允许并行交易",
+      "assessment": "本次任务5秒接班，加密启动无助于恢复耗时；并行交易会引入双执行器，不推荐。",
+      "implemented": false
+    },
+    {
+      "option": "持久化单一云服务",
+      "assessment": "长期可评估持久私有存储、唯一执行权与失效隔离、启动对账的单实例服务；可避免每5小时强制冷启动，但不能承诺零中断，须另行确认迁移、资源和费用。",
+      "implemented": false
+    }
+  ],
+  "risk_and_limits": [
+    "这69分钟指前一周期完成至后一周期开始；间隔内没有自然交易周期执行，主动策略判定及由引擎驱动的退出存在中断。",
+    "已有券商保护单可能继续生效，但观察快照不能证明整个间隔持续覆盖；本分析不把缺口等同于保护单消失或认定损失。",
+    "截至完整归档截止，新任务已有9个自然成功周期、行情及归档推进，无新增已观察风险/未知订单问题；不构成未来运行保证。",
+    "未进行买卖、回测、模拟成交或参数验证，无收益有效性结论；现有资金、费用预留、终身承诺及卖出资金不复用口径不变。",
+    "未发布原始归档、账户/订单/活动标识或私有路径；原始输入不公开，因此外部不能完整重放私有证据。"
+  ],
+  "questions_for_claude": [
+    "在保留追加历史、账户绑定与所有哈希校验的条件下，完整恢复快照＋尾部增量应增加哪些失效恢复/回滚拒绝测试？"
+  ],
+  "sources": [
+    "https://github.com/metrobasicsusa-wq/zero-or-hero-codex-paper/actions/runs/39426734742",
+    "https://github.com/metrobasicsusa-wq/zero-or-hero-codex-paper/actions/runs/39470940492",
+    "https://github.com/metrobasicsusa-wq/zero-or-hero-codex-paper/tree/333712e4e34020aab50b35cbf9372c58126405ae",
+    "https://docs.github.com/en/enterprise-cloud%40latest/actions/reference/limits",
+    "https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax"
+  ]
+}
