@@ -4420,6 +4420,44 @@ class ResearchZdteCost(unittest.TestCase):
         self.assertIn("| 2026-10-16 | +0.25% | SPY770C | +169% |", md)
 
 
+class EarningsReasons(unittest.TestCase):
+    def test_tally_joins_results_and_finds_usable_signs(self):
+        from unittest import mock
+        from hero import earnings_reasons as er
+        with tempfile.TemporaryDirectory() as d:
+            folder = Path(d)
+            reports, calls, lines = [], [], []
+            for i in range(6):
+                sym = f"S{i}"
+                gap = 0.03 if i < 4 else -0.02                   # S0-S3 open up, S4-S5 down
+                res = {"gap_pre": gap, "move": gap * 2, "up": gap > 0} if i < 5 else None   # S5 not scored yet
+                reports.append({"symbol": sym, "implied_move": 0.05, **({"result": res} if res else {})})
+                calls.append({"symbol": sym, "direction": "up", "confidence": 0.55})
+                lines.append({"date": "2026-10-19", "symbol": sym, "last_guide": "raise" if i < 4 else "cut",
+                              "run20": -0.08 if i < 3 else 0.06, "eps": "beat", "guide": "raise" if i < 4 else "cut",
+                              "tags": ["成本"] if i == 4 else [], "reason": f"r{i}"})
+            (folder / "2026-10-19.json").write_text(json.dumps({"date": "2026-10-19", "reports": reports}))
+            (folder / "2026-10-19.judgment.json").write_text(json.dumps({"date": "2026-10-19", "calls": calls}))
+            lines.append({**lines[0], "reason": "corrected"})           # a later line replaces the earlier one
+            (folder / "reasons.jsonl").write_text("\n".join(json.dumps(x, ensure_ascii=False) for x in lines) + "\n")
+            got = er.outcomes(folder)[("2026-10-19", "S4")]
+            self.assertFalse(got["up"])
+            self.assertFalse(got["right"])
+            rows = [{**r, **er.outcomes(folder).get((r["date"], r["symbol"]), {})} for r in er.load_reasons(folder)]
+            self.assertEqual(len(rows), 6)
+            t = dict((v, (n, up)) for v, n, up, _, _ in er.tally([r for r in rows if r.get("gap") is not None], "last_guide"))
+            self.assertEqual(t["上调"], (4, 1.0))
+            self.assertEqual(t["下调"], (1, 0.0))
+            with mock.patch.object(er, "MIN_N", 4):
+                rules = er.usable([r for r in rows if r.get("gap") is not None])
+            self.assertTrue(any("上次指引「上调」" in x and "判涨" in x for x in rules))
+            md = er.render(folder)
+            self.assertIn("超预期 + 指引上调", md)
+            self.assertIn("| 2026-10-19 | S5 | 涨 | 待记分 |", md)
+            self.assertIn("corrected", md)
+            self.assertIn("| 成本 | 1 | 0% |", md)
+
+
 class ResearchZdteConfirm(unittest.TestCase):
     def test_gauges_are_signed_by_spy_and_split_in_and_out_of_sample(self):
         from unittest import mock
