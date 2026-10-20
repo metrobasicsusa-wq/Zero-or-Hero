@@ -28,7 +28,7 @@ from pathlib import Path
 
 import requests
 
-from hero.earnings import BROWSER, NASDAQ, NASDAQ_TIME
+from hero.earnings import BROWSER, NASDAQ, NASDAQ_TIME, yahoo_dates, yahoo_time
 
 ROOT = Path(__file__).resolve().parent.parent
 FOLDER = ROOT / "research" / "earnings-forecast"
@@ -170,15 +170,29 @@ def watched(root: Path = ROOT) -> set[str]:
                 out.add(sym[:-15] if len(sym) > 15 and sym[-9] in "CP" else sym)
         except Exception:
             pass
-    return out
+    try:
+        out |= set(json.loads((root / "research" / "earnings-forecast" / "extra_watch.json").read_text()).get("symbols") or [])
+    except Exception:
+        pass
+    return {s for s in out if s and s.isalpha()}
 
 
-def ahead(n: int, today: date, root: Path = ROOT, get=requests.get, top: int = AHEAD_TOP) -> dict[str, list[dict]]:
-    """day -> the reports worth a page: the `top` largest by market value plus any we watch."""
+def ahead(n: int, today: date, root: Path = ROOT, get=requests.get, top: int = AHEAD_TOP, lookup=None) -> dict[str, list[dict]]:
+    """day -> the reports worth a page: the `top` largest by market value plus any we watch. Names we watch that
+    Nasdaq does not list are asked of Yahoo (10-20: SpaceX was in no calendar)."""
     mine, out = watched(root), {}
-    for d in weekdays_after(today, n):
+    days = weekdays_after(today, n)
+    listed = set()
+    for d in days:
         rows = calendar(d, get)
+        listed |= {r["symbol"] for r in rows}
         out[d] = [r for i, r in enumerate(rows) if i < top or r["symbol"] in mine]
+    missing = sorted(mine - listed)
+    got = (lookup or yahoo_dates)(missing) if missing else {}
+    for sym in missing:
+        y = got.get(sym)
+        if y and y["date"] in out:
+            out[y["date"]].append({"symbol": sym, "time": yahoo_time(y.get("ts")), "cap": 0.0, "source": "yahoo"})
     return out
 
 

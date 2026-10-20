@@ -23,6 +23,7 @@ import io
 import json
 from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
+from zoneinfo import ZoneInfo
 
 import time as _time
 
@@ -131,13 +132,39 @@ def yahoo_dates(symbols: list[str], session=None, pause: float = 0.2) -> dict[st
                       params={"modules": "calendarEvents", "crumb": crumb}, timeout=20)
             res = ((r.json().get("quoteSummary") or {}).get("result") or [{}])[0]
             e = (res.get("calendarEvents") or {}).get("earnings") or {}
-            ds = [x.get("fmt") for x in e.get("earningsDate") or [] if x.get("fmt")]
-            if ds:
-                out[sym] = {"date": ds[0], "confirmed": e.get("isEarningsDateEstimate") is False}
+            got = [x for x in e.get("earningsDate") or [] if x.get("fmt")]
+            if got:
+                out[sym] = {"date": got[0]["fmt"], "confirmed": e.get("isEarningsDateEstimate") is False, "ts": got[0].get("raw")}
         except Exception:
             pass
         _time.sleep(pause)
     return out
+
+
+def yahoo_time(ts) -> str:
+    """Yahoo's report timestamp as Alpha Vantage's time of day: before noon ET pre-market, from 3 pm post-market."""
+    if not ts:
+        return ""
+    h = datetime.fromtimestamp(int(ts), ZoneInfo("America/New_York")).hour
+    return "pre-market" if h < 12 else "post-market" if h >= 15 else ""
+
+
+def fill_missing(rows: list[dict], today: date, symbols, days: int = 4, lookup=None) -> tuple[list[dict], list[str]]:
+    """Reports Yahoo knows for `symbols` that neither calendar has, added for the next `days` days. Owner, 10-20: SpaceX
+    (listed in June) reported that evening and was in neither Alpha Vantage's nor Nasdaq's calendar, nor in our pool."""
+    lookup = lookup or yahoo_dates
+    end = (today + timedelta(days=days)).isoformat()
+    have = {r["symbol"] for r in rows if today.isoformat() <= (r.get("reportDate") or "") <= end}
+    ask = sorted({s for s in symbols if s and s not in have})
+    got = lookup(ask) if ask else {}
+    added, out = [], list(rows)
+    for sym in ask:
+        y = got.get(sym)
+        if y and today.isoformat() <= y["date"] <= end:
+            out.append({"symbol": sym, "reportDate": y["date"], "timeOfTheDay": yahoo_time(y.get("ts")), "estimate": None,
+                        "fiscalDateEnding": None, "checked": "yahoo", "confirmed": bool(y.get("confirmed"))})
+            added.append(sym)
+    return out, added
 
 
 def confirm(data: dict, today: date, days: int = CONFIRM_DAYS, lookup=None) -> dict:

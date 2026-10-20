@@ -4480,6 +4480,39 @@ class EarningsReasons(unittest.TestCase):
             self.assertIn("| 成本 | 1 | 0% |", md)
 
 
+class EarningsFillMissing(unittest.TestCase):
+    def test_yahoo_adds_what_both_calendars_missed(self):
+        from hero import earnings as earn
+        self.assertEqual(earn.yahoo_time(1792526400), "post-market")       # 2026-10-20 20:00 UTC = 16:00 ET
+        self.assertEqual(earn.yahoo_time(1792585800), "pre-market")        # 2026-10-21 12:30 UTC = 08:30 ET
+        self.assertEqual(earn.yahoo_time(None), "")
+        rows = [{"symbol": "NFLX", "reportDate": "2026-10-20", "timeOfTheDay": "post-market"}]
+        asked = []
+        look = lambda syms: asked.extend(syms) or {"SPCX": {"date": "2026-10-20", "ts": 1792526400, "confirmed": True},
+                                                    "LATE": {"date": "2026-11-20", "ts": 1795200000}}
+        out, added = earn.fill_missing(rows, date(2026, 10, 20), ["NFLX", "SPCX", "LATE", "SPCX"], lookup=look)
+        self.assertEqual(asked, ["LATE", "SPCX"])                          # NFLX is already in the calendar
+        self.assertEqual(added, ["SPCX"])                                  # LATE reports outside the window
+        self.assertEqual(out[-1], {"symbol": "SPCX", "reportDate": "2026-10-20", "timeOfTheDay": "post-market", "estimate": None,
+                                   "fiscalDateEnding": None, "checked": "yahoo", "confirmed": True})
+
+    def test_big_names_for_the_forecast(self):
+        from unittest import mock
+        from hero import research_earnings_forecast as ef
+        with tempfile.TemporaryDirectory() as d:
+            root = Path(d)
+            (root / "data").mkdir()
+            (root / "data" / "universe.json").write_text(json.dumps({"stocks": ["NVDA", "MU"]}))
+            (root / "journal").mkdir()
+            (root / "journal" / "snapshot.json").write_text(json.dumps({"positions": [{"symbol": "META"}, {"symbol": "XLE261113C00066500"}]}))
+            (root / "out").mkdir()
+            (root / "out" / "extra_watch.json").write_text(json.dumps({"symbols": ["SPCX"]}))
+            client = type("C", (), {"most_actives": lambda self, n: ["TSLA", "BRK.B"]})()
+            with mock.patch.object(ef, "OUT", root / "out"):
+                got = ef.big_names(client, root)
+        self.assertEqual(got, ["META", "MU", "NVDA", "SPCX", "TSLA", "XLE"])     # BRK.B left out (Yahoo symbol differs)
+
+
 class EarningsProfiles(unittest.TestCase):
     def test_page_joins_the_history_scored_reports_and_notes(self):
         from hero import earnings_profiles as ep
@@ -4519,8 +4552,15 @@ class EarningsProfiles(unittest.TestCase):
             root = Path(d)
             (root / "journal-s500").mkdir()
             (root / "journal-s500" / "snapshot.json").write_text(json.dumps({"positions": [{"symbol": "IREN261023P00027500"}]}))
-            got = ep.ahead(1, date(2026, 10, 20), root, get, top=3)
-        self.assertEqual([r["symbol"] for r in got["2026-10-21"]], ["S0", "S1", "S2", "IREN"])   # the 3 largest + a holding
+            (root / "research" / "earnings-forecast").mkdir(parents=True)
+            (root / "research" / "earnings-forecast" / "extra_watch.json").write_text(json.dumps({"symbols": ["SPCX"]}))
+            asked = []
+            yahoo = lambda syms: asked.extend(syms) or {"SPCX": {"date": "2026-10-21", "ts": 1792612800}}   # 10-21 16:00 ET
+            got = ep.ahead(1, date(2026, 10, 20), root, get, top=3, lookup=yahoo)
+        self.assertEqual(asked, ["SPCX"])                                                        # IREN was listed
+        self.assertEqual([r["symbol"] for r in got["2026-10-21"]], ["S0", "S1", "S2", "IREN", "SPCX"])   # + a holding, + Yahoo
+        self.assertEqual(got["2026-10-21"][-1]["time"], "post-market")
+        got["2026-10-21"].pop()
         self.assertEqual(got["2026-10-21"][-1]["time"], "pre-market")
         md = ep.page("NVDA", [], {"bar": "超预期还不够，要指引比买方期待高"}, [])
         self.assertIn("本季门槛：超预期还不够", md)

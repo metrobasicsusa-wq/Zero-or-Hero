@@ -182,6 +182,10 @@ class Alpaca:
         """Latest trade and previous daily bar per symbol (IEX), for intraday moves."""
         return self._d("/v2/stocks/snapshots", {"symbols": ",".join(symbols), "feed": "iex"}) or {}
 
+    def most_actives(self, top: int = 100, by: str = "volume") -> list[str]:
+        """Today's most traded stocks (read only; the earnings forecast uses it to catch reports the calendars miss)."""
+        return [x["symbol"] for x in (self._d("/v1beta1/screener/stocks/most-actives", {"by": by, "top": top}) or {}).get("most_actives", [])]
+
     def news(self, symbols: list[str], start: str, limit: int = 50) -> list[dict]:
         """Benzinga headlines via Alpaca's news API, newest first."""
         page = self._d("/v1beta1/news", {"symbols": ",".join(symbols), "start": start, "limit": limit,

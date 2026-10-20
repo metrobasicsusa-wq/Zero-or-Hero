@@ -457,6 +457,32 @@ def markdown(rep: dict) -> str:
     return "\n".join(md) + "\n"
 
 
+def big_names(client, root: Path = ROOT) -> list[str]:
+    """Names worth asking Yahoo about when no calendar lists them: today's 100 most traded, our pool, both accounts'
+    holdings, and research/earnings-forecast/extra_watch.json (new listings, added by hand)."""
+    out = set()
+    try:
+        out |= set(client.most_actives(100))
+    except Exception:
+        pass
+    try:
+        out |= set(json.loads((root / "data" / "universe.json").read_text()).get("stocks") or [])
+    except Exception:
+        pass
+    for d in ("journal", "journal-s500"):
+        try:
+            for p in json.loads((root / d / "snapshot.json").read_text()).get("positions") or []:
+                sym = str(p.get("symbol") or "")
+                out.add(sym[:-15] if len(sym) > 15 and sym[-9] in "CP" else sym)
+        except Exception:
+            pass
+    try:
+        out |= set(json.loads((OUT / "extra_watch.json").read_text()).get("symbols") or [])
+    except Exception:
+        pass
+    return sorted(s for s in out if s and s.isalpha())
+
+
 def main() -> None:
     import os
     from hero.alpaca import Alpaca
@@ -466,9 +492,10 @@ def main() -> None:
     OUT.mkdir(parents=True, exist_ok=True)
     changed = score_due(client, today)
     rows, check = earn.cross_check(earn.fetch(os.environ["ALPHAVANTAGE_API_KEY"]), today, days=4)   # Nasdaq fixes dates / times
+    rows, check["yahoo_added"] = earn.fill_missing(rows, today, big_names(client))   # what both calendars miss (SpaceX, 10-20)
     rep = forecast(client, rows, today, wait=Pace(client).wait,  # the main account's key: slow while the market is open
                    confirmed=earn.yahoo_dates)
-    rep["cross_check"] = {k: check.get(k) for k in ("days", "moved", "time_filled", "disputed", "added", "error") if k in check}
+    rep["cross_check"] = {k: check.get(k) for k in ("days", "moved", "time_filled", "disputed", "added", "error", "yahoo_added") if k in check}
     (OUT / f"{today.isoformat()}.json").write_text(json.dumps(rep, ensure_ascii=False) + "\n")
     (OUT / f"{today.isoformat()}.md").write_text(markdown(rep))
     (OUT / "scorecard.md").write_text(scorecard())
