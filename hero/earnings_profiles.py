@@ -10,7 +10,12 @@ read first. Two parts per company:
     its guidance habit, and why it moved last time; plus its lines in reasons.jsonl.
 Note: across those 98 companies the direction of past reactions barely predicts the next (51.6% open up overall;
 45.5% after two down in a row, 50-52% after one), so the pages are for the why, not a streak rule.
+The evening routine (owner, 10-20: "every company is different, schedule a check") also writes, for each big name
+reporting in the next few days, this quarter's bar in companies.json ("bar": what it takes to go up, with date and
+sources), so the 15:05 call starts from it.
 Run: python -m hero.earnings_profiles [--date YYYY-MM-DD] [SYMBOL ...]  (no symbols: the day's top TOP by turnover)
+     python -m hero.earnings_profiles --ahead 3   (the next 3 weekdays from Nasdaq's calendar: the biggest by market
+                                                   value, plus our universe and both accounts' holdings; one page a day)
 """
 
 from __future__ import annotations
@@ -18,14 +23,19 @@ from __future__ import annotations
 import argparse
 import json
 import statistics
-from datetime import date
+from datetime import date, timedelta
 from pathlib import Path
+
+import requests
+
+from hero.earnings import BROWSER, NASDAQ, NASDAQ_TIME
 
 ROOT = Path(__file__).resolve().parent.parent
 FOLDER = ROOT / "research" / "earnings-forecast"
 HIST = ROOT / "research" / "2026-10-02-earnings-reactions.json"
 LAST = 8
 TOP = 12
+AHEAD_TOP = 15
 
 
 def history(root: Path = ROOT) -> dict[str, list[dict]]:
@@ -76,7 +86,7 @@ def reasons(root: Path = ROOT) -> dict[str, list[dict]]:
 def page(sym: str, hist: list[dict], note: dict | None, why: list[dict]) -> str:
     md = [f"## {sym}", ""]
     if note:
-        for key, name in (("watch", "市场盯什么"), ("habit", "指引习惯"), ("last", "上次为什么涨跌")):
+        for key, name in (("watch", "市场盯什么"), ("habit", "指引习惯"), ("last", "上次为什么涨跌"), ("bar", "本季门槛")):
             if note.get(key):
                 md.append(f"- {name}：{note[key]}")
         for n in note.get("notes", [])[-3:]:
@@ -124,14 +134,70 @@ def render(symbols: list[str], day: str, root: Path = ROOT) -> str:
     return "\n".join(head + [page(s, hist.get(s, []), nts.get(s), why.get(s, [])) + "\n" for s in symbols])
 
 
+def weekdays_after(day: date, n: int) -> list[str]:
+    out, d = [], day
+    while len(out) < n:
+        d += timedelta(days=1)
+        if d.weekday() < 5:
+            out.append(d.isoformat())
+    return out
+
+
+def calendar(day: str, get=requests.get) -> list[dict]:
+    """Nasdaq's reports for one date: symbol, time, market value (largest first); [] when it cannot be read."""
+    try:
+        r = get(NASDAQ, params={"date": day}, headers=BROWSER, timeout=30)
+        r.raise_for_status()
+        rows = ((r.json() or {}).get("data") or {}).get("rows") or []
+    except Exception:
+        return []
+    cap = lambda x: float((x.get("marketCap") or "0").replace("$", "").replace(",", "") or 0)
+    return sorted(({"symbol": x["symbol"], "time": NASDAQ_TIME.get(x.get("time") or "", ""), "cap": cap(x)}
+                   for x in rows if x.get("symbol")), key=lambda x: -x["cap"])
+
+
+def watched(root: Path = ROOT) -> set[str]:
+    """Our universe's stocks and the underlyings either account holds."""
+    out = set()
+    try:
+        out |= set(json.loads((root / "data" / "universe.json").read_text()).get("stocks") or [])
+    except Exception:
+        pass
+    for d in ("journal", "journal-s500"):
+        try:
+            for p in json.loads((root / d / "snapshot.json").read_text()).get("positions") or []:
+                sym = str(p.get("symbol") or "")
+                out.add(sym[:-15] if len(sym) > 15 and sym[-9] in "CP" else sym)
+        except Exception:
+            pass
+    return out
+
+
+def ahead(n: int, today: date, root: Path = ROOT, get=requests.get, top: int = AHEAD_TOP) -> dict[str, list[dict]]:
+    """day -> the reports worth a page: the `top` largest by market value plus any we watch."""
+    mine, out = watched(root), {}
+    for d in weekdays_after(today, n):
+        rows = calendar(d, get)
+        out[d] = [r for i, r in enumerate(rows) if i < top or r["symbol"] in mine]
+    return out
+
+
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--date", default=date.today().isoformat())
+    ap.add_argument("--ahead", type=int, default=0, help="pages for the next N weekdays from Nasdaq's calendar")
     ap.add_argument("symbols", nargs="*")
     a = ap.parse_args()
+    (FOLDER / "profiles").mkdir(parents=True, exist_ok=True)
+    if a.ahead:
+        for d, rows in ahead(a.ahead, date.fromisoformat(a.date)).items():
+            out = FOLDER / "profiles" / f"{d}.md"
+            when = {r["symbol"]: ("盘前" if r["time"] == "pre-market" else "盘后" if r["time"] == "post-market" else "时间未知") for r in rows}
+            out.write_text(render([r["symbol"] for r in rows], d))
+            print(f"wrote {out}: " + " ".join(f"{s}({w})" for s, w in when.items()))
+        return
     syms = [s.upper() for s in a.symbols] or top_symbols(a.date)
     out = FOLDER / "profiles" / f"{a.date}.md"
-    out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(render(syms, a.date))
     print(f"wrote {out} ({len(syms)} companies)")
 

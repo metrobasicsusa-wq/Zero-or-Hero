@@ -4506,6 +4506,25 @@ class EarningsProfiles(unittest.TestCase):
         self.assertIn("还没有手写的档案", md.split("## ISRG")[1])
         self.assertIn("没有过去的反应数据", md.split("## ISRG")[1])
 
+    def test_ahead_takes_the_largest_and_the_ones_we_watch(self):
+        from types import SimpleNamespace
+        from hero import earnings_profiles as ep
+        self.assertEqual(ep.weekdays_after(date(2026, 10, 23), 2), ["2026-10-26", "2026-10-27"])     # Friday -> Mon, Tue
+
+        def get(url, params=None, headers=None, timeout=None):
+            rows = [{"symbol": f"S{i}", "time": "time-after-hours", "marketCap": f"${(100 - i) * 1e9:,.0f}"} for i in range(30)]
+            rows.append({"symbol": "IREN", "time": "time-pre-market", "marketCap": "$1,000,000"})
+            return SimpleNamespace(raise_for_status=lambda: None, json=lambda: {"data": {"rows": rows}})
+        with tempfile.TemporaryDirectory() as d:
+            root = Path(d)
+            (root / "journal-s500").mkdir()
+            (root / "journal-s500" / "snapshot.json").write_text(json.dumps({"positions": [{"symbol": "IREN261023P00027500"}]}))
+            got = ep.ahead(1, date(2026, 10, 20), root, get, top=3)
+        self.assertEqual([r["symbol"] for r in got["2026-10-21"]], ["S0", "S1", "S2", "IREN"])   # the 3 largest + a holding
+        self.assertEqual(got["2026-10-21"][-1]["time"], "pre-market")
+        md = ep.page("NVDA", [], {"bar": "超预期还不够，要指引比买方期待高"}, [])
+        self.assertIn("本季门槛：超预期还不够", md)
+
 
 class ResearchZdteConfirm(unittest.TestCase):
     def test_gauges_are_signed_by_spy_and_split_in_and_out_of_sample(self):
