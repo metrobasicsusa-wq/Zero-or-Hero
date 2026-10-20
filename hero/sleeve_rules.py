@@ -201,7 +201,9 @@ class ZeroDTE:
     trend since the open, `offset` beyond the price, a `take` x limit, out at 15:30 the same day either way. With
     `half_take`, half the contracts carry the take and the rest run on a trail (research/2026-10-13-zdte-timing.md).
     Optional: `side` "call" / "put" fixes the side; `after_drop` (e.g. -0.01) trades only the day after a close
-    at least that far below the one before it (research/2026-10-08-zdte-streak.md)."""
+    at least that far below the one before it (research/2026-10-08-zdte-streak.md); `min_move` (e.g. 0.005) trades
+    only when the price is at least that far from the open at entry time, else the day is sat out
+    (research/2026-10-20-zdte-cost.md: the only group of days that paid under every cost assumption)."""
 
     def entries(self, run, spec, s):
         day = run.today.isoformat()
@@ -221,6 +223,11 @@ class ZeroDTE:
         spot, o, _, _ = spot_open(snap)
         if not spot or not o:
             return None
+        if spec.get("min_move") and abs(spot / o - 1) < spec["min_move"]:
+            run.j.event("sleeve_skip", dry_run=False, sleeve=spec["id"], symbol=und,
+                        why=f"{spec['id']}：{und} 开盘 ${o:,.2f}、现在 ${spot:,.2f}，离开盘 {spot / o - 1:+.2%}，"
+                            f"不到 {spec['min_move']:.1%}，今天不做")
+            return (day, [])
         kind = {"call": "C", "put": "P"}.get(spec.get("side"), "C" if spot >= o else "P")
         got = option_pick(run, und, kind, spot, spec["offset"], day, (run.today + timedelta(days=7)).isoformat())
         if not got:

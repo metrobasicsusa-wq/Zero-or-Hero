@@ -3150,6 +3150,28 @@ class SleeveRules(unittest.TestCase):
         b.bars["SPY"][-1]["c"] = 101.5                               # only -0.5%: sit the day out
         self.assertEqual(sr.ZeroDTE().entries(self.run_at(date(2026, 10, 8), 10, 0, b), spec, {"slots": {}}), ("2026-10-08", []))
 
+    def test_zdte_min_move_sits_out_a_quiet_open(self):
+        from types import SimpleNamespace
+        from hero import sleeve_rules as sr
+        spec = {"id": "spy0dte-500", "und": "SPY", "offset": 0.003, "take": 3, "min_move": 0.005}
+        b = self.broker()
+        b.snaps["SPY"] = {"dailyBar": {"o": 100.0, "l": 99.8}, "latestTrade": {"p": 100.25}, "prevDailyBar": {"c": 100.1}}
+        r = self.run_at(date(2026, 10, 20), 10, 0, b)
+        seen = []
+        r.j = SimpleNamespace(event=lambda kind, **k: seen.append((kind, k)))
+        self.assertEqual(sr.ZeroDTE().entries(r, spec, {"slots": {}}), ("2026-10-20", []))     # like 10-20: +0.25%, sat out
+        self.assertEqual(seen[0][0], "sleeve_skip")
+        self.assertIn("离开盘 +0.25%，不到 0.5%，今天不做", seen[0][1]["why"])
+        b.snaps["SPY"]["latestTrade"]["p"] = 100.6                                             # +0.6%: a call
+        slot, picks = sr.ZeroDTE().entries(self.run_at(date(2026, 10, 20), 10, 0, b), spec, {"slots": {}})
+        self.assertTrue(picks[0]["sym"].endswith("C101"))                                     # 100.6 x 1.003 = 100.9 -> 101
+        b.snaps["SPY"]["latestTrade"]["p"] = 99.4                                              # -0.6%: a put
+        slot, picks = sr.ZeroDTE().entries(self.run_at(date(2026, 10, 20), 10, 0, b), spec, {"slots": {}})
+        self.assertTrue(picks[0]["sym"].endswith("P99"))                                      # 99.4 x 0.997 = 99.1 -> 99
+        del spec["min_move"]                                                                   # without it, +0.25% trades
+        b.snaps["SPY"]["latestTrade"]["p"] = 100.25
+        self.assertEqual(len(sr.ZeroDTE().entries(self.run_at(date(2026, 10, 20), 10, 0, b), spec, {"slots": {}})[1]), 1)
+
     def test_zdte_takes_the_nearest_expiry_when_there_is_none_today_and_still_sells_at_half_past_three(self):
         from hero import sleeve_rules as sr
         spec = {"und": "NVDA", "offset": 0.006, "take": 3}
