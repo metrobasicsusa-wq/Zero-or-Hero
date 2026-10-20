@@ -2,32 +2,11 @@
  "sleeves": {
   "spy0dte-500": {
    "start": 500.0,
-   "cash": 160.0,
+   "cash": 292.0,
    "round": 1,
    "heroes": 0,
    "zeros": 0,
    "open": [
-    {
-     "tid": "20261020-1fdb35",
-     "kind": "zdte",
-     "sym": "SPY261020C00773000",
-     "asset": "option",
-     "und": "SPY",
-     "qty": 4,
-     "cost": 0.11,
-     "paid": 44.0,
-     "opened": "2026-10-20 10:00",
-     "why": "SPY 开盘 $765.67、现在 $767.58，顺势买当天到期看涨 773（离现价 0.7%），3 倍止盈，15:30 平仓",
-     "expiry": "2026-10-20",
-     "exit_day": "2026-10-20",
-     "exit_at": "15:30",
-     "trail": false,
-     "best_bid": 0.2,
-     "expiry_out": null,
-     "take_x": 3,
-     "take": 0.33,
-     "take_cid": "sl-spy0dte-500-20261020-1fdb35-t2d10"
-    },
     {
      "tid": "20261020-1fdb35r",
      "kind": "zdte",
@@ -43,7 +22,7 @@
      "exit_day": "2026-10-20",
      "exit_at": "15:30",
      "trail": true,
-     "best_bid": 0.2,
+     "best_bid": 0.33,
      "expiry_out": null
     }
    ],
@@ -289,6 +268,33 @@
      "how": "2026-10-19 15:30 到时卖出",
      "closed": "2026-10-19 15:30",
      "ret": -0.971
+    },
+    {
+     "tid": "20261020-1fdb35",
+     "kind": "zdte",
+     "sym": "SPY261020C00773000",
+     "asset": "option",
+     "und": "SPY",
+     "qty": 4,
+     "cost": 0.11,
+     "paid": 44.0,
+     "opened": "2026-10-20 10:00",
+     "why": "SPY 开盘 $765.67、现在 $767.58，顺势买当天到期看涨 773（离现价 0.7%），3 倍止盈，15:30 平仓",
+     "expiry": "2026-10-20",
+     "exit_day": "2026-10-20",
+     "exit_at": "15:30",
+     "trail": false,
+     "best_bid": 0.2,
+     "expiry_out": null,
+     "take_x": 3,
+     "take": 0.33,
+     "take_cid": "sl-spy0dte-500-20261020-1fdb35-t2d10",
+     "state": "closed",
+     "exit_price": 0.33,
+     "proceeds": 132.0,
+     "how": "3 倍止盈（券商挂单成交）",
+     "closed": "2026-10-20 10:20",
+     "ret": 2.0
     }
    ],
    "slots": {
@@ -305,32 +311,11 @@
   },
   "spy0dte-1000": {
    "start": 1000.0,
-   "cash": 849.0,
+   "cash": 1641.0,
    "round": 1,
    "heroes": 0,
    "zeros": 0,
    "open": [
-    {
-     "tid": "20261020-5f793c",
-     "kind": "zdte",
-     "sym": "SPY261020C00773000",
-     "asset": "option",
-     "und": "SPY",
-     "qty": 24,
-     "cost": 0.11,
-     "paid": 264.0,
-     "opened": "2026-10-20 10:00",
-     "why": "SPY 开盘 $765.67、现在 $767.58，顺势买当天到期看涨 773（离现价 0.7%），3 倍止盈，15:30 平仓",
-     "expiry": "2026-10-20",
-     "exit_day": "2026-10-20",
-     "exit_at": "15:30",
-     "trail": false,
-     "best_bid": 0.2,
-     "expiry_out": null,
-     "take_x": 3,
-     "take": 0.33,
-     "take_cid": "sl-spy0dte-1000-20261020-5f793c-tbc4b"
-    },
     {
      "tid": "20261020-5f793cr",
      "kind": "zdte",
@@ -346,7 +331,7 @@
      "exit_day": "2026-10-20",
      "exit_at": "15:30",
      "trail": true,
-     "best_bid": 0.2,
+     "best_bid": 0.33,
      "expiry_out": null
     }
    ],
@@ -618,6 +603,33 @@
      "how": "2026-10-19 15:30 到时卖出",
      "closed": "2026-10-19 15:30",
      "ret": -0.971
+    },
+    {
+     "tid": "20261020-5f793c",
+     "kind": "zdte",
+     "sym": "SPY261020C00773000",
+     "asset": "option",
+     "und": "SPY",
+     "qty": 24,
+     "cost": 0.11,
+     "paid": 264.0,
+     "opened": "2026-10-20 10:00",
+     "why": "SPY 开盘 $765.67、现在 $767.58，顺势买当天到期看涨 773（离现价 0.7%），3 倍止盈，15:30 平仓",
+     "expiry": "2026-10-20",
+     "exit_day": "2026-10-20",
+     "exit_at": "15:30",
+     "trail": false,
+     "best_bid": 0.2,
+     "expiry_out": null,
+     "take_x": 3,
+     "take": 0.33,
+     "take_cid": "sl-spy0dte-1000-20261020-5f793c-tbc4b",
+     "state": "closed",
+     "exit_price": 0.33,
+     "proceeds": 792.0,
+     "how": "3 倍止盈（券商挂单成交）",
+     "closed": "2026-10-20 10:20",
+     "ret": 2.0
     }
    ],
    "slots": {
@@ -1757,7 +1769,7 @@
      "exit_day": "2026-10-20",
      "exit_at": "15:30",
      "trail": false,
-     "best_bid": 0.92,
+     "best_bid": 1.29,
      "expiry_out": null,
      "take_x": 3,
      "take": 1.56,
@@ -1778,7 +1790,7 @@
      "exit_day": "2026-10-20",
      "exit_at": "15:30",
      "trail": true,
-     "best_bid": 0.92,
+     "best_bid": 1.29,
      "expiry_out": null
     }
    ],
@@ -2086,7 +2098,7 @@
      "exit_day": "2026-10-20",
      "exit_at": "15:30",
      "trail": false,
-     "best_bid": 0.92,
+     "best_bid": 1.29,
      "expiry_out": null,
      "take_x": 3,
      "take": 1.56,
@@ -2107,7 +2119,7 @@
      "exit_day": "2026-10-20",
      "exit_at": "15:30",
      "trail": true,
-     "best_bid": 0.92,
+     "best_bid": 1.29,
      "expiry_out": null
     }
    ],
