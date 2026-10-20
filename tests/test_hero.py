@@ -4342,5 +4342,70 @@ class ResearchZdteMinMove(unittest.TestCase):
         self.assertIn("NVDA 末日单", md)
 
 
+class ResearchZdteCost(unittest.TestCase):
+    def minute(self, day, hhmm, px):   # an ET minute on a 2026-10 day (EDT, UTC-4)
+        h, m = map(int, hhmm.split(":"))
+        return {"t": f"{day}T{h + 4:02d}:{m:02d}:00Z", "o": px, "h": px, "l": px, "c": px, "v": 100}
+
+    def test_play_cost_prices_both_sides(self):
+        from hero.research_0dte import et_minutes
+        from hero.research_zdte_cost import play_cost
+        day = "2026-10-20"
+        # 10:00 at $0.50, up to $3.00 (6x), back to $1.20 (40% off the best), then $0.10 at 15:30.
+        opt = et_minutes([self.minute(day, t, px) for t, px in
+                          (("10:00", 0.5), ("10:20", 3.0), ("11:10", 1.7), ("11:12", 1.2), ("15:30", 0.1))])
+        free = play_cost(opt, "10:00", 0.0, 0.0)
+        self.assertAlmostEqual(free["take3"], 2.0)                    # 3x on the half
+        self.assertAlmostEqual(free["take3_trail"], (2.0 + (1.7 / 0.5 - 1)) / 2)   # 1.70 <= 0.6 x 3.00
+        self.assertAlmostEqual(free["hold"], 0.1 / 0.5 - 1)
+        dear = play_cost(opt, "10:00", 0.10, 0.10)                    # in at 0.55, out 10% under
+        self.assertAlmostEqual(dear["take3_trail"], (2.0 + (1.7 * 0.9 / 0.55 - 1)) / 2, places=4)
+        self.assertLess(dear["take3_trail"], free["take3_trail"])
+        cheap = et_minutes([self.minute(day, t, px) for t, px in (("10:00", 0.05), ("15:30", 0.05))])
+        self.assertAlmostEqual(play_cost(cheap, "10:00", 0.10, 0.10)["hold"], 0.04 / 0.06 - 1, places=4)   # a cent each way
+
+    def test_run_and_report_with_live_trades(self):
+        import tempfile
+        from unittest import mock
+        from hero import research_zdte_cost as zc
+        minute = self.minute
+
+        class Client:
+            def stock_bars(self, syms, start, end, feed=None):
+                day = "2026-10-20"
+                if not (start[:10] <= day < end[:10]):
+                    return {}
+                return {"SPY": [minute(day, "09:30", 765.67), minute(day, "10:00", 767.58), minute(day, "15:30", 769.0)]}
+
+            def option_contracts(self, und, status, expiration_date_gte, **kw):
+                return [{"symbol": f"SPY{k}{t[0].upper()}", "expiration_date": expiration_date_gte, "strike_price": str(k), "type": t}
+                        for k in range(760, 776) for t in ("call", "put")]
+
+            def option_bars(self, syms, start, end, timeframe=None):
+                path = [("10:00", 0.5), ("10:20", 1.6), ("11:00", 0.9), ("15:30", 0.2)]
+                return {s: [minute(start[:10], t, px) for t, px in path] for s in syms}
+
+        with mock.patch.object(zc, "START", "2026-10-01"), mock.patch("time.sleep"):
+            rep = zc.run(Client())
+        self.assertEqual(len(rep["rows"]), 1)
+        r = rep["rows"][0]
+        self.assertEqual(r["kind"], "C")
+        self.assertEqual(r["syms"][0.003], "SPY770C")                 # first strike 0.3% above 767.58
+        self.assertEqual(r["syms"][0.006], "SPY773C")
+        self.assertEqual(set(r["res"]["0.003"]), {"0.1/0.1", "0.05/0.05", "0/0.1", "0/0"})
+        g = zc.groups(rep["rows"], 0.003, "0/0")
+        self.assertEqual(len(g["10:00 离开盘 0.2%–0.3%"]), 1)
+        self.assertEqual(len(g["不到 0.5% 就不做"]), 0)
+        with tempfile.TemporaryDirectory() as d:
+            (Path(d) / "journal-s500").mkdir()
+            (Path(d) / "journal-s500" / "sleeves.json").write_text(json.dumps({"sleeves": {"spy0dte-near-1000": {"closed": [
+                {"kind": "zdte", "opened": "2026-10-20 10:00", "paid": 260.0, "ret": 2.0},
+                {"kind": "zdte", "opened": "2026-10-20 10:00", "paid": 260.0, "ret": 1.38}]}}}))
+            self.assertAlmostEqual(zc.live_trades(Path(d), "spy0dte-near-1000")["2026-10-20"], 1.69)
+            table, md = zc.report(json.loads(json.dumps(rep)), Path(d))
+        self.assertIn("SPY 末日单 0.3%", md)
+        self.assertIn("| 2026-10-20 | +0.25% | SPY770C | +169% |", md)
+
+
 if __name__ == "__main__":
     unittest.main()
