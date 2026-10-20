@@ -4420,5 +4420,50 @@ class ResearchZdteCost(unittest.TestCase):
         self.assertIn("| 2026-10-16 | +0.25% | SPY770C | +169% |", md)
 
 
+class ResearchZdteConfirm(unittest.TestCase):
+    def test_gauges_are_signed_by_spy_and_split_in_and_out_of_sample(self):
+        from unittest import mock
+        from hero import research_zdte_confirm as zc
+
+        def minute(day, hhmm, px):
+            h, m = map(int, hhmm.split(":"))
+            return {"t": f"{day}T{h + 4:02d}:{m:02d}:00Z", "o": px, "h": px, "l": px, "c": px, "v": 100}
+
+        days = [f"2025-06-{d:02d}" for d in range(2, 28)] + [f"2026-06-{d:02d}" for d in range(1, 11)]
+        rows = []
+        for i, d in enumerate(days):
+            kind = "C" if i % 2 == 0 else "P"
+            win = 2.0 if i % 3 == 0 else -0.9
+            rows.append({"day": d, "move": 0.003 if kind == "C" else -0.003, "kind": kind,
+                         "res": {"0.003": {"0/0": {"take3_trail": win}, "0/0.1": {"take3_trail": win - 0.05}}}})
+
+        class Client:      # IWM goes with SPY on the winning days, against it otherwise; the rest stay flat
+            def stock_bars(self, syms, start, end, feed=None):
+                sym, out = syms[0], []
+                for i, d in enumerate(days):
+                    if not (start[:10] <= d < end[:10]):
+                        continue
+                    up = (i % 2 == 0) == (i % 3 == 0) if sym == "IWM" else None
+                    ten = 100.0 if up is None else (100.5 if up else 99.5)
+                    out += [minute(d, "09:30", 100.0), minute(d, "10:00", ten)]
+                return {sym: out}
+
+        with mock.patch.object(zc, "latest_replay", lambda: {"start": "2025-06-01", "end": "2026-06-30", "rows": rows}):
+            data = zc.run(Client())
+        self.assertEqual(len(data["days"]), len(days))
+        d0 = data["days"][0]                         # a call day that won: IWM +0.5% -> same direction
+        self.assertAlmostEqual(d0["g"]["IWM"], 0.005)
+        self.assertEqual(zc.bucket(d0["g"]["SMH"]), "持平")
+        d1 = data["days"][1]                         # a put day that lost: IWM up 0.5% while SPY fell -> against
+        self.assertAlmostEqual(d1["g"]["IWM"], -0.005)
+        g = zc.groups(data["days"])
+        self.assertTrue(all(d["main"] == 2.0 for d in g["小盘 IWM 同向"]))
+        table, md = zc.report(data["days"], data["end"])
+        self.assertEqual(table["小盘 IWM 同向"]["verdict"], "笔数太少，不下结论")   # 9 found, 3 to check
+        self.assertIn("| 每天都做 | 36 |", md)
+        self.assertEqual(zc.verdict((0.3, 40), (0.2, 10), (0.0, 400), (0.0, 100), 0.1), "样本内外都更好，去掉最好 3 笔也赚：值得实盘小试")
+        self.assertEqual(zc.verdict((0.3, 40), (-0.1, 10), (0.0, 400), (0.0, 100), 0.1), "只在 2024–25 更好，2026 没重现")
+
+
 if __name__ == "__main__":
     unittest.main()
