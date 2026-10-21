@@ -30,7 +30,7 @@ GROUPS = [
     ("末日单（当天到期期权）", ["spy0dte", "spy0dte-near", "qqq0dte", "tsla0dte", "tsla0dte-5x", "nvda0dte",
                           "spydip", "oneshot", "vixspike"]),
     ("周内期权", ["wk-trend", "wk-momo", "wk-news", "net"]),
-    ("抄底和跳空", ["gap", "flush", "opengap", "breakgap", "dipweek"]),
+    ("抄底和跳空", ["fadelotto", "gap", "flush", "opengap", "breakgap", "dipweek"]),
     ("财报", ["earn", "pead", "relay"]),
     ("狙击和隔夜", ["sniper", "overnight"]),
     ("杠杆 ETF", ["tqqq", "hikerally"]),
@@ -41,8 +41,8 @@ TITLE = {"spy0dte": "SPY 末日单", "spy0dte-near": "SPY 末日单（离现价 
          "wk-momo": "周内动量", "wk-news": "周内新闻", "net": "撒网", "gap": "低开反弹", "flush": "急跌再拉",
          "opengap": "开盘跳空延续", "breakgap": "突破大跳空", "dipweek": "抄底给一周", "earn": "财报正股 / 两倍",
          "pead": "财报后漂移", "relay": "接力", "sniper": "开盘狙击", "overnight": "隔夜动量", "tqqq": "TQQQ 均线",
-         "hikerally": "加息期快涨"}
-EVENT_KINDS = {"sleeve_skip": "跳过", "sleeve_plan": "演算", "sleeve_round": "换轮",
+         "hikerally": "加息期快涨", "fadelotto": "高开回落彩票"}
+EVENT_KINDS = {"lotto_alert": "提醒", "sleeve_skip": "跳过", "sleeve_plan": "演算", "sleeve_round": "换轮",
                "sleeve_plan_fill": "演算买进", "sleeve_plan_result": "演算结果"}
 MAX_EVENTS = 40
 SHOW_SPEC = ("und", "offset", "min_move", "take", "half_take", "entry", "side", "after_drop", "n", "mode", "fraction",
@@ -168,7 +168,9 @@ def collect(root: Path = ROOT) -> dict:
                 e = json.loads(line)
             except Exception:
                 continue
-            if e.get("kind") in EVENT_KINDS and e.get("sleeve") in ids:
+            if e.get("kind") == "lotto_alert":            # the lottery scan's alerts belong to its page
+                events.setdefault("fadelotto", []).append({"ts": e.get("ts", ""), "kind": e["kind"], "sleeve": "", "why": e.get("why", "")})
+            elif e.get("kind") in EVENT_KINDS and e.get("sleeve") in ids:
                 events.setdefault(ids[e["sleeve"]], []).append(
                     {"ts": e.get("ts", ""), "kind": e["kind"], "sleeve": e["sleeve"], "why": e.get("why", "")})
     bf_name, bf_rows = latest_backfill(root)
@@ -244,8 +246,11 @@ def pct(x) -> str:
 
 
 def ledger_name(r: dict) -> str:
-    size = SIZE.search(r["id"] if "id" in r else r["sleeve"])
-    return f'{"演算 " if r.get("plan") else ""}${size.group(1) if size else "?"}'
+    sid = r["id"] if "id" in r else r["sleeve"]
+    if not sid:
+        return "—"
+    size = SIZE.search(sid)
+    return f'{"演算 " if r.get("plan") else ""}{"$" + size.group(1) if size else "样本"}'
 
 
 def table(head: list[tuple[str, str]], rows: list[list[str]], cls: str = "") -> str:

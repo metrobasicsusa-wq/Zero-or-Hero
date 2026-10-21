@@ -16,7 +16,7 @@ EVENT_KINDS = {"order", "close", "rebalance_deferred", "halt", "option_skip", "a
                "zdte_skip", "zdte_fill", "zdte_result", "zdte_switch", "zdte_attempt_end",
                "net_skip", "net_buy", "net_result", "net_round", "zdte_shadow_open", "zdte_shadow_result",
                "sleeve_plan", "sleeve_buy", "sleeve_fill", "sleeve_skip", "sleeve_exit", "sleeve_result", "sleeve_round",
-               "sleeve_plan_fill", "sleeve_plan_result"}
+               "sleeve_plan_fill", "sleeve_plan_result", "lotto_alert"}
 MAX_EVENTS = 200
 REPO_BLOB = "https://github.com/metrobasicsusa-wq/Zero-or-Hero/blob/claude/cloud-paper-trading-ivwxqk"
 

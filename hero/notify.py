@@ -31,12 +31,12 @@ ET = ZoneInfo("America/New_York")
 LABEL = {"journal": "主账户 $100k", "journal-s500": "多账本 $50k"}
 PUSH = {"order", "close", "zdte_fill", "zdte_result", "zdte_skip", "sleeve_fill", "sleeve_exit", "sleeve_result",
         "sleeve_round", "sleeve_skip", "alert_error", "halt", "attempt_end", "rebalance_deferred", "buy_blocked",
-        "news_alert", "order_error", "sleeve_recover"}
+        "news_alert", "order_error", "sleeve_recover", "lotto_alert"}
 QUIET_REASONS = {"protective_stop"}  # re-placed every cycle; the fills that matter show up as closes
 ICON = {"zdte_fill": "✅", "sleeve_fill": "✅", "order": "🛒", "close": "💰", "sleeve_exit": "💰", "zdte_result": "📊",
         "sleeve_result": "📊", "sleeve_round": "🔁", "zdte_skip": "⏭️", "sleeve_skip": "⏭️", "alert_error": "⚠️",
         "order_error": "⚠️", "halt": "🛑", "attempt_end": "🛑", "rebalance_deferred": "⏳", "buy_blocked": "⏳",
-        "news_alert": "📰", "sleeve_recover": "🩹"}
+        "news_alert": "📰", "sleeve_recover": "🩹", "lotto_alert": "🎟️"}
 ERRORS = {"alert_error", "order_error", "halt", "attempt_end"}
 BLUE, GREEN, RED, ORANGE, GREY = 0x3498DB, 0x2ECC71, 0xE74C3C, 0xE67E22, 0x95A5A6
 EMBEDS_PER_MESSAGE, CHARS_PER_MESSAGE = 10, 5500  # Discord: 10 embeds and 6,000 characters per message
@@ -47,7 +47,7 @@ SLEEVE = {"spy0dte": "SPY 末日", "qqq0dte": "QQQ 末日", "tsla0dte": "TSLA �
           "wk-news": "周票·新闻", "net": "撒网", "gap": "低开反弹", "flush": "急跌反弹", "earn": "财报彩票", "tqqq": "TQQQ 趋势",
           "relay": "接力", "spydip": "SPY 昨跌", "opengap": "开盘跳空", "oneshot": "一把到", "sniper": "开盘狙击",
           "overnight": "隔夜动量", "pead": "财报漂移", "vixspike": "恐慌反弹",
-          "breakgap": "突破大跳空", "hikerally": "加息快涨", "dipweek": "抄底一周"}
+          "breakgap": "突破大跳空", "hikerally": "加息快涨", "dipweek": "抄底一周", "fadelotto": "彩票"}
 BROKER = {"no available quote": "合约没有报价（没人接手），市价单被拒",
           "insufficient": "资金或可卖数量不够", "market is closed": "市场已收盘",
           "potential wash trade": "可能构成对敲交易，被拒"}
@@ -134,6 +134,8 @@ def body(e: dict) -> str:
             text = f"出错（{e['source']}）：{text}"
     if e.get("sleeve"):
         text = sleeve_text(e, text)
+    if e.get("kind") == "lotto_alert":
+        text = f"{linked('**彩票提醒**', 'fadelotto')} {text}"
     act = action(e)
     return readable(f"**{act}**：{text}" if act else text)
 

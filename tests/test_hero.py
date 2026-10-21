@@ -3076,6 +3076,28 @@ class Sleeves(unittest.TestCase):
         self.assertEqual(b.orders, {})                                                 # never an order
         self.assertEqual(len([e for e in log if e["kind"] == "sleeve_plan_fill"]), 1)  # one try a day
 
+    def test_plan_lottery_sample_books_one_contract_a_find_and_alerts_once(self):
+        # owner, 10-21「先大胆点 取样本」: every find a fixed 1 contract; the alert goes to the trade feed
+        b = SleeveBroker(lambda s: (0.08, 0.10))
+        b.snaps["SPY"] = {"dailyBar": {"o": 700.0, "l": 699.0}, "latestTrade": {"p": 702.0}, "prevDailyBar": {"c": 660.0}}  # +6%, above open
+        b.most_actives = lambda top: []
+        spec = [{"id": "fadelotto-plan", "kind": "fadelotto", "start": 10000, "gap": 0.03, "max_ask": 1.0, "scan_from": "10:00",
+                 "scan_until": "15:00", "watch": ["SPY"], "every": True, "qty": 1, "alert": True, "alert_gap": 0.05,
+                 "alert_max_ask": 0.5, "zero_line": 0, "target": 1000000000, "plan_only": True}]
+        book, log = self.plan_cycle(b, 10, 30, spec)
+        s = book.s("fadelotto-plan")
+        self.assertEqual([(t["qty"], t["cost"], t["sym"][-4:], t.get("take")) for t in s["open"]], [(1, 0.10, "P700", 0.3)])
+        self.assertEqual(s["cash"], 9990.0)
+        kinds = [e["kind"] for e in log]
+        self.assertEqual(kinds.count("lotto_alert"), 1)
+        self.assertFalse([e for e in log if e["kind"] == "lotto_alert"][0]["dry_run"])   # pushed to Discord
+        self.assertNotIn("alert_error", kinds)
+        self.assertEqual(b.orders, {})
+        book, log = self.plan_cycle(b, 10, 40, spec)
+        self.assertEqual(len(book.s("fadelotto-plan")["open"]), 1)                       # SPY already taken today
+        self.assertEqual([e["kind"] for e in log].count("lotto_alert"), 1)
+        self.assertEqual((book.s("fadelotto-plan")["round"], book.s("fadelotto-plan")["keep"]), (1, 1000))
+
     def test_plan_runner_half_trails_and_the_take_half_leaves_at_its_time(self):
         b = SleeveBroker(lambda s: (0.08, 0.10))
         spec = [{**self.specs[0], "half_take": True}]                                    # $500: 22 contracts at $0.10
@@ -3452,6 +3474,51 @@ class SleeveRules(unittest.TestCase):
         self.assertIn("15 个交易日涨 +12.0%", picks[0]["why"])
         self.assertEqual(s["hike_last"], {"SMH": "2026-10-16"})
         self.assertEqual(sr.HikeRally().entries(r(date(2026, 10, 19), 15, 50), spec, s), ("2026-10-19", []))  # one ticket a run-up
+
+    def test_fade_lotto_finds_cheap_fades_alerts_once_and_samples_every_name(self):
+        # owner, 10-21: SPCX up 8.6%, still above its open at noon, the 160 put due that day at $0.25 -> $3.15
+        from hero import sleeve_rules as sr
+        b = self.broker()
+        b.snaps["AAA"] = {"dailyBar": {"o": 108.0, "l": 107.0}, "latestTrade": {"p": 109.0}, "prevDailyBar": {"c": 100.0}}  # +8%, above open
+        b.snaps["BBB"] = {"dailyBar": {"o": 106.0, "l": 104.0}, "latestTrade": {"p": 105.0}, "prevDailyBar": {"c": 100.0}}  # +6%, faded already
+        b.snaps["CCC"] = {"dailyBar": {"o": 94.0, "l": 92.0}, "latestTrade": {"p": 93.0}, "prevDailyBar": {"c": 100.0}}     # -6%, below open
+        b.snaps["SPCX"] = {"dailyBar": {"o": 103.5, "l": 103.0}, "latestTrade": {"p": 104.0}, "prevDailyBar": {"c": 100.0}}  # +3.5%
+        b.most_actives = lambda top: ["SPCX", "BBB"]
+        events = []
+
+        def run(hh, mm, day=date(2026, 10, 22)):
+            r = self.run_at(day, hh, mm, b)
+            r.j.event = lambda kind, **k: events.append((kind, k))
+            return r
+        game = {"gap": 0.05, "max_ask": 0.5}
+        s = {"slots": {}, "cash": 500.0}
+        self.assertIsNone(sr.FadeLotto().entries(run(10, 50), game, s))                     # 11:00 to 14:00
+        slot, picks = sr.FadeLotto().entries(run(11, 0), game, s)
+        self.assertEqual((slot, [p["und"] for p in picks]), ("2026-10-22", ["AAA"]))          # the first find of the day
+        p = picks[0]
+        self.assertTrue(p["sym"].endswith("P108"))                                           # the put at the open
+        self.assertEqual((p["take"], p["half"], p["exit_day"], p["exit_at"], p["ask"]), (3, True, "2026-10-22", "15:50", 0.5))
+        self.assertIn("还在开盘上方", p["why"])
+        s["slots"][slot] = "x"
+        self.assertIsNone(sr.FadeLotto().entries(run(11, 10), game, s))                     # once a day
+        self.assertIsNone(sr.FadeLotto().entries(run(11, 0), {**game, "max_ask": 0.3}, {"slots": {}, "cash": 500.0}))  # too dear
+        sample = {"gap": 0.03, "max_ask": 1.0, "scan_from": "10:00", "scan_until": "15:00", "every": True, "qty": 1,
+                  "alert": True, "alert_gap": 0.05, "alert_max_ask": 0.5}
+        s2 = {"slots": {}, "cash": 10000.0}
+        slot, picks = sr.FadeLotto().entries(run(10, 30), sample, s2)
+        self.assertEqual(slot, "2026-10-22 10:30")
+        self.assertEqual(sorted(x["und"] for x in picks), ["AAA", "CCC", "SPCX"])
+        ccc = next(x for x in picks if x["und"] == "CCC")
+        self.assertTrue(ccc["sym"].endswith("C94"))                                          # gap down: the call at the open
+        alerts = [k for kind, k in events if kind == "lotto_alert"]
+        self.assertEqual(sorted(a["symbol"][:3] for a in alerts), ["AAA", "CCC"])            # SPCX's 3.5% is a sample only
+        self.assertTrue(all(not a["dry_run"] and "只记录、不下单" in a["why"] and not a["why"].startswith("彩票") for a in alerts))
+        self.assertIsNone(sr.FadeLotto().entries(run(10, 40), sample, s2))                  # nothing new: no ticket, no alert
+        self.assertEqual(len([1 for kind, _ in events if kind == "lotto_alert"]), 2)
+        self.assertEqual(s2["keep"], 1000)
+        slot, picks = sr.FadeLotto().entries(run(10, 30, date(2026, 10, 23)), sample, s2)      # a new day starts over
+        self.assertEqual(len(picks), 3)
+        self.assertEqual(list(s2["taken"]), ["2026-10-23"])
 
     def test_open_gap_takes_the_largest_gap_the_open_keeps_and_holds_a_later_expiry_overnight(self):
         from hero import sleeve_rules as sr

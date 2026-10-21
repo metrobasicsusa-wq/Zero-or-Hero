@@ -963,7 +963,108 @@ class Relay:
         return None
 
 
+class FadeLotto:
+    """Owner, 10-21 (SPCX: up 8.6% at the open, still above it at noon, the 160 put due that day at $0.25 reached $3.15
+    by 14:10): a cheap lottery on a big gap fading back. From `scan_from` (11:00) to `scan_until` (14:00), every cycle: names
+    that opened `gap` (5%) or more from yesterday's close and are still on the gap's side of the open -- the pool, the
+    day's most traded, today's earnings reactions and `watch` -- and for each the nearest expiry within a week, the
+    strike just past the open toward the fade (a put at or under the open after a gap up, a call at or over it after a
+    gap down), asking at most `max_ask`. Each new find is an alert in the trade feed (once a name a day, `alert` on one
+    ledger only); the ledger books the first find of the day: half on a 3x take, half on a trail, out 15:30 if it
+    expires that day else 15:50. Only about 55% of 5%+ gap ups trade back under the open that day: most go to zero."""
+
+    def universe(self, run, spec) -> list[str]:
+        names = list(pool(run)) + list(spec.get("watch") or [])
+        names += cached(run, "most_actives", lambda: run.c.most_actives(100)) or []
+
+        def reactions():
+            files = sorted((ROOT / "research" / "earnings-forecast").glob("20??-??-??.json"))
+            out = []
+            for f in files[-3:]:
+                try:
+                    out += [r["symbol"] for r in json.loads(f.read_text()).get("reports", [])
+                            if r.get("reaction_day") == run.today.isoformat()]
+                except Exception:
+                    continue
+            return out
+        names += cached(run, "earnings_reactions", reactions) or []
+        return list(dict.fromkeys(x for x in names if x and x.isalpha()))
+
+    def finds(self, run, spec) -> list[dict]:
+        def scan():
+            day, out = run.today.isoformat(), []
+            found = []
+            for x, v in snaps(run, self.universe(run, spec)).items():
+                spot, o, _, prev = spot_open(v)
+                if not spot or not o or not prev:
+                    continue
+                g = o / prev - 1
+                if (g >= spec.get("gap", 0.05) and spot > o) or (g <= -spec.get("gap", 0.05) and spot < o):
+                    found.append((abs(g), x, spot, o, g))
+            for _, und, spot, o, g in sorted(found, reverse=True)[:spec.get("top", 10)]:
+                kind = "P" if g > 0 else "C"
+                lo, hi = (o * 0.9, o * 1.0001) if kind == "P" else (o * 0.9999, o * 1.1)
+                cs = contracts(run, und, day, (run.today + timedelta(days=7)).isoformat(), lo, hi, "put" if kind == "P" else "call")
+                if not cs:
+                    continue
+                side_ok = (lambda k: k <= o) if kind == "P" else (lambda k: k >= o)
+                cs = [c for c in cs if side_ok(float(c["strike_price"]))]
+                if not cs:
+                    continue
+                exp = min(c["expiration_date"] for c in cs)
+                ks = sorted((c for c in cs if c["expiration_date"] == exp), key=lambda c: float(c["strike_price"]))
+                c = ks[-1] if kind == "P" else ks[0]       # just past the open toward the fade
+                ask = ask_of(run, c["symbol"])
+                if not 0 < ask <= spec.get("max_ask", 0.5):
+                    continue
+                k = float(c["strike_price"])
+                side = "看跌" if kind == "P" else "看涨"
+                when = "今天到期" if exp == day else f"{exp[5:]} 到期"
+                out.append({"sym": c["symbol"], "asset": "option", "und": und, "ask": ask, "take": 3, "half": True, "gap": round(g, 4),
+                            "expiry": exp, "exit_day": day, "exit_at": "15:30" if exp == day else "15:50",
+                            "why": f"彩票：{und} {'高' if g > 0 else '低'}开 {g:+.1%}（开盘 ${o:,.2f}），现在 ${spot:,.2f}、"
+                                   f"还在开盘{'上' if g > 0 else '下'}方 {abs(spot / o - 1):.1%}；{side} {k:g}（{when}）卖价 ${ask:.2f}，"
+                                   f"{'跌回' if g > 0 else '涨回'} ${k:g} {'以下' if g > 0 else '以上'}才开始值钱；"
+                                   f"一半 3 倍止盈、一半翻倍后回撤 40% 卖，最晚 {'15:30' if exp == day else '15:50'}"})
+            return out
+        return cached(run, ("fadelotto", run.today.isoformat(), run.hhmm, spec.get("gap", 0.05), spec.get("max_ask", 0.5)), scan) or []
+
+    def entries(self, run, spec, s):
+        """`alert`: post each name once a day when it is at least `alert_gap` and asks at most `alert_max_ask`.
+        `every` (owner, 10-21「先大胆点 取样本」): book every name the first time it qualifies each day (a sample, with a
+        fixed `qty` set in the spec); else the first find of the day only, like a ledger that plays it."""
+        day = run.today.isoformat()
+        if not (spec.get("scan_from", "11:00") <= run.hhmm < spec.get("scan_until", "14:00")):
+            return None
+        picks = self.finds(run, spec)
+        if spec.get("alert"):
+            seen = s.setdefault("alerted", {})
+            for k in [k for k in seen if k != day]:
+                seen.pop(k)
+            told = seen.setdefault(day, [])
+            for pk in picks:
+                if (pk["und"] not in told and abs(pk["gap"]) >= spec.get("alert_gap", spec.get("gap", 0.05))
+                        and pk["ask"] <= spec.get("alert_max_ask", spec.get("max_ask", 0.5))):
+                    told.append(pk["und"])
+                    run.j.event("lotto_alert", dry_run=False, symbol=pk["sym"],
+                                why=pk["why"].split("；一半")[0].removeprefix("彩票：") + "。只记录、不下单（模拟盘，不是投资建议）")
+        if spec.get("every"):
+            taken = s.setdefault("taken", {})
+            for k in [k for k in taken if k != day]:
+                taken.pop(k)
+            have = taken.setdefault(day, [])
+            new = [pk for pk in picks if pk["und"] not in have]
+            if not new:
+                return None
+            have += [pk["und"] for pk in new]
+            s["keep"] = spec.get("keep", 1000)
+            return (f"{day} {run.hhmm}", new)
+        if day in s["slots"] or not picks:
+            return None              # nothing yet: look again next cycle
+        return (day, picks[:1])
+
+
 RULES = {"zdte": ZeroDTE(), "weekly": Weekly(), "net": Net(), "gap": Gap(), "flush": Flush(), "earnings": EarningsLotto(),
          "letf": LETF(), "relay": Relay(), "opengap": OpenGap(), "sniper": Sniper(), "oneshot": OneShot(),
          "overnight": Overnight(), "pead": Pead(), "vixspike": VixSpike(), "breakgap": BreakGap(),
-         "hikerally": HikeRally(), "dipweek": DipWeek()}
+         "hikerally": HikeRally(), "dipweek": DipWeek(), "fadelotto": FadeLotto()}

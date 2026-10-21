@@ -66,7 +66,7 @@ class Book:
 
     def save(self) -> None:
         for s in self.d["sleeves"].values():
-            s["closed"] = s["closed"][-200:]
+            s["closed"] = s["closed"][-int(s.get("keep", 200)):]   # a sample ledger keeps more (hero.sleeve_rules.FadeLotto)
             s["slots"] = dict(sorted(s["slots"].items())[-20:])
         self.path.write_text(json.dumps(self.d, indent=1, ensure_ascii=False) + "\n")
 
@@ -443,6 +443,8 @@ class Runner:
                 else:
                     limit = tick(pk["ask"] + self.p["buy_pad"])
                     qty = int(each // (limit * 100))
+                    if spec.get("qty"):   # a sample ledger: a fixed number of contracts a find (owner, 10-21)
+                        qty = int(spec["qty"]) if limit * 100 * int(spec["qty"]) <= s["cash"] else 0
                     size = f"{qty} 张 × ${limit:.2f}" if qty else f"一张 ${limit * 100:,.2f} 超过 ${each:,.2f}，买不起"
                 self.j.event("sleeve_plan", dry_run=True, sleeve=spec["id"], symbol=pk["sym"],
                              why=f"{spec['id']}（演算，不下单）：{pk['why']}；{size}")
