@@ -1977,6 +1977,79 @@ class ResearchPlanReview(unittest.TestCase):
         self.assertEqual((held["exit"], held["how"]), (0.4, "还拿着（按收盘估值）"))
 
 
+class ResearchPlanResults(unittest.TestCase):
+    """Owner, 10-21: what the stopped / plan-only rules would have made, run through the live exit code."""
+
+    def ev(self, ts, sleeve, sym, why):
+        return {"kind": "sleeve_plan", "ts": ts, "sleeve": sleeve, "symbol": sym, "why": why}
+
+    def test_rebuild_reads_each_rules_exit_from_its_own_words(self):
+        from hero import research_plan_results as r
+        gap = r.rebuild(self.ev("2026-10-20T13:50:25+00:00", "gap-plan-500", "IREN261023C00026500",
+                                "gap-plan-500（演算，不下单）：IREN 低开 -3.4%，买看涨 26.5（2026-10-23 到期），翻倍后回撤 40% 卖，最晚 15:50；1 张 × $1.03"), {})
+        pk, qty, day, at = gap
+        self.assertEqual((pk["ask"], pk["exit_day"], pk["exit_at"], pk["trail"], "take" in pk, qty, at),
+                         (1.02, "2026-10-20", "15:50", True, False, 1, "09:50"))
+        pk, *_ = r.rebuild(self.ev("2026-10-19T19:50:30+00:00", "overnight-plan-500", "AMZN261026C00272500",
+                                   "…买看涨 272.5（2026-10-26 到期）；翻倍后回撤 40% 卖，否则 10-22 15:50 卖；1 张 × $1.33"), {})
+        self.assertEqual((pk["exit_day"], pk["exit_at"], pk["trail"]), ("2026-10-22", "15:50", True))
+        pk, *_ = r.rebuild(self.ev("2026-10-16T13:40:00+00:00", "opengap-500", "CRWV261016P00064000",
+                                   "…买看跌 64（2026-10-16 到期），一半 3 倍止盈、一半翻倍后回撤 40% 卖，最晚 15:30；3 张 × $0.75"), {})
+        self.assertEqual((pk["take"], pk["half"], pk["trail"], pk["exit_at"]), (3.0, True, False, "15:30"))
+        pk, *_ = r.rebuild(self.ev("2026-10-21T14:00:00+00:00", "oneshot-500", "QQQ261021C00731000",
+                                   "…顺势买当天到期看涨 731（离现价 1.1%），全仓、不止盈，拿到 15:55 赌一把到目标；25 张 × $0.20"), {})
+        self.assertEqual(("take" in pk, pk["exit_at"], pk["expiry_out"]), (False, "15:55", "15:55"))
+        pk, *_ = r.rebuild(self.ev("2026-10-19T14:00:00+00:00", "spydip-500", "SPY261019C00772000",
+                                   "…买当天到期看涨 772（离现价 0.7%），3 倍止盈，15:30 平仓；25 张 × $0.10"), {"half_take": False})
+        self.assertEqual((pk["take"], pk["half"], pk["exit_day"], pk["exit_at"]), (3.0, False, "2026-10-19", "15:30"))
+        pk, *_ = r.rebuild(self.ev("2026-10-21T13:35:00+00:00", "breakgap-500", "SMCI261023C00040000",
+                                   "突破大跳空：…买看涨 40（2026-10-23 到期），拿到 10-22 15:50 卖；1 张 × $2.00"), {})
+        self.assertEqual((pk["exit_day"], pk["trail"]), ("2026-10-22", False))
+        self.assertIsNone(r.rebuild(self.ev("2026-10-08T13:50:25+00:00", "gap-500", "COHR261009C00330000",
+                                            "…一张 $540.00 超过 $125.00，买不起"), {}))
+
+    def test_replay_runs_the_live_exits_on_one_minute_trades(self):
+        from hero import research_plan_results as r
+        bar = lambda hhmm, c, day="2026-10-20": {"t": f"{day}T{int(hhmm[:2]) + 4:02d}:{hhmm[3:]}:00Z", "c": c}
+        gap_spec = {"id": "gap-plan-500", "kind": "gap", "start": 500, "plan_only": True}
+        z_spec = {"id": "opengap-500", "kind": "opengap", "start": 500, "plan_only": True}
+        e1 = self.ev("2026-10-20T13:50:25+00:00", "gap-plan-500", "AAA261023C00010000", "…翻倍后回撤 40% 卖，最晚 15:50；1 张 × $1.03")
+        e2 = self.ev("2026-10-20T13:50:25+00:00", "opengap-500", "BBB261020P00010000",
+                     "…一半 3 倍止盈、一半翻倍后回撤 40% 卖，最晚 15:30；4 张 × $0.30")
+        e3 = self.ev("2026-10-20T14:00:00+00:00", "gap-plan-500", "CCC261023C00010000", "…翻倍后回撤 40% 卖，最晚 15:50；1 张 × $1.00")
+        e4 = self.ev("2026-10-20T19:50:00+00:00", "gap-plan-500", "DDD261030C00010000", "…翻倍后回撤 40% 卖，否则 10-27 15:50 卖；2 张 × $1.00")
+        picks = []
+        for e, spec in ((e1, gap_spec), (e2, z_spec), (e3, gap_spec), (e4, gap_spec)):
+            pk, qty, day, at = r.rebuild(e, spec)
+            picks.append((e, pk, qty, day, at, spec))
+        tape = r.Tape({"AAA261023C00010000": [bar("10:00", 1.0), bar("11:00", 2.5), bar("11:10", 1.4)],     # armed, then 44% off
+                       "BBB261020P00010000": [bar("10:30", 0.9), bar("10:40", 0.5)],                      # take 0.87, runner trails
+                       "CCC261023C00010000": [bar("09:59", 1.0)],                                         # nothing after the buy
+                       "DDD261030C00010000": [bar("15:55", 1.2), bar("15:00", 1.5, "2026-10-21")]})       # still held
+        rows = {x["sym"][:3]: x for x in r.replay(picks, tape, "2026-10-21")}
+        self.assertEqual((rows["AAA"]["paid"], rows["AAA"]["got"], rows["AAA"]["pnl"]), (102.0, 140.0, 38.0))
+        self.assertIn("翻倍后从最高 $2.50 回撤 40%", rows["AAA"]["how"])
+        self.assertEqual((rows["BBB"]["paid"], rows["BBB"]["got"]), (116.0, 274.0))                   # 2 x $0.87 + 2 x $0.50
+        self.assertFalse(rows["CCC"]["valued"])
+        self.assertEqual((rows["DDD"]["held"], rows["DDD"]["got"]), (True, 300.0))                    # 2 x $1.50, its last trade
+        md = r.markdown(list(rows.values()), [], [], "2026-10-21", 0)
+        self.assertIn("| gap-plan | 2 |", md)                                                          # CCC not counted
+        self.assertIn("估不了值", md)
+
+    def test_live_rows_count_entries_before_the_stop_and_skip_open_ones(self):
+        from hero import research_plan_results as r
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "journal-s500").mkdir()
+            t = lambda tid, day, paid, got: {"tid": tid, "opened": f"{day} 10:00", "sym": "X", "paid": paid, "proceeds": got}
+            (root / "journal-s500" / "sleeves.json").write_text(json.dumps({"sleeves": {
+                "gap-500": {"open": [], "closed": [t("a1", "2026-10-15", 100, 0), t("a2", "2026-10-17", 100, 300)]},
+                "sniper-500": {"open": [{"tid": "b1r"}], "closed": [t("b1", "2026-10-19", 100, 20), t("c1", "2026-10-15", 100, 0)]}}}))
+            rows = {(x["sleeve"], x["day"]): x for x in r.live_rows(root)}
+        self.assertEqual(set(rows), {("gap-500", "2026-10-15"), ("sniper-500", "2026-10-15")})          # after the stop / still open: out
+        self.assertEqual(rows[("gap-500", "2026-10-15")]["pnl"], -100.0)
+
+
 class ResearchStreak(unittest.TestCase):
     def test_streaks_and_what_followed(self):
         from hero import research_streak as r
@@ -2959,8 +3032,114 @@ class Sleeves(unittest.TestCase):
                        date(2026, 10, 8), sleep=lambda s: None).plan()
         self.assertEqual(b.orders, {})
         log = [json.loads(l) for l in (self.root / "trades.jsonl").read_text().splitlines()]
-        self.assertEqual([e["kind"] for e in log], ["sleeve_plan", "sleeve_plan"])
-        self.assertIn("45 张 × $0.11", log[-1]["why"])
+        self.assertEqual([e["kind"] for e in log], ["sleeve_plan", "sleeve_plan_fill", "sleeve_plan", "sleeve_plan_fill"])
+        self.assertIn("45 张 × $0.11", log[-2]["why"])
+        self.assertTrue(all(e["dry_run"] for e in log))
+
+    def plan_cycle(self, broker, hh, mm, specs, day=None):
+        from datetime import datetime
+        from hero import sleeve_rules, sleeves
+        day = day or date(2026, 10, 8)
+        book = sleeves.Book(self.root / "plan.json", specs)
+        sleeves.Runner(broker, Journal(self.root), self.cfg, specs, book, sleeve_rules.RULES,
+                       datetime(day.year, day.month, day.day, hh, mm), day, sleep=lambda s: None).plan()
+        book.save()
+        log = [json.loads(l) for l in (self.root / "trades.jsonl").read_text().splitlines()] if (self.root / "trades.jsonl").exists() else []
+        return book, log
+
+    def test_plan_books_the_pick_at_the_ask_and_takes_profit_once_the_bid_gets_there(self):
+        # owner, 10-21: a stopped rule must still show what it would have made
+        b = SleeveBroker(lambda s: (0.08, 0.10))
+        spec = [self.specs[1]]                                                          # $1,000, 0.6% out, 3x take
+        book, log = self.plan_cycle(b, 10, 0, spec)
+        s = book.s("spy0dte-1000")
+        t = s["open"][0]
+        self.assertEqual((t["qty"], t["cost"], t["paid"], t["take"], t["sim"]), (45, 0.10, 450.0, 0.30, True))  # sized at the limit, booked at the ask
+        self.assertEqual(s["cash"], 550.0)
+        self.assertEqual(b.orders, {})
+        self.assertIn("按卖价 $0.10 记作买进 45 张", [e for e in log if e["kind"] == "sleeve_plan_fill"][-1]["why"])
+        b.quotes = lambda sym: (0.30, 0.32)                                              # the bid reaches the take
+        book, log = self.plan_cycle(b, 10, 10, spec)
+        s = book.s("spy0dte-1000")
+        self.assertEqual((s["open"], s["closed"][-1]["proceeds"], s["closed"][-1]["ret"], s["cash"]), ([], 1350.0, 2.0, 1900.0))
+        res = [e for e in log if e["kind"] == "sleeve_plan_result"]
+        self.assertEqual(len(res), 1)
+        self.assertIn("3 倍止盈", res[0]["why"])
+        self.assertTrue(res[0]["dry_run"])
+        self.assertEqual(b.orders, {})                                                 # never an order
+        self.assertEqual(len([e for e in log if e["kind"] == "sleeve_plan_fill"]), 1)  # one try a day
+
+    def test_plan_runner_half_trails_and_the_take_half_leaves_at_its_time(self):
+        b = SleeveBroker(lambda s: (0.08, 0.10))
+        spec = [{**self.specs[0], "half_take": True}]                                    # $500: 22 contracts at $0.10
+        book, _ = self.plan_cycle(b, 10, 0, spec)
+        self.assertEqual(sorted((t["qty"], t["trail"], t.get("take")) for t in book.s("spy0dte-500")["open"]),
+                         [(11, False, 0.30), (11, True, None)])                    # the runner has no take, as live
+        b.quotes = lambda sym: (0.25, 0.26)                                              # runner armed (2x), take not reached
+        self.plan_cycle(b, 11, 0, spec)
+        b.quotes = lambda sym: (0.14, 0.15)                                              # 44% off the best: the runner goes
+        book, log = self.plan_cycle(b, 11, 10, spec)
+        s = book.s("spy0dte-500")
+        self.assertEqual([(t["qty"], t["trail"]) for t in s["open"]], [(11, False)])
+        self.assertEqual(s["closed"][-1]["proceeds"], 154.0)                             # 11 x $0.14
+        b.quotes = lambda sym: (0.05, 0.06)
+        book, log = self.plan_cycle(b, 15, 30, spec)
+        s = book.s("spy0dte-500")
+        self.assertEqual((s["open"], s["closed"][-1]["proceeds"], s["cash"]), ([], 55.0, 489.0))   # 500 - 220 + 154 + 55
+        self.assertIn("到时卖出", [e for e in log if e["kind"] == "sleeve_plan_result"][-1]["why"])
+
+    def test_plan_waits_out_a_missing_quote_and_books_an_expired_contract_at_zero(self):
+        b = SleeveBroker(lambda s: (0.08, 0.10))
+        spec = [self.specs[1]]
+        self.plan_cycle(b, 10, 0, spec)
+        b.option_snapshots = lambda syms: {}                                              # the quote call came back empty
+        book, log = self.plan_cycle(b, 15, 30, spec)
+        self.assertEqual(len(book.s("spy0dte-1000")["open"]), 1)                           # not sold at $0 on a missing quote
+        book, log = self.plan_cycle(b, 9, 40, spec, day=date(2026, 10, 9))                 # the next day it has expired
+        s = book.s("spy0dte-1000")
+        self.assertEqual((s["open"], s["closed"][-1]["proceeds"], s["closed"][-1]["how"]), ([], 0.0, "到期作废"))
+
+    def test_finished_entries_count_a_buy_with_its_runner_once_and_skip_open_ones(self):
+        from hero import sleeves
+        s = {"open": [{"tid": "c1r"}], "closed": [
+            {"tid": "a1", "paid": 100.0, "proceeds": 0.0},
+            {"tid": "b1", "paid": 100.0, "proceeds": 150.0}, {"tid": "b1r", "paid": 100.0, "proceeds": 20.0},
+            {"tid": "c1", "paid": 50.0, "proceeds": 500.0},                                 # its runner is still open
+            {"tid": "d1s", "paid": 10.0, "proceeds": 5.0}]}                                 # a recovered sold part
+        self.assertEqual(sleeves.finished_entries(s), (3, -135.0))
+
+    def test_stop_if_losing_after_n_finished_entries_buys_nothing_new(self):
+        from hero import sleeves
+        spec = [{**self.specs[0], "stop_if_losing": {"after": 2, "twin": "spy0dte-plan-500"}}]
+
+        def ledger(closed, open_=()):
+            if (self.root / "sleeves.json").exists():
+                (self.root / "sleeves.json").unlink()
+            book = sleeves.Book(self.root / "sleeves.json", spec)
+            book.s("spy0dte-500").update(closed=closed, open=list(open_))
+            book.save()
+        lost = [{"tid": "a1", "paid": 100.0, "proceeds": 0.0}, {"tid": "b1", "paid": 100.0, "proceeds": 150.0},
+                {"tid": "b1r", "paid": 100.0, "proceeds": 20.0}]                               # two entries, -$130
+        ledger(lost)
+        b = SleeveBroker(lambda s: (0.08, 0.10))
+        book, log = self.cycle(b, 10, 0, spec)
+        self.assertEqual(b.orders, {})
+        stop = [e for e in log if e["kind"] == "sleeve_skip"]
+        self.assertEqual(len(stop), 1)
+        self.assertIn("已做完 2 次，合计亏 $130.00", stop[0]["why"])
+        self.assertIn("spy0dte-plan-500 照常演算", stop[0]["why"])
+        book, log = self.cycle(b, 10, 10, spec)
+        self.assertEqual(len([e for e in log if e["kind"] == "sleeve_skip"]), 1)       # logged once a day
+        self.assertEqual(b.orders, {})
+        (self.root / "trades.jsonl").unlink()
+        ledger(lost[:1])                                                                   # one finished entry: keeps buying
+        b = SleeveBroker(lambda s: (0.08, 0.10))
+        self.cycle(b, 10, 0, spec)
+        self.assertTrue([o for o in b.orders.values() if o["side"] == "buy"])
+        ledger([{"tid": "a1", "paid": 100.0, "proceeds": 0.0}, {"tid": "b1", "paid": 100.0, "proceeds": 260.0}])  # +$60
+        b = SleeveBroker(lambda s: (0.08, 0.10))
+        self.cycle(b, 10, 0, spec)
+        self.assertTrue([o for o in b.orders.values() if o["side"] == "buy"])          # ahead after 2: keeps going
 
     def test_letf_holds_above_its_average_and_sells_below(self):
         spec = [{"id": "tqqq-500", "kind": "letf", "start": 500, "sym": "TQQQ", "ma": 20, "fraction": 1.0}]
@@ -3032,6 +3211,15 @@ class EarningsShares(unittest.TestCase):
         b.whole_only.add("NVDA")
         (slot, picks), ev = self.run_rule(b, date(2026, 10, 8), 15, 45, ("NVDA",), {"id": "earn-500", "n": 3})
         self.assertEqual((picks[0]["sym"], picks[0]["whole"]), ("NVDA", True))
+
+    def test_the_old_call_lottery_comes_back_only_for_its_plan_twin(self):
+        # owner, 10-21: what would the stopped option version have made? (its plan twin records it)
+        self.calendar({"NVDA": [{"date": "2026-10-08", "time": "post-market", "confirmed": True}]})
+        (slot, picks), ev = self.run_rule(self.broker(), date(2026, 10, 8), 15, 45, ("NVDA",),
+                                          {"id": "earn-opt-plan-500", "n": 3, "instrument": "option", "plan_only": True})
+        p = picks[0]
+        self.assertEqual((p["asset"], p["sym"], p["exit_day"], p["exit_at"]), ("option", "NVDAXC190", "2026-10-09", "09:35"))  # 180 x (1 + 2 x 2.2%) -> 190
+        self.assertIn("10-19 前的财报彩票", p["why"])
 
     def runner(self, broker, specs, rules, now, day):
         from hero import sleeves
@@ -3346,17 +3534,17 @@ class SleeveRules(unittest.TestCase):
     def test_plan_only_sleeves_stay_out_of_the_live_run(self):
         from types import SimpleNamespace
         from hero import engine, sleeves
-        seen, planned = [], []
+        seen, planned, order = [], [], []
 
         class Runner:
             def __init__(self, c, j, cfg, specs, book, rules, now, today):
                 seen.extend(x["id"] for x in specs)
             def run(self):
-                pass
+                order.append("live")
         cfg = {"sleeves": {"list": [{"id": "a-500", "start": 500}, {"id": "dip-500", "start": 500, "plan_only": True}]}}
         with tempfile.TemporaryDirectory() as tmp:
             fake = SimpleNamespace(cfg=cfg, dry=False, c=None, now=None, j=SimpleNamespace(root=Path(tmp), event=lambda *a, **k: None),
-                                   _sleeves_plan=lambda today, only_plan_only=False: planned.append(only_plan_only))
+                                   _sleeves_plan=lambda today, only_plan_only=False: (planned.append(only_plan_only), order.append("plan")))
             old = sleeves.Runner
             sleeves.Runner = Runner
             try:
@@ -3365,6 +3553,7 @@ class SleeveRules(unittest.TestCase):
                 sleeves.Runner = old
             self.assertEqual(seen, ["a-500"])
             self.assertEqual(planned, [True])
+            self.assertEqual(order, ["live", "plan"])                                     # the plan only watches, after the real orders
             self.assertNotIn("dip-500", json.loads((Path(tmp) / "sleeves.json").read_text())["sleeves"])
 
     def test_flush_needs_two_percent_under_the_open(self):

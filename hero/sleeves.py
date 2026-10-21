@@ -136,6 +136,19 @@ def entry_tid(slot: str) -> str:
     return f"{slot_key(slot)}-{uuid.uuid4().hex[:6]}"
 
 
+def finished_entries(s: dict) -> tuple[int, float]:
+    """(entries whose tickets are all closed, their net dollars). A runner half ("...r") and a recovered sold part
+    ("...s") belong to their buy's ticket id; an entry with a ticket still open is not finished."""
+    base = lambda tid: str(tid).rstrip("rs")
+    still = {base(t["tid"]) for t in s["open"]}
+    net: dict[str, float] = {}
+    for t in s["closed"]:
+        b = base(t["tid"])
+        if b not in still:
+            net[b] = net.get(b, 0.0) + float(t.get("proceeds") or 0) - float(t.get("paid") or 0)
+    return len(net), round(sum(net.values()), 2)
+
+
 def occ_expiry(sym: str) -> str | None:
     """SPY261014P00768000 -> 2026-10-14."""
     if len(sym) <= 15 or not sym[-15:-9].isdigit():
@@ -390,8 +403,18 @@ class Runner:
                      why=f"{sid}：{t['sym']} {how}，花 ${t['paid']:,.2f}、收回 ${done['proceeds']:,.2f}（{done['ret']:+.0%}），"
                          f"账本 ${s['cash']:,.2f}")
 
-    # ---- plan only (a rehearsal on live quotes: what each sleeve would buy now; nothing is sent) ----
+    # ---- plan only (a rehearsal on live quotes; nothing is sent) ----
+    # Owner, 10-21: a stopped rule must still show what it would have made. So each plan pick with a size is booked
+    # in the plan book (journal-s500/sleeves_plan.json) as bought at the ask, and every cycle follows it with the
+    # live exits on live quotes: the take once the bid reaches it (checked each cycle, so a brief spike that a resting
+    # order would catch can be missed), the trail and the time exits, sold at the bid. A plan ledger's cash moves
+    # with its results and starts a new round like a real one.
     def plan(self) -> None:
+        self.plan_manage()
+        for spec in self.specs:
+            msg = self.book.round_check(spec["id"], {**self.p, **{k: spec[k] for k in ("zero_line", "target") if k in spec}})
+            if msg:
+                self.j.event("sleeve_round", dry_run=True, sleeve=spec["id"], why=f"{msg}（演算）")
         for spec in self.specs:
             rule = self.rules.get(spec["kind"])
             s = self.book.s(spec["id"])
@@ -412,6 +435,9 @@ class Runner:
             each = spec.get("fraction", self.p["fraction"]) * s["cash"] / len(picks)
             for pk in picks:
                 if pk["asset"] == "stock":
+                    notional = math.floor(each * 100) / 100
+                    ask = float(pk.get("ask") or 0)
+                    qty = (int(notional // ask) if pk.get("whole") else round(notional / ask, 6)) if ask > 0 else 0
                     size = f"买 ${each:,.2f}"
                 else:
                     limit = tick(pk["ask"] + self.p["buy_pad"])
@@ -419,14 +445,92 @@ class Runner:
                     size = f"{qty} 张 × ${limit:.2f}" if qty else f"一张 ${limit * 100:,.2f} 超过 ${each:,.2f}，买不起"
                 self.j.event("sleeve_plan", dry_run=True, sleeve=spec["id"], symbol=pk["sym"],
                              why=f"{spec['id']}（演算，不下单）：{pk['why']}；{size}")
+                if qty and qty > 0:
+                    self.plan_open(spec, pk, qty, slot)
+
+    def plan_open(self, spec: dict, pk: dict, qty, slot: str) -> None:
+        """Book a plan pick as filled at the ask (the live limit is the ask + buy_pad; our fills land at or under it)."""
+        option = pk["asset"] == "option"
+        mult, price = (100 if option else 1), float(pk["ask"])
+        t = {"tid": entry_tid(slot), "kind": spec["kind"], "sym": pk["sym"], "asset": pk["asset"], "und": pk.get("und") or pk["sym"],
+             "qty": qty, "cost": price, "paid": round(price * qty * mult, 2), "opened": f"{self.today.isoformat()} {self.hhmm}",
+             "why": pk["why"], "best_bid": 0.0, "sim": True}
+        if option:
+            t.update({"expiry": pk.get("expiry"), "exit_day": pk.get("exit_day"), "exit_at": pk.get("exit_at", "15:30"),
+                      "trail": pk.get("trail", False), "expiry_out": pk.get("expiry_out")})
+        else:
+            t.update({"exit_at": pk.get("exit_at") or "15:50", **({"exit_day": pk["exit_day"]} if pk.get("exit_day") else {})})
+        runner = None
+        if option and pk.get("take") and pk.get("half") and qty >= 2:   # the same split as a live fill
+            runner = {**t, "tid": t["tid"] + "r", "qty": qty - qty // 2, "trail": True}
+            runner["paid"] = round(price * runner["qty"] * 100, 2)
+            t["qty"] = qty // 2
+            t["paid"] = round(t["paid"] - runner["paid"], 2)
+        if option and pk.get("take"):
+            t["take_x"] = pk["take"]
+            t["take"] = tick(price * pk["take"])
+        self.book.open_ticket(spec["id"], t)
+        if runner:
+            self.book.open_ticket(spec["id"], runner)
+        self.j.event("sleeve_plan_fill", dry_run=True, sleeve=spec["id"], symbol=pk["sym"], qty=qty, price=price,
+                     why=f"{spec['id']}（演算）：按卖价 ${price:.2f} 记作买进 {qty:g} {'张' if option else '股'}，"
+                         f"花 ${price * qty * mult:,.2f}"
+                         + (f"；{t['qty']} 张 {pk['take']:g} 倍止盈 ${t['take']:.2f}" if t.get("take") else "")
+                         + (f"；另 {runner['qty']} 张翻倍后回撤 40% 卖" if runner else ""))
+
+    def plan_manage(self) -> None:
+        """The plan book's open tickets: the take when the bid reaches it, else the live exit rules, sold at the bid."""
+        tickets = [(sid, t) for sid, s in self.book.d["sleeves"].items() for t in list(s["open"])]
+        if not tickets:
+            return
+        quotes = self.bids(sorted({t["sym"] for _, t in tickets}))
+        for sid, t in tickets:
+            if t["sym"] not in quotes:   # no quote this cycle: wait (a missing quote is not a $0 sale), unless it has expired
+                if t.get("expiry") and t["expiry"] < self.today.isoformat():
+                    self.plan_closed(sid, t, 0.0, "到期作废")
+                continue
+            bid = quotes[t["sym"]][0]
+            if t.get("take") and bid >= t["take"]:
+                self.plan_closed(sid, t, t["take"], f"{t['take_x']:g} 倍止盈（买价到了止盈价）")
+                continue
+            t["best_bid"] = max(t.get("best_bid", 0.0), bid)
+            why = self.exit_reason(sid, t, bid)
+            if why:
+                self.plan_closed(sid, t, bid, why)
+
+    def plan_closed(self, sid: str, t: dict, price: float, how: str) -> None:
+        done = self.book.close_ticket(sid, t, round(price, 4), how, f"{self.today.isoformat()} {self.hhmm}")
+        s = self.book.s(sid)
+        self.j.event("sleeve_plan_result", dry_run=True, sleeve=sid, symbol=t["sym"], ret=done["ret"],
+                     why=f"{sid}（演算）：{t['sym']} {how}，花 ${t['paid']:,.2f}、收回 ${done['proceeds']:,.2f}（{done['ret']:+.0%}），"
+                         f"演算账本 ${s['cash']:,.2f}")
 
     # ---- entries ----
+    def losing_stop(self, spec: dict, s: dict) -> bool:
+        """Owner, 10-21 (the sniper: 3 picks, 3 losses): `stop_if_losing` {"after": N} -- once N entries have finished,
+        a sleeve that is down on them in total opens no new tickets; its plan twin keeps recording what it would do.
+        Once stopped it stays stopped (no new entries, so the total cannot recover) until the config changes."""
+        rule = spec.get("stop_if_losing")
+        if not rule:
+            return False
+        after = int(rule.get("after", 10))
+        n, net = finished_entries(s)
+        if n < after or net >= 0:
+            return False
+        day = self.today.isoformat()
+        if s.get("stopped_day") != day:   # once a day in the journal
+            s["stopped_day"] = day
+            self.j.event("sleeve_skip", dry_run=False, sleeve=spec["id"],
+                         why=f"{spec['id']}：已做完 {n} 次，合计亏 ${-net:,.2f}；按用户 10-21 定的线（满 {after} 次还是亏就停），"
+                             "改成只记录、不下单" + (f"（{rule['twin']} 照常演算）" if rule.get("twin") else ""))
+        return True
+
     def enter(self) -> None:
         intents = []
         for spec in self.specs:
             rule = self.rules.get(spec["kind"])
             s = self.book.s(spec["id"])
-            if not rule or spec.get("stop_entries"):  # stop_entries: no new tickets, the open ones still run to their exits
+            if not rule or spec.get("stop_entries") or self.losing_stop(spec, s):  # no new tickets; open ones still run to their exits
                 continue
             try:  # one rule's bad data must not stop the other sleeves
                 got = rule.entries(self, spec, s)

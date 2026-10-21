@@ -430,10 +430,30 @@
        "und": "QQQ", "offset": 0.01, "fraction": 1.0, "plan_only": true
       },
       {"id": "sniper-500", "kind": "sniper", "start": 500, "name": "开盘狙击：盘前判断的一只，09:30 起不逆向就买约 0.1 delta，翻倍后回撤 40% 卖",
-       "fraction": 0.5
+       "fraction": 0.5, "stop_if_losing": {"after": 10, "twin": "sniper-plan-500"},
+       "note": "10-21 用户同意：做完 10 次以后，只要这个账本合计是亏的，就改成只记录、不下单（前 3 次全亏：CRWV 看跌归零、CLF / HPE 看涨各跌约八成）；sniper-plan-500 照常演算"
       },
       {"id": "sniper-1000", "kind": "sniper", "start": 1000, "name": "开盘狙击：盘前判断的一只，09:30 起不逆向就买约 0.1 delta，翻倍后回撤 40% 卖",
-       "fraction": 0.5
+       "fraction": 0.5, "stop_if_losing": {"after": 10, "twin": "sniper-plan-1000"},
+       "note": "同 sniper-500：满 10 次还是合计亏就停，sniper-plan-1000 照常演算"
+      },
+      {"id": "sniper-plan-500", "kind": "sniper", "start": 500, "name": "开盘狙击：同一只（只演算，10-21 起；实盘停了它照常记）",
+       "fraction": 0.5, "plan_only": true
+      },
+      {"id": "sniper-plan-1000", "kind": "sniper", "start": 1000, "name": "开盘狙击：同一只（只演算，10-21 起；实盘停了它照常记）",
+       "fraction": 0.5, "plan_only": true
+      },
+      {"id": "spy0dte-old-plan-500", "kind": "zdte", "half_take": true, "start": 500, "name": "SPY 末日单 0.6%、天天做（10-20 前的规则，只演算）",
+       "und": "SPY", "offset": 0.006, "take": 3, "plan_only": true
+      },
+      {"id": "spy0dte-old-plan-1000", "kind": "zdte", "half_take": true, "start": 1000, "name": "SPY 末日单 0.6%、天天做（10-20 前的规则，只演算）",
+       "und": "SPY", "offset": 0.006, "take": 3, "plan_only": true
+      },
+      {"id": "earn-opt-plan-500", "kind": "earnings", "start": 500, "name": "财报彩票看涨：2 倍波动处看涨，第二天 09:35 卖（10-19 前的规则，只演算）",
+       "n": 3, "instrument": "option", "plan_only": true
+      },
+      {"id": "earn-opt-plan-1000", "kind": "earnings", "start": 1000, "name": "财报彩票看涨：2 倍波动处看涨，第二天 09:35 卖（10-19 前的规则，只演算）",
+       "n": 3, "instrument": "option", "plan_only": true
       },
       {"id": "overnight-500", "kind": "overnight", "start": 500, "name": "隔夜动量：15:50 当天涨 3%+、收在高位、在 50 日均线上方的最强一只，买下周价外 3% 看涨，翻倍后回撤 40% 卖，否则第三天 15:50 卖（10-16 起不再开新仓，只卖完已有的）",
        "fraction": 0.5, "stop_entries": true

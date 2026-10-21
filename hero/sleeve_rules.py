@@ -794,7 +794,8 @@ class EarningsLotto:
     """The close before a report's reaction: the stock's 2x long fund (or the stock), sold at the next open.
     Until 10-19 it bought a call about 2x the implied move above; option IV collapsing after the report took
     earn-500 from $500 to $211 in a week, so (owner, 10-19) shares or 2x funds only. The names are still the
-    pool's reports with the largest implied moves (at-the-money straddle), now only to choose."""
+    pool's reports with the largest implied moves (at-the-money straddle), now only to choose. `instrument`
+    "option" brings back the old call (about 2x the implied move above) for a plan-only twin."""
 
     def entries(self, run, spec, s):
         day = run.today.isoformat()
@@ -831,6 +832,16 @@ class EarningsLotto:
                 continue
             move = (ask_of(run, atm_c["symbol"]) + ask_of(run, atm_p["symbol"])) / spot
             if move <= 0:
+                continue
+            if spec.get("instrument") == "option":
+                # the rule before 10-19, kept only for its plan twin (owner, 10-21: what would the stopped rule have made?)
+                c = pick(cs, "C", spot, 2 * move, exp)
+                ask = ask_of(run, c["symbol"]) if c else 0
+                if c and ask > 0:
+                    picks.append((move, {"sym": c["symbol"], "asset": "option", "und": und, "ask": ask, "expiry": exp,
+                                         "exit_day": nxt, "exit_at": "09:35",
+                                         "why": f"{und} 财报（期权定价的波动 {move:.1%}），买 2 倍波动处看涨 "
+                                                f"{float(c['strike_price']):g}（{exp} 到期），第二天 09:35 卖（10-19 前的财报彩票）"}))
                 continue
             pk = share_pick(run, und, spot, nxt, f"{und} 财报（期权定价的波动 {move:.1%}）")
             if pk:

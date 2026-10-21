@@ -158,6 +158,11 @@ footer { color: var(--muted); font-size: 12px; margin-top: 24px; }
     <div id="sleeves"></div>
   </section>
 
+  <section class="card" id="plan-card" hidden>
+    <h2>只演算的方向：停掉的规则会赚多少（不下单）</h2>
+    <div id="plan-sleeves"></div>
+  </section>
+
   <section class="card" id="zdte-card" hidden>
     <h2>末日阶段（0DTE）</h2>
     <div id="zdte"></div>
@@ -460,6 +465,27 @@ function renderSleeves() {
     `<p class="meta">每笔押本账本一半（TQQQ 全仓），只能买整张；低于起始的 10% 归零、到 $10,000 成功，都从公共资金重开。公共资金已补 ${usd(b.topups || 0, 2)}。</p>`;
 }
 
+function renderPlanSleeves() {
+  // owner, 10-21: stopped rules keep a record of what they would have made (hero.sleeves Runner.plan)
+  const b = DATA.plan_sleeves, p = DATA.config.sleeves;
+  if (!b || !p) return;
+  const specs = Object.fromEntries((p.list || []).filter((s) => s.plan_only).map((s) => [s.id, s]));
+  const rows = Object.entries(b.sleeves).filter(([id]) => specs[id]).map(([id, s]) => {
+    const sim = s.closed.filter((t) => t.sim), open = s.open.filter((t) => t.sim);
+    const held = open.reduce((a, t) => a + t.paid, 0);
+    const got = sim.reduce((a, t) => a + t.proceeds - t.paid, 0);
+    const wins = sim.filter((t) => t.ret > 0).length;
+    const name = specs[id].name || "";
+    return [`<b>${esc(id)}</b><br><span class="meta">${esc(name.length > 36 ? name.slice(0, 36) + "…" : name)}</span>`,
+      usd(s.start, 0), usd(s.cash, 2), held ? usd(held, 2) : "—",
+      sim.length ? `<span class="${tone(got)}">${usd(got, 2)}</span>` : "—", `${sim.length}（赚 ${wins}）`];
+  });
+  if (!rows.length) return;
+  $("plan-card").hidden = false;
+  $("plan-sleeves").innerHTML = table([["方向"], ["起始", 1], ["演算现金", 1], ["持仓成本", 1], ["已平仓盈亏", 1], ["演算交易数"]], rows) +
+    '<p class="meta">10-22 起：按卖价记买进、按实时买价和实盘同样的卖出规则记卖出（止盈每 10 分钟查一次买价，比挂单保守）。之前的见 research/*-plan-results.md。</p>';
+}
+
 function renderEvents() {
   const es = DATA.events;
   if (DATA.rehearsal) $("events-note").textContent = "· 演练中：以下都是模拟，没有真下单";
@@ -467,7 +493,7 @@ function renderEvents() {
   const kind = (e) => e.kind === "close" ? "平仓" : e.kind === "halt" ? "暂停开仓" : e.kind === "option_skip" ? "未买期权"
     : e.kind === "zdte_result" ? "末日结果" : e.kind === "zdte_fill" ? "末日成交" : e.kind === "zdte_shadow_open" ? "个股末日影子" : e.kind === "zdte_shadow_result" ? "个股末日影子结果" : e.kind === "zdte_skip" ? "末日跳过"
     : e.kind === "zdte_switch" ? "翻倍切换" : e.kind === "zdte_attempt_end" ? "本轮归零"
-    : e.kind === "sleeve_plan" ? "账本演算" : e.kind === "sleeve_buy" ? "账本下单" : e.kind === "sleeve_fill" ? "账本成交" : e.kind === "sleeve_skip" ? "账本跳过"
+    : e.kind === "sleeve_plan_fill" ? "演算买进" : e.kind === "sleeve_plan_result" ? "演算结果" : e.kind === "sleeve_plan" ? "账本演算" : e.kind === "sleeve_buy" ? "账本下单" : e.kind === "sleeve_fill" ? "账本成交" : e.kind === "sleeve_skip" ? "账本跳过"
     : e.kind === "sleeve_exit" ? "账本卖出" : e.kind === "sleeve_result" ? "账本结果" : e.kind === "sleeve_round" ? "账本换轮"
     : e.kind === "net_buy" ? "撒网买入" : e.kind === "net_result" ? "撒网结果" : e.kind === "net_skip" ? "撒网跳过" : e.kind === "net_round" ? "撒网换轮"
     : e.kind === "lottery_pick" ? "本周彩票" : e.kind === "lottery_skip" ? "彩票跳过" : e.kind === "lottery_result" ? "彩票结果"
@@ -587,6 +613,7 @@ renderPositions();
 renderOrders();
 renderZdte();
 renderSleeves();
+renderPlanSleeves();
 renderNet();
 renderEvents();
 renderParams();

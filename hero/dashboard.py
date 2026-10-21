@@ -15,7 +15,8 @@ EVENT_KINDS = {"order", "close", "rebalance_deferred", "halt", "option_skip", "a
                "lottery_pick", "lottery_skip", "lottery_result",
                "zdte_skip", "zdte_fill", "zdte_result", "zdte_switch", "zdte_attempt_end",
                "net_skip", "net_buy", "net_result", "net_round", "zdte_shadow_open", "zdte_shadow_result",
-               "sleeve_plan", "sleeve_buy", "sleeve_fill", "sleeve_skip", "sleeve_exit", "sleeve_result", "sleeve_round"}
+               "sleeve_plan", "sleeve_buy", "sleeve_fill", "sleeve_skip", "sleeve_exit", "sleeve_result", "sleeve_round",
+               "sleeve_plan_fill", "sleeve_plan_result"}
 MAX_EVENTS = 200
 REPO_BLOB = "https://github.com/metrobasicsusa-wq/Zero-or-Hero/blob/claude/cloud-paper-trading-ivwxqk"
 
@@ -71,9 +72,11 @@ def collect(journal: Path, cfg: dict) -> dict:
     brief_dir = journal.resolve().parent / "macro" / "briefings"
     briefs = sorted(brief_dir.glob("20*.md")) if brief_dir.exists() else []
     zdte_path, net_path, sl_path = journal / "zdte.json", journal / "net.json", journal / "sleeves.json"
+    plan_path = journal / "sleeves_plan.json"
     return {
         "rehearsal": show_sim,
         "sleeves": json.loads(sl_path.read_text()) if sl_path.exists() else sleeves_preview(cfg, journal),
+        "plan_sleeves": json.loads(plan_path.read_text()) if plan_path.exists() else None,   # plan-only: what they would have made
         "zdte": json.loads(zdte_path.read_text()) if zdte_path.exists() else None,
         "net": json.loads(net_path.read_text()) if net_path.exists() else None,
         "generated": datetime.now(timezone.utc).isoformat(timespec="seconds"),
