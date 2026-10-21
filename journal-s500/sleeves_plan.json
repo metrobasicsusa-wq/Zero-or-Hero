@@ -952,11 +952,12 @@
   },
   "spy0dte-old-plan-500": {
    "start": 500.0,
-   "cash": 283.0,
+   "cash": 314.0,
    "round": 1,
    "heroes": 0,
    "zeros": 0,
-   "open": [
+   "open": [],
+   "closed": [
     {
      "tid": "20261021-db5d93",
      "kind": "zdte",
@@ -976,7 +977,13 @@
      "trail": false,
      "expiry_out": null,
      "take_x": 3,
-     "take": 0.21
+     "take": 0.21,
+     "state": "closed",
+     "exit_price": 0.01,
+     "proceeds": 15.0,
+     "how": "2026-10-21 15:30 到时卖出",
+     "closed": "2026-10-21 15:30",
+     "ret": -0.857
     },
     {
      "tid": "20261021-db5d93r",
@@ -995,10 +1002,15 @@
      "exit_day": "2026-10-21",
      "exit_at": "15:30",
      "trail": true,
-     "expiry_out": null
+     "expiry_out": null,
+     "state": "closed",
+     "exit_price": 0.01,
+     "proceeds": 16.0,
+     "how": "2026-10-21 15:30 到时卖出",
+     "closed": "2026-10-21 15:30",
+     "ret": -0.857
     }
    ],
-   "closed": [],
    "slots": {
     "2026-10-21": "2026-10-21T11:50-04:00"
    },
@@ -1007,11 +1019,12 @@
   },
   "spy0dte-old-plan-1000": {
    "start": 1000.0,
-   "cash": 566.0,
+   "cash": 628.0,
    "round": 1,
    "heroes": 0,
    "zeros": 0,
-   "open": [
+   "open": [],
+   "closed": [
     {
      "tid": "20261021-19b9d9",
      "kind": "zdte",
@@ -1031,7 +1044,13 @@
      "trail": false,
      "expiry_out": null,
      "take_x": 3,
-     "take": 0.21
+     "take": 0.21,
+     "state": "closed",
+     "exit_price": 0.01,
+     "proceeds": 31.0,
+     "how": "2026-10-21 15:30 到时卖出",
+     "closed": "2026-10-21 15:30",
+     "ret": -0.857
     },
     {
      "tid": "20261021-19b9d9r",
@@ -1050,10 +1069,15 @@
      "exit_day": "2026-10-21",
      "exit_at": "15:30",
      "trail": true,
-     "expiry_out": null
+     "expiry_out": null,
+     "state": "closed",
+     "exit_price": 0.01,
+     "proceeds": 31.0,
+     "how": "2026-10-21 15:30 到时卖出",
+     "closed": "2026-10-21 15:30",
+     "ret": -0.857
     }
    ],
-   "closed": [],
    "slots": {
     "2026-10-21": "2026-10-21T11:50-04:00"
    },

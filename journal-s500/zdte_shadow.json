@@ -495,7 +495,7 @@
     "status": "no_expiry"
    },
    "NVDA": {
-    "status": "open",
+    "status": "closed",
     "contract": "NVDA261021P00217500",
     "kind": "P",
     "strike": 217.5,
@@ -505,10 +505,16 @@
     "ask": 0.28,
     "spread": 0.0364,
     "opened_at": "10:00",
-    "best_bid": 0.69
+    "best_bid": 0.69,
+    "exit": "time",
+    "exit_bid": 0.01,
+    "exit_ask": 0.02,
+    "exit_at": "15:30",
+    "exit_spread": 0.6667,
+    "ret": -0.964
    },
    "AMZN": {
-    "status": "open",
+    "status": "closed",
     "contract": "AMZN261021P00257500",
     "kind": "P",
     "strike": 257.5,
@@ -518,10 +524,16 @@
     "ask": 0.33,
     "spread": 0.1639,
     "opened_at": "10:00",
-    "best_bid": 0.36
+    "best_bid": 0.36,
+    "exit": "time",
+    "exit_bid": 0.03,
+    "exit_ask": 0.08,
+    "exit_at": "15:30",
+    "exit_spread": 0.9091,
+    "ret": -0.909
    },
    "SPY": {
-    "status": "open",
+    "status": "closed",
     "contract": "SPY261021P00765000",
     "kind": "P",
     "strike": 765.0,
@@ -531,7 +543,13 @@
     "ask": 0.26,
     "spread": 0.0392,
     "opened_at": "10:00",
-    "best_bid": 0.52
+    "best_bid": 0.52,
+    "exit": "time",
+    "exit_bid": 0.03,
+    "exit_ask": 0.04,
+    "exit_at": "15:30",
+    "exit_spread": 0.2857,
+    "ret": -0.885
    }
   }
  }
