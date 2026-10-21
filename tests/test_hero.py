@@ -1977,6 +1977,61 @@ class ResearchPlanReview(unittest.TestCase):
         self.assertEqual((held["exit"], held["how"]), (0.4, "还拿着（按收盘估值）"))
 
 
+class ResearchFadeLotto(unittest.TestCase):
+    def test_an_spcx_day_is_found_priced_and_grouped(self):
+        from datetime import datetime, timezone
+        from zoneinfo import ZoneInfo
+        from hero import research_fade_lotto as fl
+        et = ZoneInfo("America/New_York")
+        utc = lambda hhmm: datetime(2026, 10, 21, int(hhmm[:2]), int(hhmm[3:]), tzinfo=et).astimezone(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+        day = lambda d, o, c: {"t": f"{d}T04:00:00Z", "o": o, "c": c}
+        # gaps(): a split between two days is not a gap
+        adj = [day("2026-10-19", 100, 100), day("2026-10-20", 100, 100), day("2026-10-21", 108.6, 105)]
+        raw = [day("2026-10-19", 100, 100), day("2026-10-20", 100, 100), day("2026-10-21", 108.6, 105)]
+        self.assertEqual([g["day"] for g in fl.gaps(adj, raw, "2026-10-01")], ["2026-10-21"])
+        split = [day("2026-10-19", 100, 100), day("2026-10-20", 200, 200), day("2026-10-21", 108.6, 105)]   # 2-for-1 on 10-21
+        self.assertEqual(fl.gaps(adj, split, "2026-10-01"), [])
+        # the day: opens 160.56 (+8.6%), above the open until 13:00, then falls through it
+        stock = {}
+        for h in range(9, 16):
+            for m in range(0, 60):
+                t = f"{h:02d}:{m:02d}"
+                if "09:30" <= t <= "15:59":
+                    stock[t] = {"t": utc(t), "c": 162.5 if t < "13:00" else 158.0}
+        opt = {t: {"t": utc(t), "c": (0.25 if t < "13:00" else 3.0)} for t in stock if t >= "10:00"}
+
+        class C:
+            def _d(self, path, params):
+                syms = params["symbols"].split(",")
+                bars = {"AAA": [day("2026-10-19", 147, 147), day("2026-10-20", 147.85, 147.85), day("2026-10-21", 160.56, 158.0)]}
+                return {"bars": {s: bars[s] for s in syms if s in bars}}
+
+            def stock_bars(self, syms, start, end, feed="sip"):
+                return {"AAA": [dict(v) for v in stock.values()]}
+
+            def option_contracts(self, und, **kw):
+                return [{"symbol": f"AAA261021P00{k}000", "strike_price": str(k), "expiration_date": "2026-10-21"} for k in (155, 160, 165)]
+
+            def option_bars(self, syms, start, end, timeframe="1Min"):
+                return {syms[0]: [dict(v) for v in opt.values()]}
+        from unittest import mock
+        with mock.patch.object(fl, "START", "2026-10-21"), \
+                mock.patch.object(fl.json, "loads", return_value={"stocks": ["AAA"]}):
+            rep = fl.run(C(), "2026-10-21")
+        rows = rep["rows"]
+        self.assertEqual(sorted(r["cap"] for r in rows), [0.5, 1.0])
+        r = rows[0]
+        self.assertEqual((r["sym"], r["kind"], r["strike"], r["at"], r["same_day"], r["crossed"]), ("AAA", "P", 160.0, "10:00", True, True))
+        self.assertEqual(r["cost"], 0.275)                                      # 0.25 + 10% (at least a cent)
+        self.assertEqual(r["res"]["take3"], 2.0)                                # 3x reached at 13:00
+        self.assertGreater(r["peak"], 10)
+        self.assertEqual(rep["counts"]["gaps"], 1)
+        g = fl.groups(rows)
+        self.assertEqual(len(g["提醒条件：跳空 5%+、≤$0.50"]), 1)
+        self.assertEqual(len(g["$500 账本玩法：11:00–14:00 每天第一张"]), 0)   # bought at 10:00: the ledger starts at 11:00
+        self.assertIn("10 倍以上 1 张", fl.extras(rep))
+
+
 class ResearchPlanResults(unittest.TestCase):
     """Owner, 10-21: what the stopped / plan-only rules would have made, run through the live exit code."""
 
