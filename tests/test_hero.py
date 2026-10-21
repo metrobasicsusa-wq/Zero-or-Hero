@@ -4447,6 +4447,19 @@ class DiscordPost(unittest.TestCase):
                 os.environ.pop("DC_WEBHOOK_DAILY", None)
                 self.assertEqual(dp.main(["daily", "posts/earnings/a.md"]), 0)        # no secret yet: skipped
 
+    def test_chinese_pages_kept_under_the_byte_cap(self):
+        from hero import discord_post as dp
+        page = "# 财报\n\n## 理由\n\n" + "\n".join(f"- 第 {i} 只：" + "门槛和判断" * 30 for i in range(20)) + "\n\n## 记分\n\n还没有。\n"
+        cs = dp.cards(page, 1)
+        self.assertEqual([c["title"] for c in cs], ["理由", "记分"])   # under 3,800 characters: one card by the old rule
+        ms = dp.messages(cs)
+        embeds = [e for m in ms for e in m["embeds"]]
+        self.assertEqual([e["title"] for e in embeds], ["理由", "理由（续）", "记分"])   # ...but too many bytes: split
+        self.assertTrue(all(dp.nbytes(e) <= dp.CARD_BYTES for e in embeds))
+        self.assertTrue(all(dp.nbytes(m) <= dp.MESSAGE_BYTES for m in ms))
+        self.assertEqual(len(ms), 2)
+        self.assertEqual("\n".join(e["description"] for e in embeds[:2]), cs[0]["description"])   # nothing lost
+
     def test_rate_limit_waits_and_errors_are_printed(self):
         import io
         from contextlib import redirect_stdout
