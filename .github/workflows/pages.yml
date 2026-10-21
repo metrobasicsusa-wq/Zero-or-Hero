@@ -34,6 +34,7 @@ jobs:
           python -m hero --config config/s500.json --journal journal-s500 dashboard --out site/s500.html
           python -m hero.exchange_page --out site/exchange.html
           python -m hero.earnings_page --out site/earnings.html
+          python -m hero.feature_pages --out site/f || echo "::warning::feature pages failed; the rest of the site still deploys"
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:

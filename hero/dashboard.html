@@ -226,7 +226,9 @@ function optionLabel(sym) {
 
 function empty(msg) { return `<div class="empty">${esc(msg)}</div>`; }
 
-const EXPERIMENTS = [["Claude 主实验 $100k", "index.html"], ["Claude-500 多账本 $50k", "s500.html"], ["三方交流", "exchange.html"], ["财报", "earnings.html"]];
+const EXPERIMENTS = [["Claude 主实验 $100k", "index.html"], ["Claude-500 多账本 $50k", "s500.html"], ["各方向", "f/index.html"], ["三方交流", "exchange.html"], ["财报", "earnings.html"]];
+// a ledger id without its size or plan suffix is its direction page (hero/feature_pages.py)
+const direction = (id) => id.replace(/-(500|1000)$/, "").replace(/-(?:old-|opt-)?plan$/, "");
 
 function renderNav() {
   const name = DATA.config.name || "Claude";
@@ -456,13 +458,13 @@ function renderSleeves() {
     const held = s.open.reduce((a, t) => a + t.paid, 0);
     const wins = s.closed.filter((t) => t.ret > 0).length;
     const value = s.cash + held;
-    return [`<b>${esc((specs[id] || {}).name || id)}</b>`, usd(s.start, 0), usd(s.cash, 2), held ? usd(held, 2) : "—",
+    return [`<a href="f/${esc(direction(id))}.html"><b>${esc((specs[id] || {}).name || id)}</b></a>`, usd(s.start, 0), usd(s.cash, 2), held ? usd(held, 2) : "—",
       `<span class="${tone(value / s.start - 1)}">${pct(value / s.start - 1, 0)}</span>`,
       `第 ${s.round} 轮`, `${s.heroes} / ${s.zeros}`, `${s.closed.length}（赚 ${wins}）`];
   });
   $("sleeves").innerHTML = (p.enabled ? "" : '<p class="meta">尚未开跑：下面是起始状态</p>') +
     table([["方向"], ["起始", 1], ["现金", 1], ["持仓成本", 1], ["本轮", 1], ["轮次"], ["成功 / 归零"], ["交易数"]], rows) +
-    `<p class="meta">每笔押本账本一半（TQQQ 全仓），只能买整张；低于起始的 10% 归零、到 $10,000 成功，都从公共资金重开。公共资金已补 ${usd(b.topups || 0, 2)}。</p>`;
+    `<p class="meta">点方向名看它自己的页面（规则、每笔交易、为什么没做）。每笔押本账本一半（TQQQ 全仓），只能买整张；低于起始的 10% 归零、到 $10,000 成功，都从公共资金重开。公共资金已补 ${usd(b.topups || 0, 2)}。</p>`;
 }
 
 function renderPlanSleeves() {
@@ -476,7 +478,7 @@ function renderPlanSleeves() {
     const got = sim.reduce((a, t) => a + t.proceeds - t.paid, 0);
     const wins = sim.filter((t) => t.ret > 0).length;
     const name = specs[id].name || "";
-    return [`<b>${esc(id)}</b><br><span class="meta">${esc(name.length > 36 ? name.slice(0, 36) + "…" : name)}</span>`,
+    return [`<a href="f/${esc(direction(id))}.html"><b>${esc(id)}</b></a><br><span class="meta">${esc(name.length > 36 ? name.slice(0, 36) + "…" : name)}</span>`,
       usd(s.start, 0), usd(s.cash, 2), held ? usd(held, 2) : "—",
       sim.length ? `<span class="${tone(got)}">${usd(got, 2)}</span>` : "—", `${sim.length}（赚 ${wins}）`];
   });

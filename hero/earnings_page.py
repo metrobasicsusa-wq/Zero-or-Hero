@@ -158,7 +158,7 @@ td, th {{ vertical-align: top; }}
 </style></head>
 <body><main>
 <header><h1>Zero-or-Hero <span>· 财报</span></h1>
-<nav class="meta"><a href="index.html">Claude 主实验 $100k</a> · <a href="s500.html">Claude-500 多账本 $50k</a> · <a href="exchange.html">三方交流</a> · <b>财报</b></nav>
+<nav class="meta"><a href="index.html">Claude 主实验 $100k</a> · <a href="s500.html">Claude-500 多账本 $50k</a> · <a href="f/index.html">各方向</a> · <a href="exchange.html">三方交流</a> · <b>财报</b></nav>
 <div class="meta">更新于 {esc(data['generated'])}（UTC）· ★ = 两个账户里正拿着（正股或期权）· ✓ = 公司已公布日期（Yahoo）· ⚠ = 日历来源不一致，待核对 · 模拟盘，参考记录，不是投资建议</div></header>
 <section class="card"><h2>今晚盘后 · 明早盘前（全美股）</h2>{forecast_table(data['forecast'], data['calls'], hold)}</section>
 <section class="card"><h2>我们股票池接下来三周</h2>

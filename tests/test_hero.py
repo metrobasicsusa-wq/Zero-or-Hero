@@ -4491,6 +4491,87 @@ class DiscordPost(unittest.TestCase):
         self.assertNotIn("webhooks", out.getvalue())                             # the address never printed
 
 
+class FeaturePages(unittest.TestCase):
+    def test_one_page_per_direction_with_ledgers_trades_and_why(self):
+        from hero import feature_pages as fp
+        self.assertEqual([fp.family(x) for x in ("spy0dte-500", "spy0dte-old-plan-1000", "gap-plan-500", "earn-opt-plan-500",
+                                                 "spy0dte-near-1000", "oneshot-500")],
+                         ["spy0dte", "spy0dte", "gap", "earn", "spy0dte-near", "oneshot"])
+        specs = [{"id": "spy0dte-500", "kind": "zdte", "start": 500, "name": "SPY 末日单", "offset": 0.003},
+                 {"id": "spy0dte-1000", "kind": "zdte", "start": 1000, "name": "SPY 末日单", "offset": 0.003},
+                 {"id": "spy0dte-old-plan-500", "kind": "zdte", "start": 500, "name": "旧规则（只演算）", "plan_only": True},
+                 {"id": "gap-500", "kind": "gap", "start": 500, "name": "低开反弹；停开新仓", "stop_entries": True},
+                 {"id": "sniper-500", "kind": "sniper", "start": 500, "name": "狙击", "stop_if_losing": {"after": 2}},
+                 {"id": "oneshot-500", "kind": "oneshot", "start": 500, "name": "一把到（只演算）", "plan_only": True}]
+        closed = {"tid": "t1", "sym": "SPY261020C00773000", "asset": "option", "qty": 4, "cost": 0.11, "paid": 44.0,
+                  "opened": "2026-10-20 10:00", "closed": "2026-10-20 10:20", "proceeds": 132.0, "ret": 2.0,
+                  "why": "顺势买看涨 773", "how": "3 倍止盈", "sell_cid": "sl-secret-cid"}
+        held = {"tid": "t2", "sym": "SPY261021C00778000", "asset": "option", "qty": 2, "cost": 0.10, "paid": 20.0,
+                "opened": "2026-10-21 10:00", "why": "又买"}
+        lost = lambda tid: {"tid": tid, "sym": "CLF261023C00014500", "asset": "option", "qty": 1, "cost": 1.0, "paid": 100.0,
+                            "opened": "2026-10-1" + tid[-1] + " 09:30", "closed": "2026-10-1" + tid[-1] + " 15:00",
+                            "proceeds": 10.0, "ret": -0.9}
+        live = {"sleeves": {"spy0dte-500": {"start": 500, "cash": 568.0, "round": 1, "open": [held], "closed": [closed]},
+                            "gap-500": {"start": 500, "cash": 500, "open": [], "closed": []},
+                            "sniper-500": {"start": 500, "cash": 320, "open": [], "closed": [lost("s5"), lost("s6")]}}}
+        plan = {"sleeves": {"spy0dte-old-plan-500": {"start": 500, "cash": 450.0, "open": [],
+                                                     "closed": [dict(closed, sim=True, proceeds=-0.0, ret=-1.0)]}}}
+        with tempfile.TemporaryDirectory() as d:
+            root = Path(d)
+            for sub in ("config", "journal-s500", "research"):
+                (root / sub).mkdir()
+            (root / "config" / "s500.json").write_text(json.dumps({"sleeves": {"list": specs, "fraction": 0.5, "zero_line": 0.1}}))
+            j = root / "journal-s500"
+            (j / "sleeves.json").write_text(json.dumps(live))
+            (j / "sleeves_plan.json").write_text(json.dumps(plan))
+            (j / "snapshot.json").write_text(json.dumps({"ts": "2026-10-21T19:30:00+00:00", "positions": [
+                {"symbol": "SPY261021C00778000", "current_price": "0.30"}]}))
+            (j / "trades.jsonl").write_text("\n".join(json.dumps(e) for e in [
+                {"kind": "sleeve_skip", "sleeve": "spy0dte-500", "ts": "2026-10-21T14:00:00+00:00", "why": "离开盘不到 0.5%，不做"},
+                {"kind": "sleeve_plan", "dry_run": True, "sleeve": "oneshot-500", "ts": "2026-10-21T14:00:00+00:00",
+                 "why": "oneshot-500（演算）：QQQ 看涨 731"},
+                {"kind": "order", "symbol": "SPY", "ts": "2026-10-21T14:00:00+00:00"}]) + "\n")
+            (root / "research" / "2026-10-21-plan-results.json").write_text(json.dumps({"rows": [
+                {"day": "2026-10-14", "at": "10:00", "sleeve": "oneshot-500", "sym": "QQQ261014C00700000", "qty": 10,
+                 "paid": 500.0, "got": 0.0, "pnl": -500.0, "ret": -1.0, "how": "到期作废", "src": "backfill"},
+                {"day": "2026-10-15", "at": "10:00", "sleeve": "oneshot-500", "sym": "QQQ261015C00700000", "qty": 10,
+                 "paid": 500.0, "got": 5000.0, "pnl": 4500.0, "ret": 9.0, "how": "15:50 卖", "src": "backfill"},
+                {"day": "2026-10-21", "sleeve": "oneshot-500", "sym": "X", "src": "engine"}]}))
+            data = fp.collect(root)
+            fam = data["families"]
+            self.assertEqual(set(fam), {"spy0dte", "gap", "sniper", "oneshot"})
+            spy = fam["spy0dte"]
+            self.assertEqual([r["id"] for r in spy["ledgers"]], ["spy0dte-500", "spy0dte-1000", "spy0dte-old-plan-500"])
+            l500 = spy["ledgers"][0]
+            self.assertAlmostEqual(l500["now"], 60.0)                     # 2 contracts x $0.30 x 100
+            self.assertAlmostEqual(l500["value"], 628.0)
+            self.assertEqual((l500["realized"], l500["trades"], l500["wins"], l500["open"]), (88.0, 1, 1, 1))
+            self.assertEqual(spy["ledgers"][1]["value"], 1000)             # no ledger yet: its starting state
+            self.assertEqual(spy["ledgers"][2]["realized"], -44.0)         # plan twin: only sim trades
+            self.assertEqual((spy["status"], fam["gap"]["status"], fam["oneshot"]["status"]),
+                             ("实盘", "实盘已停开新仓", "只演算（不下单）"))
+            self.assertEqual(fam["sniper"]["tone"], "stopped")             # 2 finished, net -$180
+            self.assertEqual(spy["curve"]["spy0dte-500"], [("2026-10-20", 88.0)])
+            self.assertEqual([e["why"] for e in spy["events"]], ["离开盘不到 0.5%，不做"])
+            self.assertEqual(len(fam["oneshot"]["backfill"]), 2)            # engine rows are not backfill
+            paths = fp.write(root / "site" / "f", root)
+            names = sorted(p.name for p in paths)
+            self.assertEqual(names, ["gap.html", "index.html", "oneshot.html", "sniper.html", "spy0dte.html"])
+            index = (root / "site" / "f" / "index.html").read_text()
+            page = (root / "site" / "f" / "spy0dte.html").read_text()
+            one = (root / "site" / "f" / "oneshot.html").read_text()
+        self.assertIn('href="spy0dte.html"', index)
+        self.assertIn("2 笔赚 1", index)                                    # backfill as counts, never a summed $
+        self.assertIn("SPY 10/20 773C", page)
+        self.assertIn("顺势买看涨 773", page)
+        self.assertIn("持有中", page)
+        self.assertIn("离开盘不到 0.5%，不做", page)
+        self.assertIn('href="../s500.html"', page)
+        self.assertNotIn("sl-secret-cid", page)                            # client order ids stay out of the page
+        self.assertIn("中位收益", one)
+        self.assertIn("QQQ 看涨 731", one)
+
+
 class EarningsPage(unittest.TestCase):
     def test_calendar_forecast_and_holdings(self):
         from hero import earnings_page as ep
