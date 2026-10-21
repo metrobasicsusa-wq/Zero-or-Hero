@@ -2048,6 +2048,9 @@ class ResearchPlanResults(unittest.TestCase):
             rows = {(x["sleeve"], x["day"]): x for x in r.live_rows(root)}
         self.assertEqual(set(rows), {("gap-500", "2026-10-15"), ("sniper-500", "2026-10-15")})          # after the stop / still open: out
         self.assertEqual(rows[("gap-500", "2026-10-15")]["pnl"], -100.0)
+        md = r.markdown([], [], list(rows.values()), "2026-10-20", 0)
+        self.assertIn("| sniper-plan | 0 |", md)                                         # a stopped rule with only its live record
+        self.assertIn("1 / -$100.00 / -100%", md)
 
 
 class ResearchStreak(unittest.TestCase):
@@ -3087,6 +3090,19 @@ class Sleeves(unittest.TestCase):
         s = book.s("spy0dte-500")
         self.assertEqual((s["open"], s["closed"][-1]["proceeds"], s["cash"]), ([], 55.0, 489.0))   # 500 - 220 + 154 + 55
         self.assertIn("到时卖出", [e for e in log if e["kind"] == "sleeve_plan_result"][-1]["why"])
+
+    def test_plan_one_shot_sells_at_the_last_cycle_of_its_expiry_day(self):
+        # no cycle runs after 15:50, so a 15:55 exit would never come and an in-the-money ticket would be booked at $0
+        spec = [{"id": "oneshot-500", "kind": "oneshot", "start": 500, "und": "SPY", "offset": 0.01, "fraction": 1.0}]
+        b = SleeveBroker(lambda s: (0.08, 0.10))
+        self.plan_cycle(b, 10, 0, spec)
+        b.quotes = lambda sym: (1.20, 1.25)
+        book, _ = self.plan_cycle(b, 15, 40, spec)
+        self.assertEqual(len(book.s("oneshot-500")["open"]), 1)                           # still held at 15:40
+        book, log = self.plan_cycle(b, 15, 50, spec)
+        s = book.s("oneshot-500")
+        self.assertEqual((s["open"], s["closed"][-1]["proceeds"]), ([], 45 * 120.0))      # 45 contracts at the 15:50 bid
+        self.assertIn("到期日最后一轮", s["closed"][-1]["how"])
 
     def test_plan_waits_out_a_missing_quote_and_books_an_expired_contract_at_zero(self):
         b = SleeveBroker(lambda s: (0.08, 0.10))

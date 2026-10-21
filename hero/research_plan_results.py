@@ -35,7 +35,7 @@ SIM_FROM = "2026-10-22"    # the engine follows plan picks itself from this day 
 SIZE = re.compile(r"(\d+) 张 × \$([\d.]+)")
 UNTIL = re.compile(r"(?:否则|拿到) (\d\d)-(\d\d) (\d\d:\d\d) 卖")
 TAKE = re.compile(r"([\d.]+) 倍止盈")
-STEPS = [f"{h:02d}:{m:02d}" for h in range(9, 16) for m in range(0, 60, 10) if "09:40" <= f"{h:02d}:{m:02d}" <= "15:50"] + ["15:55"]
+STEPS = [f"{h:02d}:{m:02d}" for h in range(9, 16) for m in range(0, 60, 10) if "09:40" <= f"{h:02d}:{m:02d}" <= "15:50"]  # as the engine: 15:50 is the last cycle
 # the stopped rules' plan twins -> (the live family, the day its rule changed or stopped; live entries before it count)
 LIVE_OF = {"gap-plan": ("gap", "2026-10-17"), "flush-plan": ("flush", "2026-10-17"), "overnight-plan": ("overnight", "2026-10-17"),
            "spy0dte-old-plan": ("spy0dte", "2026-10-21"), "earn-opt-plan": ("earn", "2026-10-19"), "sniper-plan": ("sniper", None)}
@@ -273,7 +273,7 @@ def markdown(rows: list[dict], eng: list[dict], live: list[dict], last_day: str,
     pct = lambda v: "—" if v is None else f"{v:+.0%}"
     md = [f"# 停掉 / 只演算的规则：会赚多少 {date.today().isoformat()}", "",
           f"用户 10-21：停掉的规则也要记「会赚多少」。{FROM} 到 {SIM_FROM} 前是补算：每条只演算的选单按记录的张数、卖价买进，"
-          "再用和实盘同一段卖出代码（止盈、一半止盈一半回撤、翻倍后回撤 40%、到时卖）每 10 分钟走一次分钟成交价，"
+          "再用和实盘同一段卖出代码（止盈、一半止盈一半回撤、翻倍后回撤 40%、到时卖；当天到期的最晚在 15:50 最后一轮卖）每 10 分钟走一次分钟成交价，"
           f"成交数据到 {last_day}。用成交价当买价、没扣价差，比真实略好；止盈要 10 分钟检查时看到才算。"
           f"{SIM_FROM} 起由交易程序自己按实时报价记（按卖价买、按买价卖）。还拿着的按最后成交价（引擎记的按成本）估值。"
           f"买不起一张的选单不算（{unsized} 条）。只研究，不改交易。", "",
@@ -281,13 +281,17 @@ def markdown(rows: list[dict], eng: list[dict], live: list[dict], last_day: str,
           "| 规则 | 笔数 | 花费 | 收回 | 盈亏 | 每 $1 | 赚钱笔数 | 还拿着 | 中位数 | 去掉最好 3 笔 | 提醒 | 停之前实盘（笔数 / 盈亏 / 每 $1） |",
           "|---|---|---|---|---|---|---|---|---|---|---|---|"]
     live_of = {k: v[0] for k, v in LIVE_OF.items()}
-    for fam, t in both.items():
-        s = t["robust"] or {}
+    for fam in sorted(set(both) | {k for k, v in live_of.items() if v in lv}):
+        t = both.get(fam)
         l = lv.get(live_of.get(fam, ""), None)
+        tail = (f"{l['n']} / {money(l['net'])} / {pct(l['per_dollar'])}" if l else "—") + " |"
+        if not t:   # a stopped rule with no plan picks yet: its live record only
+            md.append(f"| {fam} | 0 | — | — | — | — | — | — | — | — | 从 {SIM_FROM} 起才开始演算 | " + tail)
+            continue
+        s = t["robust"] or {}
         md.append(f"| {fam} | {t['n']} | ${t['paid']:,.2f} | ${t['got']:,.2f} | {money(t['net'])} | {pct(t['per_dollar'])} | "
-                  f"{t['wins']} | {t['held']} | {pct(s.get('median'))} | {pct(s.get('trim'))} | {'；'.join(s.get('flags') or []) or '—'} | "
-                  + (f"{l['n']} / {money(l['net'])} / {pct(l['per_dollar'])}" if l else "—") + " |")
-    if not both:
+                  f"{t['wins']} | {t['held']} | {pct(s.get('median'))} | {pct(s.get('trim'))} | {'；'.join(s.get('flags') or []) or '—'} | " + tail)
+    if not both and not lv:
         md.append("| （还没有） |  |  |  |  |  |  |  |  |  |  |  |")
     md += ["", "停之前实盘：gap / flush / 隔夜动量 10-16（含）以前开的单，SPY 0.6% 10-21 前、财报彩票看涨 10-19 前，狙击是全部已平的单。", "",
            "## 每一笔", "", "| 日期 | 时间 | 账本 | 合约 | 张数 × 价格 | 花费 | 收回 | 盈亏 | 怎么出 | 来源 |", "|---|---|---|---|---|---|---|---|---|---|"]

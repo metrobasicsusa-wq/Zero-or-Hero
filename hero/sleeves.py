@@ -35,6 +35,7 @@ ROOT = Path(__file__).resolve().parent.parent
 
 DEFAULTS = {"enabled": False, "fraction": 0.5, "zero_line": 0.1, "target": 10_000.0, "buy_pad": 0.01,
             "fill_wait_s": 60, "chase_cap": 1.3, "cash_buffer": 1_000.0}
+LAST_CYCLE = "15:50"   # the day's last trading cycle (the engine only runs while the market is open)
 
 
 def settings(cfg: dict) -> dict:
@@ -495,6 +496,8 @@ class Runner:
                 continue
             t["best_bid"] = max(t.get("best_bid", 0.0), bid)
             why = self.exit_reason(sid, t, bid)
+            if not why and t.get("expiry") == self.today.isoformat() and self.hhmm >= LAST_CYCLE:
+                why = "到期日最后一轮（15:50 以后没有交易轮）卖出"   # one shot's 15:55 never comes: no cycle runs after 15:50
             if why:
                 self.plan_closed(sid, t, bid, why)
 
