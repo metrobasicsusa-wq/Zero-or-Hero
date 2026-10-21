@@ -1086,25 +1086,107 @@
   },
   "earn-opt-plan-500": {
    "start": 500.0,
-   "cash": 500.0,
+   "cash": 440.0,
    "round": 1,
    "heroes": 0,
    "zeros": 0,
-   "open": [],
+   "open": [
+    {
+     "tid": "20261021-97fb7a",
+     "kind": "earnings",
+     "sym": "NOK261023C00011000",
+     "asset": "option",
+     "und": "NOK",
+     "qty": 20,
+     "cost": 0.03,
+     "paid": 60.0,
+     "opened": "2026-10-21 15:40",
+     "why": "NOK 财报（期权定价的波动 7.1%），买 2 倍波动处看涨 11（2026-10-23 到期），第二天 09:35 卖（10-19 前的财报彩票）",
+     "best_bid": 0.0,
+     "sim": true,
+     "expiry": "2026-10-23",
+     "exit_day": "2026-10-22",
+     "exit_at": "09:35",
+     "trail": false,
+     "expiry_out": null
+    }
+   ],
    "closed": [],
-   "slots": {},
+   "slots": {
+    "2026-10-21": "2026-10-21T15:40-04:00"
+   },
    "best": 500.0,
    "created": null
   },
   "earn-opt-plan-1000": {
    "start": 1000.0,
-   "cash": 1000.0,
+   "cash": 654.0,
    "round": 1,
    "heroes": 0,
    "zeros": 0,
-   "open": [],
+   "open": [
+    {
+     "tid": "20261021-ed2c07",
+     "kind": "earnings",
+     "sym": "SPOT261023C00615000",
+     "asset": "option",
+     "und": "SPOT",
+     "qty": 1,
+     "cost": 1.36,
+     "paid": 136.0,
+     "opened": "2026-10-21 15:40",
+     "why": "SPOT 财报（期权定价的波动 8.9%），买 2 倍波动处看涨 615（2026-10-23 到期），第二天 09:35 卖（10-19 前的财报彩票）",
+     "best_bid": 0.0,
+     "sim": true,
+     "expiry": "2026-10-23",
+     "exit_day": "2026-10-22",
+     "exit_at": "09:35",
+     "trail": false,
+     "expiry_out": null
+    },
+    {
+     "tid": "20261021-5462e9",
+     "kind": "earnings",
+     "sym": "TXN261023C00327500",
+     "asset": "option",
+     "und": "TXN",
+     "qty": 1,
+     "cost": 0.87,
+     "paid": 87.0,
+     "opened": "2026-10-21 15:40",
+     "why": "TXN 财报（期权定价的波动 7.1%），买 2 倍波动处看涨 327.5（2026-10-23 到期），第二天 09:35 卖（10-19 前的财报彩票）",
+     "best_bid": 0.0,
+     "sim": true,
+     "expiry": "2026-10-23",
+     "exit_day": "2026-10-22",
+     "exit_at": "09:35",
+     "trail": false,
+     "expiry_out": null
+    },
+    {
+     "tid": "20261021-163faf",
+     "kind": "earnings",
+     "sym": "NOK261023C00011000",
+     "asset": "option",
+     "und": "NOK",
+     "qty": 41,
+     "cost": 0.03,
+     "paid": 123.0,
+     "opened": "2026-10-21 15:40",
+     "why": "NOK 财报（期权定价的波动 7.1%），买 2 倍波动处看涨 11（2026-10-23 到期），第二天 09:35 卖（10-19 前的财报彩票）",
+     "best_bid": 0.0,
+     "sim": true,
+     "expiry": "2026-10-23",
+     "exit_day": "2026-10-22",
+     "exit_at": "09:35",
+     "trail": false,
+     "expiry_out": null
+    }
+   ],
    "closed": [],
-   "slots": {},
+   "slots": {
+    "2026-10-21": "2026-10-21T15:40-04:00"
+   },
    "best": 1000.0,
    "created": null
   }
