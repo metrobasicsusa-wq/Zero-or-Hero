@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import math
+import re
 import time
 import uuid
 from datetime import date, datetime, timedelta, timezone
@@ -39,6 +40,9 @@ def round_option_price(x: float) -> float:
     return round(round(x / tick) * tick, 2)
 
 
+OCC_SYMBOL = re.compile(r"^[A-Z]{1,6}\d{6}[CP]\d{8}$")
+
+
 class Engine:
     def __init__(self, client, cfg: dict, journal: Journal, dry_run: bool = False, earnings: dict | None = None):
         self.c, self.cfg, self.j, self.dry = client, cfg, journal, dry_run
@@ -61,7 +65,24 @@ class Engine:
         self.j.event("close", symbol=symbol, reason=reason, why=why, dry_run=self.dry, evidence=evidence or {},
                      intent_key=intent)
         if not self.dry:
-            self._submit(intent, lambda: self.c.close_position(symbol))
+            self._submit(intent, lambda: self._close_call(symbol))
+
+    def _close_call(self, symbol: str) -> dict:
+        """Close at market; an option the broker has no quote for cannot be (10-08 SPY 781C, three cycles in a
+        row: "no available quote ... please reenter with a limit"), so it is offered at $0.01 instead -- what a
+        contract with no bid is worth. The sleeves do the same (hero.sleeves)."""
+        try:
+            return self.c.close_position(symbol)
+        except AlpacaError as e:
+            if "no available quote" not in str(e) or not OCC_SYMBOL.search(symbol):
+                raise
+            qty = next((float(p["qty"]) for p in self.c.positions() if p["symbol"] == symbol), 0.0)
+            if qty <= 0:
+                raise
+            self.j.event("close_retry", symbol=symbol, dry_run=False,
+                         why=f"{symbol} 没有报价，券商不收市价平仓；改挂 $0.01 限价卖出 {qty:g} 张（没有买价的合约只值这么多）")
+            return self.c.submit_order(symbol=symbol, qty=f"{qty:g}", side="sell", type="limit", limit_price="0.01",
+                                       time_in_force="day", client_order_id=uuid.uuid4().hex)
 
     def _submit(self, intent: str, call) -> None:
         """Run a broker call and journal its outcome; the order_key (hashed broker order id)
@@ -877,9 +898,14 @@ class Engine:
             same_qty = len(existing) == 1 and abs(float(existing[0]["qty"]) - qty) < 1e-9
             if same_qty and not (tighten and float(existing[0].get("stop_price") or 0) < price * 0.995):
                 continue
-            if existing:
-                self._cancel_stops(sym, f"{tighten}，止损收紧到 ${price:,.2f}" if same_qty
-                                   else f"持股数变为 {qty:g}，撤销旧止损单后按新股数重挂")
+            if existing and not self._cancel_stops(sym, f"{tighten}，止损收紧到 ${price:,.2f}" if same_qty
+                                                   else f"持股数变为 {qty:g}，撤销旧止损单后按新股数重挂"):
+                # 10-20 AAPL: the old stop's cancel was still pending, so a new stop for the same shares was rejected
+                # ("insufficient qty ... held_for_orders"). The old one protects the shares until it is gone; the
+                # next cycle re-reads the broker and places the new stop then.
+                self.j.event("stop_deferred", symbol=sym, dry_run=self.dry,
+                             why=f"{sym} 旧止损单还没撤销完（券商还占着股份），新止损单下一轮再挂")
+                continue
             basis = (f"{risk['stop_vol_mult']:g} 倍日波动率 {daily:.1%}" if daily is not None else "波动率数据不足，取上限")
             tif = risk.get("stop_tif", "gtc")
             life = "GTC 长期有效" if tif == "gtc" else "当日有效，收盘失效，次日第一轮重挂"

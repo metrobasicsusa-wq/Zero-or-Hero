@@ -9,7 +9,7 @@ from zoneinfo import ZoneInfo
 from pathlib import Path
 
 from hero import backtest, dashboard, earnings, evolve, macro, market, patrol, review, universe
-from hero.alpaca import Alpaca
+from hero.alpaca import Alpaca, AlpacaError
 from hero.engine import Engine
 from hero.journal import Journal
 
@@ -110,10 +110,17 @@ def main() -> None:
         if args.cmd == "run":
             cal = earnings.load(EARNINGS)
             print(json.dumps(Engine(client, cfg, journal, args.dry_run, earnings=cal).run(force=args.force)))
-        journal.snapshot({"account": client.account(), "positions": client.positions(),
-                          "open_orders": client.open_orders(),
-                          "benchmark": review.benchmark_quote(client, cfg["regime_symbol"])})
-        print(f"fills: {journal.record_fills(client.fill_activities(et_today()))} new")
+        # 10-06 17:40: after the cycle had traded, a 429 on open orders (four tries) failed this step, so the
+        # second account's cycle and the journal commit after it were skipped. A snapshot is a record: on a
+        # broker error keep the last one, say so in the journal, and let the run go on.
+        try:
+            journal.snapshot({"account": client.account(), "positions": client.positions(),
+                              "open_orders": client.open_orders(),
+                              "benchmark": review.benchmark_quote(client, cfg["regime_symbol"])})
+            print(f"fills: {journal.record_fills(client.fill_activities(et_today()))} new")
+        except AlpacaError as e:
+            journal.event("alert_error", source="snapshot", error=str(e)[:200])
+            print(f"snapshot skipped: {str(e)[:200]}")
     elif args.cmd == "status":
         a = client.account()
         print(f"equity {a['equity']}  cash {a['cash']}  buying power {a['buying_power']}")

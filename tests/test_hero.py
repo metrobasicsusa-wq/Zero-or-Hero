@@ -651,6 +651,48 @@ class ProtectiveStops(unittest.TestCase):
         self.assertEqual(c.cancelled, ["s1"])
         self.assertEqual([o["qty"] for o in c.orders if o["type"] == "stop"], ["68"])
 
+    def test_stop_replacement_waits_while_the_old_cancel_is_pending(self):
+        # 2026-10-20 AAPL: tightening after a news alert cancelled the old stop and placed the new one at once; the
+        # cancel was still pending, so the broker rejected the new stop ("insufficient qty ... held_for_orders").
+        c = FakeClient(self.closes, positions=[self.pos("UP1", qty="68", cur="294")],
+                       open_orders=[self.stop_order("UP1", "60")])
+        c.cancel_result = "pending_cancel"
+        self.run_engine(c)
+        self.assertEqual(c.cancelled, ["s1"])
+        self.assertFalse([o for o in c.orders if o["type"] == "stop"])                 # not this cycle
+        self.assertIn("stop_deferred", (Path(self.tmp.name) / "trades.jsonl").read_text())
+
+    def test_an_option_without_a_quote_is_offered_at_a_cent(self):
+        # 2026-10-08 SPY 781C: three market closes in a row rejected for "no available quote"
+        from hero.alpaca import AlpacaError
+        sym = "SPY261008C00781000"
+        c = FakeClient(self.closes, positions=[{**self.pos(sym, qty="13", cur="0"), "asset_class": "us_option"}])
+
+        def no_quote(s):
+            raise AlpacaError(f'DELETE https://x/v2/positions/{s} -> 403: {{"code":40310000,"message":"order has been '
+                              'rejected due to no available quote for symbol. please reenter with a limit"}', 403)
+        c.close_position = no_quote
+        Engine(c, cfg(), self.j)._close(sym, "zdte_exit", why="末日期权 15:30 前平仓")
+        self.assertEqual([(o["symbol"], o["qty"], o["type"], o["limit_price"]) for o in c.orders], [(sym, "13", "limit", "0.01")])
+        log = (Path(self.tmp.name) / "trades.jsonl").read_text()
+        self.assertIn("close_retry", log)
+        self.assertNotIn("order_error", log)
+        c.close_position = lambda s: (_ for _ in ()).throw(AlpacaError("DELETE x -> 403: insufficient buying power", 403))
+        Engine(c, cfg(), self.j)._close("UP1", "dropped", why="x")                      # other rejections stay errors
+        self.assertIn("order_error", (Path(self.tmp.name) / "trades.jsonl").read_text())
+
+    def test_journal_never_writes_broker_ids_or_account_numbers(self):
+        self.j.event("order_error", error='403: {"existing_order_id":"6a1b2c3d-1623-47fc-8139-97d6feb1982a",'
+                                          '"related_orders":["0f0e0d0c-aaaa-4bbb-8ccc-123456789abc"],"account":"PA3XYZ12345"}',
+                     symbol="PANW261023C00200000", nested={"ids": ["6a1b2c3d-1623-47fc-8139-97d6feb1982a"]})
+        line = (Path(self.tmp.name) / "trades.jsonl").read_text()
+        self.assertNotIn("6a1b2c3d", line)
+        self.assertNotIn("0f0e0d0c", line)
+        self.assertNotIn("PA3XYZ12345", line)
+        self.assertIn("<id>", line)
+        self.assertIn("<account>", line)
+        self.assertIn("PANW261023C00200000", line)                                      # option symbols are kept
+
     def test_add_on_buy_cancels_the_stop_first(self):
         # 2026-10-19: an AAPL add-on buy was rejected as a potential wash trade because our GTC sell
         # stop was still resting. Cancel the stop, buy, and re-place the stop next cycle.
@@ -4509,7 +4551,7 @@ class DiscordPost(unittest.TestCase):
         self.assertTrue(all(c["footer"]["text"] == dp.FOOTER for c in cs))
         for ok in ("PANW261023C00200000", "SPY261019P00762000", "AKAM261023P00050000"):
             self.assertIsNone(dp.unsafe(ok))
-        for bad in ("https://discord.com/api/webhooks/1/x", "6157ff3f-1623-47fc-8139-97d6feb1982a", "PKABCDEFGHIJ12345678"):
+        for bad in ("https://discord.com/api/webhooks/1/x", "00000000-1111-4222-8333-444444444444", "PKABCDEFGHIJ12345678"):
             self.assertTrue(dp.unsafe(bad))
         self.assertEqual(dp._url("https://h.invalid/api/webhooks/1/t?thread_id=5", "9"),
                          "https://h.invalid/api/webhooks/1/t/messages/9?thread_id=5")
@@ -4543,7 +4585,7 @@ class DiscordPost(unittest.TestCase):
             (root / "posts" / "earnings").mkdir(parents=True)
             page = root / "posts" / "earnings" / "a.md"
             page.write_text(long_page)
-            (root / "posts" / "earnings" / "b.md").write_text("# b\n\n6157ff3f-1623-47fc-8139-97d6feb1982a\n")
+            (root / "posts" / "earnings" / "b.md").write_text("# b\n\n00000000-1111-4222-8333-444444444444\n")
             (root / "notes.md").write_text("# n\n")
             rec = root / "posts" / ".sent" / "earnings" / "a.md.json"
             with mock.patch.object(dp, "ROOT", root), mock.patch.object(dp, "POSTS", root / "posts"), \

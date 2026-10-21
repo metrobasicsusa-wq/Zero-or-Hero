@@ -5,6 +5,7 @@ from __future__ import annotations
 import csv
 import hashlib
 import json
+import re
 from datetime import datetime, timezone
 from pathlib import Path
 from zoneinfo import ZoneInfo
@@ -41,6 +42,24 @@ def sanitize(snapshot: dict) -> dict:
     }
 
 
+# 10-21: broker rejections are journaled with their text, and Alpaca's text names the order in the way
+# ("existing_order_id": "6157ff3f-...", AAPL 10-19 and 10-20), which then went into the public repo. Every string
+# an event carries is scrubbed of order / account ids (UUIDs) and account numbers before it is written.
+_UUID = re.compile(r"\b[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\b", re.I)
+_ACCOUNT = re.compile(r"\b(?![A-Z]{1,6}\d{6}[CP]\d{8}\b)PA[0-9A-Z]{8,}\b")
+
+
+def redact(value):
+    """The value with broker ids and account numbers replaced (strings inside dicts and lists too)."""
+    if isinstance(value, str):
+        return _ACCOUNT.sub("<account>", _UUID.sub("<id>", value))
+    if isinstance(value, dict):
+        return {k: redact(v) for k, v in value.items()}
+    if isinstance(value, list):
+        return [redact(v) for v in value]
+    return value
+
+
 def execution_key(activity_id: str) -> str:
     """Stable, non-reversible id for a broker fill (the raw id is never published)."""
     return hashlib.sha256(activity_id.encode()).hexdigest()[:16]
@@ -68,7 +87,7 @@ class Journal:
         (self.root / "alerts.json").write_text(json.dumps(book, indent=1, ensure_ascii=False, sort_keys=True) + "\n")
 
     def event(self, kind: str, **data) -> None:
-        rec = {"ts": datetime.now(timezone.utc).isoformat(timespec="seconds"), "kind": kind, **data}
+        rec = {"ts": datetime.now(timezone.utc).isoformat(timespec="seconds"), "kind": kind, **redact(data)}
         with open(self.root / "trades.jsonl", "a") as f:
             f.write(json.dumps(rec, sort_keys=True, ensure_ascii=False) + "\n")
 

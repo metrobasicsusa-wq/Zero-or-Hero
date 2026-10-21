@@ -3,6 +3,7 @@
 - 用中文回复用户。
 - 两个 Alpaca 模拟盘：主账户 $100k（`journal/`、`config/strategy.json`），多账本 $50k（`journal-s500/`、`config/s500.json`）。
 - 钥匙只放 GitHub Secrets；公开仓库不放账户号、订单号；改实盘交易代码的推送在收盘后（或用户同意时）。
+- 推送前跑测试：`.githooks/pre-push` 在改了代码 / 配置 / 工作流时自动跑，失败就推不上去（会话开始时由 `.claude/settings.json` 启用）；不要用 `--no-verify` 绕过。
 
 ## 报告盈亏（2026-10-15 的教训，见 notes/lessons.md）
 

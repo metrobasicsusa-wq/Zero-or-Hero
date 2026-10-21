@@ -52,6 +52,7 @@ jobs:
           ALPACA_SECRET_KEY: ${{ secrets.ALPACA_SECRET_KEY }}
         run: python -m hero run ${{ inputs.dry_run && '--dry-run' || '' }}
       - name: Trade Claude-500
+        if: ${{ !cancelled() }}   # also after a failed main-account step: the other account trades, the journal is kept
         # Separate $500 paper account. A failure here must not stop the main journal from being saved.
         continue-on-error: true
         env:
@@ -59,12 +60,14 @@ jobs:
           ALPACA_SECRET_KEY: ${{ secrets.ALPACA_S500_SECRET_KEY }}
         run: python -m hero --config config/s500.json --journal journal-s500 run ${{ inputs.dry_run && '--dry-run' || '' }}
       - name: Notify Discord
+        if: ${{ !cancelled() }}   # also after a failed main-account step: the other account trades, the journal is kept
         # One-way push of fills, exits, results and errors since the last cycle; does nothing without DC_WEBHOOK.
         continue-on-error: true
         env:
           DC_WEBHOOK: ${{ secrets.DC_WEBHOOK }}
         run: python -m hero.notify journal journal-s500
       - name: Commit journal
+        if: ${{ !cancelled() }}   # also after a failed main-account step: the other account trades, the journal is kept
         run: |
           git config user.name "zero-or-hero-bot"
           git config user.email "zero-or-hero-bot@users.noreply.github.com"
