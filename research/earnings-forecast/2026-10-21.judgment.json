@@ -1,0 +1,769 @@
+{
+ "date": "2026-10-21",
+ "written": "2026-10-21T15:13-04:00",
+ "calls": [
+  {
+   "symbol": "META",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.52,
+   "why": "门槛：三季度收入要在一致预期 $633 亿之上、四季度指引高于预期，同时 2027 资本开支 / 费用别再大幅上调；判断：跌——前两次财报都因费用和资本开支开盘跌（7 月约 -10%），今天市场正在惩罚资本开支（GOOGL 因 Google Cloud 加 GPU 的消息 -2%），进财报前 20 天 -5.5% 只算弱的偏涨证据（档案、companies.json）"
+  },
+  {
+   "symbol": "TSLA",
+   "direction": "up",
+   "big": false,
+   "confidence": 0.51,
+   "why": "门槛：汽车毛利率要从二季度 16.8% 回升、自由现金流转正，Robotaxi / Cybercab 时间表别再推迟；判断：涨，信心很低——三季度交付 48.65 万辆好于约 46.9 万预期，量上来有利毛利率，但交付已公布，最近 8 次开盘涨跌各 4 次（档案、companies.json）"
+  },
+  {
+   "symbol": "LRCX",
+   "direction": "up",
+   "big": false,
+   "confidence": 0.55,
+   "why": "门槛：四季度指引明显高于一致预期（本季约 $81 亿）、2027 设备支出（WFE）说得更强；判断：涨——进财报前 20 天 -15%，门槛比 7 月（+25%）低很多，今天芯片股 SMH +1.7%；回测里跌了 5% 以上的略偏涨（57% / 上一季 48%）"
+  },
+  {
+   "symbol": "SPOT",
+   "direction": "up",
+   "big": false,
+   "confidence": 0.52,
+   "why": "门槛：营业利润明显高于自己偏低的 €6.7 亿指引、四季度利润指引高于预期；判断：涨，信心低——利润指引本来就保守，进财报前 20 天 +1.9% 没透支（companies.json）"
+  },
+  {
+   "symbol": "IBM",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.55,
+   "why": "门槛：软件重新加速、确认 7 月延后的大单已签回、全年指引不再下调；判断：跌——最近 8 次开盘跌 6 次、连续 3 次跌，进财报前 20 天 +5.6%、3 个月 +15%（从 7 月 -25% 里反弹），回测里涨了 5% 以上的偏跌（48% / 上一季 34%）"
+  },
+  {
+   "symbol": "PG",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.53,
+   "why": "门槛：有机销售好于预期并维持或上调全年（有机增长 1–3%）；判断：跌——进财报前 20 天 +6.7%，今天必需消费 XLP -0.6%，回测里涨了 5% 以上的偏跌"
+  },
+  {
+   "symbol": "TXN",
+   "direction": "down",
+   "big": true,
+   "confidence": 0.52,
+   "why": "门槛：本季落在指引上半、四季度指引中值高于一致预期；判断：跌，信心低——上次 EPS 远超预期仍开盘 -5.5%（指引保守是常态），今天 +2.5% 进财报（档案）"
+  },
+  {
+   "symbol": "VLO",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.55,
+   "why": "门槛：四季度炼油利润展望继续强、回购加码；判断：跌——进财报前 20 天 +15.8%、3 个月 +38%（油价大涨已经计入），回测里涨了 5% 以上的偏跌（companies.json）"
+  },
+  {
+   "symbol": "CMCSA",
+   "direction": "up",
+   "big": false,
+   "confidence": 0.5,
+   "why": "门槛：宽带用户流失少于预期；判断：涨，信心最低——进财报前 20 天 -2.7%，没有明显方向（机械规则：没涨 5% 以上判涨）"
+  },
+  {
+   "symbol": "AAL",
+   "direction": "up",
+   "big": false,
+   "confidence": 0.52,
+   "why": "门槛：四季度单位收入指引不差、燃油成本可控；判断：涨，信心低——进财报前 20 天 -8.5%，跌了 5% 以上的略偏涨；昨天 UAL 开盘 -0.3% 是反例"
+  },
+  {
+   "symbol": "ARGX",
+   "direction": "up",
+   "big": false,
+   "confidence": 0.5,
+   "why": "机械规则：进财报前 20 天 -6.1%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+  },
+  {
+   "symbol": "TSCO",
+   "direction": "up",
+   "big": false,
+   "confidence": 0.5,
+   "why": "机械规则：进财报前 20 天 -0.5%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+  },
+  {
+   "symbol": "URI",
+   "direction": "up",
+   "big": false,
+   "confidence": 0.5,
+   "why": "机械规则：进财报前 20 天 +2.6%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+  },
+  {
+   "symbol": "NOK",
+   "direction": "up",
+   "big": false,
+   "confidence": 0.52,
+   "why": "门槛：网络业务订单和 AI 数据中心光通信收入好于预期；判断：涨，信心低——进财报前 20 天 -13%，今天 +2.5%"
+  },
+  {
+   "symbol": "CSX",
+   "direction": "up",
+   "big": false,
+   "confidence": 0.5,
+   "why": "机械规则：进财报前 20 天 +1.7%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+  },
+  {
+   "symbol": "LMT",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.51,
+   "why": "门槛：没有新的项目减值、维持或上调全年、现金流达标；判断：跌，信心最低——财报前 5 天约 +7%，新合同拉低利润率的风险（companies.json）"
+  },
+  {
+   "symbol": "CBRE",
+   "direction": "up",
+   "big": false,
+   "confidence": 0.5,
+   "why": "机械规则：进财报前 20 天 -2.7%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+  },
+  {
+   "symbol": "BX",
+   "direction": "up",
+   "big": false,
+   "confidence": 0.52,
+   "why": "门槛：募资和退出好于预期，打消私募信贷担忧；判断：涨，信心低——进财报前 20 天 -8.4%（板块回调），跌了 5% 以上的略偏涨（companies.json）"
+  },
+  {
+   "symbol": "UNP",
+   "direction": "up",
+   "big": false,
+   "confidence": 0.5,
+   "why": "门槛：运量和营业比率好于预期；判断：涨，信心最低——进财报前 20 天 +4.3%，不到 5%（机械规则）"
+  },
+  {
+   "symbol": "LUV",
+   "direction": "up",
+   "big": false,
+   "confidence": 0.5,
+   "why": "机械规则：进财报前 20 天 -3.5%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+  },
+  {
+   "symbol": "TTMI",
+   "direction": "up",
+   "big": false,
+   "confidence": 0.5,
+   "why": "机械规则：进财报前 20 天 -19.9%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+  },
+  {
+   "symbol": "DOW",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.52,
+   "why": "机械规则：进财报前 20 天 +5.7%，涨了 5% 以上判跌（回测 48% 开盘涨、上一季 34%；整套规则 53% / 55%）"
+  },
+  {
+   "symbol": "KMI",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.52,
+   "why": "机械规则：进财报前 20 天 +9.0%，涨了 5% 以上判跌（回测 48% 开盘涨、上一季 34%；整套规则 53% / 55%）"
+  },
+  {
+   "symbol": "SAP",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.55,
+   "why": "门槛：云积压增速明显好于预期并上调全年；判断：跌——进财报前 20 天 +9.7%、3 个月 +48%，涨得太多，二季度 EPS 和收入都略低于预期（companies.json、回测）"
+  },
+  {
+   "symbol": "WCN",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.52,
+   "why": "机械规则：进财报前 20 天 +8.0%，涨了 5% 以上判跌（回测 48% 开盘涨、上一季 34%；整套规则 53% / 55%）"
+  },
+  {
+   "symbol": "CCI",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.52,
+   "why": "机械规则：进财报前 20 天 +12.3%，涨了 5% 以上判跌（回测 48% 开盘涨、上一季 34%；整套规则 53% / 55%）"
+  },
+  {
+   "symbol": "DGX",
+   "direction": "up",
+   "big": false,
+   "confidence": 0.5,
+   "why": "机械规则：进财报前 20 天 +2.7%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+  },
+  {
+   "symbol": "HON",
+   "direction": "up",
+   "big": false,
+   "confidence": 0.5,
+   "why": "机械规则：进财报前 20 天 +0.6%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+  },
+  {
+   "symbol": "BCS",
+   "direction": "up",
+   "big": false,
+   "confidence": 0.5,
+   "why": "机械规则：进财报前 20 天 -7.5%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+  },
+  {
+   "symbol": "MEDP",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.52,
+   "why": "机械规则：进财报前 20 天 +5.2%，涨了 5% 以上判跌（回测 48% 开盘涨、上一季 34%；整套规则 53% / 55%）"
+  },
+  {
+   "symbol": "NSC",
+   "direction": "up",
+   "big": false,
+   "confidence": 0.5,
+   "why": "机械规则：进财报前 20 天 +3.5%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+  },
+  {
+   "symbol": "ROP",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.52,
+   "why": "机械规则：进财报前 20 天 +8.0%，涨了 5% 以上判跌（回测 48% 开盘涨、上一季 34%；整套规则 53% / 55%）"
+  },
+  {
+   "symbol": "PCG",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.52,
+   "why": "机械规则：进财报前 20 天 +6.2%，涨了 5% 以上判跌（回测 48% 开盘涨、上一季 34%；整套规则 53% / 55%）"
+  },
+  {
+   "symbol": "NDAQ",
+   "direction": "up",
+   "big": false,
+   "confidence": 0.5,
+   "why": "机械规则：进财报前 20 天 +0.1%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+  },
+  {
+   "symbol": "HBAN",
+   "direction": "up",
+   "big": false,
+   "confidence": 0.5,
+   "why": "机械规则：进财报前 20 天 +1.6%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+  },
+  {
+   "symbol": "DOV",
+   "direction": "up",
+   "big": false,
+   "confidence": 0.5,
+   "why": "机械规则：进财报前 20 天 +4.6%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+  },
+  {
+   "symbol": "LVS",
+   "direction": "up",
+   "big": false,
+   "confidence": 0.5,
+   "why": "机械规则：进财报前 20 天 -4.7%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+  },
+  {
+   "symbol": "MOH",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.52,
+   "why": "机械规则：进财报前 20 天 +13.3%，涨了 5% 以上判跌（回测 48% 开盘涨、上一季 34%；整套规则 53% / 55%）"
+  },
+  {
+   "symbol": "PHM",
+   "direction": "up",
+   "big": false,
+   "confidence": 0.5,
+   "why": "机械规则：进财报前 20 天 -4.6%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+  },
+  {
+   "symbol": "PKG",
+   "direction": "up",
+   "big": false,
+   "confidence": 0.5,
+   "why": "机械规则：进财报前 20 天 -1.5%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+  },
+  {
+   "symbol": "CRS",
+   "direction": "up",
+   "big": false,
+   "confidence": 0.5,
+   "why": "机械规则：进财报前 20 天 -7.7%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+  },
+  {
+   "symbol": "ROL",
+   "direction": "up",
+   "big": false,
+   "confidence": 0.5,
+   "why": "机械规则：进财报前 20 天 +2.9%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+  },
+  {
+   "symbol": "KNX",
+   "direction": "up",
+   "big": false,
+   "confidence": 0.5,
+   "why": "机械规则：进财报前 20 天 -6.1%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+  },
+  {
+   "symbol": "RS",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.52,
+   "why": "机械规则：进财报前 20 天 +8.7%，涨了 5% 以上判跌（回测 48% 开盘涨、上一季 34%；整套规则 53% / 55%）"
+  },
+  {
+   "symbol": "ALLE",
+   "direction": "up",
+   "big": false,
+   "confidence": 0.5,
+   "why": "机械规则：进财报前 20 天 +1.2%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+  },
+  {
+   "symbol": "WH",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.52,
+   "why": "机械规则：进财报前 20 天 +12.2%，涨了 5% 以上判跌（回测 48% 开盘涨、上一季 34%；整套规则 53% / 55%）"
+  },
+  {
+   "symbol": "HXL",
+   "direction": "up",
+   "big": false,
+   "confidence": 0.5,
+   "why": "机械规则：进财报前 20 天 +4.7%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+  },
+  {
+   "symbol": "SNA",
+   "direction": "up",
+   "big": false,
+   "confidence": 0.5,
+   "why": "机械规则：进财报前 20 天 -0.7%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+  },
+  {
+   "symbol": "SEIC",
+   "direction": "up",
+   "big": false,
+   "confidence": 0.5,
+   "why": "机械规则：进财报前 20 天 +2.8%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+  },
+  {
+   "symbol": "VLY",
+   "direction": "up",
+   "big": false,
+   "confidence": 0.5,
+   "why": "机械规则：进财报前 20 天 +0.6%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+  },
+  {
+   "symbol": "ORI",
+   "direction": "up",
+   "big": false,
+   "confidence": 0.5,
+   "why": "机械规则：进财报前 20 天 +4.5%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+  },
+  {
+   "symbol": "CACI",
+   "direction": "up",
+   "big": false,
+   "confidence": 0.5,
+   "why": "机械规则：进财报前 20 天 +0.5%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+  },
+  {
+   "symbol": "PNFP",
+   "direction": "up",
+   "big": false,
+   "confidence": 0.5,
+   "why": "机械规则：进财报前 20 天 +2.1%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+  },
+  {
+   "symbol": "SSB",
+   "direction": "up",
+   "big": false,
+   "confidence": 0.5,
+   "why": "机械规则：进财报前 20 天 +0.6%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+  },
+  {
+   "symbol": "ESI",
+   "direction": "up",
+   "big": false,
+   "confidence": 0.5,
+   "why": "机械规则：进财报前 20 天 +0.9%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+  },
+  {
+   "symbol": "COCO",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.52,
+   "why": "机械规则：进财报前 20 天 +7.3%，涨了 5% 以上判跌（回测 48% 开盘涨、上一季 34%；整套规则 53% / 55%）"
+  },
+  {
+   "symbol": "LBRT",
+   "direction": "up",
+   "big": false,
+   "confidence": 0.5,
+   "why": "机械规则：进财报前 20 天 -6.8%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+  },
+  {
+   "symbol": "EGP",
+   "direction": "up",
+   "big": false,
+   "confidence": 0.5,
+   "why": "机械规则：进财报前 20 天 -0.2%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+  },
+  {
+   "symbol": "GL",
+   "direction": "up",
+   "big": false,
+   "confidence": 0.5,
+   "why": "机械规则：进财报前 20 天 +0.3%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+  },
+  {
+   "symbol": "SON",
+   "direction": "up",
+   "big": false,
+   "confidence": 0.5,
+   "why": "机械规则：进财报前 20 天 -0.0%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+  },
+  {
+   "symbol": "MSM",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.52,
+   "why": "机械规则：进财报前 20 天 +5.9%，涨了 5% 以上判跌（回测 48% 开盘涨、上一季 34%；整套规则 53% / 55%）"
+  },
+  {
+   "symbol": "BFH",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.52,
+   "why": "机械规则：进财报前 20 天 +8.5%，涨了 5% 以上判跌（回测 48% 开盘涨、上一季 34%；整套规则 53% / 55%）"
+  },
+  {
+   "symbol": "FAF",
+   "direction": "up",
+   "big": false,
+   "confidence": 0.5,
+   "why": "机械规则：进财报前 20 天 -3.0%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+  },
+  {
+   "symbol": "FR",
+   "direction": "up",
+   "big": false,
+   "confidence": 0.5,
+   "why": "机械规则：进财报前 20 天 -3.3%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+  },
+  {
+   "symbol": "SLG",
+   "direction": "up",
+   "big": false,
+   "confidence": 0.5,
+   "why": "机械规则：进财报前 20 天 -6.4%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+  },
+  {
+   "symbol": "BPOP",
+   "direction": "up",
+   "big": false,
+   "confidence": 0.5,
+   "why": "机械规则：进财报前 20 天 +1.7%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+  },
+  {
+   "symbol": "POOL",
+   "direction": "up",
+   "big": false,
+   "confidence": 0.5,
+   "why": "机械规则：进财报前 20 天 +2.6%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+  },
+  {
+   "symbol": "GGG",
+   "direction": "up",
+   "big": false,
+   "confidence": 0.5,
+   "why": "机械规则：进财报前 20 天 +3.5%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+  },
+  {
+   "symbol": "FULT",
+   "direction": "up",
+   "big": false,
+   "confidence": 0.5,
+   "why": "机械规则：进财报前 20 天 -1.7%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+  },
+  {
+   "symbol": "BMI",
+   "direction": "up",
+   "big": false,
+   "confidence": 0.5,
+   "why": "机械规则：进财报前 20 天 -1.3%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+  },
+  {
+   "symbol": "R",
+   "direction": "up",
+   "big": false,
+   "confidence": 0.5,
+   "why": "机械规则：进财报前 20 天 +0.3%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+  },
+  {
+   "symbol": "WDFC",
+   "direction": "up",
+   "big": false,
+   "confidence": 0.5,
+   "why": "机械规则：进财报前 20 天 -3.1%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+  },
+  {
+   "symbol": "BBT",
+   "direction": "up",
+   "big": false,
+   "confidence": 0.5,
+   "why": "机械规则：进财报前 20 天 -0.5%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+  },
+  {
+   "symbol": "FCFS",
+   "direction": "up",
+   "big": false,
+   "confidence": 0.5,
+   "why": "机械规则：进财报前 20 天 -0.5%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+  },
+  {
+   "symbol": "NTST",
+   "direction": "up",
+   "big": false,
+   "confidence": 0.5,
+   "why": "机械规则：进财报前 20 天 -10.2%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+  },
+  {
+   "symbol": "LAZ",
+   "direction": "up",
+   "big": false,
+   "confidence": 0.5,
+   "why": "机械规则：进财报前 20 天 +0.6%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+  },
+  {
+   "symbol": "CVBF",
+   "direction": "up",
+   "big": false,
+   "confidence": 0.5,
+   "why": "机械规则：进财报前 20 天 +0.6%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+  },
+  {
+   "symbol": "FBP",
+   "direction": "up",
+   "big": false,
+   "confidence": 0.5,
+   "why": "机械规则：进财报前 20 天 +2.0%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+  },
+  {
+   "symbol": "THRM",
+   "direction": "up",
+   "big": false,
+   "confidence": 0.5,
+   "why": "机械规则：进财报前 20 天 -20.3%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+  },
+  {
+   "symbol": "VC",
+   "direction": "up",
+   "big": false,
+   "confidence": 0.5,
+   "why": "机械规则：进财报前 20 天 -7.8%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+  },
+  {
+   "symbol": "EGBN",
+   "direction": "up",
+   "big": false,
+   "confidence": 0.5,
+   "why": "机械规则：进财报前 20 天 +1.4%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+  },
+  {
+   "symbol": "EPRT",
+   "direction": "up",
+   "big": false,
+   "confidence": 0.5,
+   "why": "机械规则：进财报前 20 天 -7.5%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+  },
+  {
+   "symbol": "OII",
+   "direction": "up",
+   "big": false,
+   "confidence": 0.5,
+   "why": "机械规则：进财报前 20 天 -3.4%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+  },
+  {
+   "symbol": "CURB",
+   "direction": "up",
+   "big": false,
+   "confidence": 0.5,
+   "why": "机械规则：进财报前 20 天 -3.7%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+  },
+  {
+   "symbol": "KALU",
+   "direction": "up",
+   "big": false,
+   "confidence": 0.5,
+   "why": "机械规则：进财报前 20 天 -2.5%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+  },
+  {
+   "symbol": "BANR",
+   "direction": "up",
+   "big": false,
+   "confidence": 0.5,
+   "why": "机械规则：进财报前 20 天 -0.5%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+  },
+  {
+   "symbol": "FRME",
+   "direction": "up",
+   "big": false,
+   "confidence": 0.5,
+   "why": "机械规则：进财报前 20 天 -0.7%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+  },
+  {
+   "symbol": "FSV",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.52,
+   "why": "机械规则：进财报前 20 天 +5.0%，涨了 5% 以上判跌（回测 48% 开盘涨、上一季 34%；整套规则 53% / 55%）"
+  },
+  {
+   "symbol": "CATY",
+   "direction": "up",
+   "big": false,
+   "confidence": 0.5,
+   "why": "机械规则：进财报前 20 天 -0.3%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+  },
+  {
+   "symbol": "WSBC",
+   "direction": "up",
+   "big": false,
+   "confidence": 0.5,
+   "why": "机械规则：进财报前 20 天 -2.1%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+  },
+  {
+   "symbol": "OSBC",
+   "direction": "up",
+   "big": false,
+   "confidence": 0.5,
+   "why": "机械规则：进财报前 20 天 +0.7%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+  },
+  {
+   "symbol": "STC",
+   "direction": "up",
+   "big": false,
+   "confidence": 0.5,
+   "why": "机械规则：进财报前 20 天 -15.7%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+  },
+  {
+   "symbol": "LNN",
+   "direction": "up",
+   "big": false,
+   "confidence": 0.5,
+   "why": "机械规则：进财报前 20 天 -9.1%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+  },
+  {
+   "symbol": "ZGN",
+   "direction": "up",
+   "big": false,
+   "confidence": 0.5,
+   "why": "机械规则：进财报前 20 天 +3.3%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+  },
+  {
+   "symbol": "HFWA",
+   "direction": "up",
+   "big": false,
+   "confidence": 0.5,
+   "why": "机械规则：进财报前 20 天 -1.6%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+  },
+  {
+   "symbol": "TFIN",
+   "direction": "up",
+   "big": false,
+   "confidence": 0.5,
+   "why": "机械规则：进财报前 20 天 +0.8%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+  },
+  {
+   "symbol": "CASH",
+   "direction": "up",
+   "big": false,
+   "confidence": 0.5,
+   "why": "机械规则：进财报前 20 天 -0.4%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+  },
+  {
+   "symbol": "HBNC",
+   "direction": "up",
+   "big": false,
+   "confidence": 0.5,
+   "why": "机械规则：进财报前 20 天 +2.5%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+  },
+  {
+   "symbol": "EFSC",
+   "direction": "up",
+   "big": false,
+   "confidence": 0.5,
+   "why": "机械规则：进财报前 20 天 +0.0%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+  },
+  {
+   "symbol": "AMAL",
+   "direction": "up",
+   "big": false,
+   "confidence": 0.5,
+   "why": "机械规则：进财报前 20 天 +2.4%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+  },
+  {
+   "symbol": "CNOB",
+   "direction": "up",
+   "big": false,
+   "confidence": 0.5,
+   "why": "机械规则：进财报前 20 天 +0.6%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+  },
+  {
+   "symbol": "GTY",
+   "direction": "up",
+   "big": false,
+   "confidence": 0.5,
+   "why": "机械规则：进财报前 20 天 -5.0%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+  },
+  {
+   "symbol": "STBA",
+   "direction": "up",
+   "big": false,
+   "confidence": 0.5,
+   "why": "机械规则：进财报前 20 天 -1.0%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+  },
+  {
+   "symbol": "GSBC",
+   "direction": "up",
+   "big": false,
+   "confidence": 0.5,
+   "why": "机械规则：进财报前 20 天 -0.3%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+  },
+  {
+   "symbol": "LOB",
+   "direction": "up",
+   "big": false,
+   "confidence": 0.5,
+   "why": "机械规则：进财报前 20 天 -5.4%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+  },
+  {
+   "symbol": "TRST",
+   "direction": "up",
+   "big": false,
+   "confidence": 0.5,
+   "why": "机械规则：进财报前 20 天 -2.5%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+  },
+  {
+   "symbol": "IIIN",
+   "direction": "up",
+   "big": false,
+   "confidence": 0.5,
+   "why": "机械规则：进财报前 20 天 +2.8%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+  },
+  {
+   "symbol": "CIVB",
+   "direction": "up",
+   "big": false,
+   "confidence": 0.5,
+   "why": "机械规则：进财报前 20 天 +0.3%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+  },
+  {
+   "symbol": "TCBX",
+   "direction": "up",
+   "big": false,
+   "confidence": 0.5,
+   "why": "机械规则：进财报前 20 天 -6.0%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+  }
+ ]
+}
