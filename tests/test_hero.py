@@ -4462,15 +4462,18 @@ class DiscordPost(unittest.TestCase):
 
         replies = [R(429, {"retry_after": 0.01}), R(200, {"id": "7"}),        # create: limited once, then sent
                    R(400, {"message": "Invalid Form Body"}),                   # edit: refused
-                   R(404, {"message": "Unknown Message"})]                     # edit: deleted by hand
+                   R(404, {"message": "Unknown Message"}),                     # edit: deleted by hand
+                   R(500, {}), R(500, {})]                                     # delete: Discord's error twice
         out = io.StringIO()
         with mock.patch.object(dp.requests, "request", side_effect=replies) as req, \
                 mock.patch.object(dp.time, "sleep") as nap, redirect_stdout(out):
             self.assertEqual(dp.create("https://h.invalid/api/webhooks/1/t", {"embeds": []}), "7")
             self.assertIs(dp.edit("https://h.invalid/api/webhooks/1/t", "5", {"embeds": []}), False)
             self.assertIsNone(dp.edit("https://h.invalid/api/webhooks/1/t", "6", {"embeds": []}))
-        self.assertEqual(req.call_count, 4)
-        nap.assert_called_once_with(0.5)
+            self.assertFalse(dp.delete("https://h.invalid/api/webhooks/1/t", "8"))
+        self.assertEqual(req.call_count, 6)
+        self.assertEqual([c.args for c in nap.call_args_list], [(0.5,), (2,)])
+        self.assertIn("delete 8 -> HTTP 500", out.getvalue())
         self.assertIn("edit 5 -> HTTP 400 Invalid Form Body", out.getvalue())
         self.assertNotIn("webhooks", out.getvalue())                             # the address never printed
 

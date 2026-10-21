@@ -110,14 +110,19 @@ def _url(base: str, mid: str | None = None, **query) -> str:
 
 def _call(method: str, url: str, what: str, **kw) -> requests.Response | None:
     """One request to Discord. A 429 (rate limit) waits the retry_after Discord gives (at most 10 s) and tries
-    again, up to 3 times; any other failure prints its HTTP status and Discord's message (never the address)."""
-    r = None
+    again, a 5xx tries once more after 2 s; any other failure prints its HTTP status and Discord's message (never
+    the address)."""
+    r, server_errors = None, 0
     for _ in range(4):
         try:
             r = requests.request(method, url, timeout=15, **kw)
         except Exception as e:
             print(f"discord_post: {what} failed: {type(e).__name__}")
             return None
+        if r.status_code >= 500 and server_errors == 0:      # Discord's own error: one more try after 2 s
+            server_errors += 1
+            time.sleep(2)
+            continue
         if r.status_code != 429:
             break
         try:
