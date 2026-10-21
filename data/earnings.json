@@ -1,7 +1,7 @@
 {
  "source": "alphavantage EARNINGS_CALENDAR horizon=3month",
- "fetched_at": "2026-10-20T09:00:25-04:00",
- "fetched_on": "2026-10-20",
+ "fetched_at": "2026-10-21T09:00:24-04:00",
+ "fetched_on": "2026-10-21",
  "horizon_days": 90,
  "symbols": [
   "AAPL",
@@ -128,36 +128,6 @@
   "XOM"
  ],
  "reports": {
-  "GE": [
-   {
-    "date": "2026-10-20",
-    "time": "pre-market",
-    "estimate": "2.02",
-    "fiscal_end": "2026-09-30",
-    "checked": "nasdaq",
-    "confirmed": true
-   }
-  ],
-  "ISRG": [
-   {
-    "date": "2026-10-20",
-    "time": "post-market",
-    "estimate": "2.13",
-    "fiscal_end": "2026-09-30",
-    "checked": "nasdaq",
-    "confirmed": true
-   }
-  ],
-  "NFLX": [
-   {
-    "date": "2026-10-20",
-    "time": "post-market",
-    "estimate": "0.82",
-    "fiscal_end": "2026-09-30",
-    "checked": "nasdaq",
-    "confirmed": true
-   }
-  ],
   "ABT": [
    {
     "date": "2026-10-21",
@@ -675,7 +645,7 @@
     "estimate": "0.94",
     "fiscal_end": "2026-09-30",
     "checked": "nasdaq",
-    "confirmed": false
+    "confirmed": true
    }
   ],
   "APP": [
@@ -730,19 +700,18 @@
   ],
   "KLAC": [
    {
-    "date": "2026-11-04",
-    "time": "unknown",
+    "date": "2026-10-28",
+    "time": "post-market",
     "estimate": "1.18",
     "fiscal_end": "2026-09-30",
     "checked": "nasdaq",
-    "confirmed": false,
-    "yahoo_date": "2026-10-28"
+    "confirmed": true
    }
   ],
   "QCOM": [
    {
     "date": "2026-11-04",
-    "time": "unknown",
+    "time": "post-market",
     "estimate": "1.46",
     "fiscal_end": "2026-09-30",
     "checked": "nasdaq",
@@ -836,6 +805,7 @@
     "time": "unknown",
     "estimate": "1.15",
     "fiscal_end": "2026-10-31",
+    "checked": "nasdaq",
     "confirmed": false,
     "yahoo_date": "2026-11-12"
    }
@@ -1011,7 +981,13 @@
  },
  "cross_check": {
   "nasdaq_days": 16,
-  "moved": [],
+  "moved": [
+   [
+    "KLAC",
+    "2026-11-04",
+    "2026-10-28"
+   ]
+  ],
   "time_filled": [
    [
     "AMZN",
@@ -1022,13 +998,18 @@
     "XOM",
     "unknown",
     "pre-market"
+   ],
+   [
+    "QCOM",
+    "unknown",
+    "post-market"
    ]
   ],
   "disputed": [],
   "yahoo": {
-   "asked": 78,
-   "answered": 78,
-   "confirmed": 73,
+   "asked": 75,
+   "answered": 75,
+   "confirmed": 71,
    "conflicts": [
     [
      "CRWV",
@@ -1039,11 +1020,6 @@
      "CSCO",
      "2026-11-11",
      "2026-11-12"
-    ],
-    [
-     "KLAC",
-     "2026-11-04",
-     "2026-10-28"
     ],
     [
      "NVDA",
