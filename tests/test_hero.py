@@ -4447,6 +4447,33 @@ class DiscordPost(unittest.TestCase):
                 os.environ.pop("DC_WEBHOOK_DAILY", None)
                 self.assertEqual(dp.main(["daily", "posts/earnings/a.md"]), 0)        # no secret yet: skipped
 
+    def test_rate_limit_waits_and_errors_are_printed(self):
+        import io
+        from contextlib import redirect_stdout
+        from unittest import mock
+        from hero import discord_post as dp
+
+        class R:
+            def __init__(self, code, body):
+                self.status_code, self.body, self.headers = code, body, {}
+
+            def json(self):
+                return self.body
+
+        replies = [R(429, {"retry_after": 0.01}), R(200, {"id": "7"}),        # create: limited once, then sent
+                   R(400, {"message": "Invalid Form Body"}),                   # edit: refused
+                   R(404, {"message": "Unknown Message"})]                     # edit: deleted by hand
+        out = io.StringIO()
+        with mock.patch.object(dp.requests, "request", side_effect=replies) as req, \
+                mock.patch.object(dp.time, "sleep") as nap, redirect_stdout(out):
+            self.assertEqual(dp.create("https://h.invalid/api/webhooks/1/t", {"embeds": []}), "7")
+            self.assertIs(dp.edit("https://h.invalid/api/webhooks/1/t", "5", {"embeds": []}), False)
+            self.assertIsNone(dp.edit("https://h.invalid/api/webhooks/1/t", "6", {"embeds": []}))
+        self.assertEqual(req.call_count, 4)
+        nap.assert_called_once_with(0.5)
+        self.assertIn("edit 5 -> HTTP 400 Invalid Form Body", out.getvalue())
+        self.assertNotIn("webhooks", out.getvalue())                             # the address never printed
+
 
 class EarningsPage(unittest.TestCase):
     def test_calendar_forecast_and_holdings(self):

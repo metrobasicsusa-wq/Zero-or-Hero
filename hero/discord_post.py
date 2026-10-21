@@ -24,6 +24,7 @@ import json
 import os
 import re
 import sys
+import time
 from datetime import datetime, timezone
 from pathlib import Path
 from urllib.parse import parse_qsl, urlencode, urlsplit, urlunsplit
@@ -107,30 +108,52 @@ def _url(base: str, mid: str | None = None, **query) -> str:
     return urlunsplit((u.scheme, u.netloc, path, urlencode(q), ""))
 
 
+def _call(method: str, url: str, what: str, **kw) -> requests.Response | None:
+    """One request to Discord. A 429 (rate limit) waits the retry_after Discord gives (at most 10 s) and tries
+    again, up to 3 times; any other failure prints its HTTP status and Discord's message (never the address)."""
+    r = None
+    for _ in range(4):
+        try:
+            r = requests.request(method, url, timeout=15, **kw)
+        except Exception as e:
+            print(f"discord_post: {what} failed: {type(e).__name__}")
+            return None
+        if r.status_code != 429:
+            break
+        try:
+            wait = float(r.json().get("retry_after", 1))
+        except Exception:
+            wait = float(r.headers.get("Retry-After", 1) or 1)
+        time.sleep(min(max(wait, 0.5), 10))
+    if r is not None and r.status_code >= 300 and r.status_code != 404:
+        try:
+            msg = str(r.json().get("message", ""))[:200]
+        except Exception:
+            msg = ""
+        print(f"discord_post: {what} -> HTTP {r.status_code} {msg}".rstrip())
+    return r
+
+
 def create(url: str, payload: dict) -> str | None:
     """Post one message and return its id (wait=true makes Discord answer with the message)."""
+    r = _call("POST", _url(url, wait="true"), "create", json=payload)
     try:
-        r = requests.post(_url(url, wait="true"), json=payload, timeout=15)
-        return str(r.json()["id"]) if r.status_code < 300 else None
+        return str(r.json()["id"]) if r is not None and r.status_code < 300 else None
     except Exception:
         return None
 
 
 def edit(url: str, mid: str, payload: dict) -> bool | None:
     """Replace a message; None when Discord no longer has it (deleted by hand)."""
-    try:
-        r = requests.patch(_url(url, mid), json={"content": None, **payload}, timeout=15)
-        return None if r.status_code == 404 else r.status_code < 300
-    except Exception:
+    r = _call("PATCH", _url(url, mid), f"edit {mid}", json={"content": None, **payload})
+    if r is None:
         return False
+    return None if r.status_code == 404 else r.status_code < 300
 
 
 def delete(url: str, mid: str) -> bool:
-    try:
-        r = requests.delete(_url(url, mid), timeout=15)
-        return r.status_code < 300 or r.status_code == 404
-    except Exception:
-        return False
+    r = _call("DELETE", _url(url, mid), f"delete {mid}")
+    return r is not None and (r.status_code < 300 or r.status_code == 404)
 
 
 def record_path(path: Path) -> Path:

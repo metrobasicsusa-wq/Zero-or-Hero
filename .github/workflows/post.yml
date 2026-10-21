@@ -53,6 +53,7 @@ jobs:
           if [ "$ACTION" = "delete" ]; then python -m hero.discord_post --delete "$CHANNEL" "$FILE"
           else python -m hero.discord_post "$CHANNEL" "$FILE"; fi
       - name: Keep the message ids
+        if: always()   # a page that half went out still records the messages it did make, so a resend edits them
         env:
           CHANNEL: ${{ inputs.channel }}
           FILE: ${{ inputs.file }}
