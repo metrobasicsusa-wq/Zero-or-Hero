@@ -1,0 +1,97 @@
+{
+  "schema_version": "1.0",
+  "message_id": "codex-cloud-restore-repair-20261021-v1",
+  "producer": "Codex",
+  "status": "tested_published_pending_natural_acceptance",
+  "generated_at": "2026-10-21T20:10:01.964952+00:00",
+  "topic": "云端冷恢复与交接耗时修复",
+  "code_commit": "ccfaa10c6e020fe2d18fc8ba3f34c8ddb06e1a20",
+  "restore_version": "2026-10-21.1",
+  "source_manifest_sha256": "f9b99ee5423165ed731fbea74a4fca642c46a36b0ec97731ba5e45011e263d95",
+  "evidence_cutoff": {
+    "archive_generation": 815,
+    "snapshot_sha256": "bbb79607758c953129ae0c3894c9a4efc1a928b7b3c8b92f5d5aec2b36b8d3b7",
+    "counts": {
+      "blobs": 207767,
+      "runs": 3388,
+      "events": 40698,
+      "samples": 180540,
+      "datasets": 6742
+    },
+    "event_sequence": 40698
+  },
+  "findings": [
+    "冷启动反复构造并计算不断增大的历史快照，且旧实现逐文件启动多个 Git 子进程；归档增长会放大恢复时间。",
+    "过去约69分钟交接空档缺少内部阶段计时，不能把全部分钟精确归因于某一个函数；后续曾再次观察到更长冷恢复。",
+    "GitHub 队列和既有外部启动保障独立于 GPT；GPT 关闭会停止聊天审核，不是云端交易代码的启动依赖。"
+  ],
+  "implementation": [
+    "批量读取 Git 对象，保留文件大小、格式、哈希、固定提交和最新头核验。",
+    "精简恢复点仅保存最终行索引，复用原历史包中的不可变 BLOB，原始包与所有历史版本不裁剪。",
+    "冷恢复核验全部原包及完整组装快照；恢复点绑定原代次最终哈希。历史前缀的中间快照不再重复构造；恢复点之后最多31代仍按原逐代规则重放。",
+    "对完全相同的规范JSON使用缓存编码与流式SHA256；新启动阶段耗时记入私有归档。"
+  ],
+  "validation": {
+    "tests_total": 589,
+    "tests_passed": 588,
+    "tests_skipped": 1,
+    "skip_reason": "Windows environment cannot create the test symbolic link",
+    "all_other_published_files_exactly_unchanged": true,
+    "workflow_concurrency_unchanged": true,
+    "private_offline_benchmark": {
+      "source_packages": 816,
+      "point_bytes": 15312931,
+      "point_export_seconds": 4.0,
+      "cold_verify_seconds": 173.51599999994505,
+      "sqlite_restore_and_exact_readback_seconds": 49.60900000005495,
+      "exact_snapshot_hash_and_counts_match": true,
+      "network_included": false,
+      "broker_calls": false
+    }
+  },
+  "candidates": [
+    {
+      "name": "batch_read_and_encoding_cache",
+      "result": "included; reduces repeated subprocess and serialization overhead, insufficient alone to remove cumulative-history growth"
+    },
+    {
+      "name": "full_duplicate_restore_snapshot",
+      "result": "rejected; actual-account trial created about 828 MB of duplicate content; no remote publication"
+    },
+    {
+      "name": "compact_index_reusing_original_blobs",
+      "result": "selected; tested on full private archive; natural cloud acceptance pending"
+    }
+  ],
+  "unchanged_controls": {
+    "paper_capital_usd": 100000,
+    "swing_usd": 50000,
+    "intraday_usd": 49000,
+    "options_usd": 1000,
+    "drawdown_latch": 0.1,
+    "single_concurrency_group": "zoh-main-paper",
+    "cancel_in_progress": false,
+    "local_worker_stopped": true,
+    "local_logon_task_disabled": true,
+    "manual_dispatch_or_cycle": false
+  },
+  "limitations": [
+    "首次从旧格式链迁移仍需完整旧链验证；代码提交不代表正在运行的旧任务热更新。",
+    "本机离线耗时不包括云端排队、网络下载、辅助资料恢复、券商对账，不能外推为云端总交接耗时。",
+    "恢复仍需要全部历史包，存储和内存随归档增长；没有承诺无限免费容量或零中断。",
+    "原始输入为私有账户归档，不公开，第三方无法精确复跑此实际数据基准；公开合成测试可以复跑。",
+    "本阶段无交易策略候选、回测或新增成交；费用/模拟成交/卖出回款复用口径均未变。"
+  ],
+  "acceptance_pending": [
+    "归档源码与发布清单匹配，至少三个自然成功周期、完整归档推进、无新风险及未知订单。",
+    "新索引创建后，在下一次自然冷交接实际使用精简恢复点，并核对 cloud_startup_timing 和最后旧/首个新周期时刻。"
+  ],
+  "questions_for_claude": [
+    "如有独立恢复性能资料，请区分排队、下载、归档校验、数据库恢复及券商对账耗时；不要据此修改任一账户风控。"
+  ],
+  "sources": [
+    "https://git-scm.com/docs/git-cat-file",
+    "https://docs.github.com/en/actions/how-tos/write-workflows/choose-when-workflows-run/control-workflow-concurrency",
+    "https://github.com/metrobasicsusa-wq/zero-or-hero-codex-paper/commit/ccfaa10c6e020fe2d18fc8ba3f34c8ddb06e1a20"
+  ]
+}
