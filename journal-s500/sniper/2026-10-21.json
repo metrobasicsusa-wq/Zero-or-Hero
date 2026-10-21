@@ -1,0 +1,153 @@
+{
+ "date": "2026-10-21",
+ "sniper": {
+  "symbol": "HPE",
+  "direction": "call",
+  "catalyst": "SMCI 盘前把本季收入预期上调到 $185–195 亿（CNBC、Investing.com），AI 服务器需求的直接读法；同行 DELL 已 +7%，HPE 盘前只 +4.7%（约平时单日波动 1.6 倍），还没被吃掉；下次财报在 12 月。",
+  "confidence": 0.3
+ },
+ "candidates": [
+  {
+   "rank": 1,
+   "symbol": "HPE",
+   "direction": "call",
+   "confidence": 0.3,
+   "why": "SMCI 上调本季收入预期的二线受益（AI 服务器同行），盘前 +4.7%、约平时波动 1.6 倍，没破 20 日高（20 日高 $73.56，近一个月跌了约 24%）；优先拿过夜的 10-23 到期"
+  },
+  {
+   "rank": 2,
+   "symbol": "VRT",
+   "direction": "call",
+   "confidence": 0.25,
+   "why": "AI 数据中心电源 / 液冷，跟着 SMCI 的读法盘前 +6.2%、约平时 3.0 倍，但没找到自己的新消息，也没破 20 日高；10-28 发财报"
+  },
+  {
+   "rank": 3,
+   "symbol": "NVDA",
+   "direction": "call",
+   "confidence": 0.2,
+   "why": "马斯克说云厂商「没有算力」，加上一批英伟达合作消息（Dell、Nebius、GE Vernova、Nokia）；盘前 +1.9%、约 1.5 倍，没破 20 日高；11-17 财报"
+  },
+  {
+   "rank": 4,
+   "symbol": "MU",
+   "direction": "call",
+   "confidence": 0.15,
+   "why": "和台湾工会签了劳资协议，昨天拖累存储股的罢工风险解除；盘前 +3.2%、约 1.4 倍，离 20 日高很远"
+  },
+  {
+   "rank": 5,
+   "symbol": "DELL",
+   "direction": "call",
+   "confidence": 0.15,
+   "why": "和英伟达扩大 AI Factory 合作 + SMCI 读法，盘前 +7.0%、约 2.6 倍，大盘股跳空这么多多半已反映；没破 20 日高"
+  }
+ ],
+ "skipped": [
+  {
+   "symbol": "SMCI",
+   "direction": "call",
+   "gap": 0.123,
+   "reason": "跳空已吃掉",
+   "why_not": "自己上调本季收入预期（相当于提前报业绩），+12.3%、约平时 4.2 倍，消息已在价格里；狙击只做非财报消息"
+  },
+  {
+   "symbol": "SPCX",
+   "direction": "call",
+   "gap": 0.076,
+   "reason": "其他",
+   "why_not": "昨晚财报后的反应（收入 +161%），另有和特斯拉成立合并特别委员会，属于财报反应日"
+  },
+  {
+   "symbol": "NFLX",
+   "direction": "put",
+   "gap": -0.068,
+   "reason": "其他",
+   "why_not": "财报反应（收入只符合、下调 2026 广告收入目标），不是新消息"
+  },
+  {
+   "symbol": "T",
+   "direction": "put",
+   "gap": -0.063,
+   "reason": "其他",
+   "why_not": "今早财报：光纤 ARPU 降 4%、四季度 EBITDA 受营销费用影响，财报反应"
+  },
+  {
+   "symbol": "TMO",
+   "direction": "put",
+   "gap": -0.029,
+   "reason": "其他",
+   "why_not": "今早财报（上调全年 EPS 只到预期附近），财报反应"
+  },
+  {
+   "symbol": "NOK",
+   "direction": "call",
+   "gap": 0.034,
+   "reason": "财报临近",
+   "why_not": "和 SMCI 合作 AI-RAN，但 10-22 盘前发财报"
+  },
+  {
+   "symbol": "TSLA",
+   "direction": "call",
+   "gap": 0.01,
+   "reason": "财报临近",
+   "why_not": "和 SpaceX 成立合并特别委员会，但今晚盘后发财报"
+  },
+  {
+   "symbol": "NBIS",
+   "direction": "call",
+   "gap": 0.032,
+   "reason": "消息太弱",
+   "why_not": "跟着马斯克「缺算力」的说法涨，跳空只有平时 0.8 倍，分析师下调目标价"
+  },
+  {
+   "symbol": "CRWV",
+   "direction": "call",
+   "gap": 0.03,
+   "reason": "消息太弱",
+   "why_not": "同上，0.8 倍，分析师下调目标价"
+  },
+  {
+   "symbol": "LITE",
+   "direction": "call",
+   "gap": 0.054,
+   "reason": "消息太弱",
+   "why_not": "光模块跟着板块涨，没有自己的新闻，约 1.5 倍"
+  },
+  {
+   "symbol": "COHR",
+   "direction": "call",
+   "gap": 0.042,
+   "reason": "分析师评级",
+   "why_not": "只有目标价下调这一条标题，跟着板块涨"
+  },
+  {
+   "symbol": "GEV",
+   "direction": "call",
+   "gap": 0.026,
+   "reason": "财报临近",
+   "why_not": "加入英伟达 AI Factory 生态，消息偏弱，10-28 发财报"
+  },
+  {
+   "symbol": "MSTR",
+   "direction": "call",
+   "gap": 0.029,
+   "reason": "消息太弱",
+   "why_not": "比特币小涨，没有自己的新闻"
+  },
+  {
+   "symbol": "GOOGL",
+   "direction": "put",
+   "gap": -0.01,
+   "reason": "claude-b 已选",
+   "why_not": "claude-b 今天狙击 GOOGL 看涨（OpenAI 模型上 Google Cloud），按规则不选同一只"
+  }
+ ],
+ "claude_b_pick": "GOOGL call（CNBC：OpenAI 把模型放到 Google Cloud，GOOGL 盘前 -1%，信心 0.3）",
+ "notes": [
+  "今天主线是 AI 硬件反弹：SMCI 上调预期、马斯克说缺算力、英伟达一批合作消息；但 10 月这些股都跌了很多，没有一只突破 20 日高，所以回测的「破 20 日高 + 3 倍跳空」加分项都不满足，信心都不高。",
+  "今晚 META、TSLA、IBM、LRCX、TXN、SAP 盘后财报，大盘尾盘可能被预期牵动。",
+  "盘前价是 IEX / Yahoo 的最新成交，盘前成交稀，仅供参考。"
+ ],
+ "generated_at": "2026-10-21T09:04:52-04:00"
+}
