@@ -1,167 +1,168 @@
 {
  "date": "2026-10-21",
- "written": "2026-10-21T15:13-04:00",
+ "written": "2026-10-21T15:25-04:00",
+ "revised": "15:13 第一版只细看了前十来只、其余按机械规则；用户要求做得更仔细，截止前对全部 109 只逐家 WebSearch（一致预期、上次指引、最近消息、上次反应、进财报前 20 天走势），每只写清门槛或依据再判断；查不到可靠信息的仍按机械规则（进财报前 20 天涨 5% 以上判跌、否则判涨）并在理由里写明。相对第一版改判：AAL、TSCO、LUV、ORI、SSB、POOL、BMI、VC、EGBN、FRME、EFSC；LMT 改判涨",
  "calls": [
   {
    "symbol": "META",
    "direction": "down",
    "big": false,
-   "confidence": 0.52,
-   "why": "门槛：三季度收入要在一致预期 $633 亿之上、四季度指引高于预期，同时 2027 资本开支 / 费用别再大幅上调；判断：跌——前两次财报都因费用和资本开支开盘跌（7 月约 -10%），今天市场正在惩罚资本开支（GOOGL 因 Google Cloud 加 GPU 的消息 -2%），进财报前 20 天 -5.5% 只算弱的偏涨证据（档案、companies.json）"
+   "confidence": 0.53,
+   "why": "门槛：三季度收入要在一致预期约 $632–638 亿之上（指引 $610–640 亿）、四季度收入指引高于预期，而且 2027 资本开支别明显超过约 $2,050 亿（IG、美银的预期，+22%；买方有人看 $2,250–2,500 亿）；判断：跌——7 月就是资本开支下限上调、费用上调导致开盘约 -10%，最近连续 2 次开盘跌；今天市场正在惩罚资本开支（GOOGL 因加 GPU 的消息 -2%）；进财报前 20 天 -5.5% 只是弱的偏涨证据（IG、Bank of America、档案）"
   },
   {
    "symbol": "TSLA",
    "direction": "up",
    "big": false,
-   "confidence": 0.51,
-   "why": "门槛：汽车毛利率要从二季度 16.8% 回升、自由现金流转正，Robotaxi / Cybercab 时间表别再推迟；判断：涨，信心很低——三季度交付 48.65 万辆好于约 46.9 万预期，量上来有利毛利率，但交付已公布，最近 8 次开盘涨跌各 4 次（档案、companies.json）"
+   "confidence": 0.52,
+   "why": "门槛：毛利率要到约 17.7% 的一致预期以上（二季度 16.8%）、自由现金流转正，Robotaxi / Cybercab 不再推迟；判断：涨，信心低——二季度后三季度营业利润预期已被砍 56% 到约 $6.6 亿，门槛降低；交付 48.65 万辆好于预期；最近 8 次开盘涨跌各半（Hudson Labs、S&P Global、档案）"
   },
   {
    "symbol": "LRCX",
    "direction": "up",
    "big": false,
    "confidence": 0.55,
-   "why": "门槛：四季度指引明显高于一致预期（本季约 $81 亿）、2027 设备支出（WFE）说得更强；判断：涨——进财报前 20 天 -15%，门槛比 7 月（+25%）低很多，今天芯片股 SMH +1.7%；回测里跌了 5% 以上的略偏涨（57% / 上一季 48%）"
+   "why": "门槛：四季度指引明显高于一致预期（本季约 $81 亿、EPS $2.17），2027 设备支出说得更强；判断：涨——进财报前 20 天 -15%、5 天 -12.5%，门槛比 7 月（开盘 +25%）低很多；今天芯片 SMH +1.7%；回测里跌了 5% 以上的略偏涨（companies.json、回测）"
   },
   {
    "symbol": "SPOT",
    "direction": "up",
    "big": false,
-   "confidence": 0.52,
-   "why": "门槛：营业利润明显高于自己偏低的 €6.7 亿指引、四季度利润指引高于预期；判断：涨，信心低——利润指引本来就保守，进财报前 20 天 +1.9% 没透支（companies.json）"
+   "confidence": 0.53,
+   "why": "门槛：营业利润明显高于自己偏低的 €6.7 亿指引（当时就低于市场预期），付费用户到 3.05 亿、四季度利润指引高于预期；判断：涨——指引给得保守，二季度营业利润 €6.55 亿、付费用户 +700 万到 3 亿；进财报前 20 天只 +1.9%（公司 6-K、Music Business Worldwide）"
   },
   {
    "symbol": "IBM",
    "direction": "down",
    "big": false,
    "confidence": 0.55,
-   "why": "门槛：软件重新加速、确认 7 月延后的大单已签回、全年指引不再下调；判断：跌——最近 8 次开盘跌 6 次、连续 3 次跌，进财报前 20 天 +5.6%、3 个月 +15%（从 7 月 -25% 里反弹），回测里涨了 5% 以上的偏跌（48% / 上一季 34%）"
+   "why": "门槛：软件重新加速（二季度总收入增速从 6% 降到 1%）、确认 7 月延后的大单签回、全年 4–5% 不再下调；判断：跌——最近 8 次开盘跌 6 次、连续 3 次跌；进财报前 20 天 +5.6%、3 个月 +15%，Jefferies 说软件的好消息已在价格里；回测里涨了 5% 以上的偏跌（TipRanks、fn2、档案）"
   },
   {
    "symbol": "PG",
    "direction": "down",
    "big": false,
-   "confidence": 0.53,
-   "why": "门槛：有机销售好于预期并维持或上调全年（有机增长 1–3%）；判断：跌——进财报前 20 天 +6.7%，今天必需消费 XLP -0.6%，回测里涨了 5% 以上的偏跌"
+   "confidence": 0.55,
+   "why": "门槛：有机销售好于预期（上季持平）、维持全年有机 1–3% 和 EPS $6.89–7.11（中值本来就低于预期）；判断：跌——公司已说一季度核心 EPS 降 5% 以上，低收入消费者在收缩，毛利率预计收窄 120 基点；进财报前 20 天 +6.7%，今天必需消费 XLP -0.6%（Zacks、CTV、回测）"
   },
   {
    "symbol": "TXN",
    "direction": "down",
    "big": true,
    "confidence": 0.52,
-   "why": "门槛：本季落在指引上半、四季度指引中值高于一致预期；判断：跌，信心低——上次 EPS 远超预期仍开盘 -5.5%（指引保守是常态），今天 +2.5% 进财报（档案）"
+   "why": "门槛：本季落在指引上半（EPS $2.23–2.57、一致预期约 $2.40）、四季度指引中值高于预期；判断：跌，信心低——上次 EPS 远超预期仍开盘 -5.5%（指引保守是常态）；今天 +2.5% 进财报（档案、Hudson Labs）"
   },
   {
    "symbol": "VLO",
    "direction": "down",
    "big": false,
-   "confidence": 0.55,
-   "why": "门槛：四季度炼油利润展望继续强、回购加码；判断：跌——进财报前 20 天 +15.8%、3 个月 +38%（油价大涨已经计入），回测里涨了 5% 以上的偏跌（companies.json）"
+   "confidence": 0.53,
+   "why": "门槛：EPS 要明显超过约 $21.2 的一致预期（30 天里上调 3 次）、四季度炼油利润展望继续强；判断：跌，信心低——摩根大通等都预期创纪录，好消息大多已在价格里，进财报前 20 天 +15.8%、3 个月 +38%；回测里涨了 5% 以上的偏跌（Zacks、Finviz、回测）"
   },
   {
    "symbol": "CMCSA",
    "direction": "up",
    "big": false,
-   "confidence": 0.5,
-   "why": "门槛：宽带用户流失少于预期；判断：涨，信心最低——进财报前 20 天 -2.7%，没有明显方向（机械规则：没涨 5% 以上判涨）"
+   "confidence": 0.52,
+   "why": "门槛：宽带流失不比财务长 9 月预告的「比去年差」更差、ARPU 环比改善；判断：涨，信心低——坏消息已经预告过（9 月会议），进财报前 20 天 -2.7%（Broadband Breakfast）"
   },
   {
    "symbol": "AAL",
-   "direction": "up",
+   "direction": "down",
    "big": false,
    "confidence": 0.52,
-   "why": "门槛：四季度单位收入指引不差、燃油成本可控；判断：涨，信心低——进财报前 20 天 -8.5%，跌了 5% 以上的略偏涨；昨天 UAL 开盘 -0.3% 是反例"
+   "why": "门槛：三季度调整后亏损落在 $0.10–0.70 区间偏好的一端（一致预期约 -$0.33），四季度燃油假设不再上调；判断：跌，信心低——7 月给指引后三季度燃油成本又多了约 $2.3 亿、全年多 $5.5 亿，四季度指引大概率再降；进财报前 20 天 -8.5% 是反方向的弱证据（Live and Let's Fly、MarketBeat）"
   },
   {
    "symbol": "ARGX",
    "direction": "up",
    "big": false,
-   "confidence": 0.5,
-   "why": "机械规则：进财报前 20 天 -6.1%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+   "confidence": 0.52,
+   "why": "门槛：VYVGART 销售继续高增长（二季度 $15 亿、+60%）、全血清型标签扩展起量；判断：涨，信心低——进财报前 20 天 -6.1%，公司不给收入指引，可能谈到肌炎三期结果（公司半年报、dpa-AFX）"
   },
   {
    "symbol": "TSCO",
-   "direction": "up",
+   "direction": "down",
    "big": false,
-   "confidence": 0.5,
-   "why": "机械规则：进财报前 20 天 -0.5%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+   "confidence": 0.52,
+   "why": "门槛：同店销售在全年 1–3% 的上半、EPS 好于约 $0.41（同比 -16%）；判断：跌，信心低——去年三季度同店 +3.9% 基数高，机构看法偏谨慎（Tiger 预览）"
   },
   {
    "symbol": "URI",
    "direction": "up",
    "big": false,
-   "confidence": 0.5,
-   "why": "机械规则：进财报前 20 天 +2.6%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+   "confidence": 0.51,
+   "why": "门槛：维持 7 月上调后的全年收入 $175–178 亿、EBITDA 指引；判断：涨，信心最低——7 月刚上调全年，进财报前 20 天 +2.6%；注意：有来源写 10-26 才发，以公司确认日期为准（SEC 8-K、Earnings Whispers）"
   },
   {
    "symbol": "NOK",
    "direction": "up",
    "big": false,
    "confidence": 0.52,
-   "why": "门槛：网络业务订单和 AI 数据中心光通信收入好于预期；判断：涨，信心低——进财报前 20 天 -13%，今天 +2.5%"
+   "why": "门槛：调整后营业利润超过一致预期约 €4.53 亿（公司说大约持平于 €4.34 亿），AI / 云客户和光通信继续高增长；判断：涨，信心低——进财报前 20 天 -13%，网络基础设施全年增速已上调到 12–14%（Inderes、S&P Global）"
   },
   {
    "symbol": "CSX",
    "direction": "up",
    "big": false,
-   "confidence": 0.5,
-   "why": "机械规则：进财报前 20 天 +1.7%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+   "confidence": 0.53,
+   "why": "门槛：EPS 不低于约 $0.54 的一致预期、营业比率继续改善；判断：涨——二季度管理层说三季度初运量比预期高 6.5%，全年已上调；服务指标的问题是风险（公司 8-K、Benzinga）"
   },
   {
    "symbol": "LMT",
-   "direction": "down",
+   "direction": "up",
    "big": false,
    "confidence": 0.51,
-   "why": "门槛：没有新的项目减值、维持或上调全年、现金流达标；判断：跌，信心最低——财报前 5 天约 +7%，新合同拉低利润率的风险（companies.json）"
+   "why": "门槛：没有新的项目减值（去年三季度的大额减值是前车之鉴），维持或上调全年（已上调到 $797.5–817.5 亿），EPS 约 $7.45；判断：涨，信心最低——二季度 EPS $7.94 远超 $7.23，进财报前 20 天 +4.2% 不到 5%（Hudson Labs、Zacks）"
   },
   {
    "symbol": "CBRE",
    "direction": "up",
    "big": false,
-   "confidence": 0.5,
-   "why": "机械规则：进财报前 20 天 -2.7%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+   "confidence": 0.53,
+   "why": "门槛：EPS 好于约 $1.93、维持 $7.80–7.90 的全年指引；判断：涨——过去 4 季都超预期（平均 15%），全年指引高于一致预期；风险是市场担心自动化冲击；进财报前 20 天 -2.7%（Zacks、Barchart）"
   },
   {
    "symbol": "BX",
    "direction": "up",
    "big": false,
    "confidence": 0.52,
-   "why": "门槛：募资和退出好于预期，打消私募信贷担忧；判断：涨，信心低——进财报前 20 天 -8.4%（板块回调），跌了 5% 以上的略偏涨（companies.json）"
+   "why": "门槛：募资和退出好于预期，打消私募信贷担忧；判断：涨，信心低——二季度管理资产创纪录 $1.35 万亿、维持指引，进财报前 20 天 -8.4%（板块回调）（fn2）"
   },
   {
    "symbol": "UNP",
    "direction": "up",
    "big": false,
-   "confidence": 0.5,
-   "why": "门槛：运量和营业比率好于预期；判断：涨，信心最低——进财报前 20 天 +4.3%，不到 5%（机械规则）"
+   "confidence": 0.52,
+   "why": "门槛：营业比率继续改善、维持上调后的全年 EPS 高个位数增长；判断：涨，信心低——二季度 EPS $3.41 超预期 6.6% 并上调全年，进财报前 20 天 +4.3% 不到 5%；并购审批是长期事项（Barchart、fn2）"
   },
   {
    "symbol": "LUV",
-   "direction": "up",
+   "direction": "down",
    "big": false,
-   "confidence": 0.5,
-   "why": "机械规则：进财报前 20 天 -3.5%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+   "confidence": 0.51,
+   "why": "门槛：三季度调整后 EPS 落在 $0.50–0.75 上半（指引当时就低于 $0.82 的预期）；判断：跌，信心最低——指引基于 7 月中旬的燃油价格，之后中东冲突再起、油价又涨，全年 $3.25–4.25 有再降的风险（公司二季度新闻稿、路透）"
   },
   {
    "symbol": "TTMI",
    "direction": "up",
    "big": false,
-   "confidence": 0.5,
-   "why": "机械规则：进财报前 20 天 -19.9%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+   "confidence": 0.52,
+   "why": "门槛：EPS 在指引 $1.21–1.27 上沿（一致预期 $1.25）、四季度指引继续增长；判断：涨，信心低——进财报前 20 天 -19.9%、今天 +5.5%；注意：有来源写 11-02 才发，以公司确认日期为准（MarketBeat、Earnings Whispers）"
   },
   {
    "symbol": "DOW",
    "direction": "down",
    "big": false,
-   "confidence": 0.52,
-   "why": "机械规则：进财报前 20 天 +5.7%，涨了 5% 以上判跌（回测 48% 开盘涨、上一季 34%；整套规则 53% / 55%）"
+   "confidence": 0.53,
+   "why": "门槛：三季度 EBITDA 好于公司给的约 $17 亿（环比大降）、四季度展望不再变差；判断：跌——指引本来就差，进财报前 20 天 +5.7% 已经反弹，回测里涨了 5% 以上的偏跌（Weiss Ratings、Benzinga）"
   },
   {
    "symbol": "KMI",
    "direction": "down",
    "big": false,
-   "confidence": 0.52,
-   "why": "机械规则：进财报前 20 天 +9.0%，涨了 5% 以上判跌（回测 48% 开盘涨、上一季 34%；整套规则 53% / 55%）"
+   "confidence": 0.51,
+   "why": "门槛：EPS 好于约 $0.32–0.33、维持全年；判断：跌，信心最低——进财报前 20 天 +9.0%（机械规则），平时反应很小（Benzinga）"
   },
   {
    "symbol": "SAP",
@@ -174,596 +175,596 @@
    "symbol": "WCN",
    "direction": "down",
    "big": false,
-   "confidence": 0.52,
-   "why": "机械规则：进财报前 20 天 +8.0%，涨了 5% 以上判跌（回测 48% 开盘涨、上一季 34%；整套规则 53% / 55%）"
+   "confidence": 0.51,
+   "why": "门槛：EPS 好于约 $1.51–1.52、维持 7 月上调后的全年收入 $100.2–100.5 亿；判断：跌，信心最低——二季度大超预期并上调，但进财报前 20 天 +8.0%（机械规则偏跌）（公司公告、Benzinga）"
   },
   {
    "symbol": "CCI",
    "direction": "down",
    "big": false,
    "confidence": 0.52,
-   "why": "机械规则：进财报前 20 天 +12.3%，涨了 5% 以上判跌（回测 48% 开盘涨、上一季 34%；整套规则 53% / 55%）"
+   "why": "门槛：维持或再上调 2026 AFFO（光纤和小基站已出售、上调过一次）；判断：跌，信心低——进财报前 20 天 +12.3%，好消息（出售提前完成、回购 $10 亿）已在价格里（公司 8-K）"
   },
   {
    "symbol": "DGX",
    "direction": "up",
    "big": false,
-   "confidence": 0.5,
-   "why": "机械规则：进财报前 20 天 +2.7%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+   "confidence": 0.53,
+   "why": "门槛：EPS 好于约 $2.86、维持 7 月上调后的全年 $11.05–11.25；判断：涨——二季度 EPS $3.12 大超 $2.82，检测量 +13%，全年两次上调；进财报前 20 天 +2.7%（Nasdaq、Benzinga）"
   },
   {
    "symbol": "HON",
    "direction": "up",
    "big": false,
    "confidence": 0.5,
-   "why": "机械规则：进财报前 20 天 +0.6%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+   "why": "门槛：拆分航空后的 Honeywell Technologies 维持全年调整后 EPS $7.90–8.30（并股后）；判断：涨，信心最低——拆分后第一个完整季度，看不出方向，按机械规则（进财报前 20 天 +0.6%）（The Next Web、chemxplore）"
   },
   {
    "symbol": "BCS",
    "direction": "up",
    "big": false,
-   "confidence": 0.5,
-   "why": "机械规则：进财报前 20 天 -7.5%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+   "confidence": 0.51,
+   "why": "门槛：净利息收入展望维持或上调；判断：涨，信心最低——没找到可靠的预览，进财报前 20 天 -7.5%（跌了 5% 以上略偏涨）"
   },
   {
    "symbol": "MEDP",
    "direction": "down",
    "big": false,
-   "confidence": 0.52,
-   "why": "机械规则：进财报前 20 天 +5.2%，涨了 5% 以上判跌（回测 48% 开盘涨、上一季 34%；整套规则 53% / 55%）"
+   "confidence": 0.51,
+   "why": "门槛：净签约率（book-to-bill）回到 1.1 以上、取消率下降，EPS 好于约 $4.44；判断：跌，信心最低——去年四季度签约率 1.04、取消率一年来最高，股价当天 -16%；今天 +4.3%、进财报前 20 天 +5.2%（Benzinga、fintool）"
   },
   {
    "symbol": "NSC",
    "direction": "up",
    "big": false,
-   "confidence": 0.5,
-   "why": "机械规则：进财报前 20 天 +3.5%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+   "confidence": 0.52,
+   "why": "门槛：EPS 好于约 $3.57、营业比率改善；判断：涨，信心低——二季度 EPS $3.52 大超 $3.20，进财报前 20 天 +3.5%（Benzinga）"
   },
   {
    "symbol": "ROP",
    "direction": "down",
    "big": false,
    "confidence": 0.52,
-   "why": "机械规则：进财报前 20 天 +8.0%，涨了 5% 以上判跌（回测 48% 开盘涨、上一季 34%；整套规则 53% / 55%）"
+   "why": "门槛：三季度 EPS 在指引 $5.75–5.80 之上、四季度指引高于预期；判断：跌，信心低——指引已高于预期并上调全年，进财报前 20 天 +8.0%，回测里涨了 5% 以上的偏跌；二季度超预期后股价也跌过（MarketBeat）"
   },
   {
    "symbol": "PCG",
    "direction": "down",
    "big": false,
-   "confidence": 0.52,
-   "why": "机械规则：进财报前 20 天 +6.2%，涨了 5% 以上判跌（回测 48% 开盘涨、上一季 34%；整套规则 53% / 55%）"
+   "confidence": 0.51,
+   "why": "门槛：维持全年核心 EPS $1.64–1.66，山火责任立法有进展；判断：跌，信心最低——州议会没通过山火法案、不确定性还在，进财报前 20 天 +6.2%（Morningstar、fn2）"
   },
   {
    "symbol": "NDAQ",
    "direction": "up",
    "big": false,
-   "confidence": 0.5,
-   "why": "机械规则：进财报前 20 天 +0.1%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+   "confidence": 0.53,
+   "why": "门槛：EPS 好于约 $1.03–1.04；判断：涨——最近几个季度都超预期（二季度 $1.07 对 $1.00），市场成交活跃，进财报前 20 天 +0.1%（Benzinga、FXEmpire）"
   },
   {
    "symbol": "HBAN",
    "direction": "up",
    "big": false,
-   "confidence": 0.5,
-   "why": "机械规则：进财报前 20 天 +1.6%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+   "confidence": 0.51,
+   "why": "门槛：维持 9 月下调后的净利息收入增速约 35%、EPS 好于约 $0.39；判断：涨，信心最低——坏消息已在 9 月会议上预告（美银因此降级），过去 4 季都超预期（Zacks、Benzinga）"
   },
   {
    "symbol": "DOV",
    "direction": "up",
    "big": false,
-   "confidence": 0.5,
-   "why": "机械规则：进财报前 20 天 +4.6%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+   "confidence": 0.51,
+   "why": "门槛：收入不再低于预期（上次因冷柜工厂合并没达标，股价 -8%）、维持上调后的全年；判断：涨，信心最低——过去 4 季 EPS 都超预期但幅度在缩小，进财报前 20 天 +4.6%（Barchart、Benzinga）"
   },
   {
    "symbol": "LVS",
    "direction": "up",
    "big": false,
-   "confidence": 0.5,
-   "why": "机械规则：进财报前 20 天 -4.7%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+   "confidence": 0.52,
+   "why": "门槛：EPS 好于约 $0.77、新加坡金沙继续创纪录、澳门止跌；判断：涨，信心低——进财报前 20 天 -4.7%、今天 -2.1%，预期已经放低（Zacks、CDC Gaming）"
   },
   {
    "symbol": "MOH",
    "direction": "down",
    "big": false,
    "confidence": 0.52,
-   "why": "机械规则：进财报前 20 天 +13.3%，涨了 5% 以上判跌（回测 48% 开盘涨、上一季 34%；整套规则 53% / 55%）"
+   "why": "门槛：医疗成本率不再恶化、维持上调后的全年 EPS ≥$5.25；判断：跌，信心低——进财报前 20 天 +13.3%（「最差的一年已过」已经被交易），管理式医疗成本风险还在（公司 8-K、Earnings Whispers）"
   },
   {
    "symbol": "PHM",
    "direction": "up",
    "big": false,
-   "confidence": 0.5,
-   "why": "机械规则：进财报前 20 天 -4.6%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+   "confidence": 0.51,
+   "why": "门槛：交房 7,000–7,400 套、毛利率 24.5–25% 的指引守住，订单不比预期差；判断：涨，信心最低——进财报前 20 天 -4.6%，买房负担问题早已知道（Quartr、Tiger 预览）"
   },
   {
    "symbol": "PKG",
    "direction": "up",
    "big": false,
-   "confidence": 0.5,
-   "why": "机械规则：进财报前 20 天 -1.5%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+   "confidence": 0.51,
+   "why": "门槛：EPS 达到自己给的约 $2.91（低于当时一致预期 $2.97）；判断：涨，信心最低——指引已经压低预期，进财报前 20 天 -1.5%（MarketBeat、Zacks）"
   },
   {
    "symbol": "CRS",
    "direction": "up",
    "big": false,
-   "confidence": 0.5,
-   "why": "机械规则：进财报前 20 天 -7.7%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+   "confidence": 0.53,
+   "why": "门槛：营业利润在自己给的 $1.95–2.00 亿（同比 +27–30%）之上、维持全年 $8.5–8.8 亿（管理层说是「底线」）；判断：涨——航空订单积压约 1.6 万架、发动机商抢供应，进财报前 20 天 -7.7%；风险：CEO 7 月突然去世后原 CEO 回任（mychesco、Nasdaq）"
   },
   {
    "symbol": "ROL",
    "direction": "up",
    "big": false,
-   "confidence": 0.5,
-   "why": "机械规则：进财报前 20 天 +2.9%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+   "confidence": 0.51,
+   "why": "门槛：有机增长不低于下调后的「至少 6%」，线上获客回升；判断：涨，信心最低——二季度收入、EPS 都不及并下调全年，但管理层说 6 月底起获客量已回升；AI 搜索冲击线上获客是新风险（公司 10-Q、MarketBeat）"
   },
   {
    "symbol": "KNX",
    "direction": "up",
    "big": false,
-   "confidence": 0.5,
-   "why": "机械规则：进财报前 20 天 -6.1%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+   "confidence": 0.52,
+   "why": "门槛：EPS 在自己给的 $0.71–0.77 区间（高于当时一致预期 $0.67），四季度指引不差；判断：涨，信心低——二季度 $0.63 大超 $0.51，进财报前 20 天 -6.1%（公司 8-K、MarketBeat）"
   },
   {
    "symbol": "RS",
    "direction": "down",
    "big": false,
    "confidence": 0.52,
-   "why": "机械规则：进财报前 20 天 +8.7%，涨了 5% 以上判跌（回测 48% 开盘涨、上一季 34%；整套规则 53% / 55%）"
+   "why": "门槛：EPS 在自己给的 $6.40–6.60 之上（含边境墙项目约 $0.60）、毛利率不再收窄；判断：跌，信心低——进财报前 20 天 +8.7%；钢铁同行 STLD 10-20 开盘 -5.1%（只当参考）；二季度毛利率已收窄 1.6 个百分点（Quartr、公司新闻稿）"
   },
   {
    "symbol": "ALLE",
    "direction": "up",
    "big": false,
-   "confidence": 0.5,
-   "why": "机械规则：进财报前 20 天 +1.2%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+   "confidence": 0.52,
+   "why": "门槛：EPS 好于约 $2.49、美洲有机增长继续强；判断：涨，信心低——二季度超预期、上调全年收入增速到 6–8%，欧洲（德国）偏弱已经在重组；进财报前 20 天 +1.2%（公司 8-K、MarketBeat）"
   },
   {
    "symbol": "WH",
    "direction": "down",
    "big": false,
-   "confidence": 0.52,
-   "why": "机械规则：进财报前 20 天 +12.2%，涨了 5% 以上判跌（回测 48% 开盘涨、上一季 34%；整套规则 53% / 55%）"
+   "confidence": 0.53,
+   "why": "门槛：RevPAR 不比全年 -1% 到 +1% 的指引更差、四季度不下调；判断：跌——巴克莱预计三季度偏软、四季度指引有下调风险，一致预期 EPS $1.31 比去年 $1.46 低；进财报前 20 天 +12.2%（The Fly、MarketScreener）"
   },
   {
    "symbol": "HXL",
    "direction": "up",
    "big": false,
-   "confidence": 0.5,
-   "why": "机械规则：进财报前 20 天 +4.7%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+   "confidence": 0.51,
+   "why": "门槛：EPS 好于约 $0.41–0.48、维持 7 月上调后的全年 $2.30–2.40；判断：涨，信心最低——波音、空客提产有利，但三季度季节性和成本压利润率；进财报前 20 天 +4.7%（Zacks、Benzinga）"
   },
   {
    "symbol": "SNA",
    "direction": "up",
    "big": false,
    "confidence": 0.5,
-   "why": "机械规则：进财报前 20 天 -0.7%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+   "why": "门槛：EPS 好于约 $4.91（30 天里下调 1 美分）；判断：涨，信心最低——上季小幅超预期，风险是客户谨慎、关税和成本；进财报前 20 天 -0.7%，按机械规则（Zacks、Benzinga）"
   },
   {
    "symbol": "SEIC",
    "direction": "up",
    "big": false,
-   "confidence": 0.5,
-   "why": "机械规则：进财报前 20 天 +2.8%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+   "confidence": 0.53,
+   "why": "上季 EPS $1.66 大超 $1.42，一致预期约 $1.58；涨（Benzinga、Earnings Whispers）"
   },
   {
    "symbol": "VLY",
    "direction": "up",
    "big": false,
-   "confidence": 0.5,
-   "why": "机械规则：进财报前 20 天 +0.6%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+   "confidence": 0.51,
+   "why": "二季度净利息收入环比增加，一致预期约 $0.33；涨，信心最低（公司 10-Q、Benzinga）"
   },
   {
    "symbol": "ORI",
-   "direction": "up",
+   "direction": "down",
    "big": false,
-   "confidence": 0.5,
-   "why": "机械规则：进财报前 20 天 +4.5%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+   "confidence": 0.52,
+   "why": "最近几季都不及预期（二季度 $0.76 对 $0.79，一季度 $0.68 远低于预期），机构偏谨慎（投资收益波动）；跌（Benzinga、Tiger 预览）"
   },
   {
    "symbol": "CACI",
    "direction": "up",
    "big": false,
-   "confidence": 0.5,
-   "why": "机械规则：进财报前 20 天 +0.5%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+   "confidence": 0.52,
+   "why": "门槛：一季度 EPS 好于约 $6.62、维持 8 月给的全年 EPS $32.96–33.86（高于当时预期 $31.25）；判断：涨，信心低——上季收入 +17.6%、股价 +15.7%，进财报前 20 天 +0.5% 没透支（Business Wire、MarketBeat）"
   },
   {
    "symbol": "PNFP",
    "direction": "up",
    "big": false,
-   "confidence": 0.5,
-   "why": "机械规则：进财报前 20 天 +2.1%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+   "confidence": 0.51,
+   "why": "和 Synovus 合并后第三季，贷款环比 +2%、新招 96 名客户经理；涨，信心最低（SEC 8-K）"
   },
   {
    "symbol": "SSB",
-   "direction": "up",
+   "direction": "down",
    "big": false,
-   "confidence": 0.5,
-   "why": "机械规则：进财报前 20 天 +0.6%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+   "confidence": 0.51,
+   "why": "最近连续几次不及预期（Barchart：三次没达标），一致预期约 $2.39–2.41；跌，信心最低（Barchart、Earnings Whispers）"
   },
   {
    "symbol": "ESI",
    "direction": "up",
    "big": false,
    "confidence": 0.5,
-   "why": "机械规则：进财报前 20 天 +0.9%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+   "why": "已同意被 Solstice 收购（0.5 股 + $10 现金），股价跟着收购条款和 Solstice 走，财报影响小；涨，信心最低（SEC 8-K）"
   },
   {
    "symbol": "COCO",
    "direction": "down",
    "big": false,
-   "confidence": 0.52,
-   "why": "机械规则：进财报前 20 天 +7.3%，涨了 5% 以上判跌（回测 48% 开盘涨、上一季 34%；整套规则 53% / 55%）"
+   "confidence": 0.51,
+   "why": "门槛：EPS 好于约 $0.51–0.53；判断：跌，信心最低——上季大超预期，但进财报前 20 天 +7.3%（机械规则偏跌）；注意：有来源写 11-02 才发，以公司确认日期为准（Benzinga、Earnings Whispers）"
   },
   {
    "symbol": "LBRT",
    "direction": "up",
    "big": false,
-   "confidence": 0.5,
-   "why": "机械规则：进财报前 20 天 -6.8%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+   "confidence": 0.51,
+   "why": "车队利用率高、定价改善，但电力业务资本开支压现金流，Zacks 模型不预测超预期；进财报前 20 天 -6.8%；涨，信心最低（Zacks、MarketBeat）"
   },
   {
    "symbol": "EGP",
    "direction": "up",
    "big": false,
-   "confidence": 0.5,
-   "why": "机械规则：进财报前 20 天 -0.2%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+   "confidence": 0.51,
+   "why": "二季度 FFO +6.8%、同店 NOI +8.3%，全年 FFO 指引 $9.52–9.66；涨，信心最低（SEC 8-K、Benzinga）"
   },
   {
    "symbol": "GL",
    "direction": "up",
    "big": false,
    "confidence": 0.5,
-   "why": "机械规则：进财报前 20 天 +0.3%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+   "why": "分析师已在下调预期（门槛降低），二季度略不及但上调全年 EPS 到 $15.55–15.95；涨，信心最低（Barchart、Benzinga）"
   },
   {
    "symbol": "SON",
    "direction": "up",
    "big": false,
    "confidence": 0.5,
-   "why": "机械规则：进财报前 20 天 -0.0%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+   "why": "上季小幅超预期、维持全年 $5.8–6.2；涨，信心最低（Benzinga）"
   },
   {
    "symbol": "MSM",
    "direction": "down",
    "big": false,
    "confidence": 0.52,
-   "why": "机械规则：进财报前 20 天 +5.9%，涨了 5% 以上判跌（回测 48% 开盘涨、上一季 34%；整套规则 53% / 55%）"
+   "why": "四季度指引（日均销售 +6.5–8.5%）比分析师乐观、开始和去年的涨价基数比，进财报前 20 天 +5.9%；跌（公司 8-K）"
   },
   {
    "symbol": "BFH",
    "direction": "down",
    "big": false,
-   "confidence": 0.52,
-   "why": "机械规则：进财报前 20 天 +8.5%，涨了 5% 以上判跌（回测 48% 开盘涨、上一季 34%；整套规则 53% / 55%）"
+   "confidence": 0.51,
+   "why": "信用在改善（全年净损失率指引收窄到 7.0–7.1%），但进财报前 20 天 +8.5%（机械规则偏跌）；跌，信心最低（公司 8-K）"
   },
   {
    "symbol": "FAF",
    "direction": "up",
    "big": false,
-   "confidence": 0.5,
-   "why": "机械规则：进财报前 20 天 -3.0%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+   "confidence": 0.52,
+   "why": "二季度 EPS $2.08 大超 $1.83，一致预期约 $1.88（Zacks 下调到 $1.77）；进财报前 20 天 -3.0%；涨（Benzinga、MarketBeat）"
   },
   {
    "symbol": "FR",
    "direction": "up",
    "big": false,
    "confidence": 0.5,
-   "why": "机械规则：进财报前 20 天 -3.3%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+   "why": "没找到可靠的预览，进财报前 20 天 -3.3%；按机械规则判涨，信心最低"
   },
   {
    "symbol": "SLG",
    "direction": "up",
    "big": false,
-   "confidence": 0.5,
-   "why": "机械规则：进财报前 20 天 -6.4%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+   "confidence": 0.52,
+   "why": "二季度把全年 FFO 指引从 $4.40–4.70 上调到 $5.60–5.90（One Vanderbilt），曼哈顿出租率 94.7%；进财报前 20 天 -6.4%；涨（公司 8-K）"
   },
   {
    "symbol": "BPOP",
    "direction": "up",
    "big": false,
-   "confidence": 0.5,
-   "why": "机械规则：进财报前 20 天 +1.7%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+   "confidence": 0.52,
+   "why": "二季度 EPS $4.35 大超 $3.67，一致预期约 $3.91；涨（Benzinga、Earnings Whispers）"
   },
   {
    "symbol": "POOL",
-   "direction": "up",
+   "direction": "down",
    "big": false,
-   "confidence": 0.5,
-   "why": "机械规则：进财报前 20 天 +2.6%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+   "confidence": 0.52,
+   "why": "7 月把全年 EPS 下调到 $10.66–10.96（低于当时预期），机构偏谨慎，一致预期约 $3.37 持平；跌（Benzinga、Tiger 预览）"
   },
   {
    "symbol": "GGG",
    "direction": "up",
    "big": false,
-   "confidence": 0.5,
-   "why": "机械规则：进财报前 20 天 +3.5%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+   "confidence": 0.51,
+   "why": "积压订单年初以来 +28%，三季度收入指引 $5.8–6.0 亿；上季 EPS 超、收入不及；涨，信心最低（Longbridge、Benzinga）"
   },
   {
    "symbol": "FULT",
    "direction": "up",
    "big": false,
-   "confidence": 0.5,
-   "why": "机械规则：进财报前 20 天 -1.7%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+   "confidence": 0.52,
+   "why": "二季度 EPS $0.60 大超 $0.47、一季度也超，一致预期约 $0.55；涨（Benzinga）"
   },
   {
    "symbol": "BMI",
-   "direction": "up",
+   "direction": "down",
    "big": false,
-   "confidence": 0.5,
-   "why": "机械规则：进财报前 20 天 -1.3%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+   "confidence": 0.52,
+   "why": "一季度 EPS 大幅不及、二季度小幅不及，管理层说全年收入「大致持平」；跌（Benzinga、Chartmill）"
   },
   {
    "symbol": "R",
    "direction": "up",
    "big": false,
-   "confidence": 0.5,
-   "why": "机械规则：进财报前 20 天 +0.3%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+   "confidence": 0.51,
+   "why": "三季度指引 $4.00–4.20 略低于当时预期，但上调了全年，二季度小幅超预期；涨，信心最低（MarketBeat、Benzinga）"
   },
   {
    "symbol": "WDFC",
    "direction": "up",
    "big": false,
-   "confidence": 0.5,
-   "why": "机械规则：进财报前 20 天 -3.1%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+   "confidence": 0.52,
+   "why": "7 月上调全年 EPS 到 $6.05–6.35，三季度 EPS $2.33 大超 $1.57；进财报前 20 天 -3.1%；涨（公司 8-K）"
   },
   {
    "symbol": "BBT",
    "direction": "up",
    "big": false,
    "confidence": 0.5,
-   "why": "机械规则：进财报前 20 天 -0.5%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+   "why": "一季度不及、二季度符合，一致预期约 $0.78；按机械规则判涨（Benzinga、Earnings Whispers）"
   },
   {
    "symbol": "FCFS",
    "direction": "up",
    "big": false,
-   "confidence": 0.5,
-   "why": "机械规则：进财报前 20 天 -0.5%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+   "confidence": 0.53,
+   "why": "典当需求强，二季度创纪录并再次上调全年典当收入指引，下半年典当费预计增长中双位数以上；涨（公司 8-K）"
   },
   {
    "symbol": "NTST",
    "direction": "up",
    "big": false,
-   "confidence": 0.5,
-   "why": "机械规则：进财报前 20 天 -10.2%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+   "confidence": 0.51,
+   "why": "二季度上调全年 AFFO 和投资额指引，进财报前 20 天 -10.2%；涨，信心最低（公司 8-K）"
   },
   {
    "symbol": "LAZ",
    "direction": "up",
    "big": false,
-   "confidence": 0.5,
-   "why": "机械规则：进财报前 20 天 +0.6%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+   "confidence": 0.51,
+   "why": "顾问收入在下滑、二季度 EPS 大幅不及，但预期已经很低，管理层说并购排名是 2014 年来最好；涨，信心最低（公司 8-K、Barchart）"
   },
   {
    "symbol": "CVBF",
    "direction": "up",
    "big": false,
    "confidence": 0.5,
-   "why": "机械规则：进财报前 20 天 +0.6%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+   "why": "一致预期约 $0.45；日期有冲突（有来源写 10-22 盘后）；没有明显方向，按机械规则判涨（Earnings Whispers）"
   },
   {
    "symbol": "FBP",
    "direction": "up",
    "big": false,
-   "confidence": 0.5,
-   "why": "机械规则：进财报前 20 天 +2.0%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+   "confidence": 0.52,
+   "why": "二季度 EPS $0.62 超 $0.54，一致预期约 $0.58–0.59；涨（Benzinga、Earnings Whispers）"
   },
   {
    "symbol": "THRM",
    "direction": "up",
    "big": false,
-   "confidence": 0.5,
-   "why": "机械规则：进财报前 20 天 -20.3%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+   "confidence": 0.52,
+   "why": "7 月上调全年，已预告三季度利润率下滑、四季度回升，分析师已下调预期；进财报前 20 天 -20.3%；涨（公司 8-K、Barchart）"
   },
   {
    "symbol": "VC",
-   "direction": "up",
+   "direction": "down",
    "big": false,
-   "confidence": 0.5,
-   "why": "机械规则：进财报前 20 天 -7.8%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+   "confidence": 0.51,
+   "why": "一、二季度 EPS 都不及（收入超），维持全年但下半年行业产量偏软、内存供应是风险；跌，信心最低（公司 8-K、Benzinga）"
   },
   {
    "symbol": "EGBN",
-   "direction": "up",
+   "direction": "down",
    "big": false,
-   "confidence": 0.5,
-   "why": "机械规则：进财报前 20 天 +1.4%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+   "confidence": 0.51,
+   "why": "二季度 EPS $0.23 远不及 $0.35，写字楼贷款风险没解除；跌，信心最低（Benzinga、Earnings Whispers）"
   },
   {
    "symbol": "EPRT",
    "direction": "up",
    "big": false,
-   "confidence": 0.5,
-   "why": "机械规则：进财报前 20 天 -7.5%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+   "confidence": 0.52,
+   "why": "二季度 AFFO +9% 并上调全年 AFFO 和投资额，进财报前 20 天 -7.5%；涨（公司 8-K、Business Wire）"
   },
   {
    "symbol": "OII",
    "direction": "up",
    "big": false,
-   "confidence": 0.5,
-   "why": "机械规则：进财报前 20 天 -3.4%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+   "confidence": 0.52,
+   "why": "二季度强（EPS $0.63 对 $0.45）并上调全年 EBITDA 到 $4–4.4 亿，三季度 EBITDA 指引 $1.15–1.25 亿；进财报前 20 天 -3.4%；涨（公司 8-K、Quartr）"
   },
   {
    "symbol": "CURB",
    "direction": "up",
    "big": false,
-   "confidence": 0.5,
-   "why": "机械规则：进财报前 20 天 -3.7%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+   "confidence": 0.51,
+   "why": "过去 4 季都超预期、上调全年 EPS 到 $1.24–1.26；日期有冲突（有来源写 10-29）；涨，信心最低（Benzinga）"
   },
   {
    "symbol": "KALU",
    "direction": "up",
    "big": false,
-   "confidence": 0.5,
-   "why": "机械规则：进财报前 20 天 -2.5%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+   "confidence": 0.52,
+   "why": "二季度 EPS $5.53 远超 $2.66 并上调全年，一致预期约 $2.17（较旧）；涨（Benzinga）"
   },
   {
    "symbol": "BANR",
    "direction": "up",
    "big": false,
-   "confidence": 0.5,
-   "why": "机械规则：进财报前 20 天 -0.5%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+   "confidence": 0.51,
+   "why": "多数季度超预期（二季度小幅不及），一致预期约 $1.56–1.57；涨，信心最低（Benzinga、Earnings Whispers）"
   },
   {
    "symbol": "FRME",
-   "direction": "up",
+   "direction": "down",
    "big": false,
-   "confidence": 0.5,
-   "why": "机械规则：进财报前 20 天 -0.7%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+   "confidence": 0.51,
+   "why": "二季度 EPS $0.74 远不及 $1.03、收入也不及，一致预期仍约 $1.03–1.04；跌，信心最低（Benzinga）"
   },
   {
    "symbol": "FSV",
    "direction": "down",
    "big": false,
-   "confidence": 0.52,
-   "why": "机械规则：进财报前 20 天 +5.0%，涨了 5% 以上判跌（回测 48% 开盘涨、上一季 34%；整套规则 53% / 55%）"
+   "confidence": 0.51,
+   "why": "通常小幅超预期，但进财报前 20 天 +5.0%（机械规则偏跌），市场担心软件自动化冲击物业管理；跌，信心最低（Barchart、Earnings Whispers）"
   },
   {
    "symbol": "CATY",
    "direction": "up",
    "big": false,
-   "confidence": 0.5,
-   "why": "机械规则：进财报前 20 天 -0.3%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+   "confidence": 0.52,
+   "why": "过去 4 季 EPS 和收入都超预期，一致预期约 $1.43–1.45；涨（Benzinga、Earnings Whispers）"
   },
   {
    "symbol": "WSBC",
    "direction": "up",
    "big": false,
    "confidence": 0.5,
-   "why": "机械规则：进财报前 20 天 -2.1%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+   "why": "下半年净息差指引约 3.60%，看商业地产信用；没有明显方向，按机械规则判涨（Quartr、Earnings Whispers）"
   },
   {
    "symbol": "OSBC",
    "direction": "up",
    "big": false,
    "confidence": 0.5,
-   "why": "机械规则：进财报前 20 天 +0.7%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+   "why": "二季度符合预期、一季度不及，一致预期约 $0.58–0.59；按机械规则判涨（Benzinga、Earnings Whispers）"
   },
   {
    "symbol": "STC",
    "direction": "up",
    "big": false,
-   "confidence": 0.5,
-   "why": "机械规则：进财报前 20 天 -15.7%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+   "confidence": 0.51,
+   "why": "二季度 EPS 不及但收入超，同行 FAF 二季度大超；进财报前 20 天 -15.7%；日期有冲突（有来源写 10-26）；涨，信心最低（Benzinga）"
   },
   {
    "symbol": "LNN",
    "direction": "up",
    "big": false,
-   "confidence": 0.5,
-   "why": "机械规则：进财报前 20 天 -9.1%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+   "confidence": 0.51,
+   "why": "三季度 EPS $1.53 大超 $1.22，灌溉业务弱、中东北非大项目照计划；进财报前 20 天 -9.1%；涨，信心最低（公司 8-K）"
   },
   {
    "symbol": "ZGN",
    "direction": "up",
    "big": false,
-   "confidence": 0.5,
-   "why": "机械规则：进财报前 20 天 +3.3%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+   "confidence": 0.52,
+   "why": "一、二季度收入都超预期（二季度有机 +11%），直营强；涨（Il Sole 24 Ore、Teleborsa）"
   },
   {
    "symbol": "HFWA",
    "direction": "up",
    "big": false,
    "confidence": 0.5,
-   "why": "机械规则：进财报前 20 天 -1.6%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+   "why": "二季度 EPS 超、收入不及，一致预期约 $0.57–0.58；按机械规则判涨（Benzinga）"
   },
   {
    "symbol": "TFIN",
    "direction": "up",
    "big": false,
    "confidence": 0.5,
-   "why": "机械规则：进财报前 20 天 +0.8%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+   "why": "支付业务 EBITDA 利润率在升（二季度 25.7%），没有一致预期；按机械规则判涨（公司股东信）"
   },
   {
    "symbol": "CASH",
    "direction": "up",
    "big": false,
    "confidence": 0.5,
-   "why": "机械规则：进财报前 20 天 -0.4%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+   "why": "三季度大幅不及并下调全年 EPS 到 $7.80–8.20，四季度隐含 $1.51–1.91、一致预期 $1.60 在区间里，门槛已降；看 2027 指引 $9.50–10.00 是否维持；信心最低（Benzinga、MarketBeat）"
   },
   {
    "symbol": "HBNC",
    "direction": "up",
    "big": false,
    "confidence": 0.5,
-   "why": "机械规则：进财报前 20 天 +2.5%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+   "why": "二季度数据各家说法不一，一致预期约 $0.53；按机械规则判涨（Benzinga）"
   },
   {
    "symbol": "EFSC",
-   "direction": "up",
+   "direction": "down",
    "big": false,
-   "confidence": 0.5,
-   "why": "机械规则：进财报前 20 天 +0.0%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+   "confidence": 0.51,
+   "why": "二季度 EPS $1.13 远不及 $1.34、收入也不及，去年三季度也不及；跌，信心最低（Benzinga、Earnings Whispers）"
   },
   {
    "symbol": "AMAL",
    "direction": "up",
    "big": false,
-   "confidence": 0.5,
-   "why": "机械规则：进财报前 20 天 +2.4%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+   "confidence": 0.51,
+   "why": "二季度 EPS $1.10 超 $0.99（一季度不及），一致预期约 $1.06–1.10；涨，信心最低（MarketBeat、Benzinga）"
   },
   {
    "symbol": "CNOB",
    "direction": "up",
    "big": false,
    "confidence": 0.5,
-   "why": "机械规则：进财报前 20 天 +0.6%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+   "why": "二季度 EPS 小超、收入不及，一致预期约 $0.85–0.86；按机械规则判涨（Benzinga）"
   },
   {
    "symbol": "GTY",
    "direction": "up",
    "big": false,
-   "confidence": 0.5,
-   "why": "机械规则：进财报前 20 天 -5.0%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+   "confidence": 0.51,
+   "why": "今年两次上调 AFFO 指引到 $2.52–2.54，进财报前 20 天 -5.0%；涨，信心最低（公司 8-K、Benzinga）"
   },
   {
    "symbol": "STBA",
    "direction": "up",
    "big": false,
-   "confidence": 0.5,
-   "why": "机械规则：进财报前 20 天 -1.0%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+   "confidence": 0.51,
+   "why": "二季度 EPS $1.02 大超 $0.92、新增 $1 亿回购；涨，信心最低（Chartmill、Benzinga）"
   },
   {
    "symbol": "GSBC",
    "direction": "up",
    "big": false,
-   "confidence": 0.5,
-   "why": "机械规则：进财报前 20 天 -0.3%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+   "confidence": 0.52,
+   "why": "二季度 EPS $1.57 超 $1.37，一致预期约 $1.39；涨（公司公告、Benzinga）"
   },
   {
    "symbol": "LOB",
    "direction": "up",
    "big": false,
-   "confidence": 0.5,
-   "why": "机械规则：进财报前 20 天 -5.4%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+   "confidence": 0.51,
+   "why": "二季度 EPS $0.74 超预期、净息差 3.33%，进财报前 20 天 -5.4%；涨，信心最低（公司 8-K）"
   },
   {
    "symbol": "TRST",
    "direction": "up",
    "big": false,
-   "confidence": 0.5,
-   "why": "机械规则：进财报前 20 天 -2.5%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+   "confidence": 0.51,
+   "why": "二季度 EPS +24%、净息差改善，年底前回购 15.8% 股本；涨，信心最低（Quartr）"
   },
   {
    "symbol": "IIIN",
    "direction": "up",
    "big": false,
    "confidence": 0.5,
-   "why": "机械规则：进财报前 20 天 +2.8%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+   "why": "上季成本吃掉了涨价，一致预期约 $0.49（Sidoti 上调）；按机械规则判涨（公司 8-K、MarketBeat）"
   },
   {
    "symbol": "CIVB",
    "direction": "up",
    "big": false,
-   "confidence": 0.5,
-   "why": "机械规则：进财报前 20 天 +0.3%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+   "confidence": 0.51,
+   "why": "过去 4 季 EPS 都超预期，一致预期约 $0.70；涨，信心最低（MarketBeat、Benzinga）"
   },
   {
    "symbol": "TCBX",
    "direction": "up",
    "big": false,
-   "confidence": 0.5,
-   "why": "机械规则：进财报前 20 天 -6.0%，没涨 5% 以上判涨（整套规则回测猜对 53% / 上一季 55%）"
+   "confidence": 0.51,
+   "why": "上季超预期，一致预期约 $0.98，进财报前 20 天 -6.0%；涨，信心最低（Earnings Whispers）"
   }
  ]
 }
