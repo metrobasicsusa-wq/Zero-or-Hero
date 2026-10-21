@@ -31,7 +31,7 @@ from urllib.parse import parse_qsl, urlencode, urlsplit, urlunsplit
 
 import requests
 
-from hero.notify import EMBEDS_PER_MESSAGE, GREY, chunked
+from hero.notify import CARD_BYTES, GREY, MESSAGE_BYTES, chunked, messages, nbytes, split_card  # noqa: F401
 
 ROOT = Path(__file__).resolve().parent.parent
 POSTS = ROOT / "posts"
@@ -98,47 +98,6 @@ def cards(text: str, color: int = GREY) -> list[dict]:
         out += chunked(t[:250], rows or ["—"], color, FOOTER)
     return out
 
-
-
-# 10-21: Discord also caps a message by bytes. A page of Chinese text (3 bytes a character) under the 6,000-character
-# rule still came back "413 Message size exceeds maximum allowed" at about 10.5 KB, and a message near 8.3 KB went
-# through, so each card is kept under CARD_BYTES and each message under MESSAGE_BYTES of UTF-8 JSON.
-CARD_BYTES, MESSAGE_BYTES = 5000, 7000
-
-
-def nbytes(obj) -> int:
-    return len(json.dumps(obj, ensure_ascii=False).encode())
-
-
-def split_card(card: dict) -> list[dict]:
-    """One card as several (title「（续）」) when its text is too many bytes; lines are kept whole."""
-    if nbytes(card) <= CARD_BYTES:
-        return [card]
-    base = card["title"].removesuffix("（续）")
-    out, cur = [], []
-    for line in card.get("description", "").split("\n"):
-        trial = {**card, "description": "\n".join(cur + [line])}
-        if cur and nbytes(trial) > CARD_BYTES:
-            out.append(cur)
-            cur = []
-        cur.append(line)
-    if cur:
-        out.append(cur)
-    return [{**card, "title": card["title"] if i == 0 else f"{base}（续）", "description": "\n".join(ls)}
-            for i, ls in enumerate(out)]
-
-
-def messages(cards_: list[dict]) -> list[dict]:
-    """Cards grouped into messages: at most 10 cards and MESSAGE_BYTES each."""
-    out, cur = [], []
-    for c in (x for card in cards_ for x in split_card(card)):
-        if cur and (len(cur) >= EMBEDS_PER_MESSAGE or nbytes({"embeds": cur + [c]}) > MESSAGE_BYTES):
-            out.append({"embeds": cur})
-            cur = []
-        cur.append(c)
-    if cur:
-        out.append({"embeds": cur})
-    return out
 
 
 def _url(base: str, mid: str | None = None, **query) -> str:

@@ -87,6 +87,19 @@ def sleeve_name(sid: str) -> str:
         f"{SLEEVE.get(m.group(1), m.group(1))} ${amt:,}"
 
 
+SITE = "https://metrobasicsusa-wq.github.io/Zero-or-Hero"
+
+
+def direction(sid: str) -> str:
+    """A ledger id without its size or plan suffix: spy0dte-1000 / spy0dte-old-plan-500 -> spy0dte (its page)."""
+    return re.sub(r"-(?:old-|opt-)?plan$", "", re.sub(r"-(500|1000)$", "", sid or ""))
+
+
+def linked(text: str, sid: str) -> str:
+    """Owner, 10-21: a ledger named in Discord links to its direction's page (hero/feature_pages.py, site/f/)."""
+    return f"[{text}]({SITE}/f/{direction(sid)}.html)" if sid else text
+
+
 def sleeve_text(e: dict, text: str) -> str:
     """A sleeve event's sentence, led by the ledger's name; the contract (on the card's title) and the result's
     percentage (moved to the front) are not repeated."""
@@ -96,7 +109,7 @@ def sleeve_text(e: dict, text: str) -> str:
             text = text[len(lead):]
             break
     text = text.replace("挂在券商", "已挂单")
-    name = f"**{sleeve_name(sid)}**" if sid else ""
+    name = linked(f"**{sleeve_name(sid)}**", sid) if sid else ""
     if e.get("kind") == "sleeve_result" and isinstance(e.get("ret"), (int, float)):
         text = re.sub(r"（[+-]?\d[\d,]*%）", "", text)
         return f"{name} **{e['ret']:+.0%}** · {text}".strip()
@@ -146,12 +159,14 @@ MONEY = re.compile(r"花 \$([\d,.]+)、收回 \$([\d,.]+)")
 def who(sids: list[str], qty: dict[str, float] | None = None) -> str:
     """Ledgers by direction: TSLA 末日 $500/$1k · TSLA 末日·5 倍 $500 (with each one's contracts if given)."""
     groups: dict[str, list[str]] = {}
+    first: dict[str, str] = {}
     for sid in sids:
         base, _, amt = sleeve_name(sid).rpartition(" ")
         part = f"{amt} {qty[sid]:g} 张" if qty else amt
+        first.setdefault(base or sid, sid)
         if part not in groups.setdefault(base or sid, []):
             groups[base or sid].append(part)
-    return " · ".join(f"{b} {('、' if qty else '/').join(a)}" for b, a in groups.items())
+    return " · ".join(f"{linked(b, first[b])} {('、' if qty else '/').join(a)}" for b, a in groups.items())
 
 
 def folded(evs: list[dict]) -> tuple[list[dict], list[tuple[str, str, str]]]:
@@ -368,7 +383,7 @@ def ledger_cards(root: Path, day: str) -> list[dict]:
         mark = "🏆" if ratio >= 2 else "🟢" if ratio >= 1 else "🔴"
         extra = [f"今天 {today:+,.0f}" if today else "", f"持 {n} 笔" if n else "",
                  f"第 {s['round']} 轮" if int(s.get("round") or 1) > 1 else ""]
-        rows.append(f"{mark} **{sleeve_name(sid)}** ${now:,.0f}（{ratio:.2f} 倍）" + "".join(f" · {x}" for x in extra if x))
+        rows.append(f"{mark} {linked(f'**{sleeve_name(sid)}**', sid)} ${now:,.0f}（{ratio:.2f} 倍）" + "".join(f" · {x}" for x in extra if x))
     if idle:
         names: dict[str, list[str]] = {}
         for sid in idle:
@@ -385,14 +400,43 @@ def size(card: dict) -> int:
     return len(json.dumps(card, ensure_ascii=False))
 
 
+# 10-21: Discord also caps a message by bytes. A page of Chinese text (3 bytes a character) under the 6,000-character
+# rule still came back "413 Message size exceeds maximum allowed" at about 10.5 KB, and a message near 8.3 KB went
+# through, so each card is kept under CARD_BYTES and each message under MESSAGE_BYTES of UTF-8 JSON.
+CARD_BYTES, MESSAGE_BYTES = 5000, 7000
+
+
+def nbytes(obj) -> int:
+    return len(json.dumps(obj, ensure_ascii=False).encode())
+
+
+def split_card(card: dict) -> list[dict]:
+    """One card as several (title「（续）」) when its text is too many bytes; lines are kept whole."""
+    if nbytes(card) <= CARD_BYTES:
+        return [card]
+    base = card["title"].removesuffix("（续）")
+    out, cur = [], []
+    for line in card.get("description", "").split("\n"):
+        trial = {**card, "description": "\n".join(cur + [line])}
+        if cur and nbytes(trial) > CARD_BYTES:
+            out.append(cur)
+            cur = []
+        cur.append(line)
+    if cur:
+        out.append(cur)
+    return [{**card, "title": card["title"] if i == 0 else f"{base}（续）", "description": "\n".join(ls)}
+            for i, ls in enumerate(out)]
+
+
 def messages(cards_: list[dict]) -> list[dict]:
-    out, cur, n = [], [], 0
-    for c in cards_:
-        if cur and (len(cur) >= EMBEDS_PER_MESSAGE or n + size(c) > CHARS_PER_MESSAGE):
+    """Cards grouped into messages: at most 10 cards, CHARS_PER_MESSAGE characters and MESSAGE_BYTES each."""
+    out, cur = [], []
+    for c in (x for card in cards_ for x in split_card(card)):
+        if cur and (len(cur) >= EMBEDS_PER_MESSAGE or nbytes({"embeds": cur + [c]}) > MESSAGE_BYTES
+                    or sum(size(x) for x in cur + [c]) > CHARS_PER_MESSAGE):
             out.append({"embeds": cur})
-            cur, n = [], 0
+            cur = []
         cur.append(c)
-        n += size(c)
     if cur:
         out.append({"embeds": cur})
     return out

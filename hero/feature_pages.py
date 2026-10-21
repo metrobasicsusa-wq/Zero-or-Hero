@@ -21,12 +21,11 @@ from pathlib import Path
 from zoneinfo import ZoneInfo
 
 from hero.exchange_page import esc, styles
-from hero.notify import readable
+from hero.notify import direction, readable
 
 ROOT = Path(__file__).resolve().parent.parent
 ET = ZoneInfo("America/New_York")
 SIZE = re.compile(r"-(500|1000)$")
-TWIN = re.compile(r"-(?:old-|opt-)?plan$")
 GROUPS = [
     ("末日单（当天到期期权）", ["spy0dte", "spy0dte-near", "qqq0dte", "tsla0dte", "tsla0dte-5x", "nvda0dte",
                           "spydip", "oneshot", "vixspike"]),
@@ -51,7 +50,7 @@ SHOW_SPEC = ("und", "offset", "min_move", "take", "half_take", "entry", "side", 
 
 
 def family(sleeve_id: str) -> str:
-    return TWIN.sub("", SIZE.sub("", sleeve_id))
+    return direction(sleeve_id)
 
 
 def _load(path: Path, default):

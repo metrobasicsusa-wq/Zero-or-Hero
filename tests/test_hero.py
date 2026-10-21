@@ -2330,14 +2330,14 @@ class Notify(unittest.TestCase):
         res = notify.lines([{"ts": "2026-10-14T15:50:00+00:00", "kind": "sleeve_result", "sleeve": "spy0dte-1000",
                              "symbol": "SPY261014P00768000", "ret": 2.0,
                              "why": "spy0dte-1000：SPY261014P00768000 3 倍止盈（券商挂单成交），花 $98.00、收回 $294.00（+200%），账本 $610.00"}])
-        self.assertEqual(res, ["🟢 `11:50` **SPY 末日 $1k** **+200%** · 3 倍止盈（券商挂单成交），花 $98.00、收回 $294.00，账本 $610.00"])
+        self.assertEqual(res, ["🟢 `11:50` [**SPY 末日 $1k**](https://metrobasicsusa-wq.github.io/Zero-or-Hero/f/spy0dte.html) **+200%** · 3 倍止盈（券商挂单成交），花 $98.00、收回 $294.00，账本 $610.00"])
         fill = notify.lines([{"ts": "2026-10-14T14:00:00+00:00", "kind": "sleeve_fill", "sleeve": "tsla0dte-5x-500",
                               "symbol": "TSLA261014P00362500", "why": "tsla0dte-5x-500：TSLA261014P00362500 成交 1 张 × $0.85，花 $85.00；"
                                                                       "1 张 5 倍止盈 $4.25 挂在券商"}])
-        self.assertEqual(fill, ["✅ `10:00` **TSLA 末日·5 倍 $500** 成交 1 张 × $0.85，花 $85.00；1 张 5 倍止盈 $4.25 已挂单"])
+        self.assertEqual(fill, ["✅ `10:00` [**TSLA 末日·5 倍 $500**](https://metrobasicsusa-wq.github.io/Zero-or-Hero/f/tsla0dte-5x.html) 成交 1 张 × $0.85，花 $85.00；1 张 5 倍止盈 $4.25 已挂单"])
         lost = notify.lines([{"ts": "2026-10-14T13:30:00+00:00", "kind": "sleeve_result", "sleeve": "earn-500", "symbol": "X", "ret": -0.97,
                               "why": "earn-500：X 到时卖出，花 $60.00、收回 $2.00（-97%），账本 $343.00"}])
-        self.assertTrue(lost[0].startswith("🔴 `09:30` **财报彩票 $500** **-97%** · 到时卖出"))
+        self.assertTrue(lost[0].startswith("🔴 `09:30` [**财报彩票 $500**](https://metrobasicsusa-wq.github.io/Zero-or-Hero/f/earn.html) **-97%** · 到时卖出"))
 
     def test_a_held_position_opens_its_card_with_two_short_lines(self):
         from hero import notify
@@ -2365,8 +2365,8 @@ class Notify(unittest.TestCase):
                ev("19:31", kind="sleeve_result", sleeve="tsla0dte-5x-1000", ret=-0.965,
                   why=f"tsla0dte-5x-1000：{sym} 2026-10-14 15:30 到时卖出，花 $255.00、收回 $9.00（-96%），账本 $436.00")]
         self.assertEqual(notify.lines(evs), [
-            "✅ `10:00` 成交 × $0.85：TSLA 末日 $500 1 张 · TSLA 末日·5 倍 $1k 3 张（共 4 张，花 $340）；挂 3/5 倍止盈",
-            "🔴 `15:30` **-96%** · 15:30 到时卖出：TSLA 末日 $500 · TSLA 末日·5 倍 $1k（花 $340、收回 $12）"])
+            "✅ `10:00` 成交 × $0.85：[TSLA 末日](https://metrobasicsusa-wq.github.io/Zero-or-Hero/f/tsla0dte.html) $500 1 张 · [TSLA 末日·5 倍](https://metrobasicsusa-wq.github.io/Zero-or-Hero/f/tsla0dte-5x.html) $1k 3 张（共 4 张，花 $340）；挂 3/5 倍止盈",
+            "🔴 `15:30` **-96%** · 15:30 到时卖出：[TSLA 末日](https://metrobasicsusa-wq.github.io/Zero-or-Hero/f/tsla0dte.html) $500 · [TSLA 末日·5 倍](https://metrobasicsusa-wq.github.io/Zero-or-Hero/f/tsla0dte-5x.html) $1k（花 $340、收回 $12）"])
 
     def test_ledger_scoreboard_after_the_close(self):
         from hero import notify
@@ -2382,8 +2382,8 @@ class Notify(unittest.TestCase):
             cards = notify.ledger_cards(root, "2026-10-14")
             self.assertEqual(cards[0]["title"], "账本榜 · 合计 $3,934 / 起点 $3,000 · 今天已实现 +440")
             rows = cards[0]["description"].split("\n")
-            self.assertEqual(rows[0], "🏆 **NVDA 末日 $500** $1,434（2.87 倍） · 今天 +440 · 持 1 笔")
-            self.assertEqual(rows[1], "🟢 **接力 $1k** $1,000（1.00 倍） · 第 2 轮")
+            self.assertEqual(rows[0], "🏆 [**NVDA 末日 $500**](https://metrobasicsusa-wq.github.io/Zero-or-Hero/f/nvda0dte.html) $1,434（2.87 倍） · 今天 +440 · 持 1 笔")
+            self.assertEqual(rows[1], "🟢 [**接力 $1k**](https://metrobasicsusa-wq.github.io/Zero-or-Hero/f/relay.html) $1,000（1.00 倍） · 第 2 轮")
             self.assertEqual(rows[2], "⚪ 还没出手：撒网（500/1000）")
 
     def test_order_lines_say_buy_or_sell_and_how_much(self):
@@ -2424,8 +2424,12 @@ class Notify(unittest.TestCase):
         many = [{"title": f"X{i}", "description": "y" * 900} for i in range(25)]
         msgs = notify.messages(many)
         self.assertTrue(all(len(m["embeds"]) <= 10 and sum(notify.size(c) for c in m["embeds"]) <= notify.CHARS_PER_MESSAGE
-                            for m in msgs))
+                            and notify.nbytes(m) <= notify.MESSAGE_BYTES for m in msgs))
         self.assertEqual(sum(len(m["embeds"]) for m in msgs), 25)
+        wide = notify.messages([{"title": "中", "description": "\n".join(["中文" * 100] * 20)}])   # 4,000 chars, ~12 KB
+        self.assertTrue(all(notify.nbytes(m) <= notify.MESSAGE_BYTES for m in wide))
+        self.assertEqual(sum(len(m["embeds"]) for m in wide), 3)
+        self.assertEqual(notify.direction("spy0dte-old-plan-1000"), "spy0dte")
 
 
 class SniperScore(unittest.TestCase):
