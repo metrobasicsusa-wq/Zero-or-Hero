@@ -3171,6 +3171,21 @@ class Sleeves(unittest.TestCase):
         self.assertEqual(sleeves.units(139.5, 200.0, 201.0), (0, False))               # not even the whole ledger: no trade
         self.assertEqual(sleeves.units(500.0, 1000.0, 201.0), (2, False))              # the half buys two: unchanged
 
+    def test_plan_scales_a_share_pick(self):
+        # a 3x inverse fund takes a third of the notional (hero.sleeve_rules.Peer)
+        from datetime import datetime
+        from hero import sleeves
+        b = SleeveBroker(lambda s: (0.08, 0.10))
+        b.snaps = {"SOXS": {"dailyBar": {"o": 50.0}, "latestTrade": {"p": 50.0}, "prevDailyBar": {"c": 45.0}}}
+        rule = type("R", (), {"entries": lambda self, run, spec, s: ("2026-10-08", [
+            {"sym": "SOXS", "asset": "stock", "und": "SMH", "ask": 50.0, "whole": False, "scale": 1 / 3, "exit_at": "15:50", "why": "x"}])})()
+        spec = {"id": "p-900", "kind": "peer", "start": 900, "fraction": 1.0}
+        book = sleeves.Book(self.root / "plan.json", [spec])
+        sleeves.Runner(b, Journal(self.root), self.cfg, [spec], book, {"peer": rule}, datetime(2026, 10, 8, 9, 40),
+                       date(2026, 10, 8), sleep=lambda s: None).plan()
+        t = book.s("p-900")["open"][0]
+        self.assertEqual((t["sym"], t["qty"], t["paid"]), ("SOXS", 6.0, 300.0))        # 900 / 3 = $300 at $50
+
     def test_plan_goes_all_in_the_same_way(self):
         b = SleeveBroker(lambda s: (2.00, 3.00))                                       # $301 a contract; half of $500 is $250
         book, log = self.plan_cycle(b, 10, 0, [{**self.specs[0], "id": "x-500"}])
@@ -3519,6 +3534,39 @@ class SleeveRules(unittest.TestCase):
         b.option_snapshots = lambda syms: {x: {"latestQuote": {"bp": 1, "ap": 5.0 if x.startswith("AAA") else 0.5}} for x in syms}
         slot, picks = sr.Gap().entries(self.run_at(date(2026, 10, 8), 9, 50, b), {"n": 1}, {"slots": {}, "cash": 500.0})
         self.assertEqual([p["und"] for p in picks], ["AAA"])
+
+    def test_peer_follows_claude_c_legs_in_shares_with_inverse_funds(self):
+        # owner, 10-22 (「C 的大盘方向好像都很准」「按你的来」): what the peer's three-leg call is worth, plan only
+        from types import SimpleNamespace
+        from hero import sleeve_rules as sr
+        b = self.broker()
+        b.snaps.update({"SPY": {"dailyBar": {"o": 766.0}, "latestTrade": {"p": 765.0}, "prevDailyBar": {"c": 773.0}},
+                        "SH": {"dailyBar": {"o": 40.0}, "latestTrade": {"p": 40.2}, "prevDailyBar": {"c": 39.8}},
+                        "SOXS": {"dailyBar": {"o": 50.0}, "latestTrade": {"p": 55.0}, "prevDailyBar": {"c": 45.0}},
+                        "XLP": {"dailyBar": {"o": 88.0}, "latestTrade": {"p": 88.5}, "prevDailyBar": {"c": 87.1}}})
+        with tempfile.TemporaryDirectory() as d:
+            spec = {"id": "peerc-500", "kind": "peer", "exchange_dir": d}
+            r = self.run_at(date(2026, 10, 22), 9, 40, b)
+            self.assertIsNone(sr.Peer().entries(r, spec, {"slots": {}}))              # file not archived yet: wait
+            Path(d, "2026-10-22.morning.json").write_text(json.dumps({"direction_call": {"legs": [
+                {"symbol": "SPY", "side": "看跌", "falsifier": "收盘高于 773.09 即错"},
+                {"symbol": "SMH", "side": "BEARISH", "falsifier": "close above 556.70"},
+                {"symbol": "XLP", "side": "看涨", "falsifier": "收盘低于 87.11 即错"},
+                {"symbol": "XLE", "side": "中性"}]}}))
+            seen = []
+            r.j = SimpleNamespace(event=lambda kind, **k: seen.append((kind, k)))
+            slot, picks = sr.Peer().entries(r, spec, {"slots": {}})
+            self.assertEqual(slot, "2026-10-22")
+            self.assertEqual([(p["sym"], p["und"], p["scale"], p["asset"]) for p in picks],
+                             [("SH", "SPY", 1, "stock"), ("SOXS", "SMH", 1 / 3, "stock"), ("XLP", "XLP", 1, "stock")])
+            self.assertEqual(picks[0]["exit_at"], "15:50")
+            self.assertIn("它的证伪线：收盘高于 773.09 即错", picks[0]["why"])
+            self.assertIn("反向 ETF SOXS（3 倍，只用 1/3 的钱）", picks[1]["why"])
+            self.assertEqual(seen, [])                                                   # XLE 中性 is simply not a leg
+            Path(d, "2026-10-22.morning.json").write_text(json.dumps({"direction_call": {"legs": [{"symbol": "XLP", "side": "看跌"}]}}))
+            self.assertEqual(sr.Peer().entries(r, spec, {"slots": {}}), ("2026-10-22", []))  # no inverse fund for XLP
+            self.assertIn("没有反向 ETF", seen[-1][1]["why"])
+            self.assertIsNone(sr.Peer().entries(self.run_at(date(2026, 10, 22), 10, 40, b), spec, {"slots": {}}))  # past the cutoff
 
     def test_dip_call_only_the_day_after_a_one_percent_drop(self):
         from hero import sleeve_rules as sr

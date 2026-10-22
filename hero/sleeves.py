@@ -450,7 +450,7 @@ class Runner:
             each = spec.get("fraction", self.p["fraction"]) * s["cash"] / len(picks)
             for pk in picks:
                 if pk["asset"] == "stock":
-                    notional = math.floor(each * 100) / 100
+                    notional = math.floor(each * float(pk.get("scale", 1)) * 100) / 100   # scale: a 3x fund takes a third
                     ask = float(pk.get("ask") or 0)
                     if pk.get("whole"):
                         qty, allin = units(notional, s["cash"], ask)
@@ -594,7 +594,7 @@ class Runner:
             sid = spec["id"]
             left.setdefault(sid, self.book.s(sid)["cash"])
             if pk["asset"] == "stock":
-                notional = math.floor(min(each, room) * 100) / 100
+                notional = math.floor(min(each * float(pk.get("scale", 1)), room) * 100) / 100
                 ask = float(pk.get("ask") or 0)
                 if pk.get("whole") and ask and int(notional // ask) < 1 and ask <= min(left[sid], room):
                     notional = ask   # one whole share with what is left of the ledger

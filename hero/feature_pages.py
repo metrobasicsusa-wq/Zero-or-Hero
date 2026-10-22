@@ -34,6 +34,7 @@ GROUPS = [
     ("财报", ["earn", "pead", "relay"]),
     ("狙击和隔夜", ["sniper", "overnight"]),
     ("杠杆 ETF", ["tqqq", "hikerally"]),
+    ("跟别人的判断", ["peerc"]),
 ]
 TITLE = {"spy0dte": "SPY 末日单", "spy0dte-near": "SPY 末日单（离现价 0.3%）", "qqq0dte": "QQQ 末日单",
          "tsla0dte": "TSLA 末日单", "tsla0dte-5x": "TSLA 末日单（5 倍止盈）", "nvda0dte": "NVDA 末日单",
@@ -41,7 +42,7 @@ TITLE = {"spy0dte": "SPY 末日单", "spy0dte-near": "SPY 末日单（离现价 
          "wk-momo": "周内动量", "wk-news": "周内新闻", "net": "撒网", "gap": "低开反弹", "flush": "急跌再拉",
          "opengap": "开盘跳空延续", "breakgap": "突破大跳空", "dipweek": "抄底给一周", "earn": "财报正股 / 两倍",
          "pead": "财报后漂移", "relay": "接力", "sniper": "开盘狙击", "overnight": "隔夜动量", "tqqq": "TQQQ 均线",
-         "hikerally": "加息期快涨", "fadelotto": "高开回落彩票"}
+         "hikerally": "加息期快涨", "fadelotto": "高开回落彩票", "peerc": "跟 claude-c 的方向"}
 EVENT_KINDS = {"lotto_alert": "提醒", "sleeve_skip": "跳过", "sleeve_plan": "演算", "sleeve_round": "换轮",
                "sleeve_plan_fill": "演算买进", "sleeve_plan_result": "演算结果"}
 MAX_EVENTS = 40

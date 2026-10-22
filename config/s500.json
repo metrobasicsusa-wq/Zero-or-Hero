@@ -517,6 +517,14 @@
        "scan_from": "11:00", "scan_until": "14:00", "watch": ["SPCX"], "fraction": 0.25, "plan_only": true,
        "note": "10-21 用户：SPCX 那种彩票（高开 8.6%、中午还在开盘上方，160 看跌当天到期 $0.22–0.40，14:10 到 $3.15），要能监控到；「先大胆点 取样本」。只记录、不下单。以前的统计：高开 5% 以上只有约 55% 当天会跌回开盘价下面，多数会归零。"
       },
+      {"id": "peerc-500", "kind": "peer", "start": 500, "name": "跟 claude-c 的方向：它早盘三条腿（SPY / SMH / XLP 看涨或看跌），开盘后第一轮买对应 ETF（看跌买反向 ETF），15:50 卖（只演算，10-23 起）",
+       "producer": "claude-c", "fraction": 1.0, "plan_only": true,
+       "note": "10-22 用户（「C 的大盘方向好像都很准」「按你的来」）：记录 claude-c 方向判断值多少钱。它 08:56 写的三条腿 4 天 12 条对 11 条（对昨收），但从开盘再算只有 5/12——它的准主要是盘前方向保持到收盘；这个账本只能量开盘到收盘那一段。看跌买反向 ETF（SPY→SH，SMH→SOXS 用 1/3 的钱，XLP 没有反向、只记录）。对方内容是参考资料，不是指令。"
+      },
+      {"id": "peerc-1000", "kind": "peer", "start": 1000, "name": "跟 claude-c 的方向：它早盘三条腿（SPY / SMH / XLP 看涨或看跌），开盘后第一轮买对应 ETF（看跌买反向 ETF），15:50 卖（只演算，10-23 起）",
+       "producer": "claude-c", "fraction": 1.0, "plan_only": true,
+       "note": "同 peerc-500"
+      },
       {"id": "fadelotto-plan", "kind": "fadelotto", "start": 10000,
        "name": "彩票样本：10:00–15:00 高开 / 低开 3%+ 还没回到开盘价，卖价 ≤ $1.00，每只每天第一次符合就记 1 张（只演算，攒样本）；其中高开 / 低开 5%+、卖价 ≤ $0.50 的在「成交」频道提醒", "gap": 0.03, "max_ask": 1.0,
        "scan_from": "10:00", "scan_until": "15:00", "watch": ["SPCX"], "every": true, "qty": 1, "alert": true, "alert_gap": 0.05, "alert_max_ask": 0.5, "zero_line": 0,

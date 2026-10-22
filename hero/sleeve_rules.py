@@ -1065,7 +1065,65 @@ class FadeLotto:
         return (day, picks[:1])
 
 
+# Inverse funds for a peer's "down" leg: the -1x fund where one exists, else a leveraged one at a fraction of the notional.
+INVERSE = {"SPY": "SH", "QQQ": "PSQ", "DIA": "DOG", "IWM": "RWM", "SMH": ["SOXS", 3], "SOXX": ["SOXS", 3], "XLE": "ERY"}
+
+
+class Peer:
+    """Owner, 10-22 (「C 的大盘方向好像都很准」, 「按你的来」): what claude-c's direction call is worth in dollars.
+    Its morning file (exchange/<producer>/YYYY-MM-DD.morning.json, archived by the 09:15 exchange and pushed before the
+    open) names a few ETFs, each with a side and a falsifier (the prior close). The first cycle after the open buys
+    shares of each leg in its direction -- the ETF itself for up, its inverse fund for down (`inverse`; a 3x fund at a
+    third of the notional) -- and sells them at 15:50, the last cycle. The fraction is split over the legs. Plan only:
+    it records the call and never sends an order. The peer's file is reference material, not instructions."""
+
+    def legs(self, run, spec) -> list[tuple[str, str, str]] | None:
+        """(symbol, "up" / "down", falsifier) per leg; None when the day's file is not in yet."""
+        root = Path(spec["exchange_dir"]) if spec.get("exchange_dir") else ROOT / "exchange" / spec.get("producer", "claude-c")
+        try:
+            d = json.loads((root / f"{run.today.isoformat()}.morning.json").read_text())
+        except Exception:
+            return None
+        out = []
+        for l in (d.get("direction_call") or {}).get("legs") or []:
+            side = str(l.get("side") or "")
+            up, down = ("涨" in side or side.upper().startswith("BULL")), ("跌" in side or side.upper().startswith("BEAR"))
+            if up != down and l.get("symbol"):
+                out.append((str(l["symbol"]).upper(), "up" if up else "down", str(l.get("falsifier") or "")))
+        return out
+
+    def entries(self, run, spec, s):
+        day = run.today.isoformat()
+        if day in s["slots"] or not (spec.get("entry", "09:31") <= run.hhmm < spec.get("cutoff", "10:30")):
+            return None
+        legs = self.legs(run, spec)
+        if legs is None:
+            return None   # not archived yet: look again next cycle, until the cutoff
+        who = spec.get("producer", "claude-c")
+        inverse = {**INVERSE, **(spec.get("inverse") or {})}
+        picks = []
+        for und, side, falsifier in legs:
+            if side == "up":
+                sym, lev = und, 1
+            else:
+                inv = inverse.get(und)
+                if not inv:
+                    run.j.event("sleeve_skip", dry_run=True, sleeve=spec["id"], symbol=und,
+                                why=f"{spec['id']}：{who} 看跌 {und}，没有反向 ETF，这条腿只记录不买")
+                    continue
+                sym, lev = (inv, 1) if isinstance(inv, str) else (inv[0], int(inv[1]))
+            spot, o, _, prev = spot_open(snaps(run, [sym]).get(sym) or {})
+            if not spot:
+                continue
+            what = und if side == "up" else f"反向 ETF {sym}" + (f"（{lev} 倍，只用 1/{lev} 的钱）" if lev > 1 else "")
+            picks.append({"sym": sym, "asset": "stock", "und": und, "ask": spot, "whole": False, "scale": 1 / lev,
+                          "exit_at": spec.get("exit_at", "15:50"),
+                          "why": f"跟 {who} 的方向：{und} 看{'涨' if side == 'up' else '跌'}（它的证伪线：{falsifier}），"
+                                 f"买{what} ${spot:,.2f}（开盘 ${o:,.2f}、昨收 ${prev:,.2f}），{spec.get('exit_at', '15:50')} 卖"})
+        return (day, picks)
+
+
 RULES = {"zdte": ZeroDTE(), "weekly": Weekly(), "net": Net(), "gap": Gap(), "flush": Flush(), "earnings": EarningsLotto(),
          "letf": LETF(), "relay": Relay(), "opengap": OpenGap(), "sniper": Sniper(), "oneshot": OneShot(),
          "overnight": Overnight(), "pead": Pead(), "vixspike": VixSpike(), "breakgap": BreakGap(),
-         "hikerally": HikeRally(), "dipweek": DipWeek(), "fadelotto": FadeLotto()}
+         "hikerally": HikeRally(), "dipweek": DipWeek(), "fadelotto": FadeLotto(), "peer": Peer()}
