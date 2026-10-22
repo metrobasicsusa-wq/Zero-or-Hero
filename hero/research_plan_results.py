@@ -37,6 +37,9 @@ UNTIL = re.compile(r"(?:否则|拿到) (\d\d)-(\d\d) (\d\d:\d\d) 卖")
 TAKE = re.compile(r"([\d.]+) 倍止盈")
 STEPS = [f"{h:02d}:{m:02d}" for h in range(9, 16) for m in range(0, 60, 10) if "09:40" <= f"{h:02d}:{m:02d}" <= "15:50"]  # as the engine: 15:50 is the last cycle
 # the stopped rules' plan twins -> (the live family, the day its rule changed or stopped; live entries before it count)
+# Picks that are not the rule's: spy0dte-old-plan went live at 11:50 on 10-21 and the 10:00-15:00 entry window bought at
+# once; its rule enters at 10:00 (the tickets were removed from the plan ledger after the close, notes/lessons.md 10-21).
+NOT_THE_RULES = {("spy0dte-old-plan-500", "2026-10-21"), ("spy0dte-old-plan-1000", "2026-10-21")}
 LIVE_OF = {"gap-plan": ("gap", "2026-10-17"), "flush-plan": ("flush", "2026-10-17"), "overnight-plan": ("overnight", "2026-10-17"),
            "spy0dte-old-plan": ("spy0dte", "2026-10-21"), "earn-opt-plan": ("earn", "2026-10-19"), "sniper-plan": ("sniper", None)}
 
@@ -303,6 +306,14 @@ def collect(root: Path) -> tuple[list[tuple], list[str]]:
     return picks, unsized
 
 
+def usable(picks: list[tuple], eng: list[dict], last_day: str) -> list[tuple]:
+    """The picks to backfill: up to the last day with data, none the engine already follows itself (it began on 10-21
+    afternoon, not on SIM_FROM: those were counted twice in the 10-22 morning run), none in NOT_THE_RULES."""
+    followed = {(r["sleeve"], r["sym"], r["day"]) for r in eng}
+    return [p for p in picks if p[3] <= last_day and (p[5]["id"], p[1]["sym"], p[3]) not in followed
+            and (p[5]["id"], p[3]) not in NOT_THE_RULES]
+
+
 def money(x: float) -> str:
     return f"{'-' if x < 0 else '+'}${abs(x):,.2f}"
 
@@ -368,13 +379,14 @@ def main() -> None:
     from hero.research_ideas import save
     last_day = last_full_day(datetime.now(ET).date())     # the day's option bars are only out once the day is over
     picks, unsized = collect(ROOT)
-    picks = [p for p in picks if p[3] <= last_day]
+    eng = engine_rows(ROOT)
+    picks = usable(picks, eng, last_day)
     syms = sorted({p[1]["sym"] for p in picks})
     bars = {}
     if syms:
         bars = Alpaca().option_bars(syms, f"{FROM}T13:00:00Z", f"{last_day}T21:00:00Z", timeframe="1Min")
     rows = replay(picks, Tape(bars), last_day) if picks else []
-    eng, live = engine_rows(ROOT), live_rows(ROOT)
+    live = live_rows(ROOT)
     cfg = json.loads((ROOT / "config" / "s500.json").read_text())["sleeves"]
     led = ledgers(rows, {x["id"]: x for x in cfg["list"]}, cfg)
     md = markdown(rows, eng, live, last_day, len(unsized), led)

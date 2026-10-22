@@ -2077,6 +2077,16 @@ class ResearchFadeLotto(unittest.TestCase):
 class ResearchPlanResults(unittest.TestCase):
     """Owner, 10-21: what the stopped / plan-only rules would have made, run through the live exit code."""
 
+    def test_backfill_skips_what_the_engine_follows_and_the_deploy_time_picks(self):
+        from hero import research_plan_results as rp
+        pk = lambda sid, sym, day: ({}, {"sym": sym}, 1, day, "15:40", {"id": sid})
+        picks = [pk("earn-opt-plan-500", "NOK261023C00011000", "2026-10-21"),      # the engine has it: counted once
+                 pk("gap-plan-500", "T261023C00023000", "2026-10-21"),             # only rebuilt: kept
+                 pk("spy0dte-old-plan-500", "SPY261021C00778000", "2026-10-21"),   # deploy-time entry: not the rule's
+                 pk("gap-plan-500", "X261024C00010000", "2026-10-22")]             # no bars yet
+        eng = [{"sleeve": "earn-opt-plan-500", "sym": "NOK261023C00011000", "day": "2026-10-21"}]
+        self.assertEqual([p[5]["id"] for p in rp.usable(picks, eng, "2026-10-21")], ["gap-plan-500"])
+
     def test_an_all_in_rule_is_played_in_order_not_summed(self):
         # one shot 10-14..10-20: the tickets sum to about +$4,500, but all-in one after another it went to zero
         from hero import research_plan_results as rp
