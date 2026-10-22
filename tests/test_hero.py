@@ -3158,6 +3158,27 @@ class Sleeves(unittest.TestCase):
         got = r.picks(skip, skip[-1]["ts"][:10])
         self.assertEqual((got[0]["qty"], got[0]["limit"], got[0]["shadow"]), (1, 3.0, "买不起一张"))
 
+    def test_half_cannot_buy_one_but_the_ledger_can_goes_all_in_for_one(self):
+        # owner, 10-22 (「不要把自己越改越保守了」): QQQ 0DTE sat out from 10-14 on -- half its ledger was below one contract
+        b = SleeveBroker(lambda s: (1.50, 2.00))                                       # $201 a contract; half of $279 is $139.50
+        book, log = self.cycle(b, 10, 0, self.specs[:1])
+        buys = [o for o in b.orders.values() if o["side"] == "buy"]
+        self.assertEqual([int(o["qty"]) for o in buys], [1])
+        self.assertIn("押上账本买 1 张", [e for e in log if e["kind"] == "sleeve_buy"][-1]["why"])
+        self.assertLess(book.s("spy0dte-500")["cash"], 279 - 139.5)                    # more than half went in
+        from hero import sleeves
+        self.assertEqual(sleeves.units(139.5, 279.0, 201.0), (1, True))
+        self.assertEqual(sleeves.units(139.5, 200.0, 201.0), (0, False))               # not even the whole ledger: no trade
+        self.assertEqual(sleeves.units(500.0, 1000.0, 201.0), (2, False))              # the half buys two: unchanged
+
+    def test_plan_goes_all_in_the_same_way(self):
+        b = SleeveBroker(lambda s: (2.00, 3.00))                                       # $301 a contract; half of $500 is $250
+        book, log = self.plan_cycle(b, 10, 0, [{**self.specs[0], "id": "x-500"}])
+        s = book.s("x-500")
+        self.assertEqual(s["open"][0]["qty"], 1)
+        self.assertIn("押上账本", [e for e in log if e["kind"] == "sleeve_plan"][-1]["why"])
+        self.assertEqual(b.orders, {})
+
     def test_plan_only_logs_what_it_would_buy_and_sends_nothing(self):
         from datetime import datetime
         from hero import sleeve_rules, sleeves
@@ -3490,10 +3511,14 @@ class SleeveRules(unittest.TestCase):
         from hero import sleeve_rules as sr
         b = self.broker()
         b.snaps["CCC"]["dailyBar"]["o"] = 98.0                                         # a smaller gap, -2%
-        b.option_snapshots = lambda syms: {x: {"latestQuote": {"bp": 1, "ap": 5.0 if x.startswith("AAA") else 0.5}} for x in syms}
+        b.option_snapshots = lambda syms: {x: {"latestQuote": {"bp": 1, "ap": 6.0 if x.startswith("AAA") else 0.5}} for x in syms}
         r = self.run_at(date(2026, 10, 8), 9, 50, b)
-        slot, picks = sr.Gap().entries(r, {"n": 1}, {"slots": {}, "cash": 500.0})      # $250 a pick: AAA's $500 is too dear
+        slot, picks = sr.Gap().entries(r, {"n": 1}, {"slots": {}, "cash": 500.0})      # AAA's $600 is more than the whole ledger
         self.assertEqual([p["und"] for p in picks], ["CCC"])
+        # owner, 10-22: a contract above half the ledger but within all of it is no longer passed over (the runner goes all in)
+        b.option_snapshots = lambda syms: {x: {"latestQuote": {"bp": 1, "ap": 5.0 if x.startswith("AAA") else 0.5}} for x in syms}
+        slot, picks = sr.Gap().entries(self.run_at(date(2026, 10, 8), 9, 50, b), {"n": 1}, {"slots": {}, "cash": 500.0})
+        self.assertEqual([p["und"] for p in picks], ["AAA"])
 
     def test_dip_call_only_the_day_after_a_one_percent_drop(self):
         from hero import sleeve_rules as sr

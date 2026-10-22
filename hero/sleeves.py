@@ -1,8 +1,10 @@
 """Many small accounts inside one paper account: each direction gets its own $500 and $1,000 ledger.
 
 The plan (docs/sleeves-plan.md): every direction runs as if it were a real small account. A sleeve has
-its own cash; it bets a fraction (half) of that cash per entry, never the account's; whole contracts only,
-so a small sleeve sometimes cannot afford a trade. Below 10% of its start the round is over (a zero);
+its own cash; it bets a fraction (half) of that cash per entry, never the account's; whole contracts only.
+When the fraction cannot buy one contract (or one whole share) but what is left of the ledger can, it buys
+one (owner, 10-22: a ledger below the price of two contracts but above the zero line must not sit out for
+good -- QQQ 0DTE had not traded since 10-14). Below 10% of its start the round is over (a zero);
 at $10,000 it is a hero; either way it starts again at its start from the shared pool, and the round
 count is kept. Every broker order carries a client_order_id naming the sleeve and the ticket, and
 every fill is booked from the broker's own fill price, so the ledgers add up to the real account.
@@ -49,6 +51,18 @@ def tick(x: float) -> float:
 
 def multiplier(t: dict) -> int:
     return 100 if t["asset"] == "option" else 1
+
+
+def units(each: float, left: float, price: float) -> tuple[int, bool]:
+    """Whole units (contracts at `price` x 100, or whole shares at `price`) for one pick: as many as its share
+    `each` of the ledger buys; when that is not even one but the ledger's `left` cash covers one, one (all in).
+    Returns (units, all_in)."""
+    if price <= 0:
+        return 0, False
+    q = int(each // price)
+    if q >= 1:
+        return q, False
+    return (1, True) if price <= left else (0, False)
 
 
 class Book:
@@ -438,14 +452,18 @@ class Runner:
                 if pk["asset"] == "stock":
                     notional = math.floor(each * 100) / 100
                     ask = float(pk.get("ask") or 0)
-                    qty = (int(notional // ask) if pk.get("whole") else round(notional / ask, 6)) if ask > 0 else 0
-                    size = f"买 ${each:,.2f}"
+                    if pk.get("whole"):
+                        qty, allin = units(notional, s["cash"], ask)
+                    else:
+                        qty, allin = (round(notional / ask, 6) if ask > 0 else 0), False
+                    size = f"一半 ${each:,.2f} 买不起一股，押上账本买 1 股" if allin else f"买 ${each:,.2f}"
                 else:
                     limit = tick(pk["ask"] + self.p["buy_pad"])
-                    qty = int(each // (limit * 100))
+                    qty, allin = units(each, s["cash"], limit * 100)
                     if spec.get("qty"):   # a sample ledger: a fixed number of contracts a find (owner, 10-21)
-                        qty = int(spec["qty"]) if limit * 100 * int(spec["qty"]) <= s["cash"] else 0
-                    size = f"{qty} 张 × ${limit:.2f}" if qty else f"一张 ${limit * 100:,.2f} 超过 ${each:,.2f}，买不起"
+                        qty, allin = (int(spec["qty"]) if limit * 100 * int(spec["qty"]) <= s["cash"] else 0), False
+                    size = ((f"{qty} 张 × ${limit:.2f}" + (f"（一半 ${each:,.2f} 买不起一张，押上账本）" if allin else "")) if qty
+                            else f"一张 ${limit * 100:,.2f} 超过账本剩下的 ${s['cash']:,.2f}，买不起")
                 self.j.event("sleeve_plan", dry_run=True, sleeve=spec["id"], symbol=pk["sym"],
                              why=f"{spec['id']}（演算，不下单）：{pk['why']}；{size}")
                 if qty and qty > 0:
@@ -571,24 +589,37 @@ class Runner:
             cash = 0.0
         room = cash - self.p["cash_buffer"]
         opts, stocks = [], []
+        left = {}   # what each ledger still has this cycle: one pick may go all in when its half cannot buy one unit
         for spec, pk, each, slot in intents:
+            sid = spec["id"]
+            left.setdefault(sid, self.book.s(sid)["cash"])
             if pk["asset"] == "stock":
                 notional = math.floor(min(each, room) * 100) / 100
+                ask = float(pk.get("ask") or 0)
+                if pk.get("whole") and ask and int(notional // ask) < 1 and ask <= min(left[sid], room):
+                    notional = ask   # one whole share with what is left of the ledger
+                    pk = {**pk, "why": f"{pk['why']}；一半 ${each:,.2f} 买不起一股，押上账本买 1 股"}
                 if notional >= 1:
                     stocks.append((spec, pk, notional, slot))
                     room -= notional
+                    left[sid] -= notional
                 continue
             limit = tick(pk["ask"] + self.p["buy_pad"])
-            qty = int(each // (limit * 100))
+            qty, allin = units(each, left[sid], limit * 100)
             if qty < 1:
-                self.j.event("sleeve_skip", dry_run=False, sleeve=spec["id"], symbol=pk["sym"],
-                             why=f"{spec['id']}：{pk['sym']} 一张 ${limit * 100:,.2f}，超过这笔可用的 ${each:,.2f}，不买")
+                self.j.event("sleeve_skip", dry_run=False, sleeve=sid, symbol=pk["sym"],
+                             why=f"{sid}：{pk['sym']} 一张 ${limit * 100:,.2f}，超过这笔可用的 ${each:,.2f}"
+                                 f"（账本剩下 ${left[sid]:,.2f} 也不够），不买")
                 continue
             if qty * limit * 100 > room:
-                self.j.event("sleeve_skip", dry_run=False, sleeve=spec["id"], symbol=pk["sym"], why=f"{spec['id']}：账户现金不够，不买")
+                self.j.event("sleeve_skip", dry_run=False, sleeve=sid, symbol=pk["sym"], why=f"{sid}：账户现金不够，不买")
                 continue
+            if allin:
+                pk = {**pk, "why": f"{pk['why']}；一半 ${each:,.2f} 买不起一张，押上账本买 1 张"}
             room -= qty * limit * 100
-            opts.append({"spec": spec, "pk": pk, "limit": limit, "qty": qty, "each": each, "tid": entry_tid(slot), "first_ask": pk["ask"]})
+            opts.append({"spec": spec, "pk": pk, "limit": limit, "qty": qty, "each": each, "cap": left[sid],
+                         "tid": entry_tid(slot), "first_ask": pk["ask"]})
+            left[sid] -= qty * limit * 100
         self.buy_options(opts)
         self.buy_stocks(stocks)
 
@@ -625,7 +656,7 @@ class Runner:
             for o in retry:
                 ask = quotes.get(o["pk"]["sym"], (0.0, 0.0))[1]
                 limit = tick(ask + self.p["buy_pad"]) if ask else 0.0
-                qty = int(o["each"] // (limit * 100)) if limit else 0
+                qty = units(o["each"], o.get("cap", 0.0), limit * 100)[0] if limit else 0
                 if not ask or limit > tick(o["first_ask"] * self.p["chase_cap"]) or qty < 1:
                     self.j.event("sleeve_skip", dry_run=False, sleeve=o["spec"]["id"], symbol=o["pk"]["sym"],
                                  why=f"{o['spec']['id']}：{o['pk']['sym']} 没成交、已撤单；新卖价 "

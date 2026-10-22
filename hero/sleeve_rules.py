@@ -184,9 +184,10 @@ def unverified_skip(run, spec, und: str, r: dict) -> None:
 
 
 def budget(run, spec, s, n: int) -> float:
-    """What one pick may cost in this sleeve (its fraction of the sleeve's cash, split over n picks)."""
-    frac = spec.get("fraction", getattr(run, "p", {}).get("fraction", 0.5))
-    return frac * s["cash"] / max(n, 1)
+    """What one pick may cost in this sleeve: one contract the ledger can pay for. The runner sizes it with the
+    sleeve's fraction and, when that cannot buy one, goes all in for one (hero.sleeves.units; owner, 10-22: before,
+    a contract above half the ledger was passed over here and small ledgers stopped trading)."""
+    return s["cash"]
 
 
 def trend20(xs: list[float]) -> int:
