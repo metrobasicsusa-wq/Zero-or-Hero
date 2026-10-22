@@ -6,13 +6,13 @@
 ```json
 {
   "date": "2026-10-14",
-  "sniper": {                       // 或 null（大多数日子没有够格的消息就写 null）
+  "sniper": {                       // 10-22 起每天都填第 1 名；只有没有一只有一周内期权时才写 null
     "symbol": "META",
     "direction": "call",            // "call" 或 "put"
     "catalyst": "一句话：什么新消息、为什么还没反映在价格里",
     "confidence": 0.4
   },
-  "candidates": [                   // 用户 10-15：盘前看过的 3–5 只都打分排名，第 1 名就是 sniper（sniper 为 null 时也照样列）
+  "candidates": [                   // 用户 10-15：盘前看过的 3–5 只都打分排名，第 1 名就是 sniper
     {"rank": 1, "symbol": "META", "direction": "call", "confidence": 0.4, "why": "一句话"},
     {"rank": 2, "symbol": "NBIS", "direction": "put", "confidence": 0.2, "why": "一句话"}
   ],
@@ -38,7 +38,8 @@
 - 要有新的、非财报的消息，而且还没被盘前跳空吃掉（中盘股波动大，跳空超过约 6% 通常已经反映）：产品 / 合同 / 监管 / 分析师大幅上调、
   或者某条大消息的二线受益股（例：大厂宣布新数据中心 → 供电、光模块、液冷的小公司；加密政策 → COIN、HOOD、MSTR）。
 - 机械规则（数新闻条数、按跳空大小、分析师评级本身）回测都亏（research/2026-10-13-open-catalyst.md、2026-10-13-analyst.md），
-  优势只可能来自判断，所以没有把握就写 null。
+  优势只可能来自判断。
+- **每天都下第 1 名（用户 10-22 同意：「不要把自己越改越保守了，这个项目本身的目的就是大胆」）**：10-15 到 10-22 七天里有 4 天因为「没把握」写了 null，但记分卡（research/sniper/scorecard.md，23 个候选）显示信心分没有预测作用（低于 0.2 的平均 -0.7%，0.3 以上 -5.0%），空着只是让「做满 10 次」的停止线来得更慢。所以 sniper 每天都填排第 1 的候选，信心分照打；10 次以后合计还亏就按停止线停。
 
 文件里另加一个字段：`"claude_b_pick": "META call"`（或 null / "未找到"），记录对方当天的选择，方便事后对比两边。
 
@@ -61,7 +62,7 @@
 `confidence` 是盘前的主观把握（0–1），不是算出来的概率，目前也不影响下单（只下第 1 名、账本一半）。为了检验它，
 每天把看过的 3–5 只候选都写进 `candidates` 并打分；`python -m hero.research_sniper_score`（research.yml 的 sniper_score）
 按每只当天从开盘起朝所选方向走了多少记分（收盘方向对不对、当天有没有顺向 3% 以上——约 0.1 delta 期权能翻倍的位置），
-按信心分和排名分组，写到 `research/sniper/scorecard.md`。攒够几十个数据点后，再决定要不要让分数决定下注大小、或低于某个分数就写 null。
+按信心分和排名分组，写到 `research/sniper/scorecard.md`。攒够几十个数据点后，再决定要不要让分数决定下注大小（不再用低分来空仓）。
 
 ## 回测出来的加分项（research/2026-10-15-sniper-factors*.md，用户 10-15）
 
