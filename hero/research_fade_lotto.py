@@ -22,7 +22,7 @@ from __future__ import annotations
 import json
 import statistics
 import time
-from datetime import date, timedelta
+from datetime import date, datetime, timedelta, timezone
 
 from hero.research_0dte import at_or_before, et_minutes
 from hero.research_ideas import ROOT, cost_of, intraday, report, save
@@ -36,10 +36,17 @@ FEED = "sip"
 EXITS = {"half": "一半 3 倍止盈、一半回撤（实际规则）", "hold": "拿到收盘", "take3": "3 倍止盈", "take10": "10 倍止盈"}
 
 
+def capped(ts: str) -> str:
+    """A request end no later than 16 minutes ago: the data plan serves the full (SIP) tape only after 15 minutes
+    (10-21: the first run asked for today and got 403 "subscription does not permit querying recent SIP data")."""
+    latest = (datetime.now(timezone.utc) - timedelta(minutes=16)).strftime("%Y-%m-%dT%H:%M:%SZ")
+    return min(ts, latest)
+
+
 def daily(client, syms: list[str], start: str, end: str, adjustment: str) -> dict[str, list[dict]]:
     out: dict[str, list[dict]] = {}
     for i in range(0, len(syms), 50):
-        params = {"symbols": ",".join(syms[i:i + 50]), "timeframe": "1Day", "start": start, "end": f"{end}T23:00:00Z",
+        params = {"symbols": ",".join(syms[i:i + 50]), "timeframe": "1Day", "start": start, "end": capped(f"{end}T23:00:00Z"),
                   "adjustment": adjustment, "feed": FEED, "limit": 10000}
         while True:
             page = client._d("/v2/stocks/bars", params) or {}
@@ -141,7 +148,7 @@ def run(client, end: str | None = None) -> dict:
         evs = by_day[day]
         counts["gaps"] += len(evs)
         try:
-            mins = client.stock_bars([e["sym"] for e in evs], f"{day}T13:00:00Z", f"{day}T21:00:00Z", feed=FEED)
+            mins = client.stock_bars([e["sym"] for e in evs], f"{day}T13:00:00Z", capped(f"{day}T21:00:00Z"), feed=FEED)
         except Exception:
             continue
         todo = []
@@ -164,7 +171,7 @@ def run(client, end: str | None = None) -> dict:
         if not todo:
             continue
         try:
-            opts = client.option_bars([g[0] for _, _, _, g, _ in todo], f"{day}T13:00:00Z", f"{day}T21:00:00Z", timeframe="1Min")
+            opts = client.option_bars([g[0] for _, _, _, g, _ in todo], f"{day}T13:00:00Z", capped(f"{day}T21:00:00Z"), timeframe="1Min")
         except Exception:
             continue
         for e, kind, times, (osym, exp, strike), crossed in todo:
