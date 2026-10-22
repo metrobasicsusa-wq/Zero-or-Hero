@@ -4635,6 +4635,11 @@ class EarningsForecastAroundTheReport(unittest.TestCase):
         self.assertTrue(res["up"])
         # no filing time found: the previous close
         self.assertEqual(ef.score_row(row, daily, mins, None)["before"], 100.0)
+        # owner, 10-22 (META +5% after hours, -6% at the open): an after-close report with no filing time still gets
+        # its first reaction, read an hour after 16:05 on the report date
+        mins2 = mins + [{"t": utc(17, 10, 19), "c": 105.0}]
+        res = ef.score_row(post, daily, mins2, None)
+        self.assertEqual((res["before"], res["after_1h"], res["gap_pre"]), (100.0, 0.05, 0.03))
 
     def test_score_due_reads_filings_and_minute_bars(self):
         from datetime import datetime as dt

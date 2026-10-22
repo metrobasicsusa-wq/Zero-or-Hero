@@ -205,6 +205,10 @@ def around(row: dict, mins: list[dict], prev_close: float, rel: datetime | None)
     04:00-20:00 ET; overnight 20:00-04:00 trades are not in it), else the previous close. Also the price an hour
     after the filing, for reference."""
     before, src = prev_close, "前收"
+    if rel is None and row.get("time") == "post-market" and row.get("report_date"):
+        # no 8-K time (SEC needs a contact address): an after-close report is out by 16:05 on its date, so the
+        # first reaction can still be read an hour later (owner, 10-22: META +5% after hours, -6% at the open)
+        rel = datetime.combine(date.fromisoformat(row["report_date"]), time(16, 5), ET)
     if row.get("time") == "pre-market" and rel:
         lo = datetime.combine(business_before(date.fromisoformat(row["reaction_day"])), time(16, 0), ET)
         xs = [b for b in mins if lo <= _t(b) < rel - PRE_LAG]
