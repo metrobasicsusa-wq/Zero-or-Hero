@@ -21,9 +21,10 @@ Run: python -m hero.earnings_profiles [--date YYYY-MM-DD] [SYMBOL ...]  (no symb
 from __future__ import annotations
 
 import argparse
+from zoneinfo import ZoneInfo
 import json
 import statistics
-from datetime import date, timedelta
+from datetime import date, datetime, timedelta
 from pathlib import Path
 
 import requests
@@ -198,7 +199,9 @@ def ahead(n: int, today: date, root: Path = ROOT, get=requests.get, top: int = A
 
 def main() -> None:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--date", default=date.today().isoformat())
+    # New York's date: the nightly check runs at 20:35 ET, already the next day on the runner's UTC clock (10-21: the
+    # first run skipped the next day's reports, the ones the 15:05 judgment needs)
+    ap.add_argument("--date", default=datetime.now(ZoneInfo("America/New_York")).date().isoformat())
     ap.add_argument("--ahead", type=int, default=0, help="pages for the next N weekdays from Nasdaq's calendar")
     ap.add_argument("symbols", nargs="*")
     a = ap.parse_args()
