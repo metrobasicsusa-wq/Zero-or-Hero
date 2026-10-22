@@ -1,0 +1,454 @@
+{
+  "schema_version": "1.0",
+  "producer": "Codex",
+  "mode": "PAPER",
+  "currency": "USD",
+  "trading_date": "2026-10-22",
+  "timezone": "America/New_York",
+  "status": "limited_post_market_review",
+  "as_of": "2026-10-22T15:59:48.825414445-04:00",
+  "generated_at": "2026-10-22T20:33:28.685441+00:00",
+  "evidence_cutoff": {
+    "commit": "b35d4ad547ee69351afdac9ab5b664c6a62300df",
+    "generation": 1020,
+    "core_state_sha256": "9e46179faed9bdb18f74f5259ddd7c532c56671514f5611ff73e4f2698271bdc",
+    "archive_snapshot_sha256": "5b3b97f234cf62323be929ca728578a0f60da6c2faf84593cdea6c4d4a260fe9",
+    "archive_manifest_sha256": "3c6fb696bbe3e1889acbdd2902771ee6cab76e32f62345bd1be9dbfdedf0c1b5",
+    "event_cutoff": 43900,
+    "verified_at": "2026-10-22T20:23:38.618249+00:00",
+    "evidence_stale": false,
+    "sample_cutoff": 191280,
+    "dataset_cutoff": 7279,
+    "session_start": "2026-10-22T09:30:00-04:00",
+    "session_end": "2026-10-22T16:00:00-04:00",
+    "max_session_event_sequence": 43871,
+    "archive_last_event_at": "2026-10-22T20:12:20.830270+00:00"
+  },
+  "scope": {
+    "capital_limit_usd": 100000,
+    "swing_budget_usd": 50000,
+    "intraday_budget_usd": 49000,
+    "options_budget_usd": 1000,
+    "drawdown_halt_fraction": 0.1
+  },
+  "equity": {
+    "current_usd": "103774.33",
+    "as_of": "2026-10-22T15:59:48.825414445-04:00",
+    "recorded_at": "2026-10-22T19:59:54.286856+00:00",
+    "source": "last preclose broker snapshot; sequential requests; not official close",
+    "previous_day_usd": 103402.09,
+    "previous_day_as_of": "2026-10-21T17:26:34.931927758-04:00",
+    "previous_day_basis": "prior-day post-session observation, not official close",
+    "official_open_usd": null,
+    "official_close_usd": null,
+    "official_previous_close_usd": null,
+    "cash_usd": "53582.6",
+    "external_cash_flows_usd": null,
+    "fees_usd": null,
+    "first_observation": {
+      "as_of": "2026-10-22T09:34:05.189401864-04:00",
+      "equity_usd": 103552.39,
+      "cash_usd": 61277.72,
+      "source": "archived observation, not official close"
+    },
+    "last_equity_event_observation": {
+      "as_of": "2026-10-22T15:57:51.539203631-04:00",
+      "equity_usd": 103781.69,
+      "cash_usd": 53582.6,
+      "source": "archived observation, not official close"
+    },
+    "post_session_observation": {
+      "as_of": "2026-10-22T16:12:07.553440389-04:00",
+      "equity_usd": 103739.6,
+      "cash_usd": 53582.6,
+      "source": "archived observation, not official close"
+    }
+  },
+  "fills": [
+    {
+      "execution_key": "e3e3c966039ba031b7e16624340a59c584f9c9a7331e7e8dd82adc56d1a59262",
+      "at": "2026-10-22T13:47:49.545396Z",
+      "symbol": "PFE",
+      "side": "sell",
+      "quantity": "23",
+      "price_usd": "30.03",
+      "asset_class": "us_equity",
+      "quantity_unit": "shares",
+      "multiplier": 1,
+      "sleeve": "swing",
+      "notional_usd": "690.69"
+    },
+    {
+      "execution_key": "d706bb69a01acdd8813403ca57bbc5c74fd7c4a1eecbdc74d1ff17976b7ad14d",
+      "at": "2026-10-22T13:47:50.092864Z",
+      "symbol": "PFE",
+      "side": "sell",
+      "quantity": "176",
+      "price_usd": "30.03",
+      "asset_class": "us_equity",
+      "quantity_unit": "shares",
+      "multiplier": 1,
+      "sleeve": "swing",
+      "notional_usd": "5285.28"
+    },
+    {
+      "execution_key": "26506a8e172293700d02840eec9c2da7e4c77fa8e369140b6b23bbe6ae8d0480",
+      "at": "2026-10-22T13:47:51.060124Z",
+      "symbol": "PFE",
+      "side": "sell",
+      "quantity": "79",
+      "price_usd": "30.03",
+      "asset_class": "us_equity",
+      "quantity_unit": "shares",
+      "multiplier": 1,
+      "sleeve": "swing",
+      "notional_usd": "2372.37"
+    },
+    {
+      "execution_key": "22967a0b300996d64328a3c32013fd16357549df002ba3253e83a67184108de6",
+      "at": "2026-10-22T13:47:51.580503Z",
+      "symbol": "PFE",
+      "side": "sell",
+      "quantity": "73",
+      "price_usd": "30.03",
+      "asset_class": "us_equity",
+      "quantity_unit": "shares",
+      "multiplier": 1,
+      "sleeve": "swing",
+      "notional_usd": "2192.19"
+    },
+    {
+      "execution_key": "f48fe6a035cd0457a10160de88125de9ae92a2c99fee45d7ecb222c97068e9ad",
+      "at": "2026-10-22T13:51:34.236511Z",
+      "symbol": "COP",
+      "side": "buy",
+      "quantity": "38",
+      "price_usd": "145.68",
+      "asset_class": "us_equity",
+      "quantity_unit": "shares",
+      "multiplier": 1,
+      "sleeve": "swing",
+      "notional_usd": "5535.84"
+    },
+    {
+      "execution_key": "4869d0c7e7b74e6d5be5a1cfc430209fefdca8048b722e5cfe4231b602ae17a1",
+      "at": "2026-10-22T13:51:34.951425Z",
+      "symbol": "COP",
+      "side": "buy",
+      "quantity": "30",
+      "price_usd": "145.68",
+      "asset_class": "us_equity",
+      "quantity_unit": "shares",
+      "multiplier": 1,
+      "sleeve": "swing",
+      "notional_usd": "4370.40"
+    },
+    {
+      "execution_key": "7158ba2aef5a7579fc9b3a9fda316901fd03340844f199ca1b0059bf9201fc65",
+      "at": "2026-10-22T14:31:08.803195Z",
+      "symbol": "CVX",
+      "side": "buy",
+      "quantity": "25",
+      "price_usd": "225.13",
+      "asset_class": "us_equity",
+      "quantity_unit": "shares",
+      "multiplier": 1,
+      "sleeve": "swing",
+      "notional_usd": "5628.25"
+    },
+    {
+      "execution_key": "e74b537b6ed9e3082832ece9b44cfbc3cf0db30420c30a31cf9095889e558ae9",
+      "at": "2026-10-22T14:31:09.862493Z",
+      "symbol": "CVX",
+      "side": "buy",
+      "quantity": "8",
+      "price_usd": "225.12",
+      "asset_class": "us_equity",
+      "quantity_unit": "shares",
+      "multiplier": 1,
+      "sleeve": "swing",
+      "notional_usd": "1800.96"
+    },
+    {
+      "execution_key": "fb101f7d9a4ac234dc2030d2e7dca853d642ab151117f211374685eb0cea8ce8",
+      "at": "2026-10-22T14:31:10.744506Z",
+      "symbol": "CVX",
+      "side": "buy",
+      "quantity": "4",
+      "price_usd": "225.05",
+      "asset_class": "us_equity",
+      "quantity_unit": "shares",
+      "multiplier": 1,
+      "sleeve": "swing",
+      "notional_usd": "900.20"
+    }
+  ],
+  "fill_count": 9,
+  "positions": [
+    {
+      "symbol": "COP",
+      "qty": "68",
+      "avg_entry_price": "145.68",
+      "current_price": "145.6",
+      "market_value": "9900.8",
+      "unrealized_pl": "-5.44",
+      "side": "long",
+      "asset_class": "us_equity",
+      "quantity_unit": "shares",
+      "multiplier": 1,
+      "sleeve": "swing"
+    },
+    {
+      "symbol": "CRM",
+      "qty": "44",
+      "avg_entry_price": "223.829773",
+      "current_price": "250.265",
+      "market_value": "11011.66",
+      "unrealized_pl": "1163.149988",
+      "side": "long",
+      "asset_class": "us_equity",
+      "quantity_unit": "shares",
+      "multiplier": 1,
+      "sleeve": "swing"
+    },
+    {
+      "symbol": "CVX",
+      "qty": "37",
+      "avg_entry_price": "225.119189",
+      "current_price": "226.61",
+      "market_value": "8384.57",
+      "unrealized_pl": "55.160007",
+      "side": "long",
+      "asset_class": "us_equity",
+      "quantity_unit": "shares",
+      "multiplier": 1,
+      "sleeve": "swing"
+    },
+    {
+      "symbol": "MSFT",
+      "qty": "19",
+      "avg_entry_price": "519.691579",
+      "current_price": "521.255",
+      "market_value": "9903.845",
+      "unrealized_pl": "29.704999",
+      "side": "long",
+      "asset_class": "us_equity",
+      "quantity_unit": "shares",
+      "multiplier": 1,
+      "sleeve": "swing"
+    },
+    {
+      "symbol": "NOW",
+      "qty": "70",
+      "avg_entry_price": "139.147143",
+      "current_price": "156.96",
+      "market_value": "10987.2",
+      "unrealized_pl": "1246.89999",
+      "side": "long",
+      "asset_class": "us_equity",
+      "quantity_unit": "shares",
+      "multiplier": 1,
+      "sleeve": "swing"
+    }
+  ],
+  "positions_basis": {
+    "as_of": "2026-10-22T15:59:48.825414445-04:00",
+    "source": "last preclose snapshot, not exact close"
+  },
+  "closing_positions": null,
+  "options_positions": [],
+  "performance": {
+    "official_day_pnl_usd": null,
+    "observed_window_change_usd": 229.3,
+    "observed_window_return_fraction": 0.0022143380756349516,
+    "window_start": "2026-10-22T09:34:05.189401864-04:00",
+    "window_end": "2026-10-22T15:57:51.539203631-04:00",
+    "sleeve_observed_window_change_usd": {
+      "intraday": 0.0,
+      "options": 0.0,
+      "swing": 185.430007
+    },
+    "gross_realized_pnl_usd": "558.09",
+    "realized_basis": "one swing position held since October 1; gross lifetime gain recognized on exit, not solely today earned",
+    "fees_usd": null,
+    "net_realized_pnl_usd": null,
+    "closed_trade_count": 1,
+    "observed_max_drawdown_fraction": 0.00455457253742106,
+    "max_historical_peak_drawdown_observed_fraction": 0.005416088130709373
+  },
+  "audit": {
+    "report_zh": "2026年10月22日 PAPER 交易行为审核\n\n结论：有限盘后审核。9条去重实际FILL对应3个股票订单，均属波段：卖PFE351股，买COP68股、CVX37股；日内和期权无成交。完整平仓1笔PFE，跨10月1日至22日的毛已实现收益558.09美元，不是全部当日赚得，费用后净收益未知。没有策略参数升级或新增未知仓位/订单。发现已结束的PFE退出保护空档111.187秒，详见下文。\n\n区间与依据\n归档券商交易时钟确认常规时段09:30–16:00 America/New_York。固定来源b35d4ad547ee69351afdac9ab5b664c6a62300df，归档代次1020，事件43900、样本191280、数据集7279；常规时段事件截至43871，完整证据到16:12:20.830。严格恢复验证账户绑定、核心与完整归档闭合，evidence_stale=false；只读一致事务核验21498个实际消费BLOB。远端之后继续推进，未把后来的观察当收盘。实际FILL按身份取适用修正版本、排除连接测试，未把下单请求、累计成交轮询或模拟成交重复计入。\n\n估值与收益\n最后收盘前观察取自15:59:48.825券商时钟对应快照（事件15:59:54.287）：净值103774.33、现金53582.60美元。它是接近收盘的顺序读取观察，不是官方精确收盘；官方开盘、收盘、上一日收盘和正式当日收益均未知。上一日可得参考为10月21日17:26:34.932净值103402.09、现金61277.72，这是盘后参考，不能计算成正式收盘对收盘收益。\n单独的轮末equity_observation窗口09:34:05.189→15:57:51.539净值103552.39→103781.69，变化+229.30美元；与15:59快照是不同时间。波段内部账面52816.990043→53002.420050，变化+185.430007；日内49788.250096及期权1000不变。不同估值时点不能强行归因。该日观察最大回撤0.455457%，相对历史观察峰值最大回撤0.541609%，未达10%锁定门槛。费用及外部现金流未独立核验，不能据现金差声称零现金流或净收益。\n\n逐笔审核\nPFE：09:45:49.263记录已归属波段的再平衡退出意图；09:47:49.545–51.581四条卖出FILL为23、176、79、73股，均30.03美元，合计351股/10540.53美元，订单最终filled。市价退出无可比限价；缺下单前退出报价，滑点不可计算。该组原始买入均价28.44，完整平仓毛收益558.09，4条卖出匹配腿不能当4笔完整交易。\nCOP：09:50:23.700买入意图68股、限价145.99、止损138.35；依据10月21日日线的60日动量27.74%、波动22.45%、高于SMA60且SPY高于SMA120。决策报价买145.63/卖145.92、年龄0.082809秒、价差0.198937%。波段预算50000、当时敞口31819.825、预留0、账户可用66140.175。数量及限价独立复算通过。09:51:34.237–34.951两条FILL38+30股，均145.68，合计9906.24，均不高于限价。相对记录的决策卖价滑点-16.4474基点；并非成交瞬时行情比较。\nCVX：10:29:44.481意图37股、限价225.94、止损213.75；依据10月21日日线60日动量20.82%、波动18.80%、高于SMA60且SPY高于SMA120。决策报价买225/卖225.83、年龄2.556245秒、价差0.368210%。预算50000、敞口41495.85、预留0、账户可用56464.15，数量及限价复算通过。10:31:08.803–10.745三条FILL25股225.13、8股225.12、4股225.05，合计8329.41，均价225.119189，均不高于限价；相对决策卖价-31.4755基点。此前价差门槛跳过属于提交前限制，不算拒单。\n买入合计18235.65，卖出10540.53美元。3个订单均成交完毕；无当日未成交尾单、拒单、新不确定单、重复意图、未归属FILL或未匹配卖出。买入理由、源码/策略版本与输入在下单前已归档；本审核没有事后改写理由。\n\n保护与风险\nPFE原保护止损的券商撤单时间09:46:00.393，到最后退出成交09:47:51.581相隔111.187290秒；09:47:33.375快照仍有351股而已知保护量为0。一轮报告Waiting for cancel confirmation，之后确认全部退出，无PFE残留。这是实际退出过程的历史保护空档，不能称全程有止损。COP/CVX首次可见保护快照分别在成交后约104–105秒、99–101秒，属于观察延迟，不能凭此断言此前无保护。其余快照中的保护单存在也不保证两次观察之间、交接期间连续有效或一定成交。\n343个盘中券商快照未见未知持仓/订单、数量待对账、做空持仓、账户阻断或重复意图。最低现金53582.60。波段市值最高50327.995（15:21:59.417），对应成本47698.600016；买入时预算检查通过，之后价格升值使市值短暂超过50000，不应表述为全程市值低于预算，也不等同新增超预算买入。总资本上限100000、波段50000/日内49000/期权1000及10%回撤锁定不变；未解除暂停/停机、追加资本或采用杠杆。\n末次盘中已归属波段持仓为COP68、CRM44、CVX37、MSFT19、NOW70股，乘数1。日内及期权无持仓，15:55日内、15:40期权退出截止无待清仓库存或新增退出失败。精确收盘持仓未知。16:12:07.553盘后观察净值103739.60、现金53582.60，仍相同五只波段股，之后隔夜风险单独保留；未见收盘后新FILL。\n\n样本、输入与运行\n172个在常规时段开始的自然cloud_cycle，171 completed、1 completed_with_alerts；每完整轮都有60条样本、daily/intraday/trading_calendar输入和快照，共10320条。末轮15:59:48.433开始、16:00:13.092完成，其16:00:02后的60条选择样本不计入当日截至收盘样本。严格收盘截断为171轮×60=10260条，波段8550、日内1710；按策略/股票/行情时间/参数版本去重有效条数300（波段50、日内250）。不能把重复轮询当独立机会。\n另列60条缺行情时间（早盘6轮日内入场窗口外）及20条未评估记录（11:00、13:45各10条，包含信号过期及其他拒绝理由），不混入有效去重数。已检查选择轮无缺输入/样本，无未来或未完成行情棒。宽松发布延迟诊断未报过期，不抵消这20条严格入场信号拦截。全天无选中日内看涨信号。\n首周期09:33:47.521开始，首净值09:34:05.189；开盘至首观察4分05.189秒。下午自然交接旧周期完成至新版首周期开始569.115603秒（9分29.116秒）；轮末账户观察间隔658.079052秒，口径不同。已在此前巡检完成并发布真实交接验收：恢复465.618758秒，确用精简恢复点、只逐代重放后续2代，仍读取校验保留历史包；不是整条旧链逐代重放。与10月20/21日同口径中断4150.816992/6153.207762秒相比缩短86.29%/90.75%。这不代表零中断；包读取272.613341秒和恢复点校验144.969606秒仍是已记录的主要耗时，下一步方案见已发布交接报告。本日报不重复宣告新的验收。缺口内无引擎运行或连续保护保证，不能回填样本。\n本轮增量检查另外16个自然成功周期、无新FILL或修正、无新风险/未知订单，完整归档推进至16:12。Windows旧执行器停止、登录任务禁用，未启动第二执行器、手动交易周期或重跑工作流。\n\n期权及策略\n期权配置和修复源码哈希匹配发布版本；0意图、0候选输入、0FILL、0持仓、0终身承诺、0生命周期活动。当天无合格日内看涨信号，不能为验收强行成交，也不把无候选当时钟路径新验收。保留标准100倍乘数、1张/单、240美元权利金及10美元费用预留、终身4次/同时2张、7–21天到期、90秒报价年龄/5秒未来容差、14:30停止入场及实际收盘前20分钟退出。免费indicative是派生参考报价，PAPER成交不证明实盘流动性，费用预留不是已核验费用。\n全天源码、配置及策略版本一致；10月19日两策略候选均未通过升级门槛、未应用，无待应用候选。运维修复不是策略升级。样本有限、存在运行缺口、缺精确开收盘和费用，不能从单日收益证明策略有效。\n待验证改进假设：在保留撤单身份确认、持久化订单意图和禁止盲目重发的条件下，测量并缩短撤止损到退出提交的等待；继续按既有交接报告评估包读取及恢复点校验优化；补充专门收盘估值证据。均为研究假设，本次未改引擎或风险。\nClaude当天目前可得午间材料，正式盘后文件尚未出现；不将盘中估值冒充同收盘比较，17:15交流仍按既有安排处理。\n",
+    "orders": [
+      {
+        "at": "2026-10-22T13:45:49.262594+00:00",
+        "symbol": "PFE",
+        "sleeve": "swing",
+        "side": "sell",
+        "type": "market",
+        "quantity": "351",
+        "quantity_unit": "shares",
+        "multiplier": 1,
+        "limit": null,
+        "fill_count": 4,
+        "filled_quantity": "351",
+        "vwap": "30.03",
+        "limit_pass": null,
+        "ask_slippage_bps": null,
+        "bid_slippage_bps": null,
+        "signal": null,
+        "reason": "swing_rebalance",
+        "sizing_pass": null,
+        "decision_minus_quote_seconds": null,
+        "spread_fraction": null,
+        "final_status": "filled"
+      },
+      {
+        "at": "2026-10-22T13:50:23.699876+00:00",
+        "symbol": "COP",
+        "sleeve": "swing",
+        "side": "buy",
+        "type": "limit",
+        "quantity": "68",
+        "quantity_unit": "shares",
+        "multiplier": 1,
+        "limit": "145.99",
+        "fill_count": 2,
+        "filled_quantity": "68",
+        "vwap": "145.68",
+        "limit_pass": true,
+        "ask_slippage_bps": -16.44736842105263,
+        "bid_slippage_bps": 3.4333585112957494,
+        "signal": {
+          "price": 145.69,
+          "reason": "60-session momentum 27.74%; volatility 22.45%; above SMA60; SPY above SMA120",
+          "score": 1.23557027,
+          "symbol": "COP"
+        },
+        "reason": null,
+        "sizing_pass": true,
+        "decision_minus_quote_seconds": 0.082809,
+        "spread_fraction": 0.0019893671754416054,
+        "final_status": "filled"
+      },
+      {
+        "at": "2026-10-22T14:29:44.480638+00:00",
+        "symbol": "CVX",
+        "sleeve": "swing",
+        "side": "buy",
+        "type": "limit",
+        "quantity": "37",
+        "quantity_unit": "shares",
+        "multiplier": 1,
+        "limit": "225.94",
+        "fill_count": 3,
+        "filled_quantity": "37",
+        "vwap": "225.1191891891891891891891892",
+        "limit_pass": true,
+        "ask_slippage_bps": -31.475482035637906,
+        "bid_slippage_bps": 5.297297297297297,
+        "signal": {
+          "price": 226.76,
+          "reason": "60-session momentum 20.82%; volatility 18.80%; above SMA60; SPY above SMA120",
+          "score": 1.10751654,
+          "symbol": "CVX"
+        },
+        "reason": null,
+        "sizing_pass": true,
+        "decision_minus_quote_seconds": 2.556245,
+        "spread_fraction": 0.0036820974646762637,
+        "final_status": "filled"
+      }
+    ],
+    "run_count": 172,
+    "run_status_counts": {
+      "completed": 171,
+      "completed_with_alerts": 1
+    },
+    "full_run_sample_rows": 10320,
+    "sample_coverage": {
+      "observations": 10260,
+      "runs": 171,
+      "rows_per_run_distribution": {
+        "60": 171
+      },
+      "unique_strategy_symbol_market_time_params": 300,
+      "unique_by_sleeve": {
+        "swing": 50,
+        "intraday": 250
+      },
+      "observations_by_sleeve": {
+        "swing": 8550,
+        "intraday": 1710
+      },
+      "missing_market_time": 60,
+      "unevaluated": 20,
+      "decisions": {
+        "not_selected": 9385,
+        "selected": 855,
+        "data_unavailable": 20
+      },
+      "max_sample_sequence": 191220,
+      "selection_runs_missing_inputs": 0,
+      "selection_runs_missing_samples": 0
+    },
+    "risk_observations": {
+      "minimum_cash": "53582.6",
+      "max_gross_conservative_exposure": "50327.995",
+      "unknown_position_observations": 0,
+      "known_lineage_quantity_pending_observations": 0,
+      "unknown_order_observations_against_prior_lineage": 0,
+      "short_position_observations": 0,
+      "account_blocked_observations": 0,
+      "duplicate_intent_rows": 0
+    },
+    "max_exposure_context": {
+      "at": "2026-10-22T15:21:59.417223008-04:00",
+      "market_value": "50327.995",
+      "total_cost_basis": 47698.600016
+    },
+    "stop_snapshot_gap_count": 1,
+    "resolved_exit_protection_gap": {
+      "symbol": "PFE",
+      "stop_canceled_at": "2026-10-22T09:46:00.393213692-04:00",
+      "last_exit_fill_at": "2026-10-22T09:47:51.580503-04:00",
+      "seconds": 111.18729,
+      "status": "position_fully_exited"
+    },
+    "strategy_promotions": 0,
+    "options": {
+      "intent_count": 0,
+      "fill_count": 0,
+      "position_count": 0,
+      "lifetime_commitments": 0,
+      "lifecycle_activities": 0,
+      "candidate_input_observations": 0,
+      "selected_intraday_signal_count": 0,
+      "feed": "indicative",
+      "quantity_unit": "contracts",
+      "multiplier": 100
+    },
+    "config_hashes": [
+      "ce067a951015d88a4c3454f8dcdcd1c8e8702b0f817aee267cb64730e6f0d90b"
+    ],
+    "strategy_hashes": [
+      "197138942c3433012e62d642f3bf87904e70245512edb000a39f1c87781ad274"
+    ],
+    "source_manifest_hashes": [
+      "29994a595e550f7b3d6883794d87479846e8e078fdc105d74a5cd62ab4f52128"
+    ],
+    "analysis_method_sha256": "a2af6f6b41bed429989ff2de02f1e993b01e93b4cb3fc6516864a3906f03c024",
+    "source_file_hashes": {
+      "zerotrader/options_execution.py": "4cbe53dbbeeea16fab28b5c0a7d9ef9e9eee25c4324f55d14685368a90a6a67a",
+      "zerotrader/options_pilot.py": "febb922d52edf1dba006d0201ecfb304a71c9624115bfd7e3e434ff3023e0b23"
+    },
+    "limitations": [
+      "Account, position marks and strategy accounting are sequential observations; no forced return attribution.",
+      "Observed stop snapshots do not establish continuous protection.",
+      "Matched FILL legs and fully closed FIFO position groups are reported separately; fees and external flows unverified.",
+      "Unknown-at-the-time lineage remains unknown even if a later intent exists.",
+      "Latest corrected FILL version through the fixed evidence cutoff is used, even if correction arrived after regular close.",
+      "Core may lead archive; latest core is reported separately and cannot fill archive gaps."
+    ]
+  },
+  "replies": []
+}
