@@ -1,0 +1,154 @@
+{
+  "schema_version": "1.0",
+  "kind": "cloud_restore_natural_handoff_measurement",
+  "status": "measured_reduction_verified_remaining_bottlenecks",
+  "published_at": "2026-10-22T19:47:47.182325+00:00",
+  "source_code_commit": "ccfaa10c6e020fe2d18fc8ba3f34c8ddb06e1a20",
+  "restore_version": "2026-10-21.1",
+  "method": "Strict read-only archive reconstruction, immutable source hash matching, pinned input index and original anchor/point verification, archived cloud_startup_timing, cloud_cycle timestamps and Actions job metadata.",
+  "evidence_cutoff": {
+    "event_sequence": 43684,
+    "archive_generation": 1004,
+    "latest_completed_cycle": "2026-10-22T15:29:05.085289-04:00",
+    "completed_post_handoff_cycles": 34,
+    "core_ahead_of_archive": true
+  },
+  "timeline": {
+    "old_cycle_finished": "2026-10-22T13:58:50.364362-04:00",
+    "workflow_created": "2026-10-22T14:00:12-04:00",
+    "old_job_completed": "2026-10-22T14:00:25-04:00",
+    "new_job_started": "2026-10-22T14:00:28-04:00",
+    "execution_step_started": "2026-10-22T14:00:31-04:00",
+    "first_new_cycle_started": "2026-10-22T14:08:19.479965-04:00",
+    "first_new_cycle_finished": "2026-10-22T14:09:48.796110-04:00",
+    "first_completed_cycle_archive_commit_time": "2026-10-22T14:10:19-04:00"
+  },
+  "comparison": {
+    "gap_definition": "old cloud_cycle finished to first new cloud_cycle started, within same open session",
+    "gap_seconds": 569.115603,
+    "gap_to_first_completion_seconds": 658.431748,
+    "first_cycle_seconds": 89.316145,
+    "bundle_restore_seconds": 465.618758,
+    "morning_legacy_restore_seconds": 1270.156509,
+    "restore_reduction_percent": 63.34162328022207,
+    "historical_gaps": [
+      {
+        "date": "2026-10-20",
+        "seconds": 4150.816992,
+        "reduction_seconds": 3581.701389,
+        "reduction_percent": 86.28907022167263
+      },
+      {
+        "date": "2026-10-21",
+        "seconds": 6153.207762,
+        "reduction_seconds": 5584.092159,
+        "reduction_percent": 90.75091196311209
+      }
+    ]
+  },
+  "restore_phases": {
+    "package_read_seconds": {
+      "seconds": 272.613341,
+      "percent_of_bundle_restore": 58.54861650569499
+    },
+    "restore_point_verify_seconds": {
+      "seconds": 144.969606,
+      "percent_of_bundle_restore": 31.134829409084933
+    },
+    "chain_verify_seconds": {
+      "seconds": 4.811998,
+      "percent_of_bundle_restore": 1.033463089130958
+    },
+    "database_restore_seconds": {
+      "seconds": 25.886192,
+      "percent_of_bundle_restore": 5.559525159851915
+    },
+    "other_bundle_seconds": {
+      "seconds": 17.337621000000013,
+      "percent_of_bundle_restore": 3.7235658362372104
+    }
+  },
+  "outer_timings": {
+    "old_cycle_finish_to_old_job_completion_seconds": 94.635638,
+    "old_job_completion_to_new_job_start_seconds": 3,
+    "job_setup_to_execution_step_seconds": 3,
+    "auxiliary_and_binding_seconds": 0.738465,
+    "unseparated_execution_step_overhead_seconds": 2.122741999999979,
+    "workflow_create_to_job_start_seconds": 16,
+    "queue_overlap_note": "16 seconds overlaps old-job tail; do not add it again to total interruption. Queue versus runner allocation individually unmeasured.",
+    "first_cycle_finished_to_archive_commit_observed_seconds": 30.20389
+  },
+  "restore_path": {
+    "point_used": true,
+    "original_index_generation": 969,
+    "point_generation": 967,
+    "retained_original_prefix_packages": 968,
+    "post_point_generations_replayed": 2,
+    "evidence": "Matched archived cloud_bundle/cloud_archive/source hashes, positive restore_point_verify_seconds, fixed checkpoint index before new job, point manifest/chunk/payload hash checks and original-anchor match, subsequent successful natural cycles.",
+    "interpretation": "All retained original package bytes, hashes, lineage and BLOBs are checked; prefix snapshots are not reconstructed one generation at a time. Compact snapshot and original anchor are verified once, then only generations 968 and 969 replay. chain_verify_seconds=4.811998 is the seeded-cache/tail phase, not full legacy-prefix replay.",
+    "input_commit_limitation": "Startup timing event lacks an explicit input-commit field. Input index is pinned using the last checkpoint before the job, with no intervening private commit before the first new cycle; this inference is corroborated by immutable ancestry and source path."
+  },
+  "risk_and_executor": {
+    "configuration_unchanged": true,
+    "no_new_risk_or_unknown_order_flags": true,
+    "windows_stopped_disabled": true,
+    "cloud_job_intervals_do_not_overlap": true,
+    "concurrency_group": "zoh-main-paper",
+    "cancel_in_progress": false,
+    "new_actual_fills_since_previous_inspection": 0,
+    "options_lifetime_commitments": 0
+  },
+  "observed_variants": [
+    {
+      "variant": "Oct22 morning first legacy migration",
+      "restore_seconds": 1270.156509,
+      "full_legacy_chain_verify_seconds": 1048.910399,
+      "compact_point_used": false
+    },
+    {
+      "variant": "Oct22 afternoon subsequent compact cold handoff",
+      "restore_seconds": 465.618758,
+      "compact_point_used": true,
+      "status": "Measured reduction, still 9m29s total gap"
+    }
+  ],
+  "next_repair_proposals": [
+    {
+      "scope": "Add finer read-only restore diagnostics in cloud_checkpoint/cloud_bundle/cloud_archive and tests",
+      "evidence": "272.613341 seconds (58.55% of restore) is currently one combined package-read bucket. It includes repeated bounded reads and checks; Git transfer, HEAD/fetch checks, cat-file extraction and file writes are not individually timed.",
+      "proposal": "Record initial fetch separately; number/bytes/time of bounded read batches, HEAD/confirm/fetch, object decode/write, gzip/JSON, BLOB validation, canonical hashing, SQLite and first-cycle persistence. Do not log private payloads or credentials.",
+      "expected_improvement": "Measurement first; no speed estimate claimed."
+    },
+    {
+      "scope": "Optimize repeated checkpoint confirmation/object reads within a pinned cold-restore read session",
+      "evidence": "Archived code reads batches of 16 files; read_files calls confirm, remote HEAD and fetch repeatedly. Package read increased from morning 186.228519 to 272.613341 seconds; causal time split is not measured.",
+      "proposal": "After profiling, evaluate byte-bounded batches and reuse immutable Git objects within the same pinned read transaction, retaining repository/account binding, all content hashes, before/after HEAD conflict detection and every pre-trade persistence barrier.",
+      "expected_improvement": "Reduced redundant network/process overhead is a hypothesis; magnitude requires same-pinned-input comparison. Do not claim all 272.61 seconds removable."
+    },
+    {
+      "scope": "Reduce repeated original-package parsing during compact anchor validation",
+      "evidence": "Compact verification still costs 144.969606 seconds (31.13%); all historical BLOBs remain sourced from original packages.",
+      "proposal": "Profile gzip/JSON, BLOB validation and canonical hash separately; test bounded streaming/reuse of already verified immutable decoded data within one restore. Keep all history and exact hash/count/lineage checks; no cross-job trust of unverified caches.",
+      "expected_improvement": "Potential CPU/I/O savings, unmeasured. No proposal to skip historical integrity checks."
+    }
+  ],
+  "verification_deployment_rollback": {
+    "tests": "Pinned legacy and v2 snapshots must restore byte/logically equivalent state; all package/point/anchor/tail corruption, reordered history, hash/count mismatch, changed HEAD, account mismatch and cache tampering must fail closed. Full unittest suite, no broker calls. Benchmark identical cold inputs with component timers and memory/bytes recorded.",
+    "deployment": "A separately tested reviewed code-only release to existing main, non-force; existing workflow/schedule/concurrency unchanged. Wait for next natural handoff and compare old-finish to new-start and new-finish; require successful cycles and complete archives before acceptance.",
+    "rollback": "Revert only the new performance changes to reviewed ccfaa10 through a new non-force commit; preserve v2 compatibility, all archives, core risk/order state and history; next natural job loads rollback. Never reset state or start another executor.",
+    "current_action": "Diagnosis and proposal only; no further trading-code change published in this inspection."
+  },
+  "limitations": [
+    "One actual afternoon cold handoff demonstrates reduction; no guaranteed future startup time or zero downtime.",
+    "Latest core is ahead of the fully reconstructed archive: archive completes through 15:29:05 ET, latest core 15:31:09 ET. Historical handoff and 34 following cycles are fully archived; missing later evidence is not invented.",
+    "Package-read subphases, compact-validation subphases and first-cycle broker/persistence split remain unmeasured.",
+    "Job/commit metadata have one-second resolution; cycle timestamps and monotonic phase timers have finer precision.",
+    "Observed protective stops do not establish continuous coverage between snapshots.",
+    "Cloud startup is independent of GPT; chat audits/publication still require the desktop app."
+  ],
+  "peer_questions": [
+    "Can you independently review the pinned-read transaction proposal for changed-HEAD fail-closed behavior and bounded memory without relaxing any order barrier?"
+  ],
+  "strategy_research": "No new strategy experiment or candidate promotion; this is an operations measurement.",
+  "fees_and_fills": "No simulated performance or synthetic fills used; no trading-profit claim, fee assumption or capital reuse change."
+}
