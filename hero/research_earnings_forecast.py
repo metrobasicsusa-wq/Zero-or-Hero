@@ -218,8 +218,13 @@ def around(row: dict, mins: list[dict], prev_close: float, rel: datetime | None)
     if rel:
         ys = [b for b in mins if rel + AFTER <= _t(b) < rel + AFTER + timedelta(minutes=30)]
         after = float(ys[0]["c"]) if ys else None
+    ah_close = None   # the extended-hours close (19:45-20:00) of an after-close report's day: the call digested,
+    if row.get("time") == "post-market" and row.get("report_date"):   # the overnight still to come (owner, 10-22)
+        rd = date.fromisoformat(row["report_date"])
+        zs = [b for b in mins if datetime.combine(rd, time(19, 45), ET) <= _t(b) <= datetime.combine(rd, time(20, 0), ET)]
+        ah_close = float(zs[-1]["c"]) if zs else None
     return {"before": before, "before_src": src, "release": rel.isoformat(timespec="minutes") if rel else None,
-            "after_1h": after}
+            "after_1h": after, "ah_close": ah_close}
 
 
 def score_row(row: dict, bars: list[dict], mins: list[dict] | None = None, rel: datetime | None = None) -> dict | None:
@@ -240,6 +245,7 @@ def score_row(row: dict, bars: list[dict], mins: list[dict] | None = None, rel: 
             "before": a["before"], "before_src": a["before_src"], "release": a["release"],
             "gap_pre": round(gap_pre, 4),
             "after_1h": round(a["after_1h"] / a["before"] - 1, 4) if a["after_1h"] else None,
+            "ah_close": round(a["ah_close"] / a["before"] - 1, 4) if a["ah_close"] else None,
             "up": gap_pre > 0, "up_close": move > 0}   # direction: the open against the price before the report
 
 
@@ -386,11 +392,12 @@ def scorecard(root: Path = OUT) -> str:
             md.append(f"| 方向按开盘，信心 0.6 以上 | {len(hi)} | "
                       f"{sum((r['judgment']['direction'] == 'up') == r['result']['up'] for r in hi) / len(hi):.0%} |")
     md += share_trades(rows, jr)
-    md += ["", "## 明细（最近 40 条）", "", "| 预测日 | 股票 | 时间 | 隐含 | 财报后 1 小时 | 开盘 | 收盘（对前收） | 超过隐含 | 判断 | 方向对不对（开盘 / 收盘） |",
-           "|---|---|---|---|---|---|---|---|---|---|"]
+    md += ["", "## 明细（最近 40 条）", "", "| 预测日 | 股票 | 时间 | 隐含 | 财报后 1 小时 | 盘后 20:00 | 开盘 | 收盘（对前收） | 超过隐含 | 判断 | 方向对不对（开盘 / 收盘） |",
+           "|---|---|---|---|---|---|---|---|---|---|---|"]
     for r in sorted(rows, key=lambda r: (r["day"], r["symbol"]))[-40:]:
         j, res = r["judgment"], r["result"]
         a1h = f"{res['after_1h']:+.1%}" if res.get("after_1h") is not None else "—"
+        a1h += f" | {res['ah_close']:+.1%}" if res.get("ah_close") is not None else " | —"
         jtxt = f"{'涨' if j.get('direction') == 'up' else '跌' if j.get('direction') == 'down' else '—'} / " \
                f"{'大' if j.get('big') is True else '小' if j.get('big') is False else '—'} / {float(j.get('confidence') or 0):.1f}" if j else ""
         ok = ""
@@ -429,7 +436,10 @@ def share_trades(rows: list[dict], jr: list[dict]) -> list[str]:
         line("只做看跌的判断", [r for r in dirs if d(r) < 0], d),
         line("判断信心 0.6 以上", [r for r in dirs if float(r["judgment"].get("confidence") or 0) >= 0.6], d),
         line("按判断方向，前一天 15:40 买（我们账本的做法）", dirs, d, "gap"),
-        line("对照：全部财报都买（不看判断）", rows, lambda r: 1)) if x]
+        line("按判断方向，盘后 20:00 就卖（只有盘后财报；10-22：META 盘后 +2%、开盘 -6%）",
+             [r for r in dirs if r["result"].get("ah_close") is not None], d, "ah_close"),
+        line("对照：全部财报都买（不看判断）", rows, lambda r: 1),
+        line("对照：全部盘后财报都买，20:00 卖", [r for r in rows if r["result"].get("ah_close") is not None], lambda r: 1, "ah_close")) if x]
     return out
 
 
