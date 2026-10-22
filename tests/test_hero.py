@@ -2019,6 +2019,35 @@ class ResearchPlanReview(unittest.TestCase):
         self.assertEqual((held["exit"], held["how"]), (0.4, "还拿着（按收盘估值）"))
 
 
+class ResearchAhReversal(unittest.TestCase):
+    def test_points_and_returns_around_an_after_close_report(self):
+        from datetime import datetime as dt
+        from zoneinfo import ZoneInfo
+        from hero import research_ah_reversal as ar
+        et = ZoneInfo("America/New_York")
+        utc = lambda d, h, m: f"2026-10-{d:02d}T{h + 4:02d}:{m:02d}:00Z"     # EDT -> UTC
+        bars = [{"t": utc(21, 15, 58), "o": 99.5, "c": 99.8}, {"t": utc(21, 15, 59), "o": 99.8, "c": 100.0},
+                {"t": utc(21, 16, 10), "o": 103, "c": 104.0}, {"t": utc(21, 17, 10), "o": 105, "c": 105.0},
+                {"t": utc(21, 19, 55), "o": 102, "c": 102.0},
+                {"t": utc(22, 9, 30), "o": 97.0, "c": 97.2}, {"t": utc(22, 9, 35), "o": 96.8, "c": 96.5},
+                {"t": utc(22, 10, 0), "o": 96.2, "c": 96.0}, {"t": utc(22, 15, 59), "o": 95.1, "c": 95.0}]
+        p = ar.points(bars, date(2026, 10, 21), date(2026, 10, 22), dt(2026, 10, 21, 16, 5, tzinfo=et))
+        self.assertEqual((p["c0"], p["a1h"], p["ah20"], p["o"], p["m935"], p["m10"], p["c1"]), (100.0, 0.05, 0.02, -0.03, -0.035, -0.04, -0.05))
+        self.assertEqual(p["accepted"], "16:05")
+        self.assertAlmostEqual(ar.ret(p["ah20"], p["m935"], ar.COST_AH, ar.COST_RTH), 0.965 * 0.9995 / (1.02 * 1.002) - 1, places=6)
+        self.assertIsNone(ar.ret(None, p["m935"], 0, 0))
+        # an 8-K accepted too late for an hour of after-hours trading: no first-reaction point
+        self.assertIsNone(ar.points(bars, date(2026, 10, 21), date(2026, 10, 22), dt(2026, 10, 21, 19, 30, tzinfo=et))["a1h"])
+        row = {**p, "symbol": "X", "day": "2026-10-22", "spy_gap": -0.009}
+        md = "\n".join(ar.flips([row]))
+        self.assertIn("| ≥ 6% |", md.replace("| 3–6% | 1 |", "| ≥ 6% |")) if False else self.assertIn("| 3–6% | 1 | 100% | 100% |", md)
+        G = ar.strategies([row])
+        self.assertEqual(len(G["20:00 买盘后涨 2% 以上的，09:35 卖"]), 1)
+        self.assertEqual(G["20:00 买盘后跌 2% 以上的，09:35 卖"], [])
+        L = ar.ledger_exits([row])
+        self.assertAlmostEqual(L["财报前收盘买，20:00 卖"][0][1], 1.02 * 0.998 / 1.0005 - 1, places=6)
+
+
 class ResearchFadeLotto(unittest.TestCase):
     def test_an_spcx_day_is_found_priced_and_grouped(self):
         from datetime import datetime, timezone
