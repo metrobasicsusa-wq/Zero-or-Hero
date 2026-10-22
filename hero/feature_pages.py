@@ -137,13 +137,14 @@ def curve(trades: list[dict]) -> dict[str, list[tuple[str, float]]]:
     return out
 
 
-def latest_backfill(root: Path) -> tuple[str, list[dict]]:
+def latest_backfill(root: Path) -> tuple[str, list[dict], dict[str, dict]]:
+    """(report name, backfilled rows, each ledger played in order -- research_plan_results.ledgers, when present)."""
     files = sorted((root / "research").glob("*-plan-results.json"))
     if not files:
-        return "", []
+        return "", [], {}
     d = _load(files[-1], {})
     rows = [r for r in d.get("rows", []) if r.get("src") == "backfill"]
-    return files[-1].stem, rows
+    return files[-1].stem, rows, d.get("ledgers") or {}
 
 
 def collect(root: Path = ROOT) -> dict:
@@ -173,7 +174,7 @@ def collect(root: Path = ROOT) -> dict:
             elif e.get("kind") in EVENT_KINDS and e.get("sleeve") in ids:
                 events.setdefault(ids[e["sleeve"]], []).append(
                     {"ts": e.get("ts", ""), "kind": e["kind"], "sleeve": e["sleeve"], "why": e.get("why", "")})
-    bf_name, bf_rows = latest_backfill(root)
+    bf_name, bf_rows, bf_led = latest_backfill(root)
     fams: dict[str, dict] = {}
     for spec in specs:
         key = ids[spec["id"]]
@@ -204,6 +205,9 @@ def collect(root: Path = ROOT) -> dict:
         f["curve"] = curve(f["trades"])
         f["events"] = sorted(events.get(key, []), key=lambda e: e["ts"], reverse=True)[:MAX_EVENTS]
         f["backfill"] = [r for r in bf_rows if family(str(r.get("sleeve", ""))) == key]
+        led = {sid: x for sid, x in bf_led.items() if family(sid) == key}
+        f["backfill_seq"] = ({"pnl": round(sum(x["pnl"] for x in led.values()), 2), "zeros": sum(x["zeros"] for x in led.values()),
+                              "ledgers": led} if led else None)
         lv = [r for r in f["ledgers"] if not r["plan"]]
         pl = [r for r in f["ledgers"] if r["plan"]]
         f["live_pl"] = round(sum(r["value"] - r["start"] for r in lv), 2) if lv else None
@@ -392,6 +396,9 @@ def directory(data: dict) -> str:
             if f["backfill"]:
                 won = sum(1 for r in f["backfill"] if float(r.get("ret") or 0) > 0)
                 nums.append(f'<div><span>补算</span>{len(f["backfill"])} 笔赚 {won}</div>')
+                if f.get("backfill_seq"):
+                    z = f["backfill_seq"]["zeros"]
+                    nums.append(f'<div><span>按账本</span>{signed(f["backfill_seq"]["pnl"], 0)}{f"（归零 {z}）" if z else ""}</div>')
             nums.append(f'<div><span>交易</span>{f["n_trades"]}</div>')
             nums.append(f'<div><span>最近</span>{esc(short(f["last"]) if f["last"] else "—")}</div>')
             cards.append(f'<a class="fcard" href="{esc(f["key"])}.html"><h3>{esc(f["title"])} '
@@ -457,9 +464,17 @@ def feature(data: dict, f: dict) -> str:
         rets = sorted(float(r.get("ret") or 0) for r in bf)
         won = sum(1 for x in rets if x > 0)
         mid = rets[len(rets) // 2] if len(rets) % 2 else (rets[len(rets) // 2 - 1] + rets[len(rets) // 2]) / 2
+        seq = f.get("backfill_seq")
+        seq_html = ""
+        if seq:
+            srows = [[esc(ledger_name({"id": sid, "plan": True})), str(x["n"]), signed(x["pnl"]), str(x["zeros"]),
+                      usd(x["topups"]), str(x.get("skipped", 0))] for sid, x in sorted(seq["ledgers"].items())]
+            seq_html = ('<p>按账本顺序（真账本会怎样）：每笔按那天账本剩下的钱缩放张数，低于起始 10% 归零、补钱重开；'
+                        f'合计 {signed(seq["pnl"])}，归零 {seq["zeros"]} 次。</p>'
+                        + table([("账本", ""), ("笔数", "num"), ("盈亏", "num"), ("归零", "num"), ("补回", "num"), ("买不起跳过", "num")], srows))
         bfh = (f'<section class="card"><h2>10-22 以前按分钟线补算（{len(bf)} 笔，赚 {won} 笔，中位收益 {pct(mid)}）</h2>'
                f'<p class="meta">{esc(data["backfill_name"])}：引擎开始记录以前的演算选单，用 Alpaca 一分钟成交价按同样的卖出规则补算。'
-               f'每笔都按新账本的大小算，所以金额不能直接相加（全仓的方向按顺序滚动差很多，见 research 报告）。</p>'
+               f'下面每一笔都按新账本的大小算，金额不能直接相加。</p>{seq_html}'
                + table([("时间", ""), ("账本", ""), ("合约", ""), ("数量", "num"), ("花费", "num"), ("收回", "num"),
                         ("盈亏", "num"), ("收益", "num"), ("怎么卖的", "why")], brows) + "</section>")
     nav_groups = " · ".join(f'<a href="{esc(x["key"])}.html">{esc(x["title"])}</a>' if x["key"] != f["key"] else f'<b>{esc(x["title"])}</b>'

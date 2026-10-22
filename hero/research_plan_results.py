@@ -241,6 +241,47 @@ def tally(rows: list[dict], end: str) -> dict[str, dict]:
     return out
 
 
+def ledgers(rows: list[dict], specs: dict[str, dict], common: dict) -> dict[str, dict]:
+    """Each ledger played in order, as a real one would be (10-21: one shot's tickets summed to +$13,846, but all-in
+    one after another the $500 version lost and went to zero twice). Every backfilled pick was sized against a fresh
+    ledger, so a pick's contracts are scaled by the cash the ledger would have had that day (whole contracts; none
+    affordable = skipped); after each day a ledger under its zero line starts over at its start (the top-up is
+    counted), one at its target banks it and starts over too. pnl = final cash - start - top-ups + banked."""
+    out: dict[str, dict] = {}
+    by: dict[str, list[dict]] = {}
+    for r in rows:
+        if r.get("valued", True) and r.get("ret") is not None and r.get("qty"):
+            by.setdefault(r["sleeve"], []).append(r)
+    for sid, rs in sorted(by.items()):
+        spec = specs.get(sid, {})
+        start = float(spec.get("start") or 500)
+        zero = float(spec.get("zero_line", common.get("zero_line", 0.1)))
+        target = float(spec.get("target", common.get("target", 10000)))
+        cash, topups, banked, zeros, heroes, skipped = start, 0.0, 0.0, 0, 0, 0
+        days: dict[str, list[dict]] = {}
+        for r in sorted(rs, key=lambda r: (r["day"], r["at"])):
+            days.setdefault(r["day"], []).append(r)
+        for d in sorted(days):
+            k = cash / start
+            for r in days[d]:
+                q = int(r["qty"] * k + 1e-9)
+                if q < 1:
+                    skipped += 1
+                    continue
+                cash += (r["got"] - r["paid"]) / r["qty"] * q
+            if cash < start * zero:
+                zeros += 1
+                topups += start - cash
+                cash = start
+            elif cash >= target:
+                heroes += 1
+                banked += cash - start
+                cash = start
+        out[sid] = {"n": len(rs), "pnl": round(cash - start - topups + banked, 2), "cash": round(cash, 2),
+                    "zeros": zeros, "heroes": heroes, "topups": round(topups, 2), "skipped": skipped}
+    return out
+
+
 def collect(root: Path) -> tuple[list[tuple], list[str]]:
     """The plan-only picks to backfill (FROM <= day < SIM_FROM, sleeves plan-only in today's config)."""
     specs = {s["id"]: s for s in json.loads((root / "config" / "s500.json").read_text())["sleeves"]["list"]}
@@ -266,9 +307,17 @@ def money(x: float) -> str:
     return f"{'-' if x < 0 else '+'}${abs(x):,.2f}"
 
 
-def markdown(rows: list[dict], eng: list[dict], live: list[dict], last_day: str, unsized: int) -> str:
+def markdown(rows: list[dict], eng: list[dict], live: list[dict], last_day: str, unsized: int,
+             led: dict[str, dict] | None = None) -> str:
     end = max([r["day"] for r in rows + eng] or [last_day])
     both = tally(rows + eng, end)
+    led = led or {}
+    fam_led: dict[str, dict] = {}
+    for sid, x in led.items():
+        f = fam_led.setdefault(family(sid), {"pnl": 0.0, "zeros": 0, "topups": 0.0})
+        f["pnl"] += x["pnl"]
+        f["zeros"] += x["zeros"]
+        f["topups"] += x["topups"]
     lv = tally(live, end)
     pct = lambda v: "—" if v is None else f"{v:+.0%}"
     md = [f"# 停掉 / 只演算的规则：会赚多少 {date.today().isoformat()}", "",
@@ -277,22 +326,27 @@ def markdown(rows: list[dict], eng: list[dict], live: list[dict], last_day: str,
           f"成交数据到 {last_day}。用成交价当买价、没扣价差，比真实略好；止盈要 10 分钟检查时看到才算。"
           f"{SIM_FROM} 起由交易程序自己按实时报价记（按卖价买、按买价卖）。还拿着的按最后成交价（引擎记的按成本）估值。"
           f"买不起一张的选单不算（{unsized} 条）。只研究，不改交易。", "",
+          "「盈亏」是逐笔相加：每笔都按一个新账本的大小下注、彼此独立，全仓的规则（一把到）这样加会严重失真。"
+          "「按账本顺序」是真账本会怎样：补算的每笔按那天账本剩下的钱缩放张数（整张，买不起就跳过），"
+          "每天收盘后低于起始的 10% 归零、从公共资金补回起始（补的钱算亏损），到目标就落袋重开；两个账本合计。", "",
           "## 每条规则（两个账本合计）", "",
-          "| 规则 | 笔数 | 花费 | 收回 | 盈亏 | 每 $1 | 赚钱笔数 | 还拿着 | 中位数 | 去掉最好 3 笔 | 提醒 | 停之前实盘（笔数 / 盈亏 / 每 $1） |",
-          "|---|---|---|---|---|---|---|---|---|---|---|---|"]
+          "| 规则 | 笔数 | 花费 | 收回 | 盈亏（逐笔相加） | 按账本顺序（盈亏 / 归零） | 每 $1 | 赚钱笔数 | 还拿着 | 中位数 | 去掉最好 3 笔 | 提醒 | 停之前实盘（笔数 / 盈亏 / 每 $1） |",
+          "|---|---|---|---|---|---|---|---|---|---|---|---|---|"]
     live_of = {k: v[0] for k, v in LIVE_OF.items()}
     for fam in sorted(set(both) | {k for k, v in live_of.items() if v in lv}):
         t = both.get(fam)
         l = lv.get(live_of.get(fam, ""), None)
         tail = (f"{l['n']} / {money(l['net'])} / {pct(l['per_dollar'])}" if l else "—") + " |"
         if not t:   # a stopped rule with no plan picks yet: its live record only
-            md.append(f"| {fam} | 0 | — | — | — | — | — | — | — | — | 从 {SIM_FROM} 起才开始演算 | " + tail)
+            md.append(f"| {fam} | 0 | — | — | — | — | — | — | — | — | — | 从 {SIM_FROM} 起才开始演算 | " + tail)
             continue
         s = t["robust"] or {}
-        md.append(f"| {fam} | {t['n']} | ${t['paid']:,.2f} | ${t['got']:,.2f} | {money(t['net'])} | {pct(t['per_dollar'])} | "
+        fl = fam_led.get(fam)
+        seq = f"{money(fl['pnl'])} / {fl['zeros']} 次" if fl else "—"
+        md.append(f"| {fam} | {t['n']} | ${t['paid']:,.2f} | ${t['got']:,.2f} | {money(t['net'])} | {seq} | {pct(t['per_dollar'])} | "
                   f"{t['wins']} | {t['held']} | {pct(s.get('median'))} | {pct(s.get('trim'))} | {'；'.join(s.get('flags') or []) or '—'} | " + tail)
     if not both and not lv:
-        md.append("| （还没有） |  |  |  |  |  |  |  |  |  |  |  |")
+        md.append("| （还没有） |  |  |  |  |  |  |  |  |  |  |  |  |")
     md += ["", "停之前实盘：gap / flush / 隔夜动量 10-16（含）以前开的单，SPY 0.6% 10-21 前、财报彩票看涨 10-19 前，狙击是全部已平的单。", "",
            "## 每一笔", "", "| 日期 | 时间 | 账本 | 合约 | 张数 × 价格 | 花费 | 收回 | 盈亏 | 怎么出 | 来源 |", "|---|---|---|---|---|---|---|---|---|---|"]
     for r in sorted(rows + eng, key=lambda r: (r["day"], r["at"], r["sleeve"])):
@@ -321,8 +375,11 @@ def main() -> None:
         bars = Alpaca().option_bars(syms, f"{FROM}T13:00:00Z", f"{last_day}T21:00:00Z", timeframe="1Min")
     rows = replay(picks, Tape(bars), last_day) if picks else []
     eng, live = engine_rows(ROOT), live_rows(ROOT)
-    md = markdown(rows, eng, live, last_day, len(unsized))
-    save("plan-results", {"from": FROM, "sim_from": SIM_FROM, "last_day": last_day, "rows": rows, "engine": eng, "live": live}, md)
+    cfg = json.loads((ROOT / "config" / "s500.json").read_text())["sleeves"]
+    led = ledgers(rows, {x["id"]: x for x in cfg["list"]}, cfg)
+    md = markdown(rows, eng, live, last_day, len(unsized), led)
+    save("plan-results", {"from": FROM, "sim_from": SIM_FROM, "last_day": last_day, "rows": rows, "engine": eng, "live": live,
+                          "ledgers": led}, md)
 
 
 if __name__ == "__main__":

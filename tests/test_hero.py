@@ -2077,6 +2077,27 @@ class ResearchFadeLotto(unittest.TestCase):
 class ResearchPlanResults(unittest.TestCase):
     """Owner, 10-21: what the stopped / plan-only rules would have made, run through the live exit code."""
 
+    def test_an_all_in_rule_is_played_in_order_not_summed(self):
+        # one shot 10-14..10-20: the tickets sum to about +$4,500, but all-in one after another it went to zero
+        from hero import research_plan_results as rp
+        row = lambda d, qty, paid, got: {"day": d, "at": "10:00", "sleeve": "oneshot-500", "family": "oneshot", "qty": qty,
+                                         "paid": paid, "got": got, "pnl": got - paid, "ret": got / paid - 1, "valued": True,
+                                         "sym": "QQQ261014P00728000", "cost": paid / qty / 100, "how": "到时卖", "src": "backfill"}
+        rows = [row("2026-10-14", 22, 462.0, 1320.0), row("2026-10-15", 7, 448.0, 7.0), row("2026-10-16", 14, 462.0, 5474.0),
+                row("2026-10-19", 10, 460.0, 10.0), row("2026-10-20", 20, 480.0, 20.0)]
+        self.assertGreater(sum(r["got"] - r["paid"] for r in rows), 4000)
+        led = rp.ledgers(rows, {"oneshot-500": {"start": 500, "fraction": 1.0}}, {"zero_line": 0.1, "target": 10000})
+        x = led["oneshot-500"]
+        # 1358 -> 19 contracts lose $63 each -> 161 -> 4 contracts win $358 each -> 1593 -> 31 lose $45 -> 198
+        # -> 7 lose $23 -> 37, under $50: zero, $463 topped up
+        self.assertEqual((x["zeros"], x["topups"], x["pnl"], x["cash"]), (1, 463.0, -463.0, 500.0))
+        poor = rp.ledgers([row("2026-10-14", 1, 46.0, 0.0), row("2026-10-14", 1, 46.0, 0.0)][:1] +
+                          [{**row("2026-10-15", 1, 400.0, 0.0)}], {"oneshot-500": {"start": 500}}, {"zero_line": 0.1, "target": 10000})
+        self.assertEqual(poor["oneshot-500"]["skipped"], 1)                     # 454 left: 0.9 of a contract
+        md = rp.markdown(rows, [], [], "2026-10-20", 0, led)
+        self.assertIn("按账本顺序", md)
+        self.assertIn("-$463.00 / 1 次", md)
+
     def ev(self, ts, sleeve, sym, why):
         return {"kind": "sleeve_plan", "ts": ts, "sleeve": sleeve, "symbol": sym, "why": why}
 
@@ -4704,7 +4725,8 @@ class FeaturePages(unittest.TestCase):
                  "paid": 500.0, "got": 0.0, "pnl": -500.0, "ret": -1.0, "how": "到期作废", "src": "backfill"},
                 {"day": "2026-10-15", "at": "10:00", "sleeve": "oneshot-500", "sym": "QQQ261015C00700000", "qty": 10,
                  "paid": 500.0, "got": 5000.0, "pnl": 4500.0, "ret": 9.0, "how": "15:50 卖", "src": "backfill"},
-                {"day": "2026-10-21", "sleeve": "oneshot-500", "sym": "X", "src": "engine"}]}))
+                {"day": "2026-10-21", "sleeve": "oneshot-500", "sym": "X", "src": "engine"}],
+                "ledgers": {"oneshot-500": {"n": 2, "pnl": -463.0, "cash": 500.0, "zeros": 1, "heroes": 0, "topups": 463.0, "skipped": 0}}}))
             data = fp.collect(root)
             fam = data["families"]
             self.assertEqual(set(fam), {"spy0dte", "gap", "sniper", "oneshot"})
@@ -4730,6 +4752,8 @@ class FeaturePages(unittest.TestCase):
             one = (root / "site" / "f" / "oneshot.html").read_text()
         self.assertIn('href="spy0dte.html"', index)
         self.assertIn("2 笔赚 1", index)                                    # backfill as counts, never a summed $
+        self.assertIn("按账本", index)                                       # ...and the ledger played in order
+        self.assertIn("-$463</span>（归零 1）", index)
         self.assertIn("SPY 10/20 773C", page)
         self.assertIn("顺势买看涨 773", page)
         self.assertIn("持有中", page)
@@ -4737,6 +4761,7 @@ class FeaturePages(unittest.TestCase):
         self.assertIn('href="../s500.html"', page)
         self.assertNotIn("sl-secret-cid", page)                            # client order ids stay out of the page
         self.assertIn("中位收益", one)
+        self.assertIn("归零 1 次", one)
         self.assertIn("QQQ 看涨 731", one)
 
 
