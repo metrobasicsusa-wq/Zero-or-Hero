@@ -718,7 +718,12 @@ class Sniper:
             return None
         path = ROOT / spec.get("dir", "journal-s500/sniper") / f"{day}.json"
         try:
-            pk = (json.loads(path.read_text()) or {}).get("sniper")
+            doc = json.loads(path.read_text()) or {}
+            if spec.get("rank"):   # owner, 10-22 (samples too slow): plan twins follow candidates 2 and 3 as well
+                pk = next((c for c in doc.get("candidates") or [] if int(c.get("rank") or 0) == int(spec["rank"])), None)
+                pk = {**pk, "catalyst": f"候选第 {spec['rank']} 名：{pk.get('why', '')}"} if pk else None
+            else:
+                pk = doc.get("sniper")
         except Exception:
             pk = None
         if not pk or pk.get("direction") not in ("call", "put") or not pk.get("symbol"):

@@ -43,6 +43,8 @@ EMBEDS_PER_MESSAGE, CHARS_PER_MESSAGE = 10, 5500  # Discord: 10 embeds and 6,000
 HOLDINGS_AFTER = "15:55"
 OCC = re.compile(r"\b([A-Z]{1,6})(\d{2})(\d{2})(\d{2})([CP])(\d{8})\b")
 SLEEVE = {"spy0dte": "SPY 末日", "qqq0dte": "QQQ 末日", "tsla0dte": "TSLA 末日", "nvda0dte": "NVDA 末日",
+          "iwm0dte": "IWM 末日", "dia0dte": "DIA 末日", "amd0dte": "AMD 末日", "amzn0dte": "AMZN 末日",
+          "meta0dte": "META 末日", "msft0dte": "MSFT 末日",
           "spy0dte-near": "SPY 末日·近档", "tsla0dte-5x": "TSLA 末日·5 倍", "wk-trend": "周票·趋势", "wk-momo": "周票·动量",
           "wk-news": "周票·新闻", "net": "撒网", "gap": "低开反弹", "flush": "急跌反弹", "earn": "财报彩票", "tqqq": "TQQQ 趋势",
           "relay": "接力", "spydip": "SPY 昨跌", "opengap": "开盘跳空", "oneshot": "一把到", "sniper": "开盘狙击",
@@ -91,8 +93,9 @@ SITE = "https://metrobasicsusa-wq.github.io/Zero-or-Hero"
 
 
 def direction(sid: str) -> str:
-    """A ledger id without its size or plan suffix: spy0dte-1000 / spy0dte-old-plan-500 -> spy0dte (its page)."""
-    return re.sub(r"-(?:old-|opt-)?plan$", "", re.sub(r"-(500|1000)$", "", sid or ""))
+    """A ledger id without its size, plan or rank suffix: spy0dte-1000 / spy0dte-old-plan-500 / sniper-r2-plan-500
+    -> spy0dte / sniper (its page)."""
+    return re.sub(r"-r\d+$", "", re.sub(r"-(?:old-|opt-)?plan$", "", re.sub(r"-(500|1000)$", "", sid or "")))
 
 
 def linked(text: str, sid: str) -> str:

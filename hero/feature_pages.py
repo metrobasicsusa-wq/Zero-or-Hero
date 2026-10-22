@@ -28,6 +28,7 @@ ET = ZoneInfo("America/New_York")
 SIZE = re.compile(r"-(500|1000)$")
 GROUPS = [
     ("末日单（当天到期期权）", ["spy0dte", "spy0dte-near", "qqq0dte", "tsla0dte", "tsla0dte-5x", "nvda0dte",
+                          "iwm0dte", "dia0dte", "amd0dte", "amzn0dte", "meta0dte", "msft0dte",
                           "spydip", "oneshot", "vixspike"]),
     ("周内期权", ["wk-trend", "wk-momo", "wk-news", "net"]),
     ("抄底和跳空", ["fadelotto", "gap", "flush", "opengap", "breakgap", "dipweek"]),
@@ -38,6 +39,8 @@ GROUPS = [
 ]
 TITLE = {"spy0dte": "SPY 末日单", "spy0dte-near": "SPY 末日单（离现价 0.3%）", "qqq0dte": "QQQ 末日单",
          "tsla0dte": "TSLA 末日单", "tsla0dte-5x": "TSLA 末日单（5 倍止盈）", "nvda0dte": "NVDA 末日单",
+         "iwm0dte": "IWM 末日单", "dia0dte": "DIA 末日单", "amd0dte": "AMD 末日单", "amzn0dte": "AMZN 末日单",
+         "meta0dte": "META 末日单", "msft0dte": "MSFT 末日单",
          "spydip": "SPY 昨跌后买涨", "oneshot": "一把到", "vixspike": "恐慌反弹", "wk-trend": "周内趋势",
          "wk-momo": "周内动量", "wk-news": "周内新闻", "net": "撒网", "gap": "低开反弹", "flush": "急跌再拉",
          "opengap": "开盘跳空延续", "breakgap": "突破大跳空", "dipweek": "抄底给一周", "earn": "财报正股 / 两倍",

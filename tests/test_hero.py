@@ -3535,6 +3535,26 @@ class SleeveRules(unittest.TestCase):
         slot, picks = sr.Gap().entries(self.run_at(date(2026, 10, 8), 9, 50, b), {"n": 1}, {"slots": {}, "cash": 500.0})
         self.assertEqual([p["und"] for p in picks], ["AAA"])
 
+    def test_sniper_plan_twins_follow_the_second_and_third_candidates(self):
+        # owner, 10-22 (samples too slow): rank 2 / 3 plan ledgers, on the sniper's page
+        from hero import notify, sleeve_rules as sr
+        b = self.broker()
+        with tempfile.TemporaryDirectory() as d:
+            Path(d, "2026-10-08.json").write_text(json.dumps({
+                "sniper": {"symbol": "AAA", "direction": "call", "catalyst": "x", "confidence": 0.3},
+                "candidates": [{"rank": 1, "symbol": "AAA", "direction": "call", "confidence": 0.3, "why": "a"},
+                               {"rank": 2, "symbol": "BBB", "direction": "put", "confidence": 0.2, "why": "second"}]}))
+            r = self.run_at(date(2026, 10, 8), 9, 40, b)
+            slot, picks = sr.Sniper().entries(r, {"id": "sniper-500", "dir": d}, {"slots": {}})
+            self.assertEqual((slot, picks[0]["und"]), ("2026-10-08", "AAA"))
+            slot, picks = sr.Sniper().entries(r, {"id": "sniper-r2-plan-500", "dir": d, "rank": 2}, {"slots": {}})
+            self.assertEqual(picks[0]["und"], "BBB")
+            self.assertTrue(picks[0]["sym"].endswith("P100") or "P" in picks[0]["sym"])
+            self.assertIn("候选第 2 名：second", picks[0]["why"])
+            self.assertEqual(sr.Sniper().entries(r, {"id": "sniper-r3-plan-500", "dir": d, "rank": 3}, {"slots": {}}), ("2026-10-08", []))
+        self.assertEqual(notify.direction("sniper-r2-plan-500"), "sniper")
+        self.assertEqual(notify.direction("amd0dte-plan-500"), "amd0dte")
+
     def test_peer_follows_claude_c_legs_in_shares_with_inverse_funds(self):
         # owner, 10-22 (「C 的大盘方向好像都很准」「按你的来」): what the peer's three-leg call is worth, plan only
         from types import SimpleNamespace

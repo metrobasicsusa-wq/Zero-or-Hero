@@ -228,7 +228,7 @@ function empty(msg) { return `<div class="empty">${esc(msg)}</div>`; }
 
 const EXPERIMENTS = [["Claude 主实验 $100k", "index.html"], ["Claude-500 多账本 $50k", "s500.html"], ["各方向", "f/index.html"], ["三方交流", "exchange.html"], ["财报", "earnings.html"]];
 // a ledger id without its size or plan suffix is its direction page (hero/feature_pages.py)
-const direction = (id) => id.replace(/-(500|1000)$/, "").replace(/-(?:old-|opt-)?plan$/, "");
+const direction = (id) => id.replace(/-(500|1000)$/, "").replace(/-(?:old-|opt-)?plan$/, "").replace(/-r\d+$/, "");
 
 function renderNav() {
   const name = DATA.config.name || "Claude";
