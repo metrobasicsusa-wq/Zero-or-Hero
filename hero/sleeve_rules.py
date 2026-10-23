@@ -96,6 +96,20 @@ def closes(run, syms: list[str], days: int = 400) -> dict[str, list[float]]:
     return cached(run, key, fetch) or {}
 
 
+def history(run, syms: list[str], days: int = 120) -> dict[str, list[tuple[float, float]]]:
+    """Completed daily (close, high) pairs, split-adjusted, oldest first (a bar without a high uses its close)."""
+    key = ("history", tuple(sorted(syms)), days)
+
+    def fetch():
+        start = (run.today - timedelta(days=days)).isoformat()
+        out = {}
+        for i in range(0, len(syms), 100):
+            for s, bs in run.c.daily_bars(syms[i:i + 100], start, adjustment="split").items():
+                out[s] = [(float(b["c"]), float(b.get("h") or b["c"])) for b in bs if b["t"][:10] < run.today.isoformat()]
+        return out
+    return cached(run, key, fetch) or {}
+
+
 def pool(run) -> list[str]:
     def load():
         d = json.loads((ROOT / "data" / "universe.json").read_text())
@@ -722,6 +736,67 @@ class DipWeek:
         return (day, [])
 
 
+class Pullback:
+    """research/2026-10-23-pullback.md and the owner's 10-23 ask (「能从中找出那个最强的吗」, then 「我人不在 你自己决定」):
+    a strong stock's small pullback, bought with next week's call. At 15:50, among the pool names up `mom` (20%) or
+    more over the 20 sessions before today, above their 50-day average, closing 3-10% under their 20-session high and
+    (`down_day`) under yesterday's close, the deepest pullback gets the call `offset` (at the money) out on the nearest
+    expiry 8 to 12 days away; exits, `max_spread` and `min_vol` as DipWeek. The cut was chosen from ~30 pre-specified
+    splits of 1,953 events (2024-02 on, 101 names): 485 events, +23% per $1 at 5% costs (+11% at 10%), every year
+    positive, first and second half alike (+23% / +22%), the stock itself +2.8% in five sessions; as one pick a day
+    +21%, 7/61 rounds to 20x all in (6-22%), about $4,400 a hero. Caveats in the same report: the last three months
+    -36% (a calm market, like dip-week), five names carry 42% of the profit, and the best of thirty cuts flatters."""
+
+    def entries(self, run, spec, s):
+        day = run.today.isoformat()
+        if day in s["slots"] or not (spec.get("entry", "15:45") <= run.hhmm < "15:58"):
+            return None
+        if calm(run, spec, s):
+            return (day, [])
+        held = {t.get("und") for t in s["open"]}
+        names = [x for x in pool(run) if x not in held]
+        hist = history(run, names)
+        found = []
+        for x, v in snaps(run, names).items():
+            bars = hist.get(x) or []
+            spot, _, _, prev = spot_open(v)
+            if not spot or len(bars) < 51:
+                continue
+            cs = [c for c, _ in bars]
+            mom = cs[-1] / cs[-21] - 1
+            hi20 = max(h for _, h in bars[-20:])
+            ma50 = statistics.mean(cs[-50:])
+            dip = spot / hi20 - 1
+            if mom >= spec.get("mom", 0.20) and spot > ma50 and spec.get("low", -0.10) <= dip <= spec.get("high", -0.03) \
+                    and (not spec.get("down_day", True) or spot < (prev or cs[-1])):
+                found.append((dip, x, spot, mom))
+        each = budget(run, spec, s, 1)
+        exit_ = spec.get("exit", "trail")
+        for dip, und, spot, mom in sorted(found)[:8]:
+            got = option_pick(run, und, "C", spot, spec.get("offset", 0.0), (run.today + timedelta(days=spec.get("min_days", 8))).isoformat(),
+                              (run.today + timedelta(days=spec.get("max_days", 12))).isoformat())
+            if not got or got[1] * 100 > each:
+                continue
+            c, ask = got
+            bid, skip = too_wide(run, spec, c, ask)
+            if skip:
+                continue
+            spread = f"，买价 ${bid:.2f} / 卖价 ${ask:.2f}（价差占中间价 {(ask - bid) / ((ask + bid) / 2):.0%}）" if bid > 0 else ""
+            exp = c["expiration_date"]
+            out, at = held_out(run, exp, spec.get("hold", 5))
+            k = float(c["strike_price"])
+            pk = {"sym": c["symbol"], "asset": "option", "und": und, "ask": ask, "trail": exit_ == "trail", "expiry": exp,
+                  "exit_day": out, "exit_at": at}
+            if exit_ == "take2":
+                pk["take"] = 2
+            sell = {"hold": "拿到", "take2": "2 倍止盈，否则"}.get(exit_, "翻倍后回撤 40% 卖，否则")
+            pk["why"] = (f"强势股回调：{und} 前 20 天 {mom:+.0%}、在 50 日线上，今天收在 20 日最高下方 {-dip:.1%}"
+                         f"{'、收阴' if spec.get('down_day', True) else ''}；买看涨 {k:g}（{exp} 到期，离现价 {k / spot - 1:+.1%}）{spread}；"
+                         f"{sell} {out[5:]} {at} 卖")
+            return (day, [pk])
+        return (day, [])
+
+
 class OpenGap:
     """research/2026-10-13-open-catalyst.md, the one group worth watching: a 2%+ gap that the first minutes keep going
     the same way; the largest such gap, at the first cycle from 09:35, an option 0.6% beyond the price in the gap's
@@ -1197,4 +1272,4 @@ class Peer:
 RULES = {"zdte": ZeroDTE(), "weekly": Weekly(), "net": Net(), "gap": Gap(), "flush": Flush(), "earnings": EarningsLotto(),
          "letf": LETF(), "relay": Relay(), "opengap": OpenGap(), "sniper": Sniper(), "oneshot": OneShot(),
          "overnight": Overnight(), "pead": Pead(), "vixspike": VixSpike(), "breakgap": BreakGap(),
-         "hikerally": HikeRally(), "dipweek": DipWeek(), "fadelotto": FadeLotto(), "peer": Peer()}
+         "hikerally": HikeRally(), "dipweek": DipWeek(), "fadelotto": FadeLotto(), "peer": Peer(), "pullback": Pullback()}

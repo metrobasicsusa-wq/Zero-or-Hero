@@ -3816,6 +3816,42 @@ class SleeveRules(unittest.TestCase):
         self.assertEqual(sr.Overnight().entries(r(), {"max_spread": 0.10}, s)[1][0]["und"], "AAA")
         self.assertIn("买价 $0.48 / 卖价 $0.50", sr.Overnight().entries(r(), {"max_spread": 0.10}, s)[1][0]["why"])
 
+    def test_pullback_buys_the_deepest_pullback_of_a_strong_stock_with_a_call_8_to_12_days_out(self):
+        # owner, 10-23 (「能从中找出那个最强的吗」, then 「我人不在 你自己决定」): research/2026-10-23-pullback.md's strongest cut
+        from hero import sleeve_rules as sr
+        b = self.broker()
+
+        def tape(level, mom, hi):
+            # 60 completed bars: 40 flat at `level`, then 20 rising to `level` x (1 + mom), one high of `hi` among the last 20
+            bs = [{"t": f"2026-0{m}-{d:02d}T04:00:00Z", "c": level, "h": level} for m in (7, 8) for d in range(1, 21)]
+            bs += [{"t": f"2026-09-{d:02d}T04:00:00Z", "c": level * (1 + mom * d / 20), "h": level * (1 + mom * d / 20)} for d in range(1, 21)]
+            bs[-5]["h"] = hi
+            return bs
+        b.bars["AAA"] = tape(100.0, 0.25, 130.0)                                                   # +25% in 20 sessions, 20-day high 130
+        b.bars["BBB"] = tape(100.0, 0.10, 115.0)                                                   # +10%: not strong enough
+        b.bars["CCC"] = tape(100.0, 0.30, 150.0)                                                   # +30%, but 20% under its high: too deep
+        b.snaps["AAA"] = {"dailyBar": {"o": 124.0, "l": 119.0}, "latestTrade": {"p": 120.0}, "prevDailyBar": {"c": 125.0}}   # 7.7% under 130, a down day
+        b.snaps["BBB"] = {"dailyBar": {"o": 110.0, "l": 108.0}, "latestTrade": {"p": 108.0}, "prevDailyBar": {"c": 110.0}}
+        b.snaps["CCC"] = {"dailyBar": {"o": 125.0, "l": 119.0}, "latestTrade": {"p": 120.0}, "prevDailyBar": {"c": 130.0}}
+        r = lambda hh, mm: self.run_at(date(2026, 10, 16), hh, mm, b)
+        fresh = lambda: {"slots": {}, "cash": 500.0, "open": []}
+        self.assertIsNone(sr.Pullback().entries(r(10, 0), {}, fresh()))                           # 15:45 to 15:58 only
+        slot, picks = sr.Pullback().entries(r(15, 50), {}, fresh())
+        self.assertEqual([p["und"] for p in picks], ["AAA"])
+        self.assertTrue(picks[0]["sym"].endswith("C120") and picks[0]["trail"])                   # at the money, trailing exit
+        self.assertEqual((picks[0]["expiry"], picks[0]["exit_day"], picks[0]["exit_at"]), ("2026-10-28", "2026-10-23", "15:50"))
+        self.assertIn("前 20 天 +25%", picks[0]["why"])
+        self.assertIn("20 日最高下方 7.7%、收阴", picks[0]["why"])
+        self.assertIn("买价 $0.40 / 卖价 $0.50", picks[0]["why"])
+        self.assertEqual(sr.Pullback().entries(r(15, 50), {}, {"slots": {}, "cash": 500.0, "open": [{"und": "AAA"}]}), ("2026-10-16", []))  # held: nothing else qualifies
+        b.snaps["AAA"]["prevDailyBar"]["c"] = 119.0                                                 # an up day: not taken
+        self.assertEqual(sr.Pullback().entries(r(15, 50), {}, fresh()), ("2026-10-16", []))
+        self.assertEqual(sr.Pullback().entries(r(15, 50), {"down_day": False}, fresh())[1][0]["und"], "AAA")
+        b.snaps["AAA"]["prevDailyBar"]["c"] = 125.0
+        b.bars["SPY"] = [{"t": f"2026-09-{d:02d}T04:00:00Z", "c": 100.0 + (0.1 if d % 2 else 0.0)} for d in range(1, 29)]   # ~1% vol
+        self.assertEqual(sr.Pullback().entries(r(15, 50), {"min_vol": 0.103}, fresh()), ("2026-10-16", []))   # calm: sits out, like dip-week
+        self.assertEqual(sr.Pullback().entries(r(15, 50), {"max_spread": 0.10}, fresh()), ("2026-10-16", []))   # 0.40 / 0.50 is 22% wide
+
     def test_hikerally_records_a_month_out_put_after_a_fast_run_only_while_hiking(self):
         from hero import sleeve_rules as sr
         b = self.broker()

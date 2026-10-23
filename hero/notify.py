@@ -49,7 +49,7 @@ SLEEVE = {"spy0dte": "SPY 末日", "qqq0dte": "QQQ 末日", "tsla0dte": "TSLA �
           "wk-news": "周票·新闻", "net": "撒网", "gap": "低开反弹", "flush": "急跌反弹", "earn": "财报彩票", "tqqq": "TQQQ 趋势",
           "relay": "接力", "spydip": "SPY 昨跌", "opengap": "开盘跳空", "oneshot": "一把到", "sniper": "开盘狙击",
           "overnight": "隔夜动量", "pead": "财报漂移", "vixspike": "恐慌反弹",
-          "breakgap": "突破大跳空", "hikerally": "加息快涨", "dipweek": "抄底一周", "dipweek-hold": "抄底一周·拿满", "dipweek-take": "抄底一周·2 倍", "fadelotto": "彩票",
+          "breakgap": "突破大跳空", "hikerally": "加息快涨", "dipweek": "抄底一周", "dipweek-hold": "抄底一周·拿满", "dipweek-take": "抄底一周·2 倍", "pullback": "强势回调", "fadelotto": "彩票",
           "peerc": "跟 c 方向"}
 BROKER = {"no available quote": "合约没有报价（没人接手），市价单被拒",
           "insufficient": "资金或可卖数量不够", "market is closed": "市场已收盘",
