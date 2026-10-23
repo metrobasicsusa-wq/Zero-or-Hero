@@ -5440,3 +5440,42 @@ class ResearchHeroGame(unittest.TestCase):
         self.assertEqual(s["抄底给一周 平值 d5"], [-0.9])                                 # the biggest gap-down of the day
         md = hg.markdown(hg.table(docs), "2026-10-23")
         self.assertIn("| 一分钱末日彩票 全部（单张 20 倍止盈） | 2 | 押一半 |", md)
+
+
+class ResearchPeerSignals(unittest.TestCase):
+    """Owner, 10-23 (「C 上传了一个东西」): a signal group's sheet replayed on daily bars; aggregates only."""
+
+    def test_parse_replay_and_summary(self):
+        import openpyxl
+        from hero import research_peer_signals as ps
+        wb = openpyxl.Workbook()
+        ws = wb.active
+        ws.title = "Sheet1"
+        ws.append(["日期", "标的", "入场价", "最高TP/止损", "到达TP数"])
+        ws.append([datetime(2026, 4, 10), "aaa", 110.5, 0.08, 2])
+        ws.append([datetime(2026, 4, 12), "BBB", 50.0, "/", "/"])            # no sheet return yet
+        ws.append(["note", None, None, None, None])
+        with tempfile.TemporaryDirectory() as tmp:
+            f = Path(tmp) / "s.xlsx"
+            wb.save(f)
+            sigs = ps.parse(f)
+        self.assertEqual(sigs, [{"day": "2026-04-10", "sym": "AAA", "entry": 110.5, "sheet_tp": 0.08, "ntp": 2},
+                                {"day": "2026-04-12", "sym": "BBB", "entry": 50.0, "sheet_tp": None, "ntp": None}])
+        bars = [{"t": f"2026-04-{d:02d}T04:00:00Z", "o": 100.0 + d, "h": 102.0 + d, "l": 99.0 + d, "c": 101.0 + d} for d in range(1, 30)]
+        bench = {"SMH": [{"t": b["t"], "c": 200.0 + i} for i, b in enumerate(bars)]}
+        r = ps.replay(sigs[0], bars, bench)
+        self.assertEqual((r["how"], r["first"]), ("当天按表价", "target"))                   # 110.5 inside the 10th's 109-112 range
+        self.assertAlmostEqual(r["res"]["c5"], 116 / 110.5 - 1 - 0.001)                      # the 15th closes at 116
+        self.assertAlmostEqual(r["mfe10"], 122 / 110.5 - 1)                                  # the 20th's high
+        self.assertAlmostEqual(r["bench"]["SMH"]["c5"], 214 / 209 - 1)
+        late = ps.replay({**sigs[0], "entry": 50.0}, bars, bench)                            # not traded through: next open
+        self.assertEqual((late["how"], late["res"]["c1"]), ("第二天开盘", (113 / 111) - 1 - 0.001))
+        self.assertIsNone(ps.replay({**sigs[0], "day": "2026-05-01"}, bars, bench))
+        s = ps.summarise([r, late])
+        self.assertEqual(s["entry"], {"当天按表价": 1, "第二天开盘": 1})
+        self.assertAlmostEqual(s["first"]["target"], 1.0)
+        self.assertIn("2026-04", s["months"])
+        md = ps.markdown(s, {"generated": "2026-10-23", "title": "t", "signals": 2, "first": "2026-04-10", "last": "2026-04-12",
+                             "sheet_mean": 0.08, "sheet_wins": 1.0, "replayed": 2}, [0.1, -0.05])
+        self.assertIn("先到 +5% 的 +100.0%", md)
+        self.assertAlmostEqual(ps.momentum_at("2026-04-25", bars), 125 / 105 - 1)
