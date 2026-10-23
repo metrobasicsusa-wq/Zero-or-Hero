@@ -5487,3 +5487,17 @@ class ResearchPeerSignals(unittest.TestCase):
         g = ps.buckets([r, late])
         self.assertEqual((g["信号前 20 天涨 10% 以上（追强势）"]["n"], g["信号前 20 天在跌（抄底）"]["n"], g["当天成交量是平时 2 倍以上"]["n"]), (1, 1, 1))
         self.assertIsNone(ps.setup("2026-04-05", bars))
+        up = [{"t": f"d{d}", "o": 100.0 + d, "h": 101.0 + d, "l": 99.5 + d, "c": 100.5 + d} for d in range(1, 25)]   # +1 a day
+        g = ps.ladder(100.0, up)
+        self.assertEqual(g["levels"], 5)                                                        # every level trades on the way up
+        self.assertAlmostEqual(g["ret"], sum(max(l, 0) for l in (0.012, 0.025, 0.04, 0.06, 0.10)) / 5 - 0.001, places=2)
+        down = [{"t": f"d{d}", "o": 100.0 - 2 * d, "h": 100.5 - 2 * d, "l": 99.0 - 2 * d, "c": 99.5 - 2 * d} for d in range(1, 25)]
+        g = ps.ladder(100.0, down)
+        self.assertEqual((g["levels"], g["days"]), (0, 3))                                      # the stop on day 3 (low 93 <= 94)
+        self.assertAlmostEqual(g["ret"], 94 / 100 - 1 - 0.001)
+        flat = [{"t": f"d{d}", "o": 100.0, "h": 100.5, "l": 99.5, "c": 100.0} for d in range(1, 25)]
+        self.assertEqual(ps.ladder(100.0, flat), {"ret": -0.001, "days": 20, "levels": 0})      # nothing trades: out at the horizon
+        be = [{"t": "d1", "o": 100.0, "h": 101.5, "l": 99.8, "c": 101.0}] + [{"t": f"d{d}", "o": 100.5, "h": 100.8, "l": 97.0, "c": 98.0} for d in range(2, 25)]
+        g = ps.ladder(100.0, be)
+        self.assertEqual(g["levels"], 1)                                                        # first level, then the breakeven stop
+        self.assertAlmostEqual(g["ret"], 0.2 * 0.012 + 0.8 * 0.0 - 0.001)

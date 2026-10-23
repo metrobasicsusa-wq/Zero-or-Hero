@@ -83,6 +83,7 @@ def replay(sig: dict, bars: list[dict], bench: dict[str, list[dict]]) -> dict | 
             first = "target"
             break
     out["first"] = first or "neither"
+    out["ladder"] = ladder(entry, bars[start + 1: start + 21])
     for name, bb in bench.items():
         bd = {b["t"][:10]: float(b["c"]) for b in bb}
         d0 = days[start]
@@ -115,6 +116,46 @@ def setup(sig_day: str, bars: list[dict]) -> dict | None:
     vol20 = statistics.mean(float(b.get("v") or 0) for b in prev)
     return {"mom20": cp / float(bars[i - 21]["c"]) - 1, "from_high": c0 / hi20 - 1, "day": c0 / cp - 1,
             "gap": float(bars[i]["o"]) / cp - 1, "vol": (float(bars[i].get("v") or 0) / vol20) if vol20 else None}
+
+
+LADDER = (0.012, 0.025, 0.04, 0.06, 0.10)   # the cards' typical levels on a $424 / $344 / $526 / $233 entry: +1% to +10%
+LADDER_STOP = -0.06                           # about one ATR, the sheet's average loss is -6.3%
+
+
+def ladder(entry: float, path: list[dict], levels=LADDER, stop=LADDER_STOP, horizon: int = 20) -> dict:
+    """The group's own exit logic on daily bars: sell a fifth at each level, move the stop to the entry once the first
+    level trades, the rest out at the stop or the horizon's close. Inside one day the touch nearer the open is taken
+    first. Returns the weighted return per $1, the sessions held, the levels taken."""
+    left, got, stop_px, taken = 1.0, 0.0, entry * (1 + stop), 0
+    days = 0
+    for b in path[:horizon]:
+        days += 1
+        o, h, lo = float(b["o"]), float(b["h"]), float(b["l"])
+        while left > 1e-9:
+            nxt = entry * (1 + levels[taken]) if taken < len(levels) else None
+            hit_stop = lo <= stop_px
+            hit_lvl = nxt is not None and h >= nxt
+            if not hit_stop and not hit_lvl:
+                break
+            stop_first = hit_stop and (not hit_lvl or abs(o - stop_px) <= abs(o - nxt))
+            if stop_first:
+                px = min(o, stop_px) if o <= stop_px else stop_px
+                got += left * (px / entry - 1)
+                left = 0.0
+                break
+            px = max(o, nxt)
+            slice_ = min(left, 1.0 / len(levels))
+            got += slice_ * (px / entry - 1)
+            left -= slice_
+            taken += 1
+            stop_px = max(stop_px, entry)          # breakeven after the first level
+            if taken == len(levels):
+                left = 0.0
+        if left <= 1e-9:
+            break
+    if left > 1e-9 and path:
+        got += left * (float(path[min(len(path), horizon) - 1]["c"]) / entry - 1)
+    return {"ret": got - COST, "days": days, "levels": taken}
 
 
 def buckets(rows: list[dict]) -> dict[str, dict]:
@@ -155,6 +196,12 @@ def summarise(rows: list[dict]) -> dict:
             ex = [(r["day"], r["res"][f"c{h}"] - r["bench"][name][f"c{h}"]) for r in rows
                   if r["res"].get(f"c{h}") is not None and r["bench"].get(name, {}).get(f"c{h}") is not None]
             out["excess"][f"{name}|c{h}"] = robust.summary(ex, extra_cost=COST) if ex else None
+    lad = [(r["day"], r["ladder"]["ret"]) for r in rows if r.get("ladder")]
+    out["ladder"] = robust.summary(lad, extra_cost=COST) if lad else None
+    if lad:
+        out["ladder_detail"] = {"days": statistics.mean(r["ladder"]["days"] for r in rows if r.get("ladder")),
+                                "levels": statistics.mean(r["ladder"]["levels"] for r in rows if r.get("ladder")),
+                                "stopped_at_loss": sum(r["ladder"]["levels"] == 0 and r["ladder"]["ret"] < 0 for r in rows if r.get("ladder")) / len(lad)}
     mfe = [r["mfe10"] for r in rows if r["mfe10"] is not None]
     if mfe:
         out["mfe"] = {"mean": statistics.mean(mfe), "median": statistics.median(mfe), "ge5": sum(x >= 0.05 for x in mfe) / len(mfe),
@@ -189,6 +236,12 @@ def markdown(s: dict, meta: dict, momo: list[float]) -> str:
     out.append(robust.table({f"第 {h} 天收盘卖": s["holds"].get(f"c{h}") for h in HOLDS}, "按天数拿"))
     out.append("")
     out.append(robust.table({f"减 {name} 同期，第 {h} 天": s["excess"].get(f"{name}|c{h}") for name in ("SMH", "SPY") for h in (5, 10, 20)}, "超额（减去 SMH / SPY 同一窗口）"))
+    if s.get("ladder"):
+        d = s.get("ladder_detail", {})
+        out += ["", "## 按群自己的玩法出场（阶梯分批 + 保本止损）", "",
+                f"卡片的典型阶梯：入场上方 +1.2% / +2.5% / +4% / +6% / +10% 各出五分之一，止损 -6%（约 1 个 ATR），碰到第一档后止损移到成本价，20 个交易日到期按收盘出；"
+                f"同一天里离开盘价近的那边先成交。平均持有 {d.get('days', 0):.1f} 天，平均到 {d.get('levels', 0):.1f} 档，{d.get('stopped_at_loss', 0):.0%} 的信号一档没到就止损。", ""]
+        out.append(robust.table({"阶梯分批 + 保本止损": s["ladder"]}, "群的玩法，真实日线"))
     out += ["", "## 按月（第 10 天收盘，平均 / 条数 / 赚钱比例）", "", "| 月 | 平均 | 条数 | 赚钱比例 |", "|---|---|---|---|"]
     out += [f"| {m} | {pct(v[0])} | {v[1]} | {v[2]:.0%} |" for m, v in s["months"].items()]
     if s.get("setups"):
