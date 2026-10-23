@@ -1,0 +1,175 @@
+{
+ "date": "2026-10-23",
+ "sniper": {
+  "symbol": "T",
+  "direction": "put",
+  "confidence": 0.35,
+  "catalyst": "彭博 / CNBC：SpaceX 在和铁塔公司谈租用约 8 万个基站、自建第四张网，运营商盘前 T -5.5%、VZ -4.8%、TMUS -5.9%，铁塔 CCI / AMT / SBAC +10–14%。T 的财报 10-21 已出，这是新的非财报消息；盘前跌破 20 日低 $21.79，跳空约平时波动 3.0 倍——回测里唯一两段都赚的组合（破 20 日低 + 3 倍跳空，拿到第二天收盘）；买不在今天到期的最近合约（10-30）"
+ },
+ "candidates": [
+  {
+   "rank": 1,
+   "symbol": "T",
+   "direction": "put",
+   "confidence": 0.35,
+   "why": "SpaceX 租 8 万基站自建网络，运营商二线受害；盘前 -5.5%、约平时 3.0 倍，破 20 日低；10-21 财报已出，没有财报风险；拿过夜（10-30 到期）。风险：大盘股跳空 5% 以上可能已反映，昨天 -6% 今天再跌是连续第二天"
+  },
+  {
+   "rank": 2,
+   "symbol": "MU",
+   "direction": "call",
+   "confidence": 0.2,
+   "why": "SK 海力士三季度业绩（韩国时间今早）带动存储股盘前反弹，MU +1.4%、约平时 0.5 倍，小跳空有实质消息的二线受益；12-16 才财报；没破 20 日高（离 20 日高 $1,108 很远，昨天刚到 20 日低）"
+  },
+  {
+   "rank": 3,
+   "symbol": "TMUS",
+   "direction": "put",
+   "confidence": 0.2,
+   "why": "同一条 SpaceX 消息，盘前 -5.9%、约 3.0 倍，离 20 日低 $147.90 只差 1%，没破；财报日期我们日历里没有（去年是 10-23 前后），有撞上财报的风险，所以排第 3"
+  },
+  {
+   "rank": 4,
+   "symbol": "SBAC",
+   "direction": "call",
+   "confidence": 0.15,
+   "why": "SpaceX 消息的受益方，盘前 +10.6%、约 5.7 倍、破 20 日高；但中盘股跳空超过 6% 常已反映，财报日期日历里没有"
+  }
+ ],
+ "skipped": [
+  {
+   "symbol": "VZ",
+   "direction": "put",
+   "gap": -0.048,
+   "reason": "财报临近",
+   "why_not": "同一条 SpaceX 消息、约 3.1 倍，但 10-26 盘前财报"
+  },
+  {
+   "symbol": "CCI",
+   "direction": "call",
+   "gap": 0.139,
+   "reason": "其他",
+   "why_not": "受益方最大、破 20 日高、7.9 倍，但昨晚刚发财报，今天是财报反应日，而且 +14% 已反映"
+  },
+  {
+   "symbol": "AMT",
+   "direction": "call",
+   "gap": 0.106,
+   "reason": "财报临近",
+   "why_not": "受益方，破 20 日高、6.9 倍，但 10-27 盘前财报，且 +10.6% 已反映"
+  },
+  {
+   "symbol": "NOK",
+   "direction": "call",
+   "gap": 0.043,
+   "reason": "消息太弱",
+   "why_not": "昨天财报 -13.5% 后的反弹；新闻是目标价下调和一份乌克兰 MoU"
+  },
+  {
+   "symbol": "BE",
+   "direction": "put",
+   "gap": -0.04,
+   "reason": "其他",
+   "why_not": "昨晚财报反应"
+  },
+  {
+   "symbol": "WDC",
+   "direction": "put",
+   "gap": -0.025,
+   "reason": "其他",
+   "why_not": "昨晚财报反应"
+  },
+  {
+   "symbol": "NEM",
+   "direction": "call",
+   "gap": 0.01,
+   "reason": "其他",
+   "why_not": "昨晚财报反应"
+  },
+  {
+   "symbol": "FIX",
+   "direction": "put",
+   "gap": -0.05,
+   "reason": "其他",
+   "why_not": "昨晚财报反应"
+  },
+  {
+   "symbol": "RNG",
+   "direction": "call",
+   "gap": 0.15,
+   "reason": "其他",
+   "why_not": "财报反应（超预期加上调）"
+  },
+  {
+   "symbol": "RHI",
+   "direction": "call",
+   "gap": 0.088,
+   "reason": "其他",
+   "why_not": "财报反应"
+  },
+  {
+   "symbol": "DECK",
+   "direction": "put",
+   "gap": -0.084,
+   "reason": "其他",
+   "why_not": "财报反应"
+  },
+  {
+   "symbol": "MRNA",
+   "direction": "put",
+   "gap": -0.057,
+   "reason": "其他",
+   "why_not": "癌症疫苗数据泄露，昨天 -25%，今天是连续第二天追（回测最差）"
+  },
+  {
+   "symbol": "MSTR",
+   "direction": "put",
+   "gap": -0.032,
+   "reason": "消息太弱",
+   "why_not": "跟着比特币跌，没有自己的新闻"
+  },
+  {
+   "symbol": "SNDK",
+   "direction": "call",
+   "gap": 0.019,
+   "reason": "财报临近",
+   "why_not": "存储反弹，但 10-29 盘后财报"
+  },
+  {
+   "symbol": "ORCL",
+   "direction": "call",
+   "gap": null,
+   "reason": "消息太弱",
+   "why_not": "$10 亿合作伙伴生态投资，在资本开支恐慌里方向不明（claude-b 也这么看）"
+  },
+  {
+   "symbol": "NVDA",
+   "direction": "call",
+   "gap": -0.002,
+   "reason": "消息太弱",
+   "why_not": "Vertiv / Stellantis / Pony AI 合作，例行消息"
+  },
+  {
+   "symbol": "AAPL",
+   "direction": "call",
+   "gap": null,
+   "reason": "消息太弱",
+   "why_not": "接近 52 周高，内部人卖股，没有新消息"
+  },
+  {
+   "symbol": "INTC",
+   "direction": "call",
+   "gap": 0.003,
+   "reason": "财报临近",
+   "why_not": "芯片止跌反弹，10-29 财报"
+  }
+ ],
+ "claude_b_pick": "null（没有狙击：它认为没有大公司有自己的重磅消息；SPY 判 none、p_up 0.52）",
+ "notes": [
+  "今天是「每天都下第 1 名」的第一天：T 看跌是今天唯一同时满足回测两条加分项（破 20 日低点 + 跳空 ≥3 倍平时波动）的非财报消息股；按回测优先拿过夜，到期日选 10-30。",
+  "最大的风险是「大盘股跳空 5% 以上多半已反映」和「连续第二天追最差」：T 昨天财报后 -6%，今天 -5.5% 是第二天。但昨天跌的是财报，今天跌的是新消息，不算同一条。",
+  "铁塔股是这条消息更干净的受益方，但三家不是财报反应就是财报临近，而且都跳空 10% 以上。",
+  "周五：claude-b 的 SPY 规则周五不做；我们的末日单照常。盘前价是 IEX 最新成交，盘前成交稀，仅供参考。"
+ ],
+ "generated_at": "2026-10-23T09:06:18-04:00"
+}
