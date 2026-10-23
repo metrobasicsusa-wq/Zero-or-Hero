@@ -1263,7 +1263,7 @@ class Peer:
                 continue
             what = und if side == "up" else f"反向 ETF {sym}" + (f"（{lev} 倍，只用 1/{lev} 的钱）" if lev > 1 else "")
             picks.append({"sym": sym, "asset": "stock", "und": und, "ask": spot, "whole": False, "scale": 1 / lev,
-                          "exit_at": spec.get("exit_at", "15:50"),
+                          "exit_day": day, "exit_at": spec.get("exit_at", "15:50"),   # 10-23: without exit_day the 15:50 sale never fired
                           "why": f"跟 {who} 的方向：{und} 看{'涨' if side == 'up' else '跌'}（它的证伪线：{falsifier}），"
                                  f"买{what} ${spot:,.2f}（开盘 ${o:,.2f}、昨收 ${prev:,.2f}），{spec.get('exit_at', '15:50')} 卖"})
         return (day, picks)

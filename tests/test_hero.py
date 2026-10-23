@@ -3670,6 +3670,7 @@ class SleeveRules(unittest.TestCase):
             seen = []
             r.j = SimpleNamespace(event=lambda kind, **k: seen.append((kind, k)))
             slot, picks = sr.Peer().entries(r, spec, {"slots": {}})
+            self.assertTrue(all((p["exit_day"], p["exit_at"]) == ("2026-10-22", "15:50") for p in picks))   # 10-23: sold the same day
             self.assertEqual(slot, "2026-10-22")
             self.assertEqual([(p["sym"], p["und"], p["scale"], p["asset"]) for p in picks],
                              [("SH", "SPY", 1, "stock"), ("SOXS", "SMH", 1 / 3, "stock"), ("XLP", "XLP", 1, "stock")])
