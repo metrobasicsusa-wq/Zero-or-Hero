@@ -5283,3 +5283,61 @@ class ResearchZdteConfirm(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class ResearchVerdict(unittest.TestCase):
+    """Owner, 10-23 (「想加快进度」): each ledger against the backtest that already answers it, plus a 10-trade stop line."""
+
+    def docs(self):
+        days = [f"2026-{m:02d}-{d:02d}" for m in (7, 8, 9) for d in (1, 8, 15, 22)]
+        mm = {"rows": [{"und": "SPY", "day": d, "dte": 0, "move": {"09:35": 0.001, "10:00": 0.006 if i % 2 else 0.001},
+                        "res": {"10:00|0.003": {"take3_trail": 2.0 if i % 3 == 0 else -0.9, "take5_trail": -0.5},
+                                "09:35|0.003": {"take3_trail": -0.8}}} for i, d in enumerate(days)]}
+        nm = {"trades": {"IWM|0.003|3": [[d, -0.9] for d in days]}}
+        st = {"rows": [{"day": d, "symbol": "SPY", "prev_ret": -0.02 if i % 2 else 0.01, "side": "C", "res": {"C|0.003|3": 0.5, "C|0.006|3": -0.2}}
+                       for i, d in enumerate(days)]}
+        dw = {"rows": [{"day": d, "leg": "otm3", "res": {"trail2": 0.3}} for d in days] + [{"day": days[0], "leg": None, "res": {}}]}
+        pd_ = {"rows": [{"day": d, "gap": 0.12 if i % 2 else 0.06, "held": 0.01, "res": {"trail2": 0.4}} for i, d in enumerate(days)]}
+        return {"minmove": mm, "names": nm, "streak": st, "dipweek": dw, "pead": pd_}
+
+    def test_each_ledger_maps_to_its_series(self):
+        from hero import research_verdict as v
+        led = v.ledgers(self.docs())
+        self.assertEqual(len(led["spy0dte-near-500"][1]), 12)                       # every day
+        self.assertEqual(len(led["spy0dte-500"][1]), 6)                             # only 10:00 moves of 0.5%+
+        self.assertEqual([r for _, r in led["spy0dte-near-1000"][1]][:2], [-0.8, -0.8])   # the 09:35 entry
+        self.assertEqual(len(led["spydip-500"][1]), 6)                              # after a 1%+ drop
+        self.assertEqual(len(led["dipweek-500"][1]), 12)                            # the otm3 leg, the empty row dropped
+        self.assertEqual((len(led["pead-500"][1]), len(led["pead-1000"][1])), (6, 12))
+        self.assertIsNone(led["dia0dte-plan-500"][1])
+
+    def test_stop_line_is_the_20th_percentile_of_ten_trade_sums(self):
+        from hero import research_verdict as v
+        xs = [(f"2026-01-{i + 1:02d}", r) for i, r in enumerate([-1.0] * 10 + [2.0] * 10)]
+        line = v.stop_line(xs)
+        self.assertEqual((line["windows"], line["worst"], line["best"]), (11, -10.0, 20.0))
+        self.assertEqual(line["p20"], -4.0)                                          # sums go -10, -7, -4, ... 20
+        self.assertIsNone(v.stop_line(xs[:5]))
+
+    def test_live_trades_join_the_take_and_trail_halves(self):
+        from hero import research_verdict as v
+        book = {"sleeves": {"x-500": {"closed": [
+            {"tid": "20261010-aa", "paid": 100.0, "proceeds": 300.0, "closed": "2026-10-10 10:20"},
+            {"tid": "20261010-aar", "paid": 100.0, "proceeds": 10.0, "closed": "2026-10-10 15:30"},
+            {"tid": "20261011-bb", "paid": 200.0, "proceeds": 0.0, "closed": "2026-10-11 15:30"}]}}}
+        live = v.live_stats(book, "x-500")
+        self.assertEqual((live["n"], live["pnl"]), (2, -90.0))                        # 310 - 200 and 0 - 200
+        self.assertAlmostEqual(live["mean"], (0.55 - 1.0) / 2)                        # (310/200 - 1) and -1
+        self.assertIsNone(v.live_stats(book, "none"))
+
+    def test_verdict_wording_and_the_table(self):
+        from hero import research_verdict as v
+        s = {"trim": -0.2, "recent": (-0.1, 20)}
+        self.assertEqual(v.verdict(s, (0.3, 5), {"p20": -4.0}, {"n": 10, "last_sum": -5.0}), "回测就不行；最近一个月 +30%（5 笔）；实盘低于停止线")
+        self.assertEqual(v.verdict({"trim": 0.1, "recent": (0.2, 9)}, None, {"p20": -4.0}, {"n": 3, "last_sum": 1.0}), "回测可以；实盘 3/10 笔")
+        self.assertEqual(v.verdict({"trim": 0.1, "recent": (-0.2, 9)}, None, None, None), "回测分歧")
+        self.assertEqual(v.verdict(None, None, None, None), "没有回测")
+        rows, md = v.build(self.docs(), {"sleeves": {}}, "2026-10-23")
+        self.assertIn("| spy0dte-near-500 |", md)
+        self.assertIn("| dia0dte-plan-500 | 没有回测：DIA 没算过 | 0 |", md)
+        self.assertEqual(next(r for r in rows if r["id"] == "iwm0dte-plan-500")["verdict"], "回测就不行；最近一个月 -90%（4 笔）")
