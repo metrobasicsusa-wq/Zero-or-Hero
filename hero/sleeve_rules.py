@@ -635,7 +635,9 @@ class HikeRally:
 class DipWeek:
     """research/2026-10-16-dip-week.md: a dip given a week instead of a day. At 15:50, the pool name that opened the
     most below its prior close (2%+, `gap`) gets the call `offset` (3%) out on the nearest expiry 5 to 12 days away;
-    out after 2x on a 40% giveback, else 15:50 on the fifth session (15:30 if it expires first). 1,772 gap-downs since
+    out after 2x on a 40% giveback, else 15:50 on the fifth session (15:30 if it expires first); `exit` "hold" keeps it to
+    that close, "take2" rests a sell at 2x (owner, 10-23, docs/hero-plan.md: the three exits the hero game rated), and
+    `max_spread` skips a quote wider than that share of the mid (the hero rate was measured at 5% costs). 1,772 gap-downs since
     2024-02, 3% out, sold on the fifth close: +19% per $1 at 5% costs each way (2024 +8%, 2025-26 +23%, without the
     best three +17%; median -70%), +8% at 10% costs -- so the bid and ask go into the why: the cost is the question."""
 
@@ -650,6 +652,8 @@ class DipWeek:
             if spot and o and prev and o / prev - 1 <= -spec.get("gap", 0.02) and x not in held:
                 gaps.append((o / prev - 1, x, spot, spot < o))
         each = budget(run, spec, s, 1)
+        exit_ = spec.get("exit", "trail")   # trail: after 2x, out on a 40% giveback; hold: the fifth close; take2: all out at 2x
+        cap = spec.get("max_spread")        # owner, 10-23 (docs/hero-plan.md): the hero rate lives on 5% costs -- skip a wider quote
         for g, und, spot, failed in sorted(gaps)[:8]:
             got = option_pick(run, und, "C", spot, spec.get("offset", 0.03), (run.today + timedelta(days=5)).isoformat(),
                               (run.today + timedelta(days=12)).isoformat())
@@ -658,14 +662,23 @@ class DipWeek:
             c, ask = got
             q = (run.cache.get(("quote", c["symbol"])) or {}).get("latestQuote") or {}
             bid = float(q.get("bp") or 0)
+            if cap is not None and (bid <= 0 or (ask - bid) / ((ask + bid) / 2) > cap):
+                run.j.event("sleeve_skip", dry_run=True, sleeve=spec.get("id", "dipweek"), symbol=c["symbol"],
+                            why=f"{spec.get('id', 'dipweek')}：{und} 的 {c['symbol']} 买价 ${bid:.2f} / 卖价 ${ask:.2f}，"
+                                f"价差超过中间价的 {cap:.0%}，换下一只")
+                continue
             spread = f"，买价 ${bid:.2f} / 卖价 ${ask:.2f}（价差占中间价 {(ask - bid) / ((ask + bid) / 2):.0%}）" if bid > 0 else ""
             exp = c["expiration_date"]
             out, at = held_out(run, exp, spec.get("hold", 5))
             k = float(c["strike_price"])
-            return (day, [{"sym": c["symbol"], "asset": "option", "und": und, "ask": ask, "trail": True, "expiry": exp,
-                           "exit_day": out, "exit_at": at,
-                           "why": f"抄底给一周：{und} 低开 {g:+.1%}，{'收盘前仍低于开盘' if failed else '已回到开盘之上'}；买看涨 {k:g}"
-                                  f"（{exp} 到期，离现价 {k / spot - 1:.1%}）{spread}；翻倍后回撤 40% 卖，否则 {out[5:]} {at} 卖"}])
+            pk = {"sym": c["symbol"], "asset": "option", "und": und, "ask": ask, "trail": exit_ == "trail", "expiry": exp,
+                  "exit_day": out, "exit_at": at}
+            if exit_ == "take2":
+                pk["take"] = 2
+            sell = {"hold": "拿到", "take2": "2 倍止盈，否则"}.get(exit_, "翻倍后回撤 40% 卖，否则")
+            pk["why"] = (f"抄底给一周：{und} 低开 {g:+.1%}，{'收盘前仍低于开盘' if failed else '已回到开盘之上'}；买看涨 {k:g}"
+                         f"（{exp} 到期，离现价 {k / spot - 1:.1%}）{spread}；{sell} {out[5:]} {at} 卖")
+            return (day, [pk])
         return (day, [])
 
 

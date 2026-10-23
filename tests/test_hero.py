@@ -3233,6 +3233,22 @@ class Sleeves(unittest.TestCase):
         other.s("spy0dte-500")["open"].append({"tid": "x", "paid": 10.0})
         self.assertIsNone(other.dead_zone_restart("spy0dte-500", 300.0))
 
+    def test_every_round_is_kept_with_its_peak_and_length(self):
+        from hero import sleeves
+        book = sleeves.Book(self.root / "r.json", self.specs, {"spy0dte-500": 30.0})
+        s = book.s("spy0dte-500")
+        s["best"], s["closed"] = 900.0, [{"tid": "a"}, {"tid": "b"}, {"tid": "c"}]
+        self.assertIn("归零", book.round_check("spy0dte-500", {"zero_line": 0.1, "target": 10000}, "2026-10-23"))
+        self.assertEqual(s["rounds"], [{"round": 1, "end": "zero", "cash": 30.0, "peak": 900.0, "trades": 3, "day": "2026-10-23"}])
+        self.assertEqual((s["round"], s["round_from"], s["cash"]), (2, 3, 500.0))
+        s["cash"], s["best"] = 120.0, 500.0
+        s["closed"].append({"tid": "d"})
+        self.assertIn("算归零", book.dead_zone_restart("spy0dte-500", 300.0, "2026-10-26"))
+        self.assertEqual(s["rounds"][-1], {"round": 2, "end": "zero", "cash": 120.0, "peak": 500.0, "trades": 1, "day": "2026-10-26"})
+        s["cash"] = 10400.0
+        self.assertIn("成功", book.round_check("spy0dte-500", {"zero_line": 0.1, "target": 10000}, "2026-10-27"))
+        self.assertEqual((s["rounds"][-1]["end"], s["rounds"][-1]["peak"], s["heroes"]), ("hero", 10400.0, 1))
+
     def test_a_plan_ledger_in_the_dead_zone_restarts_the_same_way(self):
         from datetime import datetime
         from hero import sleeve_rules, sleeves
@@ -3753,6 +3769,27 @@ class SleeveRules(unittest.TestCase):
         self.assertIn("收盘前仍低于开盘", picks[0]["why"])
         s["open"] = [{"und": "AAA"}]
         self.assertEqual(sr.DipWeek().entries(r(15, 50), {}, s)[1][0]["und"], "BBB")               # AAA already held
+
+    def test_dipweek_exit_variants_and_the_spread_cap(self):
+        # owner, 10-23 (docs/hero-plan.md): hold to the fifth close / all out at 2x, and skip quotes wider than the cap
+        from hero import sleeve_rules as sr
+        b = self.broker()
+        b.snaps["AAA"] = {"dailyBar": {"o": 97.0, "l": 95.5}, "latestTrade": {"p": 96.0}, "prevDailyBar": {"c": 100.0}}
+        b.snaps["BBB"] = {"dailyBar": {"o": 97.5, "l": 97.0}, "latestTrade": {"p": 98.0}, "prevDailyBar": {"c": 100.0}}
+        r = lambda: self.run_at(date(2026, 10, 16), 15, 50, b)
+        s = {"slots": {}, "cash": 500.0, "open": []}
+        slot, picks = sr.DipWeek().entries(r(), {"exit": "hold"}, s)
+        self.assertEqual((picks[0]["trail"], picks[0].get("take"), picks[0]["exit_day"]), (False, None, "2026-10-23"))
+        self.assertIn("拿到 10-23 15:50 卖", picks[0]["why"])
+        slot, picks = sr.DipWeek().entries(r(), {"exit": "take2"}, s)
+        self.assertEqual((picks[0]["trail"], picks[0]["take"]), (False, 2))
+        self.assertIn("2 倍止盈，否则 10-23 15:50 卖", picks[0]["why"])
+        slot, picks = sr.DipWeek().entries(r(), {}, s)
+        self.assertTrue(picks[0]["trail"] and "take" not in picks[0])                            # the default is unchanged
+        self.assertEqual(sr.DipWeek().entries(r(), {"max_spread": 0.10}, s), ("2026-10-16", []))   # 0.40 / 0.50 is 22% wide: both skipped
+        b.option_snapshots = lambda syms: {x: {"latestQuote": {"bp": 0.48, "ap": 0.50}} for x in syms}
+        slot, picks = sr.DipWeek().entries(r(), {"max_spread": 0.10}, s)
+        self.assertEqual(picks[0]["und"], "AAA")                                                 # 4% wide: taken
 
     def test_hikerally_records_a_month_out_put_after_a_fast_run_only_while_hiking(self):
         from hero import sleeve_rules as sr
@@ -5497,6 +5534,20 @@ class ResearchHeroGame(unittest.TestCase):
         self.assertEqual((half["heroes"], half["trades_per_round"]), (1, 5))
         self.assertIsNone(hg.game([], 1.0)["p_hero"])
 
+    def test_live_rounds_from_the_ledgers(self):
+        from hero import research_hero_game as hg
+        book = {"sleeves": {"x-500": {"start": 500.0, "cash": 620.0, "best": 700.0, "round": 3, "closed": [{}] * 7, "round_from": 5,
+                                      "rounds": [{"round": 1, "end": "zero", "cash": 40.0, "peak": 1100.0, "trades": 3, "day": "2026-10-20"},
+                                                 {"round": 2, "end": "hero", "cash": 10400.0, "peak": 10400.0, "trades": 2, "day": "2026-10-22"}]},
+                            "y-500": {"start": 500.0, "cash": 500.0, "best": 500.0, "round": 1, "closed": []}}}
+        rows = hg.live_rounds(book, "实盘")
+        x = next(r for r in rows if r["id"] == "x-500")
+        self.assertEqual((x["rounds"], x["heroes"], x["zeros"], x["x2_rounds"], x["trades_per_round"], x["cost_per_hero"]), (2, 1, 1, 1.0, 2.5, 1000.0))
+        self.assertEqual(x["now"], {"round": 3, "cash": 1.24, "peak": 1.4, "trades": 2})
+        y = next(r for r in rows if r["id"] == "y-500")
+        self.assertEqual((y["rounds"], y["cost_per_hero"], y["now"]["trades"]), (0, None, 0))
+        self.assertIn("| x-500 | 实盘 | 2 | 1 | 1 | 100.0% | 2 | $1,000 | 第 3 轮 · 1.24 / 1.40 · 2 |", hg.live_markdown(rows))
+
     def test_series_and_markdown(self):
         from hero import research_hero_game as hg
         docs = {"lotto": {"rows": [{"symbol": "SPY", "best_x": 25.0, "hold": 3.0}, {"symbol": "AAA", "best_x": 1.5, "hold": -0.9}]},
@@ -5568,3 +5619,30 @@ class ResearchPeerSignals(unittest.TestCase):
         g = ps.ladder(100.0, be)
         self.assertEqual(g["levels"], 1)                                                        # first level, then the breakeven stop
         self.assertAlmostEqual(g["ret"], 0.2 * 0.012 + 0.8 * 0.0 - 0.001)
+
+
+
+
+
+
+class HeroPlanConfig(unittest.TestCase):
+    """docs/hero-plan.md, approved 10-23: what config/s500.json must say."""
+
+    def test_the_ledgers_follow_the_plan(self):
+        cfg = json.loads((Path(__file__).resolve().parent.parent / "config" / "s500.json").read_text())
+        by = {s["id"]: s for s in cfg["sleeves"]["list"]}
+        self.assertEqual(len(by), len(cfg["sleeves"]["list"]))
+        for sid in ("spy0dte-500", "spy0dte-1000", "spy0dte-near-500", "spy0dte-near-1000", "qqq0dte-500", "qqq0dte-1000", "tsla0dte-500", "tsla0dte-1000"):
+            self.assertEqual(by[sid].get("fraction"), 1.0, sid)                          # the 0DTE ledgers go all in
+        for sid in ("nvda0dte-500", "nvda0dte-1000", "tsla0dte-5x-500", "tsla0dte-5x-1000", "spydip-500", "spydip-1000", "pead-1000"):
+            self.assertTrue(by[sid].get("stop_entries"), sid)                             # not hero candidates: no new entries
+        for sid in ("nvda0dte-plan-500", "tsla0dte-5x-plan-500", "spydip-plan-500", "pead-plan-1000"):
+            self.assertTrue(by[sid].get("plan_only"), sid)                                # their plan twins keep the record
+        dip = {sid: s for sid, s in by.items() if s["kind"] == "dipweek"}
+        self.assertEqual(sorted(dip), ["dipweek-1000", "dipweek-500", "dipweek-hold-1000", "dipweek-hold-500", "dipweek-take-1000", "dipweek-take-500"])
+        self.assertTrue(all(s.get("max_spread") == 0.10 and s.get("fraction") == 0.5 for s in dip.values()))
+        self.assertEqual({(s.get("exit", "trail"), s["offset"]) for s in dip.values()},
+                         {("trail", 0.03), ("trail", 0.0), ("hold", 0.03), ("hold", 0.0), ("take2", 0.0), ("take2", 0.03)})
+        for sid in ("iwm0dte-plan-500", "amd0dte-plan-500", "amzn0dte-plan-500", "meta0dte-plan-500", "msft0dte-plan-500"):
+            self.assertNotIn(sid, by)                                                    # answered by the backtests already
+        self.assertIn("dia0dte-plan-500", by)

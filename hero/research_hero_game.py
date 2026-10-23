@@ -93,6 +93,38 @@ def table(docs: dict) -> dict[str, dict[str, dict]]:
     return {name: {f"f{int(f * 100)}": game(rets, f) for f in FRACTIONS} for name, rets in series(docs).items() if rets}
 
 
+def live_rounds(book: dict, label: str) -> list[dict]:
+    """The ledgers' own rounds (hero/sleeves.py Book.end_round): how many ended, how, their peaks, the price of a hero."""
+    out = []
+    for sid, s in (book.get("sleeves") or {}).items():
+        if not isinstance(s, dict):
+            continue
+        rounds = s.get("rounds") or []
+        start = float(s.get("start") or START)
+        heroes = sum(r["end"] == "hero" for r in rounds)
+        zeros = len(rounds) - heroes
+        peaks = [r.get("peak", 0) / start for r in rounds]
+        out.append({"id": sid, "book": label, "rounds": len(rounds), "heroes": heroes, "zeros": zeros,
+                    "x2_rounds": sum(p >= 2 for p in peaks) / len(rounds) if rounds else None,
+                    "trades_per_round": statistics.mean(r.get("trades", 0) for r in rounds) if rounds else None,
+                    "cost_per_hero": len(rounds) * start / heroes if heroes else None,
+                    "now": {"round": s.get("round", 1), "cash": round(float(s.get("cash", start)) / start, 2),
+                            "peak": round(float(s.get("best", start)) / start, 2), "trades": len(s.get("closed", [])) - s.get("round_from", 0)}})
+    return out
+
+
+def live_markdown(rows: list[dict]) -> str:
+    out = ["", "## 实盘和演算账本的轮（journal-s500）", "",
+           "每条规则自己的轮：到 20 倍 / 归零各几次、到过 2 倍的轮占几成、每轮几笔、每个 hero 到现在花了多少；最后一列是进行中的这一轮。"
+           "对上面回测的同一列看：实盘的 hero 率低于回测一半以上，先查成交成本，再谈规则。", "",
+           "| 账本 | 本子 | 轮数 | 到 20 倍 | 归零 | 到过 2 倍的轮 | 每轮笔数 | 每个 hero 的成本 | 进行中：第几轮 · 现在 / 峰值（倍）· 笔数 |", "|---|---|---|---|---|---|---|---|---|"]
+    for r in rows:
+        n = r["now"]
+        out.append(f"| {r['id']} | {r['book']} | {r['rounds']} | {r['heroes']} | {r['zeros']} | {fmt(r['x2_rounds'])} | {fmt(r['trades_per_round'], 'n')} | "
+                   f"{fmt(r['cost_per_hero'], 'usd')} | 第 {n['round']} 轮 · {n['cash']:.2f} / {n['peak']:.2f} · {n['trades']} |")
+    return "\n".join(out) + "\n"
+
+
 def fmt(x, kind="pct") -> str:
     if x is None:
         return "—"
@@ -137,9 +169,19 @@ def main(argv: list[str]) -> int:
             pass
     t = table(docs)
     md = markdown(t, today)
+    live = []
+    for name, label in (("sleeves.json", "实盘"), ("sleeves_plan.json", "演算")):
+        try:
+            live += live_rounds(json.loads((ROOT / "journal-s500" / name).read_text()), label)
+        except FileNotFoundError:
+            pass
+    live = [r for r in live if r["rounds"] or r["now"]["trades"]]
+    if live:
+        md += live_markdown(live)
     out = ROOT / "research" / f"{today}-hero-game"
     out.with_suffix(".md").write_text(md)
-    out.with_suffix(".json").write_text(json.dumps({"generated": today, "zero": ZERO, "target": TARGET, "table": t}, ensure_ascii=False, indent=1))
+    out.with_suffix(".json").write_text(json.dumps({"generated": today, "zero": ZERO, "target": TARGET, "table": t, "live": live},
+                                                   ensure_ascii=False, indent=1))
     print(md)
     return 0
 

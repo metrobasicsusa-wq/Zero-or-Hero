@@ -104,7 +104,15 @@ class Book:
         s["closed"].append(done)
         return done
 
-    def round_check(self, sid: str, p: dict) -> str | None:
+    def end_round(self, s: dict, how: str, when: str | None) -> None:
+        """Owner, 10-23 (docs/hero-plan.md): the ledgers are scored by rounds, so each one is kept: how it ended, its
+        peak cash (the 2x question), how many closed tickets it took."""
+        s.setdefault("rounds", []).append({"round": s["round"], "end": how, "cash": round(s["cash"], 2),
+                                           "peak": round(max(s.get("best", s["start"]), s["cash"]), 2),
+                                           "trades": len(s["closed"]) - s.get("round_from", 0), "day": when})
+        s["round_from"] = len(s["closed"])
+
+    def round_check(self, sid: str, p: dict, when: str | None = None) -> str | None:
         """Only when flat: below the zero line or at the target, the round ends and restarts at the start."""
         s = self.s(sid)
         if s["open"]:
@@ -116,13 +124,14 @@ class Book:
             self.d["topups"] = round(self.d["topups"] + s["start"] - cash, 2)  # a hero hands its winnings back
             msg = (f"{sid} 第 {s['round']} 轮" + (f"到 ${p['target']:,.0f}，成功" if hero else f"低于 ${s['start'] * p['zero_line']:,.0f}，归零")
                    + f"（${cash:,.2f}），从 ${s['start']:,.0f} 重开第 {s['round'] + 1} 轮")
+            self.end_round(s, "hero" if hero else "zero", when)
             s["round"] += 1
             s["cash"] = s["start"]
             s["best"] = s["start"]
             return msg
         return None
 
-    def dead_zone_restart(self, sid: str, need: float) -> str | None:
+    def dead_zone_restart(self, sid: str, need: float, when: str | None = None) -> str | None:
         """Owner, 10-23 (「改」): a flat ledger that cannot buy one unit with everything it has left is a zero now, not
         later -- between the zero line and one contract it would sit idle and give no sample (QQQ 0DTE: $127 left,
         $175 a contract, since 10-14). Counts the zero, restarts at the start; the caller then buys from the new round."""
@@ -134,6 +143,7 @@ class Book:
         self.d["topups"] = round(self.d["topups"] + s["start"] - cash, 2)
         msg = (f"{sid} 第 {s['round']} 轮剩 ${cash:,.2f}，连一张 ${need:,.2f} 都买不起，算归零，"
                f"从 ${s['start']:,.0f} 重开第 {s['round'] + 1} 轮")
+        self.end_round(s, "zero", when)
         s["round"] += 1
         s["cash"] = s["start"]
         s["best"] = s["start"]
@@ -288,7 +298,8 @@ class Runner:
         self.recover()
         self.manage()
         for spec in self.specs:
-            msg = self.book.round_check(spec["id"], {**self.p, **{k: spec[k] for k in ("zero_line", "target") if k in spec}})
+            msg = self.book.round_check(spec["id"], {**self.p, **{k: spec[k] for k in ("zero_line", "target") if k in spec}},
+                                        self.today.isoformat())
             if msg:
                 self.j.event("sleeve_round", dry_run=False, sleeve=spec["id"], why=msg)
         self.enter()
@@ -445,7 +456,8 @@ class Runner:
     def plan(self) -> None:
         self.plan_manage()
         for spec in self.specs:
-            msg = self.book.round_check(spec["id"], {**self.p, **{k: spec[k] for k in ("zero_line", "target") if k in spec}})
+            msg = self.book.round_check(spec["id"], {**self.p, **{k: spec[k] for k in ("zero_line", "target") if k in spec}},
+                                        self.today.isoformat())
             if msg:
                 self.j.event("sleeve_round", dry_run=True, sleeve=spec["id"], why=f"{msg}（演算）")
         for spec in self.specs:
@@ -578,7 +590,7 @@ class Runner:
         s = self.book.s(sid)
         if left != s["cash"]:   # something else of this cycle is already sized from this ledger
             return each, left
-        msg = self.book.dead_zone_restart(sid, need)
+        msg = self.book.dead_zone_restart(sid, need, self.today.isoformat())
         if not msg:
             return each, left
         self.j.event("sleeve_round", dry_run=dry_run, sleeve=sid, why=msg + ("（演算）" if dry_run else ""))
