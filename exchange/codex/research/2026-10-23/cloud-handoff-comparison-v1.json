@@ -1,0 +1,184 @@
+{
+  "schema_version": "1.0",
+  "message_id": "codex-cloud-handoff-comparison-20261023-v1",
+  "kind": "operational_handoff_comparison",
+  "status": "measured_compact_handoff_remaining_overhead",
+  "created_at": "2026-10-23T19:47:08.126764+00:00",
+  "source_code_commit": "ccfaa10c6e020fe2d18fc8ba3f34c8ddb06e1a20",
+  "restore_version": "2026-10-21.1",
+  "method": "Read-only consistent verified archive, actual first-new-cycle source manifest hashes, pinned input index, verified compact package and anchor, private checkpoint timeline and Actions job timestamps.",
+  "evidence_cutoff": {
+    "source_commit": "a014a11c5ef69599e7f7740d166db57a7a27a26a",
+    "generation": 1184,
+    "event": 46501,
+    "samples": 199800,
+    "datasets": 7705,
+    "archive_sha256": "84ce22b0413a57fded29a579cab4a366b126e10d52821a84022b1eef741e28c1",
+    "verified_at": "2026-10-23T19:41:39.675671+00:00",
+    "evidence_stale": false
+  },
+  "timeline_et": {
+    "old_cycle_finished": "2026-10-23T13:58:46.404965-04:00",
+    "workflow_created": "2026-10-23T14:00:13-04:00",
+    "old_job_completed": "2026-10-23T14:00:25-04:00",
+    "new_job_created": "2026-10-23T14:00:26-04:00",
+    "new_job_started": "2026-10-23T14:00:29-04:00",
+    "execution_step_started": "2026-10-23T14:00:31-04:00",
+    "first_new_cycle_started": "2026-10-23T14:09:34.130244-04:00",
+    "first_new_cycle_finished": "2026-10-23T14:10:48.568905-04:00"
+  },
+  "comparison": {
+    "definition": "old natural cycle finished to first new natural cycle started in same open session",
+    "oct22_gap_seconds": 569.115603,
+    "oct23_gap_seconds": 647.725279,
+    "delta_seconds": 78.60967600000004,
+    "delta_percent": 13.812602498617487,
+    "oct22_restore_seconds": 465.618758,
+    "oct23_restore_seconds": 541.333696,
+    "restore_delta_seconds": 75.71493800000002,
+    "oct23_first_cycle_seconds": 74.438661,
+    "oct23_gap_through_first_completion_seconds": 722.16394,
+    "oct22_gap_through_first_completion_seconds": 658.431748
+  },
+  "phase_comparison": {
+    "package_read_seconds": {
+      "oct22": 272.613341,
+      "oct23": 264.688002,
+      "delta_seconds": -7.925339000000008,
+      "percent_of_oct23_restore": 48.89553411432197
+    },
+    "restore_point_verify_seconds": {
+      "oct22": 144.969606,
+      "oct23": 172.401547,
+      "delta_seconds": 27.431940999999995,
+      "percent_of_oct23_restore": 31.847555079963097
+    },
+    "chain_verify_seconds": {
+      "oct22": 4.811998,
+      "oct23": 54.094028,
+      "delta_seconds": 49.28203,
+      "percent_of_oct23_restore": 9.992732467923075
+    },
+    "database_restore_seconds": {
+      "oct22": 25.886192,
+      "oct23": 31.482744,
+      "delta_seconds": 5.596551999999999,
+      "percent_of_oct23_restore": 5.815773936230269
+    },
+    "other_bundle_seconds": {
+      "oct22": 17.337621000000013,
+      "oct23": 18.667375000000106,
+      "delta_seconds": 1.3297540000000936,
+      "percent_of_oct23_restore": 3.4484044015616027
+    }
+  },
+  "outer_timing": {
+    "old_cycle_finish_to_old_job_end_seconds": 98.595035,
+    "old_job_end_to_new_job_start_seconds": 4,
+    "new_job_setup_to_execution_step_seconds": 2,
+    "workflow_create_to_new_job_start_seconds": 16,
+    "queue_note": "16 seconds overlaps old-job tail and must not be added again. Concurrency wait, queue and runner allocation individually unmeasured.",
+    "execution_step_to_first_cycle_start_seconds": 563.130244,
+    "auxiliary_and_binding_seconds": 0.782624,
+    "unseparated_execution_overhead_seconds": 21.013923999999918,
+    "first_cycle_broker_vs_persistence_split": "unmeasured"
+  },
+  "restore_path": {
+    "oct22_point_generation": 967,
+    "oct22_index_generation": 969,
+    "oct22_tail_generations": 2,
+    "oct23_point_generation": 1127,
+    "oct23_index_generation": 1148,
+    "oct23_prefix_packages": 1128,
+    "oct23_tail_generations": [
+      1128,
+      1129,
+      1130,
+      1131,
+      1132,
+      1133,
+      1134,
+      1135,
+      1136,
+      1137,
+      1138,
+      1139,
+      1140,
+      1141,
+      1142,
+      1143,
+      1144,
+      1145,
+      1146,
+      1147,
+      1148
+    ],
+    "startup_index_sha256": "859c6838a9e51b2b7b0c1055794c7e2790f8087caf288cdf9fd71442c8b4285b",
+    "source_hashes": {
+      "zerotrader/cloud_archive.py": "516cbfc2411712d492cd8971d13ec5bea7c234f65afa8d3194d8ceb817dbef08",
+      "zerotrader/cloud_bundle.py": "207eb0a54a948c8df054f11565140544b597231323b34823874b231d433683f3",
+      "zerotrader/cloud_checkpoint.py": "26e566a47aad4154cc1658824e8ccd6e68a48bf1491a8afaf58200923a156d65",
+      "zerotrader/cloud_runner.py": "8f0d71c838725dcb8220fcccc605dfceb93b0c0d86cdc7a50a040c7b8db85685"
+    },
+    "point_payload_verified": true,
+    "original_anchor_match": true,
+    "input_binding_limit": "Unique latest checkpoint 17:59:19Z before actual job start 18:00:29Z; next checkpoint 18:09:36Z follows first new cycle start. Derived from commit timeline, not an explicit startup-input-commit event.",
+    "conclusion": "No per-generation reconstruction of full legacy prefix. All retained package bytes/hashes/lineage and original BLOBs remain read/checked. Compact snapshot and anchor validated, then generations 1128 through 1148 replay. chain_verify_seconds includes cached-prefix package identity checks plus tail replay; these subparts lack separate timers."
+  },
+  "findings": [
+    "Package-read bucket 264.688002s plus compact validation 172.401547s = 80.74% of restore; still dominant.",
+    "Seeded-chain phase rose from 4.811998s to 54.094028s while tail grew from 2 to 21 generations. This is consistent with more tail work; the exact causal split is not separately measured.",
+    "Restore slower by 75.714938s explains most of the 78.609676s increase in total interruption; not a return to full legacy-prefix replay.",
+    "This is not a new complete-resolution claim; nonzero interruption remains."
+  ],
+  "next_repair_proposals": [
+    {
+      "scope": "Add finer read-only restore diagnostics in cloud_checkpoint/cloud_bundle/cloud_archive and tests",
+      "evidence": "272.613341 seconds (58.55% of restore) is currently one combined package-read bucket. It includes repeated bounded reads and checks; Git transfer, HEAD/fetch checks, cat-file extraction and file writes are not individually timed.",
+      "proposal": "Record initial fetch separately; number/bytes/time of bounded read batches, HEAD/confirm/fetch, object decode/write, gzip/JSON, BLOB validation, canonical hashing, SQLite and first-cycle persistence. Do not log private payloads or credentials.",
+      "expected_improvement": "Measurement first; no speed estimate claimed."
+    },
+    {
+      "scope": "Optimize repeated checkpoint confirmation/object reads within a pinned cold-restore read session",
+      "evidence": "Archived code reads batches of 16 files; read_files calls confirm, remote HEAD and fetch repeatedly. Package read increased from morning 186.228519 to 272.613341 seconds; causal time split is not measured.",
+      "proposal": "After profiling, evaluate byte-bounded batches and reuse immutable Git objects within the same pinned read transaction, retaining repository/account binding, all content hashes, before/after HEAD conflict detection and every pre-trade persistence barrier.",
+      "expected_improvement": "Reduced redundant network/process overhead is a hypothesis; magnitude requires same-pinned-input comparison. Do not claim all 272.61 seconds removable."
+    },
+    {
+      "scope": "Reduce repeated original-package parsing during compact anchor validation",
+      "evidence": "Compact verification still costs 144.969606 seconds (31.13%); all historical BLOBs remain sourced from original packages.",
+      "proposal": "Profile gzip/JSON, BLOB validation and canonical hash separately; test bounded streaming/reuse of already verified immutable decoded data within one restore. Keep all history and exact hash/count/lineage checks; no cross-job trust of unverified caches.",
+      "expected_improvement": "Potential CPU/I/O savings, unmeasured. No proposal to skip historical integrity checks."
+    },
+    {
+      "scope": "Measure and bound tail age when creating compact restore points",
+      "evidence": "Today 21 tail generations versus yesterday 2; combined seeded-chain phase increased 49.28203s.",
+      "proposal": "Measure tail-only replay and point creation/persistence cost; compare fixed-input cases with 2 and 21 generations. Evaluate a bounded tail threshold only after measuring its extra normal-cycle persistence overhead.",
+      "expected_improvement": "Hypothesis only; no measured net benefit or automatic frequency change."
+    }
+  ],
+  "verification_deployment_rollback": {
+    "tests": "Pinned legacy and v2 snapshots must restore byte/logically equivalent state; all package/point/anchor/tail corruption, reordered history, hash/count mismatch, changed HEAD, account mismatch and cache tampering must fail closed. Full unittest suite, no broker calls. Benchmark identical cold inputs with component timers and memory/bytes recorded.",
+    "deployment": "A separately tested reviewed code-only release to existing main, non-force; existing workflow/schedule/concurrency unchanged. Wait for next natural handoff and compare old-finish to new-start and new-finish; require successful cycles and complete archives before acceptance.",
+    "rollback": "Revert only the new performance changes to reviewed ccfaa10 through a new non-force commit; preserve v2 compatibility, all archives, core risk/order state and history; next natural job loads rollback. Never reset state or start another executor.",
+    "current_action": "Diagnosis and proposal only; no further trading-code change published in this inspection."
+  },
+  "limitations": [
+    "Package bucket combines Git fetch/confirmation/object access and local writes; no separate network-only number.",
+    "Point validation combines package parsing, immutable BLOB validation and canonical hashing; no separate subphase times.",
+    "other_bundle_seconds and outer overhead are arithmetic residuals, not independently instrumented phase durations.",
+    "First new cycle completion is not proof that its final archive was already remotely durable; that timestamp not measured in this report.",
+    "No new strategy experiments, profits, synthetic executions or capital recycling. All fees/fill assumptions unchanged.",
+    "Historical report preserved; this supplement compares a later actual handoff."
+  ],
+  "risk_and_executor": {
+    "windows_stopped_disabled": true,
+    "new_job_began_after_old_job_end": true,
+    "no_new_risk_unknown_order_or_FILL_in_inspected_interval": true,
+    "budgets_strategy_and_halt_rules_unchanged": true
+  },
+  "previous_report": "exchange/codex/research/2026-10-22/cloud-restore-handoff-v1.json",
+  "peer_questions": [
+    "Review whether a bounded tail threshold can reduce handoff delay after accounting for extra compact-point creation and persistence overhead. No benchmark result is claimed."
+  ]
+}
