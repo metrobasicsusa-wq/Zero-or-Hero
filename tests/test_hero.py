@@ -5479,3 +5479,11 @@ class ResearchPeerSignals(unittest.TestCase):
                              "sheet_mean": 0.08, "sheet_wins": 1.0, "replayed": 2}, [0.1, -0.05])
         self.assertIn("先到 +5% 的 +100.0%", md)
         self.assertAlmostEqual(ps.momentum_at("2026-04-25", bars), 125 / 105 - 1)
+        f = ps.setup("2026-04-25", [{**b, "v": 1000 if b["t"] < "2026-04-25" else 3000} for b in bars])
+        self.assertAlmostEqual(f["mom20"], 125 / 105 - 1)
+        self.assertAlmostEqual(f["from_high"], 126 / 126 - 1)                                 # closes at the 20-day high
+        self.assertAlmostEqual(f["vol"], 3.0)
+        r["setup"], late["setup"] = {"mom20": 0.2, "from_high": 0.0, "day": 0.01, "gap": 0.0, "vol": 1.0}, {"mom20": -0.1, "from_high": -0.15, "day": -0.03, "gap": 0.0, "vol": 2.5}
+        g = ps.buckets([r, late])
+        self.assertEqual((g["信号前 20 天涨 10% 以上（追强势）"]["n"], g["信号前 20 天在跌（抄底）"]["n"], g["当天成交量是平时 2 倍以上"]["n"]), (1, 1, 1))
+        self.assertIsNone(ps.setup("2026-04-05", bars))

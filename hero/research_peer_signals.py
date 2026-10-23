@@ -100,6 +100,48 @@ def momentum_at(sig_day: str, bars: list[dict]) -> float | None:
     return float(bars[i - 1]["c"]) / float(bars[i - 21]["c"]) - 1 if i >= 21 else None
 
 
+def setup(sig_day: str, bars: list[dict]) -> dict | None:
+    """What the chart looked like when the idea was posted: the 20-session move in, how far under the 20-session high,
+    the signal day's own move and gap, its volume against the 20-session average."""
+    days = [b["t"][:10] for b in bars]
+    if sig_day not in days:
+        return None
+    i = days.index(sig_day)
+    if i < 21:
+        return None
+    prev = [bars[k] for k in range(i - 20, i)]
+    c0, cp = float(bars[i]["c"]), float(bars[i - 1]["c"])
+    hi20 = max(float(b["h"]) for b in prev)
+    vol20 = statistics.mean(float(b.get("v") or 0) for b in prev)
+    return {"mom20": cp / float(bars[i - 21]["c"]) - 1, "from_high": c0 / hi20 - 1, "day": c0 / cp - 1,
+            "gap": float(bars[i]["o"]) / cp - 1, "vol": (float(bars[i].get("v") or 0) / vol20) if vol20 else None}
+
+
+def buckets(rows: list[dict]) -> dict[str, dict]:
+    """Real outcomes by the shape of the setup."""
+    groups = {
+        "信号前 20 天涨 10% 以上（追强势）": lambda f: f["mom20"] > 0.10,
+        "信号前 20 天 0 到 10%": lambda f: 0 <= f["mom20"] <= 0.10,
+        "信号前 20 天在跌（抄底）": lambda f: f["mom20"] < 0,
+        "收在 20 日高点 3% 以内（突破 / 新高）": lambda f: f["from_high"] >= -0.03,
+        "离 20 日高点 3–10%（回调中）": lambda f: -0.10 <= f["from_high"] < -0.03,
+        "离 20 日高点 10% 以上（深回调）": lambda f: f["from_high"] < -0.10,
+        "信号当天涨 3% 以上": lambda f: f["day"] >= 0.03,
+        "信号当天跌 2% 以上": lambda f: f["day"] <= -0.02,
+        "当天成交量是平时 2 倍以上": lambda f: (f["vol"] or 0) >= 2,
+    }
+    out = {}
+    for name, keep in groups.items():
+        rs = [r for r in rows if r.get("setup") and keep(r["setup"])]
+        c10 = [r["res"]["c10"] for r in rs if r["res"].get("c10") is not None]
+        ex = [r["res"]["c10"] - r["bench"]["SMH"]["c10"] for r in rs if r["res"].get("c10") is not None and r["bench"].get("SMH", {}).get("c10") is not None]
+        if c10:
+            out[name] = {"n": len(c10), "c10": statistics.mean(c10), "win": sum(x > 0 for x in c10) / len(c10),
+                         "ex_smh": statistics.mean(ex) if ex else None,
+                         "touch5": sum(r["first"] == "target" for r in rs) / len(rs), "stop": sum(r["first"] == "stop" for r in rs) / len(rs)}
+    return out
+
+
 def summarise(rows: list[dict]) -> dict:
     out = {"n": len(rows), "entry": {}, "first": {}, "holds": {}, "excess": {}, "mfe": {}, "sheet_vs_real": {}, "months": {}}
     for k in ("当天按表价", "第二天开盘"):
@@ -149,6 +191,11 @@ def markdown(s: dict, meta: dict, momo: list[float]) -> str:
     out.append(robust.table({f"减 {name} 同期，第 {h} 天": s["excess"].get(f"{name}|c{h}") for name in ("SMH", "SPY") for h in (5, 10, 20)}, "超额（减去 SMH / SPY 同一窗口）"))
     out += ["", "## 按月（第 10 天收盘，平均 / 条数 / 赚钱比例）", "", "| 月 | 平均 | 条数 | 赚钱比例 |", "|---|---|---|---|"]
     out += [f"| {m} | {pct(v[0])} | {v[1]} | {v[2]:.0%} |" for m, v in s["months"].items()]
+    if s.get("setups"):
+        out += ["", "## 形态：发出信号时图上是什么样，之后 10 天真实拿到多少", "",
+                "| 形态 | 条数 | 第 10 天收盘 | 赚钱比例 | 减 SMH 同期 | 10 天内先到 +5% | 先到 -6.3% |", "|---|---|---|---|---|---|---|"]
+        for name, g in s["setups"].items():
+            out.append(f"| {name} | {g['n']} | {pct(g['c10'])} | {g['win']:.0%} | {pct(g['ex_smh'])} | {g['touch5']:.0%} | {g['stop']:.0%} |")
     if momo:
         out += ["", "## 风格：信号前 20 天这只股票走了多少", "",
                 f"中位 {statistics.median(momo):+.1%}，平均 {statistics.mean(momo):+.1%}；涨了的占 {sum(x > 0 for x in momo) / len(momo):.0%}，涨 10% 以上的占 {sum(x > 0.10 for x in momo) / len(momo):.0%}——"
@@ -169,6 +216,7 @@ def run(client, sheet: Path) -> tuple[dict, dict, list[float]]:
         bs = bars.get(sg["sym"]) or []
         r = replay(sg, bs, bench)
         if r:
+            r["setup"] = setup(sg["day"], bs)
             rows.append(r)
             m = momentum_at(sg["day"], bs)
             if m is not None:
@@ -177,7 +225,9 @@ def run(client, sheet: Path) -> tuple[dict, dict, list[float]]:
     meta = {"generated": date.today().isoformat(), "title": sheet.stem, "signals": len(sigs), "first": min(x["day"] for x in sigs),
             "last": max(x["day"] for x in sigs), "sheet_mean": statistics.mean(tps) if tps else None,
             "sheet_wins": sum(x > 0 for x in tps) / len(tps) if tps else 0.0, "replayed": len(rows)}
-    return meta, summarise(rows), momo
+    s = summarise(rows)
+    s["setups"] = buckets(rows)
+    return meta, s, momo
 
 
 def main() -> int:
