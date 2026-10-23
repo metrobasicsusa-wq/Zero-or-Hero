@@ -14,13 +14,17 @@ from typing import Any
 
 import requests
 
+from hero.journal import redact
+
 PAPER_URL = "https://paper-api.alpaca.markets"
 DATA_URL = "https://data.alpaca.markets"
 
 
 class AlpacaError(RuntimeError):
     def __init__(self, msg: str, status: int | None = None):
-        super().__init__(msg)
+        # Broker error bodies and URLs can carry order ids and the account number, and the message
+        # reaches the public Actions logs, journal and Discord; scrub it once, here.
+        super().__init__(redact(msg))
         self.status = status  # HTTP status, when the broker answered
 
 

@@ -327,6 +327,16 @@ class Dashboard(unittest.TestCase):
             self.assertEqual(dashboard.collect(Path(d), {**c, "launch_approved": True})["events"], [])
 
 
+class AlpacaErrorRedaction(unittest.TestCase):
+    def test_ids_scrubbed(self):
+        e = AlpacaError('DELETE https://x/v2/orders/6a1b2c3d-1623-47fc-8139-97d6feb1982a -> 403: '
+                        '{"existing_order_id":"0f0e0d0c-aaaa-4bbb-8ccc-123456789abc","account":"PA3XYZ12345"}', 403)
+        self.assertNotIn("6a1b2c3d", str(e))
+        self.assertNotIn("0f0e0d0c", str(e))
+        self.assertNotIn("PA3XYZ12345", str(e))
+        self.assertEqual(e.status, 403)
+
+
 class Review(unittest.TestCase):
     def test_facts(self):
         with tempfile.TemporaryDirectory() as d:
