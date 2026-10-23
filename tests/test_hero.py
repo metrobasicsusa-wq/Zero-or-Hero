@@ -3791,6 +3791,31 @@ class SleeveRules(unittest.TestCase):
         slot, picks = sr.DipWeek().entries(r(), {"max_spread": 0.10}, s)
         self.assertEqual(picks[0]["und"], "AAA")                                                 # 4% wide: taken
 
+    def test_dipweek_sits_out_a_calm_market_and_overnight_shares_the_spread_cap(self):
+        from hero import sleeve_rules as sr
+        b = self.broker()
+        b.snaps["AAA"] = {"dailyBar": {"o": 97.0, "l": 95.5}, "latestTrade": {"p": 96.0}, "prevDailyBar": {"c": 100.0}}
+        quiet = [{"t": f"2026-09-{d:02d}T04:00:00Z", "c": 100.0 + (0.1 if d % 2 else 0.0)} for d in range(1, 29)]          # ~1% vol
+        wild = [{"t": f"2026-09-{d:02d}T04:00:00Z", "c": 100.0 * (1.03 if d % 2 else 1.0)} for d in range(1, 29)]          # ~45% vol
+        s = {"slots": {}, "cash": 500.0, "open": []}
+        b.bars["SPY"] = quiet
+        r = lambda: self.run_at(date(2026, 10, 16), 15, 50, b)
+        self.assertEqual(sr.DipWeek().entries(r(), {"min_vol": 0.103}, s), ("2026-10-16", []))      # calm: sits out
+        self.assertEqual(sr.DipWeek().entries(r(), {}, s)[1][0]["und"], "AAA")                       # no gate: trades
+        b.bars["SPY"] = wild
+        self.assertEqual(sr.DipWeek().entries(r(), {"min_vol": 0.103}, s)[1][0]["und"], "AAA")      # moving: trades
+        b.bars["SPY"] = []
+        self.assertEqual(sr.DipWeek().entries(r(), {"min_vol": 0.103}, s)[1][0]["und"], "AAA")      # no data: trades
+        # overnight momentum: the same cap
+        b.snaps["AAA"] = {"dailyBar": {"o": 100.0, "l": 99.0, "h": 103.2}, "latestTrade": {"p": 103.0}, "prevDailyBar": {"c": 100.0}}
+        b.bars["AAA"] = [{"t": f"2026-0{m}-{d:02d}T04:00:00Z", "c": 50.0 + m * 5 + d * 0.1} for m in (6, 7, 8, 9) for d in range(1, 29)]
+        self.assertEqual(sr.Overnight().entries(r(), {"max_spread": 0.10}, s), ("2026-10-16", []))  # 0.40 / 0.50: 22% wide
+        slot, picks = sr.Overnight().entries(r(), {}, s)
+        self.assertEqual(picks[0]["und"], "AAA")
+        b.option_snapshots = lambda syms: {x: {"latestQuote": {"bp": 0.48, "ap": 0.50}} for x in syms}
+        self.assertEqual(sr.Overnight().entries(r(), {"max_spread": 0.10}, s)[1][0]["und"], "AAA")
+        self.assertIn("买价 $0.48 / 卖价 $0.50", sr.Overnight().entries(r(), {"max_spread": 0.10}, s)[1][0]["why"])
+
     def test_hikerally_records_a_month_out_put_after_a_fast_run_only_while_hiking(self):
         from hero import sleeve_rules as sr
         b = self.broker()
@@ -5544,9 +5569,14 @@ class ResearchHeroGame(unittest.TestCase):
         x = next(r for r in rows if r["id"] == "x-500")
         self.assertEqual((x["rounds"], x["heroes"], x["zeros"], x["x2_rounds"], x["trades_per_round"], x["cost_per_hero"]), (2, 1, 1, 1.0, 2.5, 1000.0))
         self.assertEqual(x["now"], {"round": 3, "cash": 1.24, "peak": 1.4, "trades": 2})
+        self.assertEqual((x["trades"], x["x2"], x["x5"]), (0, None, None))                # the fake closed tickets carry no money
         y = next(r for r in rows if r["id"] == "y-500")
         self.assertEqual((y["rounds"], y["cost_per_hero"], y["now"]["trades"]), (0, None, 0))
-        self.assertIn("| x-500 | 实盘 | 2 | 1 | 1 | 100.0% | 2 | $1,000 | 第 3 轮 · 1.24 / 1.40 · 2 |", hg.live_markdown(rows))
+        self.assertIn("| x-500 | 实盘 | 0 | — | — | 2 | 1 | 1 | 100.0% | 2 | $1,000 | 第 3 轮 · 1.24 / 1.40 · 2 |", hg.live_markdown(rows))
+        book["sleeves"]["y-500"]["closed"] = [{"tid": "a", "paid": 100.0, "proceeds": 300.0}, {"tid": "ar", "paid": 100.0, "proceeds": 900.0},
+                                              {"tid": "b", "paid": 200.0, "proceeds": 0.0}]
+        y = next(r for r in hg.live_rounds(book, "实盘") if r["id"] == "y-500")
+        self.assertEqual((y["trades"], y["x2"], y["x5"]), (2, 0.5, 0.5))                 # a: 1200 / 200 = 6x; b: -100%
 
     def test_series_and_markdown(self):
         from hero import research_hero_game as hg
@@ -5632,15 +5662,20 @@ class HeroPlanConfig(unittest.TestCase):
         cfg = json.loads((Path(__file__).resolve().parent.parent / "config" / "s500.json").read_text())
         by = {s["id"]: s for s in cfg["sleeves"]["list"]}
         self.assertEqual(len(by), len(cfg["sleeves"]["list"]))
-        for sid in ("spy0dte-500", "spy0dte-1000", "spy0dte-near-500", "spy0dte-near-1000", "qqq0dte-500", "qqq0dte-1000", "tsla0dte-500", "tsla0dte-1000"):
-            self.assertEqual(by[sid].get("fraction"), 1.0, sid)                          # the 0DTE ledgers go all in
-        for sid in ("nvda0dte-500", "nvda0dte-1000", "tsla0dte-5x-500", "tsla0dte-5x-1000", "spydip-500", "spydip-1000", "pead-1000"):
-            self.assertTrue(by[sid].get("stop_entries"), sid)                             # not hero candidates: no new entries
-        for sid in ("nvda0dte-plan-500", "tsla0dte-5x-plan-500", "spydip-plan-500", "pead-plan-1000"):
+        for sid in ("spy0dte-500", "spy0dte-1000", "spy0dte-near-500", "spy0dte-near-1000"):
+            self.assertEqual(by[sid].get("fraction"), 1.0, sid)                          # the SPY 0DTE ledgers go all in
+        for sid in ("nvda0dte-500", "nvda0dte-1000", "tsla0dte-5x-500", "tsla0dte-5x-1000", "spydip-500", "spydip-1000", "pead-1000",
+                    "qqq0dte-500", "qqq0dte-1000", "tsla0dte-500", "tsla0dte-1000"):
+            self.assertTrue(by[sid].get("stop_entries"), sid)                             # not hero candidates (or too dear): no new entries
+            self.assertNotEqual(by[sid].get("fraction"), 1.0, sid)
+        for sid in ("nvda0dte-plan-500", "tsla0dte-5x-plan-500", "spydip-plan-500", "pead-plan-1000", "qqq0dte-plan-500", "tsla0dte-plan-500"):
             self.assertTrue(by[sid].get("plan_only"), sid)                                # their plan twins keep the record
+        for sid in ("overnight-500", "overnight-1000"):                                   # momentum calls: back on, with the cap
+            self.assertFalse(by[sid].get("stop_entries"), sid)
+            self.assertEqual(by[sid].get("max_spread"), 0.10, sid)
         dip = {sid: s for sid, s in by.items() if s["kind"] == "dipweek"}
         self.assertEqual(sorted(dip), ["dipweek-1000", "dipweek-500", "dipweek-hold-1000", "dipweek-hold-500", "dipweek-take-1000", "dipweek-take-500"])
-        self.assertTrue(all(s.get("max_spread") == 0.10 and s.get("fraction") == 0.5 for s in dip.values()))
+        self.assertTrue(all(s.get("max_spread") == 0.10 and s.get("fraction") == 0.5 and s.get("min_vol") == 0.103 for s in dip.values()))
         self.assertEqual({(s.get("exit", "trail"), s["offset"]) for s in dip.values()},
                          {("trail", 0.03), ("trail", 0.0), ("hold", 0.03), ("hold", 0.0), ("take2", 0.0), ("take2", 0.03)})
         for sid in ("iwm0dte-plan-500", "amd0dte-plan-500", "amzn0dte-plan-500", "meta0dte-plan-500", "msft0dte-plan-500"):

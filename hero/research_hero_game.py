@@ -112,6 +112,13 @@ def live_rounds(book: dict, label: str) -> list[dict]:
             continue
         rounds = s.get("rounds") or []
         start = float(s.get("start") or START)
+        by: dict[str, dict] = {}   # one entry = its take half and its trail half together
+        for t in s.get("closed", []):
+            if t.get("paid") and t.get("proceeds") is not None:
+                e = by.setdefault(str(t.get("tid", "")).rstrip("r"), {"paid": 0.0, "got": 0.0})
+                e["paid"] += float(t["paid"])
+                e["got"] += float(t["proceeds"])
+        tails = [e["got"] / e["paid"] - 1 for e in by.values() if e["paid"] > 0]
         heroes = sum(r["end"] == "hero" for r in rounds)
         zeros = len(rounds) - heroes
         peaks = [r.get("peak", 0) / start for r in rounds]
@@ -119,6 +126,8 @@ def live_rounds(book: dict, label: str) -> list[dict]:
                     "x2_rounds": sum(p >= 2 for p in peaks) / len(rounds) if rounds else None,
                     "trades_per_round": statistics.mean(r.get("trades", 0) for r in rounds) if rounds else None,
                     "cost_per_hero": len(rounds) * start / heroes if heroes else None,
+                    "trades": len(tails), "x2": sum(r >= 1 for r in tails) / len(tails) if tails else None,
+                    "x5": sum(r >= 4 for r in tails) / len(tails) if tails else None,
                     "now": {"round": s.get("round", 1), "cash": round(float(s.get("cash", start)) / start, 2),
                             "peak": round(float(s.get("best", start)) / start, 2), "trades": len(s.get("closed", [])) - s.get("round_from", 0)}})
     return out
@@ -128,11 +137,14 @@ def live_markdown(rows: list[dict]) -> str:
     out = ["", "## 实盘和演算账本的轮（journal-s500）", "",
            "每条规则自己的轮：到 20 倍 / 归零各几次、到过 2 倍的轮占几成、每轮几笔、每个 hero 到现在花了多少；最后一列是进行中的这一轮。"
            "对上面回测的同一列看：实盘的 hero 率低于回测一半以上，先查成交成本，再谈规则。", "",
-           "| 账本 | 本子 | 轮数 | 到 20 倍 | 归零 | 到过 2 倍的轮 | 每轮笔数 | 每个 hero 的成本 | 进行中：第几轮 · 现在 / 峰值（倍）· 笔数 |", "|---|---|---|---|---|---|---|---|---|"]
+           "hero 太稀，先看单笔的尾巴：「笔 ≥2 倍 / ≥5 倍」是每笔（一半止盈 + 一半回撤合起来算）到过 2 倍、5 倍的比例，几十笔就能和回测对上；"
+           "押满时 hero 率约等于连赢两三把的概率，由它推算。", "",
+           "| 账本 | 本子 | 笔数 | 笔 ≥2 倍 | 笔 ≥5 倍 | 轮数 | 到 20 倍 | 归零 | 到过 2 倍的轮 | 每轮笔数 | 每个 hero 的成本 | 进行中：第几轮 · 现在 / 峰值（倍）· 笔数 |",
+           "|---|---|---|---|---|---|---|---|---|---|---|---|"]
     for r in rows:
         n = r["now"]
-        out.append(f"| {r['id']} | {r['book']} | {r['rounds']} | {r['heroes']} | {r['zeros']} | {fmt(r['x2_rounds'])} | {fmt(r['trades_per_round'], 'n')} | "
-                   f"{fmt(r['cost_per_hero'], 'usd')} | 第 {n['round']} 轮 · {n['cash']:.2f} / {n['peak']:.2f} · {n['trades']} |")
+        out.append(f"| {r['id']} | {r['book']} | {r['trades']} | {fmt(r['x2'])} | {fmt(r['x5'])} | {r['rounds']} | {r['heroes']} | {r['zeros']} | {fmt(r['x2_rounds'])} | "
+                   f"{fmt(r['trades_per_round'], 'n')} | {fmt(r['cost_per_hero'], 'usd')} | 第 {n['round']} 轮 · {n['cash']:.2f} / {n['peak']:.2f} · {n['trades']} |")
     return "\n".join(out) + "\n"
 
 
@@ -190,7 +202,7 @@ def main(argv: list[str]) -> int:
             live += live_rounds(json.loads((ROOT / "journal-s500" / name).read_text()), label)
         except FileNotFoundError:
             pass
-    live = [r for r in live if r["rounds"] or r["now"]["trades"]]
+    live = [r for r in live if r["rounds"] or r["trades"]]
     if live:
         md += live_markdown(live)
     out = ROOT / "research" / f"{today}-hero-game"

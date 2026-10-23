@@ -273,6 +273,44 @@ def held_out(run, exp: str, days: int = 3) -> tuple[str, str]:
     return (out, "15:50") if out < exp else (exp, "15:30")
 
 
+def too_wide(run, spec, c: dict, ask: float) -> tuple[float, bool]:
+    """(bid, skip): owner, 10-23 (docs/hero-plan.md): the hero rates were measured at 5% costs a side, so a quote wider
+    than `max_spread` of the mid (or with no bid) is passed over and logged. No cap in the spec: never skip."""
+    q = (run.cache.get(("quote", c["symbol"])) or {}).get("latestQuote") or {}
+    bid = float(q.get("bp") or 0)
+    cap = spec.get("max_spread")
+    if cap is None:
+        return bid, False
+    if bid <= 0 or (ask - bid) / ((ask + bid) / 2) > cap:
+        run.j.event("sleeve_skip", dry_run=True, sleeve=spec.get("id", spec.get("kind", "")), symbol=c["symbol"],
+                    why=f"{spec.get('id', spec.get('kind', ''))}：{c['symbol']} 买价 ${bid:.2f} / 卖价 ${ask:.2f}，价差超过中间价的 {cap:.0%}，换下一只")
+        return bid, True
+    return bid, False
+
+
+def realized_vol(run, sym: str = "SPY", n: int = 20) -> float | None:
+    """Annualised standard deviation of the last n daily close-to-close moves, None without enough closes."""
+    xs = (closes(run, [sym], 60).get(sym) or [])[-(n + 1):]
+    if len(xs) < n + 1:
+        return None
+    rs = [xs[k] / xs[k - 1] - 1 for k in range(1, len(xs))]
+    return statistics.pstdev(rs) * 252 ** 0.5
+
+
+def calm(run, spec, s) -> bool:
+    """Owner, 10-23: dip-buying only pays when the market is moving. With `min_vol` set, a 20-day SPY realised vol under
+    it (the backtest's bottom third, under 10.3%: -19% a trade, 11% ever 2x) sits the day out. No data: trade."""
+    lo = spec.get("min_vol")
+    if lo is None:
+        return False
+    v = realized_vol(run)
+    if v is None or v >= lo:
+        return False
+    run.j.event("sleeve_skip", dry_run=True, sleeve=spec.get("id", spec.get("kind", "")), symbol="SPY",
+                why=f"{spec.get('id', spec.get('kind', ''))}：SPY 20 日实现波动 {v:.1%} 低于 {lo:.1%}（回测里最低的三分之一，这段平均每 $1 -19%），今天不做")
+    return True
+
+
 class Overnight:
     """research/2026-10-13-overnight.md (Lou, Polk & Skouras: momentum is earned overnight). At 15:50: the pool
     names up `move` (3%) or more on the day, in the top 15% of the day's range and above their 50-day average; the
@@ -303,12 +341,16 @@ class Overnight:
             if not got or got[1] * 100 > each:
                 continue
             c, ask = got
+            bid, skip = too_wide(run, spec, c, ask)
+            if skip:
+                continue
             exp = c["expiration_date"]
             out, at = held_out(run, exp)
+            spread = f"，买价 ${bid:.2f} / 卖价 ${ask:.2f}" if bid > 0 else ""
             return (day, [{"sym": c["symbol"], "asset": "option", "und": und, "ask": ask, "trail": True, "expiry": exp,
                            "exit_day": out, "exit_at": at,
                            "why": f"隔夜动量：{und} 今天涨 {r:+.1%}、收在当天区间 {pos:.0%} 处、在 50 日均线上方，买看涨 "
-                                  f"{float(c['strike_price']):g}（{exp} 到期）；翻倍后回撤 40% 卖，否则 {out[5:]} {at} 卖"}])
+                                  f"{float(c['strike_price']):g}（{exp} 到期）{spread}；翻倍后回撤 40% 卖，否则 {out[5:]} {at} 卖"}])
         return (day, [])
 
 
@@ -637,7 +679,8 @@ class DipWeek:
     most below its prior close (2%+, `gap`) gets the call `offset` (3%) out on the nearest expiry 5 to 12 days away;
     out after 2x on a 40% giveback, else 15:50 on the fifth session (15:30 if it expires first); `exit` "hold" keeps it to
     that close, "take2" rests a sell at 2x (owner, 10-23, docs/hero-plan.md: the three exits the hero game rated), and
-    `max_spread` skips a quote wider than that share of the mid (the hero rate was measured at 5% costs). 1,772 gap-downs since
+    `max_spread` skips a quote wider than that share of the mid (the hero rate was measured at 5% costs), `min_vol` sits out
+    a calm market (SPY 20-day realised vol under it: the backtest's bottom third lost 19% a trade). 1,772 gap-downs since
     2024-02, 3% out, sold on the fifth close: +19% per $1 at 5% costs each way (2024 +8%, 2025-26 +23%, without the
     best three +17%; median -70%), +8% at 10% costs -- so the bid and ask go into the why: the cost is the question."""
 
@@ -645,6 +688,8 @@ class DipWeek:
         day = run.today.isoformat()
         if day in s["slots"] or not (spec.get("entry", "15:45") <= run.hhmm < "15:58"):
             return None
+        if calm(run, spec, s):
+            return (day, [])
         held = {t.get("und") for t in s["open"]}
         gaps = []
         for x, v in snaps(run, pool(run)).items():
@@ -653,19 +698,14 @@ class DipWeek:
                 gaps.append((o / prev - 1, x, spot, spot < o))
         each = budget(run, spec, s, 1)
         exit_ = spec.get("exit", "trail")   # trail: after 2x, out on a 40% giveback; hold: the fifth close; take2: all out at 2x
-        cap = spec.get("max_spread")        # owner, 10-23 (docs/hero-plan.md): the hero rate lives on 5% costs -- skip a wider quote
         for g, und, spot, failed in sorted(gaps)[:8]:
             got = option_pick(run, und, "C", spot, spec.get("offset", 0.03), (run.today + timedelta(days=5)).isoformat(),
                               (run.today + timedelta(days=12)).isoformat())
             if not got or got[1] * 100 > each:
                 continue
             c, ask = got
-            q = (run.cache.get(("quote", c["symbol"])) or {}).get("latestQuote") or {}
-            bid = float(q.get("bp") or 0)
-            if cap is not None and (bid <= 0 or (ask - bid) / ((ask + bid) / 2) > cap):
-                run.j.event("sleeve_skip", dry_run=True, sleeve=spec.get("id", "dipweek"), symbol=c["symbol"],
-                            why=f"{spec.get('id', 'dipweek')}：{und} 的 {c['symbol']} 买价 ${bid:.2f} / 卖价 ${ask:.2f}，"
-                                f"价差超过中间价的 {cap:.0%}，换下一只")
+            bid, skip = too_wide(run, spec, c, ask)
+            if skip:
                 continue
             spread = f"，买价 ${bid:.2f} / 卖价 ${ask:.2f}（价差占中间价 {(ask - bid) / ((ask + bid) / 2):.0%}）" if bid > 0 else ""
             exp = c["expiration_date"]
