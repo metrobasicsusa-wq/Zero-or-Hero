@@ -5681,3 +5681,53 @@ class HeroPlanConfig(unittest.TestCase):
         for sid in ("iwm0dte-plan-500", "amd0dte-plan-500", "amzn0dte-plan-500", "meta0dte-plan-500", "msft0dte-plan-500"):
             self.assertNotIn(sid, by)                                                    # answered by the backtests already
         self.assertIn("dia0dte-plan-500", by)
+
+
+class WeekendStudies(unittest.TestCase):
+    """Owner, 10-23 (「改，推完排上」): the three weekend studies' pure parts."""
+
+    def test_pullback_events(self):
+        from hero import research_pullback as pb
+        n = 120
+        closes = [100.0 * (1.01 ** i) for i in range(n)]            # a steady climb: +22% over 20 sessions
+        highs = [c * 1.001 for c in closes]
+        days = [f"d{i:03d}" for i in range(n)]
+        self.assertEqual(pb.events(days, highs, closes), [])      # never 3% under its 20-day high
+        closes[100] = closes[99] * 0.95                             # a 5% drop under the high
+        for i in range(101, n):
+            closes[i] = closes[100]
+        highs = [c * 1.001 for c in closes]
+        ev = pb.events(days, highs, closes)
+        self.assertEqual([e["day"] for e in ev], ["d100", "d105"])   # again five sessions on while the run still counts, then the momentum fades
+        e = ev[0]
+        self.assertTrue(-0.10 <= e["from_high"] <= -0.03 and e["mom"] >= 0.10 and not e["up_day"])
+        self.assertAlmostEqual(e["stock"]["s5"], 0.0)
+        rows = [{"day": "d1", "leg": "atm", "from_high": -0.05, "res": {"d5": 0.3}}, {"day": "d1", "leg": "atm", "from_high": -0.08, "res": {"d5": -0.5}},
+                {"day": "d2", "leg": "atm", "from_high": -0.04, "res": {"d5": 1.5}}]
+        self.assertEqual(pb.pick_series(rows, "atm", "d5"), [-0.5, 1.5])   # the deeper pullback is the day's pick
+        self.assertEqual(set(pb.groups(rows)), {"强势股回调 3–10% · 平值", "强势股回调 3–10% · 价外 3%", "　回调 3–6% · 平值", "　回调 6–10% · 平值",
+                                                "　前 20 天涨 20% 以上 · 平值", "　当天收阳 · 平值", "　当天收阴 · 平值"})
+
+    def test_dip_week_broad_pick_and_names(self):
+        from hero import research_dip_week_broad as db
+        rows = [{"day": "d1", "und": "AAA", "leg": "otm3", "gap": -0.03, "res": {"d5": 0.3}, "res10": {"d5": 0.1}},
+                {"day": "d1", "und": "BBB", "leg": "otm3", "gap": -0.06, "res": {"d5": -0.9}, "res10": {"d5": -0.95}},
+                {"day": "d2", "und": "AAA", "leg": "otm3", "gap": -0.02, "res": {"d5": 2.0}, "res10": {"d5": 1.6}}]
+        self.assertEqual(db.pick_series(rows, "otm3", "d5"), [-0.9, 2.0])
+        self.assertEqual(db.pick_series(rows, "otm3", "d5", "res10", {"AAA"}), [0.1, 1.6])   # only the old names
+        self.assertTrue(len(db.names()) >= 28)
+
+    def test_vol_regime_split(self):
+        from hero import research_vol_regime as vr
+        bars = [{"t": f"2026-01-{d:02d}T05:00:00Z", "c": 100.0 * (1.03 if d % 2 else 1.0)} for d in range(1, 31)]
+        vol = vr.realised(bars)
+        self.assertEqual(len(vol), 10)                                 # 30 bars, 20 moves each
+        self.assertTrue(all(v > 0.3 for v in vol.values()))            # 3% swings every day: a wild tape
+        f = vr.regime_of(vol, 0.10, 0.136)
+        self.assertEqual(f("2026-01-30"), "high")
+        self.assertIsNone(f("2026-01-02"))                             # nothing known before it
+        xs = [(f"2026-01-{d:02d}", 0.5 if d % 2 else -0.9) for d in range(22, 31)]
+        s = vr.split(xs, vol, 0.10, 0.136)
+        self.assertIn("high", s)
+        self.assertEqual(s["high"]["n"], 9)
+        self.assertIn("vol≥15.0%", s)
