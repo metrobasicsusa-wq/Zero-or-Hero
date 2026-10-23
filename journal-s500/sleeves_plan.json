@@ -474,33 +474,11 @@
   },
   "opengap-500": {
    "start": 500.0,
-   "cash": 82.0,
+   "cash": 85.0,
    "round": 1,
    "heroes": 0,
    "zeros": 0,
-   "open": [
-    {
-     "tid": "20261023-8dfee1",
-     "kind": "opengap",
-     "sym": "CRDO261023P00146000",
-     "asset": "option",
-     "und": "CRDO",
-     "qty": 1,
-     "cost": 2.83,
-     "paid": 283.0,
-     "opened": "2026-10-23 09:40",
-     "why": "CRDO 低开 -7.0%、开盘后继续跌，买看跌 146（2026-10-23 到期），一半 3 倍止盈、一半翻倍后回撤 40% 卖，最晚 15:30",
-     "best_bid": 1.57,
-     "sim": true,
-     "expiry": "2026-10-23",
-     "exit_day": "2026-10-23",
-     "exit_at": "15:30",
-     "trail": false,
-     "expiry_out": null,
-     "take_x": 3,
-     "take": 8.5
-    }
-   ],
+   "open": [],
    "closed": [
     {
      "tid": "20261022-157840",
@@ -526,6 +504,33 @@
      "how": "翻倍后从最高 $0.26 回撤 40%",
      "closed": "2026-10-23 09:30",
      "ret": -0.625
+    },
+    {
+     "tid": "20261023-8dfee1",
+     "kind": "opengap",
+     "sym": "CRDO261023P00146000",
+     "asset": "option",
+     "und": "CRDO",
+     "qty": 1,
+     "cost": 2.83,
+     "paid": 283.0,
+     "opened": "2026-10-23 09:40",
+     "why": "CRDO 低开 -7.0%、开盘后继续跌，买看跌 146（2026-10-23 到期），一半 3 倍止盈、一半翻倍后回撤 40% 卖，最晚 15:30",
+     "best_bid": 1.57,
+     "sim": true,
+     "expiry": "2026-10-23",
+     "exit_day": "2026-10-23",
+     "exit_at": "15:30",
+     "trail": false,
+     "expiry_out": null,
+     "take_x": 3,
+     "take": 8.5,
+     "state": "closed",
+     "exit_price": 0.03,
+     "proceeds": 3.0,
+     "how": "2026-10-23 15:30 到时卖出",
+     "closed": "2026-10-23 15:30",
+     "ret": -0.989
     }
    ],
    "slots": {
@@ -543,11 +548,12 @@
   },
   "opengap-1000": {
    "start": 1000.0,
-   "cash": 377.0,
+   "cash": 480.0,
    "round": 1,
    "heroes": 0,
    "zeros": 0,
-   "open": [
+   "open": [],
+   "closed": [
     {
      "tid": "20261022-1dd77d",
      "kind": "opengap",
@@ -565,7 +571,13 @@
      "exit_day": "2026-10-23",
      "exit_at": "15:30",
      "trail": true,
-     "expiry_out": null
+     "expiry_out": null,
+     "state": "closed",
+     "exit_price": 1.0,
+     "proceeds": 100.0,
+     "how": "2026-10-23 15:30 到时卖出",
+     "closed": "2026-10-23 15:30",
+     "ret": -0.706
     },
     {
      "tid": "20261023-9c258c",
@@ -586,10 +598,15 @@
      "trail": false,
      "expiry_out": null,
      "take_x": 3,
-     "take": 8.5
+     "take": 8.5,
+     "state": "closed",
+     "exit_price": 0.03,
+     "proceeds": 3.0,
+     "how": "2026-10-23 15:30 到时卖出",
+     "closed": "2026-10-23 15:30",
+     "ret": -0.989
     }
    ],
-   "closed": [],
    "slots": {
     "2026-10-14": "2026-10-14T09:40-04:00",
     "2026-10-15": "2026-10-15T09:40-04:00",
@@ -955,7 +972,8 @@
    "round": 1,
    "heroes": 0,
    "zeros": 0,
-   "open": [
+   "open": [],
+   "closed": [
     {
      "tid": "20261022-b6fc12",
      "kind": "breakgap",
@@ -973,10 +991,15 @@
      "exit_day": "2026-10-23",
      "exit_at": "15:30",
      "trail": false,
-     "expiry_out": null
+     "expiry_out": null,
+     "state": "closed",
+     "exit_price": 0.0,
+     "proceeds": 0.0,
+     "how": "2026-10-23 15:30 到时卖出",
+     "closed": "2026-10-23 15:30",
+     "ret": -1.0
     }
    ],
-   "closed": [],
    "slots": {
     "2026-10-16": "2026-10-16T09:40-04:00",
     "2026-10-19": "2026-10-19T09:40-04:00",
@@ -989,11 +1012,12 @@
   },
   "breakgap-1000": {
    "start": 1000.0,
-   "cash": 660.0,
+   "cash": 760.0,
    "round": 1,
    "heroes": 0,
    "zeros": 0,
-   "open": [
+   "open": [],
+   "closed": [
     {
      "tid": "20261022-24168d",
      "kind": "breakgap",
@@ -1011,10 +1035,15 @@
      "exit_day": "2026-10-23",
      "exit_at": "15:30",
      "trail": false,
-     "expiry_out": null
+     "expiry_out": null,
+     "state": "closed",
+     "exit_price": 1.0,
+     "proceeds": 100.0,
+     "how": "2026-10-23 15:30 到时卖出",
+     "closed": "2026-10-23 15:30",
+     "ret": -0.706
     }
    ],
-   "closed": [],
    "slots": {
     "2026-10-16": "2026-10-16T09:40-04:00",
     "2026-10-19": "2026-10-19T09:40-04:00",
@@ -1145,27 +1174,7 @@
    "round": 1,
    "heroes": 0,
    "zeros": 0,
-   "open": [
-    {
-     "tid": "20261023-6d6e26",
-     "kind": "gap",
-     "sym": "CRDO261023C00152500",
-     "asset": "option",
-     "und": "CRDO",
-     "qty": 1,
-     "cost": 1.77,
-     "paid": 177.0,
-     "opened": "2026-10-23 09:50",
-     "why": "CRDO 低开 -7.0%，买看涨 152.5（2026-10-23 到期），翻倍后回撤 40% 卖，最晚 15:50",
-     "best_bid": 2.37,
-     "sim": true,
-     "expiry": "2026-10-23",
-     "exit_day": "2026-10-23",
-     "exit_at": "15:50",
-     "trail": true,
-     "expiry_out": null
-    }
-   ],
+   "open": [],
    "closed": [
     {
      "tid": "20261022-daf931",
@@ -1216,27 +1225,9 @@
      "how": "2026-10-22 15:50 到时卖出",
      "closed": "2026-10-22 15:50",
      "ret": -0.761
-    }
-   ],
-   "slots": {
-    "2026-10-19": "2026-10-19T09:50-04:00",
-    "2026-10-20": "2026-10-20T09:50-04:00",
-    "2026-10-21": "2026-10-21T09:50-04:00",
-    "2026-10-22": "2026-10-22T09:50-04:00",
-    "2026-10-23": "2026-10-23T09:50-04:00"
-   },
-   "best": 500.0,
-   "created": null
-  },
-  "gap-plan-1000": {
-   "start": 1000.0,
-   "cash": 288.0,
-   "round": 1,
-   "heroes": 0,
-   "zeros": 0,
-   "open": [
+    },
     {
-     "tid": "20261023-335375",
+     "tid": "20261023-6d6e26",
      "kind": "gap",
      "sym": "CRDO261023C00152500",
      "asset": "option",
@@ -1252,28 +1243,32 @@
      "exit_day": "2026-10-23",
      "exit_at": "15:50",
      "trail": true,
-     "expiry_out": null
-    },
-    {
-     "tid": "20261023-284d5d",
-     "kind": "gap",
-     "sym": "BE261023C00197500",
-     "asset": "option",
-     "und": "BE",
-     "qty": 1,
-     "cost": 2.64,
-     "paid": 264.0,
-     "opened": "2026-10-23 09:50",
-     "why": "BE 低开 -6.7%，买看涨 197.5（2026-10-23 到期），翻倍后回撤 40% 卖，最晚 15:50",
-     "best_bid": 2.31,
-     "sim": true,
-     "expiry": "2026-10-23",
-     "exit_day": "2026-10-23",
-     "exit_at": "15:50",
-     "trail": true,
-     "expiry_out": null
+     "expiry_out": null,
+     "state": "closed",
+     "exit_price": 0.0,
+     "proceeds": 0.0,
+     "how": "到期日 15:30 卖出，不留到收盘",
+     "closed": "2026-10-23 15:30",
+     "ret": -1.0
     }
    ],
+   "slots": {
+    "2026-10-19": "2026-10-19T09:50-04:00",
+    "2026-10-20": "2026-10-20T09:50-04:00",
+    "2026-10-21": "2026-10-21T09:50-04:00",
+    "2026-10-22": "2026-10-22T09:50-04:00",
+    "2026-10-23": "2026-10-23T09:50-04:00"
+   },
+   "best": 500.0,
+   "created": null
+  },
+  "gap-plan-1000": {
+   "start": 1000.0,
+   "cash": 305.0,
+   "round": 1,
+   "heroes": 0,
+   "zeros": 0,
+   "open": [],
    "closed": [
     {
      "tid": "20261022-6e655a",
@@ -1324,6 +1319,56 @@
      "how": "2026-10-22 15:50 到时卖出",
      "closed": "2026-10-22 15:50",
      "ret": -0.333
+    },
+    {
+     "tid": "20261023-335375",
+     "kind": "gap",
+     "sym": "CRDO261023C00152500",
+     "asset": "option",
+     "und": "CRDO",
+     "qty": 1,
+     "cost": 1.77,
+     "paid": 177.0,
+     "opened": "2026-10-23 09:50",
+     "why": "CRDO 低开 -7.0%，买看涨 152.5（2026-10-23 到期），翻倍后回撤 40% 卖，最晚 15:50",
+     "best_bid": 2.37,
+     "sim": true,
+     "expiry": "2026-10-23",
+     "exit_day": "2026-10-23",
+     "exit_at": "15:50",
+     "trail": true,
+     "expiry_out": null,
+     "state": "closed",
+     "exit_price": 0.0,
+     "proceeds": 0.0,
+     "how": "到期日 15:30 卖出，不留到收盘",
+     "closed": "2026-10-23 15:30",
+     "ret": -1.0
+    },
+    {
+     "tid": "20261023-284d5d",
+     "kind": "gap",
+     "sym": "BE261023C00197500",
+     "asset": "option",
+     "und": "BE",
+     "qty": 1,
+     "cost": 2.64,
+     "paid": 264.0,
+     "opened": "2026-10-23 09:50",
+     "why": "BE 低开 -6.7%，买看涨 197.5（2026-10-23 到期），翻倍后回撤 40% 卖，最晚 15:50",
+     "best_bid": 2.31,
+     "sim": true,
+     "expiry": "2026-10-23",
+     "exit_day": "2026-10-23",
+     "exit_at": "15:50",
+     "trail": true,
+     "expiry_out": null,
+     "state": "closed",
+     "exit_price": 0.17,
+     "proceeds": 17.0,
+     "how": "到期日 15:30 卖出，不留到收盘",
+     "closed": "2026-10-23 15:30",
+     "ret": -0.936
     }
    ],
    "slots": {
@@ -1728,52 +1773,11 @@
   },
   "spy0dte-old-plan-500": {
    "start": 500.0,
-   "cash": 149.0,
+   "cash": 152.0,
    "round": 1,
    "heroes": 0,
    "zeros": 0,
-   "open": [
-    {
-     "tid": "20261023-7a8afc",
-     "kind": "zdte",
-     "sym": "SPY261023C00766000",
-     "asset": "option",
-     "und": "SPY",
-     "qty": 1,
-     "cost": 0.45,
-     "paid": 45.0,
-     "opened": "2026-10-23 10:00",
-     "why": "SPY 开盘 $759.88、现在 $760.85，顺势买当天到期看涨 766（离现价 0.7%），3 倍止盈，15:30 平仓",
-     "best_bid": 0.53,
-     "sim": true,
-     "expiry": "2026-10-23",
-     "exit_day": "2026-10-23",
-     "exit_at": "15:30",
-     "trail": false,
-     "expiry_out": null,
-     "take_x": 3,
-     "take": 1.35
-    },
-    {
-     "tid": "20261023-7a8afcr",
-     "kind": "zdte",
-     "sym": "SPY261023C00766000",
-     "asset": "option",
-     "und": "SPY",
-     "qty": 2,
-     "cost": 0.45,
-     "paid": 90.0,
-     "opened": "2026-10-23 10:00",
-     "why": "SPY 开盘 $759.88、现在 $760.85，顺势买当天到期看涨 766（离现价 0.7%），3 倍止盈，15:30 平仓",
-     "best_bid": 0.53,
-     "sim": true,
-     "expiry": "2026-10-23",
-     "exit_day": "2026-10-23",
-     "exit_at": "15:30",
-     "trail": true,
-     "expiry_out": null
-    }
-   ],
+   "open": [],
    "closed": [
     {
      "tid": "20261022-93ed6e",
@@ -1826,24 +1830,36 @@
      "how": "2026-10-22 15:30 到时卖出",
      "closed": "2026-10-22 15:30",
      "ret": -1.0
-    }
-   ],
-   "slots": {
-    "2026-10-22": "2026-10-22T10:00-04:00",
-    "2026-10-23": "2026-10-23T10:00-04:00"
-   },
-   "best": 500.0,
-   "created": null
-  },
-  "spy0dte-old-plan-1000": {
-   "start": 1000.0,
-   "cash": 316.0,
-   "round": 1,
-   "heroes": 0,
-   "zeros": 0,
-   "open": [
+    },
     {
-     "tid": "20261023-0b8e26",
+     "tid": "20261023-7a8afc",
+     "kind": "zdte",
+     "sym": "SPY261023C00766000",
+     "asset": "option",
+     "und": "SPY",
+     "qty": 1,
+     "cost": 0.45,
+     "paid": 45.0,
+     "opened": "2026-10-23 10:00",
+     "why": "SPY 开盘 $759.88、现在 $760.85，顺势买当天到期看涨 766（离现价 0.7%），3 倍止盈，15:30 平仓",
+     "best_bid": 0.53,
+     "sim": true,
+     "expiry": "2026-10-23",
+     "exit_day": "2026-10-23",
+     "exit_at": "15:30",
+     "trail": false,
+     "expiry_out": null,
+     "take_x": 3,
+     "take": 1.35,
+     "state": "closed",
+     "exit_price": 0.01,
+     "proceeds": 1.0,
+     "how": "2026-10-23 15:30 到时卖出",
+     "closed": "2026-10-23 15:30",
+     "ret": -0.978
+    },
+    {
+     "tid": "20261023-7a8afcr",
      "kind": "zdte",
      "sym": "SPY261023C00766000",
      "asset": "option",
@@ -1858,31 +1874,30 @@
      "expiry": "2026-10-23",
      "exit_day": "2026-10-23",
      "exit_at": "15:30",
-     "trail": false,
-     "expiry_out": null,
-     "take_x": 3,
-     "take": 1.35
-    },
-    {
-     "tid": "20261023-0b8e26r",
-     "kind": "zdte",
-     "sym": "SPY261023C00766000",
-     "asset": "option",
-     "und": "SPY",
-     "qty": 3,
-     "cost": 0.45,
-     "paid": 135.0,
-     "opened": "2026-10-23 10:00",
-     "why": "SPY 开盘 $759.88、现在 $760.85，顺势买当天到期看涨 766（离现价 0.7%），3 倍止盈，15:30 平仓",
-     "best_bid": 0.53,
-     "sim": true,
-     "expiry": "2026-10-23",
-     "exit_day": "2026-10-23",
-     "exit_at": "15:30",
      "trail": true,
-     "expiry_out": null
+     "expiry_out": null,
+     "state": "closed",
+     "exit_price": 0.01,
+     "proceeds": 2.0,
+     "how": "2026-10-23 15:30 到时卖出",
+     "closed": "2026-10-23 15:30",
+     "ret": -0.978
     }
    ],
+   "slots": {
+    "2026-10-22": "2026-10-22T10:00-04:00",
+    "2026-10-23": "2026-10-23T10:00-04:00"
+   },
+   "best": 500.0,
+   "created": null
+  },
+  "spy0dte-old-plan-1000": {
+   "start": 1000.0,
+   "cash": 321.0,
+   "round": 1,
+   "heroes": 0,
+   "zeros": 0,
+   "open": [],
    "closed": [
     {
      "tid": "20261022-fb0bdb",
@@ -1935,6 +1950,58 @@
      "how": "2026-10-22 15:30 到时卖出",
      "closed": "2026-10-22 15:30",
      "ret": -1.0
+    },
+    {
+     "tid": "20261023-0b8e26",
+     "kind": "zdte",
+     "sym": "SPY261023C00766000",
+     "asset": "option",
+     "und": "SPY",
+     "qty": 2,
+     "cost": 0.45,
+     "paid": 90.0,
+     "opened": "2026-10-23 10:00",
+     "why": "SPY 开盘 $759.88、现在 $760.85，顺势买当天到期看涨 766（离现价 0.7%），3 倍止盈，15:30 平仓",
+     "best_bid": 0.53,
+     "sim": true,
+     "expiry": "2026-10-23",
+     "exit_day": "2026-10-23",
+     "exit_at": "15:30",
+     "trail": false,
+     "expiry_out": null,
+     "take_x": 3,
+     "take": 1.35,
+     "state": "closed",
+     "exit_price": 0.01,
+     "proceeds": 2.0,
+     "how": "2026-10-23 15:30 到时卖出",
+     "closed": "2026-10-23 15:30",
+     "ret": -0.978
+    },
+    {
+     "tid": "20261023-0b8e26r",
+     "kind": "zdte",
+     "sym": "SPY261023C00766000",
+     "asset": "option",
+     "und": "SPY",
+     "qty": 3,
+     "cost": 0.45,
+     "paid": 135.0,
+     "opened": "2026-10-23 10:00",
+     "why": "SPY 开盘 $759.88、现在 $760.85，顺势买当天到期看涨 766（离现价 0.7%），3 倍止盈，15:30 平仓",
+     "best_bid": 0.53,
+     "sim": true,
+     "expiry": "2026-10-23",
+     "exit_day": "2026-10-23",
+     "exit_at": "15:30",
+     "trail": true,
+     "expiry_out": null,
+     "state": "closed",
+     "exit_price": 0.01,
+     "proceeds": 3.0,
+     "how": "2026-10-23 15:30 到时卖出",
+     "closed": "2026-10-23 15:30",
+     "ret": -0.978
     }
    ],
    "slots": {
@@ -2288,7 +2355,9 @@
      "expiry_out": null,
      "take_x": 3,
      "take": 0.54
-    },
+    }
+   ],
+   "closed": [
     {
      "tid": "202610231300-2383b3",
      "kind": "fadelotto",
@@ -2308,7 +2377,13 @@
      "trail": false,
      "expiry_out": null,
      "take_x": 3,
-     "take": 1.29
+     "take": 1.29,
+     "state": "closed",
+     "exit_price": 0.0,
+     "proceeds": 0.0,
+     "how": "2026-10-23 15:30 到时卖出",
+     "closed": "2026-10-23 15:30",
+     "ret": -1.0
     },
     {
      "tid": "202610231310-628451",
@@ -2329,10 +2404,15 @@
      "trail": false,
      "expiry_out": null,
      "take_x": 3,
-     "take": 0.12
+     "take": 0.12,
+     "state": "closed",
+     "exit_price": 0.0,
+     "proceeds": 0.0,
+     "how": "2026-10-23 15:30 到时卖出",
+     "closed": "2026-10-23 15:30",
+     "ret": -1.0
     }
    ],
-   "closed": [],
    "slots": {
     "2026-10-23 12:20": "2026-10-23T12:20-04:00",
     "2026-10-23 13:00": "2026-10-23T13:00-04:00",
@@ -2448,11 +2528,12 @@
   },
   "sniper-r2-plan-500": {
    "start": 500.0,
-   "cash": 70.0,
+   "cash": 79.0,
    "round": 1,
    "heroes": 0,
    "zeros": 0,
-   "open": [
+   "open": [],
+   "closed": [
     {
      "tid": "20261023-00fbfa",
      "kind": "sniper",
@@ -2470,10 +2551,15 @@
      "exit_day": "2026-10-23",
      "exit_at": "15:30",
      "trail": true,
-     "expiry_out": null
+     "expiry_out": null,
+     "state": "closed",
+     "exit_price": 0.09,
+     "proceeds": 9.0,
+     "how": "2026-10-23 15:30 到时卖出",
+     "closed": "2026-10-23 15:30",
+     "ret": -0.979
     }
    ],
-   "closed": [],
    "slots": {
     "2026-10-23": "2026-10-23T09:40-04:00"
    },
@@ -2482,11 +2568,12 @@
   },
   "sniper-r3-plan-500": {
    "start": 500.0,
-   "cash": 347.0,
+   "cash": 606.0,
    "round": 1,
    "heroes": 0,
    "zeros": 0,
-   "open": [
+   "open": [],
+   "closed": [
     {
      "tid": "20261023-2dfb61",
      "kind": "sniper",
@@ -2504,23 +2591,29 @@
      "exit_day": "2026-10-23",
      "exit_at": "15:30",
      "trail": true,
-     "expiry_out": null
+     "expiry_out": null,
+     "state": "closed",
+     "exit_price": 2.59,
+     "proceeds": 259.0,
+     "how": "2026-10-23 15:30 到时卖出",
+     "closed": "2026-10-23 15:30",
+     "ret": 0.693
     }
    ],
-   "closed": [],
    "slots": {
     "2026-10-23": "2026-10-23T09:30-04:00"
    },
-   "best": 500.0,
+   "best": 606.0,
    "created": null
   },
   "iwm0dte-plan-500": {
    "start": 500.0,
-   "cash": 266.0,
+   "cash": 275.0,
    "round": 1,
    "heroes": 0,
    "zeros": 0,
-   "open": [
+   "open": [],
+   "closed": [
     {
      "tid": "20261023-323b44",
      "kind": "zdte",
@@ -2540,7 +2633,13 @@
      "trail": false,
      "expiry_out": null,
      "take_x": 3,
-     "take": 0.78
+     "take": 0.78,
+     "state": "closed",
+     "exit_price": 0.01,
+     "proceeds": 4.0,
+     "how": "2026-10-23 15:30 到时卖出",
+     "closed": "2026-10-23 15:30",
+     "ret": -0.962
     },
     {
      "tid": "20261023-323b44r",
@@ -2559,10 +2658,15 @@
      "exit_day": "2026-10-23",
      "exit_at": "15:30",
      "trail": true,
-     "expiry_out": null
+     "expiry_out": null,
+     "state": "closed",
+     "exit_price": 0.01,
+     "proceeds": 5.0,
+     "how": "2026-10-23 15:30 到时卖出",
+     "closed": "2026-10-23 15:30",
+     "ret": -0.962
     }
    ],
-   "closed": [],
    "slots": {
     "2026-10-23": "2026-10-23T10:00-04:00"
    },
@@ -2571,33 +2675,11 @@
   },
   "dia0dte-plan-500": {
    "start": 500.0,
-   "cash": 366.0,
+   "cash": 368.0,
    "round": 1,
    "heroes": 0,
    "zeros": 0,
-   "open": [
-    {
-     "tid": "20261023-605bcb",
-     "kind": "zdte",
-     "sym": "DIA261023P00520000",
-     "asset": "option",
-     "und": "DIA",
-     "qty": 2,
-     "cost": 0.55,
-     "paid": 110.0,
-     "opened": "2026-10-23 10:00",
-     "why": "DIA 开盘 $522.80、现在 $522.48，顺势买当天到期看跌 520（离现价 0.5%），3 倍止盈，15:30 平仓",
-     "best_bid": 1.16,
-     "sim": true,
-     "expiry": "2026-10-23",
-     "exit_day": "2026-10-23",
-     "exit_at": "15:30",
-     "trail": false,
-     "expiry_out": null,
-     "take_x": 3,
-     "take": 1.65
-    }
-   ],
+   "open": [],
    "closed": [
     {
      "tid": "20261023-605bcbr",
@@ -2623,6 +2705,33 @@
      "how": "翻倍后从最高 $1.16 回撤 40%",
      "closed": "2026-10-23 10:50",
      "ret": -0.218
+    },
+    {
+     "tid": "20261023-605bcb",
+     "kind": "zdte",
+     "sym": "DIA261023P00520000",
+     "asset": "option",
+     "und": "DIA",
+     "qty": 2,
+     "cost": 0.55,
+     "paid": 110.0,
+     "opened": "2026-10-23 10:00",
+     "why": "DIA 开盘 $522.80、现在 $522.48，顺势买当天到期看跌 520（离现价 0.5%），3 倍止盈，15:30 平仓",
+     "best_bid": 1.16,
+     "sim": true,
+     "expiry": "2026-10-23",
+     "exit_day": "2026-10-23",
+     "exit_at": "15:30",
+     "trail": false,
+     "expiry_out": null,
+     "take_x": 3,
+     "take": 1.65,
+     "state": "closed",
+     "exit_price": 0.01,
+     "proceeds": 2.0,
+     "how": "2026-10-23 15:30 到时卖出",
+     "closed": "2026-10-23 15:30",
+     "ret": -0.982
     }
    ],
    "slots": {
@@ -2633,11 +2742,12 @@
   },
   "amd0dte-plan-500": {
    "start": 500.0,
-   "cash": 157.0,
+   "cash": 238.0,
    "round": 1,
    "heroes": 0,
    "zeros": 0,
-   "open": [
+   "open": [],
+   "closed": [
     {
      "tid": "20261023-204874",
      "kind": "zdte",
@@ -2657,10 +2767,15 @@
      "trail": false,
      "expiry_out": null,
      "take_x": 3,
-     "take": 10.3
+     "take": 10.3,
+     "state": "closed",
+     "exit_price": 0.81,
+     "proceeds": 81.0,
+     "how": "2026-10-23 15:30 到时卖出",
+     "closed": "2026-10-23 15:30",
+     "ret": -0.764
     }
    ],
-   "closed": [],
    "slots": {
     "2026-10-23": "2026-10-23T10:00-04:00"
    },
@@ -2669,11 +2784,12 @@
   },
   "amzn0dte-plan-500": {
    "start": 500.0,
-   "cash": 280.0,
+   "cash": 313.0,
    "round": 1,
    "heroes": 0,
    "zeros": 0,
-   "open": [
+   "open": [],
+   "closed": [
     {
      "tid": "20261023-0a6845",
      "kind": "zdte",
@@ -2693,7 +2809,13 @@
      "trail": false,
      "expiry_out": null,
      "take_x": 3,
-     "take": 0.6
+     "take": 0.6,
+     "state": "closed",
+     "exit_price": 0.03,
+     "proceeds": 15.0,
+     "how": "2026-10-23 15:30 到时卖出",
+     "closed": "2026-10-23 15:30",
+     "ret": -0.85
     },
     {
      "tid": "20261023-0a6845r",
@@ -2712,10 +2834,15 @@
      "exit_day": "2026-10-23",
      "exit_at": "15:30",
      "trail": true,
-     "expiry_out": null
+     "expiry_out": null,
+     "state": "closed",
+     "exit_price": 0.03,
+     "proceeds": 18.0,
+     "how": "2026-10-23 15:30 到时卖出",
+     "closed": "2026-10-23 15:30",
+     "ret": -0.85
     }
    ],
-   "closed": [],
    "slots": {
     "2026-10-23": "2026-10-23T10:00-04:00"
    },
@@ -2724,11 +2851,12 @@
   },
   "meta0dte-plan-500": {
    "start": 500.0,
-   "cash": 268.0,
+   "cash": 272.0,
    "round": 1,
    "heroes": 0,
    "zeros": 0,
-   "open": [
+   "open": [],
+   "closed": [
     {
      "tid": "20261023-04525a",
      "kind": "zdte",
@@ -2748,10 +2876,15 @@
      "trail": false,
      "expiry_out": null,
      "take_x": 3,
-     "take": 6.95
+     "take": 6.95,
+     "state": "closed",
+     "exit_price": 0.04,
+     "proceeds": 4.0,
+     "how": "2026-10-23 15:30 到时卖出",
+     "closed": "2026-10-23 15:30",
+     "ret": -0.983
     }
    ],
-   "closed": [],
    "slots": {
     "2026-10-23": "2026-10-23T10:00-04:00"
    },
