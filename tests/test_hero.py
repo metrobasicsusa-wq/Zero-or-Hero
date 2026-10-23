@@ -5413,3 +5413,30 @@ class ResearchSharesSignals(unittest.TestCase):
         self.assertAlmostEqual(g["drawdown"], 0.05)
         self.assertAlmostEqual(g["g100"], (math.log(1.1) + math.log(0.95)) / 3)
         self.assertEqual((g["worst"], g["best"]), (-0.05, 0.10))
+
+
+class ResearchHeroGame(unittest.TestCase):
+    """Owner, 10-23 (「出方案」): rounds from $500 to 20x or under 10%, replayed on a per-trade series."""
+
+    def test_rounds_heroes_and_zeros(self):
+        from hero import research_hero_game as hg
+        g = hg.game([2.0, 2.0, 2.0, -1.0, -0.5, -0.5, -0.5, -0.5, 1.0], 1.0)
+        self.assertEqual((g["rounds"], g["heroes"], g["zeros"]), (3, 1, 2))            # 27x, then -100%, then 4 halvings
+        self.assertEqual(g["trades_per_round"], 8 / 3)
+        self.assertAlmostEqual(g["p_hero"], 1 / 3)
+        self.assertEqual((g["peak_max"], g["cost_per_hero"]), (27.0, 1500.0))
+        self.assertEqual(g["open_peak"], 2.0)                                           # the last trade is still open
+        half = hg.game([2.0] * 5, 0.5)                                                  # x2 a trade: 32x on the fifth
+        self.assertEqual((half["heroes"], half["trades_per_round"]), (1, 5))
+        self.assertIsNone(hg.game([], 1.0)["p_hero"])
+
+    def test_series_and_markdown(self):
+        from hero import research_hero_game as hg
+        docs = {"lotto": {"rows": [{"symbol": "SPY", "best_x": 25.0, "hold": 3.0}, {"symbol": "AAA", "best_x": 1.5, "hold": -0.9}]},
+                "dipweek": {"rows": [{"day": "2026-01-02", "leg": "atm", "gap": -0.03, "res": {"d5": 0.5}},
+                                     {"day": "2026-01-02", "leg": "atm", "gap": -0.06, "res": {"d5": -0.9}}]}}
+        s = hg.series(docs)
+        self.assertEqual(s["一分钱末日彩票 全部（单张 20 倍止盈）"], [19.0, -0.9])
+        self.assertEqual(s["抄底给一周 平值 d5"], [-0.9])                                 # the biggest gap-down of the day
+        md = hg.markdown(hg.table(docs), "2026-10-23")
+        self.assertIn("| 一分钱末日彩票 全部（单张 20 倍止盈） | 2 | 押一半 |", md)
