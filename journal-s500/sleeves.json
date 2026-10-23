@@ -924,7 +924,7 @@
      "exit_day": "2026-10-23",
      "exit_at": "15:30",
      "trail": false,
-     "best_bid": 0.0,
+     "best_bid": 0.76,
      "expiry_out": null,
      "take_x": 3,
      "take": 4.9,
@@ -1292,7 +1292,7 @@
      "exit_day": "2026-10-23",
      "exit_at": "15:30",
      "trail": false,
-     "best_bid": 0.0,
+     "best_bid": 0.4,
      "expiry_out": null,
      "take_x": 3,
      "take": 1.5,
@@ -1313,7 +1313,7 @@
      "exit_day": "2026-10-23",
      "exit_at": "15:30",
      "trail": true,
-     "best_bid": 0.0,
+     "best_bid": 0.4,
      "expiry_out": null
     }
    ],
@@ -1705,7 +1705,7 @@
      "exit_day": "2026-10-23",
      "exit_at": "15:30",
      "trail": false,
-     "best_bid": 0.0,
+     "best_bid": 0.4,
      "expiry_out": null,
      "take_x": 5,
      "take": 2.5,
@@ -1726,7 +1726,7 @@
      "exit_day": "2026-10-23",
      "exit_at": "15:30",
      "trail": true,
-     "best_bid": 0.0,
+     "best_bid": 0.4,
      "expiry_out": null
     }
    ],
@@ -2170,7 +2170,7 @@
      "exit_day": "2026-10-23",
      "exit_at": "15:30",
      "trail": false,
-     "best_bid": 0.0,
+     "best_bid": 0.89,
      "expiry_out": null,
      "take_x": 3,
      "take": 3.2,
@@ -3138,7 +3138,7 @@
      "exit_day": "2026-10-23",
      "exit_at": "15:30",
      "trail": false,
-     "best_bid": 0.0,
+     "best_bid": 0.76,
      "expiry_out": null,
      "take_x": 5,
      "take": 8.15,
@@ -3267,7 +3267,7 @@
      "exit_day": "2026-10-23",
      "exit_at": "15:30",
      "trail": false,
-     "best_bid": 0.0,
+     "best_bid": 0.76,
      "expiry_out": null,
      "take_x": 5,
      "take": 8.15,
@@ -3288,7 +3288,7 @@
      "exit_day": "2026-10-23",
      "exit_at": "15:30",
      "trail": true,
-     "best_bid": 0.0,
+     "best_bid": 0.76,
      "expiry_out": null
     }
    ],
@@ -5349,7 +5349,7 @@
      "exit_day": "2026-10-23",
      "exit_at": "15:30",
      "trail": true,
-     "best_bid": 0.13,
+     "best_bid": 0.14,
      "expiry_out": null
     }
    ],
@@ -5396,7 +5396,7 @@
   },
   "sniper-1000": {
    "start": 1000.0,
-   "cash": 186.0,
+   "cash": 310.0,
    "round": 1,
    "heroes": 0,
    "zeros": 0,
@@ -5436,24 +5436,6 @@
      "trail": true,
      "best_bid": 0.45,
      "expiry_out": null
-    },
-    {
-     "tid": "20261023-a39b6d",
-     "kind": "sniper",
-     "sym": "T261023P00021000",
-     "asset": "option",
-     "und": "T",
-     "qty": 62,
-     "cost": 0.01,
-     "paid": 62.0,
-     "opened": "2026-10-23 09:30",
-     "why": "开盘狙击 T看跌 21（2026-10-23 到期，离现价 3.6%（平时一天波动 1.9% 的一半））：彭博 / CNBC：SpaceX 在和铁塔公司谈租用约 8 万个基站、自建第四张网，运营商盘前 T -5.5%、VZ -4.8%、TMUS -5.9%，铁塔 CCI / AMT / SBAC +10–14%。T 的财报 10-21 已出，这；翻倍后回撤 40% 卖，否则到期日 15:30 卖",
-     "expiry": "2026-10-23",
-     "exit_day": "2026-10-23",
-     "exit_at": "15:30",
-     "trail": true,
-     "best_bid": 0.03,
-     "expiry_out": null
     }
    ],
    "closed": [
@@ -5482,6 +5464,32 @@
      "how": "券商已无持仓（到期作废）",
      "closed": "2026-10-19 09:30",
      "ret": -1.0
+    },
+    {
+     "tid": "20261023-a39b6d",
+     "kind": "sniper",
+     "sym": "T261023P00021000",
+     "asset": "option",
+     "und": "T",
+     "qty": 62,
+     "cost": 0.01,
+     "paid": 62.0,
+     "opened": "2026-10-23 09:30",
+     "why": "开盘狙击 T看跌 21（2026-10-23 到期，离现价 3.6%（平时一天波动 1.9% 的一半））：彭博 / CNBC：SpaceX 在和铁塔公司谈租用约 8 万个基站、自建第四张网，运营商盘前 T -5.5%、VZ -4.8%、TMUS -5.9%，铁塔 CCI / AMT / SBAC +10–14%。T 的财报 10-21 已出，这；翻倍后回撤 40% 卖，否则到期日 15:30 卖",
+     "expiry": "2026-10-23",
+     "exit_day": "2026-10-23",
+     "exit_at": "15:30",
+     "trail": true,
+     "best_bid": 0.03,
+     "expiry_out": null,
+     "sell_cid": "sl-sniper-1000-20261023-a39b6d-xa522",
+     "sell_why": "翻倍后从最高 $0.03 回撤 40%",
+     "state": "closed",
+     "exit_price": 0.02,
+     "proceeds": 124.0,
+     "how": "翻倍后从最高 $0.03 回撤 40%",
+     "closed": "2026-10-23 10:10",
+     "ret": 1.0
     }
    ],
    "slots": {
@@ -5655,7 +5663,7 @@
      "exit_day": "2026-10-23",
      "exit_at": "15:30",
      "trail": false,
-     "best_bid": 0.0,
+     "best_bid": 0.89,
      "expiry_out": null,
      "take_x": 3,
      "take": 3.15,
@@ -5676,7 +5684,7 @@
      "exit_day": "2026-10-23",
      "exit_at": "15:30",
      "trail": true,
-     "best_bid": 0.0,
+     "best_bid": 0.89,
      "expiry_out": null
     }
    ],
@@ -5709,7 +5717,7 @@
      "exit_day": "2026-10-23",
      "exit_at": "15:30",
      "trail": false,
-     "best_bid": 0.0,
+     "best_bid": 0.45,
      "expiry_out": null,
      "take_x": 3,
      "take": 1.68,
@@ -5730,7 +5738,7 @@
      "exit_day": "2026-10-23",
      "exit_at": "15:30",
      "trail": true,
-     "best_bid": 0.0,
+     "best_bid": 0.45,
      "expiry_out": null
     }
    ],
