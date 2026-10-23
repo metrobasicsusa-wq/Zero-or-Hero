@@ -3188,14 +3188,16 @@ class Sleeves(unittest.TestCase):
         self.assertIn("归零", [e for e in log if e["kind"] == "sleeve_round"][-1]["why"])
 
     def test_cannot_afford_one_contract_skips(self):
-        b = SleeveBroker(lambda s: (2.00, 3.00))
+        # a contract dearer than a whole fresh ledger: no restart would help (10-23), so it is skipped as before
+        b = SleeveBroker(lambda s: (5.00, 6.00))                                      # $600 a contract on a $500 ledger
         book, log = self.cycle(b, 10, 0, self.specs[:1])
         self.assertEqual([o for o in b.orders.values()], [])
+        self.assertEqual([e for e in log if e["kind"] == "sleeve_round"], [])
         self.assertIn("超过这笔可用", [e for e in log if e["kind"] == "sleeve_skip"][-1]["why"])
         from hero import research_plan_review as r                                   # owner, 10-19: follow it anyway
         skip = [e for e in log if e["kind"] == "sleeve_skip"]
         got = r.picks(skip, skip[-1]["ts"][:10])
-        self.assertEqual((got[0]["qty"], got[0]["limit"], got[0]["shadow"]), (1, 3.0, "买不起一张"))
+        self.assertEqual((got[0]["qty"], got[0]["limit"], got[0]["shadow"]), (1, 6.0, "买不起一张"))
 
     def test_half_cannot_buy_one_but_the_ledger_can_goes_all_in_for_one(self):
         # owner, 10-22 (「不要把自己越改越保守了」): QQQ 0DTE sat out from 10-14 on -- half its ledger was below one contract
@@ -3209,6 +3211,43 @@ class Sleeves(unittest.TestCase):
         self.assertEqual(sleeves.units(139.5, 279.0, 201.0), (1, True))
         self.assertEqual(sleeves.units(139.5, 200.0, 201.0), (0, False))               # not even the whole ledger: no trade
         self.assertEqual(sleeves.units(500.0, 1000.0, 201.0), (2, False))              # the half buys two: unchanged
+
+    def test_a_flat_ledger_that_cannot_buy_one_contract_is_a_zero_and_restarts_at_once(self):
+        # owner, 10-23 (「改」): QQQ 0DTE sat at $127 with a $175 contract -- above the zero line, below one contract, no samples
+        from hero import sleeves
+        b = SleeveBroker(lambda s: (2.50, 3.00))                                       # $301 a contract; the ledger has $279
+        book, log = self.cycle(b, 10, 0, self.specs[:1])
+        rounds = [e for e in log if e["kind"] == "sleeve_round"]
+        self.assertEqual(len(rounds), 1)
+        self.assertIn("连一张 $300.00 都买不起，算归零，从 $500 重开第 2 轮", rounds[0]["why"])   # $3.01 ticks to $3.00
+        self.assertFalse(rounds[0]["dry_run"])
+        buys = [o for o in b.orders.values() if o["side"] == "buy"]
+        self.assertEqual([int(o["qty"]) for o in buys], [1])                          # half of the fresh $500 cannot: all in
+        s = book.s("spy0dte-500")
+        self.assertEqual((s["round"], s["zeros"], s["cash"], book.d["topups"]), (2, 1, 200.0, 221.0))
+        self.assertIn("押上账本买 1 张", [e for e in log if e["kind"] == "sleeve_buy"][-1]["why"])
+        # not flat, affordable, or dearer than a whole fresh ledger: no restart
+        other = sleeves.Book(self.root / "b.json", self.specs, {"spy0dte-500": 279.0})
+        self.assertIsNone(other.dead_zone_restart("spy0dte-500", 250.0))
+        self.assertIsNone(other.dead_zone_restart("spy0dte-500", 501.0))
+        other.s("spy0dte-500")["open"].append({"tid": "x", "paid": 10.0})
+        self.assertIsNone(other.dead_zone_restart("spy0dte-500", 300.0))
+
+    def test_a_plan_ledger_in_the_dead_zone_restarts_the_same_way(self):
+        from datetime import datetime
+        from hero import sleeve_rules, sleeves
+        b = SleeveBroker(lambda s: (2.50, 3.00))
+        specs = [{**self.specs[0], "id": "x-500"}]
+        book = sleeves.Book(self.root / "plan.json", specs, {"x-500": 279.0})
+        sleeves.Runner(b, Journal(self.root), self.cfg, specs, book, sleeve_rules.RULES, datetime(2026, 10, 8, 10, 0),
+                       date(2026, 10, 8), sleep=lambda s: None).plan()
+        log = [json.loads(l) for l in (self.root / "trades.jsonl").read_text().splitlines()]
+        rounds = [e for e in log if e["kind"] == "sleeve_round"]
+        self.assertEqual(len(rounds), 1)
+        self.assertTrue(rounds[0]["dry_run"] and rounds[0]["why"].endswith("重开第 2 轮（演算）"))
+        s = book.s("x-500")
+        self.assertEqual((s["round"], s["zeros"], s["open"][0]["qty"], s["cash"]), (2, 1, 1, 200.0))   # booked at the $3.00 ask
+        self.assertEqual(b.orders, {})
 
     def test_plan_scales_a_share_pick(self):
         # a 3x inverse fund takes a third of the notional (hero.sleeve_rules.Peer)
@@ -3811,6 +3850,34 @@ class SleeveRules(unittest.TestCase):
             self.assertEqual((picks[0]["exit_day"], picks[0]["exit_at"]), (picks[0]["expiry"], "15:30"))
             self.assertIn("a downgrade", picks[0]["why"])
             self.assertIsNone(sr.Sniper().entries(r(10, 0), spec, {"slots": {}}))     # past the cutoff
+
+    def test_sniper_holds_overnight_or_to_a_named_expiry_when_the_pick_says_so(self):
+        # 10-23: the T pick said 10-30 in prose; the rule bought the day's $0.01 contract. Now the file can say it.
+        from hero import sleeve_rules as sr
+        with tempfile.TemporaryDirectory() as tmp:
+            spec = {"dir": tmp}
+            b = self.broker()
+            b.option_contracts = lambda und, **kw: [
+                {"symbol": f"{und}{e}{kw['type'][0].upper()}{k}", "strike_price": str(k), "expiration_date": e, "type": kw["type"]}
+                for e in (kw["expiration_date_gte"], "2026-10-15", "2026-10-17") for k in range(70, 131)]
+            b.snaps["AAA"]["latestTrade"]["p"] = 96.0
+            b.option_snapshots = lambda syms: {x: {"latestQuote": {"ap": 0.3}, "greeks": {"delta": -(1 - abs(int(x[-2:]) - 96) / 10)}}
+                                               for x in syms}
+            f = Path(tmp) / "2026-10-13.json"
+            base = {"symbol": "AAA", "direction": "put", "catalyst": "x"}
+            f.write_text(json.dumps({"sniper": base}))
+            slot, picks = sr.Sniper().entries(self.run_at(date(2026, 10, 13), 9, 40, b), spec, {"slots": {}})
+            self.assertEqual((picks[0]["expiry"], picks[0]["exit_day"], picks[0]["exit_at"]), ("2026-10-13", "2026-10-13", "15:30"))
+            f.write_text(json.dumps({"sniper": {**base, "overnight": True}}))
+            slot, picks = sr.Sniper().entries(self.run_at(date(2026, 10, 13), 9, 40, b), spec, {"slots": {}})
+            self.assertEqual((picks[0]["expiry"], picks[0]["exit_day"], picks[0]["exit_at"]), ("2026-10-15", "2026-10-14", "15:50"))
+            self.assertTrue(picks[0]["sym"].startswith("AAA2026-10-15P") and picks[0]["trail"])
+            self.assertIn("拿到 10-14 15:50 卖", picks[0]["why"])
+            f.write_text(json.dumps({"sniper": {**base, "expiry": "2026-10-16"}}))
+            slot, picks = sr.Sniper().entries(self.run_at(date(2026, 10, 13), 9, 40, b), spec, {"slots": {}})
+            self.assertEqual((picks[0]["expiry"], picks[0]["exit_day"], picks[0]["exit_at"]), ("2026-10-17", "2026-10-14", "15:50"))
+            f.write_text(json.dumps({"sniper": {**base, "expiry": "2026-10-30"}}))                  # nothing listed that far
+            self.assertEqual(sr.Sniper().entries(self.run_at(date(2026, 10, 13), 9, 40, b), spec, {"slots": {}}), ("2026-10-13", []))
 
     def test_sniper_goes_half_a_daily_swing_out_but_not_past_a_0_30_delta(self):
         from hero import sleeve_rules as sr

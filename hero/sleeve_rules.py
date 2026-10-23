@@ -710,7 +710,10 @@ class Sniper:
     (the day's if listed), the first strike `swing_frac` (half) of the stock's average daily move (20 sessions) out of
     the money -- never further out than `min_delta` (0.30): owner, 10-15, a fixed 0.10 delta is a lottery ticket on a
     slow mega-cap (AAPL 355C at 345.5) -- and ride it on the trail (after 2x, out on a 40% giveback), else out at 15:30
-    on its expiry day."""
+    on its expiry day. The pick may say `"overnight": true` (the nearest expiry after today, held to the next session's
+    15:50: research/2026-10-15-sniper-factors3.md, a 20-day break with a 3x gap pays into the next close) or name an
+    `"expiry"` (the first listed on or after it); 10-23 the T pick said 10-30 in prose and the rule bought the day's
+    $0.01 contract."""
 
     def entries(self, run, spec, s):
         day = run.today.isoformat()
@@ -734,9 +737,14 @@ class Sniper:
             return None  # going against the pick: wait for a later cycle, until the cutoff
         lo, hi = (spot, spot * 1.15) if kind == "C" else (spot * 0.85, spot)
         cs = contracts(run, und, day, (run.today + timedelta(days=7)).isoformat(), lo, hi, "call" if kind == "C" else "put")
-        if not cs:
+        exps = sorted({c["expiration_date"] for c in cs})
+        if pk.get("expiry"):
+            exps = [e for e in exps if e >= str(pk["expiry"])]
+        elif pk.get("overnight"):
+            exps = [e for e in exps if e > day]
+        if not exps:
             return (day, [])
-        exp = min(c["expiration_date"] for c in cs)
+        exp = exps[0]
         near = [c for c in cs if c["expiration_date"] == exp]
         quotes = run.c.option_snapshots([c["symbol"] for c in near]) or {}
         xs = (closes(run, [und], 60).get(und) or [])[-21:]
@@ -763,10 +771,15 @@ class Sniper:
         _, c, ask, d = pick
         how = f"离现价 {pick[0]:.1%}（平时一天波动 {swing:.1%} 的一半）" + (f"，delta {d:.2f}" if d is not None else "")
         exp = c["expiration_date"]
+        out, at = exp, "15:30"
+        if pk.get("overnight") or pk.get("expiry"):   # held to the next session's close, the expiry's 15:30 if sooner
+            out = min(next_business_day(run.today).isoformat(), exp)
+            at = "15:50" if out < exp else "15:30"
+        sell = f"拿到 {out[5:]} {at} 卖" if out != exp or at != "15:30" else "到期日 15:30 卖"
         return (day, [{"sym": c["symbol"], "asset": "option", "und": und, "ask": ask, "trail": True, "expiry": exp,
-                       "exit_day": exp, "exit_at": "15:30",
+                       "exit_day": out, "exit_at": at,
                        "why": f"开盘狙击 {und}{'看涨' if kind == 'C' else '看跌'} {float(c['strike_price']):g}（{exp} 到期，{how}）："
-                              f"{str(pk.get('catalyst', ''))[:120]}；翻倍后回撤 40% 卖，否则到期日 15:30 卖"}])
+                              f"{str(pk.get('catalyst', ''))[:120]}；翻倍后回撤 40% 卖，否则{sell}"}])
 
 
 class Flush:

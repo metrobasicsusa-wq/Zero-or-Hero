@@ -6,7 +6,8 @@ When the fraction cannot buy one contract (or one whole share) but what is left 
 one (owner, 10-22: a ledger below the price of two contracts but above the zero line must not sit out for
 good -- QQQ 0DTE had not traded since 10-14). Below 10% of its start the round is over (a zero);
 at $10,000 it is a hero; either way it starts again at its start from the shared pool, and the round
-count is kept. Every broker order carries a client_order_id naming the sleeve and the ticket, and
+count is kept. A flat ledger that cannot buy even one unit with all it has left is a zero on the spot
+and restarts the same cycle (owner, 10-23: the dead zone between 10% and one contract gave no samples). Every broker order carries a client_order_id naming the sleeve and the ticket, and
 every fill is booked from the broker's own fill price, so the ledgers add up to the real account.
 
 The ledger lives in the journal, which a cycle commits at its end; if that commit is lost, the broker still
@@ -120,6 +121,23 @@ class Book:
             s["best"] = s["start"]
             return msg
         return None
+
+    def dead_zone_restart(self, sid: str, need: float) -> str | None:
+        """Owner, 10-23 (「改」): a flat ledger that cannot buy one unit with everything it has left is a zero now, not
+        later -- between the zero line and one contract it would sit idle and give no sample (QQQ 0DTE: $127 left,
+        $175 a contract, since 10-14). Counts the zero, restarts at the start; the caller then buys from the new round."""
+        s = self.s(sid)
+        if s["open"] or need <= s["cash"] or need > s["start"]:   # dearer than a whole fresh ledger: restarting would not help
+            return None
+        cash = s["cash"]
+        s["zeros"] += 1
+        self.d["topups"] = round(self.d["topups"] + s["start"] - cash, 2)
+        msg = (f"{sid} 第 {s['round']} 轮剩 ${cash:,.2f}，连一张 ${need:,.2f} 都买不起，算归零，"
+               f"从 ${s['start']:,.0f} 重开第 {s['round'] + 1} 轮")
+        s["round"] += 1
+        s["cash"] = s["start"]
+        s["best"] = s["start"]
+        return msg
 
     def summary(self) -> list[dict]:
         out = []
@@ -453,6 +471,9 @@ class Runner:
                     notional = math.floor(each * float(pk.get("scale", 1)) * 100) / 100   # scale: a 3x fund takes a third
                     ask = float(pk.get("ask") or 0)
                     if pk.get("whole"):
+                        if ask > 0 and units(notional, s["cash"], ask)[0] < 1:
+                            each, _ = self.restart_dead(spec["id"], each, s["cash"], ask, dry_run=True)
+                            notional = math.floor(each * float(pk.get("scale", 1)) * 100) / 100
                         qty, allin = units(notional, s["cash"], ask)
                     else:
                         qty, allin = (round(notional / ask, 6) if ask > 0 else 0), False
@@ -460,6 +481,9 @@ class Runner:
                 else:
                     limit = tick(pk["ask"] + self.p["buy_pad"])
                     qty, allin = units(each, s["cash"], limit * 100)
+                    if qty < 1 and not spec.get("qty"):
+                        each, _ = self.restart_dead(spec["id"], each, s["cash"], limit * 100, dry_run=True)
+                        qty, allin = units(each, s["cash"], limit * 100)
                     if spec.get("qty"):   # a sample ledger: a fixed number of contracts a find (owner, 10-21)
                         qty, allin = (int(spec["qty"]) if limit * 100 * int(spec["qty"]) <= s["cash"] else 0), False
                     size = ((f"{qty} 张 × ${limit:.2f}" + (f"（一半 ${each:,.2f} 买不起一张，押上账本）" if allin else "")) if qty
@@ -548,6 +572,19 @@ class Runner:
                              "改成只记录、不下单" + (f"（{rule['twin']} 照常演算）" if rule.get("twin") else ""))
         return True
 
+    def restart_dead(self, sid: str, each: float, left: float, need: float, dry_run: bool) -> tuple[float, float]:
+        """Owner, 10-23: a flat ledger that cannot buy one unit at all starts a new round on the spot (a zero on its record)
+        and this pick is sized from the fresh start. `each` keeps its share of the ledger; `left` is the ledger's cash."""
+        s = self.book.s(sid)
+        if left != s["cash"]:   # something else of this cycle is already sized from this ledger
+            return each, left
+        msg = self.book.dead_zone_restart(sid, need)
+        if not msg:
+            return each, left
+        self.j.event("sleeve_round", dry_run=dry_run, sleeve=sid, why=msg + ("（演算）" if dry_run else ""))
+        share = each / left if left else 0.0
+        return round(share * s["cash"], 2), s["cash"]
+
     def enter(self) -> None:
         intents = []
         for spec in self.specs:
@@ -596,6 +633,8 @@ class Runner:
             if pk["asset"] == "stock":
                 notional = math.floor(min(each * float(pk.get("scale", 1)), room) * 100) / 100
                 ask = float(pk.get("ask") or 0)
+                if pk.get("whole") and ask and int(notional // ask) < 1 and ask > left[sid] and ask <= room:
+                    each, left[sid] = self.restart_dead(sid, each, left[sid], ask, dry_run=False)
                 if pk.get("whole") and ask and int(notional // ask) < 1 and ask <= min(left[sid], room):
                     notional = ask   # one whole share with what is left of the ledger
                     pk = {**pk, "why": f"{pk['why']}；一半 ${each:,.2f} 买不起一股，押上账本买 1 股"}
@@ -606,6 +645,9 @@ class Runner:
                 continue
             limit = tick(pk["ask"] + self.p["buy_pad"])
             qty, allin = units(each, left[sid], limit * 100)
+            if qty < 1:
+                each, left[sid] = self.restart_dead(sid, each, left[sid], limit * 100, dry_run=False)
+                qty, allin = units(each, left[sid], limit * 100)
             if qty < 1:
                 self.j.event("sleeve_skip", dry_run=False, sleeve=sid, symbol=pk["sym"],
                              why=f"{sid}：{pk['sym']} 一张 ${limit * 100:,.2f}，超过这笔可用的 ${each:,.2f}"
