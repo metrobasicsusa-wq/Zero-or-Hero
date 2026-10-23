@@ -5341,3 +5341,75 @@ class ResearchVerdict(unittest.TestCase):
         self.assertIn("| spy0dte-near-500 |", md)
         self.assertIn("| dia0dte-plan-500 | 没有回测：DIA 没算过 | 0 |", md)
         self.assertEqual(next(r for r in rows if r["id"] == "iwm0dte-plan-500")["verdict"], "回测就不行；最近一个月 -90%（4 笔）")
+
+
+class ResearchSharesSignals(unittest.TestCase):
+    """Owner, 10-23 (「那你现在做？」): the signal rules in shares, on a fake tape."""
+
+    def tape(self):
+        from datetime import date, timedelta
+        days, d = [], date(2026, 1, 5)
+        while len(days) < 40:
+            if d.weekday() < 5:
+                days.append(d.isoformat())
+            d += timedelta(days=1)
+        flat = {s: [[100.0, 100.5, 100.0] for _ in days] for s in ("AAA", "BBB", "SPY", "QQQ")}   # open, high, close
+        flat["SSO"] = [[50.0, 50.2, 50.0] for _ in days]
+        flat["QLD"] = [[40.0, 40.2, 40.0] for _ in days]
+        for i in range(25, 30):
+            flat["AAA"][i] = [97.0, 97.5, 97.0]                   # day 25: a 3% gap down, closes there and stays
+        flat["AAA"][30] = [97.5, 107.5, 107.0]                   # five sessions on: back to 107 within the day, no gap
+        flat["AAA"][31] = [107.0, 107.5, 107.0]
+        for i in range(0, 28):
+            flat["BBB"][i] = [100.0, 100.5, 100.0 + (0.1 if i % 2 else 0.0)]   # a 0.1% daily wiggle: the 20-day swing
+        flat["AAA"][32] = [118.0, 119.5, 119.0]                   # +10.3% over the 107 close, closes above its open
+        for i in range(33, 40):
+            flat["AAA"][i] = [120.0, 122.5, 122.0]                # the next open is 120, that close 122
+        flat["BBB"][28] = [105.0, 106.5, 106.0]                   # +5% open over a 20-day high of 100.5, closes 106
+        for i in range(29, 40):
+            flat["BBB"][i] = [107.0, 108.5, 108.0]
+        flat["SPY"][26] = [100.0, 100.5, 98.9]                    # closes 1.1% down
+        flat["SPY"][27] = [99.0, 100.5, 100.0]
+        for i in range(27, 40):
+            flat["SSO"][i] = [50.0, 51.5, 51.0]
+        bars = {s: [{"t": f"{days[i]}T05:00:00Z", "o": x[0], "h": x[1], "c": x[2], "v": 1000} for i, x in enumerate(v)] for s, v in flat.items()}
+        return days, bars
+
+    def test_signals_and_their_returns(self):
+        from hero import research_shares_signals as ss
+        days, bars = self.tape()
+        dates, o, h, c, dv = ss.align(bars)
+        rows = ss.signals(dates, o, h, c, lambda t: ["AAA", "BBB"], 21)
+        dip = next(r for r in rows if r["sig"] == "dip2")
+        self.assertEqual((dip["sym"], dip["day"], dip["gap"]), ("AAA", days[25], -0.03))
+        self.assertAlmostEqual(dip["res"]["hold5"], 107 / 97 - 1 - 0.001)
+        self.assertEqual([r["sym"] for r in rows if r["sig"] == "dip5"], [])
+        bg = next(r for r in rows if r["sig"] == "breakgap")
+        self.assertEqual((bg["sym"], bg["day"]), ("BBB", days[28]))
+        self.assertAlmostEqual(bg["res"]["same_close"], 106 / 105 - 1 - 0.001)
+        self.assertAlmostEqual(bg["res"]["next_close"], 108 / 105 - 1 - 0.001)
+        big = next(r for r in rows if r["sig"] == "bigup")
+        self.assertEqual((big["sym"], big["day"]), ("AAA", days[33]))                     # bought the next open
+        self.assertAlmostEqual(big["res"]["close1"], 122 / 120 - 1 - 0.001)
+        sd = next(r for r in rows if r["sig"] == "spydip_SPY")
+        self.assertEqual(sd["day"], days[27])
+        self.assertAlmostEqual(sd["res"]["SPY"], 100 / 99 - 1 - 0.001)
+        self.assertAlmostEqual(sd["res"]["SSO"], 51 / 50 - 1 - 0.001)
+        self.assertEqual([r for r in rows if r["sig"] == "spydip_QQQ"], [])
+        base = ss.baseline(dates, c, lambda t: ["AAA", "BBB"], 21)
+        self.assertEqual(len(base), len(dates) - 5 - 21)
+        self.assertEqual(ss.day_series(rows, "dip2", "hold5"), [(days[25], dip["res"]["hold5"])])
+        table = ss.evaluate(rows, base, dates[-1])
+        self.assertIn("dip2|hold5", table)
+        self.assertEqual(table["dip2|hold5"]["rows"], 1)
+        md = ss.markdown(table, {"generated": "2026-10-23", "start": days[21], "end": days[-1], "candidates": 2})
+        self.assertIn("突破大跳空", md)
+        self.assertIn("| 第 5 天 | 1（1） | +10.2% |", md)
+
+    def test_growth_compounds_in_sequence(self):
+        from hero import research_shares_signals as ss
+        g = ss.growth([("d1", 0.10), ("d2", -0.05), ("d3", 0.0)])
+        self.assertAlmostEqual(g["multiple"], 1.1 * 0.95)
+        self.assertAlmostEqual(g["drawdown"], 0.05)
+        self.assertAlmostEqual(g["g100"], (math.log(1.1) + math.log(0.95)) / 3)
+        self.assertEqual((g["worst"], g["best"]), (-0.05, 0.10))
