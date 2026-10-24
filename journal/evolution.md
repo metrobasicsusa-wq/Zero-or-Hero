@@ -27,3 +27,10 @@
 - decision: keep
 - briefing accuracy (record only, 11 days): predictions 15/21 (71%), predictions unverifiable 1, bias vs SPY 8/11 (73%)
 
+## 2026-10-24 — generation 1
+- live return since start: +5.46% over 17 days
+- current score 0.84 (train 1.11, val 0.84, val DD -10.2%)
+- best score 0.84 (train 1.11, val 0.84, val DD -10.2%) 
+- decision: keep
+- briefing accuracy (record only, 16 days): predictions 25/31 (81%), predictions unverifiable 1, bias vs SPY 12/16 (75%)
+
