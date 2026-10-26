@@ -3239,12 +3239,14 @@ class Sleeves(unittest.TestCase):
         s = book.s("spy0dte-500")
         s["best"], s["closed"] = 900.0, [{"tid": "a"}, {"tid": "b"}, {"tid": "c"}]
         self.assertIn("归零", book.round_check("spy0dte-500", {"zero_line": 0.1, "target": 10000}, "2026-10-23"))
-        self.assertEqual(s["rounds"], [{"round": 1, "end": "zero", "cash": 30.0, "peak": 900.0, "trades": 3, "day": "2026-10-23"}])
+        self.assertEqual(s["rounds"], [{"round": 1, "end": "zero", "cash": 30.0, "peak": 900.0, "trades": 3, "day": "2026-10-23",
+                                        "x": 20.0}])                                    # audit 10-26 #3: the goal as a multiple
         self.assertEqual((s["round"], s["round_from"], s["cash"]), (2, 3, 500.0))
         s["cash"], s["best"] = 120.0, 500.0
         s["closed"].append({"tid": "d"})
         self.assertIn("算归零", book.dead_zone_restart("spy0dte-500", 300.0, "2026-10-26"))
-        self.assertEqual(s["rounds"][-1], {"round": 2, "end": "zero", "cash": 120.0, "peak": 500.0, "trades": 1, "day": "2026-10-26"})
+        self.assertEqual(s["rounds"][-1], {"round": 2, "end": "zero", "cash": 120.0, "peak": 500.0, "trades": 1, "day": "2026-10-26",
+                                           "x": 20.0})
         s["cash"] = 10400.0
         self.assertIn("成功", book.round_check("spy0dte-500", {"zero_line": 0.1, "target": 10000}, "2026-10-27"))
         self.assertEqual((s["rounds"][-1]["end"], s["rounds"][-1]["peak"], s["heroes"]), ("hero", 10400.0, 1))
@@ -3568,6 +3570,61 @@ class Sleeves(unittest.TestCase):
             {"round": 1, "end": "zero", "peak": 600.0, "trades": 2}, {"round": 2, "end": "stopped", "peak": 500.0, "trades": 1}]}}}
         r = hg.live_rounds(book, "实盘")[0]
         self.assertEqual((r["rounds"], r["heroes"], r["zeros"], r["stopped"]), (2, 0, 1, 1))
+
+    def test_audit3_a_hero_is_twenty_times_the_start_unless_the_spec_says_otherwise(self):
+        # audit #3: the target was a fixed $10,000 -- 20x for $500, 10x for $1,000, 5x for $2,000, all in one table
+        from hero import sleeves
+        p = sleeves.settings({"sleeves": {}})
+        self.assertEqual((sleeves.target_of(p, 500), sleeves.target_of(p, 1000)), (10_000.0, 20_000.0))
+        self.assertEqual(sleeves.target_of({**p, "target": 10_000}, 2000), 10_000.0)          # the $2,000 ledgers: 5x, said in the spec
+        specs = [{"id": "a-1000", "kind": "zdte", "start": 1000}, {"id": "b-2000", "kind": "zdte", "start": 2000, "target": 10000}]
+        book = sleeves.Book(self.root / "t.json", specs)
+        book.s("a-1000")["cash"] = 12_000.0
+        self.assertIsNone(book.round_check("a-1000", p, "2026-10-27"))                       # 12x is not a hero any more
+        book.s("a-1000")["cash"] = 20_500.0
+        self.assertIn("到 $20,000，成功", book.round_check("a-1000", p, "2026-10-27"))
+        self.assertEqual((book.s("a-1000")["rounds"][-1]["x"], book.s("a-1000")["target"]), (20.0, 20_000.0))
+        book.s("b-2000")["cash"] = 10_500.0
+        self.assertIn("成功", book.round_check("b-2000", {**p, "target": 10000}, "2026-10-27"))
+        self.assertEqual(book.s("b-2000")["rounds"][-1]["x"], 5.0)
+
+    def test_audit3_a_rule_change_ends_the_round_and_starts_a_new_one(self):
+        # audit #3: spy0dte kept its id across the 10-20 / 10-23 changes, so the old rule's $2,191 sat in the new rule's round
+        from hero import sleeves
+        spec = {"id": "spy0dte-1000", "kind": "zdte", "start": 1000, "und": "SPY", "offset": 0.003, "take": 5, "min_move": 0.9,
+                "rule_from": "2026-10-23"}
+        book = sleeves.Book(self.root / "sleeves.json", [spec])
+        book.s("spy0dte-1000").update(cash=3191.0, best=3191.0, closed=[{"tid": "a1", "qty": 5, "paid": 275.0, "proceeds": 1550.0}])
+        book.save()
+        b = SleeveBroker(lambda s: (0.08, 0.10))
+        book, log = self.cycle(b, 10, 0, [spec])
+        s = book.s("spy0dte-1000")
+        self.assertEqual((s["rounds"][-1]["end"], s["rounds"][-1]["cash"], s["rounds"][-1].get("rule_from")), ("rule", 3191.0, None))
+        self.assertEqual((s["round"], s["cash"], s["rule_from"], s["heroes"], s["zeros"], book.d["topups"]),
+                         (2, 1000.0, "2026-10-23", 0, 0, -2191.0))                               # the old rule's winnings go back to the pool
+        self.assertIn("规则改了", [e for e in log if e["kind"] == "sleeve_round"][-1]["why"])
+        book, log = self.cycle(b, 10, 10, [spec])
+        self.assertEqual(len(book.s("spy0dte-1000")["rounds"]), 1)                              # once
+        fresh = sleeves.Book(self.root / "f.json", [spec])                                      # a new ledger: nothing to end
+        self.assertIsNone(fresh.rule_change("spy0dte-1000", "2026-10-23", "2026-10-27"))
+        self.assertEqual((fresh.s("spy0dte-1000")["rule_from"], fresh.s("spy0dte-1000").get("rounds")), ("2026-10-23", None))
+        held = sleeves.Book(self.root / "h.json", [spec])
+        held.s("spy0dte-1000")["open"].append({"tid": "o1"})
+        self.assertIsNone(held.rule_change("spy0dte-1000", "2026-10-23", "2026-10-27"))         # waits until flat
+        self.assertNotIn("rule_from", held.s("spy0dte-1000"))
+
+    def test_audit3_the_hero_table_lists_each_target_multiple_apart(self):
+        from hero import research_hero_game as hg
+        book = {"sleeves": {
+            "a-500": {"start": 500, "cash": 500.0, "round": 2, "closed": [], "rounds": [{"round": 1, "end": "zero", "peak": 600.0, "trades": 2}]},
+            "b-2000": {"start": 2000, "cash": 2000.0, "round": 2, "target": 10000.0, "closed": [],
+                       "rounds": [{"round": 1, "end": "hero", "peak": 10400.0, "trades": 4, "x": 5.0}]}}}
+        rows = hg.live_rounds(book, "实盘")
+        self.assertEqual({r["id"]: r["x"] for r in rows}, {"a-500": 20.0, "b-2000": 5.0})
+        md = hg.live_markdown(rows)
+        self.assertLess(md.index("目标 20 倍"), md.index("a-500"))
+        self.assertLess(md.index("目标 5 倍"), md.index("b-2000"))
+        self.assertLess(md.index("a-500"), md.index("目标 5 倍"))
 
 
 class EarningsShares(unittest.TestCase):
@@ -5952,6 +6009,23 @@ class HeroPlanConfig(unittest.TestCase):
         for sid in ("iwm0dte-plan-500", "amd0dte-plan-500", "amzn0dte-plan-500", "meta0dte-plan-500", "msft0dte-plan-500"):
             self.assertNotIn(sid, by)                                                    # answered by the backtests already
         self.assertIn("dia0dte-plan-500", by)
+
+
+class LedgerAuditConfig(unittest.TestCase):
+    """docs/ledger-audit-2026-10-26.md, 三、修: what config/s500.json must say after the fixes."""
+
+    def setUp(self):
+        self.cfg = json.loads((Path(__file__).resolve().parent.parent / "config" / "s500.json").read_text())
+        self.by = {s["id"]: s for s in self.cfg["sleeves"]["list"]}
+
+    def test_audit3_targets_are_multiples_and_the_spy0dte_rule_change_starts_a_round(self):
+        self.assertNotIn("target", self.cfg["sleeves"])                                  # no fixed $10,000 for every ledger
+        self.assertEqual(self.cfg["sleeves"]["target_x"], 20)
+        two = [s for s in self.by.values() if s["start"] == 2000]
+        self.assertTrue(two)
+        self.assertTrue(all(s.get("target") == 10000 for s in two), [s["id"] for s in two])   # the $2,000 ledgers stay at 5x, said aloud
+        for sid in ("spy0dte-500", "spy0dte-1000"):
+            self.assertEqual(self.by[sid].get("rule_from"), "2026-10-23", sid)
 
 
 class WeekendStudies(unittest.TestCase):

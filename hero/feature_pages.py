@@ -95,7 +95,9 @@ def ledger_row(spec: dict, s: dict, plan: bool, prices: dict[str, float]) -> dic
     realized = sum(float(t.get("proceeds") or 0) - float(t.get("paid") or 0) for t in closed)
     start, cash = float(s.get("start") or spec.get("start") or 0), float(s.get("cash") or 0)
     value = cash + (now if now is not None else held)
+    target = float(s.get("target") or spec.get("target") or 20 * start)   # audit 10-26 #3: 20x the start unless the spec says
     return {"id": spec["id"], "plan": plan, "start": start, "cash": cash, "held": held, "now": now, "value": value,
+            "target": target, "x": target / start if start else 20.0,
             "ret": value / start - 1 if start else 0.0, "realized": round(realized, 2), "trades": len(closed),
             "wins": sum(1 for t in closed if float(t.get("ret") or 0) > 0), "open": len(opened),
             "round": s.get("round", 1), "heroes": s.get("heroes", 0), "zeros": s.get("zeros", 0),
@@ -224,7 +226,7 @@ def collect(root: Path = ROOT) -> dict:
     rest = [f for k, f in fams.items() if k not in order]
     if rest:
         groups.append(("其他", rest))
-    common = {k: (cfg.get("sleeves") or {}).get(k) for k in ("fraction", "zero_line", "target")}
+    common = {k: (cfg.get("sleeves") or {}).get(k) for k in ("fraction", "zero_line", "target_x")}
     return {"generated": datetime.now(timezone.utc).isoformat(timespec="seconds"), "snapshot_ts": snap.get("ts"),
             "groups": [(g, fs) for g, fs in groups if fs], "families": fams, "common": common, "backfill_name": bf_name}
 
@@ -433,7 +435,8 @@ def feature(data: dict, f: dict) -> str:
             rule.append(f'<p class="meta">{esc(s["note"])}</p>')
         rule.append(f'<p><code>{esc(spec_lines(s))}</code></p>')
     rule.append(f'<p class="meta">共同规则：每笔押账本的 {c.get("fraction") or 0.5:.0%}（个别方向全仓，见上面 fraction），只买整张；'
-                f'低于起始的 {c.get("zero_line") or 0.1:.0%} 算归零、到 {usd(c.get("target") or 10000, 0)} 算成功，都从公共资金重开。</p>')
+                f'低于起始的 {c.get("zero_line") or 0.1:.0%} 算归零、到起始的 {c.get("target_x") or 20:g} 倍算成功'
+                f'（规则里写了 target 的按它，比如 $2,000 账本 $10,000、5 倍；见下表「目标」），都从公共资金重开。</p>')
     for r in f["ledgers"]:
         sl = r.get("stop_line")
         if sl:
@@ -442,9 +445,9 @@ def feature(data: dict, f: dict) -> str:
     lrows = [[f'<b>{esc(ledger_name(r))}</b><br><span class="meta">{esc(r["id"])}</span>', usd(r["start"], 0), usd(r["cash"]),
               usd(r["held"]) if r["open"] else "—", usd(r["now"]) if r["now"] is not None else ("按成本" if r["open"] else "—"),
               usd(r["value"]), pct(r["ret"]), signed(r["realized"]), f'{r["trades"]}（赚 {r["wins"]}）',
-              f'第 {r["round"]} 轮 · {r["heroes"]} / {r["zeros"]}'] for r in f["ledgers"]]
+              f'{r["x"]:g} 倍 · {usd(r["target"], 0)}', f'第 {r["round"]} 轮 · {r["heroes"]} / {r["zeros"]}'] for r in f["ledgers"]]
     ledgers = table([("账本", ""), ("起始", "num"), ("现金", "num"), ("持仓成本", "num"), ("持仓现值", "num"), ("现值", "num"),
-                     ("本轮", "num"), ("已实现", "num"), ("卖出笔数", "num"), ("轮次 · 成功 / 归零", "")], lrows)
+                     ("本轮", "num"), ("已实现", "num"), ("卖出笔数", "num"), ("目标", "num"), ("轮次 · 成功 / 归零", "")], lrows)
 
     def trow(r):
         note = f'买：{esc(r["why"])}' + (f'<br>卖：{esc(r["how"])}' if r["how"] else "")

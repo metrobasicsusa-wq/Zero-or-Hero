@@ -259,7 +259,7 @@ def ledgers(rows: list[dict], specs: dict[str, dict], common: dict) -> dict[str,
         spec = specs.get(sid, {})
         start = float(spec.get("start") or 500)
         zero = float(spec.get("zero_line", common.get("zero_line", 0.1)))
-        target = float(spec.get("target", common.get("target", 10000)))
+        target = float(spec.get("target") or common.get("target") or float(common.get("target_x") or 20) * start)   # audit 10-26 #3
         cash, topups, banked, zeros, heroes, skipped = start, 0.0, 0.0, 0, 0, 0
         days: dict[str, list[dict]] = {}
         for r in sorted(rs, key=lambda r: (r["day"], r["at"])):

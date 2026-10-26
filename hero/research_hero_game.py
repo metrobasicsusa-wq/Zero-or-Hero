@@ -121,9 +121,12 @@ def live_rounds(book: dict, label: str) -> list[dict]:
         tails = [e["got"] / e["paid"] - 1 for e in by.values() if e["paid"] > 0]
         heroes = sum(r["end"] == "hero" for r in rounds)
         stopped = sum(r["end"] == "stopped" for r in rounds)   # audit 10-26 #2: a stopped rule's last round is not a zero
-        zeros = len(rounds) - heroes - stopped
+        changed = sum(r["end"] == "rule" for r in rounds)      # audit 10-26 #3: nor one cut short by a rule change
+        zeros = len(rounds) - heroes - stopped - changed
         peaks = [r.get("peak", 0) / start for r in rounds]
-        out.append({"id": sid, "book": label, "rounds": len(rounds), "heroes": heroes, "zeros": zeros, "stopped": stopped,
+        x = round(float(s.get("target") or TARGET * start) / start, 2)   # audit 10-26 #3: the ledger's goal, 20x unless set
+        out.append({"id": sid, "book": label, "x": x, "rounds": len(rounds), "heroes": heroes, "zeros": zeros, "stopped": stopped,
+                    "rule": changed,
                     "x2_rounds": sum(p >= 2 for p in peaks) / len(rounds) if rounds else None,
                     "trades_per_round": statistics.mean(r.get("trades", 0) for r in rounds) if rounds else None,
                     "cost_per_hero": len(rounds) * start / heroes if heroes else None,
@@ -140,13 +143,18 @@ def live_markdown(rows: list[dict]) -> str:
            "对上面回测的同一列看：实盘的 hero 率低于回测一半以上，先查成交成本，再谈规则。", "",
            "hero 太稀，先看单笔的尾巴：「笔 ≥2 倍 / ≥5 倍」是每笔（一半止盈 + 一半回撤合起来算）到过 2 倍、5 倍的比例，几十笔就能和回测对上；"
            "押满时 hero 率约等于连赢两三把的概率，由它推算。", "",
-           "| 账本 | 本子 | 笔数 | 笔 ≥2 倍 | 笔 ≥5 倍 | 轮数 | 到 20 倍 | 归零 | 到过 2 倍的轮 | 每轮笔数 | 每个 hero 的成本 | 进行中：第几轮 · 现在 / 峰值（倍）· 笔数 |",
-           "|---|---|---|---|---|---|---|---|---|---|---|---|"]
-    for r in rows:
-        n = r["now"]
-        zeros = f"{r['zeros']}（停 {r['stopped']}）" if r.get("stopped") else str(r["zeros"])
-        out.append(f"| {r['id']} | {r['book']} | {r['trades']} | {fmt(r['x2'])} | {fmt(r['x5'])} | {r['rounds']} | {r['heroes']} | {zeros} | {fmt(r['x2_rounds'])} | "
-                   f"{fmt(r['trades_per_round'], 'n')} | {fmt(r['cost_per_hero'], 'usd')} | 第 {n['round']} 轮 · {n['cash']:.2f} / {n['peak']:.2f} · {n['trades']} |")
+           "目标不同的账本分开列（审计 10-26 #3）：hero 是起始的 20 倍（$500 → $10,000、$1,000 → $20,000），$2,000 账本按它的研究是 $10,000（5 倍），不能和 20 倍的放在一起比。"
+           "「归零」括号里的停 / 换规则是停开新仓或规则改了结束的轮，不算归零。"]
+    for x in sorted({r.get("x", 20.0) for r in rows}, reverse=True):
+        out += ["", f"### 目标 {x:g} 倍", "",
+                f"| 账本 | 本子 | 笔数 | 笔 ≥2 倍 | 笔 ≥5 倍 | 轮数 | 到 {x:g} 倍 | 归零 | 到过 2 倍的轮 | 每轮笔数 | 每个 hero 的成本 | 进行中：第几轮 · 现在 / 峰值（倍）· 笔数 |",
+                "|---|---|---|---|---|---|---|---|---|---|---|---|"]
+        for r in (r for r in rows if r.get("x", 20.0) == x):
+            n = r["now"]
+            other = "，".join(f"{k} {r[key]}" for k, key in (("停", "stopped"), ("换规则", "rule")) if r.get(key))
+            zeros = f"{r['zeros']}（{other}）" if other else str(r["zeros"])
+            out.append(f"| {r['id']} | {r['book']} | {r['trades']} | {fmt(r['x2'])} | {fmt(r['x5'])} | {r['rounds']} | {r['heroes']} | {zeros} | {fmt(r['x2_rounds'])} | "
+                       f"{fmt(r['trades_per_round'], 'n')} | {fmt(r['cost_per_hero'], 'usd')} | 第 {n['round']} 轮 · {n['cash']:.2f} / {n['peak']:.2f} · {n['trades']} |")
     return "\n".join(out) + "\n"
 
 

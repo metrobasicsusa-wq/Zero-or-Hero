@@ -37,13 +37,24 @@ from zoneinfo import ZoneInfo
 
 ROOT = Path(__file__).resolve().parent.parent
 
-DEFAULTS = {"enabled": False, "fraction": 0.5, "zero_line": 0.1, "target": 10_000.0, "buy_pad": 0.01,
+DEFAULTS = {"enabled": False, "fraction": 0.5, "zero_line": 0.1, "target_x": 20.0, "buy_pad": 0.01,
             "fill_wait_s": 60, "chase_cap": 1.3, "cash_buffer": 1_000.0}
 LAST_CYCLE = "15:50"   # the day's last trading cycle (the engine only runs while the market is open)
 
 
 def settings(cfg: dict) -> dict:
     return {**DEFAULTS, **{k: v for k, v in cfg.get("sleeves", {}).items() if k != "list"}}
+
+
+def target_of(p: dict, start: float) -> float:
+    """Audit 10-26 #3: a hero is `target_x` (20) times the ledger's start -- $500 -> $10,000, $1,000 -> $20,000. The fixed
+    $10,000 made a $1,000 ledger's hero 10x and a $2,000 one's 5x, and the hero table compared them as one. A spec's own
+    `target` (dollars) overrides: the $2,000 ledgers keep $10,000, 5x, as their study measured."""
+    return float(p["target"]) if p.get("target") else float(p.get("target_x", 20.0)) * float(start)
+
+
+def round_params(p: dict, spec: dict) -> dict:
+    return {**p, **{k: spec[k] for k in ("zero_line", "target") if k in spec}}
 
 
 def tick(x: float) -> float:
@@ -115,22 +126,29 @@ class Book:
     def end_round(self, s: dict, how: str, when: str | None) -> None:
         """Owner, 10-23 (docs/hero-plan.md): the ledgers are scored by rounds, so each one is kept: how it ended, its
         peak cash (the 2x question), how many closed tickets it took."""
-        s.setdefault("rounds", []).append({"round": s["round"], "end": how, "cash": round(s["cash"], 2),
-                                           "peak": round(max(s.get("best", s["start"]), s["cash"]), 2),
-                                           "trades": len(s["closed"]) - s.get("round_from", 0), "day": when})
+        rec = {"round": s["round"], "end": how, "cash": round(s["cash"], 2),
+               "peak": round(max(s.get("best", s["start"]), s["cash"]), 2),
+               "trades": len(s["closed"]) - s.get("round_from", 0), "day": when}
+        if s.get("target"):   # audit 10-26 #3: the round's goal as a multiple of the start, and the rule it ran under
+            rec["x"] = round(float(s["target"]) / float(s["start"]), 2)
+        if s.get("rule_from"):
+            rec["rule_from"] = s["rule_from"]
+        s.setdefault("rounds", []).append(rec)
         s["round_from"] = len(s["closed"])
 
     def round_check(self, sid: str, p: dict, when: str | None = None) -> str | None:
         """Only when flat: below the zero line or at the target, the round ends and restarts at the start."""
         s = self.s(sid)
+        target = target_of(p, s["start"])
+        s["target"] = target
         if s["open"]:
             return None
         cash = s["cash"]
-        if cash < s["start"] * p["zero_line"] or cash >= p["target"]:
-            hero = cash >= p["target"]
+        if cash < s["start"] * p["zero_line"] or cash >= target:
+            hero = cash >= target
             s["heroes" if hero else "zeros"] += 1
             self.d["topups"] = round(self.d["topups"] + s["start"] - cash, 2)  # a hero hands its winnings back
-            msg = (f"{sid} 第 {s['round']} 轮" + (f"到 ${p['target']:,.0f}，成功" if hero else f"低于 ${s['start'] * p['zero_line']:,.0f}，归零")
+            msg = (f"{sid} 第 {s['round']} 轮" + (f"到 ${target:,.0f}，成功" if hero else f"低于 ${s['start'] * p['zero_line']:,.0f}，归零")
                    + f"（${cash:,.2f}），从 ${s['start']:,.0f} 重开第 {s['round'] + 1} 轮")
             self.end_round(s, "hero" if hero else "zero", when)
             s["round"] += 1
@@ -181,6 +199,27 @@ class Book:
         return (f"{sid} 已停开新仓、空仓，第 {s['round']} 轮结束：剩 ${cash:,.2f}"
                 + ("，低于归零线" if cash < s["start"] * p["zero_line"] else f"，连一张 ${need:,.2f} 都买不起" if zero else "")
                 + ("，算归零" if zero else "，记为停止") + "；不从池子补钱重开")
+
+    def rule_change(self, sid: str, rule_from: str | None, when: str | None = None) -> str | None:
+        """Audit 10-26 #3: a rule changed under the same id (its spec's `rule_from` moved) starts a new round, so the
+        old rule's result is not scored as the new one's -- spy0dte's $2,191 was all made before 10-20. Once flat,
+        the round ends as "rule" (neither a hero nor a zero) and a new one starts at the start: its winnings go back
+        to the pool, or its shortfall comes from it. A ledger with no trades yet only takes the date."""
+        s = self.s(sid)
+        if not rule_from or s.get("rule_from") == rule_from or s["open"] or s.get("stopped"):
+            return None
+        if not s["closed"] and s["cash"] == s["start"]:
+            s["rule_from"] = rule_from
+            return None
+        cash = s["cash"]
+        self.end_round(s, "rule", when)
+        s["rule_from"] = rule_from
+        self.d["topups"] = round(self.d["topups"] + s["start"] - cash, 2)
+        s["round"] += 1
+        s["cash"] = s["start"]
+        s["best"] = s["start"]
+        return (f"{sid} 规则改了（{rule_from} 起）：第 {s['round'] - 1} 轮到此为止（${cash:,.2f}，不算成功也不算归零），"
+                f"从 ${s['start']:,.0f} 开第 {s['round']} 轮记新规则")
 
     def resume(self, sid: str, when: str | None = None) -> str | None:
         """A stopped sleeve whose rule comes back starts a new round at its start (from the pool)."""
@@ -346,11 +385,13 @@ class Runner:
         self.manage()
         day = self.today.isoformat()
         for spec in self.specs:
-            p = {**self.p, **{k: spec[k] for k in ("zero_line", "target") if k in spec}}
+            p = round_params(self.p, spec)
             if spec.get("stop_entries"):   # audit 10-26 #2: no restart for a stopped rule; its round ends once it is flat
+                self.book.s(spec["id"])["target"] = target_of(p, spec["start"])
                 msg = self.book.stop_round(spec["id"], p, day)
             else:
-                msg = self.book.resume(spec["id"], day) or self.book.round_check(spec["id"], p, day)
+                msg = (self.book.resume(spec["id"], day) or self.book.rule_change(spec["id"], spec.get("rule_from"), day)
+                       or self.book.round_check(spec["id"], p, day))
             if msg:
                 self.j.event("sleeve_round", dry_run=False, sleeve=spec["id"], why=msg)
         self.enter()
@@ -507,8 +548,9 @@ class Runner:
     def plan(self) -> None:
         self.plan_manage()
         for spec in self.specs:
-            msg = self.book.round_check(spec["id"], {**self.p, **{k: spec[k] for k in ("zero_line", "target") if k in spec}},
-                                        self.today.isoformat())
+            day = self.today.isoformat()
+            msg = (self.book.rule_change(spec["id"], spec.get("rule_from"), day)
+                   or self.book.round_check(spec["id"], round_params(self.p, spec), day))
             if msg:
                 self.j.event("sleeve_round", dry_run=True, sleeve=spec["id"], why=f"{msg}（演算）")
         for spec in self.specs:
