@@ -569,33 +569,11 @@
   },
   "opengap-1000": {
    "start": 1000.0,
-   "cash": 304.0,
+   "cash": 333.0,
    "round": 1,
    "heroes": 0,
    "zeros": 0,
-   "open": [
-    {
-     "tid": "20261026-ae5d0e",
-     "kind": "opengap",
-     "sym": "TSLA261026C00395000",
-     "asset": "option",
-     "und": "TSLA",
-     "qty": 1,
-     "cost": 1.76,
-     "paid": 176.0,
-     "opened": "2026-10-26 09:40",
-     "why": "TSLA 高开 +3.2%、开盘后继续涨，买看涨 395（2026-10-26 到期），一半 3 倍止盈、一半翻倍后回撤 40% 卖，最晚 15:30",
-     "best_bid": 2.92,
-     "sim": true,
-     "expiry": "2026-10-26",
-     "exit_day": "2026-10-26",
-     "exit_at": "15:30",
-     "trail": false,
-     "expiry_out": null,
-     "take_x": 3,
-     "take": 5.3
-    }
-   ],
+   "open": [],
    "closed": [
     {
      "tid": "20261022-1dd77d",
@@ -648,6 +626,33 @@
      "how": "2026-10-23 15:30 到时卖出",
      "closed": "2026-10-23 15:30",
      "ret": -0.989
+    },
+    {
+     "tid": "20261026-ae5d0e",
+     "kind": "opengap",
+     "sym": "TSLA261026C00395000",
+     "asset": "option",
+     "und": "TSLA",
+     "qty": 1,
+     "cost": 1.76,
+     "paid": 176.0,
+     "opened": "2026-10-26 09:40",
+     "why": "TSLA 高开 +3.2%、开盘后继续涨，买看涨 395（2026-10-26 到期），一半 3 倍止盈、一半翻倍后回撤 40% 卖，最晚 15:30",
+     "best_bid": 2.92,
+     "sim": true,
+     "expiry": "2026-10-26",
+     "exit_day": "2026-10-26",
+     "exit_at": "15:30",
+     "trail": false,
+     "expiry_out": null,
+     "take_x": 3,
+     "take": 5.3,
+     "state": "closed",
+     "exit_price": 0.29,
+     "proceeds": 29.0,
+     "how": "2026-10-26 15:30 到时卖出",
+     "closed": "2026-10-26 15:30",
+     "ret": -0.835
     }
    ],
    "slots": {
@@ -3205,33 +3210,11 @@
   },
   "dia0dte-plan-500": {
    "start": 500.0,
-   "cash": 35.0,
+   "cash": 250.0,
    "round": 1,
    "heroes": 0,
    "zeros": 0,
-   "open": [
-    {
-     "tid": "20261026-c5b0ff",
-     "kind": "zdte",
-     "sym": "DIA261030C00526000",
-     "asset": "option",
-     "und": "DIA",
-     "qty": 1,
-     "cost": 3.33,
-     "paid": 333.0,
-     "opened": "2026-10-26 10:00",
-     "why": "DIA 开盘 $523.93、现在 $524.08，顺势买最近到期（10-30，今天没有当天到期的）看涨 526（离现价 0.4%），3 倍止盈，15:30 平仓",
-     "best_bid": 3.76,
-     "sim": true,
-     "expiry": "2026-10-30",
-     "exit_day": "2026-10-26",
-     "exit_at": "15:30",
-     "trail": false,
-     "expiry_out": null,
-     "take_x": 3,
-     "take": 10.0
-    }
-   ],
+   "open": [],
    "closed": [
     {
      "tid": "20261023-605bcbr",
@@ -3284,6 +3267,33 @@
      "how": "2026-10-23 15:30 到时卖出",
      "closed": "2026-10-23 15:30",
      "ret": -0.982
+    },
+    {
+     "tid": "20261026-c5b0ff",
+     "kind": "zdte",
+     "sym": "DIA261030C00526000",
+     "asset": "option",
+     "und": "DIA",
+     "qty": 1,
+     "cost": 3.33,
+     "paid": 333.0,
+     "opened": "2026-10-26 10:00",
+     "why": "DIA 开盘 $523.93、现在 $524.08，顺势买最近到期（10-30，今天没有当天到期的）看涨 526（离现价 0.4%），3 倍止盈，15:30 平仓",
+     "best_bid": 3.76,
+     "sim": true,
+     "expiry": "2026-10-30",
+     "exit_day": "2026-10-26",
+     "exit_at": "15:30",
+     "trail": false,
+     "expiry_out": null,
+     "take_x": 3,
+     "take": 10.0,
+     "state": "closed",
+     "exit_price": 2.15,
+     "proceeds": 215.0,
+     "how": "2026-10-26 15:30 到时卖出",
+     "closed": "2026-10-26 15:30",
+     "ret": -0.354
     }
    ],
    "slots": {
@@ -3604,11 +3614,12 @@
   },
   "tsla0dte-5x-plan-500": {
    "start": 500.0,
-   "cash": 370.0,
+   "cash": 371.0,
    "round": 1,
    "heroes": 0,
    "zeros": 0,
-   "open": [
+   "open": [],
+   "closed": [
     {
      "tid": "20261026-5d1d1b",
      "kind": "zdte",
@@ -3628,10 +3639,15 @@
      "trail": false,
      "expiry_out": null,
      "take_x": 5,
-     "take": 6.5
+     "take": 6.5,
+     "state": "closed",
+     "exit_price": 0.01,
+     "proceeds": 1.0,
+     "how": "2026-10-26 15:30 到时卖出",
+     "closed": "2026-10-26 15:30",
+     "ret": -0.992
     }
    ],
-   "closed": [],
    "slots": {
     "2026-10-26": "2026-10-26T10:00-04:00"
    },
@@ -3775,11 +3791,12 @@
   },
   "tsla0dte-plan-500": {
    "start": 500.0,
-   "cash": 370.0,
+   "cash": 371.0,
    "round": 1,
    "heroes": 0,
    "zeros": 0,
-   "open": [
+   "open": [],
+   "closed": [
     {
      "tid": "20261026-1b25c2",
      "kind": "zdte",
@@ -3799,10 +3816,15 @@
      "trail": false,
      "expiry_out": null,
      "take_x": 3,
-     "take": 3.9
+     "take": 3.9,
+     "state": "closed",
+     "exit_price": 0.01,
+     "proceeds": 1.0,
+     "how": "2026-10-26 15:30 到时卖出",
+     "closed": "2026-10-26 15:30",
+     "ret": -0.992
     }
    ],
-   "closed": [],
    "slots": {
     "2026-10-26": "2026-10-26T10:00-04:00"
    },
