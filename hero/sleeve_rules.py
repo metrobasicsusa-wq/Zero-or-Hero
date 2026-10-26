@@ -18,6 +18,9 @@ from zoneinfo import ZoneInfo
 
 ET = ZoneInfo("America/New_York")
 ROOT = Path(__file__).resolve().parent.parent
+# Audit 10-26 #10: the rules the studies enter at 10:00 (ZeroDTE, VixSpike, PEAD, weekly, net) stop looking at 10:30;
+# they used to look until 15:00, so a late cycle could buy hours after the moment the study measured.
+CUTOFF = "10:30"
 FOCUS = ("NVDA", "AMD", "AVGO", "MU", "INTC", "QCOM", "TSM", "ARM", "MRVL", "AMAT", "LRCX", "KLAC", "ADI", "TXN", "ON",
          "NXPI", "MCHP", "ASML", "MPWR", "TER", "AAPL", "MSFT", "GOOGL", "AMZN", "META", "TSLA")
 
@@ -223,7 +226,7 @@ class ZeroDTE:
 
     def entries(self, run, spec, s):
         day = run.today.isoformat()
-        if day in s["slots"] or not (spec.get("entry", "10:00") <= run.hhmm < "15:00"):
+        if day in s["slots"] or not (spec.get("entry", "10:00") <= run.hhmm < spec.get("cutoff", CUTOFF)):
             return None
         und = spec["und"]
         why_day = ""
@@ -415,7 +418,7 @@ class Pead:
     def entries(self, run, spec, s):
         self.remember(run, spec, s)
         day = run.today.isoformat()
-        if day in s["slots"] or not (spec.get("entry", "10:00") <= run.hhmm < "15:00"):
+        if day in s["slots"] or not (spec.get("entry", "10:00") <= run.hhmm < spec.get("cutoff", CUTOFF)):
             return None
         react = business_day_before(run.today).isoformat()
         names = sorted(s["pead_watch"].get(react) or [])
@@ -467,7 +470,7 @@ class VixSpike(ZeroDTE):
 
     def entries(self, run, spec, s):
         day = run.today.isoformat()
-        if day in s["slots"] or not (spec.get("entry", "10:00") <= run.hhmm < "15:00"):
+        if day in s["slots"] or not (spec.get("entry", "10:00") <= run.hhmm < spec.get("cutoff", CUTOFF)):
             return None
         cl = closes(run, ["SPY", "VIXY"], 10)
         spy, vix = cl.get("SPY") or [], cl.get("VIXY") or []
@@ -489,7 +492,7 @@ class Weekly:
 
     def entries(self, run, spec, s):
         wk = week_key(run.today)
-        if wk in s["slots"] or run.today.weekday() > 1 or not ("10:00" <= run.hhmm < "15:00"):
+        if wk in s["slots"] or run.today.weekday() > 1 or not ("10:00" <= run.hhmm < spec.get("cutoff", CUTOFF)):
             return None
         names = self.names(run, spec)
         friday = run.today + timedelta(days=4 - run.today.weekday())
@@ -555,7 +558,7 @@ class Net:
     def entries(self, run, spec, s):
         from hero import research_net as rn
         wk = week_key(run.today)
-        if wk in s["slots"] or run.today.weekday() > 1 or not ("10:00" <= run.hhmm < "15:00"):
+        if wk in s["slots"] or run.today.weekday() > 1 or not ("10:00" <= run.hhmm < spec.get("cutoff", CUTOFF)):
             return None
 
         def signal():

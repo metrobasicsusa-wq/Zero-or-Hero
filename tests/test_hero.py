@@ -3774,6 +3774,44 @@ class Sleeves(unittest.TestCase):
         book, _ = self.cycle(SleeveBroker(lambda s: (0.08, 0.10)), 10, 0, [live])
         self.assertEqual((book.s("qqq0dte-500")["round"], book.d["topups"]), (1, 0.0))
 
+    def test_audit10_a_plan_share_ticket_sold_after_its_exit_day_is_repriced_at_its_exit_time(self):
+        # audit #10: peerc's 10-23 legs (SH, SOXS) were due at 10-23 15:50 but were booked at 10-26's open
+        from datetime import datetime
+        from hero import sleeve_rules, sleeves
+        spec = [{"id": "peerc-500", "kind": "peer", "start": 500, "fraction": 1.0, "plan_only": True, "producer": "nobody"}]
+        late = {"tid": "20261023-aaaaaa", "kind": "peer", "sym": "SH", "asset": "stock", "und": "SPY", "qty": 7.654623, "cost": 32.66,
+                "paid": 250.0, "opened": "2026-10-23 09:40", "why": "x", "best_bid": 0.0, "sim": True, "exit_at": "15:50",
+                "exit_day": "2026-10-23", "state": "closed", "exit_price": 32.53, "proceeds": 249.0, "how": "2026-10-23 15:50 到时卖出",
+                "closed": "2026-10-26 09:30", "ret": -0.004}
+        on_time = {**late, "tid": "20261026-bbbbbb", "sym": "SPY", "opened": "2026-10-26 09:40", "exit_day": "2026-10-26",
+                   "closed": "2026-10-26 15:50", "exit_price": 765.23, "proceeds": 249.03}
+        book = sleeves.Book(self.root / "plan.json", spec)
+        book.s("peerc-500").update(cash=500.0, closed=[late, on_time])
+        book.save()
+        b = SleeveBroker(lambda s: (0.08, 0.10))
+        asked = []
+
+        def stock_bars(syms, start, end, timeframe="1Min", feed="iex"):
+            asked.append((tuple(syms), start, end))
+            return {"SH": [{"t": "2026-10-23T19:48:00Z", "c": 32.70}, {"t": "2026-10-23T19:49:00Z", "c": 32.80},
+                           {"t": "2026-10-23T19:50:00Z", "c": 32.90}]}
+        b.stock_bars = stock_bars
+        run = lambda: sleeves.Runner(b, Journal(self.root), self.cfg, spec, sleeves.Book(self.root / "plan.json", spec),
+                                     sleeve_rules.RULES, datetime(2026, 10, 27, 9, 0), date(2026, 10, 27), sleep=lambda s: None)
+        r = run()
+        r.plan()
+        r.book.save()
+        s = r.book.s("peerc-500")
+        t = s["closed"][0]
+        self.assertEqual((t["exit_price"], t["proceeds"], t["repriced"]["was"]), (32.80, round(7.654623 * 32.80, 2), 32.53))   # the bar that ends at 15:50
+        self.assertIn("审计 10-26 重算", t["how"])
+        self.assertEqual(s["cash"], round(500.0 + 7.654623 * 32.80 - 249.0, 2))
+        self.assertEqual(s["closed"][1]["exit_price"], 765.23)                               # sold on its day: untouched
+        self.assertEqual(asked, [(("SH",), "2026-10-23T19:40:00Z", "2026-10-23T19:51:00Z")])
+        r2 = run()
+        r2.plan()
+        self.assertEqual((len(asked), r2.book.s("peerc-500")["cash"]), (1, s["cash"]))       # once only
+
 
 class EarningsShares(unittest.TestCase):
     """Owner, 10-19: earnings only in shares or 2x funds; no option held through a report."""
@@ -4451,6 +4489,23 @@ class SleeveRules(unittest.TestCase):
             slot, picks = sr.Sniper().entries(self.run_at(date(2026, 10, 13), 9, 40, b), {**spec, "swing_frac": 1.0}, {"slots": {}})
             self.assertIn("一整天", picks[0]["why"])                                   # the -1000 variant says what it does
             self.assertNotIn("的一半", picks[0]["why"])
+
+    def test_audit10_the_10_oclock_rules_stop_trying_at_half_past_ten(self):
+        # audit #10: ZeroDTE, VixSpike, PEAD, weekly and net looked from 10:00 until 15:00 -- a late cycle bought hours after the study's 10:00
+        from hero import sleeve_rules as sr
+        b = self.broker()
+        zd = {"und": "AAA", "offset": 0.006, "take": 3}
+        self.assertTrue(sr.ZeroDTE().entries(self.run_at(date(2026, 10, 13), 10, 20, b), zd, {"slots": {}})[1])
+        self.assertIsNone(sr.ZeroDTE().entries(self.run_at(date(2026, 10, 13), 10, 30, b), zd, {"slots": {}}))
+        self.assertTrue(sr.ZeroDTE().entries(self.run_at(date(2026, 10, 13), 14, 0, b), {**zd, "cutoff": "15:00"}, {"slots": {}})[1])
+        late = self.run_at(date(2026, 10, 12), 10, 40, b)                                 # a Monday, after 10:30
+        self.assertIsNone(sr.Weekly().entries(late, {"mode": "momentum"}, {"slots": {}}))
+        self.assertIsNone(sr.Net().entries(late, {}, {"slots": {}}))
+        self.assertIsNone(sr.VixSpike().entries(late, {}, {"slots": {}}))
+        with tempfile.TemporaryDirectory() as tmp:
+            cal = Path(tmp) / "earnings.json"
+            cal.write_text(json.dumps({"reports": {}}))
+            self.assertIsNone(sr.Pead().entries(late, {"earnings": str(cal)}, {"slots": {}, "open": [], "cash": 500.0}))
 
     def test_overnight_buys_the_biggest_strong_close_above_its_average_and_holds_three_sessions(self):
         from hero import sleeve_rules as sr
@@ -6265,6 +6320,15 @@ class LedgerAuditConfig(unittest.TestCase):
         self.assertTrue(all(s.get("fraction") == 1.0 for s in twins), [s["id"] for s in twins if s.get("fraction") != 1.0])
         for sid in ("overnight-plan-500", "overnight-plan-1000"):
             self.assertEqual(self.by[sid].get("max_spread"), 0.1, sid)                    # as the live overnight ledgers
+
+    def test_audit10_dipweek_names_say_their_strike_and_notes_carry_the_live_pool_numbers(self):
+        dip = {sid: s for sid, s in self.by.items() if s["kind"] == "dipweek"}
+        for sid, s in dip.items():
+            head = s["name"].split("【")[0]
+            self.assertIn("平值" if s["offset"] == 0.0 else "价外 3%", head, sid)
+            self.assertNotIn("价外 3%" if s["offset"] == 0.0 else "平值", head, sid)
+            self.assertIn("实盘 100 只池", s["note"], sid)                                 # not only the 28-name survivors' +19%
+            self.assertIn("research/2026-10-23-dip-week-broad.md", s["note"], sid)
 
     def test_audit9_bounce_takes_a_20_percent_spread(self):
         bounce = [s for s in self.by.values() if s["kind"] == "bounce"]

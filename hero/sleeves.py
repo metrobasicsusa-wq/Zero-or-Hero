@@ -606,6 +606,7 @@ class Runner:
             self.j.event("sleeve_round", dry_run=True, sleeve="sleeves_plan",
                          why=f"演算本里 {len(gone)} 个账本已不在名单（{'、'.join(gone[:6])}{'…' if len(gone) > 6 else ''}），"
                              "移到 retired 保存，不再管它们的持仓（审计 10-26 #8）")
+        self.reprice_late()
         self.plan_manage()
         for spec in self.specs:
             day = self.today.isoformat()
@@ -676,6 +677,44 @@ class Runner:
                     self.plan_open(spec, pk, qty, slot)
                     if shared is not None:
                         shared -= was - s["cash"]
+
+    def reprice_late(self) -> None:
+        """Audit 10-26 #10: a plan share ticket booked after its exit day was sold at a later price than its rule says --
+        peerc's 10-23 legs (SH, SOXS) had no exit day until 10-26 (fixed then) and were booked at 10-26's open. Such a
+        ticket, still in the current round, is repriced once at the close of the minute bar that ends at its exit time
+        (the minute bars stand in for the bid the plan would have seen), and the ledger's cash moves by the difference.
+        No bars yet: left for a later cycle."""
+        et = ZoneInfo("America/New_York")
+        for spec in self.specs:
+            s = self.book.s(spec["id"])
+            for t in s["closed"][s.get("round_from", 0):]:
+                if (t.get("asset") != "stock" or not t.get("sim") or t.get("repriced") or not t.get("exit_day")
+                        or str(t.get("closed", ""))[:10] <= t["exit_day"]):
+                    continue
+                d = date.fromisoformat(t["exit_day"])
+                hh, mm = (int(x) for x in str(t.get("exit_at") or "15:50").split(":"))
+                end = datetime(d.year, d.month, d.day, hh, mm, tzinfo=et).astimezone(timezone.utc)
+                fmt = "%Y-%m-%dT%H:%M:%SZ"
+                try:
+                    bars = (self.c.stock_bars([t["sym"]], (end - timedelta(minutes=10)).strftime(fmt),
+                                              (end + timedelta(minutes=1)).strftime(fmt), "1Min", "sip") or {}).get(t["sym"]) or []
+                except Exception as e:
+                    self.j.event("alert_error", source="sleeves:reprice", error=str(e)[:200])
+                    continue
+                before = [b for b in bars if b.get("t", "") < end.strftime(fmt) and b.get("c")]
+                if not before:
+                    continue
+                price = float(before[-1]["c"])
+                was, proceeds = float(t.get("exit_price") or 0), round(price * float(t["qty"]) * multiplier(t), 2)
+                s["cash"] = round(s["cash"] + proceeds - float(t.get("proceeds") or 0), 2)
+                t["repriced"] = {"was": was, "proceeds_was": t.get("proceeds"), "closed_was": t.get("closed")}
+                t.update(exit_price=price, proceeds=proceeds, ret=round(proceeds / t["paid"] - 1, 3) if t.get("paid") else 0.0,
+                         how=f"{t.get('how', '')}（审计 10-26 重算：原来按 {str(t['repriced']['closed_was'])[5:]} 的 ${was:.2f} 记，"
+                             f"改按 {t['exit_day'][5:]} {hh:02d}:{mm:02d} 的 ${price:.2f}）")
+                self.j.event("sleeve_plan_result", dry_run=True, sleeve=spec["id"], symbol=t["sym"], ret=t["ret"],
+                             why=f"{spec['id']}（演算）：{t['sym']} 重算——该在 {t['exit_day']} {hh:02d}:{mm:02d} 卖，之前按 "
+                                 f"{t['repriced']['closed_was']} 的 ${was:.2f} 记了；改按 ${price:.2f}，收回 ${proceeds:,.2f}，"
+                                 f"演算账本 ${s['cash']:,.2f}")
 
     def plan_open(self, spec: dict, pk: dict, qty, slot: str) -> None:
         """Book a plan pick as filled at the ask (the live limit is the ask + buy_pad; our fills land at or under it)."""
