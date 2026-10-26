@@ -855,6 +855,65 @@ class Streak:
         return (day, [])
 
 
+class Bounce:
+    """research/2026-10-26-bounce.md and the owner's 10-26 asks (「AVGO 今天就有很好的机会」, 「330 CALL 早上好便宜」, 「今天的」:
+    AVGO's same-day 330 call went $0.18 to $2.36 by noon on the first bounce after SMH's 6.7% Thursday). At 10:00, when
+    `sector` (SMH) fell `flush` (5%) or more over its prior one to three sessions and now sits `bounce` (1%) or more
+    above its own open, the one of `unds` (AVGO, NVDA, AMD, MU) furthest above its own open, at least `own` (1%), gets
+    the call `offset` (0.6%) out on the nearest expiry on or after today (the daily expiry when the name has one),
+    held to 15:50 with no take (the study's 2x take flattened the result: the profit is in the tail). Ten such days
+    since 2024-02, 40 calls across the four names: +49% per $1 at 5% costs (+35% at 10%), against -15% on bounce days
+    without a flush and -34% on any day; without the best three -4%, median -8%, 38% winners, 2024 -22% / 2025 -37% /
+    2026 +125%; the name that is itself up 1%+ at 10:00: 33 calls, +65%, without the best three +2%. A lottery with a
+    fat right tail (6 of 40 doubled, one 10x, four to zero), a few fires a year; `max_spread` as DipWeek."""
+
+    UNDS = ("AVGO", "NVDA", "AMD", "MU")
+
+    def entries(self, run, spec, s):
+        day = run.today.isoformat()
+        if day in s["slots"] or not (spec.get("entry", "10:00") <= run.hhmm < spec.get("until", "10:15")):
+            return None
+        sector = spec.get("sector", "SMH")
+        unds = [x for x in spec.get("unds", self.UNDS) if x not in {t.get("und") for t in s["open"]}]
+        cs = [c for c, _ in (history(run, [sector], days=15).get(sector) or [])]
+        if len(cs) < 4:
+            return None
+        drop = min(cs[-1] / cs[-1 - k] - 1 for k in (1, 2, 3))
+        snap = snaps(run, [sector] + unds)
+        sspot, sopen, _, _ = spot_open(snap.get(sector) or {})
+        if not sspot or not sopen:
+            return None
+        m10 = sspot / sopen - 1
+        if drop > -spec.get("flush", 0.05) or m10 < spec.get("bounce", 0.01):
+            return (day, [])   # an ordinary day
+        found = []
+        for und in unds:
+            spot, o, _, _ = spot_open(snap.get(und) or {})
+            if spot and o and spot / o - 1 >= spec.get("own", 0.01):
+                found.append((spot / o - 1, und, spot))
+        each = budget(run, spec, s, 1)
+        for u10, und, spot in sorted(found, reverse=True):
+            got = option_pick(run, und, "C", spot, spec.get("offset", 0.006), day, (run.today + timedelta(days=7)).isoformat())
+            if not got or got[1] * 100 > each:
+                continue
+            c, ask = got
+            bid, skip = too_wide(run, spec, c, ask)
+            if skip:
+                continue
+            spread = f"，买价 ${bid:.2f} / 卖价 ${ask:.2f}（价差占中间价 {(ask - bid) / ((ask + bid) / 2):.0%}）" if bid > 0 else ""
+            exp = c["expiration_date"]
+            k = float(c["strike_price"])
+            pk = {"sym": c["symbol"], "asset": "option", "und": und, "ask": ask, "expiry": exp, "trail": False,
+                  "exit_day": day, "exit_at": "15:50", "expiry_out": "15:50"}
+            if spec.get("take"):
+                pk["take"], pk["half"] = spec["take"], False
+            pk["why"] = (f"板块反弹日：{sector} 前 1–3 天跌 {drop:.1%}，10:00 离开盘 {m10:+.1%}；{und} 离开盘 {u10:+.1%}，"
+                         f"买{'当天到期' if exp == day else '最近到期（' + exp[5:] + '）'}看涨 {k:g}（离现价 {k / spot - 1:+.1%}）{spread}；"
+                         f"{('%g 倍止盈，否则 ' % spec['take']) if spec.get('take') else ''}15:50 卖")
+            return (day, [pk])
+        return (day, [])
+
+
 class OpenGap:
     """research/2026-10-13-open-catalyst.md, the one group worth watching: a 2%+ gap that the first minutes keep going
     the same way; the largest such gap, at the first cycle from 09:35, an option 0.6% beyond the price in the gap's
@@ -1345,4 +1404,4 @@ RULES = {"zdte": ZeroDTE(), "weekly": Weekly(), "net": Net(), "gap": Gap(), "flu
          "letf": LETF(), "relay": Relay(), "opengap": OpenGap(), "sniper": Sniper(), "oneshot": OneShot(),
          "overnight": Overnight(), "pead": Pead(), "vixspike": VixSpike(), "breakgap": BreakGap(),
          "hikerally": HikeRally(), "dipweek": DipWeek(), "fadelotto": FadeLotto(), "peer": Peer(), "pullback": Pullback(),
-         "bottom": Streak()}
+         "bottom": Streak(), "bounce": Bounce()}

@@ -3892,6 +3892,38 @@ class SleeveRules(unittest.TestCase):
         b.bars["SPY"] = [{"t": f"2026-09-{d:02d}T04:00:00Z", "c": 100.0 + (0.1 if d % 2 else 0.0)} for d in range(1, 29)]   # ~1% vol
         self.assertEqual(sr.Streak().entries(r(15, 50), {"min_vol": 0.103}, fresh()), ("2026-10-16", []))   # calm: sits out, like dip-week
 
+    def test_bounce_buys_the_leader_of_a_sector_bounce_after_a_flush(self):
+        # owner, 10-26 (「AVGO 今天就有很好的机会」「330 CALL 早上好便宜」「今天的」): research/2026-10-26-bounce.md
+        from hero import sleeve_rules as sr
+        b = self.broker()
+        b.bars["SMH"] = [{"t": f"2026-09-{d:02d}T04:00:00Z", "c": 100.0 if d < 14 else 94.0, "h": 100.0} for d in range(1, 15)]   # -6% on the last completed day
+        b.snaps["SMH"] = {"dailyBar": {"o": 94.5, "l": 94.0}, "latestTrade": {"p": 96.0}, "prevDailyBar": {"c": 94.0}}     # +1.6% off the open
+        b.snaps["AVGO"] = {"dailyBar": {"o": 98.0, "l": 97.5}, "latestTrade": {"p": 100.0}, "prevDailyBar": {"c": 98.0}}   # +2.0%: the leader
+        b.snaps["NVDA"] = {"dailyBar": {"o": 100.0, "l": 99.5}, "latestTrade": {"p": 101.0}, "prevDailyBar": {"c": 100.0}} # +1.0%
+        b.snaps["AMD"] = {"dailyBar": {"o": 100.0, "l": 99.5}, "latestTrade": {"p": 100.5}, "prevDailyBar": {"c": 100.0}}  # +0.5%: under `own`
+        r = lambda hh, mm: self.run_at(date(2026, 10, 16), hh, mm, b)
+        fresh = lambda: {"slots": {}, "cash": 500.0, "open": []}
+        self.assertIsNone(sr.Bounce().entries(r(9, 50), {}, fresh()))                              # 10:00 to 10:15 only
+        self.assertIsNone(sr.Bounce().entries(r(10, 20), {}, fresh()))
+        slot, picks = sr.Bounce().entries(r(10, 0), {}, fresh())
+        self.assertEqual((slot, [p["und"] for p in picks]), ("2026-10-16", ["AVGO"]))
+        self.assertTrue(picks[0]["sym"].startswith("AVGO") and "C" in picks[0]["sym"] and not picks[0]["trail"])
+        self.assertEqual((picks[0]["exit_day"], picks[0]["exit_at"], picks[0]["expiry_out"]), ("2026-10-16", "15:50", "15:50"))
+        self.assertNotIn("take", picks[0])
+        self.assertIn("SMH 前 1–3 天跌 -6.0%，10:00 离开盘 +1.6%；AVGO 离开盘 +2.0%", picks[0]["why"])
+        self.assertIn("15:50 卖", picks[0]["why"])
+        took = sr.Bounce().entries(r(10, 0), {"take": 3}, fresh())[1][0]
+        self.assertEqual((took["take"], took["half"]), (3, False))
+        self.assertIn("3 倍止盈，否则 15:50 卖", took["why"])
+        held = sr.Bounce().entries(r(10, 0), {}, {"slots": {}, "cash": 500.0, "open": [{"und": "AVGO"}]})
+        self.assertEqual([p["und"] for p in held[1]], ["NVDA"])                                   # AVGO held: the next leader
+        self.assertEqual(sr.Bounce().entries(r(10, 0), {"bounce": 0.02}, fresh()), ("2026-10-16", []))   # SMH only +1.6%
+        b.snaps["SMH"]["latestTrade"]["p"] = 94.8                                                    # +0.3%: no bounce
+        self.assertEqual(sr.Bounce().entries(r(10, 0), {}, fresh()), ("2026-10-16", []))
+        b.snaps["SMH"]["latestTrade"]["p"] = 96.0
+        b.bars["SMH"] = [{"t": f"2026-09-{d:02d}T04:00:00Z", "c": 100.0, "h": 100.0} for d in range(1, 15)]             # no flush
+        self.assertEqual(sr.Bounce().entries(r(10, 0), {}, fresh()), ("2026-10-16", []))
+
     def test_hikerally_records_a_month_out_put_after_a_fast_run_only_while_hiking(self):
         from hero import sleeve_rules as sr
         b = self.broker()
