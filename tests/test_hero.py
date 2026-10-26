@@ -6009,3 +6009,37 @@ class ResearchBottomLong(unittest.TestCase):
         self.assertIn("$2,000 起步、到 $10,000（5 倍）", md)
         self.assertTrue(any(v["full"]["heroes"] >= 1 for v in out.values()))         # +400% trades all in reach 5x at once
 
+
+class ResearchBottomDeep(unittest.TestCase):
+    # owner, 10-26 (「你回测吧 这需要更多的回测 因为不知道真正的底 所以时间要久一点」)
+    def test_events_tag_streaks_depth_and_the_ladder(self):
+        from hero import research_bottom_deep as bd
+        n = 320
+        closes = [100.0 + (0.2 if i % 2 else 0.0) for i in range(n)]
+        for k, c in enumerate((99.0, 98.0, 97.0, 96.0, 95.0, 94.0)):          # six straight down closes at 270-275
+            closes[270 + k] = c
+        for i, c in zip(range(276, 280), (93.5, 93.0, 92.5, 92.0)):          # the slide goes on to 92
+            closes[i] = c
+        closes[280] = 93.0                                                    # the first up close after the slide
+        for i in range(281, n):
+            closes[i] = 100.0
+        lev = [c * 3 - 200.0 for c in closes]                                 # a crude 3x: 100 -> 100, 94 -> 82 (-18%)
+        days = [f"d{i:03d}" for i in range(n)]
+        got = {e["day"]: e for e in bd.events(days, closes, lev)}
+        self.assertIn("day3", got["d272"]["tags"]); self.assertIn("day4", got["d273"]["tags"]); self.assertIn("day5", got["d274"]["tags"])
+        self.assertIn("day6p", got["d275"]["tags"])
+        self.assertNotIn("day3deep", got["d272"]["tags"])                     # only 3% under the 20-session high
+        self.assertIn("green1", got["d280"]["tags"])
+        e = got["d272"]
+        self.assertAlmostEqual(e["mae20"], 92.0 / 97.0 - 1, places=4)          # the slide went on to 92
+        self.assertEqual(e["days_to_low"], 7)
+        self.assertAlmostEqual(e["f20"], 100.0 / 97.0 - 1, places=4)
+        self.assertEqual(e["ladder_spent"], 1.0)                              # the ladder is on the 3x fund: 91 -> 82 -> 76, both levels came
+        self.assertGreater(e["ladder20"], e["l20"])                           # averaging down beat buying all at the signal
+        self.assertIn("every5", got["d260"]["tags"])
+        self.assertEqual(bd.ladder_option({"entry": 1.0, "path": [1.0] * 19 + [2.0]}, None, 2), round((2.0 * 0.95 / 1.05 - 1) / 2, 4))
+        self.assertIsNone(bd.ladder_option({"entry": 1.0, "path": [1.0] * 5}, None, 2))
+        r = bd.exits(1.0, [1.0] * 9 + [2.5] + [1.5] * 20, True, 0.0)
+        self.assertEqual((r["d10"], r["d20"], r["d30"]), (1.5, 0.5, 0.5))
+        self.assertAlmostEqual(r["trail2"], 0.5)                              # armed at 2.5, out at 1.5 (<= 60% of 2.5)
+
