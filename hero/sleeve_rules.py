@@ -808,7 +808,11 @@ class Streak:
     three +20%, median +6%, 53% winners, against -2% for buying every fifth day; by ETF SMH +55% (33, 70% winners),
     QQQ +43%, SPY +10%, IWM +2%. Hero game, one pick a day all in: 7/41 rounds to 20x (9-31%), about $2,900 a hero.
     Caveats from the same report: the last three months -38% (14 signals), the low-vol third only +7% (high-vol +56%),
-    the 3% out call loses (-4%), and buying the big down day itself or the fourth down day loses."""
+    the 3% out call loses (-4%), and buying the big down day itself or the fourth down day loses. `dte` (lo, hi) moves the
+    expiry window and `green` takes the first up close after three or more down closes instead (owner, 10-26
+    「抄底是可以选择呆久一点的 可以模拟用 2000 抄底 回测」, research/2026-10-26-bottom-long.md: SMH, the 20-45 day call held ten
+    sessions: third down day at the money +37% per $1 (every year positive, without the best three +16%), first green close
+    5% out +97% (+51%); the $2,000 ledger reaches $10,000 in 2 of 3 half-stake rounds)."""
 
     UNDS = ("SMH", "QQQ", "SPY", "IWM")
 
@@ -830,10 +834,15 @@ class Streak:
             if not spot or len(cs) < 4:
                 continue
             prev = prev or cs[-1]
-            if not (spot < prev and cs[-1] < cs[-2] < cs[-3] and cs[-3] >= cs[-4]):
+            if spec.get("green"):
+                # the first up close after three or more down closes (research/2026-10-26-bottom-long.md: 5% out, ten sessions)
+                if not (spot > prev and cs[-1] < cs[-2] < cs[-3] < cs[-4]):
+                    continue
+            elif not (spot < prev and cs[-1] < cs[-2] < cs[-3] and cs[-3] >= cs[-4]):
                 continue
-            got = option_pick(run, und, "C", spot, spec.get("offset", 0.0), (run.today + timedelta(days=5)).isoformat(),
-                              (run.today + timedelta(days=12)).isoformat())
+            lo, hi = spec.get("dte", (5, 12))
+            got = option_pick(run, und, "C", spot, spec.get("offset", 0.0), (run.today + timedelta(days=lo)).isoformat(),
+                              (run.today + timedelta(days=hi)).isoformat())
             if not got or got[1] * 100 > each:
                 continue
             c, ask = got
@@ -849,8 +858,9 @@ class Streak:
             if exit_ == "take2":
                 pk["take"] = 2
             sell = {"hold": "拿到", "take2": "2 倍止盈，否则"}.get(exit_, "翻倍后回撤 40% 卖，否则")
-            pk["why"] = (f"抄底三连跌：{und} 连跌第 3 天（{cs[-3]:.2f} → {cs[-2]:.2f} → {cs[-1]:.2f} → 现价 {spot:.2f}，三天 {spot / cs[-3] - 1:+.1%}）；"
-                         f"买看涨 {k:g}（{exp} 到期，离现价 {k / spot - 1:+.1%}）{spread}；{sell} {out[5:]} {at} 卖")
+            head = (f"抄底第一根阳线：{und} 连跌 3 天后今天收阳（{cs[-3]:.2f} → {cs[-2]:.2f} → {cs[-1]:.2f} → 现价 {spot:.2f}）" if spec.get("green")
+                    else f"抄底三连跌：{und} 连跌第 3 天（{cs[-3]:.2f} → {cs[-2]:.2f} → {cs[-1]:.2f} → 现价 {spot:.2f}，三天 {spot / cs[-3] - 1:+.1%}）")
+            pk["why"] = f"{head}；买看涨 {k:g}（{exp} 到期，离现价 {k / spot - 1:+.1%}）{spread}；{sell} {out[5:]} {at} 卖"
             return (day, [pk])
         return (day, [])
 

@@ -3892,6 +3892,37 @@ class SleeveRules(unittest.TestCase):
         b.bars["SPY"] = [{"t": f"2026-09-{d:02d}T04:00:00Z", "c": 100.0 + (0.1 if d % 2 else 0.0)} for d in range(1, 29)]   # ~1% vol
         self.assertEqual(sr.Streak().entries(r(15, 50), {"min_vol": 0.103}, fresh()), ("2026-10-16", []))   # calm: sits out, like dip-week
 
+    def test_bottom_long_window_and_the_first_green_close(self):
+        # owner, 10-26 (「抄底是可以选择呆久一点的 可以模拟用 2000 抄底 回测」): research/2026-10-26-bottom-long.md
+        from hero import sleeve_rules as sr
+        from hero import notify, feature_pages
+        b = self.broker()
+
+        def tape(*last):
+            cs = [100.0] * (40 - len(last)) + list(last)
+            return [{"t": f"2026-{8 + i // 28:02d}-{i % 28 + 1:02d}T04:00:00Z", "c": c, "h": c} for i, c in enumerate(cs)]
+        b.bars["SMH"] = tape(99.5, 100.0, 99.0, 98.0)                                             # today would be the third down day
+        b.snaps["SMH"] = {"dailyBar": {"o": 98.0, "l": 96.5}, "latestTrade": {"p": 97.0}, "prevDailyBar": {"c": 98.0}}
+        r = lambda hh, mm: self.run_at(date(2026, 10, 16), hh, mm, b)
+        fresh = lambda: {"slots": {}, "cash": 2000.0, "open": []}
+        spec = {"unds": ["SMH"], "dte": [20, 45], "hold": 10}
+        slot, picks = sr.Streak().entries(r(15, 50), spec, fresh())
+        self.assertEqual([p["und"] for p in picks], ["SMH"])
+        self.assertEqual((picks[0]["expiry"], picks[0]["exit_day"], picks[0]["exit_at"]), ("2026-11-30", "2026-10-30", "15:50"))   # 20-45 days out, ten sessions
+        self.assertIn("连跌第 3 天", picks[0]["why"])
+        green = {**spec, "green": True, "offset": 0.05}
+        self.assertEqual(sr.Streak().entries(r(15, 50), green, fresh()), ("2026-10-16", []))      # a down day is not the first green close
+        b.bars["SMH"] = tape(101.0, 100.0, 99.0, 98.0)                                            # three down closes behind
+        b.snaps["SMH"]["latestTrade"]["p"] = 99.0                                                 # up today: the first green close
+        slot, picks = sr.Streak().entries(r(15, 50), green, fresh())
+        self.assertEqual([p["und"] for p in picks], ["SMH"])
+        self.assertIn("连跌 3 天后今天收阳", picks[0]["why"])
+        self.assertTrue(picks[0]["sym"].endswith("C104"))                                         # 5% out of 99
+        self.assertEqual(sr.Streak().entries(r(15, 50), spec, fresh()), ("2026-10-16", []))       # and not a third down day
+        self.assertEqual(notify.direction("bottom-2000"), "bottom")
+        self.assertEqual(notify.direction("green-plan-2000"), "green")
+        self.assertEqual(feature_pages.SIZE.sub("", "green-2000"), "green")
+
     def test_bounce_buys_the_leader_of_a_sector_bounce_after_a_flush(self):
         # owner, 10-26 (「AVGO 今天就有很好的机会」「330 CALL 早上好便宜」「今天的」): research/2026-10-26-bounce.md
         from hero import sleeve_rules as sr

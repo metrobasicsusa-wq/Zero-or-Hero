@@ -25,13 +25,13 @@ from hero.notify import direction, readable
 
 ROOT = Path(__file__).resolve().parent.parent
 ET = ZoneInfo("America/New_York")
-SIZE = re.compile(r"-(500|1000)$")
+SIZE = re.compile(r"-(500|1000|2000)$")
 GROUPS = [
     ("末日单（当天到期期权）", ["spy0dte", "spy0dte-near", "qqq0dte", "tsla0dte", "tsla0dte-5x", "nvda0dte",
                           "iwm0dte", "dia0dte", "amd0dte", "amzn0dte", "meta0dte", "msft0dte",
                           "spydip", "oneshot", "vixspike"]),
     ("周内期权", ["wk-trend", "wk-momo", "wk-news", "net"]),
-    ("抄底和跳空", ["fadelotto", "gap", "flush", "opengap", "breakgap", "dipweek", "dipweek-hold", "dipweek-take", "pullback", "bottom", "bounce"]),
+    ("抄底和跳空", ["fadelotto", "gap", "flush", "opengap", "breakgap", "dipweek", "dipweek-hold", "dipweek-take", "pullback", "bottom", "green", "bounce"]),
     ("财报", ["earn", "pead", "relay"]),
     ("狙击和隔夜", ["sniper", "overnight"]),
     ("杠杆 ETF", ["tqqq", "hikerally"]),
@@ -44,7 +44,7 @@ TITLE = {"spy0dte": "SPY 末日单", "spy0dte-near": "SPY 末日单（离现价 
          "spydip": "SPY 昨跌后买涨", "oneshot": "一把到", "vixspike": "恐慌反弹", "wk-trend": "周内趋势",
          "wk-momo": "周内动量", "wk-news": "周内新闻", "net": "撒网", "gap": "低开反弹", "flush": "急跌再拉",
          "opengap": "开盘跳空延续", "breakgap": "突破大跳空", "dipweek": "抄底给一周", "dipweek-hold": "抄底给一周（拿满 5 天）",
-         "dipweek-take": "抄底给一周（2 倍止盈）", "pullback": "强势股回调", "bottom": "抄底三连跌", "bounce": "板块反弹日龙头", "earn": "财报正股 / 两倍",
+         "dipweek-take": "抄底给一周（2 倍止盈）", "pullback": "强势股回调", "bottom": "抄底三连跌", "green": "抄底第一根阳线", "bounce": "板块反弹日龙头", "earn": "财报正股 / 两倍",
          "pead": "财报后漂移", "relay": "接力", "sniper": "开盘狙击", "overnight": "隔夜动量", "tqqq": "TQQQ 均线",
          "hikerally": "加息期快涨", "fadelotto": "高开回落彩票", "peerc": "跟 claude-c 的方向"}
 EVENT_KINDS = {"lotto_alert": "提醒", "sleeve_skip": "跳过", "sleeve_plan": "演算", "sleeve_round": "换轮",
