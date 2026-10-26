@@ -4832,14 +4832,21 @@ class EarningsForecastAroundTheReport(unittest.TestCase):
         res = ef.score_row(row, daily, mins, rel)
         self.assertEqual((res["before"], res["gap"], res["gap_pre"], res["after_1h"]), (104.0, 0.03, -0.0096, 0.0385))
         self.assertFalse(res["up"])          # opened above Friday's close but below the price right before the report
-        self.assertIn("财报前最后成交 10-20 05:59", res["before_src"])
+        self.assertEqual((res["before_src"], res["before_time"], res["release_src"]),
+                         ("edgar", "2026-10-20T05:59-04:00", "edgar"))
+        # the press release's headline came earlier than the 8-K: it is the release (its 30 minutes reach back past 05:59)
+        res = ef.score_row(row, daily, mins, rel, press=dt(2026, 10, 20, 6, 0, tzinfo=et))
+        self.assertEqual((res["before"], res["before_src"], res["release"], res["release_src"]),
+                         (103.0, "press", "2026-10-20T06:00-04:00", "press"))
         # an after-close report lands after 16:00: the price to beat is the regular close
         post = {**row, "time": "post-market", "report_date": "2026-10-19"}
         res = ef.score_row(post, daily, mins, dt(2026, 10, 19, 16, 5, tzinfo=et))
-        self.assertEqual((res["before"], res["before_src"], res["gap_pre"]), (100.0, "前收", 0.03))
+        self.assertEqual((res["before"], res["before_src"], res["gap_pre"]), (100.0, "prev_close", 0.03))
         self.assertTrue(res["up"])
-        # no filing time found: the previous close
-        self.assertEqual(ef.score_row(row, daily, mins, None)["before"], 100.0)
+        # no filing time found: the previous close, and the row says so
+        res = ef.score_row(row, daily, mins, None)
+        self.assertEqual((res["before"], res["before_src"], res["before_time"], res["release"], res["release_src"]),
+                         (100.0, "prev_close", None, None, None))
         # owner, 10-22 (META +5% after hours, -6% at the open): an after-close report with no filing time still gets
         # its first reaction, read an hour after 16:05 on the report date
         mins2 = mins + [{"t": utc(17, 10, 19), "c": 105.0}, {"t": utc(19, 55, 19), "c": 102.0}]
@@ -4873,6 +4880,149 @@ class EarningsForecastAroundTheReport(unittest.TestCase):
             r = json.loads((root / "2026-10-19.json").read_text())["reports"][0]["result"]
         self.assertEqual(asked, [(["GE"], "2026-10-19T15:59:00-04:00", "2026-10-20T09:31:00-04:00", "sip")])
         self.assertEqual((r["before"], r["release"], r["up"]), (104.0, "2026-10-20T06:31-04:00", False))
+
+    def test_pre_market_price_comes_from_the_filing_or_the_headline_else_the_prior_close(self):
+        """Owner's audit, 10-26: 92 of 94 before-open reports in the week of 10-19 were scored against the previous
+        close. A found 8-K time (or the press release's headline) gives the pre-market trade 30 minutes before it;
+        nothing found leaves the previous close, labelled; a later run that finds the time replaces the fallback."""
+        from datetime import datetime as dt
+        from zoneinfo import ZoneInfo
+        from hero import research_earnings_forecast as ef
+        et = ZoneInfo("America/New_York")
+        asked_news = []
+
+        class Client:
+            def daily_bars(self, syms, start, **kw):
+                return {s: [{"t": "2026-10-19T04:00:00Z", "o": 99, "c": 100.0},
+                            {"t": "2026-10-20T04:00:00Z", "o": 103.0, "c": 97.0}] for s in syms}
+
+            def stock_bars(self, syms, start, end, **kw):   # 05:59 and 07:00 ET on the reaction day
+                return {s: [{"t": "2026-10-20T09:59:00Z", "c": 104.0}, {"t": "2026-10-20T11:00:00Z", "c": 102.0}] for s in syms}
+
+            def news_range(self, syms, start, end):
+                asked_news.append((syms, start, end))
+                yield {"headline": "GE Aerospace Reports Third Quarter 2026 Results", "created_at": "2026-10-20T10:35:00Z",
+                       "symbols": ["GE"]}                                                             # 06:35 ET, after the 8-K
+                yield {"headline": "Earnings Preview: What To Expect From Halliburton", "created_at": "2026-10-20T10:00:00Z",
+                       "symbols": ["HAL"]}                                                            # a preview is not the release
+                yield {"headline": "Infosys Reports Q2 Results, Raises FY Guidance", "created_at": "2026-10-20T11:31:00Z",
+                       "symbols": ["INFY", "WIT", "ACN"]}                                             # 07:31 ET; its own release
+                yield {"headline": "Infosys Q2 EPS Beats Estimate", "created_at": "2026-10-20T11:40:00Z",
+                       "symbols": ["ACN", "INFY", "WIT"]}                                             # tagged as a peer: ignored
+
+        rows = [{"symbol": s, "time": "pre-market", "report_date": "2026-10-20", "reaction_day": "2026-10-20", "implied_move": 0.05,
+                 "p_big": 0.4, "weekly": True} for s in ("GE", "HAL", "INFY")]
+        with tempfile.TemporaryDirectory() as d:
+            root = Path(d)
+            (root / "2026-10-19.json").write_text(json.dumps({"date": "2026-10-19", "reports": rows}))
+            shown = {"accepted": dt(2026, 10, 20, 10, 31, tzinfo=et), "accession": "0000040545-26-000063", "filed": "2026-10-20", "cik": 40545}
+            checked = []
+
+            def verify(cik, accession):   # the filing's own index page: 06:31, not the 10:31 the submissions API showed
+                checked.append((cik, accession))
+                return dt(2026, 10, 20, 6, 31, tzinfo=et)
+
+            got = ef.score_due(Client(), date(2026, 10, 21), root, sec=lambda syms, since: {"GE": [shown]}, verify=verify)
+            self.assertEqual(got, ["2026-10-19.json"])
+            self.assertEqual(checked, [(40545, "0000040545-26-000063")])
+            self.assertEqual(asked_news, [(["GE", "HAL", "INFY"], "2026-10-19T15:59:00-04:00", "2026-10-20T09:31:00-04:00")])
+            res = {r["symbol"]: r["result"] for r in json.loads((root / "2026-10-19.json").read_text())["reports"]}
+            # the 8-K at 06:31 wins over the 06:35 headline: the last trade before 06:01
+            self.assertEqual((res["GE"]["before"], res["GE"]["before_src"], res["GE"]["before_time"], res["GE"]["release_src"]),
+                             (104.0, "edgar", "2026-10-20T05:59-04:00", "edgar"))
+            # no 8-K, but its own headline at 07:31: the last trade before 07:01
+            self.assertEqual((res["INFY"]["before"], res["INFY"]["before_src"], res["INFY"]["release"], res["INFY"]["release_src"]),
+                             (102.0, "press", "2026-10-20T07:31-04:00", "press"))
+            # nothing found: the previous close, and the row says so
+            self.assertEqual((res["HAL"]["before"], res["HAL"]["before_src"], res["HAL"]["release"]), (100.0, "prev_close", None))
+            self.assertEqual((res["GE"]["gap_pre"], res["HAL"]["gap_pre"], res["GE"]["up"], res["HAL"]["up"]), (-0.0096, 0.03, False, True))
+            md = ef.scorecard(root)
+            self.assertIn("| 8-K 提交前 30 分钟的盘前成交 | 1 |", md)
+            self.assertIn("| 新闻稿标题前 30 分钟的盘前成交 | 1 |", md)
+            self.assertIn("| 前收（回落） | 1 |", md)
+            self.assertIn("| 2026-10-19 | HAL | 盘前 | 前收（没找到发布时间） |", md)
+            self.assertIn("| 2026-10-19 | GE | 盘前 | 8-K 前 05:59 |", md)
+            self.assertIn("| 2026-10-19 | INFY | 盘前 | 新闻稿前 07:00 |", md)
+            # the next day's run finds HAL's 8-K too: the fallback is replaced; a run that finds less changes nothing
+            # (GE's 06:35 headline does not replace its 06:31 filing, HAL keeps its filing when EDGAR is unreachable)
+            got = ef.score_due(Client(), date(2026, 10, 22), root,
+                               sec=lambda syms, since: {"GE": [dt(2026, 10, 20, 6, 31, tzinfo=et)], "HAL": [dt(2026, 10, 20, 6, 40, tzinfo=et)]})
+            self.assertEqual(got, ["2026-10-19.json"])
+            res = {r["symbol"]: r["result"] for r in json.loads((root / "2026-10-19.json").read_text())["reports"]}
+            self.assertEqual((res["HAL"]["before"], res["HAL"]["before_src"]), (104.0, "edgar"))
+            self.assertEqual((res["GE"]["before"], res["GE"]["before_src"]), (104.0, "edgar"))
+            self.assertEqual(ef.score_due(Client(), date(2026, 10, 22), root, sec=lambda syms, since: {}), [])
+            res = {r["symbol"]: r["result"] for r in json.loads((root / "2026-10-19.json").read_text())["reports"]}
+            self.assertEqual([res[s]["before_src"] for s in ("GE", "HAL", "INFY")], ["edgar", "edgar", "press"])
+            # past the re-scoring window the file is left alone
+            self.assertEqual(ef.score_due(Client(), date(2026, 11, 5), root, sec=lambda syms, since: {}), [])
+
+
+class EarningsReleaseTimes(unittest.TestCase):
+    def test_filings_with_accession_numbers_and_the_index_page_time(self):
+        from unittest import mock
+        from hero import research_earnings as rer
+        block = {"form": ["8-K", "4", "8-K"], "filingDate": ["2026-10-20", "2026-10-20", "2026-07-16"],
+                 "acceptanceDateTime": ["2026-10-20T10:30:57.000Z", "2026-10-20T22:10:00.000Z", "2026-07-16T10:32:37.000Z"],
+                 "accessionNumber": ["0000040545-26-000063", "0000040545-26-000060", "0000040545-26-000047"],
+                 "items": ["2.02,9.01", "", "2.02,9.01"]}
+        with mock.patch.object(rer, "_sec", lambda url: {"filings": {"recent": block, "files": []}}):
+            got = rer.filings_202(40545, "2026-07-01")
+            self.assertEqual([(x["accepted"].isoformat(timespec="minutes"), x["accession"], x["filed"], x["cik"]) for x in got],
+                             [("2026-07-16T06:32-04:00", "0000040545-26-000047", "2026-07-16", 40545),
+                              ("2026-10-20T06:30-04:00", "0000040545-26-000063", "2026-10-20", 40545)])
+            self.assertEqual([t.isoformat(timespec="minutes") for t in rer.releases(40545, "2026-10-01")], ["2026-10-20T06:30-04:00"])
+        asked = []
+
+        class Page:
+            text = ('<div class="infoHead">Filing Date</div>\n<div class="info">2026-10-20</div>\n'
+                    '<div class="infoHead">Accepted</div>\n<div class="info">2026-10-20 06:30:57</div>')
+
+            def raise_for_status(self):
+                pass
+
+        def get(url, headers=None, timeout=None):
+            asked.append(url)
+            return Page()
+
+        t = rer.accepted_at(40545, "0000040545-26-000063", get=get)
+        self.assertEqual(t.isoformat(timespec="seconds"), "2026-10-20T06:30:57-04:00")
+        self.assertEqual(asked, ["https://www.sec.gov/Archives/edgar/data/40545/000004054526000063/0000040545-26-000063-index.htm"])
+
+    def test_a_mislabelled_filing_time_is_checked_on_the_index_page(self):
+        """Owner's audit, 10-26: for three days the submissions API showed GE's 06:30 8-K as 10:30 (after the open, so
+        the before-open report fell back to the previous close) and after-close 8-Ks four hours late. Such a time is
+        checked on the filing's own index page before it is used or dropped; a plain list of times behaves as before."""
+        from datetime import datetime as dt
+        from zoneinfo import ZoneInfo
+        from hero import research_earnings_forecast as ef
+        et = ZoneInfo("America/New_York")
+        row = {"symbol": "GE", "time": "pre-market", "report_date": "2026-10-20", "reaction_day": "2026-10-20"}
+        shown = [{"accepted": dt(2026, 7, 16, 6, 32, tzinfo=et), "accession": "a-47", "filed": "2026-07-16", "cik": 40545},
+                 {"accepted": dt(2026, 10, 20, 10, 30, tzinfo=et), "accession": "a-63", "filed": "2026-10-20", "cik": 40545}]
+        asked = []
+
+        def verify(cik, accession):
+            asked.append((cik, accession))
+            return dt(2026, 10, 20, 6, 30, tzinfo=et)
+
+        self.assertIsNone(ef.release_time(row, shown))                                   # no check: after the open, so none
+        self.assertEqual(ef.release_time(row, shown, verify), dt(2026, 10, 20, 6, 30, tzinfo=et))
+        self.assertEqual(asked, [(40545, "a-63")])
+        # the index page confirms a late filing (the release itself came out earlier, by press release): still none
+        self.assertIsNone(ef.release_time(row, shown, lambda cik, acc: dt(2026, 10, 20, 10, 30, tzinfo=et)))
+        self.assertIsNone(ef.release_time(row, shown, lambda cik, acc: None))            # the page could not be read
+        # an after-close 8-K shown at 20:05 on its own filing date is checked too; one at 16:05 is not
+        post = {"symbol": "NFLX", "time": "post-market", "report_date": "2026-10-20", "reaction_day": "2026-10-21"}
+        late = [{"accepted": dt(2026, 10, 20, 20, 5, tzinfo=et), "accession": "n-1", "filed": "2026-10-20", "cik": 1065280}]
+        self.assertEqual(ef.release_time(post, late, lambda cik, acc: dt(2026, 10, 20, 16, 5, tzinfo=et)), dt(2026, 10, 20, 16, 5, tzinfo=et))
+        self.assertEqual(ef.release_time(post, late, lambda cik, acc: None), dt(2026, 10, 20, 20, 5, tzinfo=et))
+        calls = []
+        ok = [{"accepted": dt(2026, 10, 20, 16, 5, tzinfo=et), "accession": "n-1", "filed": "2026-10-20", "cik": 1065280}]
+        self.assertEqual(ef.release_time(post, ok, lambda cik, acc: calls.append(1)), dt(2026, 10, 20, 16, 5, tzinfo=et))
+        self.assertEqual(calls, [])
+        # a plain list of times (the older callers) is unchanged
+        self.assertEqual(ef.release_time(row, [dt(2026, 10, 20, 6, 31, tzinfo=et)], verify), dt(2026, 10, 20, 6, 31, tzinfo=et))
 
 
 class DiscordPost(unittest.TestCase):

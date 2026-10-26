@@ -17,6 +17,7 @@ adjusted). Record only. Run: python -m hero.research_earnings
 from __future__ import annotations
 
 import json
+import re
 import statistics
 import sys
 import time
@@ -59,25 +60,54 @@ def _sec(url: str) -> dict:
     return r.json()
 
 
-def _item_202(block: dict, since: str) -> list[datetime]:
+def _filings(block: dict, since: str, cik: int | None = None) -> list[dict]:
+    n = len(block["form"])
     out = []
-    for form, filed, accepted, items in zip(block["form"], block["filingDate"], block["acceptanceDateTime"],
-                                            block.get("items") or [""] * len(block["form"])):
+    for form, filed, accepted, acc, items in zip(block["form"], block["filingDate"], block["acceptanceDateTime"],
+                                                 block.get("accessionNumber") or [None] * n, block.get("items") or [""] * n):
         if form == "8-K" and "2.02" in (items or "") and filed >= since:
-            out.append(datetime.fromisoformat(accepted.replace("Z", "+00:00")).astimezone(ET))
+            out.append({"accepted": datetime.fromisoformat(accepted.replace("Z", "+00:00")).astimezone(ET),
+                        "accession": acc, "filed": filed, "cik": cik})
     return out
 
 
-def releases(cik: int, since: str) -> list[datetime]:
-    """Acceptance times (ET) of 8-K filings carrying item 2.02, following older filing pages
-    when the recent list does not reach back far enough (frequent filers such as banks)."""
+def _item_202(block: dict, since: str) -> list[datetime]:
+    return [x["accepted"] for x in _filings(block, since)]
+
+
+def filings_202(cik: int, since: str) -> list[dict]:
+    """8-K filings carrying item 2.02 since `since`, oldest first: {"accepted": acceptance time (ET), "accession",
+    "filed": filing date, "cik"}, following older filing pages when the recent list does not reach back far enough
+    (frequent filers such as banks)."""
     data = _sec(f"https://data.sec.gov/submissions/CIK{cik:010d}.json")
-    out = _item_202(data["filings"]["recent"], since)
+    out = _filings(data["filings"]["recent"], since, cik)
     for f in data["filings"].get("files", []):
         if f.get("filingTo", "9999") < since:
             continue
-        out += _item_202(_sec(f"https://data.sec.gov/submissions/{f['name']}"), since)
-    return sorted(set(out))
+        out += _filings(_sec(f"https://data.sec.gov/submissions/{f['name']}"), since, cik)
+    return sorted(out, key=lambda x: (x["accepted"], x["accession"] or ""))
+
+
+def releases(cik: int, since: str) -> list[datetime]:
+    """Acceptance times (ET) of 8-K filings carrying item 2.02 (see filings_202)."""
+    return sorted({x["accepted"] for x in filings_202(cik, since)})
+
+
+INDEX = "https://www.sec.gov/Archives/edgar/data/{cik}/{nodash}/{accession}-index.htm"
+ACCEPTED = re.compile(r"Accepted(?:\s*</?[^>]+>)*\s*(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2})")
+
+
+def accepted_at(cik: int, accession: str, get=None) -> datetime | None:
+    """The filing's acceptance time (ET) read off its own index page on www.sec.gov, the authoritative stamp. Owner's
+    audit, 10-26: on 10-02 and 10-21..23 the submissions API's acceptanceDateTime came through four hours late (GE's
+    06:30 8-K as 10:30, NFLX's 16:01 as 20:01), so the earnings forecast checks a time that looks mislabelled here
+    before using or dropping it. One request per check, under SEC's rate limit."""
+    url = INDEX.format(cik=int(cik), nodash=accession.replace("-", ""), accession=accession)
+    r = (get or requests.get)(url, headers=SEC_HEADERS, timeout=60)
+    r.raise_for_status()
+    time.sleep(0.15)
+    m = ACCEPTED.search(r.text)
+    return datetime.strptime(m.group(1), "%Y-%m-%d %H:%M:%S").replace(tzinfo=ET) if m else None
 
 
 def reaction_index(dates: list[str], accepted: datetime) -> int | None:
