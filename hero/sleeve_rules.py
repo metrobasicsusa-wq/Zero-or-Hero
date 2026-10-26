@@ -898,7 +898,8 @@ class Bounce:
     `sector` (SMH) fell `flush` (5%) or more over its prior one to three sessions and now sits `bounce` (1%) or more
     above its own open, the one of `unds` (AVGO, NVDA, AMD, MU) furthest above its own open, at least `own` (1%), gets
     the call `offset` (0.6%) out on the nearest expiry on or after today (the daily expiry when the name has one),
-    held to 15:50 with no take (the study's 2x take flattened the result: the profit is in the tail). Ten such days
+    held with no take (the study's 2x take flattened the result: the profit is in the tail) to 15:30 when it expires
+    that day, like every other rule (audit 10-26 #9; it was 15:50), else 15:50. Ten such days
     since 2024-02, 40 calls across the four names: +49% per $1 at 5% costs (+35% at 10%), against -15% on bounce days
     without a flush and -34% on any day; without the best three -4%, median -8%, 38% winners, 2024 -22% / 2025 -37% /
     2026 +125%; the name that is itself up 1%+ at 10:00: 33 calls, +65%, without the best three +2%. A lottery with a
@@ -940,13 +941,14 @@ class Bounce:
             spread = f"，买价 ${bid:.2f} / 卖价 ${ask:.2f}（价差占中间价 {(ask - bid) / ((ask + bid) / 2):.0%}）" if bid > 0 else ""
             exp = c["expiration_date"]
             k = float(c["strike_price"])
+            at = "15:30" if exp == day else "15:50"   # audit 10-26 #9: a contract on its expiry leaves at 15:30, as every other rule's
             pk = {"sym": c["symbol"], "asset": "option", "und": und, "ask": ask, "expiry": exp, "trail": False,
-                  "exit_day": day, "exit_at": "15:50", "expiry_out": "15:50"}
+                  "exit_day": day, "exit_at": at}
             if spec.get("take"):
                 pk["take"], pk["half"] = spec["take"], False
             pk["why"] = (f"板块反弹日：{sector} 前 1–3 天跌 {drop:.1%}，10:00 离开盘 {m10:+.1%}；{und} 离开盘 {u10:+.1%}，"
                          f"买{'当天到期' if exp == day else '最近到期（' + exp[5:] + '）'}看涨 {k:g}（离现价 {k / spot - 1:+.1%}）{spread}；"
-                         f"{('%g 倍止盈，否则 ' % spec['take']) if spec.get('take') else ''}15:50 卖")
+                         f"{('%g 倍止盈，否则 ' % spec['take']) if spec.get('take') else ''}{at} 卖")
             return (day, [pk])
         return (day, [])
 
