@@ -3626,6 +3626,29 @@ class Sleeves(unittest.TestCase):
         self.assertLess(md.index("目标 5 倍"), md.index("b-2000"))
         self.assertLess(md.index("a-500"), md.index("目标 5 倍"))
 
+    def no_same_day_broker(self):
+        """Only tomorrow's expiry is listed (DIA most days, QQQ before its dailies): honours the lte filter like Alpaca."""
+        b = SleeveBroker(lambda s: (0.08, 0.10))
+        b.option_contracts = lambda und, **kw: ([] if kw["expiration_date_lte"] < "2026-10-09" else
+                                                [{"symbol": f"{und}2026-10-09C{k}", "strike_price": str(k), "expiration_date": "2026-10-09",
+                                                  "type": "call"} for k in range(690, 716)])
+        return b
+
+    def test_audit4_zero_dte_does_not_fall_back_to_the_nearest_expiry_by_default(self):
+        # audit #4: 12 fallback buys (no same-day expiry -> the nearest) lost 40%, against the same-day study's verdict
+        b = self.no_same_day_broker()
+        book, log = self.cycle(b, 10, 0, self.specs[:1])
+        self.assertEqual(b.orders, {})
+        self.assertEqual(book.s("spy0dte-500")["slots"].get("2026-10-08") is not None, True)   # the day is tried once
+        self.assertIn("没有当天到期", [e for e in log if e["kind"] == "sleeve_skip"][-1]["why"])
+
+    def test_audit4_fallback_true_keeps_the_old_nearest_expiry(self):
+        b = self.no_same_day_broker()
+        book, log = self.cycle(b, 10, 0, [{**self.specs[0], "fallback": True}])
+        t = book.s("spy0dte-500")["open"][0]
+        self.assertEqual(t["expiry"], "2026-10-09")
+        self.assertIn("最近到期", t["why"])
+
 
 class EarningsShares(unittest.TestCase):
     """Owner, 10-19: earnings only in shares or 2x funds; no option held through a report."""
@@ -3887,7 +3910,7 @@ class SleeveRules(unittest.TestCase):
 
     def test_zdte_takes_the_nearest_expiry_when_there_is_none_today_and_still_sells_at_half_past_three(self):
         from hero import sleeve_rules as sr
-        spec = {"und": "NVDA", "offset": 0.006, "take": 3}
+        spec = {"und": "NVDA", "offset": 0.006, "take": 3, "fallback": True}             # audit 10-26 #4: only when the spec asks
         b = self.broker()
         listed = {"NVDA": ["2026-10-15", "2026-10-17"]}                                # Tuesday: no same-day NVDA expiry
 
@@ -3895,6 +3918,8 @@ class SleeveRules(unittest.TestCase):
             exps = [e for e in listed[und] if kw["expiration_date_gte"] <= e <= kw["expiration_date_lte"]]
             return [{"symbol": f"{und}{e}P{k}", "strike_price": str(k), "expiration_date": e, "type": "put"} for e in exps for k in range(90, 100)]
         b.option_contracts = contracts
+        self.assertEqual(sr.ZeroDTE().entries(self.run_at(date(2026, 10, 13), 10, 0, b), {**spec, "fallback": False}, {"slots": {}}),
+                         ("2026-10-13", []))                                            # the default sits the day out
         slot, picks = sr.ZeroDTE().entries(self.run_at(date(2026, 10, 13), 10, 0, b), spec, {"slots": {}})
         self.assertEqual(picks[0]["sym"], "NVDA2026-10-15P97")                         # 98 x 0.994 = 97.4 -> 97
         self.assertEqual((picks[0]["expiry"], picks[0]["exit_day"], picks[0]["exit_at"]), ("2026-10-15", "2026-10-13", "15:30"))

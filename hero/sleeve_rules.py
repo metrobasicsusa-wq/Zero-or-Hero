@@ -212,7 +212,8 @@ def trend20(xs: list[float]) -> int:
 
 # ---------- the rules ----------
 class ZeroDTE:
-    """10:00, the option expiring today (or, when the name has none today, its nearest expiry within a week), with the
+    """10:00, the option expiring today (with `fallback`, when the name has none today, its nearest expiry within a week;
+    without it, the day is sat out -- audit 10-26 #4), with the
     trend since the open, `offset` beyond the price, a `take` x limit, out at 15:30 the same day either way. With
     `half_take`, half the contracts carry the take and the rest run on a trail (research/2026-10-13-zdte-timing.md).
     Optional: `side` "call" / "put" fixes the side; `after_drop` (e.g. -0.01) trades only the day after a close
@@ -244,9 +245,17 @@ class ZeroDTE:
                             f"不到 {spec['min_move']:.1%}，今天不做")
             return (day, [])
         kind = {"call": "C", "put": "P"}.get(spec.get("side"), "C" if spot >= o else "P")
-        got = option_pick(run, und, kind, spot, spec["offset"], day, (run.today + timedelta(days=7)).isoformat())
+        # audit 10-26 #4: no same-day expiry -> no trade, unless the spec sets `fallback` (the nearest within a week).
+        # The 12 fallback buys lost 40%, against the same-day study's verdict (research/2026-10-13-zdte-nearest.md).
+        fallback = bool(spec.get("fallback"))
+        got = option_pick(run, und, kind, spot, spec["offset"], day,
+                          (run.today + timedelta(days=7)).isoformat() if fallback else day)
         if not got:
-            return (day, [])  # nothing listed within a week
+            if not fallback:
+                sid = spec.get("id", spec.get("kind", "zdte"))
+                run.j.event("sleeve_skip", dry_run=bool(spec.get("plan_only")), sleeve=sid, symbol=und,
+                            why=f"{sid}：{und} 今天没有当天到期的期权（或没有报价），不买最近到期的（审计 10-26 #4），今天不做")
+            return (day, [])  # nothing listed (within a week, with `fallback`)
         c, ask = got
         exp = c["expiration_date"]
         how = "买" if spec.get("side") else "顺势买"
