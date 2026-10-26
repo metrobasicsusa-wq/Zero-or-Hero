@@ -1,0 +1,174 @@
+{
+ "date": "2026-10-26",
+ "sniper": {
+  "symbol": "EWZ",
+  "direction": "put",
+  "overnight": true,
+  "confidence": 0.35,
+  "catalyst_type": "sector move",
+  "catalyst": "巴西大选第二轮卢拉逆转弗拉维奥·博索纳罗获胜（Benzinga：Brazilian Stocks Set For Record Single-Day Crash After Lula Upset），巴西 ETF 和 ADR 盘前崩盘：EWZ -27%、NU -26%、PBR -21%、ITUB -26%、XP -52%（IEX / Yahoo 盘前稀疏成交，开盘为准）。非财报、全新的消息；EWZ 跌破 20 日低 $35.97、跳空约平时波动 15 倍——回测里唯一两段都赚的组合（破 20 日低 + ≥3 倍跳空，拿到下一个交易日 15:50），所以拿过夜（10-30 到期）。风险：-27% 的跳空后第一小时常有反抽，规则只在 09:30–10:00 价格不逆向时进场"
+ },
+ "candidates": [
+  {
+   "rank": 1,
+   "symbol": "EWZ",
+   "direction": "put",
+   "confidence": 0.35,
+   "catalyst_type": "sector move",
+   "why": "巴西大选黑天鹅，整个指数被重估；破 20 日低、约 15 倍跳空；周度期权流动性最好；拿过夜。风险：巨幅跳空后的反抽、巴西央行 / 财政部干预喊话"
+  },
+  {
+   "rank": 2,
+   "symbol": "PBR",
+   "direction": "put",
+   "confidence": 0.3,
+   "catalyst_type": "sector move",
+   "why": "卢拉对巴西石油的燃油定价和分红政策是最直接的政策风险；盘前 -21%、破 20 日低 $20.20、约 11 倍；有周度期权。排第 2 是因为单股比指数更容易被油价反弹拉回"
+  },
+  {
+   "rank": 3,
+   "symbol": "NU",
+   "direction": "put",
+   "confidence": 0.3,
+   "catalyst_type": "sector move",
+   "why": "Nubank 盘前 -26%、破 20 日低 $12.13、约 8 倍，期权便宜流动性好；风险：成长股在恐慌跳空后反抽最猛，而且它的业务一半以上在巴西之外的叙事会被拿来抄底"
+  },
+  {
+   "rank": 4,
+   "symbol": "CRWV",
+   "direction": "put",
+   "confidence": 0.25,
+   "catalyst_type": "sector move",
+   "why": "分析师呼应马斯克的「新云债务」警告（GPU 做抵押不够），CRWV -4%、IREN / NBIS / APLD 同跌；破 20 日低 $53.50 但只有约 1 倍平时波动，而且是连续多日下跌的第 N 天（减分）；当天到期"
+  },
+  {
+   "rank": 5,
+   "symbol": "MU",
+   "direction": "call",
+   "confidence": 0.2,
+   "catalyst_type": "sector move",
+   "why": "存储股延续周五的反抽（MU +2.1%、SNDK +2.3%、WDC +2.4%，约 0.8 倍），没有新的实质消息，没破 20 日高；12-16 才财报"
+  }
+ ],
+ "skipped": [
+  {
+   "symbol": "TSLA",
+   "direction": "call",
+   "gap": 0.025,
+   "reason": "claude-b 已选",
+   "why_not": "巴克莱上调至增持（目标价 $370→$450）加拉脱维亚批准 FSD，claude-b 今天选它"
+  },
+  {
+   "symbol": "MELI",
+   "direction": "put",
+   "gap": -0.157,
+   "reason": "其他",
+   "why_not": "同一条巴西消息、约 10 倍、破 20 日低，但股价 $1,500 以上，一张期权就超过账本一半的钱"
+  },
+  {
+   "symbol": "ITUB",
+   "direction": "put",
+   "gap": -0.263,
+   "reason": "其他",
+   "why_not": "同一条消息，但 ADR 期权流动性差、价格 $7 的合约档位太粗，用 EWZ 代替"
+  },
+  {
+   "symbol": "STNE",
+   "direction": "put",
+   "gap": -0.387,
+   "reason": "跳空已吃掉",
+   "why_not": "-39% 的小盘金融科技，跳空远超平时 12 倍，继续跌和反抽都是赌"
+  },
+  {
+   "symbol": "XP",
+   "direction": "put",
+   "gap": -0.52,
+   "reason": "没有一周内期权",
+   "why_not": "-52%，只有月度期权"
+  },
+  {
+   "symbol": "VALE",
+   "direction": "put",
+   "gap": -0.037,
+   "reason": "消息太弱",
+   "why_not": "巴西消息的二线，但铁矿石定价全球化，只跌 3.7%、刚到 20 日低，方向不清"
+  },
+  {
+   "symbol": "VZ",
+   "direction": "put",
+   "gap": -0.005,
+   "reason": "财报临近",
+   "why_not": "今天盘前财报：净增五年最好、第三次上调，收入略低，盘前 -0.5%；财报反应日不狙击"
+  },
+  {
+   "symbol": "MRNA",
+   "direction": "put",
+   "gap": -0.073,
+   "reason": "消息太弱",
+   "why_not": "盘前 -7.3%、约 1.5 倍，扫描和搜索都没找到原因，不明消息不下单"
+  },
+  {
+   "symbol": "COHR",
+   "direction": "call",
+   "gap": 0.036,
+   "reason": "消息太弱",
+   "why_not": "光模块跟芯片反抽，没有新消息"
+  },
+  {
+   "symbol": "NOK",
+   "direction": "call",
+   "gap": 0.032,
+   "reason": "消息太弱",
+   "why_not": "和 L&T 的五年研发合同，分量不够；上周财报刚 -7%"
+  },
+  {
+   "symbol": "CLS",
+   "direction": "call",
+   "gap": 0.031,
+   "reason": "财报临近",
+   "why_not": "今晚盘后财报"
+  },
+  {
+   "symbol": "TER",
+   "direction": "call",
+   "gap": 0.027,
+   "reason": "财报临近",
+   "why_not": "明天盘前财报"
+  },
+  {
+   "symbol": "SBAC",
+   "direction": "put",
+   "gap": -0.025,
+   "reason": "消息太弱",
+   "why_not": "铁塔股回吐 SpaceX 涨幅，没有新消息"
+  },
+  {
+   "symbol": "BE",
+   "direction": "call",
+   "gap": 0.022,
+   "reason": "分析师评级",
+   "why_not": "巴克莱调整目标价"
+  },
+  {
+   "symbol": "VRT",
+   "direction": "call",
+   "gap": 0.021,
+   "reason": "消息太弱",
+   "why_not": "完成一笔小收购；周三盘前财报"
+  },
+  {
+   "symbol": "IREN",
+   "direction": "put",
+   "gap": -0.029,
+   "reason": "其他",
+   "why_not": "新云债务同一条消息，CRWV 更直接"
+  }
+ ],
+ "claude_b_pick": "TSLA call",
+ "notes": [
+  "今天的主消息是巴西大选黑天鹅，不是 AI；巴西 ETF / ADR 的盘前价来自稀疏成交，开盘可能差很多，规则会按 09:30 后的价格和方向判断。",
+  "周末判断（weekend.md）：高位回调、风险偏好在降；FOMC 周的周一，10:00 以前走不动的概率高。",
+  "VZ 超预期上调仍盘前跌：SpaceX 叙事压过财报，TMUS、AMT 本周同理。"
+ ],
+ "generated_at": "2026-10-26T09:06:27-04:00"
+}
