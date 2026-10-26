@@ -5745,6 +5745,39 @@ class WeekendStudies(unittest.TestCase):
         self.assertEqual(set(pb.groups(rows)), {"强势股回调 3–10% · 平值", "强势股回调 3–10% · 价外 3%", "　回调 3–6% · 平值", "　回调 6–10% · 平值",
                                                 "　前 20 天涨 20% 以上 · 平值", "　当天收阳 · 平值", "　当天收阴 · 平值"})
 
+    def test_bottom_signals_on_a_synthetic_tape(self):
+        # owner, 10-26 (「抄底 我需要个抄底时机 这也是一个 hero 方式」): the market-level dip signals, each once per five sessions
+        from hero import research_bottom as rb
+        n = 60
+        closes = [100.0 + (0.2 if i % 2 else 0.0) for i in range(n)]          # a flat, wiggly tape
+        opens = list(closes)
+        for k, c in enumerate((99.0, 98.0, 97.0, 96.0)):                        # four straight down closes at 40-43
+            closes[40 + k] = c
+        closes[44] = 97.5                                                       # the first up close
+        for i in range(45, n):
+            closes[i] = 97.5
+        closes[50] = 94.0                                                       # 3.6% in a day, 6.2% under the 20-session high: dd3 and dd5 cross, bigdown, drop2d
+        for i in range(51, n):
+            closes[i] = 94.0
+        opens = list(closes)
+        opens[52] = 92.5                                                        # opens 1.6% under, closes above the open: reclaim
+        days = [f"d{i:02d}" for i in range(n)]
+        vix = {d: 20.0 for d in days}
+        vix["d55"] = 26.0                                                       # 30% above its 10-session low
+        got = {(e["day"], e["sig"]) for e in rb.signals(days, opens, closes, "SPY", vix)}
+        for want in (("d42", "down3"), ("d43", "down4"), ("d44", "green1"), ("d50", "dd3"), ("d50", "dd5"), ("d50", "bigdown"),
+                     ("d50", "drop2d"), ("d52", "reclaim"), ("d55", "vix25"), ("d55", "vix30"), ("d25", "every5")):
+            self.assertIn(want, got)
+        self.assertNotIn(("d51", "bigdown"), got)                               # flat after the drop
+        self.assertNotIn(("d50", "dd8"), got)                                   # 6.2% under the high is not 8%
+        self.assertEqual([d for d, s in got if s == "down3"], ["d42"])          # once, not again on d43
+        rows = [{"day": "d1", "sig": "dd5", "und": "SPY", "leg": "atm", "res": {"d5": 0.5, "trail2": 0.4}, "res10": {"d5": 0.3, "trail2": 0.2}},
+                {"day": "d2", "sig": "dd5", "und": "QQQ", "leg": "atm", "res": {"d5": -0.5, "trail2": -0.5}, "res10": {"d5": -0.6, "trail2": -0.6}}]
+        self.assertEqual(rb.series(rows, "dd5", "atm", "d5"), [("d1", 0.5), ("d2", -0.5)])
+        self.assertEqual(rb.series(rows, "dd5", "atm", "d5", und="QQQ"), [("d2", -0.5)])
+        self.assertIn("跌到 20 日高点下 5% · 平值", rb.groups(rows))
+        self.assertIn("　跌到 20 日高点下 5% · SPY · 平值", rb.groups(rows))
+
     def test_dip_week_broad_pick_and_names(self):
         from hero import research_dip_week_broad as db
         rows = [{"day": "d1", "und": "AAA", "leg": "otm3", "gap": -0.03, "res": {"d5": 0.3}, "res10": {"d5": 0.1}},
