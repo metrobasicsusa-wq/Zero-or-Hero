@@ -31,9 +31,13 @@ HOLDS = (1, 5, 10, 20)
 def parse(path: Path) -> list[dict]:
     """(day, symbol, entry price, the sheet's own max-TP return, TPs reached) from the workbook's main sheet."""
     import openpyxl
-    ws = openpyxl.load_workbook(path, read_only=True, data_only=True)["Sheet1"]
+    wb = openpyxl.load_workbook(path, read_only=True, data_only=True)
+    try:
+        rows = list(wb["Sheet1"].iter_rows(values_only=True))
+    finally:
+        wb.close()  # read-only mode holds the file open until closed; Windows can't delete an open file
     out = []
-    for r in ws.iter_rows(values_only=True):
+    for r in rows:
         d, sym, entry, tp, ntp = (tuple(r) + (None,) * 5)[:5]
         if not isinstance(d, datetime) or not sym or not isinstance(entry, (int, float)):
             continue
