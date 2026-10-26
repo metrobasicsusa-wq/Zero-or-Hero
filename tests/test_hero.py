@@ -3853,6 +3853,45 @@ class SleeveRules(unittest.TestCase):
         self.assertEqual(sr.Pullback().entries(r(15, 50), {"min_vol": 0.103}, fresh()), ("2026-10-16", []))   # calm: sits out, like dip-week
         self.assertEqual(sr.Pullback().entries(r(15, 50), {"max_spread": 0.10}, fresh()), ("2026-10-16", []))   # 0.40 / 0.50 is 22% wide
 
+    def test_bottom_buys_the_first_index_etf_on_its_third_straight_down_close(self):
+        # owner, 10-26 (「抄底 我需要个抄底时机 这也是一个 hero 方式」): research/2026-10-26-bottom.md, the one signal that beat the control
+        from hero import sleeve_rules as sr
+        b = self.broker()
+
+        def tape(*last):
+            # 40 completed bars: flat at 100, then the given closes (oldest first)
+            cs = [100.0] * (40 - len(last)) + list(last)
+            return [{"t": f"2026-{8 + i // 28:02d}-{i % 28 + 1:02d}T04:00:00Z", "c": c, "h": c} for i, c in enumerate(cs)]
+        b.bars["SMH"] = tape(99.5, 100.0, 99.0, 98.0)                                             # up, down, down: today would be the third
+        b.bars["QQQ"] = tape(101.0, 100.0, 99.0, 98.0)                                            # down, down, down: today would be the fourth
+        b.bars["SPY"] = tape(100.0, 100.0, 99.0, 98.0)                                            # flat, down, down: the third
+        b.bars["IWM"] = tape(100.0, 99.0, 98.0, 97.0)                                             # fourth
+        b.snaps["SMH"] = {"dailyBar": {"o": 98.0, "l": 96.5}, "latestTrade": {"p": 97.0}, "prevDailyBar": {"c": 98.0}}   # under yesterday
+        b.snaps["QQQ"] = {"dailyBar": {"o": 98.0, "l": 96.5}, "latestTrade": {"p": 97.0}, "prevDailyBar": {"c": 98.0}}
+        b.snaps["SPY"] = {"dailyBar": {"o": 98.0, "l": 96.5}, "latestTrade": {"p": 97.0}, "prevDailyBar": {"c": 98.0}}
+        b.snaps["IWM"] = {"dailyBar": {"o": 98.0, "l": 96.5}, "latestTrade": {"p": 96.0}, "prevDailyBar": {"c": 97.0}}
+        r = lambda hh, mm: self.run_at(date(2026, 10, 16), hh, mm, b)
+        fresh = lambda: {"slots": {}, "cash": 500.0, "open": []}
+        self.assertIsNone(sr.Streak().entries(r(10, 0), {}, fresh()))                             # 15:45 to 15:58 only
+        slot, picks = sr.Streak().entries(r(15, 50), {}, fresh())
+        self.assertEqual((slot, [p["und"] for p in picks]), ("2026-10-16", ["SMH"]))             # SMH before SPY; QQQ and IWM are on day four
+        self.assertTrue(picks[0]["sym"].endswith("C97") and picks[0]["trail"])                    # at the money, trailing exit
+        self.assertEqual((picks[0]["expiry"], picks[0]["exit_day"], picks[0]["exit_at"]), ("2026-10-28", "2026-10-23", "15:50"))
+        self.assertIn("SMH 连跌第 3 天（100.00 → 99.00 → 98.00 → 现价 97.00，三天 -3.0%）", picks[0]["why"])
+        self.assertIn("买价 $0.40 / 卖价 $0.50", picks[0]["why"])
+        held = sr.Streak().entries(r(15, 50), {}, {"slots": {}, "cash": 500.0, "open": [{"und": "SMH"}]})
+        self.assertEqual([p["und"] for p in held[1]], ["SPY"])                                    # SMH held: the next in line
+        self.assertEqual(sr.Streak().entries(r(15, 50), {"unds": ["QQQ", "IWM"]}, fresh()), ("2026-10-16", []))   # day four is not bought
+        hold = sr.Streak().entries(r(15, 50), {"exit": "hold"}, fresh())[1][0]
+        self.assertFalse(hold["trail"])
+        self.assertIn("拿到 10-23 15:50 卖", hold["why"])
+        b.snaps["SMH"]["latestTrade"]["p"] = 98.5                                                 # SMH up on the day: SPY instead
+        self.assertEqual([p["und"] for p in sr.Streak().entries(r(15, 50), {}, fresh())[1]], ["SPY"])
+        b.snaps["SMH"]["latestTrade"]["p"] = 97.0
+        self.assertEqual(sr.Streak().entries(r(15, 50), {"max_spread": 0.10}, fresh()), ("2026-10-16", []))   # 0.40 / 0.50 is 22% wide
+        b.bars["SPY"] = [{"t": f"2026-09-{d:02d}T04:00:00Z", "c": 100.0 + (0.1 if d % 2 else 0.0)} for d in range(1, 29)]   # ~1% vol
+        self.assertEqual(sr.Streak().entries(r(15, 50), {"min_vol": 0.103}, fresh()), ("2026-10-16", []))   # calm: sits out, like dip-week
+
     def test_hikerally_records_a_month_out_put_after_a_fast_run_only_while_hiking(self):
         from hero import sleeve_rules as sr
         b = self.broker()

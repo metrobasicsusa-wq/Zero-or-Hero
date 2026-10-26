@@ -797,6 +797,64 @@ class Pullback:
         return (day, [])
 
 
+class Streak:
+    """research/2026-10-26-bottom.md and the owner's 10-26 ask (「抄底 我需要个抄底时机 这也是一个 hero 方式」): the third
+    straight down close on an index ETF, the one bottom signal that beat buying on any day. At 15:50, the first of `unds`
+    (SMH, QQQ, SPY, IWM in that order) not already held whose last two completed closes each fell under the one before,
+    whose close before those was not itself a down day (the fourth down day lost in the study) and whose price now sits
+    under yesterday's close gets the call `offset` (at the money) out on the nearest expiry 5 to 12 days away (the
+    study's leg); exits, `max_spread` and `min_vol` as DipWeek. 127 signals on the four ETFs since 2024-02, sold on the
+    fifth close at 5% costs: +28% per $1 (+15% at 10%), every year positive (+39% / +28% / +14%), without the best
+    three +20%, median +6%, 53% winners, against -2% for buying every fifth day; by ETF SMH +55% (33, 70% winners),
+    QQQ +43%, SPY +10%, IWM +2%. Hero game, one pick a day all in: 7/41 rounds to 20x (9-31%), about $2,900 a hero.
+    Caveats from the same report: the last three months -38% (14 signals), the low-vol third only +7% (high-vol +56%),
+    the 3% out call loses (-4%), and buying the big down day itself or the fourth down day loses."""
+
+    UNDS = ("SMH", "QQQ", "SPY", "IWM")
+
+    def entries(self, run, spec, s):
+        day = run.today.isoformat()
+        if day in s["slots"] or not (spec.get("entry", "15:45") <= run.hhmm < "15:58"):
+            return None
+        if calm(run, spec, s):
+            return (day, [])
+        held = {t.get("und") for t in s["open"]}
+        unds = [x for x in spec.get("unds", self.UNDS) if x not in held]
+        hist = history(run, unds, days=40)
+        snap = snaps(run, unds)
+        each = budget(run, spec, s, 1)
+        exit_ = spec.get("exit", "trail")
+        for und in unds:
+            cs = [c for c, _ in hist.get(und) or []]
+            spot, _, _, prev = spot_open(snap.get(und) or {})
+            if not spot or len(cs) < 4:
+                continue
+            prev = prev or cs[-1]
+            if not (spot < prev and cs[-1] < cs[-2] < cs[-3] and cs[-3] >= cs[-4]):
+                continue
+            got = option_pick(run, und, "C", spot, spec.get("offset", 0.0), (run.today + timedelta(days=5)).isoformat(),
+                              (run.today + timedelta(days=12)).isoformat())
+            if not got or got[1] * 100 > each:
+                continue
+            c, ask = got
+            bid, skip = too_wide(run, spec, c, ask)
+            if skip:
+                continue
+            spread = f"，买价 ${bid:.2f} / 卖价 ${ask:.2f}（价差占中间价 {(ask - bid) / ((ask + bid) / 2):.0%}）" if bid > 0 else ""
+            exp = c["expiration_date"]
+            out, at = held_out(run, exp, spec.get("hold", 5))
+            k = float(c["strike_price"])
+            pk = {"sym": c["symbol"], "asset": "option", "und": und, "ask": ask, "trail": exit_ == "trail", "expiry": exp,
+                  "exit_day": out, "exit_at": at}
+            if exit_ == "take2":
+                pk["take"] = 2
+            sell = {"hold": "拿到", "take2": "2 倍止盈，否则"}.get(exit_, "翻倍后回撤 40% 卖，否则")
+            pk["why"] = (f"抄底三连跌：{und} 连跌第 3 天（{cs[-3]:.2f} → {cs[-2]:.2f} → {cs[-1]:.2f} → 现价 {spot:.2f}，三天 {spot / cs[-3] - 1:+.1%}）；"
+                         f"买看涨 {k:g}（{exp} 到期，离现价 {k / spot - 1:+.1%}）{spread}；{sell} {out[5:]} {at} 卖")
+            return (day, [pk])
+        return (day, [])
+
+
 class OpenGap:
     """research/2026-10-13-open-catalyst.md, the one group worth watching: a 2%+ gap that the first minutes keep going
     the same way; the largest such gap, at the first cycle from 09:35, an option 0.6% beyond the price in the gap's
@@ -1272,4 +1330,5 @@ class Peer:
 RULES = {"zdte": ZeroDTE(), "weekly": Weekly(), "net": Net(), "gap": Gap(), "flush": Flush(), "earnings": EarningsLotto(),
          "letf": LETF(), "relay": Relay(), "opengap": OpenGap(), "sniper": Sniper(), "oneshot": OneShot(),
          "overnight": Overnight(), "pead": Pead(), "vixspike": VixSpike(), "breakgap": BreakGap(),
-         "hikerally": HikeRally(), "dipweek": DipWeek(), "fadelotto": FadeLotto(), "peer": Peer(), "pullback": Pullback()}
+         "hikerally": HikeRally(), "dipweek": DipWeek(), "fadelotto": FadeLotto(), "peer": Peer(), "pullback": Pullback(),
+         "bottom": Streak()}

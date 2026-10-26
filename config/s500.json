@@ -436,6 +436,18 @@
       {"id": "pullback-plan-1000", "kind": "pullback", "start": 1000, "name": "强势股回调（只演算，挂波动门槛）：同 pullback-1000，价外 3%", "mom": 0.2, "offset": 0.03, "hold": 5, "fraction": 0.5, "max_spread": 0.1, "plan_only": true, "min_vol": 0.103,
        "note": "10-23 晚：和实盘的区别只是多了 min_vol 10.3%（波动期研究说这条引擎低波动期也正，所以实盘不挂、演算挂着对照）"
       },
+      {"id": "bottom-500", "kind": "bottom", "start": 500, "name": "抄底三连跌：SMH / QQQ / SPY / IWM 连跌第 3 天 15:50 买 5–12 天到期平值看涨，翻倍后回撤 40% 卖，否则第 5 天收盘", "offset": 0.0, "hold": 5, "fraction": 0.5, "max_spread": 0.1,
+       "note": "research/2026-10-26-bottom.md（用户 10-26「抄底 我需要个抄底时机 这也是一个 hero 方式」）：SPY / QQQ / SMH / IWM 2024-02 起 11 种下跌信号里只有「连跌第 3 天」赢过对照组。127 笔、平值、第 5 天收盘卖、5% 成本：每 $1 +28%（10% 成本 +15%），各年份 +39% / +28% / +14%，去掉最好 3 笔 +20%，中位数 +6%，赚钱 53%；对照（每第 5 天随便买）-2%。按 ETF：SMH +55%（33 笔、七成赚）、QQQ +43%、SPY +10%、IWM +2%。hero 游戏押满 7/41 轮到 20 倍（9–31%），一个 hero 约 $2,900。提醒：最近 3 个月 -38%（14 笔）、低波动档只 +7%（高波动 +56%）、价外 3% 亏、连跌第 4 天亏、大跌当天买亏。"
+      },
+      {"id": "bottom-1000", "kind": "bottom", "start": 1000, "name": "抄底三连跌（拿满）：同 bottom-500，第 5 天收盘卖不设止盈", "offset": 0.0, "hold": 5, "exit": "hold", "fraction": 0.5, "max_spread": 0.1,
+       "note": "10-26：出场变体。研究里第 5 天收盘卖 +28%、翻倍后回撤 40% 卖 +28%、2 倍止盈 +22%，两个实盘账本一个追踪止盈一个拿满，演算账本挂波动门槛和只做 SMH"
+      },
+      {"id": "bottom-plan-500", "kind": "bottom", "start": 500, "name": "抄底三连跌（只演算，挂波动门槛）：同 bottom-500，SPY 20 日波动低于 10.3% 不开", "offset": 0.0, "hold": 5, "fraction": 0.5, "max_spread": 0.1, "plan_only": true, "min_vol": 0.103,
+       "note": "10-26：研究按 SPY 波动分档，连跌第 3 天低波动档 +7%、中 +28%、高 +56%；实盘不挂门槛（低档仍为正），演算挂着对照"
+      },
+      {"id": "bottom-plan-1000", "kind": "bottom", "start": 1000, "name": "抄底三连跌（只演算，只做 SMH）：同 bottom-500，只看 SMH", "offset": 0.0, "hold": 5, "fraction": 0.5, "max_spread": 0.1, "plan_only": true, "unds": ["SMH"],
+       "note": "10-26：研究里最强的一格（SMH 33 笔 +55%、七成赚、各年份都正），样本小，先演算对照四只合买"
+      },
       {"id": "hikerally-500", "kind": "hikerally", "start": 500, "name": "加息期快涨：美联储加息期间 SMH 15 天涨 10%+ 或 QQQ 涨 7%+，15:50 买约一个月到期、最接近现价的看跌，翻倍后回撤 40% 卖，否则第 20 天 15:50 卖；同一只 28 天内只记一次（只演算，10-16 起）",
        "unds": {"SMH": 0.10, "QQQ": 0.07}, "hiking": true,
        "hiking_note": "2026-09-16 起加息（2023 年以来第一次）；美联储开始降息时改成 false", "fraction": 0.5, "plan_only": true
