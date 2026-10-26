@@ -120,9 +120,10 @@ def live_rounds(book: dict, label: str) -> list[dict]:
                 e["got"] += float(t["proceeds"])
         tails = [e["got"] / e["paid"] - 1 for e in by.values() if e["paid"] > 0]
         heroes = sum(r["end"] == "hero" for r in rounds)
-        zeros = len(rounds) - heroes
+        stopped = sum(r["end"] == "stopped" for r in rounds)   # audit 10-26 #2: a stopped rule's last round is not a zero
+        zeros = len(rounds) - heroes - stopped
         peaks = [r.get("peak", 0) / start for r in rounds]
-        out.append({"id": sid, "book": label, "rounds": len(rounds), "heroes": heroes, "zeros": zeros,
+        out.append({"id": sid, "book": label, "rounds": len(rounds), "heroes": heroes, "zeros": zeros, "stopped": stopped,
                     "x2_rounds": sum(p >= 2 for p in peaks) / len(rounds) if rounds else None,
                     "trades_per_round": statistics.mean(r.get("trades", 0) for r in rounds) if rounds else None,
                     "cost_per_hero": len(rounds) * start / heroes if heroes else None,
@@ -143,7 +144,8 @@ def live_markdown(rows: list[dict]) -> str:
            "|---|---|---|---|---|---|---|---|---|---|---|---|"]
     for r in rows:
         n = r["now"]
-        out.append(f"| {r['id']} | {r['book']} | {r['trades']} | {fmt(r['x2'])} | {fmt(r['x5'])} | {r['rounds']} | {r['heroes']} | {r['zeros']} | {fmt(r['x2_rounds'])} | "
+        zeros = f"{r['zeros']}（停 {r['stopped']}）" if r.get("stopped") else str(r["zeros"])
+        out.append(f"| {r['id']} | {r['book']} | {r['trades']} | {fmt(r['x2'])} | {fmt(r['x5'])} | {r['rounds']} | {r['heroes']} | {zeros} | {fmt(r['x2_rounds'])} | "
                    f"{fmt(r['trades_per_round'], 'n')} | {fmt(r['cost_per_hero'], 'usd')} | 第 {n['round']} 轮 · {n['cash']:.2f} / {n['peak']:.2f} · {n['trades']} |")
     return "\n".join(out) + "\n"
 

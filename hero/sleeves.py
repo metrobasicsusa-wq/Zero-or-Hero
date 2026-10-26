@@ -157,6 +157,45 @@ class Book:
         s["best"] = s["start"]
         return msg
 
+    def stop_round(self, sid: str, p: dict, when: str | None = None) -> str | None:
+        """Audit 10-26 #2: a sleeve that opens nothing new (`stop_entries`) never reached the dead-zone check, so its
+        round never ended and its zero was never kept. Once flat, it ends the round once and is marked stopped, without
+        a restart (no money from the pool): a zero when what is left is under the zero line or under what one unit of
+        its last ticket cost (the dead zone: it could not buy that again), else "stopped". A round with no trades
+        that still has its start is only marked, not recorded."""
+        s = self.s(sid)
+        if s["open"] or s.get("stopped"):
+            return None
+        cash = s["cash"]
+        last = next((t for t in reversed(s["closed"]) if t.get("qty") and t.get("paid")), None)
+        need = float(last["paid"]) / float(last["qty"]) if last else None
+        zero = cash < s["start"] * p["zero_line"] or (need is not None and cash < need)
+        end = "zero" if zero else "stopped"
+        s["stopped"] = {"round": s["round"], "day": when, "end": end}
+        if len(s["closed"]) == s.get("round_from", 0) and cash == s["start"]:
+            s["stopped"]["kept"] = False
+            return None
+        if zero:
+            s["zeros"] += 1
+        self.end_round(s, end, when)
+        return (f"{sid} 已停开新仓、空仓，第 {s['round']} 轮结束：剩 ${cash:,.2f}"
+                + ("，低于归零线" if cash < s["start"] * p["zero_line"] else f"，连一张 ${need:,.2f} 都买不起" if zero else "")
+                + ("，算归零" if zero else "，记为停止") + "；不从池子补钱重开")
+
+    def resume(self, sid: str, when: str | None = None) -> str | None:
+        """A stopped sleeve whose rule comes back starts a new round at its start (from the pool)."""
+        s = self.s(sid)
+        st = s.pop("stopped", None)
+        if not st:
+            return None
+        if st.get("kept") is False and s["round"] == st["round"]:
+            return None   # its round was never ended: it simply goes on
+        self.d["topups"] = round(self.d["topups"] + s["start"] - s["cash"], 2)
+        s["round"] += 1
+        s["cash"] = s["start"]
+        s["best"] = s["start"]
+        return f"{sid} 恢复开新仓，从 ${s['start']:,.0f} 开第 {s['round']} 轮"
+
     def summary(self) -> list[dict]:
         out = []
         for sid, s in self.d["sleeves"].items():
@@ -305,9 +344,13 @@ class Runner:
     def run(self) -> None:
         self.recover()
         self.manage()
+        day = self.today.isoformat()
         for spec in self.specs:
-            msg = self.book.round_check(spec["id"], {**self.p, **{k: spec[k] for k in ("zero_line", "target") if k in spec}},
-                                        self.today.isoformat())
+            p = {**self.p, **{k: spec[k] for k in ("zero_line", "target") if k in spec}}
+            if spec.get("stop_entries"):   # audit 10-26 #2: no restart for a stopped rule; its round ends once it is flat
+                msg = self.book.stop_round(spec["id"], p, day)
+            else:
+                msg = self.book.resume(spec["id"], day) or self.book.round_check(spec["id"], p, day)
             if msg:
                 self.j.event("sleeve_round", dry_run=False, sleeve=spec["id"], why=msg)
         self.enter()

@@ -3505,6 +3505,70 @@ class Sleeves(unittest.TestCase):
         self.assertEqual(([t["qty"] for t in s["open"]], s["cash"]), ([1], 700.0))      # booked at the $3.00 ask
         self.assertEqual(b.orders, {})
 
+    def stopped_ledger(self, cash, closed=(), open_=(), sid="qqq0dte-500"):
+        from hero import sleeves
+        spec = {"id": sid, "kind": "zdte", "start": 500, "und": "SPY", "offset": 0.006, "take": 3, "stop_entries": True}
+        if (self.root / "sleeves.json").exists():
+            (self.root / "sleeves.json").unlink()
+        book = sleeves.Book(self.root / "sleeves.json", [spec])
+        book.s(sid).update(cash=cash, closed=list(closed), open=list(open_))
+        book.save()
+        return spec
+
+    def test_audit2_a_stopped_flat_ledger_in_the_dead_zone_ends_its_round_as_a_zero(self):
+        # audit #2: QQQ 0DTE sat at $127 with a $175 contract; stop_entries skipped the dead-zone check, so no zero was ever kept
+        spec = self.stopped_ledger(127.0, [{"tid": "a1", "qty": 1, "paid": 175.0, "proceeds": 0.0}])
+        b = SleeveBroker(lambda s: (0.08, 0.10))
+        book, log = self.cycle(b, 10, 0, [spec])
+        s = book.s("qqq0dte-500")
+        self.assertEqual((s["rounds"][-1]["end"], s["rounds"][-1]["cash"], s["rounds"][-1]["trades"]), ("zero", 127.0, 1))
+        self.assertEqual((s["zeros"], s["round"], s["cash"], book.d["topups"]), (1, 1, 127.0, 0.0))   # not restarted: it is stopped
+        self.assertEqual(s["stopped"]["end"], "zero")
+        self.assertIn("停开新仓", [e for e in log if e["kind"] == "sleeve_round"][-1]["why"])
+        self.assertEqual(b.orders, {})
+        book, log = self.cycle(b, 10, 10, [spec])                                          # once only
+        self.assertEqual(len(book.s("qqq0dte-500")["rounds"]), 1)
+
+    def test_audit2_a_stopped_flat_ledger_that_could_still_buy_ends_as_stopped(self):
+        spec = self.stopped_ledger(400.0, [{"tid": "a1", "qty": 2, "paid": 350.0, "proceeds": 250.0}])
+        book, _ = self.cycle(SleeveBroker(lambda s: (0.08, 0.10)), 10, 0, [spec])
+        s = book.s("qqq0dte-500")
+        self.assertEqual((s["rounds"][-1]["end"], s["zeros"], s["cash"]), ("stopped", 0, 400.0))   # $175 a contract: it could buy
+
+    def test_audit2_a_stopped_ledger_under_the_zero_line_is_a_zero_without_a_restart(self):
+        spec = self.stopped_ledger(30.0, [{"tid": "a1", "qty": 3, "paid": 300.0, "proceeds": 0.0}])
+        book, _ = self.cycle(SleeveBroker(lambda s: (0.08, 0.10)), 10, 0, [spec])
+        s = book.s("qqq0dte-500")
+        self.assertEqual((s["rounds"][-1]["end"], s["zeros"], s["round"], s["cash"], book.d["topups"]), ("zero", 1, 1, 30.0, 0.0))
+
+    def test_audit2_a_stopped_ledger_with_an_open_ticket_waits_and_an_empty_round_is_not_kept(self):
+        spec = self.stopped_ledger(100.0, open_=[{"tid": "o1", "kind": "zdte", "sym": "SPY2026-10-08C707", "asset": "option", "qty": 1,
+                                                    "paid": 50.0, "cost": 0.5, "best_bid": 0.0}])
+        book, _ = self.cycle(SleeveBroker(lambda s: (0.40, 0.45)), 10, 0, [spec])
+        self.assertNotIn("rounds", book.s("qqq0dte-500"))                                 # still holding: nothing ends yet
+        spec = self.stopped_ledger(500.0)                                                  # a fresh round with no trades
+        book, _ = self.cycle(SleeveBroker(lambda s: (0.08, 0.10)), 10, 0, [spec])
+        s = book.s("qqq0dte-500")
+        self.assertEqual((s.get("rounds"), s["stopped"]["end"]), (None, "stopped"))       # marked, but no empty round recorded
+
+    def test_audit2_a_rule_that_comes_back_starts_a_new_round(self):
+        spec = self.stopped_ledger(127.0, [{"tid": "a1", "qty": 1, "paid": 175.0, "proceeds": 0.0}])
+        b = SleeveBroker(lambda s: (0.08, 0.10))
+        self.cycle(b, 9, 0, [spec])
+        live = {k: v for k, v in spec.items() if k != "stop_entries"}
+        book, log = self.cycle(b, 10, 0, [live])
+        s = book.s("qqq0dte-500")
+        self.assertNotIn("stopped", s)
+        self.assertEqual((s["round"], book.d["topups"]), (2, 373.0))                       # $500 again from the pool
+        self.assertTrue([o for o in b.orders.values() if o["side"] == "buy"])
+
+    def test_audit2_the_hero_table_counts_stopped_rounds_apart_from_zeros(self):
+        from hero import research_hero_game as hg
+        book = {"sleeves": {"x-500": {"start": 500, "cash": 127.0, "round": 3, "closed": [], "rounds": [
+            {"round": 1, "end": "zero", "peak": 600.0, "trades": 2}, {"round": 2, "end": "stopped", "peak": 500.0, "trades": 1}]}}}
+        r = hg.live_rounds(book, "实盘")[0]
+        self.assertEqual((r["rounds"], r["heroes"], r["zeros"], r["stopped"]), (2, 0, 1, 1))
+
 
 class EarningsShares(unittest.TestCase):
     """Owner, 10-19: earnings only in shares or 2x funds; no option held through a report."""
