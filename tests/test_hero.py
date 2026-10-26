@@ -3459,6 +3459,52 @@ class Sleeves(unittest.TestCase):
                        date(2026, 10, 9), sleep=lambda s: None).run()
         self.assertEqual(book.s("tqqq-500")["cash"], 400.0)                           # sold 5 at $80
 
+    # ---- docs/ledger-audit-2026-10-26.md, 三、修 ----
+    def multi_rule(self, asks):
+        """A rule that picks one $<ask> call per name, as the weekly / earnings rules hand over several at once."""
+        picks = [{"sym": f"ZZ{chr(65 + i)}261030C00100000", "asset": "option", "und": f"ZZ{chr(65 + i)}", "ask": a,
+                  "expiry": "2026-10-30", "exit_day": "2026-10-30", "exit_at": "15:30", "why": f"pick {i}"}
+                 for i, a in enumerate(asks)]
+        return type("R", (), {"entries": lambda self, run, spec, s: ("2026-10-08", [dict(p) for p in picks])})()
+
+    def test_audit1_a_multi_name_sleeve_shares_one_fraction_for_the_all_in_fallback(self):
+        # audit #1: wk-trend-1000 put 96% of its ledger into DDOG + COST -- each pick went all in on what was left
+        from datetime import datetime
+        from hero import sleeves
+        spec = {"id": "m-1000", "kind": "multi", "start": 1000, "n": 3, "fraction": 0.5}
+        b = SleeveBroker(lambda s: (2.90, 3.00))
+        book = sleeves.Book(self.root / "sleeves.json", [spec])
+        sleeves.Runner(b, Journal(self.root), self.cfg, [spec], book, {"multi": self.multi_rule([3.0, 3.0, 3.0])},
+                       datetime(2026, 10, 8, 10, 0), date(2026, 10, 8), sleep=lambda s: None).run()
+        buys = [o for o in b.orders.values() if o["side"] == "buy"]
+        self.assertEqual([int(o["qty"]) for o in buys], [1])                             # $300 ($3.01 ticks to $3.00) fits the shared $500 once
+        self.assertEqual(book.s("m-1000")["cash"], 700.0)                                # not 3 x $300 = 90% of the ledger
+        log = [json.loads(l) for l in (self.root / "trades.jsonl").read_text().splitlines()]
+        self.assertIn("几只合用", [e for e in log if e["kind"] == "sleeve_buy"][0]["why"])
+        self.assertEqual(len([e for e in log if e["kind"] == "sleeve_skip" and "几只合用" in e["why"]]), 2)
+
+    def test_audit1_a_single_pick_sleeve_still_goes_all_in(self):
+        from datetime import datetime
+        from hero import sleeves
+        spec = {"id": "one-1000", "kind": "multi", "start": 1000, "fraction": 0.5}
+        b = SleeveBroker(lambda s: (5.90, 6.00))                                         # $601: more than half of $1,000
+        book = sleeves.Book(self.root / "sleeves.json", [spec])
+        sleeves.Runner(b, Journal(self.root), self.cfg, [spec], book, {"multi": self.multi_rule([6.0])},
+                       datetime(2026, 10, 8, 10, 0), date(2026, 10, 8), sleep=lambda s: None).run()
+        self.assertEqual([int(o["qty"]) for o in b.orders.values() if o["side"] == "buy"], [1])
+
+    def test_audit1_plan_shares_the_fraction_too(self):
+        from datetime import datetime
+        from hero import sleeves
+        spec = {"id": "m-1000", "kind": "multi", "start": 1000, "n": 3, "fraction": 0.5, "plan_only": True}
+        b = SleeveBroker(lambda s: (2.90, 3.00))
+        book = sleeves.Book(self.root / "plan.json", [spec])
+        sleeves.Runner(b, Journal(self.root), self.cfg, [spec], book, {"multi": self.multi_rule([3.0, 3.0, 3.0])},
+                       datetime(2026, 10, 8, 10, 0), date(2026, 10, 8), sleep=lambda s: None).plan()
+        s = book.s("m-1000")
+        self.assertEqual(([t["qty"] for t in s["open"]], s["cash"]), ([1], 700.0))      # booked at the $3.00 ask
+        self.assertEqual(b.orders, {})
+
 
 class EarningsShares(unittest.TestCase):
     """Owner, 10-19: earnings only in shares or 2x funds; no option held through a report."""

@@ -4,7 +4,8 @@ The plan (docs/sleeves-plan.md): every direction runs as if it were a real small
 its own cash; it bets a fraction (half) of that cash per entry, never the account's; whole contracts only.
 When the fraction cannot buy one contract (or one whole share) but what is left of the ledger can, it buys
 one (owner, 10-22: a ledger below the price of two contracts but above the zero line must not sit out for
-good -- QQQ 0DTE had not traded since 10-14). Below 10% of its start the round is over (a zero);
+good -- QQQ 0DTE had not traded since 10-14); a sleeve spread over several names shares one fraction for that fallback,
+never the whole ledger (audit 10-26 #1, `spreads`). Below 10% of its start the round is over (a zero);
 at $10,000 it is a hero; either way it starts again at its start from the shared pool, and the round
 count is kept. A flat ledger that cannot buy even one unit with all it has left is a zero on the spot
 and restarts the same cycle (owner, 10-23: the dead zone between 10% and one contract gave no samples). Every broker order carries a client_order_id naming the sleeve and the ticket, and
@@ -64,6 +65,13 @@ def units(each: float, left: float, price: float) -> tuple[int, bool]:
     if q >= 1:
         return q, False
     return (1, True) if price <= left else (0, False)
+
+
+def spreads(spec: dict, picks: list) -> bool:
+    """A sleeve spread over several names (`n` > 1 in its spec, or several picks at once). Audit 10-26 #1: its all-in
+    fallback (one unit when a pick's share cannot buy one) draws on fraction x cash shared by the picks, never on the
+    whole ledger -- wk-trend-1000 had put 96% of its ledger into two names, wk-momo-1000 90% into one."""
+    return len(picks) > 1 or int(spec.get("n", 1) or 1) > 1
 
 
 class Book:
@@ -477,33 +485,50 @@ class Runner:
             if not picks:
                 self.j.event("sleeve_plan", dry_run=True, sleeve=spec["id"], why=f"{spec['id']}（演算）：{slot} 没有要买的")
                 continue
-            each = spec.get("fraction", self.p["fraction"]) * s["cash"] / len(picks)
+            fraction = spec.get("fraction", self.p["fraction"])
+            each = fraction * s["cash"] / len(picks)
+            shared = fraction * s["cash"] if spreads(spec, picks) else None   # audit 10-26 #1, as live
+
+            def cap() -> float:
+                return s["cash"] if shared is None else min(s["cash"], shared)
             for pk in picks:
                 if pk["asset"] == "stock":
                     notional = math.floor(each * float(pk.get("scale", 1)) * 100) / 100   # scale: a 3x fund takes a third
                     ask = float(pk.get("ask") or 0)
                     if pk.get("whole"):
                         if ask > 0 and units(notional, s["cash"], ask)[0] < 1:
+                            was = s["cash"]
                             each, _ = self.restart_dead(spec["id"], each, s["cash"], ask, dry_run=True)
+                            if shared is not None and s["cash"] != was:
+                                shared = fraction * s["cash"]
                             notional = math.floor(each * float(pk.get("scale", 1)) * 100) / 100
-                        qty, allin = units(notional, s["cash"], ask)
+                        qty, allin = units(notional, cap(), ask)
                     else:
                         qty, allin = (round(notional / ask, 6) if ask > 0 else 0), False
-                    size = f"一半 ${each:,.2f} 买不起一股，押上账本买 1 股" if allin else f"买 ${each:,.2f}"
+                    size = (f"一半 ${each:,.2f} 买不起一股，" + ("押上账本买 1 股" if shared is None else f"用这次几只合用的 ${shared:,.2f} 买 1 股")
+                            if allin else f"买 ${each:,.2f}")
                 else:
                     limit = tick(pk["ask"] + self.p["buy_pad"])
-                    qty, allin = units(each, s["cash"], limit * 100)
+                    qty, allin = units(each, cap(), limit * 100)
                     if qty < 1 and not spec.get("qty"):
+                        was = s["cash"]
                         each, _ = self.restart_dead(spec["id"], each, s["cash"], limit * 100, dry_run=True)
-                        qty, allin = units(each, s["cash"], limit * 100)
+                        if shared is not None and s["cash"] != was:
+                            shared = fraction * s["cash"]
+                        qty, allin = units(each, cap(), limit * 100)
                     if spec.get("qty"):   # a sample ledger: a fixed number of contracts a find (owner, 10-21)
                         qty, allin = (int(spec["qty"]) if limit * 100 * int(spec["qty"]) <= s["cash"] else 0), False
-                    size = ((f"{qty} 张 × ${limit:.2f}" + (f"（一半 ${each:,.2f} 买不起一张，押上账本）" if allin else "")) if qty
-                            else f"一张 ${limit * 100:,.2f} 超过账本剩下的 ${s['cash']:,.2f}，买不起")
+                    size = ((f"{qty} 张 × ${limit:.2f}" + ((f"（一半 ${each:,.2f} 买不起一张，押上账本）" if shared is None
+                                                           else f"（一半 ${each:,.2f} 买不起一张，用这次几只合用的 ${shared:,.2f}）") if allin else ""))
+                            if qty else (f"一张 ${limit * 100:,.2f} 超过账本剩下的 ${s['cash']:,.2f}，买不起" if shared is None
+                                         else f"一张 ${limit * 100:,.2f} 超过这次几只合用的 ${max(shared, 0):,.2f}，不押整个账本，不买"))
                 self.j.event("sleeve_plan", dry_run=True, sleeve=spec["id"], symbol=pk["sym"],
                              why=f"{spec['id']}（演算，不下单）：{pk['why']}；{size}")
                 if qty and qty > 0:
+                    was = s["cash"]
                     self.plan_open(spec, pk, qty, slot)
+                    if shared is not None:
+                        shared -= was - s["cash"]
 
     def plan_open(self, spec: dict, pk: dict, qty, slot: str) -> None:
         """Book a plan pick as filled at the ask (the live limit is the ask + buy_pad; our fills land at or under it)."""
@@ -621,6 +646,7 @@ class Runner:
                 continue
             fraction = spec.get("fraction", self.p["fraction"])
             each = fraction * s["cash"] / len(picks)
+            spread = spreads(spec, picks)
             for pk in picks:
                 r = self.report_inside(pk.get("und"), pk.get("exit_day") or pk.get("expiry")) if pk["asset"] == "option" else None
                 if r:
@@ -629,7 +655,7 @@ class Runner:
                                      f"{'盘后' if 'post' in r.get('time', '') else '盘前' if 'pre' in r.get('time', '') else ''}"
                                      f"发财报，这张期权会拿过财报（隐含波动财报后掉得太快），财报前不拿期权，不买")
                     continue
-                intents.append((spec, pk, each, slot))
+                intents.append((spec, pk, each, slot, fraction if spread else None))
         if not intents:
             return
         try:
@@ -639,41 +665,61 @@ class Runner:
         room = cash - self.p["cash_buffer"]
         opts, stocks = [], []
         left = {}   # what each ledger still has this cycle: one pick may go all in when its half cannot buy one unit
-        for spec, pk, each, slot in intents:
+        shared = {}  # audit 10-26 #1: a sleeve spread over names shares fraction x cash for that fallback, never the whole book
+
+        def cap(sid: str) -> float:
+            return left[sid] if shared.get(sid) is None else min(left[sid], shared[sid])
+
+        for spec, pk, each, slot, frac in intents:
             sid = spec["id"]
-            left.setdefault(sid, self.book.s(sid)["cash"])
+            if sid not in left:
+                left[sid] = self.book.s(sid)["cash"]
+                shared[sid] = None if frac is None else frac * left[sid]
             if pk["asset"] == "stock":
                 notional = math.floor(min(each * float(pk.get("scale", 1)), room) * 100) / 100
                 ask = float(pk.get("ask") or 0)
                 if pk.get("whole") and ask and int(notional // ask) < 1 and ask > left[sid] and ask <= room:
+                    was = left[sid]
                     each, left[sid] = self.restart_dead(sid, each, left[sid], ask, dry_run=False)
-                if pk.get("whole") and ask and int(notional // ask) < 1 and ask <= min(left[sid], room):
-                    notional = ask   # one whole share with what is left of the ledger
-                    pk = {**pk, "why": f"{pk['why']}；一半 ${each:,.2f} 买不起一股，押上账本买 1 股"}
+                    if frac is not None and left[sid] != was:
+                        shared[sid] = frac * left[sid]
+                if pk.get("whole") and ask and int(notional // ask) < 1 and ask <= min(cap(sid), room):
+                    notional = ask   # one whole share with what is left of the ledger (of the shared fraction)
+                    pk = {**pk, "why": f"{pk['why']}；一半 ${each:,.2f} 买不起一股，" + (
+                        "押上账本买 1 股" if frac is None else f"用这次几只合用的 ${shared[sid]:,.2f} 买 1 股")}
                 if notional >= 1:
                     stocks.append((spec, pk, notional, slot))
                     room -= notional
                     left[sid] -= notional
+                    if shared[sid] is not None:
+                        shared[sid] -= notional
                 continue
             limit = tick(pk["ask"] + self.p["buy_pad"])
-            qty, allin = units(each, left[sid], limit * 100)
+            qty, allin = units(each, cap(sid), limit * 100)
             if qty < 1:
+                was = left[sid]
                 each, left[sid] = self.restart_dead(sid, each, left[sid], limit * 100, dry_run=False)
-                qty, allin = units(each, left[sid], limit * 100)
+                if frac is not None and left[sid] != was:
+                    shared[sid] = frac * left[sid]
+                qty, allin = units(each, cap(sid), limit * 100)
             if qty < 1:
                 self.j.event("sleeve_skip", dry_run=False, sleeve=sid, symbol=pk["sym"],
                              why=f"{sid}：{pk['sym']} 一张 ${limit * 100:,.2f}，超过这笔可用的 ${each:,.2f}"
-                                 f"（账本剩下 ${left[sid]:,.2f} 也不够），不买")
+                                 + (f"（账本剩下 ${left[sid]:,.2f} 也不够），不买" if shared[sid] is None
+                                    else f"（这次几只合用的 ${max(shared[sid], 0):,.2f} 也不够，不押整个账本），不买"))
                 continue
             if qty * limit * 100 > room:
                 self.j.event("sleeve_skip", dry_run=False, sleeve=sid, symbol=pk["sym"], why=f"{sid}：账户现金不够，不买")
                 continue
             if allin:
-                pk = {**pk, "why": f"{pk['why']}；一半 ${each:,.2f} 买不起一张，押上账本买 1 张"}
+                pk = {**pk, "why": f"{pk['why']}；一半 ${each:,.2f} 买不起一张，" + (
+                    "押上账本买 1 张" if shared[sid] is None else f"用这次几只合用的 ${shared[sid]:,.2f} 买 1 张")}
             room -= qty * limit * 100
-            opts.append({"spec": spec, "pk": pk, "limit": limit, "qty": qty, "each": each, "cap": left[sid],
+            opts.append({"spec": spec, "pk": pk, "limit": limit, "qty": qty, "each": each, "cap": cap(sid),
                          "tid": entry_tid(slot), "first_ask": pk["ask"]})
             left[sid] -= qty * limit * 100
+            if shared[sid] is not None:
+                shared[sid] -= qty * limit * 100
         self.buy_options(opts)
         self.buy_stocks(stocks)
 
