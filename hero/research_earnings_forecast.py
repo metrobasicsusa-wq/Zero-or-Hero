@@ -392,6 +392,7 @@ def scorecard(root: Path = OUT) -> str:
             md.append(f"| 方向按开盘，信心 0.6 以上 | {len(hi)} | "
                       f"{sum((r['judgment']['direction'] == 'up') == r['result']['up'] for r in hi) / len(hi):.0%} |")
     md += share_trades(rows, jr)
+    md += reason_tables(rows, jr)
     md += ["", "## 明细（最近 40 条）", "", "| 预测日 | 股票 | 时间 | 隐含 | 财报后 1 小时 | 盘后 20:00 | 开盘 | 收盘（对前收） | 超过隐含 | 判断 | 方向对不对（开盘 / 收盘） |",
            "|---|---|---|---|---|---|---|---|---|---|---|"]
     for r in sorted(rows, key=lambda r: (r["day"], r["symbol"]))[-40:]:
@@ -441,6 +442,70 @@ def share_trades(rows: list[dict], jr: list[dict]) -> list[str]:
         line("对照：全部财报都买（不看判断）", rows, lambda r: 1),
         line("对照：全部盘后财报都买，20:00 卖", [r for r in rows if r["result"].get("ah_close") is not None], lambda r: 1, "ah_close")) if x]
     return out
+
+
+TAG_WORDS = ("default", "run20_pos", "run20_neg", "low_bar", "last_guide_raise", "last_guide_cut", "last_guide_keep",
+             "last_react_up", "last_react_down", "streak", "peers_up", "peers_down", "profile_bar", "guide_conservative",
+             "news", "mechanical", "pre_announce", "analyst")
+EVIDENCE = {"profile": "档案（门槛写清）", "news": "新闻 / 预告", "mechanical": "机械规则", "default": "默认方向"}
+
+
+def reason_tables(rows: list[dict], jr: list[dict]) -> list[str]:
+    """10-26, after three sub-agents took the earnings review apart (notes/lessons.md): the calls scored against the
+    controls that need no skill (every name down, every name up), by what the call rested on (`evidence`), by the fixed
+    reason `tags`, by confidence tier, by the day's rank and by the size of the move (the week's loss sat in the
+    29 moves of 5%+). A tag with 15 scores is marked 可用 at 65% or 禁用 at 40%; fewer is only a reading."""
+    dirs = [r for r in jr if r["judgment"].get("direction") in ("up", "down")]
+    if not dirs:
+        return []
+    sign = lambda r: 1 if r["judgment"]["direction"] == "up" else -1
+    gap = lambda r: r["result"].get("gap_pre", r["result"]["gap"])
+
+    def line(name, rs, verdict=False):
+        if not rs:
+            return None
+        hit = sum((r["judgment"]["direction"] == "up") == r["result"]["up"] for r in rs) / len(rs)
+        pnl = [sign(r) * gap(r) for r in rs]
+        base = sum(r["result"]["up"] for r in rs) / len(rs)
+        v = ""
+        if verdict:
+            v = "可用" if len(rs) >= 15 and hit >= 0.65 else "禁用" if len(rs) >= 15 and hit <= 0.40 else f"再攒 {max(0, 15 - len(rs))} 次" if len(rs) < 15 else "—"
+        return f"| {name} | {len(rs)} | {hit:.0%} | {base:.0%} | {statistics.mean(pnl):+.2%} | {sum(pnl):+.0%} |" + (f" {v} |" if verdict else "")
+
+    md = ["", "## 判断对照和分组（10-26 反驳后加）", "",
+          "「开盘涨基线」是这组财报实际开盘涨的比例：判断对的比例只有明显高于它（判涨组）或低于它（判跌组）才算有信息。"
+          "对照行不用任何判断。每 $1 是按判断方向做正股、反应日开盘卖。", "",
+          "| 组 | 次数 | 判断对 | 开盘涨基线 | 每 $1 平均 | 每 $1 合计 |", "|---|---|---|---|---|---|"]
+    allrows = [r for r in rows if r["result"].get("gap") is not None]
+    g_all = [gap(r) for r in allrows]
+    md.append(f"| 对照：全部判跌 | {len(allrows)} | {sum(not r['result']['up'] for r in allrows) / len(allrows):.0%} | "
+              f"{sum(r['result']['up'] for r in allrows) / len(allrows):.0%} | {round(-statistics.mean(g_all), 10) + 0.0:+.2%} | {round(-sum(g_all), 10) + 0.0:+.0%} |")
+    md.append(f"| 对照：全部判涨 | {len(allrows)} | {sum(r['result']['up'] for r in allrows) / len(allrows):.0%} | "
+              f"{sum(r['result']['up'] for r in allrows) / len(allrows):.0%} | {statistics.mean(g_all):+.2%} | {sum(g_all):+.0%} |")
+    md.append(line("我们的判断，全部", dirs))
+    for key, name in EVIDENCE.items():
+        md.append(line(f"　证据：{name}", [r for r in dirs if r["judgment"].get("evidence") == key]))
+    for lo, hi, name in ((0.0, 0.505, "信心 0.5（默认 / 机械）"), (0.505, 0.575, "信心 0.55"), (0.575, 1.01, "信心 0.6 以上")):
+        md.append(line(f"　{name}", [r for r in dirs if lo <= float(r["judgment"].get("confidence") or 0) < hi]))
+    byday = {}
+    for r in sorted(dirs, key=lambda r: -(r.get("dollar_volume") or 0)):
+        byday.setdefault(r["day"], []).append(r)
+    top = {id(r) for rs in byday.values() for r in rs[:30]}
+    md.append(line("　当天成交额前 30", [r for r in dirs if id(r) in top]))
+    md.append(line("　其余", [r for r in dirs if id(r) not in top]))
+    md.append(line("　开盘动 5% 以上（尾部）", [r for r in dirs if abs(gap(r)) >= 0.05]))
+    md.append(line("　开盘动不到 5%", [r for r in dirs if abs(gap(r)) < 0.05]))
+    md = [x for x in md if x]
+    tagged = [r for r in dirs if r["judgment"].get("tags")]
+    if tagged:
+        md += ["", "按理由标签（一条判断可以有几个标签；15 次以上才裁定）：", "",
+               "| 标签 · 方向 | 次数 | 判断对 | 开盘涨基线 | 每 $1 平均 | 每 $1 合计 | 裁定 |", "|---|---|---|---|---|---|---|"]
+        seen = sorted({(t, r["judgment"]["direction"]) for r in tagged for t in r["judgment"]["tags"]})
+        for t, d in seen:
+            x = line(f"{t} · {'涨' if d == 'up' else '跌'}", [r for r in tagged if t in r["judgment"]["tags"] and r["judgment"]["direction"] == d], verdict=True)
+            if x:
+                md.append(x)
+    return md
 
 
 def markdown(rep: dict) -> str:

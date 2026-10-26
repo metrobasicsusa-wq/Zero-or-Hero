@@ -4148,6 +4148,28 @@ class SleeveRules(unittest.TestCase):
         # owner, 10-19: shares (no 2x fund for these names), not a call
         self.assertEqual({(p["sym"], p["asset"], p["ask"]) for p in picks}, {("AAA", "stock", 100.0), ("BBB", "stock", 100.0)})
 
+    def test_earnings_plan_twin_holds_the_at_the_money_put_into_the_report(self):
+        # owner, 10-26 「全面优化」: the earn ledgers are plan-only puts now (this season's reports open down 55% of the time)
+        from hero import sleeve_rules as sr
+        import hero.sleeve_rules as mod
+        b = self.broker()
+        orig = mod.ROOT
+        try:
+            mod.ROOT = Path(tempfile.mkdtemp())
+            (mod.ROOT / "data").mkdir()
+            (mod.ROOT / "data" / "earnings.json").write_text(json.dumps({"reports": {
+                "AAA": [{"date": "2026-10-08", "time": "post-market"}], "BBB": [{"date": "2026-10-09", "time": "pre-market"}]}}))
+            r = self.run_at(date(2026, 10, 8), 15, 50, b)
+            slot, picks = sr.EarningsLotto().entries(r, {"n": 3, "instrument": "put"}, {"slots": {}})
+            weekly = sr.EarningsLotto().entries(r, {"n": 3, "instrument": "put", "weekly_only": True}, {"slots": {}})
+        finally:
+            mod.ROOT = orig
+        self.assertEqual(sorted(p["und"] for p in picks), ["AAA", "BBB"])
+        self.assertTrue(all(p["asset"] == "option" and "P" in p["sym"][len(p["und"]) + 6:] for p in picks))   # the put, not the stock
+        self.assertEqual((picks[0]["exit_day"], picks[0]["exit_at"]), ("2026-10-09", "09:35"))
+        self.assertIn("买平值认沽", picks[0]["why"])
+        self.assertEqual(weekly, ("2026-10-08", []))                                              # the fake's expiry is 45 days out: no weekly
+
     def test_relay_bets_the_weeks_strongest_reporter_then_switches_to_soxl(self):
         from hero import sleeve_rules as sr
         import hero.sleeve_rules as mod
@@ -5783,6 +5805,24 @@ class WeekendStudies(unittest.TestCase):
         self.assertEqual(pb.pick_series(rows, "atm", "d5"), [-0.5, 1.5])   # the deeper pullback is the day's pick
         self.assertEqual(set(pb.groups(rows)), {"强势股回调 3–10% · 平值", "强势股回调 3–10% · 价外 3%", "　回调 3–6% · 平值", "　回调 6–10% · 平值",
                                                 "　前 20 天涨 20% 以上 · 平值", "　当天收阳 · 平值", "　当天收阴 · 平值"})
+
+    def test_earnings_reason_tables_score_calls_against_the_no_skill_controls(self):
+        # 10-26: the scorecard's new block, from the three sub-agents' rebuttal of the earnings review
+        from hero import research_earnings_forecast as ef
+        res = lambda g, up: {"gap": g, "up": up, "move": g, "big": False}
+        rows = [{"day": "d1", "symbol": "AAA", "dollar_volume": 9, "result": res(0.05, True), "judgment": {"direction": "up", "confidence": 0.55, "evidence": "profile", "tags": ["profile_bar"]}},
+                {"day": "d1", "symbol": "BBB", "dollar_volume": 8, "result": res(-0.06, False), "judgment": {"direction": "up", "confidence": 0.5, "evidence": "default", "tags": ["default"]}},
+                {"day": "d1", "symbol": "CCC", "dollar_volume": 7, "result": res(-0.01, False), "judgment": {"direction": "down", "confidence": 0.5, "evidence": "default", "tags": ["default"]}},
+                {"day": "d1", "symbol": "DDD", "dollar_volume": 6, "result": res(0.02, True), "judgment": None}]
+        jr = [r for r in rows if r["judgment"]]
+        md = "\n".join(ef.reason_tables(rows, jr))
+        self.assertIn("| 对照：全部判跌 | 4 | 50% | 50% | +0.00% | +0% |", md)
+        self.assertIn("| 我们的判断，全部 | 3 | 67% | 33% | +0.00% | +0% |", md)        # AAA +5%, BBB -6%, CCC +1%
+        self.assertIn("| 　证据：档案（门槛写清） | 1 | 100% | 100% | +5.00% | +5% |", md)
+        self.assertIn("| 　信心 0.5（默认 / 机械） | 2 | 50% | 0% | -2.50% | -5% |", md)
+        self.assertIn("| 　开盘动 5% 以上（尾部） | 2 | 50% | 50% | -0.50% | -1% |", md)
+        self.assertIn("| default · 涨 | 1 | 0% | 0% | -6.00% | -6% | 再攒 14 次 |", md)
+        self.assertEqual(ef.reason_tables(rows, []), [])
 
     def test_bottom_signals_on_a_synthetic_tape(self):
         # owner, 10-26 (「抄底 我需要个抄底时机 这也是一个 hero 方式」): the market-level dip signals, each once per five sessions

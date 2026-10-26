@@ -1038,6 +1038,20 @@ class EarningsLotto:
             move = (ask_of(run, atm_c["symbol"]) + ask_of(run, atm_p["symbol"])) / spot
             if move <= 0:
                 continue
+            if spec.get("instrument") == "put":
+                # 10-26 (the owner's 「全面优化」 after three sub-agents rebutted the earnings review): this season's reports
+                # open down more often than up (45%) and shares have no convexity, so the plan twins hold the at-the-money
+                # put into the report instead; `weekly_only` skips names whose nearest expiry is more than a week out
+                # (a monthly straddle prices days beyond the report). Plan only: the lower bound was still negative.
+                if spec.get("weekly_only") and (date.fromisoformat(exp) - date.fromisoformat(nxt)).days > 7:
+                    continue
+                ask = ask_of(run, atm_p["symbol"])
+                if ask > 0:
+                    picks.append((move, {"sym": atm_p["symbol"], "asset": "option", "und": und, "ask": ask, "expiry": exp,
+                                         "exit_day": nxt, "exit_at": "09:35",
+                                         "why": f"{und} 财报（期权定价的波动 {move:.1%}），买平值认沽 "
+                                                f"{float(atm_p['strike_price']):g}（{exp} 到期），第二天 09:35 卖（只演算：这季财报开盘跌的多，正股没有凸性）"}))
+                continue
             if spec.get("instrument") == "option":
                 # the rule before 10-19, kept only for its plan twin (owner, 10-21: what would the stopped rule have made?)
                 c = pick(cs, "C", spot, 2 * move, exp)
