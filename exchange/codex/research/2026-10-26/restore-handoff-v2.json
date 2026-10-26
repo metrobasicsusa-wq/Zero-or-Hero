@@ -1,0 +1,174 @@
+{
+  "schema_version": "1.0",
+  "producer": "Codex",
+  "mode": "PAPER",
+  "message_id": "codex-restore-handoff-20261026-v2",
+  "version": 2,
+  "supersedes": "codex-restore-handoff-20261026-v1",
+  "status": "accepted_natural_handoff_performance",
+  "code_commit": "a9bf1f7fac6820b3c974989ea8441eb4ea801094",
+  "restore_version": "2026-10-23.1",
+  "evidence_as_of": "2026-10-26T16:14:10.067507-04:00",
+  "generated_at": "2026-10-26T20:29:00.167238+00:00",
+  "source_hashes": {
+    "zerotrader/cloud_archive.py": "20d6d0ba02f9f4fbd2c061d6c0d2cfbe8c4710b0ea0dc9153640444ed8daa892",
+    "zerotrader/cloud_bundle.py": "d763474378ce4f6c09d8b275ec8e2f764b1c125e9022ab962a0b289531eed145",
+    "zerotrader/cloud_checkpoint.py": "72d45eb04f5203b634878728d0c5ba07149e4f0a8022d9c809e782ad008020b3",
+    "zerotrader/cloud_runner.py": "38e0e43acd278cdc2cf31539c35e075e57f30970cb5e8365f03b73be923626ef"
+  },
+  "source_path_evidence": {
+    "zerotrader/cloud_archive.py": [
+      {
+        "line": 452,
+        "text": "def seed_restore_point(packages, point_path, target_cache, *, trusted=None, timings=None):"
+      },
+      {
+        "line": 476,
+        "text": "        for generation, path in enumerate(packages):"
+      },
+      {
+        "line": 496,
+        "text": "    _validate(model, previous=previous)"
+      },
+      {
+        "line": 552,
+        "text": "def _chain(packages, *, cache=None, timings=None):"
+      },
+      {
+        "line": 563,
+        "text": "    for path, (digest, manifest) in zip(packages, identities):"
+      },
+      {
+        "line": 567,
+        "text": "        timings['replayed_generations'] = len(packages) - len(identities)"
+      },
+      {
+        "line": 571,
+        "text": "    for generation in range(len(identities), len(packages)):"
+      }
+    ]
+  },
+  "old_cycle": {
+    "started_at": "2026-10-26T19:50:09.919678+00:00",
+    "finished_at": "2026-10-26T19:50:33.420823+00:00",
+    "status": "completed"
+  },
+  "new_cycle": {
+    "started_at": "2026-10-26T19:56:32.299368+00:00",
+    "finished_at": "2026-10-26T19:57:44.998232+00:00",
+    "status": "completed"
+  },
+  "workflow_times": {
+    "created_at": "2026-10-26T19:30:10Z",
+    "job_started_at": "2026-10-26T19:51:28Z",
+    "old_job_completed_at": "2026-10-26T19:51:24Z"
+  },
+  "post_handoff_successful_cycles": 5,
+  "start_gap_comparisons": {
+    "2026-10-23": {
+      "baseline_seconds": 647.725279,
+      "observed_seconds": 358.878545,
+      "reduction_seconds": 288.846734,
+      "reduction_percent": 44.59401900230608
+    },
+    "2026-10-22": {
+      "baseline_seconds": 569.115603,
+      "observed_seconds": 358.878545,
+      "reduction_seconds": 210.237058,
+      "reduction_percent": 36.941011086635065
+    }
+  },
+  "completion_gap_comparison": {
+    "baseline_seconds": 722.16394,
+    "observed_seconds": 431.577409,
+    "reduction_seconds": 290.58653100000004,
+    "reduction_percent": 40.238305307794796
+  },
+  "timings": {
+    "account_binding_seconds": 0.007273,
+    "archive_generation": 1386,
+    "auxiliary_and_binding_seconds": 0.758044,
+    "auxiliary_restore_seconds": 0.75077,
+    "bundle_restore_seconds": 300.268129,
+    "cached_prefix_hash_seconds": 0.959607,
+    "cached_prefix_packages": 1384,
+    "chain_verify_seconds": 8.073532,
+    "database_cached_prefix_hash_seconds": 0.964739,
+    "database_cached_prefix_packages": 1387,
+    "database_replayed_generations": 0,
+    "database_restore_seconds": 32.82933,
+    "database_sqlite_readback_seconds": 19.678291,
+    "database_sqlite_write_seconds": 12.0635,
+    "final_core_confirm_seconds": 1.043197,
+    "git_fetch_calls": 4,
+    "git_fetch_seconds": 63.3218,
+    "git_head_calls": 8,
+    "git_head_seconds": 2.101434,
+    "git_objects_calls": 360,
+    "git_objects_seconds": 3.092885,
+    "git_other_calls": 13,
+    "git_other_seconds": 0.048922,
+    "indexed_tail_generations": 3,
+    "initial_core_load_seconds": 63.791572,
+    "package_bytes_read": 1265630329,
+    "package_cache_write_seconds": 0.63357,
+    "package_files_read": 2834,
+    "package_git_read_seconds": 3.302456,
+    "package_read_seconds": 4.09233,
+    "pinned_read_session": true,
+    "point_chunk_hash_seconds": 0.013836,
+    "point_inflate_seconds": 0.168149,
+    "point_manifest_seconds": 0.000202,
+    "point_model_validation_seconds": 145.735563,
+    "point_payload_parse_seconds": 0.867524,
+    "point_snapshot_hash_seconds": 19.293186,
+    "prefix_chunk_hash_seconds": 0.981023,
+    "prefix_inflate_seconds": 6.012611,
+    "prefix_manifest_seconds": 0.200865,
+    "prefix_payload_parse_seconds": 14.967449,
+    "replayed_generations": 3,
+    "restore_point_generation": 1383,
+    "restore_point_used": true,
+    "restore_point_verify_seconds": 188.473843,
+    "restore_version": "2026-10-23.1",
+    "session_final_confirm_seconds": 0.983147,
+    "session_initial_confirm_seconds": 0.972044,
+    "tail_chunk_hash_seconds": 0.002881,
+    "tail_inflate_seconds": 0.018642,
+    "tail_manifest_seconds": 0.000629,
+    "tail_merge_seconds": 0.522259,
+    "tail_payload_parse_seconds": 0.056695,
+    "tail_snapshot_hash_seconds": 5.395336,
+    "tail_validation_seconds": 1.108073
+  },
+  "wall_clock_breakdown": {
+    "queued_from_creation_to_job_start": 1278,
+    "old_cycle_finish_to_new_job_start": 54.579177,
+    "new_job_start_to_first_cycle_start": 304.299368,
+    "new_cycle_start_to_archived_finish": 72.698864,
+    "new_cycle_start_to_final_persistence_return": 125.593201,
+    "old_last_cycle_final_persistence": null
+  },
+  "first_cycle_final_timing": {
+    "archive_complete": true,
+    "bundle_persistence_seconds": 103.021189,
+    "core_persistence_seconds": 11.836487,
+    "cycle_including_persistence_seconds": 125.593201,
+    "final_bundle_seconds": 52.887462,
+    "first_after_restore": true,
+    "persistence_returned_at": "2026-10-26T19:58:37.889524+00:00",
+    "restore_version": "2026-10-23.1",
+    "started_at": "2026-10-26T19:56:32.296335+00:00"
+  },
+  "report_zh": "2026年10月26日下午自然冷交接验收（2026-10-23.1）\n旧任务自然完成五小时运行并success退出；新任务自动接续。源码四模块哈希与发布清单一致，随后5个自然周期completed、完整归档推进到1392代、事件50303；未发现新风险、未知订单或第二执行器。此次恢复性能验收通过。早上两次任务exit 1的根因仍独立待诊断，历史记录保留；本结论不等于已修复该失败原因。\n旧周期完成19:50:33.420823Z；新job开始19:51:28Z，恢复主步骤开始19:51:30Z；首周期开始19:56:32.299368Z，归档run结束19:57:44.998232Z，最终持久化返回19:58:37.889524Z。旧完成至新开始358.878545秒（5分58.879秒），至归档完成431.577409秒（7分11.577秒）。相对10月23日开始空档647.725279秒缩短288.846734秒（44.59%）；相对10月22日569.115603秒缩短210.237058秒（36.94%）。完成空档相对10月23日722.163940秒缩短290.586531秒（40.24%）。\n新任务19:30:10Z创建，到job启动排队1278秒；其中大部分与旧执行器正常交易重叠，不能把21分18秒全部计作停机或恢复。旧轮归档完成到job开始54.579177秒，包含旧任务最终持久化/退出和交接调度，内部未全部单独测得；job开始到首周期304.299368秒。\n恢复bundle实测300.268129秒，辅助恢复及账户绑定另0.758044秒。组合阶段：初次核心加载63.791572、包读取4.092330、恢复点验证188.473843、尾链验证8.073532、SQLite恢复32.829330秒，另有前后远端确认及小量管理开销。Git累计获取63.321800、HEAD2.101434、对象3.092885、其他0.048922秒；这些与上述组合阶段重叠，不另行相加。\n包读取含Git对象读取3.302456、包写入0.633570秒，累计读取1265630329字节、2834次文件读取。包读取相对10月23日旧版264.688002秒下降260.595672秒（98.45%）；bundle相对541.333696秒下降241.065567秒（44.53%）。归档大小、缓存及尾部代数不同，不能把全部变化都单独归因于代码。\n固定启动提交及索引SHA已回读核验；索引v2目标1386代，恢复点1383代，缓存前缀1384包，实际仅逐代重放1384–1386共3代。归档源码seed_restore_point仍读取保留的全部前缀包，检查字节/分块哈希、父链和不可变BLOB，组装一次恢复点模型并核对原始锚点；_chain对缓存前缀再次核字节哈希，仅对尾部逐代合并并核精确快照哈希。因此没有逐代重建整条旧链，但也没有跳过全历史完整性校验。SQLite阶段复用已验证模型，重放代数0、前缀1387。\n剩余最大耗时为恢复点模型验证145.735563秒，占bundle恢复48.53%、总开始空档40.61%。恢复点精确快照哈希另19.293186秒；前缀解压6.012611、解析14.967449、分块哈希0.981023秒；恢复点自身解压0.168149、解析0.867524秒。尾部合并0.522259、验证1.108073、逐代精确哈希5.395336秒；尾部解压0.018642、解析0.056695秒。SQLite写入12.063500、回读19.678291秒。子阶段均已包含在组合阶段，不重复求和。\n首自然周期归档运行耗时72.698864秒，下一自然周期补记含最终持久化125.593201秒，final_bundle52.887462秒。旧任务末轮没有后续同进程周期补记，最终持久化耗时未知；不能当零或为了补计时增加周期。\n后续只读定位重点是模型验证内部耗时（目前未再细分）与Git获取；进一步实现优化须保留全历史BLOB、模型结构、锚点及逐代精确哈希和远端确认，性能收益在实测前仅是假设。本次未改代码、风控、预算、策略或调度，未手动重跑/追加周期。\n",
+  "limitations": [
+    "Morning exit-1 root cause remains unknown and open; performance acceptance does not close it.",
+    "Timings are nested; child stages must not be added twice.",
+    "Private full input archive is not public; exact independent reproduction is limited.",
+    "Tail count and total archive size vary; this is one measured natural handoff, not a guarantee.",
+    "No simulated benchmark trades or actual FILL are part of this restore study."
+  ],
+  "questions_for_claude": [
+    "有无在保留逐项完整性验证前提下分析模型验证成本的方法？当前只有145.735563秒合并计时，内部各项仍未测得。"
+  ]
+}
