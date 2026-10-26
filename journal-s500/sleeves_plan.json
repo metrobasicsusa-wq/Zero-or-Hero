@@ -1705,11 +1705,31 @@
   },
   "sniper-plan-500": {
    "start": 500.0,
-   "cash": 1375.0,
+   "cash": 763.0,
    "round": 1,
    "heroes": 0,
    "zeros": 0,
-   "open": [],
+   "open": [
+    {
+     "tid": "20261026-b067d6",
+     "kind": "sniper",
+     "sym": "EWZ261030P00031000",
+     "asset": "option",
+     "und": "EWZ",
+     "qty": 9,
+     "cost": 0.68,
+     "paid": 612.0,
+     "opened": "2026-10-26 09:30",
+     "why": "开盘狙击 EWZ看跌 31（2026-10-30 到期，离现价 1.9%（平时一天波动 1.8% 的一半），delta 0.37）：巴西大选第二轮卢拉逆转弗拉维奥·博索纳罗获胜（Benzinga：Brazilian Stocks Set For Record Single-Day Crash After Lula Upset），巴西 ETF 和 ADR 盘前崩盘：EWZ；翻倍后回撤 40% 卖，否则拿到 10-27 15:50 卖",
+     "best_bid": 0.0,
+     "sim": true,
+     "expiry": "2026-10-30",
+     "exit_day": "2026-10-27",
+     "exit_at": "15:50",
+     "trail": true,
+     "expiry_out": null
+    }
+   ],
    "closed": [
     {
      "tid": "20261023-91c806",
@@ -1739,18 +1759,39 @@
    ],
    "slots": {
     "2026-10-22": "2026-10-22T09:30-04:00",
-    "2026-10-23": "2026-10-23T09:30-04:00"
+    "2026-10-23": "2026-10-23T09:30-04:00",
+    "2026-10-26": "2026-10-26T09:30-04:00"
    },
    "best": 1375.0,
    "created": null
   },
   "sniper-plan-1000": {
    "start": 1000.0,
-   "cash": 1000.0,
+   "cash": 524.0,
    "round": 1,
    "heroes": 0,
    "zeros": 0,
-   "open": [],
+   "open": [
+    {
+     "tid": "20261026-57fee9",
+     "kind": "sniper",
+     "sym": "EWZ261030P00031000",
+     "asset": "option",
+     "und": "EWZ",
+     "qty": 7,
+     "cost": 0.68,
+     "paid": 476.0,
+     "opened": "2026-10-26 09:30",
+     "why": "开盘狙击 EWZ看跌 31（2026-10-30 到期，离现价 1.9%（平时一天波动 1.8% 的一半），delta 0.37）：巴西大选第二轮卢拉逆转弗拉维奥·博索纳罗获胜（Benzinga：Brazilian Stocks Set For Record Single-Day Crash After Lula Upset），巴西 ETF 和 ADR 盘前崩盘：EWZ；翻倍后回撤 40% 卖，否则拿到 10-27 15:50 卖",
+     "best_bid": 0.0,
+     "sim": true,
+     "expiry": "2026-10-30",
+     "exit_day": "2026-10-27",
+     "exit_at": "15:50",
+     "trail": true,
+     "expiry_out": null
+    }
+   ],
    "closed": [
     {
      "tid": "20261023-eb9d3a",
@@ -1780,7 +1821,8 @@
    ],
    "slots": {
     "2026-10-22": "2026-10-22T09:30-04:00",
-    "2026-10-23": "2026-10-23T09:30-04:00"
+    "2026-10-23": "2026-10-23T09:30-04:00",
+    "2026-10-26": "2026-10-26T09:30-04:00"
    },
    "best": 1000.0,
    "created": null
@@ -2523,11 +2565,12 @@
   },
   "peerc-500": {
    "start": 500.0,
-   "cash": 166.67,
+   "cash": 496.44,
    "round": 1,
    "heroes": 0,
    "zeros": 0,
-   "open": [
+   "open": [],
+   "closed": [
     {
      "tid": "20261023-732fac",
      "kind": "peer",
@@ -2542,7 +2585,13 @@
      "best_bid": 32.66,
      "sim": true,
      "exit_at": "15:50",
-     "exit_day": "2026-10-23"
+     "exit_day": "2026-10-23",
+     "state": "closed",
+     "exit_price": 32.53,
+     "proceeds": 249.0,
+     "how": "2026-10-23 15:50 到时卖出",
+     "closed": "2026-10-26 09:30",
+     "ret": -0.004
     },
     {
      "tid": "20261023-6a85ad",
@@ -2558,10 +2607,15 @@
      "best_bid": 52.6,
      "sim": true,
      "exit_at": "15:50",
-     "exit_day": "2026-10-23"
+     "exit_day": "2026-10-23",
+     "state": "closed",
+     "exit_price": 51.16,
+     "proceeds": 80.77,
+     "how": "2026-10-23 15:50 到时卖出",
+     "closed": "2026-10-26 09:30",
+     "ret": -0.031
     }
    ],
-   "closed": [],
    "slots": {
     "2026-10-23": "2026-10-23T09:40-04:00"
    },
@@ -2570,11 +2624,12 @@
   },
   "peerc-1000": {
    "start": 1000.0,
-   "cash": 333.34,
+   "cash": 992.89,
    "round": 1,
    "heroes": 0,
    "zeros": 0,
-   "open": [
+   "open": [],
+   "closed": [
     {
      "tid": "20261023-9da560",
      "kind": "peer",
@@ -2589,7 +2644,13 @@
      "best_bid": 32.66,
      "sim": true,
      "exit_at": "15:50",
-     "exit_day": "2026-10-23"
+     "exit_day": "2026-10-23",
+     "state": "closed",
+     "exit_price": 32.53,
+     "proceeds": 498.01,
+     "how": "2026-10-23 15:50 到时卖出",
+     "closed": "2026-10-26 09:30",
+     "ret": -0.004
     },
     {
      "tid": "20261023-abc634",
@@ -2605,10 +2666,15 @@
      "best_bid": 52.6,
      "sim": true,
      "exit_at": "15:50",
-     "exit_day": "2026-10-23"
+     "exit_day": "2026-10-23",
+     "state": "closed",
+     "exit_price": 51.16,
+     "proceeds": 161.54,
+     "how": "2026-10-23 15:50 到时卖出",
+     "closed": "2026-10-26 09:30",
+     "ret": -0.031
     }
    ],
-   "closed": [],
    "slots": {
     "2026-10-23": "2026-10-23T09:40-04:00"
    },
@@ -2617,11 +2683,31 @@
   },
   "sniper-r2-plan-500": {
    "start": 500.0,
-   "cash": 79.0,
+   "cash": 45.0,
    "round": 1,
    "heroes": 0,
    "zeros": 0,
-   "open": [],
+   "open": [
+    {
+     "tid": "20261026-0e0e15",
+     "kind": "sniper",
+     "sym": "PBR261030P00021500",
+     "asset": "option",
+     "und": "PBR",
+     "qty": 1,
+     "cost": 0.34,
+     "paid": 34.0,
+     "opened": "2026-10-26 09:30",
+     "why": "开盘狙击 PBR看跌 21.5（2026-10-30 到期，离现价 2.3%（平时一天波动 1.9% 的一半），delta 0.32）：候选第 2 名：卢拉对巴西石油的燃油定价和分红政策是最直接的政策风险；盘前 -21%、破 20 日低 $20.20、约 11 倍；有周度期权。排第 2 是因为单股比指数更容易被油价反弹拉回；翻倍后回撤 40% 卖，否则到期日 15:30 卖",
+     "best_bid": 0.0,
+     "sim": true,
+     "expiry": "2026-10-30",
+     "exit_day": "2026-10-30",
+     "exit_at": "15:30",
+     "trail": true,
+     "expiry_out": null
+    }
+   ],
    "closed": [
     {
      "tid": "20261023-00fbfa",
@@ -2650,18 +2736,39 @@
     }
    ],
    "slots": {
-    "2026-10-23": "2026-10-23T09:40-04:00"
+    "2026-10-23": "2026-10-23T09:40-04:00",
+    "2026-10-26": "2026-10-26T09:30-04:00"
    },
    "best": 500.0,
    "created": null
   },
   "sniper-r3-plan-500": {
    "start": 500.0,
-   "cash": 606.0,
+   "cash": 346.0,
    "round": 1,
    "heroes": 0,
    "zeros": 0,
-   "open": [],
+   "open": [
+    {
+     "tid": "20261026-a667b8",
+     "kind": "sniper",
+     "sym": "NU261030P00011500",
+     "asset": "option",
+     "und": "NU",
+     "qty": 5,
+     "cost": 0.52,
+     "paid": 260.0,
+     "opened": "2026-10-26 09:30",
+     "why": "开盘狙击 NU看跌 11.5（2026-10-30 到期，离现价 3.5%（平时一天波动 3.1% 的一半），delta 0.35）：候选第 3 名：Nubank 盘前 -26%、破 20 日低 $12.13、约 8 倍，期权便宜流动性好；风险：成长股在恐慌跳空后反抽最猛，而且它的业务一半以上在巴西之外的叙事会被拿来抄底；翻倍后回撤 40% 卖，否则到期日 15:30 卖",
+     "best_bid": 0.0,
+     "sim": true,
+     "expiry": "2026-10-30",
+     "exit_day": "2026-10-30",
+     "exit_at": "15:30",
+     "trail": true,
+     "expiry_out": null
+    }
+   ],
    "closed": [
     {
      "tid": "20261023-2dfb61",
@@ -2690,7 +2797,8 @@
     }
    ],
    "slots": {
-    "2026-10-23": "2026-10-23T09:30-04:00"
+    "2026-10-23": "2026-10-23T09:30-04:00",
+    "2026-10-26": "2026-10-26T09:30-04:00"
    },
    "best": 606.0,
    "created": null
@@ -3045,6 +3153,142 @@
     "2026-10-23": "2026-10-23T10:00-04:00"
    },
    "best": 860.0,
+   "created": null
+  },
+  "pullback-plan-500": {
+   "start": 500.0,
+   "cash": 500.0,
+   "round": 1,
+   "heroes": 0,
+   "zeros": 0,
+   "open": [],
+   "closed": [],
+   "slots": {},
+   "best": 500.0,
+   "created": null
+  },
+  "pullback-plan-1000": {
+   "start": 1000.0,
+   "cash": 1000.0,
+   "round": 1,
+   "heroes": 0,
+   "zeros": 0,
+   "open": [],
+   "closed": [],
+   "slots": {},
+   "best": 1000.0,
+   "created": null
+  },
+  "nvda0dte-plan-500": {
+   "start": 500.0,
+   "cash": 500.0,
+   "round": 1,
+   "heroes": 0,
+   "zeros": 0,
+   "open": [],
+   "closed": [],
+   "slots": {},
+   "best": 500.0,
+   "created": null
+  },
+  "tsla0dte-5x-plan-500": {
+   "start": 500.0,
+   "cash": 500.0,
+   "round": 1,
+   "heroes": 0,
+   "zeros": 0,
+   "open": [],
+   "closed": [],
+   "slots": {},
+   "best": 500.0,
+   "created": null
+  },
+  "spydip-plan-500": {
+   "start": 500.0,
+   "cash": 500.0,
+   "round": 1,
+   "heroes": 0,
+   "zeros": 0,
+   "open": [],
+   "closed": [],
+   "slots": {},
+   "best": 500.0,
+   "created": null
+  },
+  "pead-plan-1000": {
+   "start": 1000.0,
+   "cash": 1000.0,
+   "round": 1,
+   "heroes": 0,
+   "zeros": 0,
+   "open": [],
+   "closed": [],
+   "slots": {},
+   "best": 1000.0,
+   "created": null,
+   "pead_watch": {
+    "2026-10-26": [
+     "VZ"
+    ],
+    "2026-10-27": [
+     "BA",
+     "FCX",
+     "GLW",
+     "KO",
+     "SOFI"
+    ],
+    "2026-10-28": [
+     "HOOD",
+     "STX",
+     "V",
+     "APH",
+     "BSX",
+     "GEV",
+     "VRT"
+    ],
+    "2026-10-29": [
+     "GOOGL",
+     "KLAC",
+     "MSFT",
+     "NOW",
+     "CAT",
+     "LLY",
+     "MA"
+    ],
+    "2026-10-30": [
+     "AMZN",
+     "COIN",
+     "INTC",
+     "MSTR",
+     "SNDK",
+     "ABBV",
+     "CVX",
+     "XOM"
+    ]
+   }
+  },
+  "qqq0dte-plan-500": {
+   "start": 500.0,
+   "cash": 500.0,
+   "round": 1,
+   "heroes": 0,
+   "zeros": 0,
+   "open": [],
+   "closed": [],
+   "slots": {},
+   "best": 500.0,
+   "created": null
+  },
+  "tsla0dte-plan-500": {
+   "start": 500.0,
+   "cash": 500.0,
+   "round": 1,
+   "heroes": 0,
+   "zeros": 0,
+   "open": [],
+   "closed": [],
+   "slots": {},
+   "best": 500.0,
    "created": null
   }
  },
