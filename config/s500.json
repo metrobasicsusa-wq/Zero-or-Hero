@@ -367,10 +367,10 @@
        "variant": "10-22 用户（样本太慢）：$1,000 账本从 10-23 起是 $500 版的变体——行权价离现价一整天的平时波动（$500 版半天）；之前两个账本买同一只，不算两个样本"
       },
       {"id": "spy0dte-old-plan-500", "kind": "zdte", "half_take": true, "start": 500, "name": "SPY 末日单 0.6%、天天做（10-20 前的规则，只演算）",
-       "und": "SPY", "offset": 0.006, "take": 3, "plan_only": true
+       "und": "SPY", "offset": 0.006, "take": 3, "fraction": 1.0, "plan_only": true
       },
       {"id": "spy0dte-old-plan-1000", "kind": "zdte", "half_take": true, "start": 1000, "name": "SPY 末日单 0.6%、天天做（10-20 前的规则，只演算）",
-       "und": "SPY", "offset": 0.006, "take": 3, "plan_only": true
+       "und": "SPY", "offset": 0.006, "take": 3, "fraction": 1.0, "plan_only": true
       },
       {"id": "earn-opt-plan-500", "kind": "earnings", "start": 500, "name": "财报彩票看涨：2 倍波动处看涨，第二天 09:35 卖（10-19 前的规则，只演算）",
        "n": 3, "instrument": "option", "plan_only": true
@@ -382,13 +382,13 @@
        "fraction": 0.5, "max_spread": 0.1, "note": "10-23 复核（用户「全部深度重新思考一遍」）：用 hero 游戏的口径重算 research/2026-10-13-overnight.json：50 日线上、拿 3 天，押一半 3/29 轮到 20 倍（10%，区间 4–26%），每个 hero $4,800，全部规则里最便宜；10-16 按平均（最近 3 个月 -48%）停的，按 hero 口径重新开进场，只在期权价差 ≤10% 的名字里选"
       },
       {"id": "overnight-plan-500", "kind": "overnight", "start": 500, "name": "隔夜动量：同上规则（只演算，10-16 起）",
-       "fraction": 0.5, "plan_only": true
+       "fraction": 0.5, "max_spread": 0.1, "plan_only": true
       },
       {"id": "overnight-1000", "kind": "overnight", "start": 1000, "name": "隔夜动量：15:50 当天涨 3%+、收在高位、在 50 日均线上方的最强一只，买下周价外 3% 看涨，翻倍后回撤 40% 卖，否则第三天 15:50 卖（10-16 起不再开新仓，只卖完已有的）",
        "fraction": 0.5, "max_spread": 0.1, "note": "10-23 复核（用户「全部深度重新思考一遍」）：用 hero 游戏的口径重算 research/2026-10-13-overnight.json：50 日线上、拿 3 天，押一半 3/29 轮到 20 倍（10%，区间 4–26%），每个 hero $4,800，全部规则里最便宜；10-16 按平均（最近 3 个月 -48%）停的，按 hero 口径重新开进场，只在期权价差 ≤10% 的名字里选"
       },
       {"id": "overnight-plan-1000", "kind": "overnight", "start": 1000, "name": "隔夜动量：同上规则（只演算，10-16 起）",
-       "fraction": 0.5, "plan_only": true
+       "fraction": 0.5, "max_spread": 0.1, "plan_only": true
       },
       {"id": "pead-500", "kind": "pead", "start": 500, "name": "财报后漂移：财报高开 10%+ 且守住，第二天 10:00 买下周价外 3% 看涨，翻倍后回撤 40% 卖，否则第三天 15:50 卖",
        "gap": 0.10, "fraction": 0.5,
@@ -511,24 +511,24 @@
        "note": "10-22 用户（样本太慢）：演算账本同时跟候选第 2、3 名，一天 3 笔，顺便检验排名有没有用"
       },
       {"id": "nvda0dte-plan-500", "kind": "zdte", "half_take": true, "start": 500, "name": "NVDA 末日单：10:00 顺势买当天到期、离现价 0.6%，一半 3 倍止盈（只演算，10-23 起）",
-       "und": "NVDA", "offset": 0.006, "take": 3, "plan_only": true, "note": "10-23 用户「改」（docs/hero-plan.md）：实盘 nvda0dte-500 / -1000 停止进场，这里照常记录"
+       "und": "NVDA", "offset": 0.006, "take": 3, "fraction": 1.0, "plan_only": true, "note": "10-23 用户「改」（docs/hero-plan.md）：实盘 nvda0dte-500 / -1000 停止进场，这里照常记录"
       },
       {"id": "tsla0dte-5x-plan-500", "kind": "zdte", "half_take": true, "start": 500, "name": "TSLA 末日单（5 倍止盈）：10:00 顺势买当天到期、离现价 0.6%（只演算，10-23 起）",
-       "und": "TSLA", "offset": 0.006, "take": 5, "plan_only": true, "note": "10-23 用户「改」（docs/hero-plan.md）：实盘 tsla0dte-5x-500 / -1000 停止进场，这里照常记录"
+       "und": "TSLA", "offset": 0.006, "take": 5, "fraction": 1.0, "plan_only": true, "note": "10-23 用户「改」（docs/hero-plan.md）：实盘 tsla0dte-5x-500 / -1000 停止进场，这里照常记录"
       },
       {"id": "spydip-plan-500", "kind": "zdte", "half_take": true, "start": 500, "name": "SPY 昨跌 1% 后买看涨（离现价 0.3%）（只演算，10-23 起）",
-       "und": "SPY", "offset": 0.003, "take": 3, "side": "call", "after_drop": -0.01, "plan_only": true, "note": "10-23 用户「改」（docs/hero-plan.md）：实盘 spydip-500 / -1000 停止进场，这里照常记录"
+       "und": "SPY", "offset": 0.003, "take": 3, "side": "call", "after_drop": -0.01, "fraction": 1.0, "plan_only": true, "note": "10-23 用户「改」（docs/hero-plan.md）：实盘 spydip-500 / -1000 停止进场，这里照常记录"
       },
       {"id": "pead-plan-1000", "kind": "pead", "start": 1000, "name": "财报后漂移：高开 5% 以上且守住，第二天 10:00 买下周到期看涨（只演算，10-23 起）",
        "gap": 0.05, "fraction": 0.5, "plan_only": true, "note": "10-23 用户「改」（docs/hero-plan.md）：实盘 pead-1000 停止进场，这里照常记录；$500 版（10% 门槛）照常实盘"
       },
       {"id": "qqq0dte-plan-500", "kind": "zdte", "half_take": true, "start": 500, "name": "QQQ 末日单：09:35 顺势买当天到期、离现价 0.6%，一半 3 倍止盈（只演算，10-23 起）",
-       "entry": "09:35", "und": "QQQ", "offset": 0.006, "take": 3, "plan_only": true, "note": "10-23 复核（用户「全部深度重新思考一遍」）：实盘 qqq0dte-500 / -1000 停止进场，这里照常记录"
+       "entry": "09:35", "und": "QQQ", "offset": 0.006, "take": 3, "fraction": 1.0, "plan_only": true, "note": "10-23 复核（用户「全部深度重新思考一遍」）：实盘 qqq0dte-500 / -1000 停止进场，这里照常记录"
       },
       {"id": "tsla0dte-plan-500", "kind": "zdte", "half_take": true, "start": 500, "name": "TSLA 末日单：10:00 顺势买当天到期、离现价 0.6%，一半 3 倍止盈（只演算，10-23 起）",
-       "und": "TSLA", "offset": 0.006, "take": 3, "plan_only": true, "note": "10-23 复核（用户「全部深度重新思考一遍」）：实盘 tsla0dte-500 / -1000 停止进场，这里照常记录"
+       "und": "TSLA", "offset": 0.006, "take": 3, "fraction": 1.0, "plan_only": true, "note": "10-23 复核（用户「全部深度重新思考一遍」）：实盘 tsla0dte-500 / -1000 停止进场，这里照常记录"
       },
-      {"id": "dia0dte-plan-500", "kind": "zdte", "half_take": true, "start": 500, "name": "DIA 末日单：10:00 顺势买当天到期（没有就一周内最近到期）、离现价 0.3%，一半 3 倍、其余翻倍后回撤 40%，15:30 平仓（只演算，10-23 起）", "und": "DIA", "offset": 0.003, "take": 3, "plan_only": true,
+      {"id": "dia0dte-plan-500", "kind": "zdte", "half_take": true, "start": 500, "name": "DIA 末日单：10:00 顺势买当天到期（没有就一周内最近到期）、离现价 0.3%，一半 3 倍、其余翻倍后回撤 40%，15:30 平仓（只演算，10-23 起）", "und": "DIA", "offset": 0.003, "take": 3, "fraction": 1.0, "plan_only": true,
        "note": "10-22 用户（样本太慢）：末日单演算账本多铺几个标的"
       },
       {"id": "fadelotto-plan", "kind": "fadelotto", "start": 10000,

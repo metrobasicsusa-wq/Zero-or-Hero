@@ -3649,6 +3649,25 @@ class Sleeves(unittest.TestCase):
         self.assertEqual(t["expiry"], "2026-10-09")
         self.assertIn("最近到期", t["why"])
 
+    def test_audit5_plan_passes_options_held_into_a_report_like_live_but_not_the_earnings_rule(self):
+        # audit #5 (D3): the plan twins skipped the earnings guard the live ledgers obey, so they were looser than live
+        from datetime import datetime
+        from hero import sleeves
+        specs = [{"id": "m-500", "kind": "multi", "start": 500, "fraction": 0.5, "plan_only": True},
+                 {"id": "earn-500", "kind": "earnings", "start": 500, "fraction": 0.5, "plan_only": True}]
+        rule = self.multi_rule([0.10])                                                     # ZZA, held to 10-30
+        b = SleeveBroker(lambda s: (0.08, 0.10))
+        book = sleeves.Book(self.root / "plan.json", specs)
+        r = sleeves.Runner(b, Journal(self.root), self.cfg, specs, book, {"multi": rule, "earnings": rule},
+                           datetime(2026, 10, 8, 10, 0), date(2026, 10, 8), sleep=lambda s: None)
+        r._cal = {"ZZA": [{"date": "2026-10-09", "time": "pre-market"}]}                  # reports before the 10-30 exit
+        r.plan()
+        self.assertEqual(book.s("m-500")["open"], [])
+        log = [json.loads(l) for l in (self.root / "trades.jsonl").read_text().splitlines()]
+        skip = [e for e in log if e["kind"] == "sleeve_skip" and e.get("sleeve") == "m-500"]
+        self.assertTrue(skip and skip[0]["dry_run"] and "财报" in skip[0]["why"])
+        self.assertEqual(len(book.s("earn-500")["open"]), 1)                               # its whole point is the report
+
 
 class EarningsShares(unittest.TestCase):
     """Owner, 10-19: earnings only in shares or 2x funds; no option held through a report."""
@@ -6051,6 +6070,13 @@ class LedgerAuditConfig(unittest.TestCase):
         self.assertTrue(all(s.get("target") == 10000 for s in two), [s["id"] for s in two])   # the $2,000 ledgers stay at 5x, said aloud
         for sid in ("spy0dte-500", "spy0dte-1000"):
             self.assertEqual(self.by[sid].get("rule_from"), "2026-10-23", sid)
+
+    def test_audit5_the_0dte_plan_twins_go_all_in_and_overnight_plan_has_the_spread_cap(self):
+        twins = [s for s in self.by.values() if s["kind"] == "zdte" and s.get("plan_only")]
+        self.assertEqual(len(twins), 8)
+        self.assertTrue(all(s.get("fraction") == 1.0 for s in twins), [s["id"] for s in twins if s.get("fraction") != 1.0])
+        for sid in ("overnight-plan-500", "overnight-plan-1000"):
+            self.assertEqual(self.by[sid].get("max_spread"), 0.1, sid)                    # as the live overnight ledgers
 
 
 class WeekendStudies(unittest.TestCase):

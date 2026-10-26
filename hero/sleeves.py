@@ -318,6 +318,21 @@ class Runner:
                 return r
         return None
 
+    def report_skip(self, spec: dict, pk: dict, dry_run: bool) -> bool:
+        """The guard itself: an option pick that would be held into its underlying's report is passed over and logged.
+        Audit 10-26 #5: the plan twins obey it too (they were looser than live); the earnings rule's own twins are exempt,
+        since holding into the report is what they record."""
+        if pk["asset"] != "option" or (dry_run and spec.get("kind") == "earnings"):
+            return False
+        r = self.report_inside(pk.get("und"), pk.get("exit_day") or pk.get("expiry"))
+        if not r:
+            return False
+        self.j.event("sleeve_skip", dry_run=dry_run, sleeve=spec["id"], symbol=pk["sym"],
+                     why=f"{spec['id']}{'（演算）' if dry_run else ''}：{pk.get('und')} {r['date']}"
+                         f"{'盘后' if 'post' in r.get('time', '') else '盘前' if 'pre' in r.get('time', '') else ''}"
+                         f"发财报，这张期权会拿过财报（隐含波动财报后掉得太快），财报前不拿期权，不买")
+        return True
+
     # ---- broker helpers ----
     def broker_orders(self) -> list[dict] | None:
         """The broker's orders (any status) since the start of the previous weekday -- a cycle late in the day whose
@@ -577,6 +592,8 @@ class Runner:
             def cap() -> float:
                 return s["cash"] if shared is None else min(s["cash"], shared)
             for pk in picks:
+                if self.report_skip(spec, pk, dry_run=True):   # audit 10-26 #5: the live earnings guard
+                    continue
                 if pk["asset"] == "stock":
                     notional = math.floor(each * float(pk.get("scale", 1)) * 100) / 100   # scale: a 3x fund takes a third
                     ask = float(pk.get("ask") or 0)
@@ -733,12 +750,7 @@ class Runner:
             each = fraction * s["cash"] / len(picks)
             spread = spreads(spec, picks)
             for pk in picks:
-                r = self.report_inside(pk.get("und"), pk.get("exit_day") or pk.get("expiry")) if pk["asset"] == "option" else None
-                if r:
-                    self.j.event("sleeve_skip", dry_run=False, sleeve=spec["id"], symbol=pk["sym"],
-                                 why=f"{spec['id']}：{pk.get('und')} {r['date']}"
-                                     f"{'盘后' if 'post' in r.get('time', '') else '盘前' if 'pre' in r.get('time', '') else ''}"
-                                     f"发财报，这张期权会拿过财报（隐含波动财报后掉得太快），财报前不拿期权，不买")
+                if self.report_skip(spec, pk, dry_run=False):
                     continue
                 intents.append((spec, pk, each, slot, fraction if spread else None))
         if not intents:
