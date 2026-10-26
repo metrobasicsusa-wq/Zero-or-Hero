@@ -374,7 +374,11 @@ def ledger_cards(root: Path, day: str) -> list[dict]:
         return []
     rows, sum_now, sum_start, sum_today = [], 0.0, 0.0, 0.0
     scored = []
+    # audit 10-26 #8: a stopped, flat ledger handed its cash back to the pool -- not a $0 ledger, and not in the totals
+    stopped = [sid for sid, s in book.items() if s.get("stopped") and not s.get("open")]
     for sid, s in book.items():
+        if sid in stopped:
+            continue
         held = sum(float(t.get("paid") or 0) for t in s.get("open") or [])
         now, start = float(s.get("cash") or 0) + held, float(s.get("start") or 0)
         today = sum(float(t.get("proceeds") or 0) - float(t.get("paid") or 0) for t in s.get("closed") or []
@@ -396,6 +400,12 @@ def ledger_cards(root: Path, day: str) -> list[dict]:
             base, _, amt = sid.rpartition("-")
             names.setdefault(SLEEVE.get(base, base), []).append(amt)
         rows.append("⚪ 还没出手：" + "、".join(f"{k}（{'/'.join(v)}）" for k, v in names.items()))
+    if stopped:
+        names = {}
+        for sid in stopped:
+            base, _, amt = sid.rpartition("-")
+            names.setdefault(SLEEVE.get(base, base), []).append(amt)
+        rows.append("⏹ 已停、钱已退回池子：" + "、".join(f"{k}（{'/'.join(v)}）" for k, v in names.items()))
     if not rows:
         return []
     return chunked(f"账本榜 · 合计 ${sum_now:,.0f} / 起点 ${sum_start:,.0f} · 今天已实现 {sum_today:+,.0f}", rows,

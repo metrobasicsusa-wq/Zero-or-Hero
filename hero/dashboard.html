@@ -457,8 +457,10 @@ function renderSleeves() {
   const rows = Object.entries(b.sleeves).map(([id, s]) => {
     const held = s.open.reduce((a, t) => a + t.paid, 0);
     const wins = s.closed.filter((t) => t.ret > 0).length;
-    const value = s.cash + held;
-    return [`<a href="f/${esc(direction(id))}.html"><b>${esc((specs[id] || {}).name || id)}</b></a>`, usd(s.start, 0), usd(s.cash, 2), held ? usd(held, 2) : "—",
+    const back = s.stopped && !s.open.length ? (s.stopped.returned || 0) : null;   // audit 10-26 #8: its cash went back to the pool
+    const value = back !== null ? back : s.cash + held;
+    return [`<a href="f/${esc(direction(id))}.html"><b>${esc((specs[id] || {}).name || id)}</b></a>`, usd(s.start, 0),
+      back !== null ? `已停 · 退回 ${usd(back, 2)}` : usd(s.cash, 2), held ? usd(held, 2) : "—",
       `<span class="${tone(value / s.start - 1)}">${pct(value / s.start - 1, 0)}</span>`,
       `${Math.round((s.target || (p.target_x || 20) * s.start) / s.start)} 倍`,   // audit 10-26 #3: each ledger's own goal
       `第 ${s.round} 轮`, `${s.heroes} / ${s.zeros}`, `${s.closed.length}（赚 ${wins}）`];

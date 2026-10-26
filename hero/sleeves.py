@@ -181,6 +181,14 @@ class Book:
         s["best"] = s["start"]
         return msg
 
+    def retire(self, keep: set[str], when: str | None = None) -> list[str]:
+        """Audit 10-26 #8: ledgers no longer in the config move out of "sleeves" into "retired" -- kept, not deleted, and no
+        longer managed (sleeves_plan.json held 41 such ids; an old dipweek NOK ticket was still being sold)."""
+        gone = [sid for sid in self.d["sleeves"] if sid not in keep]
+        for sid in gone:
+            self.d.setdefault("retired", {})[sid] = {**self.d["sleeves"].pop(sid), "retired": when}
+        return gone
+
     def stop_round(self, sid: str, p: dict, when: str | None = None) -> str | None:
         """Audit 10-26 #2: a sleeve that opens nothing new (`stop_entries`) never reached the dead-zone check, so its
         round never ended and its zero was never kept. Once flat, it ends the round once and is marked stopped, without
@@ -195,16 +203,22 @@ class Book:
         need = float(last["paid"]) / float(last["qty"]) if last else None
         zero = cash < s["start"] * p["zero_line"] or (need is not None and cash < need)
         end = "zero" if zero else "stopped"
-        s["stopped"] = {"round": s["round"], "day": when, "end": end}
+        s["stopped"] = {"round": s["round"], "day": when, "end": end, "returned": round(cash, 2)}
+        back = f"；剩下的 ${cash:,.2f} 退回池子" if cash else ""
         if len(s["closed"]) == s.get("round_from", 0) and cash == s["start"]:
             s["stopped"]["kept"] = False
-            return None
-        if zero:
-            s["zeros"] += 1
-        self.end_round(s, end, when)
-        return (f"{sid} 已停开新仓、空仓，第 {s['round']} 轮结束：剩 ${cash:,.2f}"
-                + ("，低于归零线" if cash < s["start"] * p["zero_line"] else f"，连一张 ${need:,.2f} 都买不起" if zero else "")
-                + ("，算归零" if zero else "，记为停止") + "；不从池子补钱重开")
+            msg = f"{sid} 已停开新仓、空仓，这一轮还没交易{back}"
+        else:
+            if zero:
+                s["zeros"] += 1
+            self.end_round(s, end, when)
+            msg = (f"{sid} 已停开新仓、空仓，第 {s['round']} 轮结束：剩 ${cash:,.2f}"
+                   + ("，低于归零线" if cash < s["start"] * p["zero_line"] else f"，连一张 ${need:,.2f} 都买不起" if zero else "")
+                   + ("，算归零" if zero else "，记为停止") + "；不从池子补钱重开" + back)
+        # audit 10-26 #8: what a stopped ledger has left goes back to the pool (15 of them held $8,083 no rule would bet)
+        self.d["topups"] = round(self.d["topups"] - cash, 2)
+        s["cash"] = 0.0
+        return msg
 
     def rule_change(self, sid: str, rule_from: str | None, when: str | None = None) -> str | None:
         """Audit 10-26 #3: a rule changed under the same id (its spec's `rule_from` moved) starts a new round, so the
@@ -228,13 +242,17 @@ class Book:
                 f"从 ${s['start']:,.0f} 开第 {s['round']} 轮记新规则")
 
     def resume(self, sid: str, when: str | None = None) -> str | None:
-        """A stopped sleeve whose rule comes back starts a new round at its start (from the pool)."""
+        """A stopped sleeve whose rule comes back: a round that was never recorded takes back what it returned to the pool
+        and goes on; otherwise a new round starts at its start (from the pool)."""
         s = self.s(sid)
         st = s.pop("stopped", None)
         if not st:
             return None
         if st.get("kept") is False and s["round"] == st["round"]:
-            return None   # its round was never ended: it simply goes on
+            back = float(st.get("returned") or 0.0)
+            self.d["topups"] = round(self.d["topups"] + back, 2)
+            s["cash"] = round(s["cash"] + back, 2)
+            return None
         self.d["topups"] = round(self.d["topups"] + s["start"] - s["cash"], 2)
         s["round"] += 1
         s["cash"] = s["start"]
@@ -363,13 +381,21 @@ class Runner:
         return any((o.get("client_order_id") or "").startswith(lead) and o.get("side") == "buy" for o in self.broker_orders() or [])
 
     def order(self, client_order_id: str) -> dict:
+        """The broker's order by our id; {} only when the broker says it has none (404). Audit 10-26 #8: any other failure
+        came back as {} too, so one API error read as "never filled / cancelled" and a sold ticket was booked at $0.
+        Now it returns {"_error": ...} and the callers leave that ticket for the next cycle."""
         try:
             return self.c.order_by_client_id(client_order_id) or {}
-        except Exception:
-            return {}
+        except Exception as e:
+            if getattr(e, "status", None) == 404:
+                return {}
+            self.j.event("alert_error", source="sleeves:order", error=str(e)[:200])
+            return {"_error": str(e)[:200]}
 
     def cancel(self, client_order_id: str) -> dict:
         o = self.order(client_order_id)
+        if o.get("_error"):
+            return o
         if o.get("id") and o.get("status") not in ("filled", "canceled", "expired", "rejected"):
             try:
                 self.c.cancel_order(o["id"])
@@ -439,7 +465,9 @@ class Runner:
             family = [(tag, o) for sp, t2, tag, o in parsed if sp["id"] == sid and t2.startswith(tid)]
             for tag, o in family:
                 if o.get("status") in ("new", "accepted", "pending_new", "partially_filled", "held"):
-                    o.update(self.cancel(o["client_order_id"]) or {})
+                    st = self.cancel(o["client_order_id"]) or {}
+                    if not st.get("_error"):
+                        o.update(st)
             buys = [o for tag, o in family if o.get("side") == "buy"]
             sells = [o for tag, o in family if o.get("side") == "sell"]
             bought = sum(float(o.get("filled_qty") or 0) for o in buys)
@@ -479,6 +507,8 @@ class Runner:
             bid = quotes.get(t["sym"], (0.0, 0.0))[0]
             if t.get("sell_cid"):
                 o = self.order(t["sell_cid"])
+                if o.get("_error"):
+                    continue   # unknown, not cancelled: decide next cycle (audit 10-26 #8)
                 if o.get("status") == "filled":
                     self.closed(sid, t, float(o.get("filled_avg_price") or bid), t.get("sell_why", "卖出"))
                 elif o.get("status") in ("canceled", "expired", "rejected", None) and t["sym"] in held:
@@ -490,6 +520,8 @@ class Runner:
                 continue
             if t.get("take_cid"):
                 o = self.order(t["take_cid"])
+                if o.get("_error"):
+                    continue   # the take may have filled: no exit decision on an unknown state
                 if o.get("status") == "filled":
                     self.closed(sid, t, float(o.get("filled_avg_price") or t["take"]), f"{t['take_x']:g} 倍止盈（券商挂单成交）")
                     continue
@@ -521,6 +553,8 @@ class Runner:
     def sell(self, sid: str, t: dict, why: str, bid: float | None = None) -> None:
         if t.get("take_cid"):
             o = self.cancel(t["take_cid"])
+            if o.get("_error"):
+                return   # the take's state is unknown: its contracts may still be held by it; try again next cycle
             if o.get("status") == "filled":
                 self.closed(sid, t, float(o.get("filled_avg_price") or t["take"]), f"{t['take_x']:g} 倍止盈（券商挂单成交）")
                 return
@@ -567,6 +601,11 @@ class Runner:
     # order would catch can be missed), the trail and the time exits, sold at the bid. A plan ledger's cash moves
     # with its results and starts a new round like a real one.
     def plan(self) -> None:
+        gone = self.book.retire({s["id"] for s in self.specs}, self.today.isoformat())
+        if gone:
+            self.j.event("sleeve_round", dry_run=True, sleeve="sleeves_plan",
+                         why=f"演算本里 {len(gone)} 个账本已不在名单（{'、'.join(gone[:6])}{'…' if len(gone) > 6 else ''}），"
+                             "移到 retired 保存，不再管它们的持仓（审计 10-26 #8）")
         self.plan_manage()
         for spec in self.specs:
             day = self.today.isoformat()
@@ -669,8 +708,10 @@ class Runner:
                          + (f"；另 {runner['qty']} 张翻倍后回撤 40% 卖" if runner else ""))
 
     def plan_manage(self) -> None:
-        """The plan book's open tickets: the take when the bid reaches it, else the live exit rules, sold at the bid."""
-        tickets = [(sid, t) for sid, s in self.book.d["sleeves"].items() for t in list(s["open"])]
+        """The plan book's open tickets: the take when the bid reaches it, else the live exit rules, sold at the bid.
+        Only the listed sleeves' (audit 10-26 #8)."""
+        listed = {s["id"] for s in self.specs}
+        tickets = [(sid, t) for sid, s in self.book.d["sleeves"].items() if sid in listed for t in list(s["open"])]
         if not tickets:
             return
         quotes = self.bids(sorted({t["sym"] for _, t in tickets}))

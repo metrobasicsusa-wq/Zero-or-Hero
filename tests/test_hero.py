@@ -2553,6 +2553,21 @@ class Notify(unittest.TestCase):
             self.assertEqual(rows[1], "🟢 [**接力 $1k**](https://metrobasicsusa-wq.github.io/Zero-or-Hero/f/relay.html) $1,000（1.00 倍） · 第 2 轮")
             self.assertEqual(rows[2], "⚪ 还没出手：撒网（500/1000）")
 
+    def test_audit8_the_scoreboard_lists_stopped_ledgers_apart_not_at_zero(self):
+        from hero import notify
+        with tempfile.TemporaryDirectory() as d:
+            root = self.journal(d)
+            led = lambda cash, start, **k: {"cash": cash, "start": start, "round": 1, "open": [], "closed": [], **k}
+            (root / "sleeves.json").write_text(json.dumps({"sleeves": {
+                "relay-1000": led(1200.0, 1000, round=2),
+                "qqq0dte-500": led(0.0, 500, stopped={"round": 1, "end": "zero", "returned": 127.0}),
+                "qqq0dte-1000": led(0.0, 1000, stopped={"round": 1, "end": "stopped", "returned": 900.0})}}))
+            cards = notify.ledger_cards(root, "2026-10-14")
+            self.assertEqual(cards[0]["title"], "账本榜 · 合计 $1,200 / 起点 $1,000 · 今天已实现 +0")   # not $1,200 / $2,500
+            rows = cards[0]["description"].split("\n")
+            self.assertEqual(rows[-1], "⏹ 已停、钱已退回池子：QQQ 末日（500/1000）")
+            self.assertFalse(any("$0（0.00 倍）" in r for r in rows))
+
     def test_order_lines_say_buy_or_sell_and_how_much(self):
         from hero import notify
         line = notify.lines([{"ts": "2026-10-08T13:30:40+00:00", "kind": "order", "symbol": "XLE", "side": "sell", "qty": "56",
@@ -3524,7 +3539,7 @@ class Sleeves(unittest.TestCase):
         book, log = self.cycle(b, 10, 0, [spec])
         s = book.s("qqq0dte-500")
         self.assertEqual((s["rounds"][-1]["end"], s["rounds"][-1]["cash"], s["rounds"][-1]["trades"]), ("zero", 127.0, 1))
-        self.assertEqual((s["zeros"], s["round"], s["cash"], book.d["topups"]), (1, 1, 127.0, 0.0))   # not restarted: it is stopped
+        self.assertEqual((s["zeros"], s["round"], s["cash"], book.d["topups"]), (1, 1, 0.0, -127.0))  # not restarted; its $127 back to the pool (#8)
         self.assertEqual(s["stopped"]["end"], "zero")
         self.assertIn("停开新仓", [e for e in log if e["kind"] == "sleeve_round"][-1]["why"])
         self.assertEqual(b.orders, {})
@@ -3535,13 +3550,13 @@ class Sleeves(unittest.TestCase):
         spec = self.stopped_ledger(400.0, [{"tid": "a1", "qty": 2, "paid": 350.0, "proceeds": 250.0}])
         book, _ = self.cycle(SleeveBroker(lambda s: (0.08, 0.10)), 10, 0, [spec])
         s = book.s("qqq0dte-500")
-        self.assertEqual((s["rounds"][-1]["end"], s["zeros"], s["cash"]), ("stopped", 0, 400.0))   # $175 a contract: it could buy
+        self.assertEqual((s["rounds"][-1]["end"], s["zeros"], s["rounds"][-1]["cash"]), ("stopped", 0, 400.0))   # $175 a contract: it could buy
 
     def test_audit2_a_stopped_ledger_under_the_zero_line_is_a_zero_without_a_restart(self):
         spec = self.stopped_ledger(30.0, [{"tid": "a1", "qty": 3, "paid": 300.0, "proceeds": 0.0}])
         book, _ = self.cycle(SleeveBroker(lambda s: (0.08, 0.10)), 10, 0, [spec])
         s = book.s("qqq0dte-500")
-        self.assertEqual((s["rounds"][-1]["end"], s["zeros"], s["round"], s["cash"], book.d["topups"]), ("zero", 1, 1, 30.0, 0.0))
+        self.assertEqual((s["rounds"][-1]["end"], s["zeros"], s["round"], s["rounds"][-1]["cash"], book.d["topups"]), ("zero", 1, 1, 30.0, -30.0))
 
     def test_audit2_a_stopped_ledger_with_an_open_ticket_waits_and_an_empty_round_is_not_kept(self):
         spec = self.stopped_ledger(100.0, open_=[{"tid": "o1", "kind": "zdte", "sym": "SPY2026-10-08C707", "asset": "option", "qty": 1,
@@ -3681,6 +3696,83 @@ class Sleeves(unittest.TestCase):
             getattr(r, runner_call)()
             qty = sorted(t["qty"] for t in book.s(spec["id"])["open"])
             self.assertEqual(qty, [2, 2], runner_call)                                    # $50 each at $21: two, not eleven
+
+    def test_audit8_an_order_lookup_error_is_not_a_cancel(self):
+        # audit #8 (D6): one API error made order() return {}, and a sold ticket was booked at $0
+        from hero import sleeves
+        b = SleeveBroker(lambda s: (0.08, 0.10))
+        self.cycle(b, 10, 0, self.specs[:1])                                              # 12 contracts open, a take resting
+        for o in b.orders.values():
+            if o["side"] == "sell":
+                o["status"] = "expired"
+        sym = next(iter(b.pos))
+        cid = "sl-spy0dte-500-x-sell"
+        b.orders[cid] = {"client_order_id": cid, "id": "idx", "symbol": sym, "side": "sell", "status": "filled",
+                         "filled_qty": "12", "filled_avg_price": "0.30"}
+        b.pos[sym] = 0                                                                    # the sell filled at the broker
+        book = sleeves.Book(self.root / "sleeves.json", self.specs[:1])
+        book.s("spy0dte-500")["open"][0]["sell_cid"] = cid
+        book.save()
+
+        class Down(Exception):
+            status = 503
+        real = b.order_by_client_id
+
+        def flaky(c):
+            if c == cid:
+                raise Down("503 service unavailable")
+            return real(c)
+        b.order_by_client_id = flaky
+        book, log = self.cycle(b, 11, 0, self.specs[:1])
+        self.assertEqual(len(book.s("spy0dte-500")["open"]), 1)                           # not booked at $0: wait for the next cycle
+        self.assertTrue(any(e["kind"] == "alert_error" and e["source"] == "sleeves:order" for e in log))
+        b.order_by_client_id = real
+        book, log = self.cycle(b, 11, 10, self.specs[:1])
+        self.assertEqual((book.s("spy0dte-500")["open"], book.s("spy0dte-500")["closed"][-1]["proceeds"]), ([], 360.0))
+
+        class Gone(Exception):
+            status = 404
+        from datetime import datetime
+        from hero import sleeve_rules
+        r = sleeves.Runner(b, Journal(self.root), self.cfg, self.specs[:1], book, sleeve_rules.RULES, datetime(2026, 10, 8, 12, 0),
+                           date(2026, 10, 8), sleep=lambda s: None)
+        b.order_by_client_id = lambda c: (_ for _ in ()).throw(Gone("404 order not found"))
+        self.assertEqual(r.order("anything"), {})                                         # only a 404 means "no such order"
+
+    def test_audit8_plan_retires_ledgers_no_longer_listed_and_leaves_their_tickets_alone(self):
+        # audit #8 (D9): sleeves_plan.json kept 41 ids not in the config; an old dipweek NOK ticket was still being managed
+        from datetime import datetime
+        from hero import sleeve_rules, sleeves
+        stray = {"tid": "x1", "kind": "dipweek", "sym": "NOK2026-10-30C00006000", "asset": "option", "und": "NOK", "qty": 3,
+                 "cost": 0.10, "paid": 30.0, "best_bid": 0.0, "sim": True, "expiry": "2026-10-30", "exit_day": "2026-10-08",
+                 "exit_at": "09:00"}
+        book = sleeves.Book(self.root / "plan.json", self.specs + [{"id": "dipweek-500", "kind": "dipweek", "start": 500}])
+        book.s("dipweek-500")["open"].append(stray)
+        book.save()
+        b = SleeveBroker(lambda s: (0.08, 0.10))
+        book = sleeves.Book(self.root / "plan.json", self.specs)
+        sleeves.Runner(b, Journal(self.root), self.cfg, self.specs, book, sleeve_rules.RULES, datetime(2026, 10, 8, 10, 0),
+                       date(2026, 10, 8), sleep=lambda s: None).plan()
+        book.save()
+        d = json.loads((self.root / "plan.json").read_text())
+        self.assertNotIn("dipweek-500", d["sleeves"])
+        self.assertEqual(d["retired"]["dipweek-500"]["open"][0]["tid"], "x1")             # kept, not deleted, and not sold
+        self.assertEqual(d["retired"]["dipweek-500"]["retired"], "2026-10-08")
+        self.assertEqual(sorted(d["sleeves"]), ["spy0dte-1000", "spy0dte-500"])
+
+    def test_audit8_a_stopped_ledger_hands_its_cash_back_to_the_pool(self):
+        # audit #8 (D9): 15 stopped live ledgers held $8,083 that no rule would ever bet
+        spec = self.stopped_ledger(400.0, [{"tid": "a1", "qty": 2, "paid": 350.0, "proceeds": 250.0}])
+        book, log = self.cycle(SleeveBroker(lambda s: (0.08, 0.10)), 10, 0, [spec])
+        s = book.s("qqq0dte-500")
+        self.assertEqual((s["cash"], s["stopped"]["returned"], book.d["topups"], s["rounds"][-1]["cash"]), (0.0, 400.0, -400.0, 400.0))
+        self.assertIn("$400.00 退回池子", [e for e in log if e["kind"] == "sleeve_round"][-1]["why"])
+        spec = self.stopped_ledger(500.0)                                                  # an untouched round: its start goes back too
+        book, _ = self.cycle(SleeveBroker(lambda s: (0.08, 0.10)), 10, 0, [spec])
+        self.assertEqual((book.s("qqq0dte-500")["cash"], book.d["topups"]), (0.0, -500.0))
+        live = {k: v for k, v in spec.items() if k != "stop_entries"}                     # and comes back if the rule does
+        book, _ = self.cycle(SleeveBroker(lambda s: (0.08, 0.10)), 10, 0, [live])
+        self.assertEqual((book.s("qqq0dte-500")["round"], book.d["topups"]), (1, 0.0))
 
 
 class EarningsShares(unittest.TestCase):

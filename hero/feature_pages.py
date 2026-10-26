@@ -95,9 +95,13 @@ def ledger_row(spec: dict, s: dict, plan: bool, prices: dict[str, float]) -> dic
     realized = sum(float(t.get("proceeds") or 0) - float(t.get("paid") or 0) for t in closed)
     start, cash = float(s.get("start") or spec.get("start") or 0), float(s.get("cash") or 0)
     value = cash + (now if now is not None else held)
+    st = s.get("stopped") or {}
+    returned = float(st.get("returned") or 0.0) if st and not opened else None
+    if returned is not None:   # audit 10-26 #8: a stopped ledger's cash went back to the pool; show what it ended with
+        value = returned
     target = float(s.get("target") or spec.get("target") or 20 * start)   # audit 10-26 #3: 20x the start unless the spec says
     return {"id": spec["id"], "plan": plan, "start": start, "cash": cash, "held": held, "now": now, "value": value,
-            "target": target, "x": target / start if start else 20.0,
+            "target": target, "x": target / start if start else 20.0, "stopped": returned,
             "ret": value / start - 1 if start else 0.0, "realized": round(realized, 2), "trades": len(closed),
             "wins": sum(1 for t in closed if float(t.get("ret") or 0) > 0), "open": len(opened),
             "round": s.get("round", 1), "heroes": s.get("heroes", 0), "zeros": s.get("zeros", 0),
@@ -442,7 +446,8 @@ def feature(data: dict, f: dict) -> str:
         if sl:
             rule.append(f'<p>停止线（{esc(r["id"])}）：已做完 {sl["done"]} / {sl["after"]} 次，合计 {signed(sl["net"])}'
                         f'{"——已停" if sl["done"] >= sl["after"] and sl["net"] < 0 else ""}</p>')
-    lrows = [[f'<b>{esc(ledger_name(r))}</b><br><span class="meta">{esc(r["id"])}</span>', usd(r["start"], 0), usd(r["cash"]),
+    lrows = [[f'<b>{esc(ledger_name(r))}</b><br><span class="meta">{esc(r["id"])}</span>', usd(r["start"], 0),
+              f'已停 · 退回池子 {usd(r["stopped"])}' if r.get("stopped") is not None else usd(r["cash"]),
               usd(r["held"]) if r["open"] else "—", usd(r["now"]) if r["now"] is not None else ("按成本" if r["open"] else "—"),
               usd(r["value"]), pct(r["ret"]), signed(r["realized"]), f'{r["trades"]}（赚 {r["wins"]}）',
               f'{r["x"]:g} 倍 · {usd(r["target"], 0)}', f'第 {r["round"]} 轮 · {r["heroes"]} / {r["zeros"]}'] for r in f["ledgers"]]
