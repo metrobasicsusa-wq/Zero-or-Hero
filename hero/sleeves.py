@@ -85,6 +85,12 @@ def spreads(spec: dict, picks: list) -> bool:
     return len(picks) > 1 or int(spec.get("n", 1) or 1) > 1
 
 
+def split(spec: dict, picks: list) -> int:
+    """How many shares the fraction is cut into. Audit 10-26 #7: at least the spec's `n` -- earn-1000 (n = 10) on a day
+    with two reports gave each name a quarter of the ledger; a name's budget is capped at fraction / n."""
+    return max(len(picks), int(spec.get("n", 1) or 1))
+
+
 class Book:
     """journal/sleeves.json: {"sleeves": {id: ledger}, "topups": dollars drawn from the pool}."""
 
@@ -586,7 +592,7 @@ class Runner:
                 self.j.event("sleeve_plan", dry_run=True, sleeve=spec["id"], why=f"{spec['id']}（演算）：{slot} 没有要买的")
                 continue
             fraction = spec.get("fraction", self.p["fraction"])
-            each = fraction * s["cash"] / len(picks)
+            each = fraction * s["cash"] / split(spec, picks)   # audit 10-26 #7: at most fraction / n a name
             shared = fraction * s["cash"] if spreads(spec, picks) else None   # audit 10-26 #1, as live
 
             def cap() -> float:
@@ -747,7 +753,7 @@ class Runner:
                              why=f"{spec['id']}：券商已有 {slot} 这个时段的买单（上一轮的账本没保存上），不重复买")
                 continue
             fraction = spec.get("fraction", self.p["fraction"])
-            each = fraction * s["cash"] / len(picks)
+            each = fraction * s["cash"] / split(spec, picks)   # audit 10-26 #7: at most fraction / n a name
             spread = spreads(spec, picks)
             for pk in picks:
                 if self.report_skip(spec, pk, dry_run=False):

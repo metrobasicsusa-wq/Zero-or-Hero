@@ -3668,6 +3668,20 @@ class Sleeves(unittest.TestCase):
         self.assertTrue(skip and skip[0]["dry_run"] and "财报" in skip[0]["why"])
         self.assertEqual(len(book.s("earn-500")["open"]), 1)                               # its whole point is the report
 
+    def test_audit7_a_multi_name_sleeve_sizes_each_pick_at_fraction_over_n(self):
+        # audit #7: earn-1000 (n = 10) on a two-report day gave each name a quarter of the ledger, not a twentieth
+        from datetime import datetime
+        from hero import sleeves
+        for runner_call, path in (("run", "sleeves.json"), ("plan", "plan.json")):
+            spec = {"id": f"e-{runner_call}", "kind": "multi", "start": 1000, "n": 10, "fraction": 0.5}
+            b = SleeveBroker(lambda s: (0.18, 0.20))
+            book = sleeves.Book(self.root / path, [spec])
+            r = sleeves.Runner(b, Journal(self.root), self.cfg, [spec], book, {"multi": self.multi_rule([0.20, 0.20])},
+                               datetime(2026, 10, 8, 10, 0), date(2026, 10, 8), sleep=lambda s: None)
+            getattr(r, runner_call)()
+            qty = sorted(t["qty"] for t in book.s(spec["id"])["open"])
+            self.assertEqual(qty, [2, 2], runner_call)                                    # $50 each at $21: two, not eleven
+
 
 class EarningsShares(unittest.TestCase):
     """Owner, 10-19: earnings only in shares or 2x funds; no option held through a report."""
@@ -4465,6 +4479,51 @@ class SleeveRules(unittest.TestCase):
         self.assertEqual((picks[0]["exit_day"], picks[0]["exit_at"]), ("2026-10-09", "09:35"))
         self.assertIn("买平值认沽", picks[0]["why"])
         self.assertEqual(weekly, ("2026-10-08", []))                                              # the fake's expiry is 45 days out: no weekly
+
+    def test_audit7_earnings_decides_an_unknown_report_time_by_the_days_gap(self):
+        # audit #7: a third of the calendar has time "unknown", and those reports were skipped outright
+        from hero import sleeve_rules as sr
+        import hero.sleeve_rules as mod
+        b = self.broker()                                                                 # AAA opened -3% today, BBB and CCC flat
+        orig = mod.ROOT
+        try:
+            mod.ROOT = Path(tempfile.mkdtemp())
+            (mod.ROOT / "data").mkdir()
+            (mod.ROOT / "data" / "earnings.json").write_text(json.dumps({"reports": {
+                "AAA": [{"date": "2026-10-08", "time": "unknown"}], "BBB": [{"date": "2026-10-08", "time": "unknown"}],
+                "CCC": [{"date": "2026-10-09", "time": "unknown"}]}}))
+            events = []
+            r = self.run_at(date(2026, 10, 8), 15, 50, b)
+            r.j.event = lambda kind, **k: events.append((kind, k))
+            slot, picks = sr.EarningsLotto().entries(r, {"n": 3, "instrument": "put", "id": "earn-500"}, {"slots": {}})
+        finally:
+            mod.ROOT = orig
+        self.assertEqual([p["und"] for p in picks], ["BBB"])           # AAA's -3% open was the reaction; CCC's day is tomorrow
+        self.assertIn("时间未知", picks[0]["why"])
+        self.assertTrue(any(k == "sleeve_skip" and "AAA" in e["why"] and "跳空" in e["why"] for k, e in events))
+
+    def test_audit7_pead_finds_the_reaction_day_of_an_unknown_time_report_by_its_gap(self):
+        from hero import sleeve_rules as sr
+        with tempfile.TemporaryDirectory() as tmp:
+            cal = Path(tmp) / "earnings.json"
+            cal.write_text(json.dumps({"reports": {"AAA": [{"date": "2026-10-09", "time": "unknown"}]}}))
+            spec, s = {"earnings": str(cal)}, {"slots": {}, "open": [], "cash": 500.0}
+            b = self.broker()
+            self.assertIsNone(sr.Pead().entries(self.run_at(date(2026, 10, 9), 9, 30, b), spec, s))
+            self.assertEqual((s["pead_watch"], s["pead_unknown"]), ({"2026-10-09": ["AAA"]}, {"2026-10-12": ["AAA"]}))
+            b.snaps["AAA"]["latestTrade"]["p"] = 108.0
+            # after the close on 10-09: 10-09 opened flat, 10-12 gapped 7% and held -> bought on 10-13
+            b.bars["AAA"] = [{"t": "2026-10-08T04:00:00Z", "o": 99.0, "c": 100.0}, {"t": "2026-10-09T04:00:00Z", "o": 100.5, "c": 100.0},
+                             {"t": "2026-10-12T04:00:00Z", "o": 107.0, "c": 108.0}]
+            slot, picks = sr.Pead().entries(self.run_at(date(2026, 10, 13), 10, 0, b), spec, {**s, "slots": {}})
+            self.assertEqual([p["und"] for p in picks], ["AAA"])
+            self.assertIn("时间未知", picks[0]["why"])
+            # before the open on 10-09: 10-09 gapped 8% -- bought on 10-12, and 10-12's own gap is not a second reaction
+            b.bars["AAA"] = [{"t": "2026-10-08T04:00:00Z", "o": 99.0, "c": 100.0}, {"t": "2026-10-09T04:00:00Z", "o": 108.0, "c": 109.0}]
+            slot, picks = sr.Pead().entries(self.run_at(date(2026, 10, 12), 10, 0, b), spec, {**s, "slots": {}})
+            self.assertEqual([p["und"] for p in picks], ["AAA"])
+            b.bars["AAA"].append({"t": "2026-10-12T04:00:00Z", "o": 115.0, "c": 117.0})
+            self.assertEqual(sr.Pead().entries(self.run_at(date(2026, 10, 13), 10, 0, b), spec, {**s, "slots": {}}), ("2026-10-13", []))
 
     def test_relay_bets_the_weeks_strongest_reporter_then_switches_to_soxl(self):
         from hero import sleeve_rules as sr

@@ -390,17 +390,27 @@ class Pead:
         except Exception:
             reports = {}
         w = s.setdefault("pead_watch", {})
+        maybe = s.setdefault("pead_unknown", {})
+
+        def add(book: dict, react: date, x: str) -> None:
+            if run.today <= react <= run.today + timedelta(days=7):
+                book.setdefault(react.isoformat(), [])
+                if x not in book[react.isoformat()]:
+                    book[react.isoformat()].append(x)
         for x, rs in reports.items():
             for r in rs:
                 rd, when = date.fromisoformat(r["date"]), r.get("time", "")
-                react = rd if "pre" in when else next_business_day(rd) if "post" in when else None
-                if react and run.today <= react <= run.today + timedelta(days=7):
-                    w.setdefault(react.isoformat(), [])
-                    if x not in w[react.isoformat()]:
-                        w[react.isoformat()].append(x)
+                if "pre" in when or "post" in when:
+                    add(w, rd if "pre" in when else next_business_day(rd), x)
+                else:
+                    # audit 10-26 #7: time unknown (a third of the calendar) used to be skipped. Both days are candidates:
+                    # the report day as if before the open, the next session only if the report day did not gap (entries)
+                    add(w, rd, x)
+                    add(maybe, next_business_day(rd), x)
         cut = (run.today - timedelta(days=10)).isoformat()
-        for k in [k for k in w if k < cut]:
-            del w[k]
+        for book in (w, maybe):
+            for k in [k for k in book if k < cut]:
+                del book[k]
 
     def entries(self, run, spec, s):
         self.remember(run, spec, s)
@@ -409,18 +419,25 @@ class Pead:
             return None
         react = business_day_before(run.today).isoformat()
         names = sorted(s["pead_watch"].get(react) or [])
-        if not names:
+        maybe = sorted(set((s.get("pead_unknown") or {}).get(react) or []) - set(names))   # audit 10-26 #7
+        if not names and not maybe:
             return (day, [])
+        every = names + maybe
 
         def fetch():
             start = (run.today - timedelta(days=10)).isoformat()
-            return run.c.daily_bars(names, start, adjustment="raw")
-        bars = cached(run, ("pead_bars", tuple(names)), fetch) or {}
+            return run.c.daily_bars(every, start, adjustment="raw")
+        bars = cached(run, ("pead_bars", tuple(every)), fetch) or {}
         found = []
-        for x in names:
+        for x in every:
             bs = [b for b in bars.get(x, []) if b["t"][:10] < day]
             if len(bs) < 2 or bs[-1]["t"][:10] != react:
                 continue
+            if x in maybe:   # the session after an unknown-time report: only if the report day itself did not gap
+                if len(bs) < 3 or not float(bs[-3]["c"]):
+                    continue
+                if abs(float(bs[-2]["o"]) / float(bs[-3]["c"]) - 1) >= spec.get("gap", 0.05):
+                    continue
             o, c, prev = float(bs[-1]["o"]), float(bs[-1]["c"]), float(bs[-2]["c"])
             if prev and o / prev - 1 >= spec.get("gap", 0.05) and c >= o:
                 found.append((o / prev - 1, x, c / o - 1))
@@ -436,9 +453,10 @@ class Pead:
             c, ask = got
             exp = c["expiration_date"]
             out, at = held_out(run, exp)
+            unknown = "（财报时间未知，财报当天没跳空，按跳空认定昨天是反应日）" if und in maybe else ""
             return (day, [{"sym": c["symbol"], "asset": "option", "und": und, "ask": ask, "trail": True, "expiry": exp,
                            "exit_day": out, "exit_at": at,
-                           "why": f"财报后漂移：{und} 昨天财报高开 {g:+.1%}、收盘比开盘 {held:+.1%} 守住，买看涨 "
+                           "why": f"财报后漂移：{und} 昨天财报高开 {g:+.1%}{unknown}、收盘比开盘 {held:+.1%} 守住，买看涨 "
                                   f"{float(c['strike_price']):g}（{exp} 到期）；翻倍后回撤 40% 卖，否则 {out[5:]} {at} 卖"}])
         return (day, [])
 
@@ -1095,21 +1113,34 @@ class EarningsLotto:
             reports = {}
         nxt = next_business_day(run.today).isoformat()
         inpool = set(pool(run))
-        names = []
+        names, unknown = [], set()
         for x, rs in reports.items():
             for r in rs:
-                if (r["date"] == day and "post" in r.get("time", "")) or (r["date"] == nxt and "pre" in r.get("time", "")):
+                t = r.get("time", "")
+                blind = "pre" not in t and "post" not in t   # audit 10-26 #7: a third of the calendar; decided by today's gap below
+                if (r["date"] == day and ("post" in t or blind)) or (r["date"] == nxt and "pre" in t):
                     if x not in inpool:
                         continue
                     if not verified(r):
                         unverified_skip(run, spec, x, r)
                         continue
                     names.append(x)
+                    if blind:
+                        unknown.add(x)
         picks = []
         for und in names:
-            spot = spot_open(snaps(run, [und]).get(und) or {})[0]
+            spot, o, _, prev = spot_open(snaps(run, [und]).get(und) or {})
             if not spot:
                 continue
+            if und in unknown:
+                # the report is dated today, time unknown: a gap at today's open means it came before the open and the
+                # reaction is over; a quiet open means it comes after the close, so tonight is the reaction
+                g = o / prev - 1 if o and prev else 0.0
+                if abs(g) >= spec.get("unknown_gap", 0.03):
+                    run.j.event("sleeve_skip", dry_run=bool(spec.get("plan_only")), sleeve=spec.get("id", "earnings"), symbol=und,
+                                why=f"{spec.get('id', 'earnings')}：{und} 今天财报、时间未知，今天开盘跳空 {g:+.1%}，"
+                                    "说明盘前已经发了、反应已过，不买")
+                    continue
             lim = (run.today + timedelta(days=10)).isoformat()
             cs = contracts(run, und, nxt, lim, spot * 0.85, spot * 1.25)
             if not cs:
@@ -1148,7 +1179,11 @@ class EarningsLotto:
             pk = share_pick(run, und, spot, nxt, f"{und} 财报（期权定价的波动 {move:.1%}）")
             if pk:
                 picks.append((move, pk))
-        return (day, [pk for _, pk in sorted(picks, key=lambda x: -x[0])[:spec.get("n", 3)]])
+        out = [pk for _, pk in sorted(picks, key=lambda x: -x[0])[:spec.get("n", 3)]]
+        for pk in out:
+            if pk.get("und") in unknown:
+                pk["why"] += "；财报时间未知，今天开盘没跳空，按盘后发算"
+        return (day, out)
 
 
 class LETF:
