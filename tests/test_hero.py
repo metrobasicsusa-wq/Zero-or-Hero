@@ -5801,3 +5801,47 @@ class WeekendStudies(unittest.TestCase):
         self.assertIn("high", s)
         self.assertEqual(s["high"]["n"], 9)
         self.assertIn("vol≥15.0%", s)
+
+
+class ResearchBounce(unittest.TestCase):
+    # owner, 10-26 (「AVGO 今天就有很好的机会」「330 CALL 早上好便宜」「今天的」): the sector-bounce day study
+    def test_signals_tag_flush_bounces_plain_bounces_and_the_control(self):
+        from hero import research_bounce as rb
+        n = 30
+        days = [f"2026-09-{d:02d}" for d in range(1, n + 1)]
+        closes = [100.0] * n
+        closes[10], closes[11] = 96.0, 94.0                 # a 6% flush over two sessions (d10, d11)
+        opens = list(closes)
+        ten = {d: c for d, c in zip(days, closes)}
+        ten[days[12]] = closes[12] * 1.015                  # d12: 1.5% above its open after the flush -> bounce1 only
+        ten[days[20]] = closes[20] * 1.025                  # d20: 2.5% without a flush -> plain1 (and every10)
+        got = {e["day"]: e for e in rb.signals(days, opens, closes, ten)}
+        self.assertEqual(got[days[12]]["groups"], ["bounce1"])
+        self.assertAlmostEqual(got[days[12]]["drop"], -0.06)
+        self.assertEqual(got[days[20]]["groups"], ["plain1", "every10"])
+        self.assertEqual(got[days[10]]["groups"], ["every10"])
+        self.assertNotIn(days[13], got)                     # flat day: in no group
+
+    def test_exits_take_the_multiple_or_the_close(self):
+        from hero import research_bounce as rb
+        bars = [{"t": f"2026-10-26T{13 + (m // 60):02d}:{m % 60:02d}:00Z", "c": 1.0, "h": 1.0} for m in range(30, 410)]   # 09:30-15:49 ET in EDT
+        for b in bars:
+            hhmm = rb.et(b["t"])
+            if hhmm >= "11:00":
+                b["h"], b["c"] = 2.5, 2.4
+            if hhmm >= "15:00":
+                b["h"], b["c"] = 1.2, 1.1
+        r = rb.exits(1.0, bars, 0.05)
+        self.assertAlmostEqual(r["d0"], 1.1 * 0.95 / 1.05 - 1, places=4)   # the 15:50 close
+        self.assertAlmostEqual(r["take2"], 2 * 0.95 - 1, places=4)         # 2.5 >= 2 x 1.05: took the double
+        self.assertAlmostEqual(r["take3"], r["d0"], places=4)              # never 3 x 1.05
+        self.assertEqual(rb.exits(1.0, [], 0.05), {})
+        rows = [{"day": "d1", "und": "AVGO", "u10": 0.02, "leg": "otm06", "groups": ["bounce1"], "res": {"d0": 3.0}, "dte": 0},
+                {"day": "d1", "und": "NVDA", "u10": 0.01, "leg": "otm06", "groups": ["bounce1"], "res": {"d0": 0.5}, "dte": 0},
+                {"day": "d2", "und": "AVGO", "u10": 0.0, "leg": "otm06", "groups": ["plain1"], "res": {"d0": -0.9}, "dte": 4}]
+        self.assertEqual(rb.series(rows, "bounce1", "otm06", "d0"), [("d1", 3.0)])            # the leader of the bounce
+        gs = rb.groups(rows)
+        self.assertEqual(len(gs["板块被砸后的反弹日（10:00 离开盘 ≥1%） · 价外 0.6%"]), 2)
+        self.assertEqual(len(gs["　被砸后反弹（≥1%）· 当天到期 · 价外 0.6%"]), 2)
+        self.assertIn("| 板块被砸后的反弹日（10:00 离开盘 ≥1%） | 2 | +175% | 1 | 0 | 0 | 0 |", rb.multiples(rows))
+
