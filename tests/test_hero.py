@@ -5845,3 +5845,25 @@ class ResearchBounce(unittest.TestCase):
         self.assertEqual(len(gs["　被砸后反弹（≥1%）· 当天到期 · 价外 0.6%"]), 2)
         self.assertIn("| 板块被砸后的反弹日（10:00 离开盘 ≥1%） | 2 | +175% | 1 | 0 | 0 | 0 |", rb.multiples(rows))
 
+
+class ResearchBottomLong(unittest.TestCase):
+    # owner, 10-26 (「抄底是可以选择呆久一点的 可以模拟用 2000 抄底 回测」): the bottom signals held weeks, $2,000 to 5x
+    def test_exits_over_twenty_sessions_and_the_five_x_hero_game(self):
+        from hero import research_bottom_long as bl
+        path = [1.0] * 4 + [1.5] + [1.0] * 4 + [2.2] + [3.3] + [1.9] + [1.0] * 8      # 20 sessions: 2x on day 10, 3x on day 11, then down
+        r = bl.exits(1.0, path, True, 0.0)
+        self.assertEqual((r["d5"], r["d10"], r["d20"]), (0.5, 1.2, 0.0))
+        self.assertEqual((r["take2"], r["take3"]), (1.2, 2.3))                        # the first close at or over the multiple
+        self.assertAlmostEqual(r["trail2"], 0.9)                                       # armed at 2.2, best 3.3, out at 1.9 (<= 60% of best)
+        short = bl.exits(1.0, [1.0, 1.1, 1.2], False, 0.0)                              # not done: only what is known
+        self.assertEqual(short, {})
+        self.assertEqual(bl.exits(1.0, [1.0] * 6, True, 0.05)["d5"], round(0.95 - 1, 4))
+        closes = [100.0] * 5 + [110.0] * 10 + [120.0] * 10
+        self.assertEqual(bl.letf_hold(closes, 4), {"d10": 0.1, "d20": 0.2})
+        self.assertEqual(bl.letf_hold(closes, 20), {})                                # not enough sessions after it
+        rows = [{"day": f"d{i:02d}", "und": "SMH", "sig": "down3", "leg": "atm", "res": {"d20": 4.0 if i % 2 else -0.5}} for i in range(20)]
+        self.assertEqual(len(bl.series(rows, "down3", "atm", "d20")), 20)
+        out, md = bl.hero_table(rows)
+        self.assertIn("$2,000 起步、到 $10,000（5 倍）", md)
+        self.assertTrue(any(v["full"]["heroes"] >= 1 for v in out.values()))         # +400% trades all in reach 5x at once
+
