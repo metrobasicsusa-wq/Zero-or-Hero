@@ -1,7 +1,7 @@
 {
  "source": "alphavantage+alpaca-news",
- "fetched_at": "2026-10-23T09:01:21-04:00",
- "fetched_on": "2026-10-23",
+ "fetched_at": "2026-10-26T09:01:13-04:00",
+ "fetched_on": "2026-10-26",
  "symbols": [
   "AAPL",
   "ABBV",
@@ -129,17 +129,17 @@
  "series": {
   "us2y": {
    "unit": "%",
-   "date": "2026-10-21",
-   "latest": 4.81,
-   "chg_1d": 0.02,
-   "chg_20d": 0.1
+   "date": "2026-10-22",
+   "latest": 4.65,
+   "chg_1d": -0.16,
+   "chg_20d": -0.2
   },
   "us10y": {
    "unit": "%",
-   "date": "2026-10-21",
-   "latest": 5.13,
-   "chg_1d": 0.01,
-   "chg_20d": 0.17
+   "date": "2026-10-22",
+   "latest": 4.96,
+   "chg_1d": -0.17,
+   "chg_20d": -0.15
   },
   "wti": {
    "unit": "$",
@@ -152,11 +152,11 @@
  "errors": {},
  "gauges": {
   "putcall": {
-   "date": "2026-10-22",
-   "total": 0.94,
-   "equity": 0.69,
-   "index": 1.02,
-   "spx": 1.23
+   "date": "2026-10-23",
+   "total": 0.93,
+   "equity": 0.67,
+   "index": 1.1,
+   "spx": 1.25
   },
   "aaii": {
    "date": "2026-10-21",
@@ -167,2320 +167,367 @@
   }
  },
  "news": {
-  "APH": {
-   "articles": 1,
-   "sentiment": 0.0,
-   "label": "中性",
-   "top": [
-    {
-     "score": 0.0,
-     "title": "Hedge Hyperscaler Volatility With AI Infrastructure Stocks",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/opinion/26/10/62525140/hedge-hyperscaler-volatility-with-ai-infrastructure-stocks",
-     "published": "2026-10-22T13:03:48Z"
-    }
-   ]
-  },
-  "VRT": {
-   "articles": 3,
-   "sentiment": -0.333,
-   "label": "略偏空",
-   "top": [
-    {
-     "score": -1.0,
-     "title": "AI Sell-Off Spreads to Industrials: Caterpillar, GE Vernova, Vertiv Trapped in Bear Market",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/markets/equities/26/10/62548779/ai-sell-off-spreads-to-industrials-caterpillar-ge-vernova-vertiv-trapped-in-bear-market",
-     "published": "2026-10-22T21:27:44Z"
-    },
-    {
-     "score": 0.0,
-     "title": "Hedge Hyperscaler Volatility With AI Infrastructure Stocks",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/opinion/26/10/62525140/hedge-hyperscaler-volatility-with-ai-infrastructure-stocks",
-     "published": "2026-10-22T13:03:48Z"
-    },
-    {
-     "score": 0.0,
-     "title": "Vertiv and NVIDIA Launch New AI Factory Deployment Approach",
-     "source": "fiscal.ai",
-     "url": "https://datacentremagazine.com/news/how-vertiv-and-nvidia-cut-ai-factory-deployment-time-in-half",
-     "published": "2026-10-23T10:31:59Z"
-    }
-   ]
-  },
-  "BAC": {
-   "articles": 6,
-   "sentiment": 0.0,
-   "label": "中性",
-   "top": [
-    {
-     "score": 1.0,
-     "title": "Warren Buffett Who? Berkshire Stock Hits Records as These Holdings Drive Gains Under Greg Abel",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/trading-ideas/long-ideas/26/10/62535824/warren-buffett-berkshire-stock-hits-records-under-greg-abel",
-     "published": "2026-10-22T16:17:59Z"
-    },
-    {
-     "score": -1.0,
-     "title": "Class Action Lawsuit Filed Against Bank of America Corporation",
-     "source": "fiscal.ai",
-     "url": "https://stockhouse.com/news/press-releases/2026/10/23/bac-deadline-news-bank-of-america-investors-are-notified-of-the-imminent",
-     "published": "2026-10-23T12:01:52Z"
-    },
-    {
-     "score": 0.0,
-     "title": "BacTech Environmental Corporation Files Patent for Mine Water Remediation Process",
-     "source": "fiscal.ai",
-     "url": "https://www.thenewswire.com/press-releases/1AXXFzKmz-bactech-files-patent-on-process-that-turns-toxic-mine-water-into-saleable-iron-and-acid.html",
-     "published": "2026-10-22T13:04:24Z"
-    }
-   ]
-  },
-  "GEV": {
-   "articles": 5,
-   "sentiment": -0.2,
-   "label": "略偏空",
-   "top": [
-    {
-     "score": -1.0,
-     "title": "GE Vernova Shares Experience Significant Intraday Decline",
-     "source": "fiscal.ai",
-     "url": "https://www.morningstar.com/news/dow-jones/202610228359/ge-vernova-down-over-10-on-track-for-largest-percent-decrease-since-january-2025-data-talk",
-     "published": "2026-10-22T20:31:44Z"
-    },
-    {
-     "score": 1.0,
-     "title": "GE Vernova Prepares for Q3 2026 Earnings Release",
-     "source": "fiscal.ai",
-     "url": "https://www.barchart.com/story/news/8314748/gev-stock-earnings-preview-what-to-expect-from-ge-vernovas-q3-2026-report",
-     "published": "2026-10-22T20:31:44Z"
-    },
-    {
-     "score": -1.0,
-     "title": "AI Sell-Off Spreads to Industrials: Caterpillar, GE Vernova, Vertiv Trapped in Bear Market",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/markets/equities/26/10/62548779/ai-sell-off-spreads-to-industrials-caterpillar-ge-vernova-vertiv-trapped-in-bear-market",
-     "published": "2026-10-22T21:27:44Z"
-    }
-   ]
-  },
-  "NEE": {
-   "articles": 6,
-   "sentiment": 0.0,
-   "label": "中性",
-   "top": [
-    {
-     "score": 0.0,
-     "title": "Punchbowl Senior Energy Reporter Joshua Siegel Posts On X \"SCOOP: The Trump admin is easing its blockade on wind projects as it looks to motivate Democrats to support the Senate’s bipartisan permitting reform bill. A White House official told me DOD has advanced 2  projects in Maine & SD with more to come. Text subscribers got it 1st!\"",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/economics/macro-economic-events/26/10/62525437/punchbowl-senior-energy-reporter-joshua-siegel-posts-x-scoop-trump-admin-easing-its-blockade-wind-pr",
-     "published": "2026-10-22T13:08:16Z"
-    },
-    {
-     "score": 0.0,
-     "title": "Defensives Lead Sectors In Thursday Trading As Growth Trails",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/etfs/sector-etfs/26/10/62531733/defensives-lead-sectors-in-thursday-trading-as-growth-trails",
-     "published": "2026-10-22T15:00:23Z"
-    },
-    {
-     "score": 0.0,
-     "title": "Analyst Price Target Adjustments for NextEra Energy",
-     "source": "fiscal.ai",
-     "url": "https://www.marketscreener.com/news/hsbc-adjusts-price-target-on-nextera-energy-to-103-from-114-ce785cded88bf023",
-     "published": "2026-10-22T13:31:53Z"
-    }
-   ]
-  },
-  "SPY": {
-   "articles": 26,
-   "sentiment": -0.079,
-   "label": "中性",
-   "top": [
-    {
-     "score": 1.0,
-     "title": "Warren Buffett Who? Berkshire Stock Hits Records as These Holdings Drive Gains Under Greg Abel",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/trading-ideas/long-ideas/26/10/62535824/warren-buffett-berkshire-stock-hits-records-under-greg-abel",
-     "published": "2026-10-22T16:17:59Z"
-    },
-    {
-     "score": 1.0,
-     "title": "'Qatar Scours for More LNG to Boost Supply Outside Middle East' - Bloomberg Exclusive",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/news/26/10/62536494/qatar-scours-more-lng-boost-supply-outside-middle-east-bloomberg-exclusive",
-     "published": "2026-10-22T16:33:47Z"
-    },
-    {
-     "score": -1.0,
-     "title": "Peter Schiff Warns Stock Market Crash Before Midterms 'Is Not Outside the Realm of Possibility' — 'This Is October'",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/markets/economic-data/26/10/62550388/peter-schiff-october-stock-market-crash-warning-midterms",
-     "published": "2026-10-23T02:32:48Z"
-    }
-   ]
-  },
-  "ABBV": {
-   "articles": 5,
-   "sentiment": -0.2,
-   "label": "略偏空",
-   "top": [
-    {
-     "score": -1.0,
-     "title": "AbbVie’s Skin Disease Drug Hits Phase 3 Goal, but Efficacy Falls Short of Benchmarks: Analyst",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/markets/biotech/26/10/62541239/abbvies-skin-disease-drug-hits-phase-3-goal-but-efficacy-falls-short-of-benchmarks-analyst",
-     "published": "2026-10-22T18:17:49Z"
-    },
-    {
-     "score": 0.0,
-     "title": "AbbVie Reports Topline Results From Phase 3 INTREPID Study Evaluating Lutikizumab, Investigational Dual-Variable-Domain IL 1α/1β Antagonist, In Hidradenitis Suppurativa; Study Met Primary Endpoint And 8 Ranked Secondary Endpoints",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/news/26/10/62525478/abbvie-reports-topline-results-phase-3-intrepid-study-evaluating-lutikizumab-investigational-dual-va",
-     "published": "2026-10-22T13:08:30Z"
-    },
-    {
-     "score": 0.0,
-     "title": "Goldman Sachs Adjusts Price Target on AbbVie",
-     "source": "fiscal.ai",
-     "url": "https://www.marketscreener.com/news/goldman-sachs-adjusts-price-target-on-abbvie-to-294-from-258-ce785cdedb8bf422",
-     "published": "2026-10-22T13:31:55Z"
-    }
-   ]
-  },
-  "GOOGL": {
-   "articles": 13,
-   "sentiment": -0.026,
-   "label": "中性",
-   "top": [
-    {
-     "score": 1.0,
-     "title": "Top Economists Warn California’s Billionaire Tax Could Backfire, Wealthy Residents Leaving Could Cost the State $39 Billion More Than It Collects: 'Will Not Fulfill the Primary Functions'",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/news/politics/26/10/62526254/top-economists-warn-californias-billionaire-tax-could-backfire-wealthy-residents-leaving-could-cost-the-state-39-billion-more-than-it-collects-will-not-fulfill-the-primary-functions",
-     "published": "2026-10-22T13:26:51Z"
-    },
-    {
-     "score": 1.0,
-     "title": "Warren Buffett Who? Berkshire Stock Hits Records as These Holdings Drive Gains Under Greg Abel",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/trading-ideas/long-ideas/26/10/62535824/warren-buffett-berkshire-stock-hits-records-under-greg-abel",
-     "published": "2026-10-22T16:17:59Z"
-    },
-    {
-     "score": 1.0,
-     "title": "Blackstone CEO Sounds Alarm on AI Supply Crunch: 'Seldom in My Career Have I Seen' Anything Like It",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/markets/earnings/26/10/62541272/blackstone-ceo-sounds-alarm-on-ai-supply-crunch-seldom-in-my-career-have-i-seen-anything-like-it",
-     "published": "2026-10-22T18:18:40Z"
-    }
-   ]
-  },
-  "AVGO": {
-   "articles": 3,
-   "sentiment": 0.667,
-   "label": "偏多",
-   "top": [
-    {
-     "score": 1.0,
-     "title": "Tigress Financial Initiates Coverage On Broadcom with Buy Rating, Announces Price Target of $600",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/news/26/10/62525864/tigress-financial-initiates-coverage-broadcom-buy-rating-announces-price-target-600",
-     "published": "2026-10-22T13:16:49Z"
-    },
-    {
-     "score": 1.0,
-     "title": "Tigress Financial Initiates Coverage on Broadcom",
-     "source": "fiscal.ai",
-     "url": "https://www.marketscreener.com/news/tigress-initiates-broadcom-at-buy-with-600-price-target-ce785cdedb89f42d",
-     "published": "2026-10-22T13:31:47Z"
-    },
-    {
-     "score": 0.0,
-     "title": "Defensives Lead Sectors In Thursday Trading As Growth Trails",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/etfs/sector-etfs/26/10/62531733/defensives-lead-sectors-in-thursday-trading-as-growth-trails",
-     "published": "2026-10-22T15:00:23Z"
-    }
-   ]
-  },
-  "CVX": {
-   "articles": 4,
-   "sentiment": 0.25,
-   "label": "略偏多",
-   "top": [
-    {
-     "score": -1.0,
-     "title": "Chevron Stock Hits New 52-Week High - Here's Why",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/trading-ideas/movers/26/10/62525899/chevron-stock-hits-new-52-week-high-heres-why",
-     "published": "2026-10-22T13:17:36Z"
-    },
-    {
-     "score": 1.0,
-     "title": "Warren Buffett Who? Berkshire Stock Hits Records as These Holdings Drive Gains Under Greg Abel",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/trading-ideas/long-ideas/26/10/62535824/warren-buffett-berkshire-stock-hits-records-under-greg-abel",
-     "published": "2026-10-22T16:17:59Z"
-    },
-    {
-     "score": 1.0,
-     "title": "'Qatar Scours for More LNG to Boost Supply Outside Middle East' - Bloomberg Exclusive",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/news/26/10/62536494/qatar-scours-more-lng-boost-supply-outside-middle-east-bloomberg-exclusive",
-     "published": "2026-10-22T16:33:47Z"
-    }
-   ]
-  },
-  "META": {
-   "articles": 48,
-   "sentiment": 0.256,
-   "label": "略偏多",
-   "top": [
-    {
-     "score": 1.0,
-     "title": "Top Economists Warn California’s Billionaire Tax Could Backfire, Wealthy Residents Leaving Could Cost the State $39 Billion More Than It Collects: 'Will Not Fulfill the Primary Functions'",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/news/politics/26/10/62526254/top-economists-warn-californias-billionaire-tax-could-backfire-wealthy-residents-leaving-could-cost-the-state-39-billion-more-than-it-collects-will-not-fulfill-the-primary-functions",
-     "published": "2026-10-22T13:26:51Z"
-    },
-    {
-     "score": -1.0,
-     "title": "Michael Burry Shares Chilling Song on AI: 'Watching Trillion-Dollar Monuments Become Obsolete'",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/markets/tech/26/10/62546332/michael-burry-shares-chilling-song-on-ai-watching-trillion-dollar-monuments-become-obsolete",
-     "published": "2026-10-22T20:12:46Z"
-    },
-    {
-     "score": -1.0,
-     "title": "Peter Schiff Warns Stock Market Crash Before Midterms 'Is Not Outside the Realm of Possibility' — 'This Is October'",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/markets/economic-data/26/10/62550388/peter-schiff-october-stock-market-crash-warning-midterms",
-     "published": "2026-10-23T02:32:48Z"
-    }
-   ]
-  },
-  "AAPL": {
-   "articles": 8,
-   "sentiment": -0.042,
-   "label": "中性",
-   "top": [
-    {
-     "score": 1.0,
-     "title": "Warren Buffett Who? Berkshire Stock Hits Records as These Holdings Drive Gains Under Greg Abel",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/trading-ideas/long-ideas/26/10/62535824/warren-buffett-berkshire-stock-hits-records-under-greg-abel",
-     "published": "2026-10-22T16:17:59Z"
-    },
-    {
-     "score": -1.0,
-     "title": "Anthropic’s Path to $1.5 Trillion Demands 30% Margins: Plausible, but Delivering Is Another Matter",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/markets/tech/26/10/62552805/anthropics-path-to-1-5-trillion-demands-30-margins-plausible-but-delivering-is-another-matter",
-     "published": "2026-10-23T09:55:50Z"
-    },
-    {
-     "score": -0.333,
-     "title": "Meta Analysts Revise Price Target After Q3 Core Ad Strength, Muse Concerns Remain",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/analyst-stock-ratings/price-target/26/10/62543931/meta-analysts-revise-price-target-after-q3-core-ad-strength-muse-concerns-remain",
-     "published": "2026-10-22T19:36:24Z"
-    }
-   ]
-  },
-  "ABT": {
-   "articles": 6,
-   "sentiment": 0.0,
-   "label": "中性",
-   "top": [
-    {
-     "score": -1.0,
-     "title": "JP Morgan Maintains Overweight on Abbott Laboratories, Lowers Price Target to $118",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/news/26/10/62528042/jp-morgan-maintains-overweight-abbott-laboratories-lowers-price-target-118",
-     "published": "2026-10-22T13:55:47Z"
-    },
-    {
-     "score": 1.0,
-     "title": "Wells Fargo Maintains Overweight on Abbott Laboratories, Raises Price Target to $119",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/news/26/10/62532566/wells-fargo-maintains-overweight-abbott-laboratories-raises-price-target-119",
-     "published": "2026-10-22T15:16:39Z"
-    },
-    {
-     "score": 0.0,
-     "title": "TD Cowen Maintains Buy on Abbott Laboratories, Lowers Price Target to $118",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/news/26/10/62526419/td-cowen-maintains-buy-abbott-laboratories-lowers-price-target-118",
-     "published": "2026-10-22T13:31:33Z"
-    }
-   ]
-  },
-  "HD": {
-   "articles": 2,
-   "sentiment": 0.0,
-   "label": "中性",
-   "top": [
-    {
-     "score": 0.0,
-     "title": "The Home Depot Foundation Pledges $1 Billion to Veteran Causes by 2032",
-     "source": "fiscal.ai",
-     "url": "https://www.prnewswire.com/news-releases/the-home-depot-foundation-pledges-1-billion-to-veteran-causes-by-2032-302915941.html",
-     "published": "2026-10-22T13:31:42Z"
-    },
-    {
-     "score": 0.0,
-     "title": "Reported Earlier, U.S. Treasury Department Issues Proposed Regulations To Make Homeownership More Affordable; From January 7, 2027, Large Institutional Investors Generally May Not Purchase A Single-Family Home",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/news/26/10/62542373/reported-earlier-u-s-treasury-department-issues-proposed-regulations-make-homeownership-more-afforda",
-     "published": "2026-10-22T18:50:47Z"
-    }
-   ]
-  },
   "ADBE": {
-   "articles": 3,
-   "sentiment": 0.0,
-   "label": "中性",
+   "articles": 1,
+   "sentiment": -1.0,
+   "label": "偏空",
    "top": [
     {
-     "score": 0.0,
-     "title": "Adobe and BWT Alpine Formula One Team Announce Global Partnership",
-     "source": "fiscal.ai",
-     "url": "https://www.prnewswire.co.uk/news-releases/adobe-and-bwt-alpine-formula-one-team-partner-to-fuel-fan-engagement-with-ai-powered-experiences-302916952.html",
-     "published": "2026-10-22T13:31:43Z"
-    },
-    {
-     "score": 0.0,
-     "title": "Why Is Adobe Stock Surging on Thursday?",
+     "score": -1.0,
+     "title": "Consumer Tech (Oct 19-23): OpenAI Reportedly Seeks $30 Billion, Tesla Cuts 2026 Capex Forecast, Anthropic Commits To Over $600 Billion & More",
      "source": "benzinga",
-     "url": "https://www.benzinga.com/trading-ideas/movers/26/10/62533999/why-is-adobe-stock-surging-on-thursday-2",
-     "published": "2026-10-22T15:44:10Z"
-    },
-    {
-     "score": 0.0,
-     "title": "Insights Into Adobe's Performance Versus Peers In Software Sector",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/news/26/10/62552841/insights-adobe-s-performance-versus-peers-software-sector",
-     "published": "2026-10-23T09:58:37Z"
+     "url": "https://www.benzinga.com/markets/tech/26/10/62579783/consumer-tech-oct-19-23-openai-reportedly-seeks-30-billion-tesla-cuts-2026-capex-forecast-anthropic-commits-to-over-600-billion-more",
+     "published": "2026-10-25T13:47:05Z"
     }
    ]
   },
   "IBM": {
-   "articles": 11,
-   "sentiment": 0.909,
-   "label": "偏多",
-   "top": [
-    {
-     "score": 1.0,
-     "title": "IBM Reports Third-Quarter 2026 Financial Results",
-     "source": "fiscal.ai",
-     "url": "https://investingnews.com/ibm-releases-third-quarter-results-2678122760/",
-     "published": "2026-10-22T13:31:56Z"
-    },
-    {
-     "score": 1.0,
-     "title": "JP Morgan Maintains Overweight on IBM, Raises Price Target to $269",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/news/26/10/62527590/jp-morgan-maintains-overweight-ibm-raises-price-target-269",
-     "published": "2026-10-22T13:48:29Z"
-    },
-    {
-     "score": 1.0,
-     "title": "RBC Capital Reiterates Outperform on IBM, Maintains $270 Price Target",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/news/26/10/62534687/rbc-capital-reiterates-outperform-ibm-maintains-270-price-target",
-     "published": "2026-10-22T15:56:31Z"
-    }
-   ]
-  },
-  "C": {
-   "articles": 3,
-   "sentiment": 0.0,
-   "label": "中性",
-   "top": [
-    {
-     "score": 0.0,
-     "title": "Citi Wealth Releases Report on Singaporean High-Net-Worth Individuals",
-     "source": "fiscal.ai",
-     "url": "https://www.prnewswire.com/apac/news-releases/singapore-wealthy-clients-average-assets-reach-us1-5-million-as-mutual-fund-ownership-leads-asia-citi-wealth-report-302916907.html",
-     "published": "2026-10-22T13:32:01Z"
-    },
-    {
-     "score": 0.0,
-     "title": "'Unvetted AI Agents Are Accessing U.S. Bank Accounts' - Axios",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/news/26/10/62528737/unvetted-ai-agents-are-accessing-u-s-bank-accounts-axios",
-     "published": "2026-10-22T14:08:51Z"
-    },
-    {
-     "score": 0.0,
-     "title": "Bernie Sanders and Adam Schiff Sound Alarm As Rogue AI Agents Enter Bank Accounts, Warn of Financial Chaos: ‘Pause AI NOW!’",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/markets/tech/26/10/62552760/sanders-schiff-rogue-ai-agents-bank",
-     "published": "2026-10-23T09:49:55Z"
-    }
-   ]
-  },
-  "HOOD": {
-   "articles": 3,
-   "sentiment": 0.0,
-   "label": "中性",
-   "top": [
-    {
-     "score": 0.0,
-     "title": "DeFi Development Corp.'s CHAD Preferred Stock Now Available on Robinhood",
-     "source": "fiscal.ai",
-     "url": "https://www.moomoo.com/news/post/1002025755/defi-development-corp-announces-chad-now-available-on-robinhood",
-     "published": "2026-10-22T13:32:02Z"
-    },
-    {
-     "score": 0.0,
-     "title": "TradePMR by Robinhood Integrates ICE Connect Wealth into Fusion Platform",
-     "source": "fiscal.ai",
-     "url": "https://investingnews.com/ice-connect-wealth-now-integrated-into-tradepmr-by-robinhood-s-fusion-r-platform/",
-     "published": "2026-10-22T18:01:52Z"
-    },
-    {
-     "score": 0.0,
-     "title": "Robinhood CEO Participates in Dataline Investment",
-     "source": "fiscal.ai",
-     "url": "https://www.moomoo.com/news/post/1001986084/robinhood-hoodus-ceo-participates-in-dataline-investment-a-new-paradigm",
-     "published": "2026-10-22T20:31:47Z"
-    }
-   ]
-  },
-  "CRWD": {
    "articles": 2,
    "sentiment": 0.0,
    "label": "中性",
    "top": [
     {
-     "score": 0.0,
-     "title": "Mizuho Adjusts Price Target on CrowdStrike Holdings to $275 From $250",
-     "source": "fiscal.ai",
-     "url": "https://www.marketscreener.com/news/mizuho-adjusts-price-target-on-crowdstrike-holdings-to-275-from-250-ce785cdedb88f125",
-     "published": "2026-10-22T13:32:04Z"
+     "score": -1.0,
+     "title": "Consumer Tech (Oct 19-23): OpenAI Reportedly Seeks $30 Billion, Tesla Cuts 2026 Capex Forecast, Anthropic Commits To Over $600 Billion & More",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/tech/26/10/62579783/consumer-tech-oct-19-23-openai-reportedly-seeks-30-billion-tesla-cuts-2026-capex-forecast-anthropic-commits-to-over-600-billion-more",
+     "published": "2026-10-25T13:47:05Z"
     },
     {
-     "score": 0.0,
-     "title": "Jensen Huang on Keeping AI Under Control: 'You Contain the Baby and You Monitor It'",
+     "score": 1.0,
+     "title": "IBM, Lockheed Martin, Goldman Sachs And An Energy Stock On CNBC’s ‘Final Trades’",
      "source": "benzinga",
-     "url": "https://www.benzinga.com/markets/prediction-markets/26/10/62529457/jensen-huang-ai-safety-openshell",
-     "published": "2026-10-22T14:21:26Z"
+     "url": "https://www.benzinga.com/trading-ideas/long-ideas/26/10/62585859/ibm-lockheed-martin-goldman-sachs-and-an-energy-stock-on-cnbcs-final-trades",
+     "published": "2026-10-26T11:54:13Z"
     }
    ]
   },
-  "HPE": {
+  "SMCI": {
    "articles": 2,
-   "sentiment": 0.0,
-   "label": "中性",
-   "top": [
-    {
-     "score": 0.0,
-     "title": "Nvidia, Hewlett Packard Enterprise, and Schneider Electric Collaborate on Industrial AI Agents",
-     "source": "fiscal.ai",
-     "url": "https://de.marketscreener.com/boerse-nachrichten/nvidia-hewlett-packard-enterprise-und-schneider-electric-entwickeln-gemeinsam-industrielle-ki-agent-ce785cded88ff422",
-     "published": "2026-10-22T13:32:13Z"
-    },
-    {
-     "score": 0.0,
-     "title": "Here's How Much $100 Invested In Hewlett Packard 10 Years Ago Would Be Worth Today",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/news/26/10/62532524/here-s-how-much-100-invested-hewlett-packard-10-years-ago-would-be-worth-today",
-     "published": "2026-10-22T15:15:23Z"
-    }
-   ]
-  },
-  "COIN": {
-   "articles": 2,
-   "sentiment": 0.667,
-   "label": "偏多",
-   "top": [
-    {
-     "score": 1.0,
-     "title": "Ripple Sees a $100 Million Opportunity for Banks—What’s in It for XRP?",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/crypto/cryptocurrency/26/10/62531338/ripple-sees-a-100-million-opportunity-for-banks-whats-in-it-for-xrp",
-     "published": "2026-10-22T14:52:41Z"
-    },
-    {
-     "score": 0.333,
-     "title": "'Long Coins, Short Stocks': Expert Bullish on Bitcoin, Cautious on XRP, Coinbase, Circle",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/crypto/cryptocurrency/26/10/62526499/long-coins-short-stocks-expert-bullish-on-bitcoin-cautious-on-xrp-coinbase-circle",
-     "published": "2026-10-22T13:33:24Z"
-    }
-   ]
-  },
-  "MSTR": {
-   "articles": 5,
-   "sentiment": 0.067,
-   "label": "中性",
-   "top": [
-    {
-     "score": 1.0,
-     "title": "'Cash Is A Melting Ice Cube,' Says Industry Executive as Bitcoin Adoption Poised to Surge",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/crypto/cryptocurrency/26/10/62532675/cash-is-a-melting-ice-cube-says-industry-executive-as-bitcoin-adoption-poised-to-surge",
-     "published": "2026-10-22T15:18:53Z"
-    },
-    {
-     "score": -1.0,
-     "title": "Bitcoin, Ethereum, XRP, Dogecoin Sink as Iran War Fears Return: Analyst Says Deeper BTC Correction Won’t Be ‘Weird’",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/crypto/cryptocurrency/26/10/62550345/bitcoin-ethereum-xrp-dogecoin-crypto-iran-war",
-     "published": "2026-10-23T02:19:57Z"
-    },
-    {
-     "score": 0.333,
-     "title": "'Long Coins, Short Stocks': Expert Bullish on Bitcoin, Cautious on XRP, Coinbase, Circle",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/crypto/cryptocurrency/26/10/62526499/long-coins-short-stocks-expert-bullish-on-bitcoin-cautious-on-xrp-coinbase-circle",
-     "published": "2026-10-22T13:33:24Z"
-    }
-   ]
-  },
-  "DHR": {
-   "articles": 9,
-   "sentiment": 0.667,
-   "label": "偏多",
-   "top": [
-    {
-     "score": 1.0,
-     "title": "TD Cowen Maintains Buy on Danaher, Raises Price Target to $270",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/news/26/10/62526537/td-cowen-maintains-buy-danaher-raises-price-target-270",
-     "published": "2026-10-22T13:34:59Z"
-    },
-    {
-     "score": 1.0,
-     "title": "JP Morgan Maintains Overweight on Danaher, Raises Price Target to $270",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/news/26/10/62527500/jp-morgan-maintains-overweight-danaher-raises-price-target-270",
-     "published": "2026-10-22T13:47:08Z"
-    },
-    {
-     "score": 1.0,
-     "title": "Barclays Maintains Overweight on Danaher, Raises Price Target to $260",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/news/26/10/62534316/barclays-maintains-overweight-danaher-raises-price-target-260",
-     "published": "2026-10-22T15:48:38Z"
-    }
-   ]
-  },
-  "AMZN": {
-   "articles": 16,
-   "sentiment": -0.021,
-   "label": "中性",
-   "top": [
-    {
-     "score": 1.0,
-     "title": "Amazon Expands 'Amazon Quick' AI Platform with PwC Partnership",
-     "source": "fiscal.ai",
-     "url": "https://www.pymnts.com/news/retail/2026/walmart-and-amazon-expand-ai-agents-roles-in-shopping-and-work/",
-     "published": "2026-10-22T18:01:38Z"
-    },
-    {
-     "score": -1.0,
-     "title": "Michael Burry Shares Chilling Song on AI: 'Watching Trillion-Dollar Monuments Become Obsolete'",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/markets/tech/26/10/62546332/michael-burry-shares-chilling-song-on-ai-watching-trillion-dollar-monuments-become-obsolete",
-     "published": "2026-10-22T20:12:46Z"
-    },
-    {
-     "score": 1.0,
-     "title": "Crown Castle Stock Jumps as SpaceX Eyes 80,000 Cell Sites for Wireless Network: ‘We’re Talking to All Parties’",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/markets/equities/26/10/62550649/crown-castle-shares-surge-spacex-cell-site-talks",
-     "published": "2026-10-23T04:26:05Z"
-    }
-   ]
-  },
-  "JPM": {
-   "articles": 11,
-   "sentiment": 0.145,
-   "label": "中性",
-   "top": [
-    {
-     "score": 1.0,
-     "title": "JPMorgan Issues Buy Recommendation for Safran",
-     "source": "fiscal.ai",
-     "url": "https://www.finanzen.at/nachrichten/aktien/aktien-im-fokus-safran-weiter-unter-druck-jpmorgan-schwache-kaufen-1036658706",
-     "published": "2026-10-23T10:31:17Z"
-    },
-    {
-     "score": 0.6,
-     "title": "JPMorgan Chase Upgrades CME Group Inc. to Buy",
-     "source": "fiscal.ai",
-     "url": "https://de.marketscreener.com/boerse-nachrichten/cme-group-inc-jpmorgan-chase-erhoeht-von-verkaufen-auf-kaufen-ce785cdeda89f227",
-     "published": "2026-10-22T15:01:47Z"
-    },
-    {
-     "score": 0.0,
-     "title": "'Unvetted AI Agents Are Accessing U.S. Bank Accounts' - Axios",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/news/26/10/62528737/unvetted-ai-agents-are-accessing-u-s-bank-accounts-axios",
-     "published": "2026-10-22T14:08:51Z"
-    }
-   ]
-  },
-  "XLF": {
-   "articles": 2,
-   "sentiment": 0.0,
-   "label": "中性",
-   "top": [
-    {
-     "score": 0.0,
-     "title": "'Unvetted AI Agents Are Accessing U.S. Bank Accounts' - Axios",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/news/26/10/62528737/unvetted-ai-agents-are-accessing-u-s-bank-accounts-axios",
-     "published": "2026-10-22T14:08:51Z"
-    },
-    {
-     "score": 0.0,
-     "title": "Defensives Lead Sectors In Thursday Trading As Growth Trails",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/etfs/sector-etfs/26/10/62531733/defensives-lead-sectors-in-thursday-trading-as-growth-trails",
-     "published": "2026-10-22T15:00:23Z"
-    }
-   ]
-  },
-  "MSFT": {
-   "articles": 13,
-   "sentiment": -0.154,
-   "label": "略偏空",
-   "top": [
-    {
-     "score": -1.0,
-     "title": "Michael Burry Shares Chilling Song on AI: 'Watching Trillion-Dollar Monuments Become Obsolete'",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/markets/tech/26/10/62546332/michael-burry-shares-chilling-song-on-ai-watching-trillion-dollar-monuments-become-obsolete",
-     "published": "2026-10-22T20:12:46Z"
-    },
-    {
-     "score": -1.0,
-     "title": "Anthropic’s Path to $1.5 Trillion Demands 30% Margins: Plausible, but Delivering Is Another Matter",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/markets/tech/26/10/62552805/anthropics-path-to-1-5-trillion-demands-30-margins-plausible-but-delivering-is-another-matter",
-     "published": "2026-10-23T09:55:50Z"
-    },
-    {
-     "score": 0.0,
-     "title": "Jensen Huang on Keeping AI Under Control: 'You Contain the Baby and You Monitor It'",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/markets/prediction-markets/26/10/62529457/jensen-huang-ai-safety-openshell",
-     "published": "2026-10-22T14:21:26Z"
-    }
-   ]
-  },
-  "NVDA": {
-   "articles": 34,
-   "sentiment": -0.041,
-   "label": "中性",
-   "top": [
-    {
-     "score": 1.0,
-     "title": "Jensen Huang Downplays Memory Glut Fears: Will Micron Rebound Next?",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/markets/equities/26/10/62533057/jensen-huang-downplays-memory-glut-fears-is-a-micron-rebound-next",
-     "published": "2026-10-22T15:27:11Z"
-    },
-    {
-     "score": 1.0,
-     "title": "CoreWeave Debt Stress Mounts: Bond Yield Hits Record as Stock Suffers $44 Billion Wipeout",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/markets/bonds/26/10/62541064/coreweave-debt-stress-mounts-bond-yield-hits-record-as-stock-suffers-44-billion-wipeout",
-     "published": "2026-10-22T18:13:06Z"
-    },
-    {
-     "score": 1.0,
-     "title": "Blackstone CEO Sounds Alarm on AI Supply Crunch: 'Seldom in My Career Have I Seen' Anything Like It",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/markets/earnings/26/10/62541272/blackstone-ceo-sounds-alarm-on-ai-supply-crunch-seldom-in-my-career-have-i-seen-anything-like-it",
-     "published": "2026-10-22T18:18:40Z"
-    }
-   ]
-  },
-  "IREN": {
-   "articles": 5,
-   "sentiment": 0.133,
-   "label": "中性",
-   "top": [
-    {
-     "score": -1.0,
-     "title": "Why Is IREN Stock Falling on Thursday?",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/trading-ideas/movers/26/10/62530944/why-is-iren-stock-falling-on-thursday-3",
-     "published": "2026-10-22T14:45:06Z"
-    },
-    {
-     "score": 1.0,
-     "title": "Jensen Huang Downplays Memory Glut Fears: Will Micron Rebound Next?",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/markets/equities/26/10/62533057/jensen-huang-downplays-memory-glut-fears-is-a-micron-rebound-next",
-     "published": "2026-10-22T15:27:11Z"
-    },
-    {
-     "score": 1.0,
-     "title": "CoreWeave Debt Stress Mounts: Bond Yield Hits Record as Stock Suffers $44 Billion Wipeout",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/markets/bonds/26/10/62541064/coreweave-debt-stress-mounts-bond-yield-hits-record-as-stock-suffers-44-billion-wipeout",
-     "published": "2026-10-22T18:13:06Z"
-    }
-   ]
-  },
-  "CSCO": {
-   "articles": 5,
-   "sentiment": -0.267,
-   "label": "略偏空",
-   "top": [
-    {
-     "score": -1.0,
-     "title": "Michael Burry Shares Chilling Song on AI: 'Watching Trillion-Dollar Monuments Become Obsolete'",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/markets/tech/26/10/62546332/michael-burry-shares-chilling-song-on-ai-watching-trillion-dollar-monuments-become-obsolete",
-     "published": "2026-10-22T20:12:46Z"
-    },
-    {
-     "score": -0.333,
-     "title": "Tom Lee Urges Buying the Tech Dip, Calls Sell-Off a ‘Healthy Correction,’ Points to $30 Trillion Infrastructure Boom Ahead",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/markets/market-summary/26/10/62556338/tom-lee-urges-buying-the-tech-dip-calls-sell-off-a-healthy-correction-points-to-30-trillion-infrastructure-boom-ahead",
-     "published": "2026-10-23T12:36:56Z"
-    },
-    {
-     "score": 0.0,
-     "title": "Congressional Trading Report: Sen. John Boozman Bought Over $10K In Cisco Systems Stock",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/government/26/10/62531714/congressional-trading-report-sen-john-boozman-bought-over-10k-cisco-systems-stock",
-     "published": "2026-10-22T15:00:15Z"
-    }
-   ]
-  },
-  "CAT": {
-   "articles": 5,
-   "sentiment": -0.533,
+   "sentiment": -0.5,
    "label": "偏空",
    "top": [
     {
      "score": -1.0,
-     "title": "Michael Burry Shares Chilling Song on AI: 'Watching Trillion-Dollar Monuments Become Obsolete'",
+     "title": "Consumer Tech (Oct 19-23): OpenAI Reportedly Seeks $30 Billion, Tesla Cuts 2026 Capex Forecast, Anthropic Commits To Over $600 Billion & More",
      "source": "benzinga",
-     "url": "https://www.benzinga.com/markets/tech/26/10/62546332/michael-burry-shares-chilling-song-on-ai-watching-trillion-dollar-monuments-become-obsolete",
-     "published": "2026-10-22T20:12:46Z"
-    },
-    {
-     "score": -1.0,
-     "title": "AI Sell-Off Spreads to Industrials: Caterpillar, GE Vernova, Vertiv Trapped in Bear Market",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/markets/equities/26/10/62548779/ai-sell-off-spreads-to-industrials-caterpillar-ge-vernova-vertiv-trapped-in-bear-market",
-     "published": "2026-10-22T21:27:44Z"
-    },
-    {
-     "score": -0.667,
-     "title": "Meta Tumbles 6% on AI Spending Fears, 10-Year Yield Falls Below 5%: Stock Market Today",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/markets/equities/26/10/62539017/meta-ai-spending-10-year-yield-below-5-stock-market-today",
-     "published": "2026-10-22T17:26:37Z"
-    }
-   ]
-  },
-  "DIA": {
-   "articles": 5,
-   "sentiment": -0.467,
-   "label": "偏空",
-   "top": [
-    {
-     "score": -1.0,
-     "title": "Stock Market: Will S&P 500 Open Up or Down Today?",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/markets/prediction-markets/26/10/62551350/stock-market-will-sp-500-open-up-or-down-today-64",
-     "published": "2026-10-23T06:36:08Z"
-    },
-    {
-     "score": -0.667,
-     "title": "Meta Tumbles 6% on AI Spending Fears, 10-Year Yield Falls Below 5%: Stock Market Today",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/markets/equities/26/10/62539017/meta-ai-spending-10-year-yield-below-5-stock-market-today",
-     "published": "2026-10-22T17:26:37Z"
-    },
-    {
-     "score": -0.333,
-     "title": "Nvidia's AI Warning, $111 Oil: Why SOXL Just Suffered a Brutal 20% Wipeout",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/etfs/specialty-etfs/26/10/62545840/nvidias-ai-warning-111-oil-why-soxl-just-suffered-a-brutal-20-wipeout",
-     "published": "2026-10-22T20:07:14Z"
-    }
-   ]
-  },
-  "GE": {
-   "articles": 3,
-   "sentiment": 0.0,
-   "label": "中性",
-   "top": [
-    {
-     "score": 0.0,
-     "title": "Defensives Lead Sectors In Thursday Trading As Growth Trails",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/etfs/sector-etfs/26/10/62531733/defensives-lead-sectors-in-thursday-trading-as-growth-trails",
-     "published": "2026-10-22T15:00:23Z"
+     "url": "https://www.benzinga.com/markets/tech/26/10/62579783/consumer-tech-oct-19-23-openai-reportedly-seeks-30-billion-tesla-cuts-2026-capex-forecast-anthropic-commits-to-over-600-billion-more",
+     "published": "2026-10-25T13:47:05Z"
     },
     {
      "score": 0.0,
-     "title": "Wall Street Analysts Update Ratings and Price Targets for GE Aerospace",
-     "source": "fiscal.ai",
-     "url": "https://www.moomoo.com/hans/news/post/1002028551/a-quick-look-at-today-s-ratings-for-ge-aerospace",
-     "published": "2026-10-22T21:31:30Z"
-    },
-    {
-     "score": 0.0,
-     "title": "GE Aerospace Joins NATICA Project for ATS Platform Development",
-     "source": "fiscal.ai",
-     "url": "https://www.finanznachrichten.de/nachrichten-2026-10/69917918-pta-news-frequentis-ag-frequentis-leitet-europaeisches-sesar-projekt-zur-weiterentwicklung-der-naechsten-generation-von-flugsicherungssystemen-015.htm",
-     "published": "2026-10-23T10:31:31Z"
+     "title": "Meta Launches Offering Of 250M Depositary Shares And $22.5B Offering Of Class A Common Stock In Connection With Forward Sale Agreements; Total Value Of Offering Seen At $95B",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/news/26/10/62584750/meta-launches-offering-of-250m-depositary-shares-and-22-5b-offering-of-class-a-common-stock-in-connection-with-forward-sale-agreements",
+     "published": "2026-10-26T11:01:06Z"
     }
    ]
   },
-  "IWM": {
-   "articles": 2,
-   "sentiment": -0.333,
-   "label": "略偏空",
-   "top": [
-    {
-     "score": -0.667,
-     "title": "Meta Tumbles 6% on AI Spending Fears, 10-Year Yield Falls Below 5%: Stock Market Today",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/markets/equities/26/10/62539017/meta-ai-spending-10-year-yield-below-5-stock-market-today",
-     "published": "2026-10-22T17:26:37Z"
-    },
-    {
-     "score": 0.0,
-     "title": "Defensives Lead Sectors In Thursday Trading As Growth Trails",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/etfs/sector-etfs/26/10/62531733/defensives-lead-sectors-in-thursday-trading-as-growth-trails",
-     "published": "2026-10-22T15:00:23Z"
-    }
-   ]
-  },
-  "JNJ": {
-   "articles": 6,
-   "sentiment": 0.056,
-   "label": "中性",
-   "top": [
-    {
-     "score": 1.0,
-     "title": "European Commission Approves TECVAYLI® Indication Extension for Multiple Myeloma",
-     "source": "fiscal.ai",
-     "url": "https://www.manilatimes.net/2026/10/23/tmt-newswire/globenewswire/european-commission-approves-johnson-johnsons-tecvayli-teclistamab-monotherapy-for-relapsedrefractory-multiple-myeloma-expanding-treatment-options-from-first-relapse/2452705",
-     "published": "2026-10-23T11:31:37Z"
-    },
-    {
-     "score": -0.667,
-     "title": "Meta Tumbles 6% on AI Spending Fears, 10-Year Yield Falls Below 5%: Stock Market Today",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/markets/equities/26/10/62539017/meta-ai-spending-10-year-yield-below-5-stock-market-today",
-     "published": "2026-10-22T17:26:37Z"
-    },
-    {
-     "score": 0.0,
-     "title": "Defensives Lead Sectors In Thursday Trading As Growth Trails",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/etfs/sector-etfs/26/10/62531733/defensives-lead-sectors-in-thursday-trading-as-growth-trails",
-     "published": "2026-10-22T15:00:23Z"
-    }
-   ]
-  },
-  "KO": {
-   "articles": 8,
-   "sentiment": 0.075,
-   "label": "中性",
-   "top": [
-    {
-     "score": 1.0,
-     "title": "Warren Buffett Who? Berkshire Stock Hits Records as These Holdings Drive Gains Under Greg Abel",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/trading-ideas/long-ideas/26/10/62535824/warren-buffett-berkshire-stock-hits-records-under-greg-abel",
-     "published": "2026-10-22T16:17:59Z"
-    },
-    {
-     "score": -1.0,
-     "title": "Law Firm Investigates Data Privacy Claims Following Coca-Cola Data Breach",
-     "source": "fiscal.ai",
-     "url": "https://www.globenewswire.com/news-release/2026/10/22/3386598/0/en/coca-cola-data-breach-investigation-edelson-lechtzin-llp-probes-class-action-claims-after-customer-data-is-exposed.html",
-     "published": "2026-10-22T19:01:32Z"
-    },
-    {
-     "score": 0.6,
-     "title": "Walmart’s Best Month Since 1999 Leads a Record Staples Rally: Is This a Warning Sign?",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/etfs/sector-etfs/26/10/62546738/walmart-stock-best-month-since-1999-record-staples-rally",
-     "published": "2026-10-22T20:18:29Z"
-    }
-   ]
-  },
-  "LLY": {
+  "WDC": {
    "articles": 4,
    "sentiment": -0.25,
    "label": "略偏空",
    "top": [
     {
      "score": -1.0,
-     "title": "More Americans Now Take GLP-1 Drugs for Weight Loss Than Diabetes as Food, Alcohol and Apparel Habits Shift, Survey Finds",
+     "title": "Consumer Tech (Oct 19-23): OpenAI Reportedly Seeks $30 Billion, Tesla Cuts 2026 Capex Forecast, Anthropic Commits To Over $600 Billion & More",
      "source": "benzinga",
-     "url": "https://www.benzinga.com/news/health-care/26/10/62554133/more-americans-now-take-glp-1-drugs-for-weight-loss-than-diabetes-as-food-alcohol-and-apparel-habits-shift-survey-finds",
-     "published": "2026-10-23T11:01:46Z"
+     "url": "https://www.benzinga.com/markets/tech/26/10/62579783/consumer-tech-oct-19-23-openai-reportedly-seeks-30-billion-tesla-cuts-2026-capex-forecast-anthropic-commits-to-over-600-billion-more",
+     "published": "2026-10-25T13:47:05Z"
     },
     {
      "score": 0.0,
-     "title": "Defensives Lead Sectors In Thursday Trading As Growth Trails",
+     "title": "A SpaceX and Tesla Merger Would Build a Conglomerate Just as Spin-Offs Thrive",
      "source": "benzinga",
-     "url": "https://www.benzinga.com/etfs/sector-etfs/26/10/62531733/defensives-lead-sectors-in-thursday-trading-as-growth-trails",
-     "published": "2026-10-22T15:00:23Z"
+     "url": "https://www.benzinga.com/markets/equities/26/10/62580200/a-spacex-and-tesla-merger-would-build-a-conglomerate-just-as-spin-offs-thrive",
+     "published": "2026-10-25T19:30:08Z"
     },
     {
      "score": 0.0,
-     "title": "Eli Lilly Starts Construction On $5B Production Site In Richmond, Virginia",
+     "title": "5 Stock Picks Last Week From Wall Street's Most Accurate Analysts",
      "source": "benzinga",
-     "url": "https://www.benzinga.com/news/26/10/62530619/eli-lilly-starts-construction-5b-production-site-richmond-virginia",
-     "published": "2026-10-22T14:41:31Z"
+     "url": "https://www.benzinga.com/analyst-stock-ratings/price-target/26/10/62583042/5-stock-picks-last-week-from-wall-streets-most-accurate-analysts-41",
+     "published": "2026-10-26T09:40:07Z"
     }
    ]
   },
-  "ORCL": {
-   "articles": 10,
-   "sentiment": -0.033,
-   "label": "中性",
-   "top": [
-    {
-     "score": -1.0,
-     "title": "Analysts Discuss Oracle's AI Financing Requirements and Market Concerns",
-     "source": "fiscal.ai",
-     "url": "https://www.moomoo.com/news/post/1002028981/oracle-stock-was-caught-in-the-ai-debt-selloff-wall",
-     "published": "2026-10-22T19:01:29Z"
-    },
-    {
-     "score": 1.0,
-     "title": "Analyst Adjusts Price Target for Oracle Corporation",
-     "source": "fiscal.ai",
-     "url": "https://www.moomoo.com/ja/news/post/1002172624/goldman-sachs-maintains-oracle-orclus-with-buy-rating-cuts-target",
-     "published": "2026-10-23T11:31:40Z"
-    },
-    {
-     "score": -0.333,
-     "title": "Former Fed Adviser Danielle DiMartino Booth Warns Recession May Already Be Here: Treasury Rally Signals ‘Far More Consequential’ Shift",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/markets/economic-data/26/10/62550709/former-fed-insider-warns-recession-underway-treasury-rally",
-     "published": "2026-10-23T04:55:07Z"
-    }
-   ]
-  },
-  "PG": {
-   "articles": 13,
-   "sentiment": 0.226,
-   "label": "略偏多",
-   "top": [
-    {
-     "score": 1.0,
-     "title": "Tide And Gillette Maker Procter & Gamble's Sales Machine Keeps Humming Despite Inflation Pressure",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/markets/earnings/26/10/62527709/tide-and-gillette-maker-procter-gambles-sales-machine-keeps-humming-despite-inflation-pressure",
-     "published": "2026-10-22T13:50:07Z"
-    },
-    {
-     "score": 1.0,
-     "title": "QUICK SPARK: Procter & Gamble Stock Eyes Best Day Since 2020 – The Rally Is Hiding Something Bigger",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/markets/equities/26/10/62539221/procter-gamble-stock-best-day-since-2020",
-     "published": "2026-10-22T17:31:56Z"
-    },
-    {
-     "score": 1.0,
-     "title": "Morgan Stanley Maintains Overweight on Procter & Gamble, Raises Price Target to $185",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/news/26/10/62555546/morgan-stanley-maintains-overweight-procter-gamble-raises-price-target-185",
-     "published": "2026-10-23T12:03:08Z"
-    }
-   ]
-  },
-  "QQQ": {
+  "AMZN": {
    "articles": 12,
-   "sentiment": -0.306,
-   "label": "略偏空",
-   "top": [
-    {
-     "score": -1.0,
-     "title": "Peter Schiff Warns Stock Market Crash Before Midterms 'Is Not Outside the Realm of Possibility' — 'This Is October'",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/markets/economic-data/26/10/62550388/peter-schiff-october-stock-market-crash-warning-midterms",
-     "published": "2026-10-23T02:32:48Z"
-    },
-    {
-     "score": -1.0,
-     "title": "Stock Market: Will S&P 500 Open Up or Down Today?",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/markets/prediction-markets/26/10/62551350/stock-market-will-sp-500-open-up-or-down-today-64",
-     "published": "2026-10-23T06:36:08Z"
-    },
-    {
-     "score": -1.0,
-     "title": "Stock Market Today: S&P 500, Nasdaq 100, Dow Jones Futures Fall Ahead of Global PMI Data—Western Digital, Newmont, Crown Castle in Focus (UPDATED)",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/markets/equities/26/10/62553473/stock-market-today-sp-500-nasdaq-100-futures-mixed-ahead-of-global-pmi-data-western-digital-newmont-crown-castle-in-focus",
-     "published": "2026-10-23T12:50:25Z"
-    }
-   ]
-  },
-  "XLB": {
-   "articles": 1,
-   "sentiment": 0.0,
-   "label": "中性",
-   "top": [
-    {
-     "score": 0.0,
-     "title": "Defensives Lead Sectors In Thursday Trading As Growth Trails",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/etfs/sector-etfs/26/10/62531733/defensives-lead-sectors-in-thursday-trading-as-growth-trails",
-     "published": "2026-10-22T15:00:23Z"
-    }
-   ]
-  },
-  "XLC": {
-   "articles": 1,
-   "sentiment": 0.0,
-   "label": "中性",
-   "top": [
-    {
-     "score": 0.0,
-     "title": "Defensives Lead Sectors In Thursday Trading As Growth Trails",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/etfs/sector-etfs/26/10/62531733/defensives-lead-sectors-in-thursday-trading-as-growth-trails",
-     "published": "2026-10-22T15:00:23Z"
-    }
-   ]
-  },
-  "XLE": {
-   "articles": 2,
-   "sentiment": 0.0,
-   "label": "中性",
-   "top": [
-    {
-     "score": 0.0,
-     "title": "Defensives Lead Sectors In Thursday Trading As Growth Trails",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/etfs/sector-etfs/26/10/62531733/defensives-lead-sectors-in-thursday-trading-as-growth-trails",
-     "published": "2026-10-22T15:00:23Z"
-    },
-    {
-     "score": 0.0,
-     "title": "Strategic Petroleum Reserve Is Emptying, Here’s Why Permian Producers Can’t Fill It Up",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/markets/commodities/26/10/62554630/strategic-petroleum-reserve-is-emptying-heres-why-permian-producers-cant-fill-it-up",
-     "published": "2026-10-23T11:26:13Z"
-    }
-   ]
-  },
-  "XLI": {
-   "articles": 1,
-   "sentiment": 0.0,
-   "label": "中性",
-   "top": [
-    {
-     "score": 0.0,
-     "title": "Defensives Lead Sectors In Thursday Trading As Growth Trails",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/etfs/sector-etfs/26/10/62531733/defensives-lead-sectors-in-thursday-trading-as-growth-trails",
-     "published": "2026-10-22T15:00:23Z"
-    }
-   ]
-  },
-  "XLK": {
-   "articles": 7,
-   "sentiment": -0.057,
-   "label": "中性",
-   "top": [
-    {
-     "score": 1.0,
-     "title": "QUICK SPARK: Procter & Gamble Stock Eyes Best Day Since 2020 – The Rally Is Hiding Something Bigger",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/markets/equities/26/10/62539221/procter-gamble-stock-best-day-since-2020",
-     "published": "2026-10-22T17:31:56Z"
-    },
-    {
-     "score": -1.0,
-     "title": "What's Going On With Micron Technology Stock Thursday?",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/markets/tech/26/10/62539246/whats-going-on-with-micron-technology-stock-thursday-8",
-     "published": "2026-10-22T17:32:08Z"
-    },
-    {
-     "score": -0.667,
-     "title": "Meta Tumbles 6% on AI Spending Fears, 10-Year Yield Falls Below 5%: Stock Market Today",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/markets/equities/26/10/62539017/meta-ai-spending-10-year-yield-below-5-stock-market-today",
-     "published": "2026-10-22T17:26:37Z"
-    }
-   ]
-  },
-  "XLP": {
-   "articles": 6,
-   "sentiment": 0.156,
+   "sentiment": 0.278,
    "label": "略偏多",
    "top": [
     {
      "score": 1.0,
-     "title": "QUICK SPARK: Procter & Gamble Stock Eyes Best Day Since 2020 – The Rally Is Hiding Something Bigger",
+     "title": "Magnificent Seven ETF Pulls Back: What to Expect from Microsoft, Google, and Amazon Earnings",
      "source": "benzinga",
-     "url": "https://www.benzinga.com/markets/equities/26/10/62539221/procter-gamble-stock-best-day-since-2020",
-     "published": "2026-10-22T17:31:56Z"
+     "url": "https://www.benzinga.com/etfs/sector-etfs/26/10/62580060/magnificent-seven-etf-pulls-back-what-to-expect-from-microsoft-google-and-amazon-earnings",
+     "published": "2026-10-25T18:15:29Z"
     },
-    {
-     "score": -0.667,
-     "title": "Meta Tumbles 6% on AI Spending Fears, 10-Year Yield Falls Below 5%: Stock Market Today",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/markets/equities/26/10/62539017/meta-ai-spending-10-year-yield-below-5-stock-market-today",
-     "published": "2026-10-22T17:26:37Z"
-    },
-    {
-     "score": 0.6,
-     "title": "Walmart’s Best Month Since 1999 Leads a Record Staples Rally: Is This a Warning Sign?",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/etfs/sector-etfs/26/10/62546738/walmart-stock-best-month-since-1999-record-staples-rally",
-     "published": "2026-10-22T20:18:29Z"
-    }
-   ]
-  },
-  "XLRE": {
-   "articles": 2,
-   "sentiment": -0.167,
-   "label": "略偏空",
-   "top": [
-    {
-     "score": -0.333,
-     "title": "Ten-Year Treasury Yields Fall Below 5%: These 10 Real-Estate Stocks Are Rallying Sharply",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/real-estate/26/10/62545365/10-year-treasury-yield-falls-homebuilder-real-estate-stocks-rally",
-     "published": "2026-10-22T20:03:40Z"
-    },
-    {
-     "score": 0.0,
-     "title": "Defensives Lead Sectors In Thursday Trading As Growth Trails",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/etfs/sector-etfs/26/10/62531733/defensives-lead-sectors-in-thursday-trading-as-growth-trails",
-     "published": "2026-10-22T15:00:23Z"
-    }
-   ]
-  },
-  "XLU": {
-   "articles": 2,
-   "sentiment": 0.0,
-   "label": "中性",
-   "top": [
-    {
-     "score": 0.0,
-     "title": "Defensives Lead Sectors In Thursday Trading As Growth Trails",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/etfs/sector-etfs/26/10/62531733/defensives-lead-sectors-in-thursday-trading-as-growth-trails",
-     "published": "2026-10-22T15:00:23Z"
-    },
-    {
-     "score": 0.0,
-     "title": "The Average Stock Is Beating the S&P 500 by the Most Since April 2009: Is the Rotation Now Over?",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/markets/equities/26/10/62556800/equal-weight-sp-500-rsp-spy-best-month-since-2009-rotation",
-     "published": "2026-10-23T12:52:39Z"
-    }
-   ]
-  },
-  "XLV": {
-   "articles": 2,
-   "sentiment": -0.333,
-   "label": "略偏空",
-   "top": [
-    {
-     "score": -0.667,
-     "title": "Meta Tumbles 6% on AI Spending Fears, 10-Year Yield Falls Below 5%: Stock Market Today",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/markets/equities/26/10/62539017/meta-ai-spending-10-year-yield-below-5-stock-market-today",
-     "published": "2026-10-22T17:26:37Z"
-    },
-    {
-     "score": 0.0,
-     "title": "Defensives Lead Sectors In Thursday Trading As Growth Trails",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/etfs/sector-etfs/26/10/62531733/defensives-lead-sectors-in-thursday-trading-as-growth-trails",
-     "published": "2026-10-22T15:00:23Z"
-    }
-   ]
-  },
-  "XLY": {
-   "articles": 2,
-   "sentiment": 0.0,
-   "label": "中性",
-   "top": [
-    {
-     "score": 0.0,
-     "title": "Defensives Lead Sectors In Thursday Trading As Growth Trails",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/etfs/sector-etfs/26/10/62531733/defensives-lead-sectors-in-thursday-trading-as-growth-trails",
-     "published": "2026-10-22T15:00:23Z"
-    },
-    {
-     "score": 0.0,
-     "title": "Walmart Stock Eyes Best Monthly Rally Since 2014: Is This an Early Recession Warning?",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/markets/equities/26/10/62537079/walmart-stock-best-month-since-2014-recession-signal",
-     "published": "2026-10-22T16:44:08Z"
-    }
-   ]
-  },
-  "XOM": {
-   "articles": 5,
-   "sentiment": 0.2,
-   "label": "略偏多",
-   "top": [
     {
      "score": 1.0,
-     "title": "'Qatar Scours for More LNG to Boost Supply Outside Middle East' - Bloomberg Exclusive",
+     "title": "A $1 Trillion Depreciation Bomb Is Ticking Beneath the AI Market",
      "source": "benzinga",
-     "url": "https://www.benzinga.com/news/26/10/62536494/qatar-scours-more-lng-boost-supply-outside-middle-east-bloomberg-exclusive",
-     "published": "2026-10-22T16:33:47Z"
+     "url": "https://www.benzinga.com/markets/tech/26/10/62580225/a-1-trillion-depreciation-bomb-is-ticking-beneath-the-ai-market",
+     "published": "2026-10-25T19:45:14Z"
     },
-    {
-     "score": 0.0,
-     "title": "Defensives Lead Sectors In Thursday Trading As Growth Trails",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/etfs/sector-etfs/26/10/62531733/defensives-lead-sectors-in-thursday-trading-as-growth-trails",
-     "published": "2026-10-22T15:00:23Z"
-    },
-    {
-     "score": 0.0,
-     "title": "'Shell And Exxon’s $8B UK Chemicals Unit Put Up For Sale' - Financial Times",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/news/26/10/62526915/shell-and-exxon-s-8b-uk-chemicals-unit-put-sale-financial-times",
-     "published": "2026-10-22T13:39:50Z"
-    }
-   ]
-  },
-  "COST": {
-   "articles": 3,
-   "sentiment": 0.2,
-   "label": "略偏多",
-   "top": [
-    {
-     "score": 0.6,
-     "title": "Walmart’s Best Month Since 1999 Leads a Record Staples Rally: Is This a Warning Sign?",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/etfs/sector-etfs/26/10/62546738/walmart-stock-best-month-since-1999-record-staples-rally",
-     "published": "2026-10-22T20:18:29Z"
-    },
-    {
-     "score": 0.0,
-     "title": "IQBAR Launches Indulgent Protein Bites at Costco",
-     "source": "fiscal.ai",
-     "url": "https://www.prnewswire.com/news-releases/iqbar-expands-protein-bites-line-with-three-new-indulgent-flavors-exclusively-at-costco-302916155.html",
-     "published": "2026-10-22T15:01:36Z"
-    },
-    {
-     "score": 0.0,
-     "title": "Urban Remedy Launches Chocolate Protein Collagen Shake at Select Costco Warehouses",
-     "source": "fiscal.ai",
-     "url": "https://www.bevnet.com/pr/2026/10/22/urban-remedy-now-available-at-select-costco-warehouses-in-the-la-area",
-     "published": "2026-10-22T21:31:32Z"
-    }
-   ]
-  },
-  "INTC": {
-   "articles": 6,
-   "sentiment": 0.167,
-   "label": "略偏多",
-   "top": [
     {
      "score": 1.0,
-     "title": "SK Hynix Shelves Solidigm IPO Plans Amid Chip-Stock Correction and Market Volatility: Says Does Not Reflect Any Change in 'Growth Prospects or Investment Needs'",
+     "title": "‘Best Midterm Strategy’ for Stocks? Turn Off the TV and Buy on Election Day, Says Analyst —What 75 Years of S&P 500 History Reveals",
      "source": "benzinga",
-     "url": "https://www.benzinga.com/markets/ipos/26/10/62553421/sk-hynix-shelves-solidigm-ipo-plans-amid-chip-stock-correction-and-market-volatility-says-does-not-reflect-any-change-in-growth-prospects-or-investment-needs",
-     "published": "2026-10-23T10:17:02Z"
-    },
-    {
-     "score": 0.0,
-     "title": "Intel Reaches Construction Milestone at Ohio Manufacturing Campus",
-     "source": "fiscal.ai",
-     "url": "https://www.barchart.com/story/news/8323866/intc-stock-alert-what-to-know-as-intel-hits-construction-milestone-at-ohio-fab",
-     "published": "2026-10-22T15:02:13Z"
-    },
-    {
-     "score": 0.0,
-     "title": "'Intel Plus Elon' Could Pose Bigger Threat to TSMC Than Musk Alone, Chip Analyst Says",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/markets/prediction-markets/26/10/62539826/intel-elon-terafab-tsmc-threat",
-     "published": "2026-10-22T17:43:02Z"
+     "url": "https://www.benzinga.com/markets/tech/26/10/62586852/best-midterm-strategy-for-stocks-turn-off-the-tv-and-buy-on-election-day-says-analyst-what-75-years-of-sp-500-history-reveals",
+     "published": "2026-10-26T12:19:57Z"
     }
    ]
   },
   "CRWV": {
-   "articles": 14,
-   "sentiment": -0.167,
-   "label": "略偏空",
+   "articles": 4,
+   "sentiment": -0.5,
+   "label": "偏空",
    "top": [
     {
      "score": -1.0,
-     "title": "CoreWeave Stock Continues to Drop: What's Happening?",
+     "title": "IREN, CRWV, NBIS, APLD Stocks Fall Pre-Market as Analyst Echoes Elon Musk’s Neocloud Debt Warning: ‘Putting GPUs as Collateral Isn’t Enough Anymore'",
      "source": "benzinga",
-     "url": "https://www.benzinga.com/trading-ideas/movers/26/10/62532102/coreweave-stock-continues-to-drop-whats-happening",
-     "published": "2026-10-22T15:07:06Z"
-    },
-    {
-     "score": 1.0,
-     "title": "Jensen Huang Downplays Memory Glut Fears: Will Micron Rebound Next?",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/markets/equities/26/10/62533057/jensen-huang-downplays-memory-glut-fears-is-a-micron-rebound-next",
-     "published": "2026-10-22T15:27:11Z"
-    },
-    {
-     "score": 1.0,
-     "title": "CoreWeave Debt Stress Mounts: Bond Yield Hits Record as Stock Suffers $44 Billion Wipeout",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/markets/bonds/26/10/62541064/coreweave-debt-stress-mounts-bond-yield-hits-record-as-stock-suffers-44-billion-wipeout",
-     "published": "2026-10-22T18:13:06Z"
-    }
-   ]
-  },
-  "MU": {
-   "articles": 5,
-   "sentiment": 0.067,
-   "label": "中性",
-   "top": [
-    {
-     "score": 1.0,
-     "title": "Jensen Huang Downplays Memory Glut Fears: Will Micron Rebound Next?",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/markets/equities/26/10/62533057/jensen-huang-downplays-memory-glut-fears-is-a-micron-rebound-next",
-     "published": "2026-10-22T15:27:11Z"
+     "url": "https://www.benzinga.com/markets/equities/26/10/62583711/iren-crwv-nbis-apld-stocks-fall-pre-market-as-analyst-echoes-elon-musks-neocloud-debt-warning-putting-gpus-as-collateral-isnt-enough-anymore",
+     "published": "2026-10-26T10:14:13Z"
     },
     {
      "score": -1.0,
-     "title": "What's Going On With Micron Technology Stock Thursday?",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/markets/tech/26/10/62539246/whats-going-on-with-micron-technology-stock-thursday-8",
-     "published": "2026-10-22T17:32:08Z"
-    },
-    {
-     "score": 1.0,
-     "title": "RBC Capital Markets Maintains Outperform Rating on Micron",
+     "title": "CoreWeave Shares Decline Following Industry Commentary on 'Neocloud' Debt Risks",
      "source": "fiscal.ai",
-     "url": "https://www.moomoo.com/news/post/1002046064/micron-s-long-term-memory-strategy-supports-growth-outlook-rbc",
-     "published": "2026-10-22T21:31:50Z"
+     "url": "https://www.moomoo.com/news/post/1002340063/spacex-coreweave-ambev-xp-exxon-and-more-stocks-that-explain",
+     "published": "2026-10-26T11:32:27Z"
+    },
+    {
+     "score": 0.0,
+     "title": "S&P 500, VOO, and SPY Outlook: What Investors Need to Watch This Week",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/equities/26/10/62579924/sp-500-voo-and-spy-outlook-what-investors-need-to-watch-this-week",
+     "published": "2026-10-25T16:00:28Z"
     }
    ]
   },
-  "NBIS": {
-   "articles": 3,
-   "sentiment": 0.667,
+  "GOOGL": {
+   "articles": 8,
+   "sentiment": 0.375,
    "label": "偏多",
    "top": [
     {
      "score": 1.0,
-     "title": "Jensen Huang Downplays Memory Glut Fears: Will Micron Rebound Next?",
+     "title": "Magnificent Seven ETF Pulls Back: What to Expect from Microsoft, Google, and Amazon Earnings",
      "source": "benzinga",
-     "url": "https://www.benzinga.com/markets/equities/26/10/62533057/jensen-huang-downplays-memory-glut-fears-is-a-micron-rebound-next",
-     "published": "2026-10-22T15:27:11Z"
+     "url": "https://www.benzinga.com/etfs/sector-etfs/26/10/62580060/magnificent-seven-etf-pulls-back-what-to-expect-from-microsoft-google-and-amazon-earnings",
+     "published": "2026-10-25T18:15:29Z"
     },
     {
      "score": 1.0,
-     "title": "CoreWeave Debt Stress Mounts: Bond Yield Hits Record as Stock Suffers $44 Billion Wipeout",
+     "title": "A $1 Trillion Depreciation Bomb Is Ticking Beneath the AI Market",
      "source": "benzinga",
-     "url": "https://www.benzinga.com/markets/bonds/26/10/62541064/coreweave-debt-stress-mounts-bond-yield-hits-record-as-stock-suffers-44-billion-wipeout",
-     "published": "2026-10-22T18:13:06Z"
+     "url": "https://www.benzinga.com/markets/tech/26/10/62580225/a-1-trillion-depreciation-bomb-is-ticking-beneath-the-ai-market",
+     "published": "2026-10-25T19:45:14Z"
     },
     {
-     "score": 0.0,
-     "title": "What's Going On With Nebius Stock Thursday?",
+     "score": 1.0,
+     "title": "‘Best Midterm Strategy’ for Stocks? Turn Off the TV and Buy on Election Day, Says Analyst —What 75 Years of S&P 500 History Reveals",
      "source": "benzinga",
-     "url": "https://www.benzinga.com/trading-ideas/movers/26/10/62525801/whats-going-on-with-nebius-stock-thursday",
-     "published": "2026-10-22T13:14:46Z"
+     "url": "https://www.benzinga.com/markets/tech/26/10/62586852/best-midterm-strategy-for-stocks-turn-off-the-tv-and-buy-on-election-day-says-analyst-what-75-years-of-sp-500-history-reveals",
+     "published": "2026-10-26T12:19:57Z"
     }
    ]
   },
-  "DELL": {
-   "articles": 4,
-   "sentiment": -0.05,
-   "label": "中性",
-   "top": [
-    {
-     "score": -0.2,
-     "title": "Dell Stock Drops in Tech Sell-Off: Profit-Taking Hits AI Server Giant",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/markets/tech/26/10/62536463/dell-stock-drops-7-in-tech-sell-off-profit-taking-hits-ai-server-giant",
-     "published": "2026-10-22T16:33:23Z"
-    },
-    {
-     "score": 0.0,
-     "title": "Here’s How Much You Would Have Made Owning Dell Technologies Stock In The Last 5 Years",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/news/26/10/62537153/here-s-how-much-you-would-have-made-owning-dell-technologies-stock-last-5-years",
-     "published": "2026-10-22T16:45:23Z"
-    },
-    {
-     "score": 0.0,
-     "title": "Dell Technologies Joins Agentic AI Foundation as Silver Member",
-     "source": "fiscal.ai",
-     "url": "https://www.morningstar.com/news/pr-newswire/20261022dc78741/agentic-ai-foundation-surpasses-300-members-in-less-than-one-year",
-     "published": "2026-10-22T18:01:46Z"
-    }
-   ]
-  },
-  "LRCX": {
+  "META": {
    "articles": 12,
-   "sentiment": -0.278,
-   "label": "略偏空",
+   "sentiment": 0.028,
+   "label": "中性",
    "top": [
     {
-     "score": -1.0,
-     "title": "AMD Stock Drops 7% in Chip Sell-Off - Here's Why",
+     "score": 1.0,
+     "title": "Magnificent Seven ETF Pulls Back: What to Expect from Microsoft, Google, and Amazon Earnings",
      "source": "benzinga",
-     "url": "https://www.benzinga.com/trading-ideas/movers/26/10/62538125/amd-stock-drops-7-in-chip-sell-off-heres-why",
-     "published": "2026-10-22T17:07:11Z"
-    },
-    {
-     "score": -1.0,
-     "title": "Morgan Stanley Maintains Overweight on Lam Research, Lowers Price Target to $339",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/news/26/10/62539722/morgan-stanley-maintains-overweight-lam-research-lowers-price-target-339",
-     "published": "2026-10-22T17:41:55Z"
-    },
-    {
-     "score": -0.667,
-     "title": "Meta Tumbles 6% on AI Spending Fears, 10-Year Yield Falls Below 5%: Stock Market Today",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/markets/equities/26/10/62539017/meta-ai-spending-10-year-yield-below-5-stock-market-today",
-     "published": "2026-10-22T17:26:37Z"
-    }
-   ]
-  },
-  "SMCI": {
-   "articles": 3,
-   "sentiment": -0.333,
-   "label": "略偏空",
-   "top": [
-    {
-     "score": -1.0,
-     "title": "AMD Stock Drops 7% in Chip Sell-Off - Here's Why",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/trading-ideas/movers/26/10/62538125/amd-stock-drops-7-in-chip-sell-off-heres-why",
-     "published": "2026-10-22T17:07:11Z"
-    },
-    {
-     "score": -0.2,
-     "title": "Dell Stock Drops in Tech Sell-Off: Profit-Taking Hits AI Server Giant",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/markets/tech/26/10/62536463/dell-stock-drops-7-in-tech-sell-off-profit-taking-hits-ai-server-giant",
-     "published": "2026-10-22T16:33:23Z"
-    },
-    {
-     "score": 0.2,
-     "title": "Stock Drops 5% After Big Rally: Super Micro Computer Pulls Back During AI Supply Fears",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/markets/tech/26/10/62536780/stock-drops-5-after-big-rally-super-micro-computer-pulls-back-during-ai-supply-fears",
-     "published": "2026-10-22T16:38:30Z"
-    }
-   ]
-  },
-  "TSLA": {
-   "articles": 39,
-   "sentiment": 0.308,
-   "label": "略偏多",
-   "top": [
-    {
-     "score": -1.0,
-     "title": "Michael Burry Shares Chilling Song on AI: 'Watching Trillion-Dollar Monuments Become Obsolete'",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/markets/tech/26/10/62546332/michael-burry-shares-chilling-song-on-ai-watching-trillion-dollar-monuments-become-obsolete",
-     "published": "2026-10-22T20:12:46Z"
+     "url": "https://www.benzinga.com/etfs/sector-etfs/26/10/62580060/magnificent-seven-etf-pulls-back-what-to-expect-from-microsoft-google-and-amazon-earnings",
+     "published": "2026-10-25T18:15:29Z"
     },
     {
      "score": 1.0,
-     "title": "StoneX Reiterates Buy on Tesla, Maintains $475 Price Target",
+     "title": "A $1 Trillion Depreciation Bomb Is Ticking Beneath the AI Market",
      "source": "benzinga",
-     "url": "https://www.benzinga.com/news/26/10/62525551/stonex-reiterates-buy-tesla-maintains-475-price-target",
-     "published": "2026-10-22T13:10:17Z"
+     "url": "https://www.benzinga.com/markets/tech/26/10/62580225/a-1-trillion-depreciation-bomb-is-ticking-beneath-the-ai-market",
+     "published": "2026-10-25T19:45:14Z"
     },
     {
-     "score": 1.0,
-     "title": "Piper Sandler Maintains Overweight on Tesla, Raises Price Target to $475",
+     "score": -1.0,
+     "title": "Jamie Dimon Warns AI Agents Could Be ‘Treacherous’ for Banks, but Researcher Says There May Be Another Reason to Worry",
      "source": "benzinga",
-     "url": "https://www.benzinga.com/news/26/10/62525889/piper-sandler-maintains-overweight-tesla-raises-price-target-475",
-     "published": "2026-10-22T13:17:30Z"
+     "url": "https://www.benzinga.com/markets/tech/26/10/62584938/jamie-dimon-warns-ai-agents-treacherous-banks-researcher-another-reason-to-worry",
+     "published": "2026-10-26T11:08:37Z"
     }
    ]
   },
-  "CRM": {
+  "MSFT": {
+   "articles": 7,
+   "sentiment": 0.476,
+   "label": "偏多",
+   "top": [
+    {
+     "score": 1.0,
+     "title": "Magnificent Seven ETF Pulls Back: What to Expect from Microsoft, Google, and Amazon Earnings",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/etfs/sector-etfs/26/10/62580060/magnificent-seven-etf-pulls-back-what-to-expect-from-microsoft-google-and-amazon-earnings",
+     "published": "2026-10-25T18:15:29Z"
+    },
+    {
+     "score": 1.0,
+     "title": "A $1 Trillion Depreciation Bomb Is Ticking Beneath the AI Market",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/tech/26/10/62580225/a-1-trillion-depreciation-bomb-is-ticking-beneath-the-ai-market",
+     "published": "2026-10-25T19:45:14Z"
+    },
+    {
+     "score": 1.0,
+     "title": "Seagate Expands High-Capacity Storage Interoperability Validated by Microsoft Azure",
+     "source": "fiscal.ai",
+     "url": "https://www.businesswire.com/newsroom",
+     "published": "2026-10-26T10:31:23Z"
+    }
+   ]
+  },
+  "ORCL": {
    "articles": 5,
-   "sentiment": 0.0,
-   "label": "中性",
-   "top": [
-    {
-     "score": 0.0,
-     "title": "Why Is Salesforce Stock Surging on Thursday?",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/trading-ideas/movers/26/10/62537933/why-is-salesforce-stock-surging-on-thursday",
-     "published": "2026-10-22T17:03:07Z"
-    },
-    {
-     "score": 0.0,
-     "title": "28 North Consulting and Lumin Partner to Integrate Document Workflows with Salesforce",
-     "source": "fiscal.ai",
-     "url": "https://www.einpresswire.com/article/951014411/28-north-consulting-and-lumin-partner-to-connect-agreement-workflows-with-gtm-systems",
-     "published": "2026-10-22T18:02:00Z"
-    },
-    {
-     "score": 0.0,
-     "title": "REI Systems Launches GovGrants® Public Sector on Salesforce",
-     "source": "fiscal.ai",
-     "url": "https://www.prnewswire.com/news-releases/rei-systems-launches-govgrants-public-sector-on-salesforce-delivering-advanced-grants-management-and-ai-powered-intelligence-302916325.html",
-     "published": "2026-10-22T18:02:00Z"
-    }
-   ]
-  },
-  "AMD": {
-   "articles": 6,
-   "sentiment": -0.111,
-   "label": "中性",
-   "top": [
-    {
-     "score": -1.0,
-     "title": "AMD Stock Drops 7% in Chip Sell-Off - Here's Why",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/trading-ideas/movers/26/10/62538125/amd-stock-drops-7-in-chip-sell-off-heres-why",
-     "published": "2026-10-22T17:07:11Z"
-    },
-    {
-     "score": 1.0,
-     "title": "SOAR AI, Inc. Announces Contracted GPU Deployments Featuring AMD Instinct™ Accelerators",
-     "source": "fiscal.ai",
-     "url": "https://natlawreview.com/press-releases/soar-ai-releases-investor-presentation-outlining-its-planned-path-initial",
-     "published": "2026-10-22T21:31:27Z"
-    },
-    {
-     "score": -0.667,
-     "title": "Meta Tumbles 6% on AI Spending Fears, 10-Year Yield Falls Below 5%: Stock Market Today",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/markets/equities/26/10/62539017/meta-ai-spending-10-year-yield-below-5-stock-market-today",
-     "published": "2026-10-22T17:26:37Z"
-    }
-   ]
-  },
-  "SMH": {
-   "articles": 2,
-   "sentiment": -0.5,
-   "label": "偏空",
-   "top": [
-    {
-     "score": -0.667,
-     "title": "Meta Tumbles 6% on AI Spending Fears, 10-Year Yield Falls Below 5%: Stock Market Today",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/markets/equities/26/10/62539017/meta-ai-spending-10-year-yield-below-5-stock-market-today",
-     "published": "2026-10-22T17:26:37Z"
-    },
-    {
-     "score": -0.333,
-     "title": "Nvidia's AI Warning, $111 Oil: Why SOXL Just Suffered a Brutal 20% Wipeout",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/etfs/specialty-etfs/26/10/62545840/nvidias-ai-warning-111-oil-why-soxl-just-suffered-a-brutal-20-wipeout",
-     "published": "2026-10-22T20:07:14Z"
-    }
-   ]
-  },
-  "SPOT": {
-   "articles": 15,
-   "sentiment": 0.369,
-   "label": "偏多",
-   "top": [
-    {
-     "score": 1.0,
-     "title": "Healthcare Services Posts Upbeat Q3 Earnings, Joins Pool, Spotify And Other Big Stocks Moving Higher On Thursday",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/trading-ideas/movers/26/10/62529928/healthcare-services-posts-upbeat-q3-earnings-joins-pool-spotify-and-other-big-stocks-moving-higher-on-thursday",
-     "published": "2026-10-22T14:29:53Z"
-    },
-    {
-     "score": 1.0,
-     "title": "Barclays Adjusts Price Target on Spotify Technology",
-     "source": "fiscal.ai",
-     "url": "https://www.marketscreener.com/news/barclays-adjusts-price-target-on-spotify-technology-to-650-from-565-maintains-overweight-rating-ce785cdedd8ffe23",
-     "published": "2026-10-22T20:01:44Z"
-    },
-    {
-     "score": 1.0,
-     "title": "Spotify Embraces AI Agents From ChatGPT to Muse as New Growth Engine: ‘We Are Simply Everywhere’",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/markets/tech/26/10/62552283/spotify-chatgpt-meta-muse-ai-agent",
-     "published": "2026-10-23T08:44:38Z"
-    }
-   ]
-  },
-  "WDC": {
-   "articles": 19,
-   "sentiment": 0.102,
-   "label": "中性",
-   "top": [
-    {
-     "score": -1.0,
-     "title": "Stock Market Today: S&P 500, Nasdaq 100, Dow Jones Futures Fall Ahead of Global PMI Data—Western Digital, Newmont, Crown Castle in Focus (UPDATED)",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/markets/equities/26/10/62553473/stock-market-today-sp-500-nasdaq-100-futures-mixed-ahead-of-global-pmi-data-western-digital-newmont-crown-castle-in-focus",
-     "published": "2026-10-23T12:50:25Z"
-    },
-    {
-     "score": -1.0,
-     "title": "Western Digital Is Down 55% From Its June Peak. Can DRAM and SOXX ETFs Hold Up?",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/etfs/sector-etfs/26/10/62544302/western-digital-is-down-55-from-its-june-peak-can-dram-and-soxx-etfs-hold-up",
-     "published": "2026-10-22T19:43:23Z"
-    },
-    {
-     "score": 1.0,
-     "title": "Western Digital Q1 Adj. EPS $4.64 Beats $4.07 Estimate, Sales $4.381B Beat $4.131B Estimate",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/news/earnings/26/10/62545154/western-digital-q1-adj-eps-4-64-beats-4-07-estimate-sales-4-381b-beat-4-131b-estimate",
-     "published": "2026-10-22T20:01:34Z"
-    }
-   ]
-  },
-  "DDOG": {
-   "articles": 2,
-   "sentiment": 0.5,
-   "label": "偏多",
-   "top": [
-    {
-     "score": 1.0,
-     "title": "'Datadog Recently Offered To Buy Cloud Cybersecurity Startup Upwind Security For Nearly $4 Billion; Upwind, Which Hasn’t Accepted The Offer, Is Finalizing A $300 Million Funding Round At A Roughly $3.8 Billion Valuation' - The Information",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/m/26/10/62539172/datadog-recently-offered-buy-cloud-cybersecurity-startup-upwind-security-nearly-4-billion-upwind-whi",
-     "published": "2026-10-22T17:30:40Z"
-    },
-    {
-     "score": 0.0,
-     "title": "Datadog Reportedly Offers Nearly $4 Billion for Upwind Security",
-     "source": "fiscal.ai",
-     "url": "https://www.marketscreener.com/news/datadog-offers-nearly-4-billion-for-upwind-security-the-information-reports-ce785cdedc8df626",
-     "published": "2026-10-22T18:02:01Z"
-    }
-   ]
-  },
-  "SNDK": {
-   "articles": 2,
-   "sentiment": -0.5,
-   "label": "偏空",
-   "top": [
-    {
-     "score": -1.0,
-     "title": "SanDisk Stock Drops as AI Cost Worries Mount",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/trading-ideas/movers/26/10/62542737/sandisk-stock-drops-as-ai-cost-worries-mount",
-     "published": "2026-10-22T19:03:17Z"
-    },
-    {
-     "score": 0.0,
-     "title": "10 Information Technology Stocks With Whale Alerts In Today’s Session",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/markets/options/26/10/62539411/10-information-technology-stocks-whale-alerts-today-s-session",
-     "published": "2026-10-22T17:35:12Z"
-    }
-   ]
-  },
-  "SNOW": {
-   "articles": 2,
-   "sentiment": 0.0,
-   "label": "中性",
-   "top": [
-    {
-     "score": 0.0,
-     "title": "10 Information Technology Stocks With Whale Alerts In Today’s Session",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/markets/options/26/10/62539411/10-information-technology-stocks-whale-alerts-today-s-session",
-     "published": "2026-10-22T17:35:12Z"
-    },
-    {
-     "score": 0.0,
-     "title": "Liquibase Secure Now Available on Snowflake Marketplace",
-     "source": "fiscal.ai",
-     "url": "https://natlawreview.com/press-releases/liquibase-secure-now-available-snowflake-marketplace-automate-and-govern",
-     "published": "2026-10-23T00:02:03Z"
-    }
-   ]
-  },
-  "BE": {
-   "articles": 14,
-   "sentiment": 0.429,
-   "label": "偏多",
-   "top": [
-    {
-     "score": 1.0,
-     "title": "Bloom Energy Raises FY2026 Adj EPS Guidance from $2.55-$2.85 to $3.10-$3.40 vs $2.73 Est; Raises FY2026 Sales Guidance from $3.900B-$4.200B to $4.400B-$4.600B vs $4.097B Est",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/news/26/10/62545599/bloom-energy-raises-fy2026-adj-eps-guidance-2-55-2-85-3-10-3-40-vs-2-73-est-raises-fy2026-sales-guid",
-     "published": "2026-10-22T20:05:42Z"
-    },
-    {
-     "score": 1.0,
-     "title": "Bloom Energy Q3 Adj. EPS $0.94 Beats $0.68 Estimate, Sales $1.236B Beat $1.053B Estimate",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/news/earnings/26/10/62545604/bloom-energy-q3-adj-eps-0-94-beats-0-68-estimate-sales-1-236b-beat-1-053b-estimate",
-     "published": "2026-10-22T20:05:42Z"
-    },
-    {
-     "score": 1.0,
-     "title": "Bloom Energy Beats Q3 Estimates, Raises FY26 Outlook",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/markets/earnings/26/10/62546832/bloom-energy-beats-q3-estimates-raises-fy26-outlook",
-     "published": "2026-10-22T20:20:17Z"
-    }
-   ]
-  },
-  "UBER": {
-   "articles": 3,
-   "sentiment": 0.333,
-   "label": "略偏多",
-   "top": [
-    {
-     "score": 1.0,
-     "title": "Uber Expands ChatGPT Work Access to Over 30,000 Employees",
-     "source": "fiscal.ai",
-     "url": "https://www.marketscreener.com/news/uber-rolling-out-chatgpt-work-to-more-than-30-000-employees-ce785cdedc88f623",
-     "published": "2026-10-22T18:01:53Z"
-    },
-    {
-     "score": 0.0,
-     "title": "10 Industrials Stocks With Whale Alerts In Today’s Session",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/markets/options/26/10/62539413/10-industrials-stocks-whale-alerts-today-s-session",
-     "published": "2026-10-22T17:35:12Z"
-    },
-    {
-     "score": 0.0,
-     "title": "Uber Brings ChatGPT Work To All Employees With OpenAI",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/news/26/10/62535612/uber-brings-chatgpt-work-all-employees-openai",
-     "published": "2026-10-22T16:13:56Z"
-    }
-   ]
-  },
-  "TSM": {
-   "articles": 3,
-   "sentiment": -0.333,
-   "label": "略偏空",
-   "top": [
-    {
-     "score": -1.0,
-     "title": "Anthropic’s Path to $1.5 Trillion Demands 30% Margins: Plausible, but Delivering Is Another Matter",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/markets/tech/26/10/62552805/anthropics-path-to-1-5-trillion-demands-30-margins-plausible-but-delivering-is-another-matter",
-     "published": "2026-10-23T09:55:50Z"
-    },
-    {
-     "score": 0.0,
-     "title": "'Intel Plus Elon' Could Pose Bigger Threat to TSMC Than Musk Alone, Chip Analyst Says",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/markets/prediction-markets/26/10/62539826/intel-elon-terafab-tsmc-threat",
-     "published": "2026-10-22T17:43:02Z"
-    },
-    {
-     "score": 0.0,
-     "title": "Nvidia’s China Market Has Effectively Vanished: ‘Every Restriction Also Gives Chinese Suppliers a Larger Captive Market,’ Says Shay Boloor",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/markets/tech/26/10/62554065/nvidia-china-chip-curbs-domestic-rivals",
-     "published": "2026-10-23T11:00:19Z"
-    }
-   ]
-  },
-  "ANET": {
-   "articles": 3,
-   "sentiment": 0.0,
-   "label": "中性",
-   "top": [
-    {
-     "score": 0.0,
-     "title": "Arista Networks Named Overall LAN Solution of the Year at 2026 Mobile Breakthrough Awards",
-     "source": "fiscal.ai",
-     "url": "https://www.globenewswire.com/news-release/2026/10/22/3386564/0/en/wireless-iot-and-mobile-technology-innovators-honored-in-10th-annual-mobile-breakthrough-awards-program.html",
-     "published": "2026-10-22T18:01:43Z"
-    },
-    {
-     "score": 0.0,
-     "title": "Arista Networks Insider Kenneth Duda Sells Shares Worth $7.8 Million",
-     "source": "fiscal.ai",
-     "url": "https://www.moomoo.com/news/post/1002148535/arista-networks-insider-sold-shares-worth-7839496-according-to-a",
-     "published": "2026-10-23T10:31:49Z"
-    },
-    {
-     "score": 0.0,
-     "title": "Arista Networks Discloses Vulnerability in VeloCloud Orchestrator",
-     "source": "fiscal.ai",
-     "url": "https://www.tech-critter.com/security-vulnerabilities-zero-days-exploits-october-2026/",
-     "published": "2026-10-23T11:31:45Z"
-    }
-   ]
-  },
-  "INTU": {
-   "articles": 2,
-   "sentiment": 0.5,
-   "label": "偏多",
-   "top": [
-    {
-     "score": 1.0,
-     "title": "Intuit Ventures Participates in $35 Million Funding Round for Coast",
-     "source": "fiscal.ai",
-     "url": "https://www.prnewswire.com/news-releases/coast-raises-35-million-to-build-the-financial-platform-for-the-physical-economy-302916432.html",
-     "published": "2026-10-22T18:01:43Z"
-    },
-    {
-     "score": 0.0,
-     "title": "Intuit Acquires Sequence to Enhance Enterprise AI Strategy",
-     "source": "fiscal.ai",
-     "url": "https://tradersunion.com/news/stocks/show/3926896-intuit-gains-6-88percent-over-the/",
-     "published": "2026-10-22T20:31:54Z"
-    }
-   ]
-  },
-  "MRVL": {
-   "articles": 3,
-   "sentiment": -0.111,
-   "label": "中性",
-   "top": [
-    {
-     "score": -0.333,
-     "title": "Marvell Feels Supply Chain Bottlenecks Pressure, Stock Drops Amid Tech Sell-Off",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/markets/tech/26/10/62536673/marvell-stock-drops-amid-semiconductor-supply-chain-pressure",
-     "published": "2026-10-22T16:37:17Z"
-    },
-    {
-     "score": 0.0,
-     "title": "Bloom Energy’s October Stock Slump Deepens: Options Signal Post-Earnings Bounce to $230",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/markets/equities/26/10/62541149/bloom-energy-october-stock-slump-deepens-to-23-options-signal-post-earnings-bounce-to-230",
-     "published": "2026-10-22T18:15:24Z"
-    },
-    {
-     "score": 0.0,
-     "title": "CEO.CA's 'Inside the Boardroom' Features Marvel Biosciences President Dr. Mark Williams",
-     "source": "fiscal.ai",
-     "url": "https://www.newsfilecorp.com/release/320161/CEO.CAs-Inside-the-Boardroom-No-Approved-Drug-Does-What-Marvels-Lead-Candidate-Can-Do-for-Autism",
-     "published": "2026-10-22T13:04:34Z"
-    }
-   ]
-  },
-  "COHR": {
-   "articles": 2,
-   "sentiment": 0.333,
-   "label": "略偏多",
-   "top": [
-    {
-     "score": 1.0,
-     "title": "Coherent Corp. Named to TIME's America's Growth Leaders 2027 List",
-     "source": "fiscal.ai",
-     "url": "https://www.globenewswire.com/news-release/2026/10/22/3386815/11543/en/coherent-named-one-of-time-s-america-s-growth-leaders-2027.html",
-     "published": "2026-10-22T20:31:55Z"
-    },
-    {
-     "score": -0.333,
-     "title": "Nvidia's AI Warning, $111 Oil: Why SOXL Just Suffered a Brutal 20% Wipeout",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/etfs/specialty-etfs/26/10/62545840/nvidias-ai-warning-111-oil-why-soxl-just-suffered-a-brutal-20-wipeout",
-     "published": "2026-10-22T20:07:14Z"
-    }
-   ]
-  },
-  "SOXL": {
-   "articles": 1,
-   "sentiment": -0.333,
-   "label": "略偏空",
-   "top": [
-    {
-     "score": -0.333,
-     "title": "Nvidia's AI Warning, $111 Oil: Why SOXL Just Suffered a Brutal 20% Wipeout",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/etfs/specialty-etfs/26/10/62545840/nvidias-ai-warning-111-oil-why-soxl-just-suffered-a-brutal-20-wipeout",
-     "published": "2026-10-22T20:07:14Z"
-    }
-   ]
-  },
-  "AMAT": {
-   "articles": 2,
-   "sentiment": -0.5,
-   "label": "偏空",
-   "top": [
-    {
-     "score": -1.0,
-     "title": "Michael Burry Shares Chilling Song on AI: 'Watching Trillion-Dollar Monuments Become Obsolete'",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/markets/tech/26/10/62546332/michael-burry-shares-chilling-song-on-ai-watching-trillion-dollar-monuments-become-obsolete",
-     "published": "2026-10-22T20:12:46Z"
-    },
-    {
-     "score": 0.0,
-     "title": "Nvidia’s China Market Has Effectively Vanished: ‘Every Restriction Also Gives Chinese Suppliers a Larger Captive Market,’ Says Shay Boloor",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/markets/tech/26/10/62554065/nvidia-china-chip-curbs-domestic-rivals",
-     "published": "2026-10-23T11:00:19Z"
-    }
-   ]
-  },
-  "PLTR": {
-   "articles": 6,
-   "sentiment": 0.333,
-   "label": "略偏多",
-   "top": [
-    {
-     "score": -1.0,
-     "title": "Michael Burry Shares Chilling Song on AI: 'Watching Trillion-Dollar Monuments Become Obsolete'",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/markets/tech/26/10/62546332/michael-burry-shares-chilling-song-on-ai-watching-trillion-dollar-monuments-become-obsolete",
-     "published": "2026-10-22T20:12:46Z"
-    },
-    {
-     "score": 1.0,
-     "title": "Stagwell Expands Partnership With Palantir Over AI-Powered Marketing Services",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/news/26/10/62525316/stagwell-expands-partnership-palantir-over-ai-powered-marketing-services",
-     "published": "2026-10-22T13:06:28Z"
-    },
-    {
-     "score": 1.0,
-     "title": "Stagwell Expands Strategic AI Partnership with Palantir",
-     "source": "fiscal.ai",
-     "url": "https://www.tradingview.com/news/tradingview:f1baa70073165:0",
-     "published": "2026-10-22T18:01:43Z"
-    }
-   ]
-  },
-  "WMT": {
-   "articles": 4,
    "sentiment": 0.4,
    "label": "偏多",
    "top": [
     {
      "score": 1.0,
-     "title": "Affirm Partners Exclusively With SAM’s Club In Multi-Year Deal, Launching Buy Now, Pay Later Online Before Expanding In-Store In 2027",
+     "title": "Oracle AI-Powered Cloud Applications Help SharkNinja Automate Finance And Supply Chain To Drive Global Growth",
      "source": "benzinga",
-     "url": "https://www.benzinga.com/news/26/10/62525514/affirm-partners-exclusively-sam-s-club-multi-year-deal-launching-buy-now-pay-later-online-expanding-",
-     "published": "2026-10-22T13:09:37Z"
+     "url": "https://www.benzinga.com/news/26/10/62586447/oracle-ai-powered-cloud-applications-help-sharkninja-automate-finance-and-supply-chain-drive-global-",
+     "published": "2026-10-26T12:07:07Z"
     },
     {
-     "score": 0.6,
-     "title": "Walmart’s Best Month Since 1999 Leads a Record Staples Rally: Is This a Warning Sign?",
+     "score": 1.0,
+     "title": "Oracle Launches Fusion Claw-Powered AI Applications To Boost Sales Growth And Enhance Customer Service",
      "source": "benzinga",
-     "url": "https://www.benzinga.com/etfs/sector-etfs/26/10/62546738/walmart-stock-best-month-since-1999-record-staples-rally",
-     "published": "2026-10-22T20:18:29Z"
+     "url": "https://www.benzinga.com/news/26/10/62586483/oracle-launches-fusion-claw-powered-ai-applications-boost-sales-growth-and-enhance-customer-service",
+     "published": "2026-10-26T12:07:55Z"
     },
     {
      "score": 0.0,
-     "title": "Walmart Stock Eyes Best Monthly Rally Since 2014: Is This an Early Recession Warning?",
+     "title": "S&P 500, VOO, and SPY Outlook: What Investors Need to Watch This Week",
      "source": "benzinga",
-     "url": "https://www.benzinga.com/markets/equities/26/10/62537079/walmart-stock-best-month-since-2014-recession-signal",
-     "published": "2026-10-22T16:44:08Z"
+     "url": "https://www.benzinga.com/markets/equities/26/10/62579924/sp-500-voo-and-spy-outlook-what-investors-need-to-watch-this-week",
+     "published": "2026-10-25T16:00:28Z"
     }
    ]
   },
-  "ADI": {
+  "SPY": {
+   "articles": 9,
+   "sentiment": -0.222,
+   "label": "略偏空",
+   "top": [
+    {
+     "score": -1.0,
+     "title": "Michael Burry Backs Ken Griffin on AI Bubble Concerns, Says GPU Overcapacity Warning Is Obvious to Anyone With a ‘Working Brain Cell’",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/market-summary/26/10/62582578/michael-burry-backs-ken-griffin-on-ai-bubble-concerns-says-gpu-overcapacity-warning-is-obvious-to-anyone-with-a-working-brain-cell",
+     "published": "2026-10-26T08:15:18Z"
+    },
+    {
+     "score": 1.0,
+     "title": "Trump Says Canada Is ‘Willing to Give Us Anything’ as Michigan GOP Rep Raises Alarm Over Auto Tariffs — Predicts Quick End to Trade Fight",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/economic-data/26/10/62584475/trump-says-canada-is-willing-to-give-us-anything-as-michigan-gop-rep-raises-alarm-over-auto-tariffs-predicts-quick-end-to-trade-fight",
+     "published": "2026-10-26T10:50:47Z"
+    },
+    {
+     "score": -1.0,
+     "title": "Top Economist Warns 'Oil at 150' Could Deal a 'Significant Blow' to the Global Economy if Iran Conflict Widens: 'We Don't Have These Two Other Things That We Had Before...'",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/commodities/26/10/62587938/top-economist-warns-oil-at-150-could-deal-a-significant-blow-to-the-global-economy-if-iran-conflict-widens-we-dont-have-these-two-other-things-that-we-had-before",
+     "published": "2026-10-26T12:58:39Z"
+    }
+   ]
+  },
+  "TSLA": {
+   "articles": 10,
+   "sentiment": 0.733,
+   "label": "偏多",
+   "top": [
+    {
+     "score": 1.0,
+     "title": "Magnificent Seven ETF Pulls Back: What to Expect from Microsoft, Google, and Amazon Earnings",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/etfs/sector-etfs/26/10/62580060/magnificent-seven-etf-pulls-back-what-to-expect-from-microsoft-google-and-amazon-earnings",
+     "published": "2026-10-25T18:15:29Z"
+    },
+    {
+     "score": 1.0,
+     "title": "If Tesla Merges With SpaceX, How Many Bitcoin Would Elon's Companies Hold?",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/crypto/cryptocurrency/26/10/62579974/if-tesla-merges-with-spacex-how-many-bitcoin-would-elons-companies-hold",
+     "published": "2026-10-25T17:00:35Z"
+    },
+    {
+     "score": 1.0,
+     "title": "Tesla Expands Austin Robotaxi Service Area and Hours",
+     "source": "fiscal.ai",
+     "url": "https://www.siliconhillsnews.com/2026/10/25/silicon-hills-news-daily-roundup-sunday-oct-25-2026/",
+     "published": "2026-10-26T10:31:44Z"
+    }
+   ]
+  },
+  "COIN": {
    "articles": 3,
    "sentiment": 0.0,
    "label": "中性",
    "top": [
     {
      "score": 0.0,
-     "title": "Analog Devices Announces Extensions for NVIDIA cuVSLAM",
-     "source": "fiscal.ai",
-     "url": "https://timestech.in/from-sensor-data-to-robust-slam-adi-extensions-for-nvidia-cuvslam/",
-     "published": "2026-10-22T20:31:40Z"
+     "title": "Top Crypto Stocks to Watch This Week: SoFi, Strategy, Coinbase",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/equities/26/10/62580021/top-crypto-stocks-to-watch-this-week-sofi-strategy-coinbase",
+     "published": "2026-10-25T17:44:51Z"
     },
     {
      "score": 0.0,
-     "title": "Analog Devices to Report Fourth Quarter Fiscal Year 2026 Financial Results on November 24, 2026",
+     "title": "Bernstein Adjusts Price Target on Coinbase Global to $250 From $330",
      "source": "fiscal.ai",
-     "url": "https://www.tradingview.com/news/prnewswire:4a106db1a55d3:0-analog-devices-to-report-fourth-quarter-fiscal-year-2026-financial-results-on-tuesday-november-24-2026/",
-     "published": "2026-10-22T20:31:40Z"
+     "url": "https://www.marketscreener.com/news/bernstein-adjusts-price-target-on-coinbase-global-to-250-from-330-ce785cdcdb88f42d",
+     "published": "2026-10-26T11:31:55Z"
     },
     {
      "score": 0.0,
-     "title": "Comparative Study: Analog Devices And Industry Competitors In Semiconductors &amp; Semiconductor Equipment Industry",
+     "title": "Bitmine Immersion Technologies Announces Bitmine Crypto + Total Cash & Marketable Securities + \"Moonshots\" Holdings Totaling $15B",
      "source": "benzinga",
-     "url": "https://www.benzinga.com/news/26/10/62552843/comparative-study-analog-devices-and-industry-competitors-semiconductors-amp-semiconductor-equipment",
-     "published": "2026-10-23T09:58:42Z"
+     "url": "https://www.benzinga.com/news/26/10/62587344/bitmine-immersion-technologies-announces-bitmine-crypto-total-cash-marketable-securities-moonshots-h",
+     "published": "2026-10-26T12:37:22Z"
     }
    ]
   },
-  "IONQ": {
-   "articles": 1,
-   "sentiment": 0.0,
-   "label": "中性",
-   "top": [
-    {
-     "score": 0.0,
-     "title": "Here’s How Much You Would Have Made Owning IonQ Stock In The Last 5 Years",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/news/26/10/62549531/here-s-how-much-you-would-have-made-owning-ionq-stock-last-5-years",
-     "published": "2026-10-22T22:45:16Z"
-    }
-   ]
-  },
-  "T": {
-   "articles": 16,
-   "sentiment": -0.062,
-   "label": "中性",
-   "top": [
-    {
-     "score": 1.0,
-     "title": "Crown Castle Stock Jumps as SpaceX Eyes 80,000 Cell Sites for Wireless Network: ‘We’re Talking to All Parties’",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/markets/equities/26/10/62550649/crown-castle-shares-surge-spacex-cell-site-talks",
-     "published": "2026-10-23T04:26:05Z"
-    },
-    {
-     "score": -1.0,
-     "title": "JP Morgan Maintains Overweight on AT&T, Lowers Price Target to $31",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/news/26/10/62528167/jp-morgan-maintains-overweight-t-lowers-price-target-31",
-     "published": "2026-10-22T13:58:01Z"
-    },
-    {
-     "score": 1.0,
-     "title": "Argus Research Reiterates Buy on AT&T, Maintains $30 Price Target",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/news/26/10/62531145/argus-research-reiterates-buy-t-maintains-30-price-target",
-     "published": "2026-10-22T14:49:32Z"
-    }
-   ]
-  },
-  "VZ": {
-   "articles": 7,
-   "sentiment": -0.19,
-   "label": "略偏空",
-   "top": [
-    {
-     "score": 1.0,
-     "title": "Crown Castle Stock Jumps as SpaceX Eyes 80,000 Cell Sites for Wireless Network: ‘We’re Talking to All Parties’",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/markets/equities/26/10/62550649/crown-castle-shares-surge-spacex-cell-site-talks",
-     "published": "2026-10-23T04:26:05Z"
-    },
-    {
-     "score": -1.0,
-     "title": "Verizon Shares Decline Amid Reports of SpaceX Wireless Expansion",
-     "source": "fiscal.ai",
-     "url": "https://www.morningstar.com/news/marketwatch/2026102397/the-mobile-ambitions-of-spacex-see-telecom-stocks-get-hit-again-what-the-latest-developments-mean",
-     "published": "2026-10-23T10:31:49Z"
-    },
-    {
-     "score": -1.0,
-     "title": "Houston, Verizon Has a Problem: Verizon Stock Falls as SpaceX Reportedly Seeks 80,000 Cell Sites",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/trading-ideas/movers/26/10/62556761/houston-verizon-has-a-problem-verizon-stock-falls-as-spacex-reportedly-seeks-80000-cell-sites",
-     "published": "2026-10-23T12:51:23Z"
-    }
-   ]
-  },
-  "MS": {
-   "articles": 7,
+  "MSTR": {
+   "articles": 5,
    "sentiment": 0.0,
    "label": "中性",
    "top": [
     {
      "score": 1.0,
-     "title": "Morgan Stanley Institute for Sustainable Investing Releases 'Sustainable Signals' Report",
-     "source": "fiscal.ai",
-     "url": "https://investingnews.com/morgan-stanley-sustainable-signals-global-survey-shows-institutional-investors-expect-modest-growth-in-sustainable-investment-allocations/",
-     "published": "2026-10-22T19:01:38Z"
+     "title": "If Tesla Merges With SpaceX, How Many Bitcoin Would Elon's Companies Hold?",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/crypto/cryptocurrency/26/10/62579974/if-tesla-merges-with-spacex-how-many-bitcoin-would-elons-companies-hold",
+     "published": "2026-10-25T17:00:35Z"
     },
     {
      "score": -1.0,
-     "title": "Morgan Stanley Downgrades Vonovia to Underweight",
-     "source": "fiscal.ai",
-     "url": "https://europeanbusinessmagazine.com/germanys-landlord-faces-8bn-hit/",
-     "published": "2026-10-23T10:31:48Z"
-    },
-    {
-     "score": 0.0,
-     "title": "Bernie Sanders and Adam Schiff Sound Alarm As Rogue AI Agents Enter Bank Accounts, Warn of Financial Chaos: ‘Pause AI NOW!’",
+     "title": "Bitcoin, Ethereum, XRP, Dogecoin Dip as Investors Await Kevin Warsh's Interest Rate Moves: Analyst Sees 'Interesting Week' Ahead for BTC",
      "source": "benzinga",
-     "url": "https://www.benzinga.com/markets/tech/26/10/62552760/sanders-schiff-rogue-ai-agents-bank",
-     "published": "2026-10-23T09:49:55Z"
-    }
-   ]
-  },
-  "FCX": {
-   "articles": 1,
-   "sentiment": 0.0,
-   "label": "中性",
-   "top": [
-    {
-     "score": 0.0,
-     "title": "Freeport-McMoRan CEO Kathleen Quirk to Speak at New Asia Forum 2026",
-     "source": "fiscal.ai",
-     "url": "https://www.dubaiprnetwork.com/2/17356/new-asia-forum-2026-targets-us-30-billion-in-investment",
-     "published": "2026-10-23T10:31:46Z"
-    }
-   ]
-  },
-  "ASML": {
-   "articles": 1,
-   "sentiment": 0.0,
-   "label": "中性",
-   "top": [
-    {
-     "score": 0.0,
-     "title": "Nvidia’s China Market Has Effectively Vanished: ‘Every Restriction Also Gives Chinese Suppliers a Larger Captive Market,’ Says Shay Boloor",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/markets/tech/26/10/62554065/nvidia-china-chip-curbs-domestic-rivals",
-     "published": "2026-10-23T11:00:19Z"
-    }
-   ]
-  },
-  "BA": {
-   "articles": 1,
-   "sentiment": 1.0,
-   "label": "偏多",
-   "top": [
-    {
-     "score": 1.0,
-     "title": "US Adversaries Russia, Iran and China Are Expanding Their Military Might, and Lockheed Martin Is Ramping Up — CEO Calls for ‘Wartime Speed and Scale’ as Backlog Hits Record $292 Billion",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/markets/equities/26/10/62554642/us-adversaries-russia-iran-and-china-are-expanding-their-military-might-and-lockheed-martin-is-ramping-up-ceo-calls-for-wartime-speed-and-scale-as-backlog-hits-record-29",
-     "published": "2026-10-23T11:29:54Z"
-    }
-   ]
-  },
-  "GS": {
-   "articles": 1,
-   "sentiment": 0.0,
-   "label": "中性",
-   "top": [
-    {
-     "score": 0.0,
-     "title": "Goldman Sachs International Executes Share Repurchase Program",
-     "source": "fiscal.ai",
-     "url": "https://www.globenewswire.com/news-release/2026/10/23/3387165/0/en/transaction-in-own-shares.html",
-     "published": "2026-10-23T12:01:55Z"
-    }
-   ]
-  },
-  "TXN": {
-   "articles": 7,
-   "sentiment": 0.714,
-   "label": "偏多",
-   "top": [
-    {
-     "score": 1.0,
-     "title": "Stifel Maintains Buy on Texas Instruments, Raises Price Target to $370",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/news/26/10/62525275/stifel-maintains-buy-texas-instruments-raises-price-target-370",
-     "published": "2026-10-22T13:05:44Z"
+     "url": "https://www.benzinga.com/crypto/cryptocurrency/26/10/62581264/bitcoin-ethereum-xrp-dogecoin-crypto-market-fed-decision",
+     "published": "2026-10-26T02:05:56Z"
     },
     {
      "score": 1.0,
-     "title": "JP Morgan Maintains Overweight on Texas Instruments, Raises Price Target to $365",
+     "title": "Strategy Gears Up to Report Q3 Financials — Crypto Bettors Expect the Bitcoin Hoarder to Beat Earnings",
      "source": "benzinga",
-     "url": "https://www.benzinga.com/news/26/10/62527993/jp-morgan-maintains-overweight-texas-instruments-raises-price-target-365",
-     "published": "2026-10-22T13:54:53Z"
-    },
-    {
-     "score": 1.0,
-     "title": "Barclays Maintains Equal-Weight on Texas Instruments, Raises Price Target to $280",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/news/26/10/62536578/barclays-maintains-equal-weight-texas-instruments-raises-price-target-280",
-     "published": "2026-10-22T16:35:21Z"
-    }
-   ]
-  },
-  "TMO": {
-   "articles": 7,
-   "sentiment": 0.762,
-   "label": "偏多",
-   "top": [
-    {
-     "score": 1.0,
-     "title": "Stifel Maintains Buy on Thermo Fisher Scientific, Raises Price Target to $775",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/news/26/10/62525350/stifel-maintains-buy-thermo-fisher-scientific-raises-price-target-775",
-     "published": "2026-10-22T13:06:50Z"
-    },
-    {
-     "score": 1.0,
-     "title": "TD Cowen Maintains Buy on Thermo Fisher Scientific, Raises Price Target to $810",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/news/26/10/62530483/td-cowen-maintains-buy-thermo-fisher-scientific-raises-price-target-810",
-     "published": "2026-10-22T14:39:11Z"
-    },
-    {
-     "score": 1.0,
-     "title": "RBC Capital Maintains Sector Perform on Thermo Fisher Scientific, Raises Price Target to $730",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/news/26/10/62535905/rbc-capital-maintains-sector-perform-thermo-fisher-scientific-raises-price-target-730",
-     "published": "2026-10-22T16:19:34Z"
-    }
-   ]
-  },
-  "SHOP": {
-   "articles": 2,
-   "sentiment": -0.5,
-   "label": "偏空",
-   "top": [
-    {
-     "score": -1.0,
-     "title": "Chargeflow Launches Prevent 2.0 AI Model for Shopify Merchants",
-     "source": "fiscal.ai",
-     "url": "https://www.prnewswire.com/news-releases/chargeflow-launches-prevent-2-0-as-new-data-shows-one-in-three-black-friday-chargebacks-says-never-arrived-302916449.html",
-     "published": "2026-10-22T13:31:33Z"
-    },
-    {
-     "score": 0.0,
-     "title": "Disco Launches Pre-Purchase Integration for Shopify Checkout",
-     "source": "fiscal.ai",
-     "url": "https://markets.businessinsider.com/news/stocks/disco-launches-pre-purchase-bringing-advertiser-funded-cash-back-to-shopify-checkout-1036654602",
-     "published": "2026-10-22T15:01:37Z"
-    }
-   ]
-  },
-  "MA": {
-   "articles": 4,
-   "sentiment": -0.25,
-   "label": "略偏空",
-   "top": [
-    {
-     "score": -1.0,
-     "title": "Mastercard Joins Global Operation Against AI-Powered Fraud Networks",
-     "source": "fiscal.ai",
-     "url": "https://pressreleasehub.pa.media/article/uae-leads-landmark-global-operation-with-30-countries-and-leading-technology-companies-against-ai-powered-fraud-networks-86892.html",
-     "published": "2026-10-22T13:31:54Z"
-    },
-    {
-     "score": 0.0,
-     "title": "New Zealand Commerce Commission Caps Commercial Credit Card Interchange Fees",
-     "source": "fiscal.ai",
-     "url": "https://newswire.co.nz/2026/10/commerce-commission-caps-business-credit-card-fees-new-zealand-april-2027/",
-     "published": "2026-10-22T19:01:33Z"
-    },
-    {
-     "score": 0.0,
-     "title": "Mastercard Expands First-Party Trust Program in Europe",
-     "source": "fiscal.ai",
-     "url": "https://glenbrook.com/payments-news/all-payments-news/",
-     "published": "2026-10-22T23:01:36Z"
-    }
-   ]
-  },
-  "QCOM": {
-   "articles": 1,
-   "sentiment": 0.0,
-   "label": "中性",
-   "top": [
-    {
-     "score": 0.0,
-     "title": "Qualcomm Schedules Fourth Quarter and Fiscal 2026 Earnings Release and Conference Call",
-     "source": "fiscal.ai",
-     "url": "https://www.tradingview.com/news/prnewswire:a4bd562f9c722:0-qualcomm-schedules-fourth-quarter-and-fiscal-2026-earnings-release-and-conference-call/",
-     "published": "2026-10-22T13:31:56Z"
+     "url": "https://www.benzinga.com/crypto/cryptocurrency/26/10/62583960/strategy-mstr-bitcoin-q3-earnings-preview",
+     "published": "2026-10-26T10:25:34Z"
     }
    ]
   },
@@ -2491,248 +538,913 @@
    "top": [
     {
      "score": 0.0,
-     "title": "SoFi Launches \"SoFi Earn\" Tokenized Deposit Product",
-     "source": "fiscal.ai",
-     "url": "https://www.businesswire.com/newsroom/industry/professional-services/banking",
-     "published": "2026-10-22T13:32:15Z"
+     "title": "Top Crypto Stocks to Watch This Week: SoFi, Strategy, Coinbase",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/equities/26/10/62580021/top-crypto-stocks-to-watch-this-week-sofi-strategy-coinbase",
+     "published": "2026-10-25T17:44:51Z"
     }
    ]
   },
-  "UNH": {
-   "articles": 3,
-   "sentiment": 0.111,
+  "NVDA": {
+   "articles": 9,
+   "sentiment": -0.074,
    "label": "中性",
    "top": [
     {
-     "score": 0.333,
-     "title": "Tesla To Rally Around 23%? Here Are 10 Top Analyst Forecasts For Thursday",
+     "score": 1.0,
+     "title": "A $1 Trillion Depreciation Bomb Is Ticking Beneath the AI Market",
      "source": "benzinga",
-     "url": "https://www.benzinga.com/analyst-stock-ratings/price-target/26/10/62526491/tesla-to-rally-around-23-here-are-10-top-analyst-forecasts-for-thursday",
-     "published": "2026-10-22T13:33:09Z"
+     "url": "https://www.benzinga.com/markets/tech/26/10/62580225/a-1-trillion-depreciation-bomb-is-ticking-beneath-the-ai-market",
+     "published": "2026-10-25T19:45:14Z"
     },
     {
-     "score": 0.0,
-     "title": "UnitedHealthcare Announces Support for Northeast Missouri Health Council Maternal Healthcare",
-     "source": "fiscal.ai",
-     "url": "https://www.tradingview.com/news/corporate-activity/esg/",
-     "published": "2026-10-22T13:31:44Z"
+     "score": -1.0,
+     "title": "IREN, CRWV, NBIS, APLD Stocks Fall Pre-Market as Analyst Echoes Elon Musk’s Neocloud Debt Warning: ‘Putting GPUs as Collateral Isn’t Enough Anymore'",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/equities/26/10/62583711/iren-crwv-nbis-apld-stocks-fall-pre-market-as-analyst-echoes-elon-musks-neocloud-debt-warning-putting-gpus-as-collateral-isnt-enough-anymore",
+     "published": "2026-10-26T10:14:13Z"
     },
     {
-     "score": 0.0,
-     "title": "Optum Ventures Participates in $45 Million Series B Financing for Oxbridge Health",
-     "source": "fiscal.ai",
-     "url": "https://natlawreview.com/press-releases/oxbridge-health-save-employers-much-25-health-benefits-2027",
-     "published": "2026-10-22T18:01:38Z"
+     "score": -1.0,
+     "title": "SKHY, BABA in the Crosshairs: Goldman Slashes KOSPI Ahead of Earnings, Morgan Stanley Warns on China AI",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/equities/26/10/62586262/skhy-baba-in-the-crosshairs-goldman-slashes-kospi-ahead-of-earnings-morgan-stanley-warns-on-china-ai",
+     "published": "2026-10-26T12:03:57Z"
     }
    ]
   },
-  "NFLX": {
-   "articles": 6,
+  "ACN": {
+   "articles": 2,
    "sentiment": 0.0,
    "label": "中性",
    "top": [
     {
-     "score": -1.0,
-     "title": "Wolfe Research Downgrades Netflix to Peer Perform",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/news/26/10/62538128/wolfe-research-downgrades-netflix-peer-perform",
-     "published": "2026-10-22T17:07:14Z"
-    },
-    {
-     "score": 1.0,
-     "title": "Trump Admin Warned Netflix Its Warner Bid Was Going Nowhere, John Malone Says",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/m-a/26/10/62540124/trump-admin-warned-netflix-its-warner-bid-was-going-nowhere-john-malone-says",
-     "published": "2026-10-22T17:50:25Z"
+     "score": 0.0,
+     "title": "Accenture and SandboxAQ Collaborate on Enterprise Data Encryption",
+     "source": "fiscal.ai",
+     "url": "https://stockanalysis.com/private/sandboxaq/",
+     "published": "2026-10-25T21:01:35Z"
     },
     {
      "score": 0.0,
-     "title": "Netflix, Hoichoi Join Forces To Bring Acclaimed Stories, New Premieres, Adaptations To Audiences Worldwide",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/news/26/10/62528543/netflix-hoichoi-join-forces-bring-acclaimed-stories-new-premieres-adaptations-audiences-worldwide",
-     "published": "2026-10-22T14:03:58Z"
+     "title": "Wells Fargo Adjusts Price Target on Accenture to $252 From $210",
+     "source": "fiscal.ai",
+     "url": "https://www.marketscreener.com/news/wells-fargo-adjusts-price-target-on-accenture-to-252-from-210-ce785cdcd88ff525",
+     "published": "2026-10-26T11:01:54Z"
     }
    ]
   },
-  "MRNA": {
-   "articles": 10,
-   "sentiment": -0.6,
+  "BA": {
+   "articles": 3,
+   "sentiment": -1.0,
    "label": "偏空",
    "top": [
     {
      "score": -1.0,
-     "title": "Watching Moderna; Shares Plunge ~15% After Popular YouTuber TOGI Reveals Full-Portfolio Put Position Against The Stock",
+     "title": "Boeing Stock Forms Rare Bearish Flag as Earnings Loom: Will It Drop Further?",
      "source": "benzinga",
-     "url": "https://www.benzinga.com/markets/options/26/10/62537107/watching-moderna-shares-plunge-15-after-popular-youtuber-togi-reveals-full-portfolio-put-position-ag",
-     "published": "2026-10-22T16:44:41Z"
+     "url": "https://www.benzinga.com/markets/equities/26/10/62580396/boeing-stock-forms-rare-bearish-flag-as-earnings-loom-will-it-drop-further",
+     "published": "2026-10-25T21:05:14Z"
     },
     {
      "score": -1.0,
-     "title": "Moderna and Merck Shares Decline Following Potential Melanoma Vaccine Data Leak",
+     "title": "Reported Saturday, 'Boeing Supplier Dispute Has Halted 777 Freighter Production For Two Months, Sources Say' - Reuters Exclusive",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/news/26/10/62581712/reported-saturday-boeing-supplier-dispute-has-halted-777-freighter-production-two-months-sources-say",
+     "published": "2026-10-26T06:00:39Z"
+    },
+    {
+     "score": -1.0,
+     "title": "Boeing 777 Freighter Production Stalled by Supplier Dispute",
      "source": "fiscal.ai",
-     "url": "https://www.marketscreener.com/news/moderna-merck-shares-drop-after-potential-data-leak-for-melanoma-vaccine-ce785cdedc8af424",
-     "published": "2026-10-22T18:02:05Z"
-    },
-    {
-     "score": -1.0,
-     "title": "Why Is Moderna Stock Sinking Thursday?",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/markets/biotech/26/10/62542283/why-is-moderna-stock-sinking-thursday",
-     "published": "2026-10-22T18:47:36Z"
+     "url": "https://www.marketscreener.com/news/boeing-s-777-freighter-production-stalled-by-supplier-dispute-ce785cdcd88efe20",
+     "published": "2026-10-26T10:31:51Z"
     }
    ]
   },
-  "ISRG": {
+  "CSCO": {
    "articles": 2,
    "sentiment": 0.0,
    "label": "中性",
    "top": [
     {
      "score": 0.0,
-     "title": "Cathie Wood’s 1,100% Tesla Stock Forecast Puts These 3 Robotics ETFs in Focus",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/etfs/sector-etfs/26/10/62532522/cathie-woods-1100-tesla-stock-forecast-puts-these-3-robotics-etfs-in-focus",
-     "published": "2026-10-22T15:15:22Z"
+     "title": "Cisco Joins AMD's Open Compute Project AI Infrastructure Blueprint",
+     "source": "fiscal.ai",
+     "url": "https://www.barchart.com/story/news/8444185/dell-lenovo-cisco-hpe-supermicro-why-amds-new-ai-blueprint-has-everyone-signing-on",
+     "published": "2026-10-26T01:01:41Z"
     },
     {
      "score": 0.0,
-     "title": "Rothschild & Co Redburn Adjusts Price Target on Intuitive Surgical to $560 From $540",
+     "title": "Cisco Announces Sovereign AI Infrastructure Initiative in Qatar",
      "source": "fiscal.ai",
-     "url": "https://www.marketscreener.com/news/rothschild-co-redburn-adjusts-price-target-on-intuitive-surgical-to-560-from-540-ce785cdfd889f226",
-     "published": "2026-10-23T11:31:57Z"
+     "url": "https://businessnewsthisweek.com/business/cisco-announces-plans-to-build-sovereign-ai-infrastructure-in-qatar-in-partnership-with-mannai/",
+     "published": "2026-10-26T10:31:36Z"
     }
    ]
   },
-  "NKE": {
-   "articles": 4,
-   "sentiment": 0.25,
+  "CVX": {
+   "articles": 3,
+   "sentiment": 0.333,
    "label": "略偏多",
    "top": [
     {
      "score": 1.0,
-     "title": "Barclays Maintains Overweight on Nike, Raises Price Target to $45",
+     "title": "Gavin Newsom, Pete Buttigieg Slam Trump Over Gas Prices, Big Oil—Analyst Says Diesel Is $2.72/Gallon Higher",
      "source": "benzinga",
-     "url": "https://www.benzinga.com/news/26/10/62535674/barclays-maintains-overweight-nike-raises-price-target-45",
-     "published": "2026-10-22T16:15:06Z"
+     "url": "https://www.benzinga.com/news/politics/26/10/62581503/gavin-newsom-pete-buttigieg-slam-trump-over-gas-prices-big-oil-analyst-says-diesel-is-2-72-gallon-higher",
+     "published": "2026-10-26T04:44:22Z"
     },
     {
-     "score": -1.0,
-     "title": "Wolfe Research Initiates Coverage On Nike with Underperform Rating, Announces Price Target of $28",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/news/26/10/62538435/wolfe-research-initiates-coverage-nike-underperform-rating-announces-price-target-28",
-     "published": "2026-10-22T17:13:17Z"
+     "score": 0.0,
+     "title": "Chevron Confirms Discovery at Nargis-2 Appraisal Well Offshore Egypt",
+     "source": "fiscal.ai",
+     "url": "https://www.manilatimes.net/2026/10/26/business/foreign-business/chevron-discovers-high-quality-reservoirs-in-egypt/2453530",
+     "published": "2026-10-26T01:01:43Z"
     },
     {
-     "score": 1.0,
-     "title": "Guggenheim Reiterates Buy on Nike, Maintains $50 Price Target",
+     "score": 0.0,
+     "title": "Trump Said the 'Quiet Part' Out Loud on Gas Prices, Says Bernie Sanders: His Billionaire Friends Getting Rich Matters More Than Your Pump Costs",
      "source": "benzinga",
-     "url": "https://www.benzinga.com/news/26/10/62540918/guggenheim-reiterates-buy-nike-maintains-50-price-target",
-     "published": "2026-10-22T18:10:37Z"
+     "url": "https://www.benzinga.com/news/politics/26/10/62581823/bernie-sanders-trump-gas-oil",
+     "published": "2026-10-26T06:19:52Z"
     }
    ]
   },
-  "NOW": {
-   "articles": 4,
-   "sentiment": -0.25,
-   "label": "略偏空",
+  "CRWD": {
+   "articles": 2,
+   "sentiment": -0.5,
+   "label": "偏空",
    "top": [
     {
      "score": -1.0,
-     "title": "ServiceNow, Zscaler and a Music Streaming Giant on CNBC’s ‘Final Trades’",
+     "title": "Anthropic’s Claude Reportedly Bypassed Georgia Vote-Data Paywall, Prompting New AI Safeguard Concerns Ahead of Midterms",
      "source": "benzinga",
-     "url": "https://www.benzinga.com/trading-ideas/long-ideas/26/10/62555175/servicenow-zscaler-and-a-music-streaming-giant-on-cnbcs-final-trades",
-     "published": "2026-10-23T11:51:26Z"
+     "url": "https://www.benzinga.com/markets/tech/26/10/62582282/anthropics-claude-reportedly-bypassed-georgia-vote-data-paywall-prompting-new-ai-safeguard-concerns-ahead-of-midterms",
+     "published": "2026-10-26T07:28:13Z"
     },
     {
      "score": 0.0,
-     "title": "CNBC Halftime Report Final Trades: Zscaler, Spotify Technology, ServiceNow",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/quote/NOW",
-     "published": "2026-10-22T17:01:06Z"
-    },
-    {
-     "score": 0.0,
-     "title": "Thrive Scales Customer Experience with ServiceNow AI",
+     "title": "SecurityScorecard MAX Now Available for Purchase in CrowdStrike Marketplace",
      "source": "fiscal.ai",
-     "url": "https://directorsclub.news/2026/10/22/thrive-scales-customer-experience-with-servicenow-ai/",
-     "published": "2026-10-22T18:01:43Z"
+     "url": "https://stockanalysis.com/private/securityscorecard/",
+     "published": "2026-10-26T01:01:47Z"
     }
    ]
   },
-  "NOK": {
-   "articles": 3,
+  "DELL": {
+   "articles": 1,
    "sentiment": 0.0,
    "label": "中性",
    "top": [
     {
      "score": 0.0,
-     "title": "ICEYE, Nokia Ink Mou With Ukraine To Explore Cooperation In Space",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/news/26/10/62540410/iceye-nokia-ink-mou-ukraine-explore-cooperation-space",
-     "published": "2026-10-22T17:56:52Z"
-    },
-    {
-     "score": 0.0,
-     "title": "Nokia and ICEYE Sign MoU with Ukraine Ministry of Defense for Satellite Communications",
+     "title": "Dell Technologies and Tahaluf Al Emarat Sign MOU for AI-Powered Smart City Solutions",
      "source": "fiscal.ai",
-     "url": "https://www.finanzen.ch/nachrichten/aktien/finnische-firmen-helfen-ukraine-bei-satelliten-kommunikation-1036658639",
-     "published": "2026-10-23T08:01:30Z"
-    },
-    {
-     "score": 0.0,
-     "title": "Rosenblatt Maintains Buy on Nokia, Lowers Price Target to $14",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/news/26/10/62555942/rosenblatt-maintains-buy-nokia-lowers-price-target-14",
-     "published": "2026-10-23T12:18:21Z"
+     "url": "https://aiarab.ai/dell-technologies-tahaluf-to-advance-ai-powered-smart-city-public-safety-services-uae-barq/",
+     "published": "2026-10-26T01:01:48Z"
     }
    ]
   },
-  "STX": {
+  "GE": {
    "articles": 2,
-   "sentiment": -0.2,
-   "label": "略偏空",
+   "sentiment": 0.5,
+   "label": "偏多",
    "top": [
     {
-     "score": -1.0,
-     "title": "Western Digital Is Down 55% From Its June Peak. Can DRAM and SOXX ETFs Hold Up?",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/etfs/sector-etfs/26/10/62544302/western-digital-is-down-55-from-its-june-peak-can-dram-and-soxx-etfs-hold-up",
-     "published": "2026-10-22T19:43:23Z"
+     "score": 1.0,
+     "title": "Analyst Adjusts Price Target for GE Aerospace",
+     "source": "fiscal.ai",
+     "url": "https://www.moomoo.com/hans/news/post/1002291464/jefferies-maintains-ge-aerospace-geus-with-buy-rating-cuts-target",
+     "published": "2026-10-26T01:01:48Z"
     },
     {
-     "score": 0.6,
-     "title": "Western Digital Warns HDD Price Growth Will Eventually Slow — But AI, Inference and Robotics Are Keeping Demand Strong",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/markets/earnings/26/10/62552114/western-digital-price-growth-to-cool-storage-demand-ai-inference-robotic",
-     "published": "2026-10-23T08:30:15Z"
+     "score": 0.0,
+     "title": "Jefferies Adjusts Price Target on GE Aerospace to $425 From $435",
+     "source": "fiscal.ai",
+     "url": "https://www.marketscreener.com/news/jefferies-adjusts-price-target-on-ge-aerospace-to-425-from-435-ce785cdcd88ef226",
+     "published": "2026-10-26T11:31:50Z"
     }
    ]
   },
-  "NET": {
+  "CRDO": {
+   "articles": 1,
+   "sentiment": 0.0,
+   "label": "中性",
+   "top": [
+    {
+     "score": 0.0,
+     "title": "Credo Technology CEO William Joseph Brennan reports insider share sale",
+     "source": "fiscal.ai",
+     "url": "https://www.moomoo.com/hans/news/post/1001914541/credo-technology-group-holding-insider-sold-shares-worth-2914306-according",
+     "published": "2026-10-26T01:01:49Z"
+    }
+   ]
+  },
+  "HOOD": {
    "articles": 1,
    "sentiment": 1.0,
    "label": "偏多",
    "top": [
     {
      "score": 1.0,
-     "title": "Cloudflare Reports Surge in Exploit Attempts Following PHP Vulnerability Disclosure",
+     "title": "Robinhood CEO Discusses Potential for Crypto in Prediction Markets",
      "source": "fiscal.ai",
-     "url": "https://techmeme.com/index.html",
-     "published": "2026-10-23T11:31:39Z"
+     "url": "https://www.crowdfundinsider.com/tag/otto-lobo/",
+     "published": "2026-10-26T01:01:51Z"
     }
    ]
   },
-  "RKLB": {
+  "XOM": {
+   "articles": 2,
+   "sentiment": 0.5,
+   "label": "偏多",
+   "top": [
+    {
+     "score": 1.0,
+     "title": "Gavin Newsom, Pete Buttigieg Slam Trump Over Gas Prices, Big Oil—Analyst Says Diesel Is $2.72/Gallon Higher",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/news/politics/26/10/62581503/gavin-newsom-pete-buttigieg-slam-trump-over-gas-prices-big-oil-analyst-says-diesel-is-2-72-gallon-higher",
+     "published": "2026-10-26T04:44:22Z"
+    },
+    {
+     "score": 0.0,
+     "title": "Trump Said the 'Quiet Part' Out Loud on Gas Prices, Says Bernie Sanders: His Billionaire Friends Getting Rich Matters More Than Your Pump Costs",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/news/politics/26/10/62581823/bernie-sanders-trump-gas-oil",
+     "published": "2026-10-26T06:19:52Z"
+    }
+   ]
+  },
+  "DIA": {
+   "articles": 5,
+   "sentiment": -0.2,
+   "label": "略偏空",
+   "top": [
+    {
+     "score": -1.0,
+     "title": "Michael Burry Backs Ken Griffin on AI Bubble Concerns, Says GPU Overcapacity Warning Is Obvious to Anyone With a ‘Working Brain Cell’",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/market-summary/26/10/62582578/michael-burry-backs-ken-griffin-on-ai-bubble-concerns-says-gpu-overcapacity-warning-is-obvious-to-anyone-with-a-working-brain-cell",
+     "published": "2026-10-26T08:15:18Z"
+    },
+    {
+     "score": 1.0,
+     "title": "Trump Says Canada Is ‘Willing to Give Us Anything’ as Michigan GOP Rep Raises Alarm Over Auto Tariffs — Predicts Quick End to Trade Fight",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/economic-data/26/10/62584475/trump-says-canada-is-willing-to-give-us-anything-as-michigan-gop-rep-raises-alarm-over-auto-tariffs-predicts-quick-end-to-trade-fight",
+     "published": "2026-10-26T10:50:47Z"
+    },
+    {
+     "score": -1.0,
+     "title": "Top Economist Warns 'Oil at 150' Could Deal a 'Significant Blow' to the Global Economy if Iran Conflict Widens: 'We Don't Have These Two Other Things That We Had Before...'",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/commodities/26/10/62587938/top-economist-warns-oil-at-150-could-deal-a-significant-blow-to-the-global-economy-if-iran-conflict-widens-we-dont-have-these-two-other-things-that-we-had-before",
+     "published": "2026-10-26T12:58:39Z"
+    }
+   ]
+  },
+  "QQQ": {
+   "articles": 5,
+   "sentiment": -0.2,
+   "label": "略偏空",
+   "top": [
+    {
+     "score": -1.0,
+     "title": "Michael Burry Backs Ken Griffin on AI Bubble Concerns, Says GPU Overcapacity Warning Is Obvious to Anyone With a ‘Working Brain Cell’",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/market-summary/26/10/62582578/michael-burry-backs-ken-griffin-on-ai-bubble-concerns-says-gpu-overcapacity-warning-is-obvious-to-anyone-with-a-working-brain-cell",
+     "published": "2026-10-26T08:15:18Z"
+    },
+    {
+     "score": 1.0,
+     "title": "Trump Says Canada Is ‘Willing to Give Us Anything’ as Michigan GOP Rep Raises Alarm Over Auto Tariffs — Predicts Quick End to Trade Fight",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/economic-data/26/10/62584475/trump-says-canada-is-willing-to-give-us-anything-as-michigan-gop-rep-raises-alarm-over-auto-tariffs-predicts-quick-end-to-trade-fight",
+     "published": "2026-10-26T10:50:47Z"
+    },
+    {
+     "score": -1.0,
+     "title": "Top Economist Warns 'Oil at 150' Could Deal a 'Significant Blow' to the Global Economy if Iran Conflict Widens: 'We Don't Have These Two Other Things That We Had Before...'",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/commodities/26/10/62587938/top-economist-warns-oil-at-150-could-deal-a-significant-blow-to-the-global-economy-if-iran-conflict-widens-we-dont-have-these-two-other-things-that-we-had-before",
+     "published": "2026-10-26T12:58:39Z"
+    }
+   ]
+  },
+  "AAPL": {
+   "articles": 4,
+   "sentiment": -0.083,
+   "label": "中性",
+   "top": [
+    {
+     "score": -1.0,
+     "title": "Apple's $2,000 Foldable iPhone Sparks Buying Frenzy",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/tech/26/10/62583947/apples-2000-foldable-iphone-sparks-buying-frenzy",
+     "published": "2026-10-26T10:24:58Z"
+    },
+    {
+     "score": 0.333,
+     "title": "Apollo's Torsten Slok Warns AI Gains Are Concentrated in Mag 7 as S&P 493 Sees ‘No Signs’ of Productivity Boost: 'Zero Financial Payoff'",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/tech/26/10/62583600/apollos-torsten-slok-warns-ai-gains-are-concentrated-in-mag-7-as-sp-493-sees-no-signs-of-productivity-boost-zero-financial-payoff",
+     "published": "2026-10-26T10:08:21Z"
+    },
+    {
+     "score": 0.333,
+     "title": "Jefferies Raises Apple Price Target",
+     "source": "fiscal.ai",
+     "url": "https://www.marketscreener.com/news/jefferies-raises-apple-price-target-to-270-62-from-263-66-ce785cdcd88df125",
+     "published": "2026-10-26T10:31:34Z"
+    }
+   ]
+  },
+  "ARM": {
    "articles": 1,
    "sentiment": 0.0,
    "label": "中性",
    "top": [
     {
      "score": 0.0,
-     "title": "Rocket Lab Successfully Launches 'We're Not Hawking Around' Mission",
+     "title": "Arm Introduces New CPU Performance Evaluation Methodology for AI Agents",
      "source": "fiscal.ai",
-     "url": "https://www.globenewswire.com/news-release/2026/10/23/3387094/0/en/mission-success-rocket-lab-launches-98th-electron-mission.html",
-     "published": "2026-10-23T11:31:40Z"
+     "url": "https://www.moomoo.com/hans/news/post/1002334994",
+     "published": "2026-10-26T09:31:26Z"
+    }
+   ]
+  },
+  "ASML": {
+   "articles": 1,
+   "sentiment": 0.0,
+   "label": "中性",
+   "top": [
+    {
+     "score": 0.0,
+     "title": "ASML Holding to Trade Ex-Dividend on October 27, 2026",
+     "source": "fiscal.ai",
+     "url": "https://www.moomoo.com/news/post/1002298189/asml-holding-to-go-ex-dividend-on-october-27th-2026",
+     "published": "2026-10-26T10:01:30Z"
+    }
+   ]
+  },
+  "IREN": {
+   "articles": 1,
+   "sentiment": -1.0,
+   "label": "偏空",
+   "top": [
+    {
+     "score": -1.0,
+     "title": "IREN, CRWV, NBIS, APLD Stocks Fall Pre-Market as Analyst Echoes Elon Musk’s Neocloud Debt Warning: ‘Putting GPUs as Collateral Isn’t Enough Anymore'",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/equities/26/10/62583711/iren-crwv-nbis-apld-stocks-fall-pre-market-as-analyst-echoes-elon-musks-neocloud-debt-warning-putting-gpus-as-collateral-isnt-enough-anymore",
+     "published": "2026-10-26T10:14:13Z"
+    }
+   ]
+  },
+  "NBIS": {
+   "articles": 3,
+   "sentiment": -0.667,
+   "label": "偏空",
+   "top": [
+    {
+     "score": -1.0,
+     "title": "IREN, CRWV, NBIS, APLD Stocks Fall Pre-Market as Analyst Echoes Elon Musk’s Neocloud Debt Warning: ‘Putting GPUs as Collateral Isn’t Enough Anymore'",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/equities/26/10/62583711/iren-crwv-nbis-apld-stocks-fall-pre-market-as-analyst-echoes-elon-musks-neocloud-debt-warning-putting-gpus-as-collateral-isnt-enough-anymore",
+     "published": "2026-10-26T10:14:13Z"
+    },
+    {
+     "score": -1.0,
+     "title": "NBIS Stock Falls Pre-Market as Nebius CEO Echoes Elon Musk's Neocloud Financing Concerns: 'Some of the Capital Sources Are Temporarily Closed'",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/equities/26/10/62582975/nbis-stock-falls-pre-market-as-nebius-ceo-echoes-elon-musks-neocloud-financing-concerns-some-of-the-capital-sources-are-temporarily-closed",
+     "published": "2026-10-26T09:20:32Z"
+    },
+    {
+     "score": 0.0,
+     "title": "Nebius CEO Addresses Neocloud Financing Environment",
+     "source": "fiscal.ai",
+     "url": "https://www.moomoo.com/news/post/1002325362/nebius-nbisus-ceo-acknowledges-growing-funding-challenges-for-neocloud-musk",
+     "published": "2026-10-26T08:32:11Z"
+    }
+   ]
+  },
+  "T": {
+   "articles": 1,
+   "sentiment": -1.0,
+   "label": "偏空",
+   "top": [
+    {
+     "score": -1.0,
+     "title": "Apple's $2,000 Foldable iPhone Sparks Buying Frenzy",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/tech/26/10/62583947/apples-2000-foldable-iphone-sparks-buying-frenzy",
+     "published": "2026-10-26T10:24:58Z"
+    }
+   ]
+  },
+  "VZ": {
+   "articles": 14,
+   "sentiment": 0.214,
+   "label": "略偏多",
+   "top": [
+    {
+     "score": -1.0,
+     "title": "Apple's $2,000 Foldable iPhone Sparks Buying Frenzy",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/tech/26/10/62583947/apples-2000-foldable-iphone-sparks-buying-frenzy",
+     "published": "2026-10-26T10:24:58Z"
+    },
+    {
+     "score": 1.0,
+     "title": "Verizon, Welltower On Deck Monday As Wireless Growth, Senior Housing Demand Face Test",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/news/26/10/62580211/verizon-welltower-on-deck-monday-as-wireless-growth-senior-housing-demand-face-test",
+     "published": "2026-10-25T19:31:07Z"
+    },
+    {
+     "score": 1.0,
+     "title": "Verizon Communications Raises FY2026 Adj EPS Guidance from $4.99-$5.04 to $5.04-$5.06 vs $5.04 Est",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/news/26/10/62584698/verizon-communications-raises-fy2026-adj-eps-guidance-4-99-5-04-5-04-5-06-vs-5-04-est",
+     "published": "2026-10-26T11:00:31Z"
+    }
+   ]
+  },
+  "INTC": {
+   "articles": 1,
+   "sentiment": 0.0,
+   "label": "中性",
+   "top": [
+    {
+     "score": 0.0,
+     "title": "Traders Are Pricing a 11% Swing In Intel Ahead of Earnings",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/options/26/10/62584013/traders-are-pricing-a-11-swing-in-intel-ahead-of-earnings",
+     "published": "2026-10-26T10:30:19Z"
+    }
+   ]
+  },
+  "KO": {
+   "articles": 6,
+   "sentiment": 0.333,
+   "label": "略偏多",
+   "top": [
+    {
+     "score": 1.0,
+     "title": "How to Earn $500 a Month From Coca-Cola Stock Ahead of Q3 Earnings",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/trading-ideas/dividends/26/10/62585687/how-to-earn-500-a-month-from-coca-cola-stock-ahead-of-q3-earnings-3",
+     "published": "2026-10-26T11:46:22Z"
+    },
+    {
+     "score": 1.0,
+     "title": "Piper Sandler Maintains Overweight on Coca-Cola, Raises Price Target to $102",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/news/26/10/62586861/piper-sandler-maintains-overweight-coca-cola-raises-price-target-102",
+     "published": "2026-10-26T12:20:22Z"
+    },
+    {
+     "score": 0.0,
+     "title": "Traders Are Pricing a 11% Swing In Intel Ahead of Earnings",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/options/26/10/62584013/traders-are-pricing-a-11-swing-in-intel-ahead-of-earnings",
+     "published": "2026-10-26T10:30:19Z"
+    }
+   ]
+  },
+  "LLY": {
+   "articles": 5,
+   "sentiment": 0.2,
+   "label": "略偏多",
+   "top": [
+    {
+     "score": 1.0,
+     "title": "Bernstein Raises Price Target for Eli Lilly",
+     "source": "fiscal.ai",
+     "url": "https://www.moomoo.com/hans/news/flash/1002343208/eli-lilly-bernstein-raises-target-price-to-1450-from-1385",
+     "published": "2026-10-26T10:31:32Z"
+    },
+    {
+     "score": 0.0,
+     "title": "Traders Are Pricing a 11% Swing In Intel Ahead of Earnings",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/options/26/10/62584013/traders-are-pricing-a-11-swing-in-intel-ahead-of-earnings",
+     "published": "2026-10-26T10:30:19Z"
+    },
+    {
+     "score": 0.0,
+     "title": "Eli Lilly Presents New Clinical Data for Olomorasib at ESMO 2026",
+     "source": "fiscal.ai",
+     "url": "https://www.prnewswire.com/news-releases/new-data-on-lillys-investigational-treatment-olomorasib-at-esmo-2026-show-durable-first-line-activity-in-kras-g12c-mutant-non-small-cell-lung-cancer-302918479.html",
+     "published": "2026-10-25T13:01:46Z"
+    }
+   ]
+  },
+  "NOW": {
+   "articles": 4,
+   "sentiment": 0.75,
+   "label": "偏多",
+   "top": [
+    {
+     "score": 1.0,
+     "title": "ServiceNow Stock Rebounds as SaaSpocalypse Fears Fade: What to Expect from Earnings",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/equities/26/10/62580441/servicenow-stock-rebounds-as-saaspocalypse-fears-fade-what-to-expect-from-earnings",
+     "published": "2026-10-25T21:25:06Z"
+    },
+    {
+     "score": 1.0,
+     "title": "Cantor Fitzgerald Maintains Overweight on ServiceNow, Raises Price Target to $201",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/news/26/10/62584500/cantor-fitzgerald-maintains-overweight-servicenow-raises-price-target-201",
+     "published": "2026-10-26T10:53:05Z"
+    },
+    {
+     "score": 1.0,
+     "title": "ServiceNow To Rally Over 26%? Here Are 10 Top Analyst Forecasts For Monday",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/analyst-stock-ratings/price-target/26/10/62587922/servicenow-to-rally-over-26-here-are-10-top-analyst-forecasts-for-monday",
+     "published": "2026-10-26T12:58:25Z"
+    }
+   ]
+  },
+  "SNDK": {
+   "articles": 3,
+   "sentiment": -0.333,
+   "label": "略偏空",
+   "top": [
+    {
+     "score": -1.0,
+     "title": "Cantor Fitzgerald Maintains Overweight on SanDisk, Lowers Price Target to $2200",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/news/26/10/62584603/cantor-fitzgerald-maintains-overweight-sandisk-lowers-price-target-2200",
+     "published": "2026-10-26T10:59:52Z"
+    },
+    {
+     "score": 0.0,
+     "title": "Traders Are Pricing a 11% Swing In Intel Ahead of Earnings",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/options/26/10/62584013/traders-are-pricing-a-11-swing-in-intel-ahead-of-earnings",
+     "published": "2026-10-26T10:30:19Z"
+    },
+    {
+     "score": 0.0,
+     "title": "A SpaceX and Tesla Merger Would Build a Conglomerate Just as Spin-Offs Thrive",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/equities/26/10/62580200/a-spacex-and-tesla-merger-would-build-a-conglomerate-just-as-spin-offs-thrive",
+     "published": "2026-10-25T19:30:08Z"
+    }
+   ]
+  },
+  "CAT": {
+   "articles": 1,
+   "sentiment": 0.0,
+   "label": "中性",
+   "top": [
+    {
+     "score": 0.0,
+     "title": "Wells Fargo Adjusts Price Target on Caterpillar to $840 From $1,155",
+     "source": "fiscal.ai",
+     "url": "https://www.marketscreener.com/news/wells-fargo-adjusts-price-target-on-caterpillar-to-840-from-1-155-ce785cdcd88ff320",
+     "published": "2026-10-26T10:31:33Z"
+    }
+   ]
+  },
+  "HD": {
+   "articles": 1,
+   "sentiment": 0.0,
+   "label": "中性",
+   "top": [
+    {
+     "score": 0.0,
+     "title": "Stifel Adjusts Price Target on Home Depot to $322 From $346",
+     "source": "fiscal.ai",
+     "url": "https://www.marketscreener.com/news/stifel-adjusts-price-target-on-home-depot-to-322-from-346-ce785cdcd88ef220",
+     "published": "2026-10-26T10:31:44Z"
+    }
+   ]
+  },
+  "BAC": {
+   "articles": 2,
+   "sentiment": -0.5,
+   "label": "偏空",
+   "top": [
+    {
+     "score": -1.0,
+     "title": "Jamie Dimon Warns AI Agents Could Be ‘Treacherous’ for Banks, but Researcher Says There May Be Another Reason to Worry",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/tech/26/10/62584938/jamie-dimon-warns-ai-agents-treacherous-banks-researcher-another-reason-to-worry",
+     "published": "2026-10-26T11:08:37Z"
+    },
+    {
+     "score": 0.0,
+     "title": "Bank of America Corporation Files Current Report on Form 8-K",
+     "source": "fiscal.ai",
+     "url": "https://www.finanznachrichten.de/nachrichten-2026-10/69930964-bank-of-america-corporation-notification-of-filing-of-documents-008.htm",
+     "published": "2026-10-26T10:31:45Z"
+    }
+   ]
+  },
+  "C": {
+   "articles": 2,
+   "sentiment": -0.5,
+   "label": "偏空",
+   "top": [
+    {
+     "score": -1.0,
+     "title": "Citigroup Serves as Financial Advisor for CAE's Sale of Flightscape to SITA",
+     "source": "fiscal.ai",
+     "url": "https://www.morningstar.com/news/pr-newswire/20261026mo80477/cae-to-sell-flightscape-to-sita",
+     "published": "2026-10-26T12:01:46Z"
+    },
+    {
+     "score": 0.0,
+     "title": "Citi Acts as Financial Advisor in EQT's Acquisition of Range",
+     "source": "fiscal.ai",
+     "url": "https://www.morningstar.com/news/pr-newswire/20261026ne80550/eqt-announces-strategic-acquisition-of-range-resources-creating-americas-undisputed-natural-gas-champion",
+     "published": "2026-10-26T10:31:55Z"
+    }
+   ]
+  },
+  "APP": {
+   "articles": 1,
+   "sentiment": 0.0,
+   "label": "中性",
+   "top": [
+    {
+     "score": 0.0,
+     "title": "Macquarie Adjusts Price Target on AppLovin to $460 From $620",
+     "source": "fiscal.ai",
+     "url": "https://www.marketscreener.com/news/macquarie-adjusts-price-target-on-applovin-to-460-from-620-ce785cdcd880f425",
+     "published": "2026-10-26T10:31:58Z"
+    }
+   ]
+  },
+  "BE": {
+   "articles": 2,
+   "sentiment": 0.5,
+   "label": "偏多",
+   "top": [
+    {
+     "score": 1.0,
+     "title": "What's Going on With Bloom Energy Stock on Monday?",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/trading-ideas/movers/26/10/62587503/whats-going-on-with-bloom-energy-stock-on-monday",
+     "published": "2026-10-26T12:42:38Z"
+    },
+    {
+     "score": 0.0,
+     "title": "Barclays Adjusts Price Target on Bloom Energy",
+     "source": "fiscal.ai",
+     "url": "https://www.marketscreener.com/news/barclays-adjusts-price-target-on-bloom-energy-to-316-from-308-ce785cdcd88ef225",
+     "published": "2026-10-26T10:32:02Z"
+    }
+   ]
+  },
+  "JPM": {
+   "articles": 2,
+   "sentiment": -0.5,
+   "label": "偏空",
+   "top": [
+    {
+     "score": -1.0,
+     "title": "Jamie Dimon Warns AI Agents Could Be ‘Treacherous’ for Banks, but Researcher Says There May Be Another Reason to Worry",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/tech/26/10/62584938/jamie-dimon-warns-ai-agents-treacherous-banks-researcher-another-reason-to-worry",
+     "published": "2026-10-26T11:08:37Z"
+    },
+    {
+     "score": 0.0,
+     "title": "J.P. Morgan Asset Management Announces October 2026 ETF Distributions",
+     "source": "fiscal.ai",
+     "url": "https://www.globenewswire.com/news-release/2026/10/26/3387953/0/fr/jpmorgan-annonce-des-distributions-en-esp%C3%A8ces-pour-les-fnb-jpmorgan.html",
+     "published": "2026-10-26T11:31:38Z"
+    }
+   ]
+  },
+  "MS": {
+   "articles": 6,
+   "sentiment": 0.167,
+   "label": "略偏多",
+   "top": [
+    {
+     "score": -1.0,
+     "title": "Jamie Dimon Warns AI Agents Could Be ‘Treacherous’ for Banks, but Researcher Says There May Be Another Reason to Worry",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/tech/26/10/62584938/jamie-dimon-warns-ai-agents-treacherous-banks-researcher-another-reason-to-worry",
+     "published": "2026-10-26T11:08:37Z"
+    },
+    {
+     "score": 1.0,
+     "title": "Morgan Stanley Names Amazon a Top Pick and Raises Price Target",
+     "source": "fiscal.ai",
+     "url": "https://www.barchart.com/story/news/8445127/morgan-stanley-sees-amazon-stock-surging-100-with-aws-hitting-1-trillion-in-revenue-sooner-than-people-think",
+     "published": "2026-10-26T01:01:48Z"
+    },
+    {
+     "score": -1.0,
+     "title": "Morgan Stanley Downgrades Block to Equalweight",
+     "source": "fiscal.ai",
+     "url": "https://www.marketscreener.com/news/morgan-stanley-downgrades-block-to-equalweight-from-overweight-price-target-is-80-ce785cdcd88ff520",
+     "published": "2026-10-26T10:31:56Z"
+    }
+   ]
+  },
+  "COST": {
+   "articles": 1,
+   "sentiment": 0.0,
+   "label": "中性",
+   "top": [
+    {
+     "score": 0.0,
+     "title": "Walmart Plans Three Major Holiday Shopping Events From November 12 Through December 2",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/news/26/10/62585021/walmart-plans-three-major-holiday-shopping-events-november-12-through-december-2",
+     "published": "2026-10-26T11:11:41Z"
+    }
+   ]
+  },
+  "WMT": {
+   "articles": 1,
+   "sentiment": 0.0,
+   "label": "中性",
+   "top": [
+    {
+     "score": 0.0,
+     "title": "Walmart Plans Three Major Holiday Shopping Events From November 12 Through December 2",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/news/26/10/62585021/walmart-plans-three-major-holiday-shopping-events-november-12-through-december-2",
+     "published": "2026-10-26T11:11:41Z"
+    }
+   ]
+  },
+  "AMD": {
+   "articles": 4,
+   "sentiment": 0.0,
+   "label": "中性",
+   "top": [
+    {
+     "score": 0.0,
+     "title": "UPDATE: Meta Announces That Nvidia, Advanced Micro Devices And Broadcom Have Each Indicated An Interest In Purchasing Up To $5B Of Shares In The Common Stock Offering",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/news/26/10/62585277/update-meta-announces-nvidia-advanced-micro-devices-and-broadcom-have-each-indicated-interest-purcha",
+     "published": "2026-10-26T11:17:30Z"
+    },
+    {
+     "score": 0.0,
+     "title": "Meta Launches Offering Of 250M Depositary Shares And $22.5B Offering Of Class A Common Stock In Connection With Forward Sale Agreements; Total Value Of Offering Seen At $95B",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/news/26/10/62584750/meta-launches-offering-of-250m-depositary-shares-and-22-5b-offering-of-class-a-common-stock-in-connection-with-forward-sale-agreements",
+     "published": "2026-10-26T11:01:06Z"
+    },
+    {
+     "score": 0.0,
+     "title": "AMD Joins Fermilab-Led Genesis Mission for AI-Accelerated Chip Design",
+     "source": "fiscal.ai",
+     "url": "https://www.ans.org/news/article-8506/second-round-of-genesis-mission-selections-includes-12-phase-ii-awards/",
+     "published": "2026-10-26T11:31:45Z"
+    }
+   ]
+  },
+  "AVGO": {
+   "articles": 3,
+   "sentiment": 0.0,
+   "label": "中性",
+   "top": [
+    {
+     "score": 0.0,
+     "title": "UPDATE: Meta Announces That Nvidia, Advanced Micro Devices And Broadcom Have Each Indicated An Interest In Purchasing Up To $5B Of Shares In The Common Stock Offering",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/news/26/10/62585277/update-meta-announces-nvidia-advanced-micro-devices-and-broadcom-have-each-indicated-interest-purcha",
+     "published": "2026-10-26T11:17:30Z"
+    },
+    {
+     "score": 0.0,
+     "title": "Seagate Technology Advances High-Capacity Storage Deployment With Broadcom",
+     "source": "fiscal.ai",
+     "url": "https://www.marketscreener.com/news/seagate-technology-advances-high-capacity-storage-deployment-with-broadcom-microsoft-ce785cdcdb8bf420",
+     "published": "2026-10-26T11:31:43Z"
+    },
+    {
+     "score": 0.0,
+     "title": "Broadcom Indicates Interest in Meta Platforms Common Stock Offering",
+     "source": "fiscal.ai",
+     "url": "https://www.morningstar.com/news/pr-newswire/20261026sf80662/meta-announces-launch-of-offering-of-depositary-shares-representing-series-a-mandatory-convertible-preferred-stock-and-offering-of-class-a-common-stock-in-connection-with-forward-sale-agreements",
+     "published": "2026-10-26T12:01:38Z"
+    }
+   ]
+  },
+  "DHR": {
+   "articles": 1,
+   "sentiment": 0.0,
+   "label": "中性",
+   "top": [
+    {
+     "score": 0.0,
+     "title": "Rothschild & Co Redburn Adjusts Price Target on Danaher",
+     "source": "fiscal.ai",
+     "url": "https://www.marketscreener.com/news/rothschild-co-redburn-adjusts-price-target-on-danaher-to-220-from-205-ce785cdcdb88fe25",
+     "published": "2026-10-26T11:31:47Z"
+    }
+   ]
+  },
+  "GS": {
+   "articles": 2,
+   "sentiment": 0.5,
+   "label": "偏多",
+   "top": [
+    {
+     "score": 1.0,
+     "title": "IBM, Lockheed Martin, Goldman Sachs And An Energy Stock On CNBC’s ‘Final Trades’",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/trading-ideas/long-ideas/26/10/62585859/ibm-lockheed-martin-goldman-sachs-and-an-energy-stock-on-cnbcs-final-trades",
+     "published": "2026-10-26T11:54:13Z"
+    },
+    {
+     "score": 0.0,
+     "title": "Goldman Sachs Slashes Kospi Index Forecast by 25%",
+     "source": "fiscal.ai",
+     "url": "https://www.morningstar.com/news/marketwatch/2026102626/the-kospi-index-is-the-leading-indicator-for-the-global-ai-trade-and-goldman-just-slashed-its-forecast-by-25",
+     "published": "2026-10-26T12:01:33Z"
+    }
+   ]
+  },
+  "AMAT": {
+   "articles": 1,
+   "sentiment": 1.0,
+   "label": "偏多",
+   "top": [
+    {
+     "score": 1.0,
+     "title": "Analyst Maintains Buy Rating and $700 Price Target for Applied Materials",
+     "source": "fiscal.ai",
+     "url": "https://www.moomoo.com/hans/news/post/1002349529/bernstein-maintains-applied-materials-amatus-with-buy-rating-maintains-target",
+     "published": "2026-10-26T12:01:39Z"
+    }
+   ]
+  },
+  "JNJ": {
+   "articles": 4,
+   "sentiment": 0.0,
+   "label": "中性",
+   "top": [
+    {
+     "score": 0.0,
+     "title": "Johnson & Johnson Reports Positive Phase 1 Results for JNJ-6143 in Advanced Prostate Cancer",
+     "source": "fiscal.ai",
+     "url": "https://www.prnewswire.com/news-releases/johnson--johnson-reports-75-tumor-response-rate-in-advanced-prostate-cancer-with-jnj-6143-a-first-in-class-riptac-molecule-302918733.html",
+     "published": "2026-10-25T13:01:43Z"
+    },
+    {
+     "score": 0.0,
+     "title": "Johnson & Johnson Announced Sunday at ESMO, Phase 1b/2 OrigAMI-4 Data Showing 77% Response Rate, 14% Complete Responses With RYBREVANT Combination In First-Line HNSCC",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/quote/JNJ",
+     "published": "2026-10-25T19:47:24Z"
+    },
+    {
+     "score": 0.0,
+     "title": "Johnson & Johnson Announced At ESMO Saturday, Phase 3 PROTEUS Substudy Data Showing Perioperative Apalutamide Plus ADT Reduced Risk Of Disease Recurrence Or Death By 62%, Metastasis Or Death By 51% Vs. Surgery Alone In High-Risk Prostate Cancer",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/quote/JNJ",
+     "published": "2026-10-25T23:38:04Z"
+    }
+   ]
+  },
+  "NFLX": {
+   "articles": 1,
+   "sentiment": 0.0,
+   "label": "中性",
+   "top": [
+    {
+     "score": 0.0,
+     "title": "Reports of Declining User Engagement at Netflix",
+     "source": "fiscal.ai",
+     "url": "https://www.tradingview.com/news/seekingalpha:c9fd9defa094b:0-netflix-viewing-is-said-to-fall-as-engagement-weakens-raising-growth-concerns/",
+     "published": "2026-10-26T01:01:49Z"
+    }
+   ]
+  },
+  "NOK": {
+   "articles": 2,
+   "sentiment": 0.0,
+   "label": "中性",
+   "top": [
+    {
+     "score": 0.0,
+     "title": "Nokia, L&T Technology Services Forge Five-Year India Engineering, R&D Collaboration Spanning Product Engineering, Software Development, System Integration, Support",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/quote/NOK",
+     "published": "2026-10-26T06:01:00Z"
+    },
+    {
+     "score": 0.0,
+     "title": "Nokia Retains L&T Technology Services for Five-Year R&D Support Contract in India",
+     "source": "fiscal.ai",
+     "url": "https://www.marketscreener.com/news/nokia-retains-l-t-technology-services-to-support-r-d-in-india-ce785cdcd980f427",
+     "published": "2026-10-26T09:01:42Z"
     }
    ]
   },
@@ -2743,120 +1455,190 @@
    "top": [
     {
      "score": 1.0,
-     "title": "European Commission Approves Combination Therapy Involving Pfizer and Astellas",
+     "title": "Jefferies Maintains Buy Rating on Pfizer",
      "source": "fiscal.ai",
-     "url": "https://www.milanofinanza.it/news/msd-al-via-a-pembrolizumab-piu-enfortumab-vedotin-dalla-commissione-europea-202610231315525934",
-     "published": "2026-10-23T12:01:49Z"
+     "url": "https://www.finanzen.ch/analyse/pfizer-buy-1114143",
+     "published": "2026-10-26T11:31:47Z"
     },
     {
      "score": 0.0,
-     "title": "Wall Street's Most Accurate Analysts Give Their Take On 3 Health Care Stocks Delivering High-Dividend Yields",
+     "title": "Reported Saturday, Pfizer Presents Phase 2 25vPnC Infant Data At IDWeek 2026: Robust Responses To All 25 Serotypes, Including Five New, Safety Comparable To PREVNAR 20, No Related Serious Adverse Events",
      "source": "benzinga",
-     "url": "https://www.benzinga.com/trading-ideas/dividends/26/10/62556112/wall-streets-most-accurate-analysts-give-their-take-on-3-health-care-stocks-delivering-high-dividend-yields-18",
-     "published": "2026-10-23T12:30:09Z"
+     "url": "https://www.benzinga.com/news/26/10/62582028/reported-saturday-pfizer-presents-phase-2-25vpnc-infant-data-idweek-2026-robust-responses-all-25-ser",
+     "published": "2026-10-26T06:58:20Z"
     }
    ]
   },
-  "V": {
-   "articles": 2,
+  "STX": {
+   "articles": 4,
    "sentiment": 0.0,
    "label": "中性",
    "top": [
     {
-     "score": 0.0,
-     "title": "Visa in Discussions to Acquire Fireblocks",
+     "score": 1.0,
+     "title": "Stalexport Autostrady Reports Q3 2026 Financial Results",
      "source": "fiscal.ai",
-     "url": "https://www.marketscreener.com/news/visa-in-discussions-to-buy-fireblocks-for-roughly-2-50-billion-axios-reports-ce785cdedb8bf021",
-     "published": "2026-10-22T13:31:46Z"
+     "url": "https://www.finanzen.ch/nachrichten/aktien/stalexport-autostrady-was-beim-unternehmen-in-den-juengsten-buechern-steht-1036663636",
+     "published": "2026-10-26T08:02:54Z"
+    },
+    {
+     "score": -1.0,
+     "title": "Cantor Fitzgerald Maintains Overweight on Seagate Technology Hldgs, Lowers Price Target to $1000",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/news/26/10/62584822/cantor-fitzgerald-maintains-overweight-seagate-technology-hldgs-lowers-price-target-1000",
+     "published": "2026-10-26T11:03:53Z"
     },
     {
      "score": 0.0,
-     "title": "'Crypto custody specialist Fireblocks denies it's in talks to be acquired by Visa' - CoinDesk",
+     "title": "Seagate Technology Unveils New Interoperability Milestone To Simplifies High-Capacity Storage Expansion",
      "source": "benzinga",
-     "url": "https://www.benzinga.com/news/26/10/62531656/crypto-custody-specialist-fireblocks-denies-it-s-talks-be-acquired-visa-coindesk",
-     "published": "2026-10-22T14:59:44Z"
+     "url": "https://www.benzinga.com/news/26/10/62583731/seagate-technology-unveils-new-interoperability-milestone-simplifies-high-capacity-storage-expansion",
+     "published": "2026-10-26T10:16:13Z"
     }
    ]
   },
-  "VLO": {
-   "articles": 11,
-   "sentiment": 0.364,
+  "PG": {
+   "articles": 2,
+   "sentiment": 0.5,
    "label": "偏多",
    "top": [
     {
      "score": 1.0,
-     "title": "TD Cowen Maintains Hold on Valero Energy, Raises Price Target to $400",
+     "title": "Piper Sandler Maintains Neutral on Procter & Gamble, Raises Price Target to $167",
      "source": "benzinga",
-     "url": "https://www.benzinga.com/news/26/10/62529588/td-cowen-maintains-hold-valero-energy-raises-price-target-400",
-     "published": "2026-10-22T14:23:59Z"
+     "url": "https://www.benzinga.com/news/26/10/62586879/piper-sandler-maintains-neutral-procter-gamble-raises-price-target-167",
+     "published": "2026-10-26T12:21:43Z"
     },
     {
-     "score": 1.0,
-     "title": "Valero Exec Says \"Continues To See Pretty Strong Export Demand For Ethanol, And Our Capacity Is All Pointed At Growing Exports\"",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/news/26/10/62530592/valero-exec-says-continues-see-pretty-strong-export-demand-ethanol-and-our-capacity-all-pointed-grow",
-     "published": "2026-10-22T14:41:18Z"
-    },
-    {
-     "score": 1.0,
-     "title": "Valero Energy Q3 Results Show Record Ethanol Production, Strong Profits",
-     "source": "benzinga",
-     "url": "https://www.benzinga.com/markets/large-cap/26/10/62533103/valero-energy-q3-results-show-record-ethanol-production-strong-profits",
-     "published": "2026-10-22T15:28:03Z"
+     "score": 0.0,
+     "title": "Piper Sandler Adjusts Price Target on Procter & Gamble to $167",
+     "source": "fiscal.ai",
+     "url": "https://www.marketscreener.com/news/piper-sandler-adjusts-price-target-on-procter-gamble-to-167-from-145-ce785cdcd88ff62c",
+     "published": "2026-10-26T10:31:56Z"
     }
    ]
   },
-  "WFC": {
-   "articles": 3,
-   "sentiment": 0.0,
-   "label": "中性",
-   "top": [
-    {
-     "score": 0.0,
-     "title": "Wells Fargo Serves as Host Sponsor for Prospera's 2026 Entrepreneurship Celebration",
-     "source": "fiscal.ai",
-     "url": "https://www.prnewswire.com/news-releases/showcasing-small-business-growth-and-community-impact-302917230.html",
-     "published": "2026-10-22T18:01:32Z"
-    },
-    {
-     "score": 0.0,
-     "title": "Wells Fargo Announces Executive Leadership Changes",
-     "source": "fiscal.ai",
-     "url": "https://www.streetinsider.com/Press+Releases?before_id=27222572",
-     "published": "2026-10-22T23:02:10Z"
-    },
-    {
-     "score": 0.0,
-     "title": "Wells Fargo Adjusts Price Target on Dow Inc. to $40 From $35",
-     "source": "fiscal.ai",
-     "url": "https://www.marketscreener.com/news/wells-fargo-adjusts-price-target-on-dow-to-40-from-35-ce785cdfd98ef524",
-     "published": "2026-10-23T10:31:52Z"
-    }
-   ]
-  },
-  "WBD": {
+  "MRNA": {
    "articles": 2,
+   "sentiment": -0.5,
+   "label": "偏空",
+   "top": [
+    {
+     "score": -1.0,
+     "title": "MercadoLibre, Banco Bradesco, Itaú Unibanco And Other Big Stocks Moving Lower In Monday’s Pre-Market Session",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/trading-ideas/movers/26/10/62586159/mercadolibre-banco-bradesco-itau-unibanco-and-other-big-stocks-moving-lower-in-mondays-pre-market-session",
+     "published": "2026-10-26T12:02:10Z"
+    },
+    {
+     "score": 0.0,
+     "title": "Piper Sandler Adjusts Price Target on Moderna to $230 From $167",
+     "source": "fiscal.ai",
+     "url": "https://www.marketscreener.com/news/piper-sandler-adjusts-price-target-on-moderna-to-230-from-167-ce785cdcd880f325",
+     "published": "2026-10-26T10:31:58Z"
+    }
+   ]
+  },
+  "LITE": {
+   "articles": 1,
+   "sentiment": 1.0,
+   "label": "偏多",
+   "top": [
+    {
+     "score": 1.0,
+     "title": "StoneX Initiates Coverage of Lumentum Holdings Inc. with Buy Rating",
+     "source": "fiscal.ai",
+     "url": "https://www.moomoo.com/hans/news/flash/1002347643/lumentum-holdings-inc-stonex-initiates-coverage-with-buy-rating-target",
+     "published": "2026-10-26T11:31:47Z"
+    }
+   ]
+  },
+  "SNOW": {
+   "articles": 1,
    "sentiment": 0.0,
    "label": "中性",
    "top": [
     {
      "score": 0.0,
-     "title": "Elon Musk Invests $1 Billion in Skydance",
+     "title": "Snowflake Inc. Insider Executes Stock Sale",
      "source": "fiscal.ai",
-     "url": "https://www.zerohedge.com/markets/sell-bailout-skydance-tumbles-musks-1-billion-check-reminds-everyone-paramount-needs-one",
-     "published": "2026-10-22T21:31:58Z"
-    },
+     "url": "https://ch.marketscreener.com/boerse-nachrichten/snowflake-insider-verkaufte-aktien-im-wert-von-16-087-mio-usd-wie-aus-einer-aktuellen-sec-meldung-ce785cdcd98cf426",
+     "published": "2026-10-26T11:32:04Z"
+    }
+   ]
+  },
+  "MU": {
+   "articles": 1,
+   "sentiment": 1.0,
+   "label": "偏多",
+   "top": [
+    {
+     "score": 1.0,
+     "title": "What's Going On With Micron Technology Stock Monday?",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/tech/26/10/62585814/whats-going-on-with-micron-technology-stock-monday-7",
+     "published": "2026-10-26T11:49:58Z"
+    }
+   ]
+  },
+  "PLTR": {
+   "articles": 1,
+   "sentiment": 1.0,
+   "label": "偏多",
+   "top": [
+    {
+     "score": 1.0,
+     "title": "Deutsche Bank Adjusts Palantir Technologies Price Target to $225",
+     "source": "fiscal.ai",
+     "url": "https://www.marketscreener.com/news/deutsche-bank-adjusts-palantir-technologies-pt-to-225-from-200-maintains-buy-rating-ce785cdcdb8ef62d",
+     "published": "2026-10-26T12:01:57Z"
+    }
+   ]
+  },
+  "UBER": {
+   "articles": 1,
+   "sentiment": 0.0,
+   "label": "中性",
+   "top": [
     {
      "score": 0.0,
-     "title": "Webuild Snowy 2.0 Project Agreement Reset and Cost Reassessment",
+     "title": "Uber Eats Launches Priority Delivery Option",
      "source": "fiscal.ai",
-     "url": "https://michaelwest.com.au/snowy-2-0-could-cost-12-times-more-than-first-planned/",
-     "published": "2026-10-23T12:02:14Z"
+     "url": "https://mashable.com/article/uber-eats-priority-delivery",
+     "published": "2026-10-26T01:01:59Z"
+    }
+   ]
+  },
+  "V": {
+   "articles": 1,
+   "sentiment": 0.0,
+   "label": "中性",
+   "top": [
+    {
+     "score": 0.0,
+     "title": "Susquehanna Adjusts Price Target on Visa to $480 From $427",
+     "source": "fiscal.ai",
+     "url": "https://www.marketscreener.com/news/susquehanna-adjusts-price-target-on-visa-to-480-from-427-ce785cdcdb8bf024",
+     "published": "2026-10-26T11:31:43Z"
+    }
+   ]
+  },
+  "VRT": {
+   "articles": 1,
+   "sentiment": 0.0,
+   "label": "中性",
+   "top": [
+    {
+     "score": 0.0,
+     "title": "Vertiv Completes Acquisition of King Environmental Services Ltd.",
+     "source": "fiscal.ai",
+     "url": "https://www.morningstar.com/news/pr-newswire/20261026cl80586/vertiv-completes-acquisition-of-king-environmental-services-ltd-expanding-global-fluid-management-services",
+     "published": "2026-10-26T12:01:57Z"
     }
    ]
   }
  },
- "news_window": "since 2026-10-22T09:01-04:00 (Alpaca/Benzinga, 452 articles, word-list score)",
+ "news_window": "since 2026-10-25T09:01-04:00 (Alpaca/Benzinga, 147 articles, word-list score)",
  "attempts": 1,
  "news_attempts": 1,
  "gauge_attempts": 1
