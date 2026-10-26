@@ -1013,27 +1013,32 @@ class Sniper:
         quotes = run.c.option_snapshots([c["symbol"] for c in near]) or {}
         xs = (closes(run, [und], 60).get(und) or [])[-21:]
         swing = statistics.mean(abs(xs[k] / xs[k - 1] - 1) for k in range(1, len(xs))) if len(xs) >= 6 else 0.02
-        dist = max(spec.get("swing_frac", 0.5) * swing, 0.003)
+        frac = spec.get("swing_frac", 0.5)
+        dist = max(frac * swing, 0.003)
         sign = 1 if kind == "C" else -1
+        min_ask = spec.get("min_ask", 0.05)   # audit 10-26 #6: never a penny contract
         priced = []  # (how far out, contract, ask, |delta| or None), nearest the money first
         for c in near:
             q = quotes.get(c["symbol"]) or {}
             ask = float((q.get("latestQuote") or {}).get("ap") or 0)
             d = (q.get("greeks") or {}).get("delta")
             out = sign * (float(c["strike_price"]) / spot - 1)
-            if ask > 0 and out >= 0:
+            if ask >= min_ask and out >= 0:
                 priced.append((out, c, ask, abs(float(d)) if d is not None else None))
         priced.sort(key=lambda x: x[0])
         if not priced:
             return (day, [])
-        # half the stock's usual daily move out of the money (AAPL ~0.5%, CRWV ~3%), never past min_delta
+        # `swing_frac` (half) of the stock's usual daily move out of the money (AAPL ~0.5%, CRWV ~3%), never past min_delta.
+        # Audit 10-26 #6: a contract without a delta counts as under the floor (it used to skip the check and buy $0.01).
         pick = next((x for x in priced if x[0] >= dist), priced[-1])
         floor = spec.get("min_delta", 0.30)
-        if pick[3] is not None and pick[3] < floor:
+        if pick[3] is None or pick[3] < floor:
             closer = [x for x in priced if x[0] <= pick[0] and x[3] is not None and x[3] >= floor]
             pick = closer[-1] if closer else priced[0]
         _, c, ask, d = pick
-        how = f"离现价 {pick[0]:.1%}（平时一天波动 {swing:.1%} 的一半）" + (f"，delta {d:.2f}" if d is not None else "")
+        part = {0.5: "的一半", 1.0: "，一整天"}.get(frac, f"的 {frac:g} 倍")
+        how = (f"离现价 {pick[0]:.1%}（目标是平时一天波动 {swing:.1%}{part}）"
+               + (f"，delta {d:.2f}" if d is not None else "，没有 delta，按最接近现价的买"))
         exp = c["expiration_date"]
         out, at = exp, "15:30"
         if pk.get("overnight") or pk.get("expiry"):   # held to the next session's close, the expiry's 15:30 if sooner

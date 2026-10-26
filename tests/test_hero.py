@@ -4309,6 +4309,28 @@ class SleeveRules(unittest.TestCase):
             self.assertTrue(picks[0]["sym"].endswith("P94"))                          # 93 is only 0.25 delta: step in to 94 (0.50)
             self.assertIn("delta 0.50", picks[0]["why"])
 
+    def test_audit6_sniper_treats_a_missing_delta_as_under_the_floor_and_skips_penny_asks(self):
+        # audit #6: with no greeks the 0.30 floor never applied and the rule bought a $0.01 contract
+        from hero import sleeve_rules as sr
+        asks = {96: 0.30, 95: 0.15, 94: 0.06}                                           # 93 and further out: $0.01
+        with tempfile.TemporaryDirectory() as tmp:
+            spec = {"dir": tmp}
+            b = self.broker()
+            b.bars["AAA"] = [{"t": f"2026-09-{d:02d}T04:00:00Z", "c": 100.0 * (1.05 if d % 2 else 1.0)} for d in range(1, 29)]  # ~5% a day
+            (Path(tmp) / "2026-10-13.json").write_text(json.dumps({"sniper": {"symbol": "AAA", "direction": "put", "catalyst": "x"}}))
+            b.snaps["AAA"]["latestTrade"]["p"] = 96.0
+            b.option_snapshots = lambda syms: {x: {"latestQuote": {"ap": asks.get(int(x[-2:]), 0.01)}} for x in syms}   # no greeks
+            slot, picks = sr.Sniper().entries(self.run_at(date(2026, 10, 13), 9, 40, b), spec, {"slots": {}})
+            self.assertTrue(picks[0]["sym"].endswith("P96"), picks[0]["sym"])          # unknown delta: the nearest the money, not P93 at $0.01
+            self.assertIn("没有 delta", picks[0]["why"])
+            b.option_snapshots = lambda syms: {x: {"latestQuote": {"ap": asks.get(int(x[-2:]), 0.01)}, "greeks": {"delta": -0.5}}
+                                               for x in syms}
+            slot, picks = sr.Sniper().entries(self.run_at(date(2026, 10, 13), 9, 40, b), spec, {"slots": {}})
+            self.assertTrue(picks[0]["sym"].endswith("P94"), picks[0]["sym"])          # $0.01 asks are passed over (min_ask $0.05)
+            slot, picks = sr.Sniper().entries(self.run_at(date(2026, 10, 13), 9, 40, b), {**spec, "swing_frac": 1.0}, {"slots": {}})
+            self.assertIn("一整天", picks[0]["why"])                                   # the -1000 variant says what it does
+            self.assertNotIn("的一半", picks[0]["why"])
+
     def test_overnight_buys_the_biggest_strong_close_above_its_average_and_holds_three_sessions(self):
         from hero import sleeve_rules as sr
         b = self.broker()
