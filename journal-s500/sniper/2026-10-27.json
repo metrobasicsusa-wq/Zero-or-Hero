@@ -1,0 +1,109 @@
+{
+ "date": "2026-10-27",
+ "sniper": {
+  "symbol": "CRDO",
+  "direction": "call",
+  "confidence": 0.3,
+  "catalyst_type": "company news (second-line)",
+  "catalyst": "周一盘后 BofA / Blackstone / Citi / 摩根士丹利宣布 $630 亿 SPV 采购博通 XPU 和网络设备租给 Anthropic，Anthropic 的 S-1 又披露 $5,000 亿以上的算力支出（AMZN、GOOGL、MSFT、AVGO）。AVGO 是 claude-b 今天的选择，我们选博通网络生态的二线受益股 Credo（AEC 铜缆 / 光 DSP）：盘前 +3.7%，不到它平时单日波动（4.1%）的 1 倍，还没被跳空吃掉；12 月初才财报；有 10-30 到期的周度期权。没破 20 日高（$231.59，还差 30% 以上），不拿过夜，当周到期。风险：AI 硬件已是反弹第 2 天（SMH 周一 +2.7%），连续第 2 天追历史最差；明天联储决议"
+ },
+ "candidates": [
+  {
+   "rank": 1,
+   "symbol": "CRDO",
+   "direction": "call",
+   "confidence": 0.3,
+   "catalyst_type": "company news (second-line)",
+   "why": "Anthropic–博通 $630 亿 SPV 含网络设备、S-1 披露 $5,000 亿算力支出；Credo 是博通网络生态的二线受益股，+3.7% 约 0.9 倍平时波动，财报在 12 月；风险：板块反弹第 2 天、联储前夕"
+  },
+  {
+   "rank": 2,
+   "symbol": "COHR",
+   "direction": "call",
+   "confidence": 0.25,
+   "catalyst_type": "company news (second-line)",
+   "why": "同一条消息的光模块二线受益股，+2.7%（0.6 倍）；但 Needham 维持买入却下调目标价到 $380，消息两面；财报约 11-05"
+  },
+  {
+   "rank": 3,
+   "symbol": "CRWV",
+   "direction": "call",
+   "confidence": 0.25,
+   "catalyst_type": "company news",
+   "why": "宣布丹麦新算力和首个全球 AI 网络骨干，+3.4%（0.85 倍）；但同时有「新云债务创纪录」「Lehman」的标题和 Cramer 质疑，昨天还是看跌候选；多日下跌后的第 2 天反抽"
+  },
+  {
+   "rank": 4,
+   "symbol": "AMAT",
+   "direction": "call",
+   "confidence": 0.2,
+   "catalyst_type": "company news",
+   "why": "把 BE Semiconductor 的持股提高到约 20%（混合键合押注），+2.6%（约 1 倍）；大盘股、消息偏温和；财报 11 月中"
+  },
+  {
+   "rank": 5,
+   "symbol": "ANET",
+   "direction": "call",
+   "confidence": 0.2,
+   "catalyst_type": "company news (second-line)",
+   "why": "AI 网络二线受益股，+2.2%（0.9 倍）；但财报约 11-04，8 天内，减分"
+  }
+ ],
+ "skipped": [
+  {"symbol": "AVGO", "direction": "call", "gap": 0.034, "reason": "claude-b 已选",
+   "why_not": "$630 亿 SPV + DA Davidson 上调至买入，消息最重的一只，但 claude-b 今天选它"},
+  {"symbol": "SOFI", "direction": "call", "gap": 0.104, "reason": "财报临近",
+   "why_not": "三季报超预期 +10%，财报反应、跳空已吃掉"},
+  {"symbol": "CLS", "direction": "call", "gap": 0.092, "reason": "财报临近",
+   "why_not": "三季报 EPS $3.30 对 $2.99，+9%，财报反应"},
+  {"symbol": "JBLU", "direction": "call", "gap": 0.16, "reason": "财报临近",
+   "why_not": "财报指引 +16%，而且股价 $2.75 期权没法做"},
+  {"symbol": "RCL", "direction": "call", "gap": 0.066, "reason": "财报临近",
+   "why_not": "财报上调全年指引 +6.6%，财报反应"},
+  {"symbol": "INIO", "direction": "call", "gap": 0.06, "reason": "财报临近",
+   "why_not": "财报 +6%；新上市不久，期权流动性差"},
+  {"symbol": "WSO", "direction": "put", "gap": -0.086, "reason": "财报临近",
+   "why_not": "EPS 差 $0.32，-8.6%，财报反应、跳空已吃掉"},
+  {"symbol": "WHR", "direction": "put", "gap": -0.044, "reason": "财报临近",
+   "why_not": "再次下调指引 -4%，财报反应"},
+  {"symbol": "HSBC", "direction": "put", "gap": -0.063, "reason": "财报临近",
+   "why_not": "财报 -6%，ADR 期权流动性差"},
+  {"symbol": "BA", "direction": "put", "gap": -0.038, "reason": "财报临近",
+   "why_not": "盘前财报 -3.8%，财报反应"},
+  {"symbol": "KO", "direction": "put", "gap": -0.013, "reason": "财报临近",
+   "why_not": "盘前财报 -1.3%"},
+  {"symbol": "UPS", "direction": "put", "gap": -0.01, "reason": "财报临近",
+   "why_not": "超预期并上调指引但盘前由涨转跌 -1%，财报反应方向不定"},
+  {"symbol": "GLW", "direction": "call", "gap": 0.004, "reason": "财报临近",
+   "why_not": "盘前财报，只 +0.4%"},
+  {"symbol": "CDNS", "direction": "call", "gap": 0.004, "reason": "财报临近",
+   "why_not": "昨晚财报超预期上调，盘前只剩 +0.4%"},
+  {"symbol": "MSFT", "direction": "put", "gap": -0.005, "reason": "财报临近",
+   "why_not": "宣布 6 万人自愿买断计划 -0.5%，明天盘后财报"},
+  {"symbol": "BE", "direction": "call", "gap": 0.046, "reason": "分析师评级",
+   "why_not": "摩根士丹利称其为 AI 电力需求最大受益者，只有分析师观点；上周刚财报"},
+  {"symbol": "NBIS", "direction": "call", "gap": 0.039, "reason": "消息太弱",
+   "why_not": "没有自己的正面消息，只有 AI 泡沫 / 新云债务的标题，跟着板块涨"},
+  {"symbol": "MU", "direction": "call", "gap": 0.022, "reason": "消息太弱",
+   "why_not": "Tom Lee 看多、马斯克谈机器人内存，都是观点不是新消息；股价 $920 一张期权超过账本一半"},
+  {"symbol": "LITE", "direction": "call", "gap": 0.029, "reason": "其他",
+   "why_not": "同一条光模块逻辑，但没有自己的标题，股价 $840 一张期权超过账本一半的钱；财报约 11-04"},
+  {"symbol": "AAPL", "direction": "put", "gap": -0.003, "reason": "消息太弱",
+   "why_not": "iPhone Duo 屏幕更换计划，-0.3%，太小；11-02 财报"},
+  {"symbol": "EWZ", "direction": "call", "gap": 0.018, "reason": "其他",
+   "why_not": "巴西黑天鹅第 2 天反抽 +1.8%（昨天我们的看跌已亏九成），连续第 2 天追最差；XP +2.2% 同理"},
+  {"symbol": "SOXL", "direction": "call", "gap": 0.045, "reason": "其他",
+   "why_not": "3 倍芯片 ETF 跟板块走，不是个股消息"},
+  {"symbol": "BRAI", "direction": "call", "gap": 0.441, "reason": "没有一周内期权",
+   "why_not": "$3 微型股，+44%，没有可用期权；CLRO +20% 同理"}
+ ],
+ "claude_b_pick": "AVGO call",
+ "notes": [
+  "claude-b 选 AVGO 看涨（$630 亿 SPV + DA Davidson 上调，盘前 +3.3%，信心 0.35，不拿过夜）；我们按「二线受益股」选同一条消息的网络 / 光链：CRDO、COHR、ANET。",
+  "今天的大消息只有一条（Anthropic–博通融资 + S-1 算力支出），其余全是财报反应（SOFI、CLS、JBLU、RCL、WSO、WHR、HSBC、BA、KO、UPS）。",
+  "看过的候选没有一只接近 20 日高（CRDO 差 35%、COHR 差 35%、CRWV 差 41%），所以没有 overnight / expiry 字段，按规则买最近到期（CRDO 10-30 周度）。",
+  "宏观：联储会议第一天（周三 14:00 决议），MSFT / GOOGL 明晚财报，期货基本持平，油价反弹到 $114（布伦特）。",
+  "文件写于 09:3x ET，比 09:25 的截止晚了几分钟（09:01 的任务 09:19 才触发）；09:30–10:00 的规则窗口还在。"
+ ],
+ "generated_at": "2026-10-27T09:33:00-04:00"
+}
