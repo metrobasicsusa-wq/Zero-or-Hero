@@ -6043,3 +6043,83 @@ class ResearchBottomDeep(unittest.TestCase):
         self.assertEqual((r["d10"], r["d20"], r["d30"]), (1.5, 0.5, 0.5))
         self.assertAlmostEqual(r["trail2"], 0.5)                              # armed at 2.5, out at 1.5 (<= 60% of 2.5)
 
+
+
+class ResearchBottomTwoMonths(unittest.TestCase):
+    # owner, 10-27 (「回测下低点 买期权拿两个月」)
+    def test_events_add_the_two_month_path_and_the_control(self):
+        from hero import research_bottom_2m as b2
+        n = 360
+        closes = [100.0 + (0.2 if i % 2 else 0.0) for i in range(n)]
+        for k, c in enumerate((99.0, 98.0, 97.0)):                            # three straight down closes at 270-272
+            closes[270 + k] = c
+        for i, c in zip(range(273, 280), (96.0, 95.0, 94.0, 93.5, 93.0, 92.5, 92.0)):   # the slide goes on to 92 (day 10)
+            closes[i] = c
+        for i in range(280, n):
+            closes[i] = 100.0 + (i - 280) * 0.1                               # then a slow climb
+        lev = [c * 3 - 200.0 for c in closes]
+        days = [f"d{i:03d}" for i in range(n)]
+        got = {e["day"]: e for e in b2.events(days, closes, lev)}
+        e = got["d272"]
+        self.assertIn("day3", e["tags"])
+        self.assertAlmostEqual(e["mae42"], 92.0 / 97.0 - 1, places=4)          # the two-month window finds the real low
+        self.assertEqual(e["days_to_low42"], 7)
+        self.assertAlmostEqual(e["f42"], closes[272 + 42] / 97.0 - 1, places=4)
+        self.assertAlmostEqual(e["f63"], closes[272 + 63] / 97.0 - 1, places=4)
+        self.assertAlmostEqual(e["l42"], lev[272 + 42] / lev[272] - 1, places=4)
+        self.assertIn("every10", got["d260"]["tags"]); self.assertNotIn("every10", got["d265"]["tags"])
+
+    def test_monthlies_and_exits(self):
+        from hero import research_bottom_2m as b2
+        self.assertEqual(b2.monthlies("2026-10-27"), ["2027-01-15", "2027-02-19"])        # 80 and 115 days out
+        self.assertEqual(b2.monthlies("2024-04-01"), ["2024-06-21", "2024-07-19"])
+        self.assertEqual(b2.monthlies("2024-04-01", 20, 40), [])                           # no third Friday in a short window
+        r = b2.exits(1.05, [1.0] * 20 + [2.5] + [1.4] * 21 + [3.3] * 21, True, 0.05)
+        self.assertAlmostEqual(r["d21"], 2.5 * 0.95 / 1.05 - 1, places=4)
+        self.assertAlmostEqual(r["d42"], 1.4 * 0.95 / 1.05 - 1, places=4)
+        self.assertAlmostEqual(r["d63"], 3.3 * 0.95 / 1.05 - 1, places=4)                  # the third month is where it paid
+        self.assertAlmostEqual(r["trail42"], r["d42"], places=4)                           # armed at 2.5, out at 1.4 (<= 60% of 2.5)
+        self.assertAlmostEqual(r["take3_42"], r["d42"], places=4)                          # 3x never came within 42 sessions
+        r = b2.exits(1.05, [1.0] * 5 + [3.2] + [0.5] * 60, True, 0.05)
+        self.assertAlmostEqual(r["take3_42"], 3 * 0.95 - 1, places=4)                      # the 3x limit fills on session 6
+        self.assertEqual(b2.exits(1.05, [1.0] * 10, False, 0.05), {})                     # an unfinished path has no exits yet
+        path, done = b2.option_path(1.0, {"d1": 1.2, "d3": 0.0}, ["d1", "d2", "d3", "d4"], "d3", 100.0, {"d3": 101.0})
+        self.assertEqual((path, done), ([1.2, 1.2, 0.0], True))                           # held to expiry, the bar wins over intrinsic
+
+    def test_legs_prefer_the_monthly_with_a_bar_and_cache_lookups(self):
+        from hero import research_bottom_2m as b2
+
+        class Client:
+            def __init__(self):
+                self.calls = []
+
+            def option_contracts(self, und, **p):
+                self.calls.append(("contracts", p["expiration_date_lte"]))
+                exp = p["expiration_date_lte"]
+                return [{"symbol": f"{und}{exp}C{k}", "strike_price": str(k), "expiration_date": exp} for k in range(90, 125, 5)]
+
+            def option_bars(self, syms, start, end, timeframe="1Day"):
+                self.calls.append(("bars", tuple(syms)))
+                out = {}
+                for s in syms:
+                    if "2024-06-21" in s:
+                        continue                                              # the June monthly never traded that day
+                    out[s] = [{"t": f"2024-04-0{d}T00:00:00Z", "c": 2.0 + d} for d in range(1, 8)]
+                return out
+
+            def clock(self):
+                return {"is_open": False}
+
+        c, misses, cache = Client(), {}, {}
+        sessions = [f"2024-04-0{d}" for d in range(2, 8)]
+        got = b2.legs(c, "SPY", "2024-04-01", 100.0, "2024-04-07", sessions, {}, b2.Pace(c), misses, cache)
+        self.assertEqual(set(got), {"atm", "otm5", "otm10"})
+        self.assertTrue(all(v["expiry"] == "2024-07-19" for v in got.values()))           # fell through to the July monthly
+        self.assertEqual((got["atm"]["option"], got["otm5"]["option"], got["otm10"]["option"]),
+                         ("SPY2024-07-19C100", "SPY2024-07-19C105", "SPY2024-07-19C110"))
+        self.assertEqual(got["atm"]["entry"], 3.0)
+        self.assertEqual(misses, {})
+        n = len(c.calls)
+        again = b2.legs(c, "SPY", "2024-04-01", 100.0, "2024-04-07", sessions, {}, b2.Pace(c), misses, cache)
+        self.assertEqual(len(c.calls), n)                                                 # contracts and bars came from the cache
+        self.assertEqual(again["atm"]["option"], got["atm"]["option"])
