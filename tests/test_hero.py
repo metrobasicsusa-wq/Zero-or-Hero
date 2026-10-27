@@ -6162,3 +6162,53 @@ class ResearchBottomSemi(unittest.TestCase):
         self.assertIn("| NVDA | 2 | $2,100 | $1,200 | — | 50% |", md)
         self.assertIn("| MU | 1 | $9,000 | — | — | 0% |", md)
         self.assertEqual(bs.series(rows, "dd8", "atm", "d42"), [0.5, -0.5])                      # NVDA comes before MU on the same day
+
+
+class ResearchBottomSpread(unittest.TestCase):
+    # owner, 10-27 (「再开另一个回测 垂直价差 5 的距离」)
+    def test_spread_path_caps_at_the_width_and_settles_at_expiry(self):
+        from hero import research_bottom_spread as sp
+        long = {"d1": 6.0, "d2": 9.0, "d4": 12.0}
+        short = {"d1": 4.0, "d2": 5.0, "d3": 5.5}
+        path, done = sp.spread_path(2.0, long, short, ["d1", "d2", "d3", "d4", "d5"], "d5", 100.0, {"d5": 103.0})
+        self.assertEqual(path, [2.0, 4.0, 3.5, 5.0, 3.0])                      # d3 keeps the long's last close; d4 capped at $5; d5 intrinsic 3
+        self.assertTrue(done)
+        path, done = sp.spread_path(2.0, {"d1": 1.0}, {"d1": 0.4}, ["d1", "d2"], "d9", 100.0, {})
+        self.assertEqual((path, done), ([0.6, 0.6], False))
+        r = sp.exits(2.1, [2.0] * 20 + [3.0] + [4.2] * 21 + [2.5] * 21, True, 0.05)
+        self.assertAlmostEqual(r["d21"], 3.0 * 0.95 / 2.1 - 1, places=4)
+        self.assertAlmostEqual(r["d42"], 4.2 * 0.95 / 2.1 - 1, places=4)
+        self.assertAlmostEqual(r["d63"], 2.5 * 0.95 / 2.1 - 1, places=4)
+        self.assertAlmostEqual(r["take80"], 4.0 * 0.95 / 2.1 - 1, places=4)   # sold at $4 the first time the spread got there
+        self.assertEqual(sp.exits(2.1, [2.0] * 5, False, 0.05), {})
+
+    def test_legs_need_the_exact_five_dollar_step_and_both_bars(self):
+        from hero import research_bottom_spread as sp
+
+        class Client:
+            def __init__(self):
+                self.calls = []
+
+            def option_contracts(self, und, **p):
+                exp = p["expiration_date_lte"]
+                step = 5 if exp == "2024-07-19" else 10                       # June's grid has no $5 step
+                return [{"symbol": f"{und}{exp}C{k}", "strike_price": str(k), "expiration_date": exp} for k in range(80, 131, step)]
+
+            def option_bars(self, syms, start, end, timeframe="1Day"):
+                self.calls.append(tuple(syms))
+                px = {"C100": 7.0, "C105": 4.5, "C110": 2.5, "C115": 1.3}
+                return {s: [{"t": "2024-04-01T00:00:00Z", "c": px[s[-4:]]}, {"t": "2024-04-02T00:00:00Z", "c": px[s[-4:]] * 1.5}]
+                        for s in syms if s[-4:] in px}
+
+            def clock(self):
+                return {"is_open": False}
+
+        c, misses, cache = Client(), {}, {}
+        got = sp.legs(c, "NVDA", "2024-04-01", 100.0, "2024-04-03", ["2024-04-02", "2024-04-03"], {}, sp.Pace(c), misses, cache)
+        self.assertEqual(set(got), {"atm5", "otm5"})
+        self.assertEqual((got["atm5"]["k1"], got["atm5"]["k2"], got["atm5"]["expiry"]), (100.0, 105.0, "2024-07-19"))
+        self.assertEqual((got["otm5"]["k1"], got["otm5"]["k2"]), (105.0, 110.0))
+        self.assertAlmostEqual(got["atm5"]["entry"], 2.5); self.assertEqual(got["atm5"]["max_x"], 2.0)
+        self.assertEqual(got["atm5"]["path"][0], 3.75)                          # both legs x1.5 the next day: 10.5 - 6.75
+        self.assertEqual(misses.get("no_5_wide"), 2)                            # June's $10 grid was skipped for both spreads
+        self.assertEqual(len(c.calls), 1)                                       # one bars call for the four legs
