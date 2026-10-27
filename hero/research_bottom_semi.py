@@ -33,7 +33,7 @@ DEPTHS = ((0.08, "dd8"), (0.15, "dd15"), (0.20, "dd20"))
 LABEL = {"dd8": "首次跌到 20 日高点下 8%", "dd15": "首次跌到 20 日高点下 15%", "dd20": "首次跌到 20 日高点下 20%",
          "day3": "连跌第 3 天", "day3deep": "连跌第 3 天且已离 20 日高点 ≥8%", "day3deep15": "连跌第 3 天且已离 20 日高点 ≥15%",
          "green1": "连跌 3 天后第一根阳线", "every5": "对照：每第 5 天随便买", "every20": "对照：每第 20 天随便买"}
-OPT_TAGS = ("dd8", "dd15", "day3deep", "every20")
+OPT_TAGS = ("dd8", "dd15", "dd20", "day3deep", "every20")
 BUDGET_MIN = float(os.environ.get("RESEARCH_BUDGET_MIN", "110"))
 
 
