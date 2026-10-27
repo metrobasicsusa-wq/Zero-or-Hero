@@ -4473,7 +4473,7 @@
   },
   "qqq0dte-plan-500": {
    "start": 500.0,
-   "cash": 420.0,
+   "cash": 584.0,
    "round": 1,
    "heroes": 0,
    "zeros": 0,
@@ -4498,25 +4498,6 @@
      "expiry_out": null,
      "take_x": 3,
      "take": 1.32
-    },
-    {
-     "tid": "20261027-6edffcr",
-     "kind": "zdte",
-     "sym": "QQQ261027C00723000",
-     "asset": "option",
-     "und": "QQQ",
-     "qty": 4,
-     "cost": 0.44,
-     "paid": 176.0,
-     "opened": "2026-10-27 09:40",
-     "why": "QQQ 开盘 $715.22、现在 $717.95，顺势买当天到期看涨 723（离现价 0.7%），3 倍止盈，15:30 平仓",
-     "best_bid": 1.0,
-     "sim": true,
-     "expiry": "2026-10-27",
-     "exit_day": "2026-10-27",
-     "exit_at": "15:30",
-     "trail": true,
-     "expiry_out": null
     }
    ],
    "closed": [
@@ -4571,6 +4552,31 @@
      "how": "翻倍后从最高 $3.43 回撤 40%",
      "closed": "2026-10-26 12:00",
      "ret": 0.473
+    },
+    {
+     "tid": "20261027-6edffcr",
+     "kind": "zdte",
+     "sym": "QQQ261027C00723000",
+     "asset": "option",
+     "und": "QQQ",
+     "qty": 4,
+     "cost": 0.44,
+     "paid": 176.0,
+     "opened": "2026-10-27 09:40",
+     "why": "QQQ 开盘 $715.22、现在 $717.95，顺势买当天到期看涨 723（离现价 0.7%），3 倍止盈，15:30 平仓",
+     "best_bid": 1.0,
+     "sim": true,
+     "expiry": "2026-10-27",
+     "exit_day": "2026-10-27",
+     "exit_at": "15:30",
+     "trail": true,
+     "expiry_out": null,
+     "state": "closed",
+     "exit_price": 0.41,
+     "proceeds": 164.0,
+     "how": "翻倍后从最高 $1.00 回撤 40%",
+     "closed": "2026-10-27 12:40",
+     "ret": -0.068
     }
    ],
    "slots": {
