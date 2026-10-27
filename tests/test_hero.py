@@ -6123,3 +6123,42 @@ class ResearchBottomTwoMonths(unittest.TestCase):
         again = b2.legs(c, "SPY", "2024-04-01", 100.0, "2024-04-07", sessions, {}, b2.Pace(c), misses, cache)
         self.assertEqual(len(c.calls), n)                                                 # contracts and bars came from the cache
         self.assertEqual(again["atm"]["option"], got["atm"]["option"])
+
+
+class ResearchBottomSemi(unittest.TestCase):
+    # owner, 10-27 (「你可以拿半导体的知名股票做下回测」)
+    def test_depth_tags_fire_once_per_level_and_the_controls(self):
+        from hero import research_bottom_semi as bs
+        n = 360
+        closes = [100.0 + (0.3 if i % 2 else 0.0) for i in range(n)]
+        slide = (97.0, 94.0, 91.0, 88.0, 86.0, 83.0, 81.0, 79.0, 78.0, 80.0)            # -3% a day from 100.3 to 78, then green
+        for k, c in enumerate(slide):
+            closes[270 + k] = c
+        for i in range(280, n):
+            closes[i] = 90.0 + (i - 280) * 0.5
+        days = [f"d{i:03d}" for i in range(n)]
+        got = {e["day"]: e for e in bs.events(days, closes)}
+        self.assertIn("dd8", got["d272"]["tags"]); self.assertNotIn("dd8", got.get("d273", {"tags": []})["tags"])   # 91 is the first close 8% under 100.3
+        self.assertIn("day3", got["d272"]["tags"]); self.assertIn("day3deep", got["d272"]["tags"])
+        self.assertNotIn("day3deep15", got["d272"]["tags"])
+        self.assertIn("dd15", got["d275"]["tags"]); self.assertNotIn("dd15", got.get("d274", {"tags": []})["tags"])   # 83 is the first 15% under (85.26)
+        self.assertIn("dd20", got["d277"]["tags"])                                                 # 79 is the first 20% under (80.24)
+        self.assertNotIn("dd20", got.get("d278", {"tags": []})["tags"])
+        self.assertIn("green1", got["d279"]["tags"])
+        e = got["d272"]
+        self.assertAlmostEqual(e["mae42"], 78.0 / 91.0 - 1, places=4)
+        self.assertEqual(e["days_to_low42"], 6)
+        self.assertAlmostEqual(e["f42"], closes[272 + 42] / 91.0 - 1, places=4)
+        self.assertIn("every20", got["d260"]["tags"]); self.assertIn("every5", got["d260"]["tags"])
+        self.assertNotIn("every20", got["d265"]["tags"])
+
+    def test_cost_table_and_series_take_one_name_a_day(self):
+        from hero import research_bottom_semi as bs
+        rows = [{"und": "NVDA", "leg": "atm", "tags": ["dd8"], "day": "2025-01-02", "cost": 1800.0, "res": {"d42": 0.5}},
+                {"und": "NVDA", "leg": "atm", "tags": ["dd8"], "day": "2025-03-02", "cost": 2400.0, "res": {"d42": -0.5}},
+                {"und": "NVDA", "leg": "otm5", "tags": ["dd8"], "day": "2025-01-02", "cost": 1200.0, "res": {"d42": 0.9}},
+                {"und": "MU", "leg": "atm", "tags": ["dd8"], "day": "2025-01-02", "cost": 9000.0, "res": {"d42": 2.0}}]
+        md = bs.cost_table(rows)
+        self.assertIn("| NVDA | 2 | $2,100 | $1,200 | — | 50% |", md)
+        self.assertIn("| MU | 1 | $9,000 | — | — | 0% |", md)
+        self.assertEqual(bs.series(rows, "dd8", "atm", "d42"), [0.5, -0.5])                      # NVDA comes before MU on the same day
