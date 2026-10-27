@@ -6210,7 +6210,7 @@ class ResearchBottomSpread(unittest.TestCase):
         self.assertEqual((got["otm5"]["k1"], got["otm5"]["k2"]), (105.0, 110.0))
         self.assertAlmostEqual(got["atm5"]["entry"], 2.5); self.assertEqual(got["atm5"]["max_x"], 2.0)
         self.assertEqual(got["atm5"]["path"][0], 3.75)                          # both legs x1.5 the next day: 10.5 - 6.75
-        self.assertEqual(misses.get("no_5_wide"), 2)                            # June's $10 grid was skipped for both spreads
+        self.assertEqual(misses.get("no_width"), 2)                             # June's $10 grid was skipped for both spreads
         self.assertEqual(len(c.calls), 1)                                       # one bars call for the four legs
 
 

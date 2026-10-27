@@ -28,10 +28,11 @@ from hero.research_ideas import report, save
 ROOT = Path(__file__).resolve().parent.parent
 UNDS = tuple(ETFS) + tuple(NAMES)
 PX_START = "2012-01-01"
-WIDTH = 5.0
+WIDTH = float(os.environ.get("RESEARCH_SPREAD_WIDTH", "5"))   # owner, 10-27: 「那500 呢 2.5 价差」 -- the width is a knob
+NAME = "bottom-spread" if WIDTH == 5.0 else f"bottom-spread{WIDTH:g}".replace(".", "")
 HOLD = 63
-LEGS = {"atm5": "平值买、高 $5 卖", "otm5": "价外 5% 买、再高 $5 卖"}
-EXITS = {"d21": "第 21 天卖（1 个月）", "d42": "第 42 天（2 个月）", "d63": "第 63 天（3 个月，先到期就到期）", "take80": "价差到 $4（宽度八成）就卖，否则第 63 天"}
+LEGS = {"atm5": f"平值买、高 ${WIDTH:g} 卖", "otm5": f"价外 5% 买、再高 ${WIDTH:g} 卖"}
+EXITS = {"d21": "第 21 天卖（1 个月）", "d42": "第 42 天（2 个月）", "d63": "第 63 天（3 个月，先到期就到期）", "take80": f"价差到 ${0.8 * WIDTH:g}（宽度八成）就卖，否则第 63 天"}
 OPT_TAGS = ("dd8", "dd15", "day3deep", "every20")
 BUDGET_MIN = float(os.environ.get("RESEARCH_BUDGET_MIN", "110"))
 
@@ -87,7 +88,7 @@ def legs(client, und: str, day: str, spot: float, until: str, sessions: list[str
                 continue
             k2 = by_k.get(round(k1[0] + WIDTH, 2))
             if not k2:
-                misses["no_5_wide"] = misses.get("no_5_wide", 0) + 1
+                misses["no_width"] = misses.get("no_width", 0) + 1
                 continue
             want[name] = (k1, k2)
         bars = cache.setdefault("bars", {})
@@ -178,8 +179,8 @@ def groups(rows: list[dict]) -> dict[str, list[dict]]:
 
 
 def cost_table(rows: list[dict]) -> str:
-    lines = ["", "## 一组价差多少钱、最多赚几倍（信号日的净支出 × 100，中位数；宽度 $5 ÷ 净支出）", "",
-             "| 标的 | 笔数 | 平值价差一组 | 最多几倍 | 价外价差一组 | 最多几倍 | 平值价差到期拿满 $5 的比例 |", "|---|---|---|---|---|---|---|"]
+    lines = ["", f"## 一组价差多少钱、最多赚几倍（信号日的净支出 × 100，中位数；宽度 ${WIDTH:g} ÷ 净支出）", "",
+             f"| 标的 | 笔数 | 平值价差一组 | 最多几倍 | 价外价差一组 | 最多几倍 | 平值价差到期拿满 ${WIDTH:g} 的比例 |", "|---|---|---|---|---|---|---|"]
     for und in UNDS:
         g = {leg: [r for r in rows if r.get("leg") == leg and r["und"] == und and r.get("cost")] for leg in LEGS}
         if not g["atm5"]:
@@ -201,7 +202,7 @@ def series(rows: list[dict], tag: str, leg: str, exit_: str) -> list[float]:
 
 def hero_table(rows: list[dict]) -> str:
     lines = ["", "## hero 游戏：按日期重放成轮（同一天几只触发只算一只）；$2,000 到 5 倍和 $500 到 20 倍（押满）", "",
-             "$5 的价差一组最多只能赚「宽度 ÷ 净支出」倍，到 5 倍 / 20 倍要连赢几轮；看的是成功率。", "",
+             f"${WIDTH:g} 的价差一组最多只能赚「宽度 ÷ 净支出」倍，到 5 倍 / 20 倍要连赢几轮；看的是成功率。", "",
              "| 情况 · 腿 · 出场 | 笔数 | 平均 | $2,000 到 5 倍：hero / 轮（区间） | 每个 hero | $500 到 20 倍：hero / 轮（区间） | 每个 hero |",
              "|---|---|---|---|---|---|---|"]
     for tag in OPT_TAGS:
@@ -224,9 +225,9 @@ def main() -> None:
     from hero.alpaca import Alpaca
     rep = run(Alpaca())
     gs = groups(rep["rows"])
-    table, md = report(f"抄底用 $5 宽的牛市看涨价差拿两个月：2024 年起，4 只 ETF 和 14 只半导体股 {date.today().isoformat()}",
-                       f"{len(UNDS)} 只：{'、'.join(UNDS)}。{rep['opt_start']} 至 {rep['end']}，信号日买最近的月度到期（{DTE[0]}–{DTE[1]} 天）平值看涨、卖高 $5 的看涨（另一组从价外 5% 起），"
-                       f"拿 21 / 42 / 63 个交易日或价差到 $4 先卖，净支出买卖各多付 5%；到期按内在价值、最多 $5 结算。"
+    table, md = report(f"抄底用 ${WIDTH:g} 宽的牛市看涨价差拿两个月：2024 年起，4 只 ETF 和 14 只半导体股 {date.today().isoformat()}",
+                       f"{len(UNDS)} 只：{'、'.join(UNDS)}。{rep['opt_start']} 至 {rep['end']}，信号日买最近的月度到期（{DTE[0]}–{DTE[1]} 天）平值看涨、卖高 ${WIDTH:g} 的看涨（另一组从价外 5% 起），"
+                       f"拿 21 / 42 / 63 个交易日或价差到 ${0.8 * WIDTH:g} 先卖，净支出买卖各多付 5%；到期按内在价值、最多 ${WIDTH:g} 结算。"
                        f"跑完 {len(rep['done'])} 只{'，预算到了没跑完' if rep['partial'] else ''}，{rep['minutes']} 分钟。没拿到数据的原因：{rep['misses'] or '无'}。",
                        gs, EXITS, rep["end"])
     rep["table"] = table
@@ -236,7 +237,7 @@ def main() -> None:
            "- 和裸买看涨（research/2026-10-27-bottom-2m.md、bottom-semi.md）对照同一信号、同一出场。\n- 只研究，不改交易。\n")
     for r in rep["rows"]:
         r.pop("path", None)
-    save("bottom-spread", rep, md)
+    save(NAME, rep, md)
 
 
 if __name__ == "__main__":
