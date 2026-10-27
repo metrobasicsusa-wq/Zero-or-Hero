@@ -22,7 +22,7 @@ from hero.research_ideas import save
 
 ROOT = Path(__file__).resolve().parent.parent
 START = float(os.environ.get("RESEARCH_LEDGER_START", "1000"))   # owner, 10-27: 「那500 呢 2.5 价差」
-STARTS = (500.0, 1000.0, 2000.0, 5000.0)
+STARTS = (500.0, 1000.0, 2000.0, 5000.0, 10000.0)
 DAYS = {"d42": 61, "d63": 91, "take80": 91}
 ETFS = ("SMH", "QQQ", "IWM", "SPY")
 STOCKS = ("NVDA", "AVGO", "AMD", "MU", "TSM", "ASML", "AMAT", "LRCX", "KLAC", "QCOM", "INTC", "MRVL", "TXN", "ARM")
@@ -143,7 +143,9 @@ def resample(trs: list[dict], start: float = START, f: float = 1.0, rounds: int 
     q = lambda p: finals[min(len(finals) - 1, int(p * len(finals)))]
     return {"median": round(q(0.5), 2), "p10": round(q(0.1), 2), "p90": round(q(0.9), 2), "mean": round(statistics.mean(finals), 2),
             "p_dead": round(sum(x < 100 for x in finals) / len(finals), 3), "p_5k": round(sum(x >= 5000 for x in finals) / len(finals), 3),
-            "p_10k": round(sum(x >= 10000 for x in finals) / len(finals), 3), "rounds": rounds, "sims": sims, "pool": len(trs)}
+            "p_10k": round(sum(x >= 10000 for x in finals) / len(finals), 3), "rounds": rounds, "sims": sims, "pool": len(trs),
+            "p_lost90": round(sum(x < 0.1 * start for x in finals) / len(finals), 3), "p_5x": round(sum(x >= 5 * start for x in finals) / len(finals), 3),
+            "p_10x": round(sum(x >= 10 * start for x in finals) / len(finals), 3)}
 
 
 def run() -> dict:
@@ -162,11 +164,14 @@ def run() -> dict:
         ("对照：ETF 每第 10 天随便买 · 平值拿 63 天", b2["rows"], ("atm",), "every10", "d63", ETFS),
         ("14 只半导体股 跌 8% · 裸买平值拿 63 天", bs["rows"], ("atm",), "dd8", "d63", STOCKS),
         ("14 只半导体股 跌 15% · 裸买平值拿 63 天", bs["rows"], ("atm",), "dd15", "d63", STOCKS),
+        ("14 只半导体股 跌 20% · 裸买平值拿 63 天", bs["rows"], ("atm",), "dd20", "d63", STOCKS),
+        ("14 只半导体股 跌 20% · 裸买价外 5% 拿 63 天", bs["rows"], ("otm5",), "dd20", "d63", STOCKS),
         ("14 只半导体股 跌 8% · 裸买价外 10% 拿 63 天", bs["rows"], ("otm10",), "dd8", "d63", STOCKS),
         ("对照：半导体股每第 20 天随便买 · 平值拿 63 天", bs["rows"], ("atm",), "every20", "d63", STOCKS),
         ("18 只 跌 8% · $5 价差平值 · 到 $4 就卖", sp["rows"], ("atm5",), "dd8", "take80", None),
         ("18 只 跌 8% · $5 价差平值 · 拿到期", sp["rows"], ("atm5",), "dd8", "d63", None),
         ("四只 ETF 跌 8% · $5 价差平值 · 到 $4 就卖", sp["rows"], ("atm5",), "dd8", "take80", ETFS),
+        ("四只 ETF 跌 8% · $5 价差价外 5% · 到 $4 就卖", sp["rows"], ("otm5",), "dd8", "take80", ETFS),
         ("14 只半导体股 跌 8% · $5 价差平值 · 到 $4 就卖", sp["rows"], ("atm5",), "dd8", "take80", STOCKS),
         ("18 只 跌 15% · $5 价差价外 5% · 到 $4 就卖", sp["rows"], ("otm5",), "dd15", "take80", None),
         ("对照：18 只每第 20 天随便买 · $5 价差平值 · 到 $4 就卖", sp["rows"], ("atm5",), "every20", "take80", None),
@@ -208,16 +213,16 @@ def markdown(rep: dict) -> str:
              "同一只拿着时不再买，钱锁到出场（63 天按 91 个日历日、42 天按 61 天、先到期按到期）再按那笔的收益拿回来；「押满」每次把现金全押上，「押一半」押一半。"
              "期权回测只有 2024-02 起的数据，所以这是两年零八个月的结果。只研究，不改交易。", "",
              "## 按日期重放（2024-02 至 " + rep["end"] + "）", "",
-             "| 策略 | 信号数 | 一张 / 一组 | $500 押满 | 做了 / 买不起 | 最大回撤 | $500 押一半 | 做了 | $1,000 押满 | 做了 / 买不起 | 最大回撤 | $1,000 押一半 | $2,000 押满 | $5,000 押满 | 最大一笔赚 / 亏（$1,000 押满） |",
-             "|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|"]
+             "| 策略 | 信号数 | 一张 / 一组 | $500 押满 | 做了 / 买不起 | 最大回撤 | $500 押一半 | 做了 | $1,000 押满 | 做了 / 买不起 | 最大回撤 | $1,000 押一半 | $2,000 押满 | $5,000 押满 | $10,000 押满 | $10,000 押一半 | 最大一笔赚 / 亏（$1,000 押满） |",
+             "|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|"]
     for o in rep["options"]:
         a, b = o["starts"]["500"], o["starts"]["1000"]
         f1 = b["full"]
         best = f"{m(f1['best'][0])} {f1['best'][1]} / {m(f1['worst'][0])} {f1['worst'][1]}" if f1["best"] else "—"
         lines.append(f"| {o['name']} | {o['n_signals']} | {m(o['one_costs'])} | **{m(a['full']['final'])}** | {a['full']['taken']} / {a['full']['skipped']} | {a['full']['max_dd']:+.0%} | "
                      f"{m(a['half']['final'])} | {a['half']['taken']} | **{m(f1['final'])}** | {f1['taken']} / {f1['skipped']} | {f1['max_dd']:+.0%} | {m(b['half']['final'])} | "
-                     f"{m(o['starts']['2000']['full']['final'])} | {m(o['starts']['5000']['full']['final'])} | {best} |")
-    for s0 in ("500", "1000"):
+                     f"{m(o['starts']['2000']['full']['final'])} | {m(o['starts']['5000']['full']['final'])} | {m(o['starts']['10000']['full']['final'])} | {m(o['starts']['10000']['half']['final'])} | {best} |")
+    for s0 in ("500", "1000", "10000"):
         lines += ["", f"## ${int(s0):,} 开局，把顺序打乱：这条策略真能一笔接一笔做几次就抽几格，每格从它自己的成交里抽一笔不重复的，抽 2,000 次", "",
                   "按日期重放只有一条路，最终数字一半靠前两三笔的运气；这里给的是分布：中位数、最差一成、最好一成、归零（低于 $100）和到 $5,000 / $10,000 的概率。"
                   "它假设这条策略的成交池就是真相（池子只有两年八个月），所以是「如果这段历史重来一遍」，不是预测。", "",
