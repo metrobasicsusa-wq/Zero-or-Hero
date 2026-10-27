@@ -6212,3 +6212,36 @@ class ResearchBottomSpread(unittest.TestCase):
         self.assertEqual(got["atm5"]["path"][0], 3.75)                          # both legs x1.5 the next day: 10.5 - 6.75
         self.assertEqual(misses.get("no_5_wide"), 2)                            # June's $10 grid was skipped for both spreads
         self.assertEqual(len(c.calls), 1)                                       # one bars call for the four legs
+
+
+class ResearchBottomLedger(unittest.TestCase):
+    # owner, 10-27 (「回测下1000 开局 最终会是多少钱」)
+    def test_replay_skips_what_it_cannot_afford_and_one_bet_per_name(self):
+        from hero import research_bottom_ledger as bl
+        rows = [{"day": "2024-03-01", "und": "SMH", "tags": ["dd8"], "leg": "atm", "entry": 4.0, "expiry": "2024-07-19", "res": {"d63": 1.0}},
+                {"day": "2024-03-05", "und": "SMH", "tags": ["dd8"], "leg": "atm", "entry": 4.0, "expiry": "2024-07-19", "res": {"d63": 5.0}},   # SMH already held: skipped
+                {"day": "2024-03-06", "und": "QQQ", "tags": ["dd8"], "leg": "atm", "entry": 9.0, "expiry": "2024-07-19", "res": {"d63": 1.0}},   # $945 > $580 left: unaffordable
+                {"day": "2024-07-01", "und": "SMH", "tags": ["dd8"], "leg": "atm", "entry": 4.0, "expiry": "2024-10-18", "res": {"d63": -0.5}},
+                {"day": "2024-03-06", "und": "QQQ", "tags": ["day3"], "leg": "atm", "entry": 1.0, "expiry": "2024-07-19", "res": {"d63": 0.1}}]
+        trs = bl.trades(rows, ("atm",), "dd8", "d63", ("SMH", "QQQ"))
+        self.assertEqual([t["und"] for t in trs], ["SMH", "SMH", "QQQ", "SMH"])
+        self.assertEqual(trs[0]["cost"], 420.0); self.assertEqual(trs[0]["back"], "2024-05-31")          # 91 days, before the expiry
+        r = bl.replay(trs, 1000.0, 1.0)
+        self.assertEqual((r["taken"], r["skipped"]), (2, 1))
+        self.assertEqual(r["final"], 1000.0 - 840.0 + 1680.0 - 1680.0 + 840.0)                             # 2 x $420 doubled, then 4 x $420 halved
+        self.assertEqual((r["years"], r["peak"]), ({"2024": 1000.0}, 1840.0))                                   # the year ends where the last exit left it
+        self.assertEqual(r["best"], (840.0, "SMH", "2024-03-01")); self.assertEqual(r["worst"], (-840.0, "SMH", "2024-07-01"))
+        self.assertEqual(bl.slots(trs), 2)                                                                  # the two SMH trades do not overlap, the rest do
+        h = bl.replay(trs, 1000.0, 0.5)
+        self.assertEqual((h["taken"], h["skipped"], h["final"]), (2, 1, 1210.0))                               # half of $580 does not buy a $945 QQQ call either; one lot each way
+        s = bl.resample(trs, 1000.0, 1.0, sims=50)
+        self.assertEqual((s["rounds"], s["pool"]), (2, 4))
+        self.assertTrue(s["p10"] <= s["median"] <= s["p90"])
+
+    def test_price_replay_compounds_without_overlap(self):
+        from hero import research_bottom_ledger as bl
+        evs = [{"day": "2017-02-01", "und": "SMH", "tags": ["dd8"], "l63": 0.5}, {"day": "2017-03-01", "und": "SMH", "tags": ["dd8"], "l63": 9.0},
+               {"day": "2017-08-01", "und": "SMH", "tags": ["dd8"], "l63": -0.5}, {"day": "2017-08-01", "und": "QQQ", "tags": ["dd8"], "l63": 9.0}]
+        p = bl.price_replay(evs, "SMH", "dd8", "l63", 1000.0)
+        self.assertEqual((p["taken"], p["final"]), (2, 750.0))                                              # March's signal fell inside February's hold
+        self.assertEqual(p["max_dd"], -0.5)
