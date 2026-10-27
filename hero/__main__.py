@@ -12,6 +12,7 @@ from hero import backtest, dashboard, earnings, evolve, macro, market, patrol, r
 from hero.alpaca import Alpaca, AlpacaError
 from hero.engine import Engine
 from hero.journal import Journal
+from hero.strategies import options as opt
 
 ROOT = Path(__file__).resolve().parent.parent
 CFG_PATH = ROOT / "config" / "strategy.json"
@@ -114,7 +115,17 @@ def main() -> None:
         # second account's cycle and the journal commit after it were skipped. A snapshot is a record: on a
         # broker error keep the last one, say so in the journal, and let the run go on.
         try:
-            journal.snapshot({"account": client.account(), "positions": client.positions(),
+            positions = client.positions()
+            try:
+                # The broker's after-close mark on an option is sometimes impossible (10-15, 10-20, 10-27);
+                # keep it, and record next to it the price a decision would use (see opt.fair_mark).
+                marks = opt.fair_marks(client, positions)
+                for p in positions:
+                    if p["symbol"] in marks:
+                        p["fair_price"], p["mark_source"] = round(marks[p["symbol"]][0], 4), marks[p["symbol"]][1]
+            except AlpacaError as e:
+                journal.event("option_mark", why=f"期权报价取不到（{str(e)[:80]}），快照只有券商估值")
+            journal.snapshot({"account": client.account(), "positions": positions,
                               "open_orders": client.open_orders(),
                               "benchmark": review.benchmark_quote(client, cfg["regime_symbol"])})
             print(f"fills: {journal.record_fills(client.fill_activities(et_today()))} new")

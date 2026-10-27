@@ -19,7 +19,8 @@ EQUITY_HEADER = ["date", "equity", "cash", "generation", "benchmark", "as_of"]
 # numbers, account/order/asset ids).
 ACCOUNT_FIELDS = ("equity", "last_equity", "cash", "buying_power", "long_market_value", "portfolio_value")
 POSITION_FIELDS = ("symbol", "asset_class", "side", "qty", "avg_entry_price", "current_price", "lastday_price",
-                   "market_value", "cost_basis", "unrealized_pl", "unrealized_plpc", "unrealized_intraday_pl")
+                   "market_value", "cost_basis", "unrealized_pl", "unrealized_plpc", "unrealized_intraday_pl",
+                   "fair_price", "mark_source")
 ORDER_FIELDS = ("symbol", "asset_class", "side", "qty", "filled_qty", "filled_avg_price", "type", "limit_price",
                 "stop_price", "time_in_force", "status", "submitted_at", "filled_at", "protective_stop")
 FILL_FIELDS = ("transaction_time", "symbol", "side", "qty", "price", "type", "cum_qty", "leaves_qty")

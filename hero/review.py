@@ -298,6 +298,16 @@ def insights(journal: Path, cfg: dict, day: str) -> list[str]:
         opts = sum(abs(float(p["market_value"])) for p in positions if p.get("asset_class") == "us_option")
         if equity and opts:
             notes.append(f"期权市值占净值 {opts / equity:.1%}（上限 {cfg['options']['allocation']:.0%}）。")
+        # The broker's after-close mark on an option is sometimes impossible (10-15, 10-20, 10-27); the
+        # snapshot keeps the price a decision would have used next to it (opt.fair_mark).
+        off = [(p, float(p["fair_price"])) for p in positions
+               if p.get("mark_source") not in (None, "broker") and p.get("fair_price") is not None]
+        if off:
+            gap = sum((fair - float(p["current_price"])) * float(p["qty"]) * 100 for p, fair in off)
+            notes.append("⚠️ 期权估值可疑：" + "；".join(
+                f"{option_label(p['symbol'])} 券商估值 {float(p['current_price']):.2f}，"
+                f"按{'报价中间价' if p['mark_source'] == 'mid' else '内在价值'}应约 {fair:.2f}" for p, fair in off)
+                + f"。按这个价算，净值和今天的盈亏约{'少' if gap > 0 else '多'}算了 {_usd(abs(gap))}。")
 
     all_orders = snap.get("open_orders") or []
     orders = [o for o in all_orders if not o.get("protective_stop")]

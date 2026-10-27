@@ -327,6 +327,72 @@ class Dashboard(unittest.TestCase):
             self.assertEqual(dashboard.collect(Path(d), {**c, "launch_approved": True})["events"], [])
 
 
+class OptionMarks(unittest.TestCase):
+    """10-15 / 10-20 / 10-27: the broker's after-close mark on a held option was impossible."""
+    SYM = "XLE261113C00066500"
+
+    def test_fair_mark(self):
+        from hero.strategies import options as o
+        pos = {"symbol": self.SYM, "qty": "16", "avg_entry_price": "2", "current_price": "1.18"}
+        quote = {"latestQuote": {"bp": 2.55, "ap": 2.65}}
+        self.assertEqual(o.fair_mark(pos, quote, 68.0), (2.6, "mid"))          # outside the bid/ask
+        self.assertEqual(o.fair_mark(pos, None, 68.0), (1.5, "intrinsic"))     # below intrinsic, no quote
+        self.assertEqual(o.fair_mark({**pos, "current_price": "2.6"}, quote, 68.0), (2.6, "broker"))
+        self.assertEqual(o.fair_mark({**pos, "current_price": "2.6"}, None, None), (2.6, "broker"))
+        put = {**pos, "symbol": "SPY261113P00770000", "current_price": "0"}
+        self.assertEqual(o.fair_mark(put, None, 760.0), (10.0, "intrinsic"))
+        r = o.remark(pos, 2.6)
+        self.assertEqual((r["current_price"], r["unrealized_pl"], r["unrealized_plpc"]), ("2.6", "960.0", "0.3"))
+
+    def test_bad_mark_does_not_stop_out(self):
+        closes = {"SPY": series(0.001, seed=5), "XLE": series(0.001, seed=7)}
+
+        class Quoted(FakeClient):
+            quote = (2.55, 2.65)
+
+            def option_snapshots(self, symbols):
+                return {s: {"latestQuote": {"bp": self.quote[0], "ap": self.quote[1]}} for s in symbols}
+
+            def stock_snapshots(self, symbols):
+                return {s: {"latestTrade": {"p": 68.0}} for s in symbols}
+
+        pos = {"symbol": self.SYM, "asset_class": "us_option", "qty": "16", "avg_entry_price": "2",
+               "current_price": "1.18", "unrealized_plpc": "-0.41"}
+        conf = cfg(options={"stop_loss": -0.4, "take_profit": 0.6, "exit_dte": 1})
+        conf["universe"] = ["SPY", "XLE"]
+        with tempfile.TemporaryDirectory() as d:
+            c = Quoted(closes, positions=[pos])
+            Engine(c, conf, Journal(Path(d))).run(today=TODAY)
+            self.assertNotIn(self.SYM, c.closed)  # the live quote says 2.60 (+30%): not a stop
+            events = [json.loads(l) for l in (Path(d) / "trades.jsonl").read_text().splitlines()]
+            self.assertTrue(any(e["kind"] == "option_mark" and e.get("source") == "mid" for e in events))
+        with tempfile.TemporaryDirectory() as d:
+            c = Quoted(closes, positions=[pos])
+            c.quote = (1.1, 1.2)  # the quote agrees with the mark, and it is under intrinsic: 1.50 is -25%
+            Engine(c, conf, Journal(Path(d))).run(today=TODAY)
+            self.assertNotIn(self.SYM, c.closed)
+        with tempfile.TemporaryDirectory() as d:
+            c = Quoted(closes, positions=[{**pos, "current_price": "1.10"}])
+            c.quote = (1.05, 1.15)
+            c.stock_snapshots = lambda symbols: {s: {"latestTrade": {"p": 66.0}} for s in symbols}
+            Engine(c, conf, Journal(Path(d))).run(today=TODAY)
+            self.assertIn(self.SYM, c.closed)  # a real -45%: the stop still fires
+
+    def test_review_flags_bad_mark(self):
+        with tempfile.TemporaryDirectory() as d:
+            j = Journal(Path(d))
+            j.equity("2026-10-01", 100_000, 50_000, 0, 500.0)
+            j.equity("2026-10-02", 101_000, 50_000, 0, 505.0)
+            pos = {"symbol": self.SYM, "asset_class": "us_option", "qty": "16", "avg_entry_price": "2",
+                   "current_price": "1.18", "market_value": "1888", "unrealized_pl": "-1312",
+                   "unrealized_plpc": "-0.41", "fair_price": 2.6, "mark_source": "mid"}
+            j.snapshot({"account": {"equity": "101000", "last_equity": "100000", "cash": "0"},
+                        "positions": [pos], "open_orders": []})
+            text = review.report(Path(d), cfg(), "2026-10-02")
+            self.assertIn("期权估值可疑", text)
+            self.assertIn("少算了 $2,272", text)
+
+
 class AlpacaErrorRedaction(unittest.TestCase):
     def test_ids_scrubbed(self):
         e = AlpacaError('DELETE https://x/v2/orders/6a1b2c3d-1623-47fc-8139-97d6feb1982a -> 403: '

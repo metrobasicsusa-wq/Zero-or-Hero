@@ -919,7 +919,30 @@ class Engine:
             self._order("protective_stop", evidence, why, cid_prefix=stoplib.PREFIX, symbol=sym, qty=f"{qty:.9g}",
                         side="sell", type="stop", stop_price=f"{price:.2f}", time_in_force=tif)
 
+    def _fair_marks(self, options: dict) -> dict:
+        """Held options re-valued where the broker's mark is plainly wrong (see opt.fair_mark)."""
+        if not options:
+            return options
+        try:
+            marks = opt.fair_marks(self.c, list(options.values()))
+        except AlpacaError as e:
+            self.j.event("option_mark", dry_run=self.dry, why=f"期权报价取不到（{str(e)[:80]}），按券商估值判断")
+            return options
+        out = {}
+        for sym, pos in options.items():
+            price, source = marks.get(sym, (None, "broker"))
+            if source == "broker":
+                out[sym] = pos
+                continue
+            out[sym] = opt.remark(pos, price)
+            self.j.event("option_mark", dry_run=self.dry, symbol=sym, broker=pos.get("current_price"),
+                         price=round(price, 4), source=source,
+                         why=f"券商估值 {pos.get('current_price')} 不可信，按{'报价中间价' if source == 'mid' else '内在价值'} "
+                             f"{price:.2f} 判断止盈止损")
+        return out
+
     def _option_exits(self, options: dict, busy: set, today: date) -> None:
+        options = self._fair_marks(options)
         for sym, pos in options.items():
             if sym in busy:
                 continue
