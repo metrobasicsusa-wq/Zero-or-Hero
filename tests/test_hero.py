@@ -6378,3 +6378,11 @@ class ResearchBeatDrift(unittest.TestCase):
         self.assertAlmostEqual(res["close_d20"], round(1.95 * 0.9 - 1, 4))                           # 20th close 1.95, never 2x
         self.assertEqual(res["take2"], res["close_d20"])
         self.assertIsNone(bd.exits(1.0, []))
+
+    def test_monthly_expiry_and_a_later_entry(self):
+        from datetime import date as _d
+        from hero import research_beat_drift as bd
+        self.assertTrue(bd.third_friday(_d(2024, 3, 15))); self.assertFalse(bd.third_friday(_d(2024, 3, 22)))
+        mins = {"10:41": {"c": 2.0}, "11:30": {"c": 3.0}}
+        self.assertEqual(bd.entry(mins)[0], "10:41")                                                     # the first trade within the hour
+        self.assertIsNone(bd.entry({"11:30": {"c": 3.0}}))

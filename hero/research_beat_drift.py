@@ -19,12 +19,14 @@ from datetime import date, timedelta
 
 from hero.research_earnings_overshoot import EVENTS
 from hero.research_earnings_rules import GROUP
-from hero.research_ideas import contract, dailies, entry_cost, minutes, multiday, report, save
+from hero.research_0dte import at_or_after
+from hero.research_ideas import cost_of, dailies, minutes, multiday, pick, report, save
 
 START = "2024-02-01"
 RATIO = 1.5
 HARD = ("芯片", "AI 硬件 / 算力")
 LEGS = {"atm": 0.0, "otm5": 0.05}
+ENTRY_WITHIN = 60    # minutes after 10:00 to find the first trade: these 1-2 month contracts trade less than weeklies
 EXITS = {"close_d10": "第 10 天收盘卖", "close_d20": "第 20 天收盘卖", "take2": "收盘翻倍就卖，否则第 20 天", "trail2": "翻倍后回撤 40% 卖，否则第 20 天"}
 
 
@@ -41,6 +43,40 @@ def events(rep: dict, start: str = START) -> list[dict]:
         out.append({"und": e["symbol"], "react": e["reaction_day"], "kind": "C" if e["move"] > 0 else "P",
                     "move": e["move"], "ratio": round(ratio, 2), "group": GROUP.get(e["symbol"], "其他")})
     return out
+
+
+def third_friday(d: date) -> bool:
+    return d.weekday() == 4 and 15 <= d.day <= 21
+
+
+def monthly_contract(client, und: str, kind: str, day: str, spot: float, off: float, lo: int = 25, hi: int = 50) -> tuple[str, str] | None:
+    """(symbol, expiry) from `lo` to `hi` days out, the monthly (third Friday) expiry when there is one -- the liquid
+    one -- else the nearest; first strike `off` beyond spot."""
+    d0 = date.fromisoformat(day)
+    cs = []
+    for status in ("inactive", "active"):
+        try:
+            cs = client.option_contracts(und, status=status, type="call" if kind == "C" else "put",
+                                         expiration_date_gte=(d0 + timedelta(days=lo)).isoformat(),
+                                         expiration_date_lte=(d0 + timedelta(days=hi)).isoformat(),
+                                         strike_price_gte=f"{spot * (1 - off - 0.08):.2f}", strike_price_lte=f"{spot * (1 + off + 0.08):.2f}")
+        except Exception:
+            cs = []
+        if cs:
+            break
+    if not cs:
+        return None
+    exps = sorted({c["expiration_date"] for c in cs})
+    exp = next((x for x in exps if third_friday(date.fromisoformat(x))), exps[0])
+    sym = pick([c for c in cs if c["expiration_date"] == exp], kind, spot, off)
+    return (sym, exp) if sym else None
+
+
+def entry(mins: dict[str, dict], at: str = "10:00", within: int = ENTRY_WITHIN) -> tuple[str, float] | None:
+    got = at_or_after(mins, at, within)
+    if not got or float(got[1]["c"]) <= 0:
+        return None
+    return got[0], cost_of(float(got[1]["c"]))
 
 
 def exits(cost: float, days: list[dict]) -> dict[str, float] | None:
@@ -66,11 +102,11 @@ def run(client) -> dict:
             continue
         day, spot = nxt["t"][:10], float(nxt["o"])
         for leg, off in LEGS.items():
-            got = contract(client, e["und"], e["kind"], day, spot, off, 25, 50)
+            got = monthly_contract(client, e["und"], e["kind"], day, spot, off)
             if not got:
                 continue
             sym, exp = got
-            ec = entry_cost(minutes(client, sym, day), "10:00")
+            ec = entry(minutes(client, sym, day))
             if not ec:
                 continue
             res = exits(ec[1], dailies(client, sym, day, exp))
@@ -99,7 +135,7 @@ def main() -> None:
     rep = run(Alpaca())
     table, md = report(f"芯片 / AI 硬件财报大超之后买看涨 {rep['generated']}",
                        f"{rep['start']} 至 {rep['end']}，{EVENTS.name} 里反应日收盘涨跌超过期权定价的财报（定价 = 财报前一天收盘的平值跨式）。"
-                       "下一个交易日 10:00 买 25–50 天到期的期权（平值或价外 5%），按期权日线卖出；买入多付 10%、卖出少拿 10%。"
+                       "下一个交易日 10:00 起（这些 1–2 个月的合约成交少，取 11:00 前第一笔）买 25–50 天到期、优先月度到期的期权（平值或价外 5%），按期权日线卖出；买入多付 10%、卖出少拿 10%。"
                        "正股版（research/2026-10-28-earnings-overshoot.md）：芯片 / AI 硬件涨超定价 1.5 倍的 30 次，之后 20 天比 SPY 多涨 +9%、中位数 +3%。"
                        "幸存者偏差：都是今天的大公司。",
                        groups(rep["rows"]), EXITS, rep["end"])
