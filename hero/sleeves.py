@@ -198,27 +198,38 @@ class Book:
         round never ended and its zero was never kept. Once flat, it ends the round once and is marked stopped, without
         a restart (no money from the pool): a zero when what is left is under the zero line or under what one unit of
         its last ticket cost (the dead zone: it could not buy that again), else "stopped". A round with no trades
-        that still has its start is only marked, not recorded."""
+        that still has its start is only marked, not recorded.
+        Review 10-28: `stop_end` "zero" in the spec ends it as a zero regardless (the audit's 「停并记归零」 for the stopped
+        0DTE ledgers: their last ticket can be far cheaper than what they last tried to buy -- qqq0dte-500 had $127, its
+        last ticket $52, the contracts it tried on 10-21..23 $99-175), and a stopped ledger at its target is a hero."""
         s = self.s(sid)
         if s["open"] or s.get("stopped"):
             return None
         cash = s["cash"]
         last = next((t for t in reversed(s["closed"]) if t.get("qty") and t.get("paid")), None)
         need = float(last["paid"]) / float(last["qty"]) if last else None
-        zero = cash < s["start"] * p["zero_line"] or (need is not None and cash < need)
-        end = "zero" if zero else "stopped"
+        target = target_of(p, s["start"])
+        hero = cash >= target
+        forced = not hero and p.get("stop_end") == "zero"
+        zero = not hero and (forced or cash < s["start"] * p["zero_line"] or (need is not None and cash < need))
+        end = "hero" if hero else "zero" if zero else "stopped"
         s["stopped"] = {"round": s["round"], "day": when, "end": end, "returned": round(cash, 2)}
         back = f"；剩下的 ${cash:,.2f} 退回池子" if cash else ""
         if len(s["closed"]) == s.get("round_from", 0) and cash == s["start"]:
             s["stopped"]["kept"] = False
             msg = f"{sid} 已停开新仓、空仓，这一轮还没交易{back}"
         else:
-            if zero:
+            if hero:
+                s["heroes"] += 1
+            elif zero:
                 s["zeros"] += 1
             self.end_round(s, end, when)
-            msg = (f"{sid} 已停开新仓、空仓，第 {s['round']} 轮结束：剩 ${cash:,.2f}"
-                   + ("，低于归零线" if cash < s["start"] * p["zero_line"] else f"，连一张 ${need:,.2f} 都买不起" if zero else "")
-                   + ("，算归零" if zero else "，记为停止") + "；不从池子补钱重开" + back)
+            why = (f"，到 ${target:,.0f}，成功" if hero
+                   else "，按审计裁定（停并记归零）算归零" if forced
+                   else "，低于归零线，算归零" if cash < s["start"] * p["zero_line"]
+                   else f"，连一张 ${need:,.2f} 都买不起，算归零" if zero
+                   else "，记为停止")
+            msg = f"{sid} 已停开新仓、空仓，第 {s['round']} 轮结束：剩 ${cash:,.2f}{why}；不从池子补钱重开{back}"
         # audit 10-26 #8: what a stopped ledger has left goes back to the pool (15 of them held $8,083 no rule would bet)
         self.d["topups"] = round(self.d["topups"] - cash, 2)
         s["cash"] = 0.0
@@ -439,7 +450,7 @@ class Runner:
             p = round_params(self.p, spec)
             if spec.get("stop_entries"):   # audit 10-26 #2: no restart for a stopped rule; its round ends once it is flat
                 self.book.s(spec["id"])["target"] = target_of(p, spec["start"])
-                msg = self.book.stop_round(spec["id"], p, day)
+                msg = self.book.stop_round(spec["id"], {**p, "stop_end": spec.get("stop_end")}, day)
             else:
                 msg = (self.book.resume(spec["id"], day) or self.book.rule_change(spec["id"], spec.get("rule_from"), day)
                        or self.book.round_check(spec["id"], p, day))

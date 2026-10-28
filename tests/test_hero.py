@@ -3835,6 +3835,24 @@ class Sleeves(unittest.TestCase):
             self.assertEqual((dear.s("m-500")["round"], dear.s("m-500")["open"]), (1, []), call)   # restarting would not help
         self.assertIsNone(sleeves.Book(self.root / "x.json", [spec]).dead_zone_restart("m-500", 240.0, share=0.5))   # $500 fresh: fits
 
+    def test_review_b_a_stopped_ledger_can_be_told_its_end_and_a_stopped_hero_is_a_hero(self):
+        # review 10-28: qqq0dte-500 has $127 and its last ticket was $52 a contract, so it was booked "stopped" -- but the
+        # contracts it tried on 10-21..23 were $99-175 and the audit's verdict is "停并记归零"; `stop_end: "zero"` says so
+        closed = [{"tid": "a1", "qty": 1, "paid": 52.0, "proceeds": 0.0}]
+        spec = self.stopped_ledger(127.0, closed)
+        book, _ = self.cycle(SleeveBroker(lambda s: (0.08, 0.10)), 10, 0, [spec])
+        self.assertEqual(book.s("qqq0dte-500")["rounds"][-1]["end"], "stopped")             # by its own last ticket
+        spec = {**self.stopped_ledger(127.0, closed), "stop_end": "zero"}
+        book, log = self.cycle(SleeveBroker(lambda s: (0.08, 0.10)), 10, 0, [spec])
+        s = book.s("qqq0dte-500")
+        self.assertEqual((s["rounds"][-1]["end"], s["zeros"], s["stopped"]["end"]), ("zero", 1, "zero"))
+        self.assertIn("按审计裁定", [e for e in log if e["kind"] == "sleeve_round"][-1]["why"])
+        spec = self.stopped_ledger(12_000.0, closed)                                          # stopped, but at 24x its start
+        book, log = self.cycle(SleeveBroker(lambda s: (0.08, 0.10)), 10, 0, [spec])
+        s = book.s("qqq0dte-500")
+        self.assertEqual((s["rounds"][-1]["end"], s["heroes"], s["zeros"]), ("hero", 1, 0))
+        self.assertIn("成功", [e for e in log if e["kind"] == "sleeve_round"][-1]["why"])
+
 
 class EarningsShares(unittest.TestCase):
     """Owner, 10-19: earnings only in shares or 2x funds; no option held through a report."""
@@ -6343,6 +6361,15 @@ class LedgerAuditConfig(unittest.TestCase):
         self.assertTrue(all(s.get("fraction") == 1.0 for s in twins), [s["id"] for s in twins if s.get("fraction") != 1.0])
         for sid in ("overnight-plan-500", "overnight-plan-1000"):
             self.assertEqual(self.by[sid].get("max_spread"), 0.1, sid)                    # as the live overnight ledgers
+
+    def test_review_b_the_stopped_0dte_ledgers_end_as_zeros_by_the_audit(self):
+        # docs/ledger-audit-2026-10-26.md 总表: qqq / tsla / tsla-5x / nvda / spydip 0DTE (x2 each) -- 停并记归零
+        zdte = sorted(sid for sid, s in self.by.items() if s["kind"] == "zdte" and s.get("stop_entries"))
+        self.assertEqual(zdte, sorted(f"{x}-{n}" for x in ("qqq0dte", "tsla0dte", "tsla0dte-5x", "nvda0dte", "spydip") for n in (500, 1000)))
+        self.assertTrue(all(self.by[sid].get("stop_end") == "zero" for sid in zdte))
+        others = [sid for sid, s in self.by.items() if s.get("stop_entries") and s["kind"] != "zdte"]
+        self.assertEqual(sorted(others), ["flush-1000", "flush-500", "gap-1000", "gap-500", "pead-1000"])
+        self.assertFalse(any(self.by[sid].get("stop_end") for sid in others))              # gap / flush / pead: by the data
 
     def test_audit10_dipweek_names_say_their_strike_and_notes_carry_the_live_pool_numbers(self):
         dip = {sid: s for sid, s in self.by.items() if s["kind"] == "dipweek"}
