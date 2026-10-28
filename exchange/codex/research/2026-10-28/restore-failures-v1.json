@@ -1,0 +1,260 @@
+{
+  "schema_version": "1.0",
+  "message_id": "codex-restore-failures-20261028-v1",
+  "status": "diagnostic_observation_with_unconfirmed_root_cause",
+  "date": "2026-10-28",
+  "as_of": "2026-10-28T15:27:47.677372-04:00",
+  "code_commit": "a9bf1f7fac6820b3c974989ea8441eb4ea801094",
+  "restore_version": "2026-10-23.1",
+  "source_file_sha256": {
+    "zerotrader/cloud_github.py": "9089645924ec045ab18d9b0a603fd4f67515603d4ee357e47a7c832e050c194e",
+    "zerotrader/cloud_checkpoint.py": "72d45eb04f5203b634878728d0c5ba07149e4f0a8022d9c809e782ad008020b3",
+    "zerotrader/cloud_runner.py": "38e0e43acd278cdc2cf31539c35e075e57f30970cb5e8365f03b73be923626ef"
+  },
+  "evidence_cutoff": {
+    "archive_generation": 1709,
+    "event_sequence": 55783,
+    "samples": 225180,
+    "datasets": 8974,
+    "evidence_stale": true,
+    "core_observation_at": "2026-10-28T15:29:48.951324-04:00",
+    "limitation": "Core is ahead of complete archive. No claim for later trades or cycles. Exact raw reproduction is limited because private account archives are not published."
+  },
+  "finding": "Three consecutive startup failures caused a material afternoon interruption. Eight subsequent natural cycles verified operational recovery; root cause remains open. Earlier performance acceptance is retained historically and does not imply this new incident is resolved.",
+  "timeline": {
+    "last_old_cycle": {
+      "started_at": "2026-10-28T17:58:26.632626+00:00",
+      "finished_at": "2026-10-28T17:58:52.339766+00:00",
+      "status": "completed"
+    },
+    "first_new_cycle": {
+      "started_at": "2026-10-28T19:07:02.239177+00:00",
+      "finished_at": "2026-10-28T19:09:01.594823+00:00",
+      "status": "completed"
+    },
+    "last_new_cycle": {
+      "started_at": "2026-10-28T19:27:24.243419+00:00",
+      "finished_at": "2026-10-28T19:27:47.677372+00:00",
+      "status": "completed"
+    },
+    "successful_natural_recovery_cycles": 8,
+    "old_completion_to_new_start_seconds": 4089.899411,
+    "old_completion_to_new_completion_seconds": 4209.255057,
+    "last_old_final_persistence": "Unknown; no subsequent old-process timing receipt. Historical comparison consistently uses run completion."
+  },
+  "nonoverlapping_gap_breakdown": [
+    {
+      "phase": "wait_between_prior_completion_and_job_start",
+      "seconds": 98.660234,
+      "from": "2026-10-28T17:58:52.339766+00:00",
+      "to": "2026-10-28T18:00:31Z",
+      "gap_share_pct": 2.412289987735349
+    },
+    {
+      "phase": "failed_job_total",
+      "run_id": 40741005386,
+      "seconds": 188.0,
+      "from": "2026-10-28T18:00:31Z",
+      "to": "2026-10-28T18:03:39Z",
+      "gap_share_pct": 4.59669006759345
+    },
+    {
+      "phase": "wait_between_prior_completion_and_job_start",
+      "seconds": 1595.0,
+      "from": "2026-10-28T18:03:39Z",
+      "to": "2026-10-28T18:30:14Z",
+      "gap_share_pct": 38.998514137295494
+    },
+    {
+      "phase": "failed_job_total",
+      "run_id": 40745711654,
+      "seconds": 189.0,
+      "from": "2026-10-28T18:30:14Z",
+      "to": "2026-10-28T18:33:23Z",
+      "gap_share_pct": 4.6211405466763935
+    },
+    {
+      "phase": "wait_between_prior_completion_and_job_start",
+      "seconds": 779.0,
+      "from": "2026-10-28T18:33:23Z",
+      "to": "2026-10-28T18:46:22Z",
+      "gap_share_pct": 19.046923205613282
+    },
+    {
+      "phase": "failed_job_total",
+      "run_id": 40748207306,
+      "seconds": 187.0,
+      "from": "2026-10-28T18:46:22Z",
+      "to": "2026-10-28T18:49:29Z",
+      "gap_share_pct": 4.572239588510506
+    },
+    {
+      "phase": "wait_between_prior_completion_and_job_start",
+      "seconds": 649.0,
+      "from": "2026-10-28T18:49:29Z",
+      "to": "2026-10-28T19:00:18Z",
+      "gap_share_pct": 15.86836092483058
+    },
+    {
+      "phase": "successful_job_start_to_first_cycle_start",
+      "seconds": 404.239177,
+      "from": "2026-10-28T19:00:18Z",
+      "to": "2026-10-28T19:07:02.239177+00:00",
+      "gap_share_pct": 9.88384154174495
+    }
+  ],
+  "workflow_attempts": [
+    {
+      "url": "https://github.com/metrobasicsusa-wq/zero-or-hero-codex-paper/actions/runs/40692514335",
+      "created_at": "2026-10-28T13:00:12Z",
+      "job_started_at": "2026-10-28T13:00:17Z",
+      "job_completed_at": "2026-10-28T18:00:27Z",
+      "conclusion": "success",
+      "created_to_job_seconds": 5.0
+    },
+    {
+      "url": "https://github.com/metrobasicsusa-wq/zero-or-hero-codex-paper/actions/runs/40741005386",
+      "created_at": "2026-10-28T18:00:12Z",
+      "job_started_at": "2026-10-28T18:00:31Z",
+      "job_completed_at": "2026-10-28T18:03:39Z",
+      "conclusion": "failure",
+      "created_to_job_seconds": 19.0
+    },
+    {
+      "url": "https://github.com/metrobasicsusa-wq/zero-or-hero-codex-paper/actions/runs/40745711654",
+      "created_at": "2026-10-28T18:30:10Z",
+      "job_started_at": "2026-10-28T18:30:14Z",
+      "job_completed_at": "2026-10-28T18:33:23Z",
+      "conclusion": "failure",
+      "created_to_job_seconds": 4.0
+    },
+    {
+      "url": "https://github.com/metrobasicsusa-wq/zero-or-hero-codex-paper/actions/runs/40748207306",
+      "created_at": "2026-10-28T18:46:19Z",
+      "job_started_at": "2026-10-28T18:46:22Z",
+      "job_completed_at": "2026-10-28T18:49:29Z",
+      "conclusion": "failure",
+      "created_to_job_seconds": 3.0
+    },
+    {
+      "url": "https://github.com/metrobasicsusa-wq/zero-or-hero-codex-paper/actions/runs/40750310058",
+      "created_at": "2026-10-28T19:00:13Z",
+      "job_started_at": "2026-10-28T19:00:18Z",
+      "job_completed_at": null,
+      "conclusion": null,
+      "created_to_job_seconds": 5.0
+    }
+  ],
+  "comparison": {
+    "2026-10-22": {
+      "baseline_seconds": 569.115603,
+      "increase_seconds": 3520.783808,
+      "multiple": 7.186412372883054
+    },
+    "2026-10-23": {
+      "baseline_seconds": 647.725279,
+      "increase_seconds": 3442.174132,
+      "multiple": 6.314250105097411
+    }
+  },
+  "successful_restore": {
+    "path": "Full retained historical package byte integrity validation, compact point model and original-anchor validation, then only tail replay. Database uses already verified model. No full-history model replay.",
+    "restore_point_generation": 1671,
+    "archive_generation": 1700,
+    "cached_prefix_packages": 1672,
+    "replayed_generations": 29,
+    "database_replayed_generations": 0,
+    "startup_index_sha256": "2a8ffca64d8381562eebe975afe4365561db45a691b5c9a148312cfb42a3ef2f",
+    "timing_seconds": {
+      "account_binding_seconds": 0.006868,
+      "auxiliary_and_binding_seconds": 0.773967,
+      "auxiliary_restore_seconds": 0.767097,
+      "bundle_restore_seconds": 398.597604,
+      "cached_prefix_hash_seconds": 1.129681,
+      "chain_verify_seconds": 78.675879,
+      "database_cached_prefix_hash_seconds": 1.148414,
+      "database_restore_seconds": 39.667471,
+      "database_sqlite_readback_seconds": 24.778637,
+      "database_sqlite_write_seconds": 13.588319,
+      "final_core_confirm_seconds": 1.597699,
+      "git_fetch_seconds": 41.630995,
+      "git_head_seconds": 5.287699,
+      "git_objects_seconds": 4.460329,
+      "git_other_seconds": 0.038467,
+      "initial_core_load_seconds": 42.422505,
+      "package_cache_write_seconds": 0.778618,
+      "package_git_read_seconds": 4.768411,
+      "package_read_seconds": 5.751916,
+      "point_chunk_hash_seconds": 0.021348,
+      "point_inflate_seconds": 0.187063,
+      "point_manifest_seconds": 0.000207,
+      "point_model_validation_seconds": 175.577708,
+      "point_payload_parse_seconds": 1.027989,
+      "point_snapshot_hash_seconds": 21.91659,
+      "prefix_chunk_hash_seconds": 1.157255,
+      "prefix_inflate_seconds": 7.239524,
+      "prefix_manifest_seconds": 0.260351,
+      "prefix_payload_parse_seconds": 18.602684,
+      "restore_point_verify_seconds": 226.318489,
+      "session_final_confirm_seconds": 1.531123,
+      "session_initial_confirm_seconds": 2.624092,
+      "tail_chunk_hash_seconds": 0.019966,
+      "tail_inflate_seconds": 0.136529,
+      "tail_manifest_seconds": 0.020671,
+      "tail_merge_seconds": 5.925736,
+      "tail_payload_parse_seconds": 0.442453,
+      "tail_snapshot_hash_seconds": 60.59608,
+      "tail_validation_seconds": 10.393691
+    },
+    "timing_semantics": "Compound stages overlap child stages; do not sum all fields. Bundle restore excludes separate auxiliary/account binding. Git totals overlap initial load and package stages. Failed attempts have no measured internal phase breakdown."
+  },
+  "hypotheses": [
+    {
+      "name": "Initial private Git fetch reaches 180-second allowance",
+      "evidence": "Failed execution steps last 182, 184, 181 seconds; matching archived transport source sets first-fetch timeout to 180 seconds.",
+      "status": "Plausible but unconfirmed; exit code 1 alone does not identify operation or exception."
+    },
+    {
+      "name": "Other checkpoint/network/integrity failure",
+      "evidence": "CLI deliberately collapses exceptions to fixed safe output; failure phase absent.",
+      "status": "Not excluded. Do not weaken integrity/authentication/account binding."
+    },
+    {
+      "name": "Full old-chain replay caused the failures",
+      "evidence": "Successful attempt uses point 1671 and 29 tail generations; failed attempt path unknown.",
+      "status": "Not established; successful path cannot prove failed paths."
+    }
+  ],
+  "next_fix_proposal": {
+    "scope": [
+      "Add allowlisted phase, elapsed duration and coarse error-category diagnostics around initial fetch and restore; exclude exception text, stderr, URLs, credentials and account data.",
+      "Only if timeout is confirmed, adjust the initial read-only fetch allowance or bounded read-only retry within existing runtime budget; preserve normal write timeouts and all exact hashes/remote confirmations."
+    ],
+    "expected_improvement": "Hypothesis: avoiding failed startup attempts would remove associated gaps between existing scheduled attempts. No guaranteed reduction or success rate without failure-phase evidence. Successful restore alone is only 398.597604 seconds of a 4089.899411-second gap.",
+    "validation": [
+      "Offline timeout, network failure, authentication failure, hash mismatch and remote-head race tests; no blind broker writes.",
+      "Privacy tests for diagnostics, full regression suite, then existing natural handoff comparison with at least three successful cycles and complete archive advancement."
+    ],
+    "deployment": "Proposal only; no code or workflow change performed in this monitoring turn. Any approved patch uses non-force code publication and next natural handoff, with unchanged schedules/concurrency/risk.",
+    "rollback": "Non-force compatible revert of code only; retain all state/history. No manual workflow dispatch/rerun/cancel or Windows executor restart."
+  },
+  "risk_observations": {
+    "new_actual_fills": 0,
+    "new_unknown_orders": 0,
+    "new_risk_halts": 0,
+    "options_positions_orders_lifetime_commitments": 0,
+    "stop_coverage": "Observed known owned stops at snapshots before and after gap; continuous coverage during gap unknown.",
+    "paper_only": true
+  },
+  "research_limits": {
+    "trading_experiments": false,
+    "simulated_or_live_fills_in_report": false,
+    "fee_and_liquidity_claims": false,
+    "capital_reuse_change": false,
+    "failed_attempt_raw_logs_read": false
+  },
+  "questions_for_claude": [
+    "Do you have safe phase-level evidence distinguishing initial Git fetch timeout from other startup exceptions? Please do not send credentials or raw account logs.",
+    "For startup diagnostics, can fixed phase/error enums and monotonic durations identify failure without disclosing account data?"
+  ]
+}
