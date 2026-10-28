@@ -6444,3 +6444,237 @@ class FollowCard(unittest.TestCase):
         self.assertEqual(once, twice)                                                     # the block is replaced, not appended again
         self.assertTrue(once.startswith("# 跟单卡记分\n\n老的表\n"))
         self.assertIn("已出场 2 笔", once)
+
+
+class Ladder(unittest.TestCase):
+    """docs/questions/2026-10-28-ladder-and-opportunities.md: the ladder ledger's replay, its plan rule, the two-leg plan book."""
+
+    def ev(self, day, line, und, cost, ret, back):
+        return {"day": day, "line": line, "und": und, "cost": cost, "ret": ret, "back": back}
+
+    def test_the_play_changes_with_the_balance(self):
+        from hero import research_ladder as rl
+        ev = [self.ev("2024-03-01", "spread", "SMH", 250.0, 3.0, "2024-04-01"),   # $500: two spreads, back as $2,000
+              self.ev("2024-03-15", "fast", "SMH", 700.0, 1.0, "2024-04-12"),      # phase 1: not its play
+              self.ev("2024-04-10", "fast", "SMH", 1000.0, 4.0, "2024-05-08"),     # $2,000: all in, two calls, back as $10,000
+              self.ev("2024-04-12", "spread", "QQQ", 200.0, 1.0, "2024-07-12"),    # phase 2: not its play
+              self.ev("2024-06-03", "atm63", "SMH", 2000.0, 0.5, "2024-09-03"),    # $10,000: bag A stakes a quarter, one call
+              self.ev("2024-06-03", "spread", "SMH", 300.0, 0.0, "2024-09-03"),    # bag B: a quarter, eight spreads
+              self.ev("2024-06-04", "fast", "SMH", 1500.0, 0.0, "2024-07-02")]     # bag C: an eighth buys none, the bag ($2,500) one
+        rep = rl.ladder(ev, 500.0, None)
+        why = [(d["line"], d["phase"], d["why"]) for d in rep["log"]]
+        self.assertEqual(why, [("spread", 1, "选了"), ("fast", 1, "阶段不对"), ("fast", 2, "选了"), ("spread", 2, "阶段不对"),
+                               ("atm63", 3, "选了"), ("spread", 3, "选了"), ("fast", 3, "选了")])
+        self.assertEqual([d.get("n") for d in rep["log"] if d["why"] == "选了"], [2, 2, 1, 8, 1])
+        self.assertTrue(rep["log"][-1]["all_in"])                                       # one contract on the bag, not the stake
+        r = rep["rounds"][0]
+        self.assertEqual((r["at"]["2000"], r["at"]["10000"], r["phases"]), ("2024-04-01", "2024-05-08", {"1": 1, "2": 1, "3": 3}))
+        hero = rl.ladder(ev, 500.0, 10000.0)                                             # the hero game: the round ends at $10,000
+        self.assertEqual([x["end"] for x in hero["rounds"]], ["hero", "running"])
+        self.assertEqual(hero["log"][4]["why"], "阶段不对")                               # a fresh $500 round is back on phase 1
+        self.assertEqual(rl.ladder(ev, 2000.0, None)["log"][0]["why"], "阶段不对")        # a $2,000 start begins on phase 2
+
+    def test_a_zero_restarts_at_the_start(self):
+        from hero import research_ladder as rl
+        ev = [self.ev("2024-03-01", "spread", "SMH", 450.0, -1.0, "2024-04-01"),   # $50 left when it comes back
+              self.ev("2024-04-02", "spread", "QQQ", 200.0, 0.5, "2024-07-01")]
+        rep = rl.ladder(ev, 500.0, None)
+        self.assertEqual([(r["end"], r["to"]) for r in rep["rounds"]], [("zero", "2024-04-01"), ("running", "2024-04-02")])
+        self.assertEqual((rep["topups"], rep["log"][1]["why"], rep["log"][1]["n"]), (450.0, "选了", 2))
+        self.assertEqual(rep["final"], 700.0)                                            # $100 left over + two spreads back at $600
+
+    def test_the_engine_sizing_when_one_is_out_of_reach(self):
+        from hero import research_ladder as rl
+        ev = [self.ev("2024-03-01", "spread", "SMH", 300.0, -0.5, "2024-04-01"),   # $350 back
+              self.ev("2024-04-02", "spread", "QQQ", 400.0, 0.0, "2024-07-01"),    # flat, $350 < $400 <= $500: a zero now, then bought
+              self.ev("2024-08-01", "spread", "IWM", 600.0, 0.0, "2024-11-01")]    # dearer than a fresh ledger: skipped, no restart
+        rep = rl.ladder(ev, 500.0, None)
+        d = rep["log"]
+        self.assertEqual((d[1]["why"], d[1].get("restart"), d[1]["n"]), ("选了", True, 1))
+        self.assertEqual(rep["rounds"][0]["skips"], {"归零重来": 1})
+        self.assertEqual((d[2]["why"], len(rep["rounds"])), ("买不起", 2))
+        held = rl.ladder([self.ev("2024-03-01", "spread", "SMH", 100.0, 0.0, "2024-06-01"),
+                          self.ev("2024-03-05", "spread", "SMH", 100.0, 0.0, "2024-06-05")], 500.0, None)["log"]
+        self.assertEqual(held[1]["why"], "同一只拿着")
+        self.assertEqual(rl.size("atm63", 3, 12000.0, 12000.0, 4000.0), (1, True))       # a quarter buys none; the half bag one
+        self.assertEqual(rl.size("atm63", 3, 12000.0, 12000.0, 7000.0), (0, False))      # more than the bag
+        self.assertEqual(rl.size("fast", 3, 1000.0, 12000.0, 1200.0), (0, False))        # the bag is capped by the cash left
+        self.assertEqual(rl.size("spread", 1, 500.0, 500.0, 160.0), (3, False))          # phases 1 and 2: all in
+
+    def broker(self):
+        b = SleeveBroker(lambda s: {"QQQ2027-01-15C92": (3.0, 3.2), "QQQ2027-01-15C97": (1.0, 1.2)}.get(s, (0.40, 0.50)))
+        exps = ("2026-11-20", "2027-01-08", "2027-01-15", "2027-02-19")
+
+        def contracts(und, **kw):
+            lo, hi = float(kw["strike_price_gte"]), float(kw["strike_price_lte"])
+            return [{"symbol": f"{und}{e}C{k}", "strike_price": str(k), "expiration_date": e, "type": "call"}
+                    for e in exps if kw["expiration_date_gte"] <= e <= kw["expiration_date_lte"] for k in range(80, 121) if lo <= k <= hi]
+        b.option_contracts = contracts
+        tape = lambda *last: [{"t": f"2026-{8 + i // 28:02d}-{i % 28 + 1:02d}T04:00:00Z", "c": c, "h": c}
+                              for i, c in enumerate([100.0] * (40 - len(last)) + list(last))]
+        b.bars = {"SMH": tape(101.0, 102.0, 101.0, 100.0), "QQQ": tape(), "IWM": tape(), "SPY": tape()}   # SMH: up, then two down
+        snap = lambda p, prev: {"dailyBar": {"o": prev, "l": p}, "latestTrade": {"p": p}, "prevDailyBar": {"c": prev}}
+        b.snaps = {"SMH": snap(99.5, 100.0), "QQQ": snap(91.5, 100.0), "IWM": snap(100.0, 100.0), "SPY": snap(100.0, 100.0)}
+        return b
+
+    def run_at(self, b, hh=15, mm=50):
+        from types import SimpleNamespace
+        return SimpleNamespace(c=b, today=date(2026, 10, 16), hhmm=f"{hh:02d}:{mm:02d}", j=SimpleNamespace(event=lambda *a, **k: None),
+                               specs=[], cache={})
+
+    def test_the_plan_rule_buys_the_balance_s_play(self):
+        from hero import sleeve_rules as sr
+        b, spec = self.broker(), {"plan_only": True}
+        fresh = lambda cash, open_=(): {"slots": {}, "cash": cash, "open": list(open_)}
+        self.assertIsNone(sr.Ladder().entries(self.run_at(b), {}, fresh(500.0)))          # plan only: no two-leg live orders
+        self.assertIsNone(sr.Ladder().entries(self.run_at(b, 10, 0), spec, fresh(500.0)))  # 15:45 to 15:58 only
+        slot, picks = sr.Ladder().entries(self.run_at(b), spec, fresh(500.0))
+        self.assertEqual([(p["line"], p["und"]) for p in picks], [("spread", "QQQ")])       # QQQ's first 8% break; SMH's third down day is phase 2's
+        p = picks[0]
+        self.assertEqual((p["legs"], p["k1"], p["expiry"], p["ask"], p["each"], p["take_at"]),
+                         (["QQQ2027-01-15C92", "QQQ2027-01-15C97"], 92.0, "2027-01-15", 2.1, 500.0, 4.0))   # mid 2.0 + 5%, under the natural 2.2
+        self.assertIn("两腿中间价 $2.00、自然价 $2.20", p["why"])
+        two = sr.Ladder().entries(self.run_at(b), spec, fresh(3000.0))[1]
+        self.assertEqual([(x["line"], x["und"], x["sym"], x["take"], x["each"]) for x in two], [("fast", "SMH", "SMH2026-11-20C100", 2, 3000.0)])
+        self.assertEqual(two[0]["exit_day"], "2026-11-13")                                  # the 20th session
+        three = sr.Ladder().entries(self.run_at(b), spec, fresh(12000.0))[1]
+        self.assertEqual([(x["line"], x["each"], x["cap"]) for x in three],
+                         [("atm63", 3000.0, 6000.0), ("spread", 3000.0, 3000.0), ("fast", 1500.0, 3000.0)])
+        self.assertEqual(three[0]["sym"], "QQQ2027-01-15C92")
+        held = sr.Ladder().entries(self.run_at(b), spec, fresh(100.0, [{"line": "spread", "und": "QQQ", "paid": 400.0}]))
+        self.assertEqual(held, ("2026-10-16", []))                                          # QQQ's spread already held
+
+    def test_the_plan_book_values_a_spread_from_both_legs(self):
+        from hero import sleeves
+        tmp = tempfile.TemporaryDirectory()
+        root = Path(tmp.name)
+        L, S = "QQQ270115C00092000", "QQQ270115C00097000"
+        q = {L: (3.0, 3.2), S: (1.0, 1.2)}
+        b = SleeveBroker(lambda s: q[s])
+        b.snaps = {"QQQ": {"dailyBar": {"o": 95.0}, "latestTrade": {"p": 95.0}, "prevDailyBar": {"c": 95.0}}}
+        pick = {"sym": L, "asset": "option", "und": "QQQ", "ask": 2.0, "expiry": "2027-01-15", "exit_at": "15:30", "expiry_out": "15:30",
+                "trail": False, "legs": [L, S], "k1": 92.0, "width": 5.0, "take_at": 4.0, "each": 500.0, "cap": 500.0,
+                "line": "spread", "phase": 1, "why": "x"}
+        calls = []
+        rule = type("R", (), {"entries": lambda self, run, spec, s: calls.append(1) or (("2026-10-16", [dict(pick)]) if len(calls) == 1 else None)})()
+        spec = {"id": "ladder-plan-500", "kind": "ladder", "start": 500, "fraction": 1.0, "plan_only": True}
+        book = sleeves.Book(root / "plan.json", [spec])
+        run = lambda when, day: sleeves.Runner(b, Journal(root), {"sleeves": {"fill_wait_s": 0}}, [spec], book, {"ladder": rule},
+                                               when, day, sleep=lambda s: None).plan()
+        run(datetime(2026, 10, 16, 15, 50), date(2026, 10, 16))
+        s = book.s("ladder-plan-500")
+        t = s["open"][0]
+        self.assertEqual((t["qty"], t["paid"], t["legs"], t["line"], s["cash"]), (2, 400.0, [L, S], "spread", 100.0))
+        run(datetime(2026, 10, 19, 10, 0), date(2026, 10, 19))
+        self.assertEqual((len(s["open"]), t["mark"]), (1, 2.0))                             # 3.1 - 1.1: held
+        q[L] = (5.0, 5.4)
+        run(datetime(2026, 10, 20, 10, 0), date(2026, 10, 20))
+        self.assertEqual((s["open"], s["closed"][-1]["exit_price"], s["cash"]), ([], 4.1, 920.0))   # 5.2 - 1.1 >= $4: sold
+        self.assertEqual(b.orders, {})                                                      # nothing sent
+        s["open"].append({**t, "tid": "x2", "best_bid": 0.0})
+        s["cash"] -= 400.0
+        q[L] = (9.0, 9.4)
+        run(datetime(2027, 1, 15, 15, 40), date(2027, 1, 15))                               # the expiry: intrinsic, not the quotes
+        self.assertEqual((s["closed"][-1]["exit_price"], s["cash"]), (3.0, 1120.0))         # QQQ $95 - 92, two spreads
+        self.assertIn("到期按内在价值", s["closed"][-1]["how"])
+        tmp.cleanup()
+
+
+class Opportunities(unittest.TestCase):
+    """docs/questions/2026-10-28-ladder-and-opportunities.md: the opportunity log's scan, its scorer, the backfill."""
+
+    DAY = date(2026, 10, 16)
+
+    def chain(self, und, strikes, quotes):
+        return [{"symbol": f"{und}270115C{int(k * 1000):08d}", "expiry": "2027-01-15", "strike": float(k),
+                 "bid": quotes.get(k, (0.5, 0.6))[0], "ask": quotes.get(k, (0.5, 0.6))[1]} for k in strikes]
+
+    def data(self):
+        flat = [100.0] * 30
+        closes = {"SMH": [100.0] * 26 + [101.0, 102.0, 101.0, 100.0], "QQQ": list(flat), "IWM": [100.0] * 26 + [103.0, 102.0, 101.0, 100.0],
+                  "SPY": list(flat), "NVDA": list(flat)}
+        spots = {"SMH": 99.5, "QQQ": 91.5, "IWM": 100.5, "SPY": 100.0, "NVDA": 79.0}
+        chains = {"QQQ": self.chain("QQQ", range(88, 101), {92: (3.0, 3.2), 97: (1.0, 1.2)})}
+        return closes, spots, chains
+
+    def test_each_signal_and_the_ladder_s_choice(self):
+        from hero import opportunities as op
+        from hero import signals as sg
+        closes, spots, chains = self.data()
+        log = op.scan(self.DAY, closes, spots, {}, chains, None)
+        got = [(r["variant"], r["und"], r["why"]) for r in log["rows"]]
+        self.assertEqual(got, [("down3", "SMH", "阶段不对"), ("green1", "IWM", "回测不够"), ("dd8-spread", "QQQ", "选了"),
+                               ("dd8-atm", "QQQ", "阶段不对"), ("dd8-otm5", "QQQ", "回测不够"), ("dd20-atm", "NVDA", "回测不够"),
+                               ("dd20-otm5", "NVDA", "回测不够")])
+        sp = log["rows"][2]
+        self.assertEqual((sp["contract"]["legs"], sp["contract"]["entry"], sp["contract"]["cost"]),
+                         (["QQQ270115C00092000", "QQQ270115C00097000"], 2.0, 200.0))
+        self.assertEqual((log["ladder"]["phase"], log["ladder"]["cash"]), (1, 500.0))
+        self.assertEqual(round(log["rows"][5]["dist"], 3), -0.01)                            # NVDA 21% under: 1% past the 20% line
+        # the next day: QQQ and NVDA already under their lines -- no new first break
+        nxt = {k: v + [spots[k]] for k, v in closes.items()}
+        later = op.scan(self.DAY + timedelta(days=3), nxt, {**spots, "QQQ": 91.0, "NVDA": 78.0, "SMH": 99.0, "IWM": 100.6}, {}, {}, None)
+        self.assertFalse([r for r in later["rows"] if r["sig"] in ("dd8", "dd20")])
+        # bought with one already held, or at a balance that cannot pay for it
+        held = op.scan(self.DAY, closes, spots, {}, chains, {"cash": 100.0, "open": [{"line": "spread", "und": "QQQ", "paid": 400.0}]})
+        self.assertEqual(next(r["why"] for r in held["rows"] if r["variant"] == "dd8-spread"), "同一只拿着")
+        poor = op.scan(self.DAY, closes, spots, {}, chains, {"cash": 150.0, "open": [{"line": "spread", "und": "SPY", "paid": 300.0}]})
+        self.assertEqual(next(r["why"] for r in poor["rows"] if r["variant"] == "dd8-spread"), "买不起")
+        # the 10:00 sector bounce: SMH 6% down over its last closes, 1.3% over its open at 10:00; the name itself up 1%+
+        self.assertTrue(sg.bounce([100.0, 100.0, 100.0, 94.0], 94.0, 95.2)["on"])
+        self.assertFalse(sg.bounce([100.0, 100.0, 100.0, 96.0], 96.0, 97.2)["on"])           # only a 4% fall
+        flushed = {**closes, "SMH": [100.0] * 27 + [100.0, 100.0, 94.0], "AVGO": list(closes["SPY"]), "MU": list(closes["SPY"])}
+        b = op.scan(self.DAY, flushed, {**spots, "SMH": 95.0, "AVGO": 101.0, "MU": 100.0},
+                    {"SMH": (94.0, 95.2), "AVGO": (100.0, 101.5), "MU": (100.0, 100.4)}, {}, None)
+        self.assertEqual([(r["und"], r["why"]) for r in b["rows"] if r["sig"] == "bounce"], [("AVGO", "回测不够")])   # MU only +0.4%
+        self.assertTrue(sg.green_signal([104.0, 103.0, 102.0, 101.0], 101.5))
+        self.assertFalse(sg.green_signal([104.0, 104.0, 102.0, 101.0], 101.5))               # two down closes only
+
+    def test_the_scorer_takes_the_result_n_sessions_later(self):
+        from hero import opportunities as op
+        closes, spots, chains = self.data()
+        log = op.scan(self.DAY, closes, spots, {}, chains, None)
+        book = {"days": [], "rows": []}
+        self.assertEqual(op.book_add(book, log), 3)                                          # the QQQ rows with today's quotes
+        self.assertEqual(op.book_add(book, log), 0)                                          # once per day
+        mk = lambda day, exit_, hold, legs, entry: {"day": day, "sig": "x", "variant": "x", "und": "X", "picked": False, "why": "回测不够",
+                                                    "phase": 1, "exit": exit_, "hold": hold, "legs": legs, "expiry": "2026-12-18",
+                                                    "entry": entry, "status": "open", "mark": None, "mark_day": None, "if_done": None}
+        book = {"days": [], "rows": [mk("2026-10-01", "d10", 10, ["A"], 1.0), mk("2026-10-01", "take2", 20, ["B"], 1.0),
+                                     mk("2026-10-01", "take80", None, ["L", "S"], 2.0)]}
+        q = {"A": {"bid": 1.5, "ask": 1.6}, "B": {"bid": 1.8, "ask": 1.9}, "L": {"bid": 4.0, "ask": 4.2}, "S": {"bid": 1.0, "ask": 1.2}}
+        self.assertEqual(op.sessions_between("2026-10-01", "2026-10-14"), 9)
+        self.assertEqual(op.score(book, "2026-10-14", q), [])                                # 9 sessions: still held, marked
+        self.assertEqual([r["if_done"] for r in book["rows"]], [0.5, 0.8, 0.5])
+        q["B"]["bid"] = 2.1
+        q["L"] = {"bid": 5.0, "ask": 5.4}
+        shut = op.score(book, "2026-10-15", q)                                               # the 10th session; 2x; the spread's $4
+        self.assertEqual([r["exit"] for r in shut], ["d10", "take2", "take80"])
+        self.assertEqual([r["if_done"] for r in book["rows"]], [0.5, 1.1, 1.05])             # (5.2 - 1.1) / 2 - 1
+        md = op.weekly(book, "2026-10-16")
+        self.assertIn("机会日志周报 2026-10-16", md)
+        self.assertIn("已出场 3 行", md)
+
+    def test_the_backfill_reads_the_saved_trades_and_the_ladder_s_day(self):
+        from hero import opportunities as op
+        docs = {"bottom-long": {"rows": [{"day": "2024-03-01", "sig": "down3", "leg": "atm", "und": "SMH", "dd": -0.03, "res": {"take2": 0.9}},
+                                          {"day": "2024-03-01", "sig": "down3", "leg": "atm", "und": "QQQ", "dd": -0.02, "res": {"take2": -1.0}},
+                                          {"day": "2024-03-05", "sig": "green1", "leg": "otm5", "und": "SPY", "res": {"d10": 2.0}}]},
+                "bottom-spread": {"rows": [{"day": "2024-04-18", "tags": ["dd8"], "leg": "atm5", "und": "SMH", "dd20": -0.09, "res": {"take80": 1.3}}]},
+                "bottom-2m": {"rows": [{"day": "2024-04-18", "tags": ["dd8"], "leg": "atm", "und": "SMH", "dd20": -0.09, "res": {"d63": 1.5}}]},
+                "bottom-semi": {"rows": [{"day": "2024-07-30", "tags": ["dd20"], "leg": "atm", "und": "NVDA", "dd20": -0.23, "res": {"d63": 1.6}}]},
+                "bounce": {"rows": [{"day": "2024-08-05", "groups": ["bounce1"], "leg": "otm06", "und": "AVGO", "u10": 0.02, "m10": 0.015,
+                                     "drop": -0.07, "res": {"d0": 3.0}},
+                                    {"day": "2024-08-05", "groups": ["bounce1"], "leg": "otm06", "und": "MU", "u10": 0.005, "res": {"d0": -1.0}}]}}
+        log = [{"day": "2024-03-01", "line": "fast", "und": "SMH", "why": "阶段不对", "phase": 1},
+               {"day": "2024-04-18", "line": "spread", "und": "SMH", "why": "选了", "phase": 1},
+               {"day": "2024-04-18", "line": "atm63", "und": "SMH", "why": "阶段不对", "phase": 1}]
+        rows = op.backfill_rows(docs, log)
+        got = [(r["variant"], r["und"], r["why"], r["picked"]) for r in rows]
+        self.assertEqual(got, [("down3", "QQQ", "回测不够", False), ("down3", "SMH", "阶段不对", False), ("green1", "SPY", "回测不够", False),
+                               ("dd8-atm", "SMH", "阶段不对", False), ("dd8-spread", "SMH", "选了", True), ("dd20-atm", "NVDA", "回测不够", False),
+                               ("bounce", "AVGO", "回测不够", False)])                     # MU was not itself up 1% at 10:00
+        self.assertEqual(round(rows[5]["dist"], 2), -0.03)                                  # 23% under: 3% past the 20% line
+        md = op.summarize(rows, "t", "i", "2024-12-31")
+        self.assertIn("## 按买法：选了的和没选的", md)
+        self.assertIn("## 没选却平均更高的", md)                                             # +150% / +160% passed over vs +130% taken

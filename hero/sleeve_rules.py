@@ -16,6 +16,8 @@ from datetime import date, datetime, timedelta
 from pathlib import Path
 from zoneinfo import ZoneInfo
 
+from hero.signals import depth, fast_signal, is_monthly
+
 ET = ZoneInfo("America/New_York")
 ROOT = Path(__file__).resolve().parent.parent
 FOCUS = ("NVDA", "AMD", "AVGO", "MU", "INTC", "QCOM", "TSM", "ARM", "MRVL", "AMAT", "LRCX", "KLAC", "ADI", "TXN", "ON",
@@ -1410,8 +1412,129 @@ class Peer:
         return (day, picks)
 
 
+def bid_ask(run, sym: str) -> tuple[float, float]:
+    """An option's (bid, ask), read once a cycle (the same cache entry as ask_of)."""
+    q = cached(run, ("quote", sym), lambda: run.c.option_snapshots([sym]).get(sym) or {}) or {}
+    lq = q.get("latestQuote") or {}
+    return float(lq.get("bp") or 0), float(lq.get("ap") or 0)
+
+
+class Ladder:
+    """The ladder ledger (owner, 10-28: 「我想从低做到高」; docs/questions/2026-10-28-ladder-and-opportunities.md task 3;
+    hero/research_ladder.py, research/2026-10-28-ladder.md). One ledger that changes play with its balance -- the cash
+    plus what its open tickets cost -- each day at 15:50; a ticket leaves by the play that bought it:
+
+    - under `steps[0]` ($2,000): the first of `unds` (SMH, QQQ, IWM, SPY) at its first close `level` (8%) under its
+      20-session high (hero.signals.depth, 21 closes with today's price) -> the nearest monthly expiry 75-130 days out,
+      the at-the-money call (first strike at or above the price) bought and the call $5 above it sold, booked at the
+      spread's mid + 5% (the studies' cost, never above the natural price); sold once the two legs' mids are `spread_take`
+      ($4) apart, else valued at its intrinsic value (at most $5) on the expiry. All in.
+    - to `steps[1]` ($10,000): SMH's third down close (hero.signals.fast_signal, as Streak) -> the call at the money on
+      the nearest expiry 20-45 days out, 2x take, else the 20th session. All in.
+    - from $10,000, three bags of the balance (docs/quick-start-10k-2026-10-27.md): A, half, the depth signal's monthly
+      at-the-money call held 63 sessions, staking a quarter of the balance; B, a quarter, the spread, all of it; C, a
+      quarter, the fast line, staking an eighth. A bag's stake that buys no contract buys one when the bag covers it.
+
+    Plan only (hero.sleeves values the spread from both legs' quotes): the live engine sends no two-leg orders, so a
+    live spec gets nothing from this rule. 2024-02 to 2026-10 replayed from $500: 24.5 months to $2,000, then one fast
+    trade to $6,141; shuffled, a $500 round reached $10,000 inside the window 16% of the time (always doing the spread:
+    20%), a $2,000 one 49%."""
+
+    UNDS = ("SMH", "QQQ", "IWM", "SPY")
+    BAGS = {"atm63": (0.25, 0.5), "spread": (0.25, 0.25), "fast": (0.125, 0.25)}   # (stake, bag) shares of the balance
+
+    def depth_legs(self, run, und: str, spot: float) -> tuple[str, dict, dict | None] | None:
+        """The nearest monthly expiry 75-130 days out, its at-the-money call and the call $5 above."""
+        gte, lte = (run.today + timedelta(days=75)).isoformat(), (run.today + timedelta(days=130)).isoformat()
+        cs = contracts(run, und, gte, lte, spot * 0.995, spot * 1.12, "call")
+        listed = {c["expiration_date"] for c in cs}
+        exps = sorted(e for e in listed if is_monthly(e, listed))
+        if not exps:
+            return None
+        ks = sorted((c for c in cs if c["expiration_date"] == exps[0]), key=lambda c: float(c["strike_price"]))
+        atm = next((c for c in ks if float(c["strike_price"]) >= spot - 1e-9), None)
+        if not atm:
+            return None
+        k1 = float(atm["strike_price"])
+        return exps[0], atm, next((c for c in ks if abs(float(c["strike_price"]) - k1 - 5) < 1e-6), None)
+
+    def entries(self, run, spec, s):
+        day = run.today.isoformat()
+        if not spec.get("plan_only") or day in s["slots"] or not (spec.get("entry", "15:45") <= run.hhmm < "15:58"):
+            return None
+        lo, hi = spec.get("steps", (2000, 10000))
+        eq = s["cash"] + sum(float(t.get("paid") or 0) for t in s["open"])
+        ph = 1 if eq < lo else 2 if eq < hi else 3
+        plays = {1: ("spread",), 2: ("fast",), 3: ("atm63", "spread", "fast")}[ph]
+        held = {(t.get("line"), t.get("und")) for t in s["open"]}
+        unds = list(spec.get("unds", self.UNDS))
+        hist = history(run, sorted(set(unds) | {"SMH"}), days=60)
+        snap = snaps(run, sorted(set(unds) | {"SMH"}))
+        level = spec.get("level", 0.08)
+        tag = f"阶梯阶段{'一二三'[ph - 1]}（账本 ${eq:,.0f}）"
+        picks = []
+
+        def sized(pk: dict, line: str) -> dict:
+            if ph < 3:
+                pk.update(each=round(s["cash"], 2), cap=round(s["cash"], 2))
+            else:
+                stake, bag = self.BAGS[line]
+                pk.update(each=round(stake * eq, 2), cap=round(bag * eq, 2))
+            pk.update(line=line, phase=ph)
+            return pk
+
+        for und in unds if {"atm63", "spread"} & set(plays) else []:
+            cs = [c for c, _ in hist.get(und) or []]
+            spot = spot_open(snap.get(und) or {})[0]
+            if not spot or len(cs) < 21:
+                continue
+            d = depth(cs, spot, level)
+            if not d["first"]:
+                continue
+            legs = self.depth_legs(run, und, spot)
+            if not legs:
+                continue
+            exp, atm, short = legs
+            k1 = float(atm["strike_price"])
+            head = f"{tag}：{und} 第一次收在 20 日高点下 {level:.0%}（高点 {d['hi']:,.2f} → 现价 {spot:,.2f}，{d['dd']:+.1%}）"
+            if "atm63" in plays and ("atm63", und) not in held:
+                ab, aa = bid_ask(run, atm["symbol"])
+                if aa > 0:
+                    out, at = held_out(run, exp, spec.get("hold", 63))
+                    picks.append(sized({"sym": atm["symbol"], "asset": "option", "und": und, "ask": aa, "expiry": exp, "exit_day": out,
+                                        "exit_at": at, "trail": False,
+                                        "why": f"{head}；A 袋：买 {exp} 到期平值看涨 {k1:g}（买价 ${ab:.2f} / 卖价 ${aa:.2f}），拿到 {out[5:]} {at}，不止盈"}, "atm63"))
+            if "spread" in plays and ("spread", und) not in held and short:
+                (lb, la), (sb, sa) = bid_ask(run, atm["symbol"]), bid_ask(run, short["symbol"])
+                mid, natural = (lb + la) / 2 - (sb + sa) / 2, la - sb
+                if la > 0 and mid > 0:
+                    cost = round(min(mid * 1.05, natural), 2)
+                    take = spec.get("spread_take", 4.0)
+                    picks.append(sized({"sym": atm["symbol"], "asset": "option", "und": und, "ask": cost, "expiry": exp, "exit_at": "15:30",
+                                        "expiry_out": "15:30", "trail": False, "legs": [atm["symbol"], short["symbol"]], "k1": k1, "width": 5.0,
+                                        "take_at": take,
+                                        "why": f"{head}；{'B 袋：' if ph == 3 else ''}$5 牛市看涨价差 买 {k1:g} / 卖 {k1 + 5:g}（{exp} 到期），"
+                                               f"两腿中间价 ${mid:.2f}、自然价 ${natural:.2f}，按中间价加 5% 记 ${cost:.2f}；"
+                                               f"两腿中间价差到 ${take:g} 卖，否则到期按内在价值（最多 $5）"}, "spread"))
+                    if ph == 1:
+                        break   # all in: one spread
+        cs, spot = [c for c, _ in hist.get("SMH") or []], spot_open(snap.get("SMH") or {})[0]
+        if "fast" in plays and ("fast", "SMH") not in held and spot and fast_signal(cs, spot):
+            dlo, dhi = spec.get("fast_dte", (20, 45))
+            got = option_pick(run, "SMH", "C", spot, 0.0, (run.today + timedelta(days=dlo)).isoformat(), (run.today + timedelta(days=dhi)).isoformat())
+            if got:
+                c, ask = got
+                exp, k = c["expiration_date"], float(c["strike_price"])
+                out, at = held_out(run, exp, spec.get("fast_hold", 20))
+                picks.append(sized({"sym": c["symbol"], "asset": "option", "und": "SMH", "ask": ask, "expiry": exp, "exit_day": out,
+                                    "exit_at": at, "trail": False, "take": 2,
+                                    "why": f"{tag}：SMH 连跌第 3 天（{cs[-3]:.2f} → {cs[-2]:.2f} → {cs[-1]:.2f} → 现价 {spot:.2f}）；"
+                                           f"{'C 袋：' if ph == 3 else ''}买看涨 {k:g}（{exp} 到期），2 倍止盈，否则 {out[5:]} {at} 卖"}, "fast"))
+        return (day, picks)
+
+
 RULES = {"zdte": ZeroDTE(), "weekly": Weekly(), "net": Net(), "gap": Gap(), "flush": Flush(), "earnings": EarningsLotto(),
          "letf": LETF(), "relay": Relay(), "opengap": OpenGap(), "sniper": Sniper(), "oneshot": OneShot(),
          "overnight": Overnight(), "pead": Pead(), "vixspike": VixSpike(), "breakgap": BreakGap(),
          "hikerally": HikeRally(), "dipweek": DipWeek(), "fadelotto": FadeLotto(), "peer": Peer(), "pullback": Pullback(),
-         "bottom": Streak(), "bounce": Bounce()}
+         "bottom": Streak(), "bounce": Bounce(), "ladder": Ladder()}

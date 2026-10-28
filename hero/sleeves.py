@@ -479,6 +479,8 @@ class Runner:
                 continue
             each = spec.get("fraction", self.p["fraction"]) * s["cash"] / len(picks)
             for pk in picks:
+                if pk.get("each") is not None:   # a rule that sizes its own picks (hero.sleeve_rules.Ladder: a bag's stake)
+                    each = min(float(pk["each"]), s["cash"])
                 if pk["asset"] == "stock":
                     notional = math.floor(each * float(pk.get("scale", 1)) * 100) / 100   # scale: a 3x fund takes a third
                     ask = float(pk.get("ask") or 0)
@@ -492,7 +494,8 @@ class Runner:
                     size = f"一半 ${each:,.2f} 买不起一股，押上账本买 1 股" if allin else f"买 ${each:,.2f}"
                 else:
                     limit = tick(pk["ask"] + self.p["buy_pad"])
-                    qty, allin = units(each, s["cash"], limit * 100)
+                    left = min(s["cash"], float(pk["cap"])) if pk.get("cap") is not None else s["cash"]   # Ladder: the bag
+                    qty, allin = units(each, left, limit * 100)
                     if qty < 1 and not spec.get("qty"):
                         each, _ = self.restart_dead(spec["id"], each, s["cash"], limit * 100, dry_run=True)
                         qty, allin = units(each, s["cash"], limit * 100)
@@ -517,6 +520,9 @@ class Runner:
                       "trail": pk.get("trail", False), "expiry_out": pk.get("expiry_out")})
         else:
             t.update({"exit_at": pk.get("exit_at") or "15:50", **({"exit_day": pk["exit_day"]} if pk.get("exit_day") else {})})
+        for k in ("line", "phase", "legs", "k1", "width", "take_at"):   # hero.sleeve_rules.Ladder: its play, a spread's legs
+            if pk.get(k) is not None:
+                t[k] = pk[k]
         runner = None
         if option and pk.get("take") and pk.get("half") and qty >= 2:   # the same split as a live fill
             runner = {**t, "tid": t["tid"] + "r", "qty": qty - qty // 2, "trail": True}
@@ -540,8 +546,11 @@ class Runner:
         tickets = [(sid, t) for sid, s in self.book.d["sleeves"].items() for t in list(s["open"])]
         if not tickets:
             return
-        quotes = self.bids(sorted({t["sym"] for _, t in tickets}))
+        quotes = self.bids(sorted({x for _, t in tickets for x in (t.get("legs") or [t["sym"]])}))
         for sid, t in tickets:
+            if t.get("legs"):   # a two-leg spread (hero.sleeve_rules.Ladder)
+                self.plan_spread(sid, t, quotes)
+                continue
             if t["sym"] not in quotes:   # no quote this cycle: wait (a missing quote is not a $0 sale), unless it has expired
                 if t.get("expiry") and t["expiry"] < self.today.isoformat():
                     self.plan_closed(sid, t, 0.0, "到期作废")
@@ -556,6 +565,30 @@ class Runner:
                 why = "到期日最后一轮（15:50 以后没有交易轮）卖出"   # one shot's 15:55 never comes: no cycle runs after 15:50
             if why:
                 self.plan_closed(sid, t, bid, why)
+
+    def plan_spread(self, sid: str, t: dict, quotes: dict[str, tuple[float, float]]) -> None:
+        """A call spread in the plan book (the task's two-leg valuation): worth the long leg's mid less the short leg's,
+        between 0 and its width; sold once that reaches its take; on its expiry (from 15:30, or the first cycle after)
+        at its intrinsic value on the underlying's price, at most the width."""
+        width, day = float(t.get("width") or 5.0), self.today.isoformat()
+        if t.get("expiry") and (day > t["expiry"] or (day == t["expiry"] and self.hhmm >= (t.get("expiry_out") or "15:30"))):
+            try:   # a failed quote waits for the next cycle; it must not stop the other plan ledgers
+                snap = (self.c.stock_snapshots([t["und"]]) or {}).get(t["und"]) or {}
+            except Exception:
+                snap = {}
+            spot = float((snap.get("latestTrade") or {}).get("p") or 0)
+            if spot > 0:
+                v = min(max(spot - float(t["k1"]), 0.0), width)
+                self.plan_closed(sid, t, round(v, 4), f"到期按内在价值：{t['und']} ${spot:,.2f}、买的行权价 {float(t['k1']):g}，最多 ${width:g}")
+            return
+        qs = [quotes.get(x) for x in t["legs"]]
+        if any(q is None or q[1] <= 0 for q in qs):   # a missing quote is not a $0 sale
+            return
+        v = min(max((qs[0][0] + qs[0][1]) / 2 - (qs[1][0] + qs[1][1]) / 2, 0.0), width)
+        t["best_bid"] = round(max(t.get("best_bid", 0.0), v), 4)
+        t["mark"] = round(v, 4)
+        if t.get("take_at") and v >= float(t["take_at"]):
+            self.plan_closed(sid, t, round(v, 4), f"价差两腿中间价相减到 ${v:.2f}（≥ ${float(t['take_at']):g}）")
 
     def plan_closed(self, sid: str, t: dict, price: float, how: str) -> None:
         done = self.book.close_ticket(sid, t, round(price, 4), how, f"{self.today.isoformat()} {self.hhmm}")

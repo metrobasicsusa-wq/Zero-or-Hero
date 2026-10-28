@@ -29,11 +29,11 @@ from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 from zoneinfo import ZoneInfo
 
+from hero.signals import LEVEL, WINDOW, depth, down_run, fast_signal, is_monthly   # noqa: F401  (shared: hero.opportunities, sleeve_rules.Ladder)
+
 ROOT = Path(__file__).resolve().parent.parent
 ET = ZoneInfo("America/New_York")
 ETFS = ("SMH", "QQQ", "IWM", "SPY")
-LEVEL = 0.08
-WINDOW = 21            # closes in the high's window, today's price included (the backtests: closes[i - 20:i + 1])
 FAST_DTE, DEPTH_DTE = (20, 45), (75, 130)
 FAST_HOLD, ATM_HOLD, OTM5_HOLD = 20, 63, 42
 ACCOUNTS = (500, 1000, 2000, 10000)
@@ -63,30 +63,7 @@ def sessions_after(d: date, n: int) -> date:
     return d
 
 
-# ---------- signals (closes: completed daily closes before the day, oldest first; spot: the price now) ----------
-def down_run(cs: list[float]) -> int:
-    """How many completed closes in a row fell under the one before (ending yesterday)."""
-    k = 0
-    while k + 1 < len(cs) and cs[-1 - k] < cs[-2 - k]:
-        k += 1
-    return k
-
-
-def fast_signal(cs: list[float], spot: float) -> bool:
-    """Streak's third down day: the last two completed closes each fell, the one before them did not, now under yesterday."""
-    return len(cs) >= 4 and spot < cs[-1] and cs[-1] < cs[-2] < cs[-3] and cs[-3] >= cs[-4]
-
-
-def depth(cs: list[float], spot: float, level: float = LEVEL) -> dict:
-    """Today's and yesterday's distance under the 20-session high (21 closes), whether today is the first break, and
-    the price at which today would close at the line."""
-    hi = max(cs[-(WINDOW - 1):] + [spot])
-    hi_prev = max(cs[-WINDOW:])
-    dd, dd_prev = spot / hi - 1, cs[-1] / hi_prev - 1
-    return {"hi": hi, "dd": dd, "dd_prev": dd_prev, "first": dd <= -level and dd_prev > -level, "armed": dd_prev > -level,
-            "trigger": round(hi * (1 - level), 2)}
-
-
+# ---------- signals: hero.signals (closes: completed daily closes before the day, oldest first; spot: the price now) ----------
 def nearest(closes: dict[str, list[float]], spots: dict[str, float]) -> list[str]:
     """Plain lines: how far each rule is from firing at today's close."""
     out = []
@@ -129,15 +106,6 @@ def parse_chain(options: list[dict]) -> list[dict]:
         out.append({"symbol": sym, "expiry": f"20{tail[:2]}-{tail[2:4]}-{tail[4:6]}", "strike": int(tail[7:]) / 1000,
                     "bid": float(o.get("bid") or 0), "ask": float(o.get("ask") or 0)})
     return out
-
-
-def is_monthly(exp: str, listed: set[str]) -> bool:
-    """The third Friday, or the Thursday before it when that Friday is not listed (a holiday)."""
-    d = date.fromisoformat(exp)
-    if d.weekday() == 4 and 15 <= d.day <= 21:
-        return True
-    fri = d + timedelta(days=1)
-    return d.weekday() == 3 and 15 <= fri.day <= 21 and fri.isoformat() not in listed
 
 
 def fast_contract(chain: list[dict], spot: float, day: date) -> dict | None:
