@@ -3812,6 +3812,29 @@ class Sleeves(unittest.TestCase):
         r2.plan()
         self.assertEqual((len(asked), r2.book.s("peerc-500")["cash"]), (1, s["cash"]))       # once only
 
+    # ---- the 10-28 review of the audit fixes ----
+    def test_review_a_multi_name_ledger_short_of_its_shared_size_restarts_when_a_fresh_round_could_buy(self):
+        # review 10-28: after audit #1, $400 left with n = 3 (shared $200) and a $240 contract neither bought nor restarted --
+        # a new dead zone; the owner's 10-23 rule is that a ledger stuck like that is a zero on the spot
+        from datetime import datetime
+        from hero import sleeves
+        spec = {"id": "m-500", "kind": "multi", "start": 500, "n": 3, "fraction": 0.5}
+        for call, path in (("run", "live.json"), ("plan", "plan.json")):
+            book = sleeves.Book(self.root / path, [spec])
+            book.s("m-500").update(cash=400.0, closed=[{"tid": "a1", "qty": 1, "paid": 100.0, "proceeds": 0.0}], round_from=0)
+            b = SleeveBroker(lambda s: (2.30, 2.39))                                          # $2.40 limit: $240 a contract
+            getattr(sleeves.Runner(b, Journal(self.root), self.cfg, [spec], book, {"multi": self.multi_rule([2.39])},
+                                   datetime(2026, 10, 8, 10, 0), date(2026, 10, 8), sleep=lambda s: None), call)()
+            s = book.s("m-500")
+            self.assertEqual((s["round"], s["zeros"], [t["qty"] for t in s["open"]]), (2, 1, [1]), call)   # a zero, then one from $500
+            dear = sleeves.Book(self.root / f"dear-{path}", [spec])
+            dear.s("m-500").update(cash=400.0, closed=[{"tid": "a1", "qty": 1, "paid": 100.0, "proceeds": 0.0}])
+            b = SleeveBroker(lambda s: (2.50, 2.59))                                          # $260: more than a fresh round's $250
+            getattr(sleeves.Runner(b, Journal(self.root), self.cfg, [spec], dear, {"multi": self.multi_rule([2.59])},
+                                   datetime(2026, 10, 8, 10, 0), date(2026, 10, 8), sleep=lambda s: None), call)()
+            self.assertEqual((dear.s("m-500")["round"], dear.s("m-500")["open"]), (1, []), call)   # restarting would not help
+        self.assertIsNone(sleeves.Book(self.root / "x.json", [spec]).dead_zone_restart("m-500", 240.0, share=0.5))   # $500 fresh: fits
+
 
 class EarningsShares(unittest.TestCase):
     """Owner, 10-19: earnings only in shares or 2x funds; no option held through a report."""

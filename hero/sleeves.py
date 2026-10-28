@@ -163,18 +163,22 @@ class Book:
             return msg
         return None
 
-    def dead_zone_restart(self, sid: str, need: float, when: str | None = None) -> str | None:
+    def dead_zone_restart(self, sid: str, need: float, when: str | None = None, share: float | None = None) -> str | None:
         """Owner, 10-23 (「改」): a flat ledger that cannot buy one unit with everything it has left is a zero now, not
         later -- between the zero line and one contract it would sit idle and give no sample (QQQ 0DTE: $127 left,
-        $175 a contract, since 10-14). Counts the zero, restarts at the start; the caller then buys from the new round."""
+        $175 a contract, since 10-14). Counts the zero, restarts at the start; the caller then buys from the new round.
+        `share` (review 10-28): a sleeve spread over names may only bet that share of its cash on its fallback (audit
+        10-26 #1), so its dead zone is "cannot buy one at share x cash", and the restart only helps when share x start can."""
         s = self.s(sid)
-        if s["open"] or need <= s["cash"] or need > s["start"]:   # dearer than a whole fresh ledger: restarting would not help
+        room, fresh = (s["cash"], s["start"]) if share is None else (share * s["cash"], share * s["start"])
+        if s["open"] or need <= room or need > fresh:   # dearer than a fresh round could pay: restarting would not help
             return None
         cash = s["cash"]
         s["zeros"] += 1
         self.d["topups"] = round(self.d["topups"] + s["start"] - cash, 2)
-        msg = (f"{sid} 第 {s['round']} 轮剩 ${cash:,.2f}，连一张 ${need:,.2f} 都买不起，算归零，"
-               f"从 ${s['start']:,.0f} 重开第 {s['round'] + 1} 轮")
+        msg = (f"{sid} 第 {s['round']} 轮剩 ${cash:,.2f}，连一张 ${need:,.2f} 都买不起"
+               + (f"（几只合用的只有 ${room:,.2f}）" if share is not None else "")
+               + f"，算归零，从 ${s['start']:,.0f} 重开第 {s['round'] + 1} 轮")
         self.end_round(s, "zero", when)
         s["round"] += 1
         s["cash"] = s["start"]
@@ -644,9 +648,10 @@ class Runner:
                     notional = math.floor(each * float(pk.get("scale", 1)) * 100) / 100   # scale: a 3x fund takes a third
                     ask = float(pk.get("ask") or 0)
                     if pk.get("whole"):
-                        if ask > 0 and units(notional, s["cash"], ask)[0] < 1:
+                        if ask > 0 and units(notional, cap(), ask)[0] < 1:
                             was = s["cash"]
-                            each, _ = self.restart_dead(spec["id"], each, s["cash"], ask, dry_run=True)
+                            each, _ = self.restart_dead(spec["id"], each, s["cash"], ask, dry_run=True,
+                                                        share=fraction if shared is not None else None)
                             if shared is not None and s["cash"] != was:
                                 shared = fraction * s["cash"]
                             notional = math.floor(each * float(pk.get("scale", 1)) * 100) / 100
@@ -660,7 +665,8 @@ class Runner:
                     qty, allin = units(each, cap(), limit * 100)
                     if qty < 1 and not spec.get("qty"):
                         was = s["cash"]
-                        each, _ = self.restart_dead(spec["id"], each, s["cash"], limit * 100, dry_run=True)
+                        each, _ = self.restart_dead(spec["id"], each, s["cash"], limit * 100, dry_run=True,
+                                                    share=fraction if shared is not None else None)
                         if shared is not None and s["cash"] != was:
                             shared = fraction * s["cash"]
                         qty, allin = units(each, cap(), limit * 100)
@@ -797,13 +803,15 @@ class Runner:
                              "改成只记录、不下单" + (f"（{rule['twin']} 照常演算）" if rule.get("twin") else ""))
         return True
 
-    def restart_dead(self, sid: str, each: float, left: float, need: float, dry_run: bool) -> tuple[float, float]:
+    def restart_dead(self, sid: str, each: float, left: float, need: float, dry_run: bool,
+                     share: float | None = None) -> tuple[float, float]:
         """Owner, 10-23: a flat ledger that cannot buy one unit at all starts a new round on the spot (a zero on its record)
-        and this pick is sized from the fresh start. `each` keeps its share of the ledger; `left` is the ledger's cash."""
+        and this pick is sized from the fresh start. `each` keeps its share of the ledger; `left` is the ledger's cash;
+        `share` is a multi-name sleeve's fraction (Book.dead_zone_restart)."""
         s = self.book.s(sid)
         if left != s["cash"]:   # something else of this cycle is already sized from this ledger
             return each, left
-        msg = self.book.dead_zone_restart(sid, need, self.today.isoformat())
+        msg = self.book.dead_zone_restart(sid, need, self.today.isoformat(), share)
         if not msg:
             return each, left
         self.j.event("sleeve_round", dry_run=dry_run, sleeve=sid, why=msg + ("（演算）" if dry_run else ""))
@@ -861,9 +869,9 @@ class Runner:
             if pk["asset"] == "stock":
                 notional = math.floor(min(each * float(pk.get("scale", 1)), room) * 100) / 100
                 ask = float(pk.get("ask") or 0)
-                if pk.get("whole") and ask and int(notional // ask) < 1 and ask > left[sid] and ask <= room:
+                if pk.get("whole") and ask and int(notional // ask) < 1 and ask > cap(sid) and ask <= room:
                     was = left[sid]
-                    each, left[sid] = self.restart_dead(sid, each, left[sid], ask, dry_run=False)
+                    each, left[sid] = self.restart_dead(sid, each, left[sid], ask, dry_run=False, share=frac)
                     if frac is not None and left[sid] != was:
                         shared[sid] = frac * left[sid]
                 if pk.get("whole") and ask and int(notional // ask) < 1 and ask <= min(cap(sid), room):
@@ -881,7 +889,7 @@ class Runner:
             qty, allin = units(each, cap(sid), limit * 100)
             if qty < 1:
                 was = left[sid]
-                each, left[sid] = self.restart_dead(sid, each, left[sid], limit * 100, dry_run=False)
+                each, left[sid] = self.restart_dead(sid, each, left[sid], limit * 100, dry_run=False, share=frac)
                 if frac is not None and left[sid] != was:
                     shared[sid] = frac * left[sid]
                 qty, allin = units(each, cap(sid), limit * 100)
