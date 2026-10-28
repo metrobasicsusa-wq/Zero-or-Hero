@@ -946,6 +946,12 @@ class Runner:
             retry = []
             for o in live:
                 st = self.cancel(o["cid"]) if o in pending else self.order(o["cid"])  # a fill can land during the cancel
+                if st.get("_error"):
+                    # review 10-28: the buy's state is unknown (and the cancel could not run): a second buy could double
+                    # the position, so none is sent; the next cycle's recover() books it from the broker or cancels it
+                    self.j.event("sleeve_skip", dry_run=False, sleeve=o["spec"]["id"], symbol=o["pk"]["sym"],
+                                 why=f"{o['spec']['id']}：{o['pk']['sym']} 的买单状态查不到，不重挂第二次；下一轮从券商找回或撤单")
+                    continue
                 filled = int(float(st.get("filled_qty") or 0))
                 if filled:
                     self.filled(o, filled, float(st.get("filled_avg_price") or o["limit"]))

@@ -3853,6 +3853,27 @@ class Sleeves(unittest.TestCase):
         self.assertEqual((s["rounds"][-1]["end"], s["heroes"], s["zeros"]), ("hero", 1, 0))
         self.assertIn("成功", [e for e in log if e["kind"] == "sleeve_round"][-1]["why"])
 
+    def test_review_c_an_unknown_buy_is_not_requoted_and_is_recovered_next_cycle(self):
+        # review 10-28: a failed lookup of the first buy left it live (the cancel never ran) and a second buy went out --
+        # if both filled, the broker held twice what the ledger knew, and recover() skipped the known ticket id
+        b = SleeveBroker(lambda s: (0.08, 0.10), fill=lambda o: False)                       # the buy rests unfilled
+        real = b.order_by_client_id
+
+        class Down(Exception):
+            status = 503
+        b.order_by_client_id = lambda c: (_ for _ in ()).throw(Down("503")) if c.endswith("-b1") else real(c)
+        book, log = self.cycle(b, 10, 0, self.specs[:1])
+        buys = [o for o in b.orders.values() if o["side"] == "buy"]
+        self.assertEqual(len(buys), 1)                                                        # no second buy on an unknown state
+        self.assertEqual(book.s("spy0dte-500")["open"], [])
+        self.assertTrue(any(e["kind"] == "sleeve_skip" and "查不到" in e["why"] for e in log))
+        b.order_by_client_id = real
+        b._fill(buys[0], 0.11)                                                                # it filled at the broker after all
+        book, log = self.cycle(b, 10, 10, self.specs[:1])
+        s = book.s("spy0dte-500")
+        self.assertEqual([t["qty"] for t in s["open"]], [12])                                 # booked from the broker, once
+        self.assertEqual(len([o for o in b.orders.values() if o["side"] == "buy"]), 1)
+
 
 class EarningsShares(unittest.TestCase):
     """Owner, 10-19: earnings only in shares or 2x funds; no option held through a report."""
