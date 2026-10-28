@@ -52,9 +52,20 @@ def trades(rows: list[dict], legs: tuple[str, ...], tag: str, exit_: str, unds: 
     return sorted(out, key=lambda t: (t["day"], order.get(t["und"], 99)))
 
 
-def replay(trs: list[dict], start: float = START, f: float = 1.0) -> dict:
+def units(f: float, cash: float, cost: float, fallback: bool) -> tuple[int, bool]:
+    """Whole units for one signal: as many as f x cash buys; with `fallback` (the engine's sizing, hero/sleeves.py
+    enter(): 「一半买不起就押上账本 1 张」), one with all the cash when that buys none but the cash covers one -- the next
+    signal is sized from f again. Returns (units, all_in)."""
+    n = int(f * cash // cost)
+    if n < 1 and fallback and cost <= cash:
+        return 1, True
+    return n, False
+
+
+def replay(trs: list[dict], start: float = START, f: float = 1.0, fallback: bool = False) -> dict:
     """The ledger: every signal in order, whole units only, one bet per underlying at a time, cash locked until the
-    trade's exit day, then back with its return."""
+    trade's exit day, then back with its return. `fallback`: the engine's sizing (units()). `first_10k`: the first
+    exit day the ledger (cash plus what is locked, at cost) stood at $10,000 or more."""
     cash, open_, taken, skipped, path, big = start, [], [], 0, [], []
     for t in trs:
         open_.sort(key=lambda o: o["back"])
@@ -64,7 +75,7 @@ def replay(trs: list[dict], start: float = START, f: float = 1.0) -> dict:
             path.append((o["back"], cash + sum(x["paid"] for x in open_)))
         if any(o["und"] == t["und"] for o in open_):
             continue
-        n = int(f * cash // t["cost"])
+        n, all_in = units(f, cash, t["cost"], fallback)
         if n < 1:
             skipped += 1
             continue
@@ -72,11 +83,12 @@ def replay(trs: list[dict], start: float = START, f: float = 1.0) -> dict:
         cash -= paid
         proceeds = round(paid * (1 + t["ret"]), 2)
         open_.append({"und": t["und"], "back": t["back"], "paid": paid, "proceeds": proceeds})
-        taken.append({**t, "n": n, "paid": round(paid, 2), "pnl": round(proceeds - paid, 2)})
+        taken.append({**t, "n": n, "all_in": all_in, "paid": round(paid, 2), "pnl": round(proceeds - paid, 2)})
         big.append((proceeds - paid, t["und"], t["day"]))
     for o in sorted(open_, key=lambda o: o["back"]):
         cash += o["proceeds"]
         path.append((o["back"], cash))
+    first_10k = next((d for d, eq in sorted(path) if eq >= 10_000), None)
     peak, dd, hi = start, 0.0, start
     for _, eq in path:
         hi = max(hi, eq)
@@ -89,7 +101,23 @@ def replay(trs: list[dict], start: float = START, f: float = 1.0) -> dict:
     worst = min(big) if big else None
     return {"final": round(cash, 2), "peak": round(peak, 2), "max_dd": round(dd, 4), "taken": len(taken), "skipped": skipped,
             "years": {y: round(v, 2) for y, v in sorted(years.items())}, "best": best and (round(best[0], 2), best[1], best[2]),
-            "worst": worst and (round(worst[0], 2), worst[1], worst[2]), "trades": taken}
+            "worst": worst and (round(worst[0], 2), worst[1], worst[2]), "first_10k": first_10k, "trades": taken}
+
+
+def at_today(trs: list[dict], then: dict[tuple[str, str], float], now: dict[str, float]) -> tuple[list[dict], int]:
+    """The same trades with each contract's cost moved to today's dollars: cost x (the underlying today / the
+    underlying on the signal day). The return per $1 stays the study's; only what one contract costs changes (an
+    option's price scales with its underlying's at the same moneyness and days left). Trades without both prices are
+    dropped and counted. Returns (trades, missing)."""
+    out, missing = [], 0
+    for t in trs:
+        p0, p1 = then.get((t["und"], t["day"])), now.get(t["und"])
+        if not p0 or not p1:
+            missing += 1
+            continue
+        k = p1 / p0
+        out.append({**t, "cost": round(t["cost"] * k, 2), "scale": round(k, 4)})
+    return out, missing
 
 
 def price_replay(events: list[dict], und: str, tag: str, key: str, start: float = START, hold_days: int = 91) -> dict:
@@ -123,10 +151,12 @@ def slots(trs: list[dict]) -> int:
     return n
 
 
-def resample(trs: list[dict], start: float = START, f: float = 1.0, rounds: int | None = None, sims: int = 2000, seed: int = 7) -> dict:
+def resample(trs: list[dict], start: float = START, f: float = 1.0, rounds: int | None = None, sims: int = 2000, seed: int = 7,
+             fallback: bool = False) -> dict:
     """The same ledger with the order removed: as many slots as the strategy really had one after another, each slot
     a different trade drawn from the strategy's own pool (without replacement), whole units only, a slot the ledger
-    cannot afford is a slot waited out. The spread of finals says how much of the dated replay is the order."""
+    cannot afford is a slot waited out. The spread of finals says how much of the dated replay is the order.
+    `fallback`: the engine's sizing, as replay()."""
     import random
     rng = random.Random(seed)
     rounds = rounds or slots(trs)
@@ -134,7 +164,7 @@ def resample(trs: list[dict], start: float = START, f: float = 1.0, rounds: int 
     for _ in range(sims):
         cash = start
         for t in rng.sample(trs, min(rounds, len(trs))):
-            n = int(f * cash // t["cost"])
+            n, _ = units(f, cash, t["cost"], fallback)
             if n < 1:
                 continue
             cash += n * t["cost"] * t["ret"]
@@ -159,7 +189,11 @@ def run() -> dict:
         ("SMH 跌 8% · 裸买价外 5% 拿 63 天", b2["rows"], ("otm5",), "dd8", "d63", ("SMH",)),
         ("SMH 跌 8% · 裸买价外 10% 拿 63 天", b2["rows"], ("otm10",), "dd8", "d63", ("SMH",)),
         ("SMH 跌 8% · 裸买平值拿 42 天", b2["rows"], ("atm",), "dd8", "d42", ("SMH",)),
+        ("SMH 跌 8% · 裸买价外 5% 拿 42 天", b2["rows"], ("otm5",), "dd8", "d42", ("SMH",)),   # docs/quick-to-10k-2026-10-28-single-leg.md
         ("四只 ETF 跌 8% · 裸买平值拿 63 天", b2["rows"], ("atm",), "dd8", "d63", ETFS),
+        ("四只 ETF 跌 8% · 裸买价外 5% 拿 42 天", b2["rows"], ("otm5",), "dd8", "d42", ETFS),
+        ("四只 ETF 跌 8% · 裸买价外 5% 拿 63 天", b2["rows"], ("otm5",), "dd8", "d63", ETFS),
+        ("四只 ETF 跌 8% · 裸买价外 10% 拿 63 天", b2["rows"], ("otm10",), "dd8", "d63", ETFS),
         ("四只 ETF 连跌第 3 天 · 裸买平值拿 63 天", b2["rows"], ("atm",), "day3", "d63", ETFS),
         ("对照：ETF 每第 10 天随便买 · 平值拿 63 天", b2["rows"], ("atm",), "every10", "d63", ETFS),
         ("14 只半导体股 跌 8% · 裸买平值拿 63 天", bs["rows"], ("atm",), "dd8", "d63", STOCKS),
@@ -189,11 +223,15 @@ def run() -> dict:
         if not trs:
             continue
         full, half = replay(trs, START, 1.0), replay(trs, START, 0.5)
+        drop = lambda r: {k: v for k, v in r.items() if k != "trades"}
         out.append({"name": name, "n_signals": len(trs), "one_costs": round(statistics.median(t["cost"] for t in trs), 0),
-                    "full": {k: v for k, v in full.items() if k != "trades"}, "half": {k: v for k, v in half.items() if k != "trades"},
-                    "starts": {str(int(s0)): {"full": {k: v for k, v in replay(trs, s0, 1.0).items() if k != "trades"},
-                                              "half": {k: v for k, v in replay(trs, s0, 0.5).items() if k != "trades"},
-                                              "random_full": resample(trs, s0, 1.0), "random_half": resample(trs, s0, 0.5)} for s0 in STARTS},
+                    "full": drop(full), "half": drop(half),
+                    "starts": {str(int(s0)): {"full": drop(replay(trs, s0, 1.0)), "half": drop(replay(trs, s0, 0.5)),
+                                              # the engine's sizing: half, one contract with all the cash when half buys none
+                                              "engine": drop(replay(trs, s0, 0.5, fallback=True)),
+                                              "random_full": resample(trs, s0, 1.0), "random_half": resample(trs, s0, 0.5),
+                                              **({"random_engine": resample(trs, s0, 0.5, fallback=True)} if s0 in (1000.0, 2000.0) else {})}
+                               for s0 in STARTS},
                     "random_full": resample(trs, START, 1.0), "random_half": resample(trs, START, 0.5),
                     "full_trades": full["trades"]})
     px = {"SMH 跌 8% → SOXL 正股拿 63 天（2017 起）": price_replay(b2["events"], "SMH", "dd8", "l63", 1000.0),
@@ -222,6 +260,19 @@ def markdown(rep: dict) -> str:
         lines.append(f"| {o['name']} | {o['n_signals']} | {m(o['one_costs'])} | **{m(a['full']['final'])}** | {a['full']['taken']} / {a['full']['skipped']} | {a['full']['max_dd']:+.0%} | "
                      f"{m(a['half']['final'])} | {a['half']['taken']} | **{m(f1['final'])}** | {f1['taken']} / {f1['skipped']} | {f1['max_dd']:+.0%} | {m(b['half']['final'])} | "
                      f"{m(o['starts']['2000']['full']['final'])} | {m(o['starts']['5000']['full']['final'])} | {m(o['starts']['10000']['full']['final'])} | {m(o['starts']['10000']['half']['final'])} | {best} |")
+    lines += ["", "## 引擎口径：押一半，一半买不起一张就用全部现金买一张，下一笔回到一半（hero/sleeves.py enter()）", "",
+              "上面的「押一半」买不起就跳过；实盘引擎不跳过，而是全押一张。docs/questions/2026-10-28-single-leg.md 要的就是这一版。"
+              "「到 $10,000」是账本（现金加锁住的成本）第一次在出场日到 $10,000 的日子；打乱重抽同样用引擎口径。", "",
+              "| 策略 | 一张 / 一组 | $500 | $1,000（做了 / 买不起，回撤，到 $10,000） | $2,000（做了 / 买不起，回撤，到 $10,000） | $5,000 | $10,000 | "
+              "打乱：$1,000 中位数 / 到 $10,000 | 打乱：$2,000 中位数 / 到 $10,000 |",
+              "|---|---|---|---|---|---|---|---|---|"]
+    for o in rep["options"]:
+        st = o["starts"]
+        e = {k: st[k]["engine"] for k in st}
+        cell = lambda r: f"**{m(r['final'])}**（{r['taken']} / {r['skipped']}，{r['max_dd']:+.0%}，{r['first_10k'] or '—'}）"
+        rnd = lambda k: (f"{m(st[k]['random_engine']['median'])} / {st[k]['random_engine']['p_10k']:.0%}" if "random_engine" in st[k] else "—")
+        lines.append(f"| {o['name']} | {m(o['one_costs'])} | {m(e['500']['final'])} | {cell(e['1000'])} | {cell(e['2000'])} | "
+                     f"{m(e['5000']['final'])} | {m(e['10000']['final'])} | {rnd('1000')} | {rnd('2000')} |")
     for s0 in ("500", "1000", "10000"):
         lines += ["", f"## ${int(s0):,} 开局，把顺序打乱：这条策略真能一笔接一笔做几次就抽几格，每格从它自己的成交里抽一笔不重复的，抽 2,000 次", "",
                   "按日期重放只有一条路，最终数字一半靠前两三笔的运气；这里给的是分布：中位数、最差一成、最好一成、归零（低于 $100）和到 $5,000 / $10,000 的概率。"

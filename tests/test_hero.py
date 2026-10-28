@@ -6311,3 +6311,35 @@ class ResearchBottomLedger(unittest.TestCase):
         p = bl.price_replay(evs, "SMH", "dd8", "l63", 1000.0)
         self.assertEqual((p["taken"], p["final"]), (2, 750.0))                                              # March's signal fell inside February's hold
         self.assertEqual(p["max_dd"], -0.5)
+
+    # docs/questions/2026-10-28-single-leg.md: the engine's sizing (hero/sleeves.py enter())
+    def test_engine_replay_buys_one_with_all_cash_when_the_fraction_cannot_and_returns_to_the_fraction(self):
+        from hero import research_bottom_ledger as bl
+        row = lambda day, und, entry, ret: {"day": day, "und": und, "tags": ["dd8"], "leg": "otm5", "entry": entry,
+                                            "expiry": "2024-12-20", "res": {"d42": ret}}
+        rows = [row("2024-03-01", "SMH", 6.0, 1.0),     # $630 a contract: half of $1,000 cannot, all of it can -> one, all in
+                row("2024-03-04", "QQQ", 1.0, 0.0),     # $105: half of the $370 left buys one, the normal way
+                row("2024-06-03", "IWM", 1.0, 0.0)]     # after both exits ($1,630): back to half -> 7 contracts
+        trs = bl.trades(rows, ("otm5",), "dd8", "d42")
+        self.assertEqual([t["back"] for t in trs], ["2024-05-01", "2024-05-04", "2024-08-03"])            # 61 calendar days
+        e = bl.replay(trs, 1000.0, 0.5, fallback=True)
+        self.assertEqual(([t["n"] for t in e["trades"]], [t["all_in"] for t in e["trades"]]), ([1, 1, 7], [True, False, False]))
+        self.assertEqual((e["taken"], e["skipped"], e["final"]), (3, 0, 1630.0))
+        plain = bl.replay(trs, 1000.0, 0.5)                                                                 # the old way: SMH is skipped
+        self.assertEqual((plain["taken"], plain["skipped"], plain["final"]), (2, 1, 1000.0))
+        self.assertIsNone(e["first_10k"])
+        big = bl.replay(bl.trades([row("2024-03-01", "SMH", 6.0, 20.0)], ("otm5",), "dd8", "d42"), 1000.0, 0.5, fallback=True)
+        self.assertEqual((big["final"], big["first_10k"]), (13_600.0, "2024-05-01"))                         # 370 + 630 x 21
+        self.assertEqual(bl.replay(trs, 500.0, 0.5, fallback=True)["trades"][0]["und"], "QQQ")              # $630 > all of $500: skipped
+        self.assertEqual(bl.resample(trs, 1000.0, 0.5, sims=200, fallback=True)["median"], 1630.0)          # most draws hold SMH, bought all in
+        self.assertEqual(bl.resample(trs, 1000.0, 0.5, sims=200)["median"], 1000.0)                         # the old way never affords it
+
+    def test_costs_are_scaled_to_todays_underlying_price(self):
+        from hero import research_bottom_ledger as bl
+        trs = [{"day": "2024-03-01", "und": "SMH", "cost": 630.0, "ret": 1.0, "back": "2024-05-01"},
+               {"day": "2024-03-04", "und": "QQQ", "cost": 105.0, "ret": 0.0, "back": "2024-05-04"}]
+        then = {("SMH", "2024-03-01"): 200.0}                                                                # QQQ's price that day is missing
+        now = {"SMH": 560.0, "QQQ": 720.0}
+        out, missing = bl.at_today(trs, then, now)
+        self.assertEqual(([t["cost"] for t in out], [t["scale"] for t in out], missing), ([1764.0], [2.8], 1))
+        self.assertEqual(out[0]["ret"], 1.0)                                                                # the return per $1 is the study's
