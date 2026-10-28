@@ -528,7 +528,7 @@
       {"id": "tsla0dte-plan-500", "kind": "zdte", "half_take": true, "start": 500, "name": "TSLA 末日单：10:00 顺势买当天到期、离现价 0.6%，一半 3 倍止盈（只演算，10-23 起）",
        "und": "TSLA", "offset": 0.006, "take": 3, "fraction": 1.0, "plan_only": true, "note": "10-23 复核（用户「全部深度重新思考一遍」）：实盘 tsla0dte-500 / -1000 停止进场，这里照常记录"
       },
-      {"id": "dia0dte-plan-500", "kind": "zdte", "half_take": true, "start": 500, "name": "DIA 末日单：10:00 顺势买当天到期（没有就一周内最近到期）、离现价 0.3%，一半 3 倍、其余翻倍后回撤 40%，15:30 平仓（只演算，10-23 起）", "und": "DIA", "offset": 0.003, "take": 3, "fraction": 1.0, "plan_only": true,
+      {"id": "dia0dte-plan-500", "kind": "zdte", "half_take": true, "start": 500, "name": "DIA 末日单：10:00 顺势买当天到期（没有就一周内最近到期）、离现价 0.3%，一半 3 倍、其余翻倍后回撤 40%，15:30 平仓（只演算，10-23 起）", "und": "DIA", "offset": 0.003, "take": 3, "fraction": 1.0, "fallback": true, "plan_only": true,
        "note": "10-22 用户（样本太慢）：末日单演算账本多铺几个标的"
       },
       {"id": "fadelotto-plan", "kind": "fadelotto", "start": 10000,

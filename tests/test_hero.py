@@ -3688,14 +3688,16 @@ class Sleeves(unittest.TestCase):
         from datetime import datetime
         from hero import sleeves
         for runner_call, path in (("run", "sleeves.json"), ("plan", "plan.json")):
-            spec = {"id": f"e-{runner_call}", "kind": "multi", "start": 1000, "n": 10, "fraction": 0.5}
-            b = SleeveBroker(lambda s: (0.18, 0.20))
-            book = sleeves.Book(self.root / path, [spec])
-            r = sleeves.Runner(b, Journal(self.root), self.cfg, [spec], book, {"multi": self.multi_rule([0.20, 0.20])},
-                               datetime(2026, 10, 8, 10, 0), date(2026, 10, 8), sleep=lambda s: None)
-            getattr(r, runner_call)()
-            qty = sorted(t["qty"] for t in book.s(spec["id"])["open"])
-            self.assertEqual(qty, [2, 2], runner_call)                                    # $50 each at $21: two, not eleven
+            for kind, want in (("earnings", [2, 2]), ("weekly", [11, 11])):
+                # review 10-28: only the earnings rule (audit #7 named earn); weekly / net keep splitting over the names found
+                spec = {"id": f"e-{runner_call}-{kind}", "kind": kind, "start": 1000, "n": 10, "fraction": 0.5}
+                b = SleeveBroker(lambda s: (0.18, 0.20))
+                book = sleeves.Book(self.root / f"{kind}-{path}", [spec])
+                r = sleeves.Runner(b, Journal(self.root), self.cfg, [spec], book, {kind: self.multi_rule([0.20, 0.20])},
+                                   datetime(2026, 10, 8, 10, 0), date(2026, 10, 8), sleep=lambda s: None)
+                getattr(r, runner_call)()
+                qty = sorted(t["qty"] for t in book.s(spec["id"])["open"])
+                self.assertEqual(qty, want, (runner_call, kind))                      # earn: $50 each at $21, two; weekly: $250 each, eleven
 
     def test_audit8_an_order_lookup_error_is_not_a_cancel(self):
         # audit #8 (D6): one API error made order() return {}, and a sold ticket was booked at $0
@@ -6456,6 +6458,12 @@ class LedgerAuditConfig(unittest.TestCase):
         self.assertTrue(all(s.get("fraction") == 1.0 for s in twins), [s["id"] for s in twins if s.get("fraction") != 1.0])
         for sid in ("overnight-plan-500", "overnight-plan-1000"):
             self.assertEqual(self.by[sid].get("max_spread"), 0.1, sid)                    # as the live overnight ledgers
+
+    def test_review_e_dia_plan_keeps_its_nearest_expiry_until_the_owner_decides(self):
+        # review 10-28: with audit #4's default (no fallback), the DIA plan twin (no same-day expiry most days) would mostly
+        # stop -- and "dia0dte-plan 停" is 用户定 1, not a fix; its name still says it takes the nearest expiry
+        self.assertIs(self.by["dia0dte-plan-500"].get("fallback"), True)
+        self.assertFalse([sid for sid, s in self.by.items() if s.get("fallback") and sid != "dia0dte-plan-500"])
 
     def test_review_b_the_stopped_0dte_ledgers_end_as_zeros_by_the_audit(self):
         # docs/ledger-audit-2026-10-26.md 总表: qqq / tsla / tsla-5x / nvda / spydip 0DTE (x2 each) -- 停并记归零

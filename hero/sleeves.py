@@ -86,9 +86,13 @@ def spreads(spec: dict, picks: list) -> bool:
 
 
 def split(spec: dict, picks: list) -> int:
-    """How many shares the fraction is cut into. Audit 10-26 #7: at least the spec's `n` -- earn-1000 (n = 10) on a day
-    with two reports gave each name a quarter of the ledger; a name's budget is capped at fraction / n."""
-    return max(len(picks), int(spec.get("n", 1) or 1))
+    """How many shares the fraction is cut into. Audit 10-26 #7: for the earnings rule, at least the spec's `n` --
+    earn-1000 (n = 10) on a day with two reports gave each name a quarter of the ledger; a name's budget is capped at
+    fraction / n. Review 10-28: only there (the audit named earn); the weekly / net split over fewer names than n is
+    the owner's call (用户定 4), so every other rule still splits over the picks it found."""
+    if spec.get("kind") == "earnings":
+        return max(len(picks), int(spec.get("n", 1) or 1))
+    return max(len(picks), 1)
 
 
 class Book:
