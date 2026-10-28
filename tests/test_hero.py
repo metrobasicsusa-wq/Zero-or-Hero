@@ -6311,3 +6311,136 @@ class ResearchBottomLedger(unittest.TestCase):
         p = bl.price_replay(evs, "SMH", "dd8", "l63", 1000.0)
         self.assertEqual((p["taken"], p["final"]), (2, 750.0))                                              # March's signal fell inside February's hold
         self.assertEqual(p["max_dd"], -0.5)
+
+
+class FollowCard(unittest.TestCase):
+    """docs/questions/2026-10-28-follow-card.md: the signal card, its replay and its daily score."""
+
+    @staticmethod
+    def chain():
+        """A small CBOE-like call chain as of 2026-10-28: a weekly 16 days out, one 23 days out, the January and
+        February monthlies; strikes every $5 from 680 to 820."""
+        out = []
+        for exp, yy in (("261113", 0.6), ("261120", 1.0), ("270115", 3.0), ("270219", 3.6)):
+            for k in range(680, 825, 5):
+                mid = max(yy * 10 + (725 - k) * 0.4, 0.3)
+                out.append({"option": f"QQQ{exp}C{k * 1000:08d}", "bid": round(mid - 0.1, 2), "ask": round(mid + 0.1, 2)})
+        return out
+
+    def test_fast_signal_is_the_third_down_close_and_not_the_fourth(self):
+        from hero import follow_card as fc
+        self.assertTrue(fc.fast_signal([100.0, 101.0, 100.0, 99.0], 98.0))
+        self.assertFalse(fc.fast_signal([100.0, 101.0, 100.0, 99.0], 99.5))          # today is not under yesterday
+        self.assertFalse(fc.fast_signal([103.0, 102.0, 101.0, 100.0], 99.0))         # the fourth down day
+        self.assertEqual((fc.down_run([101.0, 100.0, 99.0]), fc.down_run([99.0, 100.0])), (2, 0))
+
+    def test_depth_fires_on_the_first_close_8_percent_under_the_high_and_not_the_next_day(self):
+        from hero import follow_card as fc
+        cs = [100.0] * 20 + [93.0]                                                    # 21 closes, yesterday -7%
+        d = fc.depth(cs, 91.9)
+        self.assertTrue(d["first"])
+        self.assertEqual((round(d["dd"], 3), d["trigger"]), (-0.081, 92.0))
+        nxt = fc.depth(cs + [91.9], 91.0)
+        self.assertEqual((nxt["first"], nxt["armed"]), (False, False))               # under the line since yesterday
+        far = fc.depth([100.0] * 25, 99.0)
+        self.assertEqual((far["first"], far["armed"], far["trigger"]), (False, True, 92.0))
+
+    def test_without_a_signal_the_card_lists_the_nearest_trigger_prices(self):
+        from hero import follow_card as fc
+        closes = {"QQQ": [100.0] * 25, "SMH": [100.0] * 20 + [93.0, 91.5], "IWM": [100.0] * 20 + [93.0, 91.0], "SPY": [100.0] * 25}
+        spots = {"QQQ": 99.0, "SMH": 92.3, "IWM": 90.5, "SPY": 100.0}
+        md, js = fc.build(date(2026, 10, 28), closes, spots, {}, {}, "2026-10-28T15:45-04:00")
+        self.assertEqual(md.splitlines()[0], "# 今日可跟单 10-28")
+        self.assertIn("今天没有信号", md)
+        self.assertIn("QQQ 收在 $92.00 以下就是深度信号", md)
+        self.assertIn("IWM 已经在 20 日高点下 8% 以下", md)                            # under the line yesterday and today
+        self.assertIn("SMH 昨天在 8% 线下，今天收回到 8% 以内", md)                      # -8.5% yesterday, -7.7% now
+        self.assertIn("SMH 已连跌 2 天，今天收在 $91.50 以下就是连跌第 3 天", md)          # 100 -> 93 -> 91.5, today 92.3 is up
+        self.assertEqual((js["producer"], js["to"], js["slot"], js["card"]["verdict"]), ("claude", ["claude-b", "claude-c"], "follow", "今天没有信号"))
+        self.assertIn("不是指令", js["note"])
+        self.assertTrue(md.rstrip().endswith("模拟盘，不是投资建议。"))
+
+    def test_contracts_follow_the_studies(self):
+        from hero import follow_card as fc
+        chain = fc.parse_chain(self.chain())
+        f = fc.fast_contract(chain, 721.7, date(2026, 10, 28))
+        self.assertEqual((f["expiry"], f["strike"]), ("2026-11-20", 720.0))              # 23 days out (16 is too near), nearest strike
+        ct = fc.depth_contracts(chain, 721.7, date(2026, 10, 28))
+        self.assertEqual((ct["expiry"], ct["atm"]["strike"], ct["otm5"]["strike"]), ("2027-01-15", 725.0, 760.0))   # first at or above; 5% out
+        self.assertEqual((ct["spread"]["long"]["strike"], ct["spread"]["short"]["strike"], ct["spread"]["mid"]), (725.0, 730.0, 2.0))
+        self.assertTrue(fc.is_monthly("2027-01-15", set()) and not fc.is_monthly("2026-11-13", set()))
+        self.assertTrue(fc.is_monthly("2027-03-18", {"2027-03-18"}))                     # a Thursday when that Friday is not listed
+
+    def test_what_each_account_buys(self):
+        from hero import follow_card as fc
+        atm = {"strike": 725.0, "expiry": "2027-01-15", "bid": 29.75, "ask": 29.91}
+        otm5 = {"strike": 760.0, "expiry": "2027-01-15", "bid": 13.5, "ask": 13.6}
+        sp = {"long": atm, "short": {"strike": 730.0, "bid": 26.93, "ask": 27.08}, "mid": 2.8, "natural": 2.98}
+        p = {x["account"]: x for x in fc.plans_depth({"atm": atm, "otm5": otm5, "spread": sp})}
+        self.assertEqual((p[500]["n"], p[1000]["n"]), (1, 3))                             # spreads, all in
+        self.assertEqual((p[2000]["n"], p[2000]["cost"]), (1, 1360.0))                    # the 5%-out call, all in
+        self.assertEqual(p[10000]["n"], 1)                                                # $2,991 > half of bag A: one, the engine's way
+        self.assertIn("B 袋：$5 价差 8 组", p[10000]["buy"])
+        dear = {x["account"]: x for x in fc.plans_depth({"atm": atm, "otm5": {**otm5, "ask": 25.0}, "spread": sp})}
+        self.assertIn("改做 $5 价差", dear[2000]["buy"])                                   # $2,500 for the 5%-out leg: spreads instead
+        fast = {x["account"]: x for x in fc.plans_fast({"strike": 560.0, "expiry": "2026-11-20", "bid": 21.0, "ask": 22.0})}
+        self.assertEqual((fast[500]["n"], fast[1000]["n"], fast[2000]["n"], fast[10000]["n"]), (0, 0, 0, 1))   # $2,200 a contract
+
+    def test_a_signal_day_card_names_the_contract_and_the_plans(self):
+        from hero import follow_card as fc
+        closes = {"QQQ": [100.0] * 20 + [93.0], "SMH": [100.0] * 25, "IWM": [100.0] * 25, "SPY": [100.0] * 25}
+        spots = {"QQQ": 91.9, "SMH": 100.0, "IWM": 100.0, "SPY": 100.0}
+        chain = fc.parse_chain([{**o, "option": o["option"].replace("QQQ", "QQQ")} for o in self.chain()])
+        scaled = [{**c, "strike": c["strike"] / 8, "bid": c["bid"] / 8, "ask": c["ask"] / 8} for c in chain]   # a $92 QQQ
+        md, js = fc.build(date(2026, 10, 28), closes, spots, {"QQQ": scaled}, {}, "2026-10-28T15:45-04:00")
+        self.assertIn("深度：QQQ 第一次跌 8%", md)
+        self.assertIn("## 按本金怎么买", md)
+        s = js["card"]["signals"][0]
+        self.assertEqual((s["line"], s["und"], s["contracts"]["expiry"], s["exit_atm"]), ("depth", "QQQ", "2027-01-15", "2027-01-29"))   # the 63rd session
+
+    def test_the_replay_counts_cards_months_and_the_longest_quiet_run(self):
+        from hero import research_follow_card as rf
+        long_ = {"rows": [{"day": "2024-02-05", "und": "SMH", "sig": "down3", "leg": "atm", "res": {"take2": 1.0}},
+                          {"day": "2024-02-07", "und": "SMH", "sig": "down3", "leg": "atm", "res": {"take2": -0.5}},
+                          {"day": "2024-02-06", "und": "QQQ", "sig": "down3", "leg": "atm", "res": {"take2": 9.0}}]}   # not SMH
+        b2 = {"rows": [{"day": "2024-02-07", "und": "QQQ", "tags": ["dd8"], "leg": "atm", "res": {"d63": 2.0}},
+                       {"day": "2024-03-01", "und": "IWM", "tags": ["dd8"], "leg": "otm5", "res": {"d42": -1.0}}]}
+        sigs = rf.signals(long_, b2, {"rows": []})
+        days = rf.calendar("2024-02-01", "2024-03-08", set(sigs))
+        self.assertNotIn("2024-02-19", days)                                             # Presidents' Day
+        e = rf.replay(days, sigs)
+        self.assertEqual((e["cards"], len(e["card"]), e["card_sum"]), (2, 3, 2.5))        # 02-05 and 02-07 (two signals that day)
+        self.assertEqual(e["months"]["2024-02"]["cards"], 2)
+        self.assertEqual(e["line_sum"]["otm5_42"], -1.0)                                  # not a headline trade, listed apart
+        self.assertEqual((e["longest_gap"], e["gap_from"], e["gap_to"]), (21, "2024-02-08", "2024-03-08"))
+        o = rf.replay(days, sigs, one_at_a_time=True)
+        self.assertEqual(len(o["card"]), 2)                                               # the 02-07 SMH signal came while 02-05's was held
+
+    def test_the_score_books_the_card_closes_by_rule_and_keeps_the_rest_of_the_page(self):
+        from hero import follow_score as fs
+        k = lambda sym, strike, exp, ask: {"symbol": sym, "strike": strike, "expiry": exp, "bid": ask - 0.1, "ask": ask}
+        card = {"card": {"day": "2026-10-28", "signals": [
+            {"line": "fast", "und": "SMH", "contract": k("SMH261120C00560000", 560.0, "2026-11-20", 10.0), "exit_day": "2026-11-25"},
+            {"line": "depth", "und": "QQQ", "exit_atm": "2027-01-28", "exit_otm5": "2026-12-28",
+             "contracts": {"atm": k("QQQ270115C00725000", 725.0, "2027-01-15", 30.0), "otm5": None,
+                           "spread": {"long": k("QQQ270115C00725000", 725.0, "2027-01-15", 30.0),
+                                      "short": k("QQQ270115C00730000", 730.0, "2027-01-15", 27.0), "mid": 2.8}}}]}}
+        book = {"days": {}, "positions": []}
+        self.assertEqual(len(fs.open_from_card(book, card)), 3)
+        self.assertEqual(fs.open_from_card(book, card), [])                              # once per card day
+        self.assertEqual({p["line"]: p["exit_day"] for p in book["positions"]}, {"fast": "2026-11-20", "atm": "2027-01-15", "spread": "2027-01-15"})
+        q = lambda sym, bid, ask: {sym: {"symbol": sym, "bid": bid, "ask": ask}}
+        quotes = {**q("SMH261120C00560000", 20.5, 20.7), **q("QQQ270115C00725000", 33.0, 33.2), **q("QQQ270115C00730000", 29.1, 29.3)}
+        self.assertEqual(fs.update(book, "2026-10-28", quotes), [])                       # not on the card's own day
+        shut = fs.update(book, "2026-10-29", quotes)
+        self.assertEqual([p["line"] for p in shut], ["fast"])                             # 20.5 >= 2 x 10: the take
+        self.assertEqual(book["positions"][0]["ret"], 1.05)
+        quotes.update({**q("QQQ270115C00725000", 34.0, 34.2), **q("QQQ270115C00730000", 29.9, 30.1)})
+        shut = fs.update(book, "2026-10-30", quotes)
+        self.assertEqual([p["line"] for p in shut], ["spread"])                           # mid 34.1 - 30.0 = 4.1 >= $4
+        page = "# 跟单卡记分\n\n老的表\n"
+        once = fs.write_block(page, fs.block(book))
+        twice = fs.write_block(once, fs.block(book))
+        self.assertEqual(once, twice)                                                     # the block is replaced, not appended again
+        self.assertTrue(once.startswith("# 跟单卡记分\n\n老的表\n"))
+        self.assertIn("已出场 2 笔", once)
