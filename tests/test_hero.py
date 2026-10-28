@@ -6311,3 +6311,50 @@ class ResearchBottomLedger(unittest.TestCase):
         p = bl.price_replay(evs, "SMH", "dd8", "l63", 1000.0)
         self.assertEqual((p["taken"], p["final"]), (2, 750.0))                                              # March's signal fell inside February's hold
         self.assertEqual(p["max_dd"], -0.5)
+
+
+class ResearchStockGuard(unittest.TestCase):
+    # owner, 10-28 (「去研究」: should the main account's stocks get an earnings guard like the options)
+    def test_scheduled_reports_and_reaction_days(self):
+        from hero import research_stock_guard as g
+        evs = [{"symbol": "TSLA", "reaction_day": "2026-07-02"}, {"symbol": "TSLA", "reaction_day": "2026-07-23"},
+               {"symbol": "TSLA", "reaction_day": "2026-10-22"}]
+        self.assertEqual(g.scheduled(evs), {"TSLA": ["2026-07-23", "2026-10-22"]})   # deliveries three weeks before: not the report
+        days = ["2026-10-27", "2026-10-28", "2026-10-29"]
+        self.assertEqual(g.reaction_day("2026-10-28", "pre-market", days), "2026-10-28")
+        self.assertEqual(g.reaction_day("2026-10-28", "post-market", days), "2026-10-29")
+        self.assertIsNone(g.reaction_day("2026-10-29", "post-market", days))
+
+    def test_archive_takes_the_final_date_known_in_advance(self):
+        from hero import research_stock_guard as g
+        with tempfile.TemporaryDirectory() as d:
+            p = Path(d)
+            (p / "2026-10-05.json").write_text(json.dumps({"reports": {
+                "AAA": [{"date": "2026-10-20", "time": "post-market"}], "BBB": [{"date": "2026-10-16", "time": ""}],
+                "ZZZ": [{"date": "2026-10-15", "time": "pre-market"}]}}))
+            (p / "2026-10-12.json").write_text(json.dumps({"reports": {
+                "AAA": [{"date": "2026-10-15", "time": "pre-market"}], "BBB": [{"date": "2026-10-16", "time": ""}]}}))   # AAA moved earlier
+            days = ["2026-10-14", "2026-10-15", "2026-10-16", "2026-10-19", "2026-10-20", "2026-10-21"]
+            out, unknown = g.from_archive({"AAA", "BBB"}, "2026-10-02", days, p)
+        self.assertEqual(out, [{"symbol": "AAA", "reaction_day": "2026-10-15"}, {"symbol": "BBB", "reaction_day": "2026-10-19"}])
+        self.assertEqual(unknown, ["BBB 2026-10-16"])                                  # no time of day: counted as after the close
+
+    def test_the_guard_sits_out_the_reaction_day(self):
+        from hero import research_stock_guard as g
+        dates = [f"2026-01-{i + 1:02d}" for i in range(30)]
+        aaa = [100 * 1.01 ** i for i in range(30)]
+        aaa[25:] = [x * 0.9 for x in aaa[25:]]                                          # -9.1% on its report
+        closes = {"AAA": aaa, "SPY": [100 * 1.001 ** i for i in range(30)]}
+        p = {"momentum_lookback": 3, "trend_sma": 3, "top_n": 1, "rsi_max": 101, "gross_exposure": 1.0}
+        react = {"AAA": {dates[25]}, "SPY": set()}
+        day = lambda mode: dict(g.simulate(closes, dates, p, "SPY", 1.0, 20, react, mode)["rets"])[dates[25]]
+        self.assertAlmostEqual(day("hold"), 1.01 * 0.9 - 1, places=9)
+        self.assertAlmostEqual(day("cash"), -0.0005, places=9)                          # sold the night before: just the cost
+        self.assertAlmostEqual(day("spy"), 0.001 - 0.001, places=9)                      # SPY's day, minus selling AAA and buying SPY
+        ev = g.simulate(closes, dates, p, "SPY", 1.0, 20, react, "hold")["events"]
+        self.assertEqual([(e["day"], e["symbol"], e["weight"]) for e in ev], [(dates[25], "AAA", 1.0)])
+        # no-entry: nothing new within 5 sessions of the report, so the first days sit in cash
+        soon = {"AAA": {dates[23]}, "SPY": set()}
+        first = lambda mode: dict(g.simulate(closes, dates, p, "SPY", 1.0, 20, soon, mode)["rets"])[dates[21]]
+        self.assertEqual(first("no-entry"), 0.0)
+        self.assertAlmostEqual(first("hold"), 0.01 - 0.0005, places=9)
