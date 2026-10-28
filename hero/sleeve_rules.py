@@ -439,7 +439,9 @@ class Pead:
             if x in maybe:   # the session after an unknown-time report: only if the report day itself did not gap
                 if len(bs) < 3 or not float(bs[-3]["c"]):
                     continue
-                if abs(float(bs[-2]["o"]) / float(bs[-3]["c"]) - 1) >= spec.get("gap", 0.05):
+                # review 10-28: the report day's own gap decides (3%, as EarningsLotto), not the entry gap -- pead-500
+                # enters on 10%, and a 6% gap on the report day is still the reaction
+                if abs(float(bs[-2]["o"]) / float(bs[-3]["c"]) - 1) >= spec.get("unknown_gap", 0.03):
                     continue
             o, c, prev = float(bs[-1]["o"]), float(bs[-1]["c"]), float(bs[-2]["c"])
             if prev and o / prev - 1 >= spec.get("gap", 0.05) and c >= o:

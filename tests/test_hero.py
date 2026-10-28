@@ -3874,6 +3874,66 @@ class Sleeves(unittest.TestCase):
         self.assertEqual([t["qty"] for t in s["open"]], [12])                                 # booked from the broker, once
         self.assertEqual(len([o for o in b.orders.values() if o["side"] == "buy"]), 1)
 
+    def test_review_d_a_rule_round_records_its_multiple_and_a_fresh_round_takes_the_date_only(self):
+        from hero import sleeves
+        spec = {"id": "spy0dte-1000", "kind": "zdte", "start": 1000, "und": "SPY", "offset": 0.003, "take": 5, "min_move": 0.9,
+                "rule_from": "2026-10-23"}
+        book = sleeves.Book(self.root / "sleeves.json", [spec])
+        book.s("spy0dte-1000").update(cash=3191.0, closed=[{"tid": "a1", "qty": 5, "paid": 275.0, "proceeds": 1550.0}])
+        book.save()
+        book, _ = self.cycle(SleeveBroker(lambda s: (0.08, 0.10)), 10, 0, [spec])
+        self.assertEqual(book.s("spy0dte-1000")["rounds"][-1]["x"], 20.0)                    # the first run's rule round too
+        # a round that has just restarted (old trades, none in this round, cash at its start): no empty "rule" round
+        later = sleeves.Book(self.root / "l.json", [spec])
+        later.s("spy0dte-1000").update(cash=1000.0, round=3, closed=[{"tid": "a1"}, {"tid": "b1"}], round_from=2)
+        self.assertIsNone(later.rule_change("spy0dte-1000", "2026-11-02", "2026-11-02"))
+        self.assertEqual((later.s("spy0dte-1000").get("rounds"), later.s("spy0dte-1000")["rule_from"]), (None, "2026-11-02"))
+
+    def test_review_d_reprice_gives_up_without_bars_and_its_errors_stay_off_discord(self):
+        from datetime import datetime
+        from hero import sleeve_rules, sleeves
+        spec = [{"id": "peerc-500", "kind": "peer", "start": 500, "fraction": 1.0, "plan_only": True, "producer": "nobody"}]
+        late = {"tid": "20261023-aaaaaa", "kind": "peer", "sym": "SH", "asset": "stock", "und": "SPY", "qty": 1.0, "cost": 32.66,
+                "paid": 32.66, "opened": "2026-10-23 09:40", "why": "x", "best_bid": 0.0, "sim": True, "exit_at": "15:50",
+                "exit_day": "2026-10-23", "state": "closed", "exit_price": 32.53, "proceeds": 32.53, "closed": "2026-10-26 09:30"}
+        book = sleeves.Book(self.root / "plan.json", spec)
+        book.s("peerc-500").update(closed=[late])
+        book.save()
+        b = SleeveBroker(lambda s: (0.08, 0.10))
+        calls = []
+        b.stock_bars = lambda *a, **k: calls.append(1) or {}
+        for day in (27, 28, 29, 30):
+            r = sleeves.Runner(b, Journal(self.root), self.cfg, spec, sleeves.Book(self.root / "plan.json", spec), sleeve_rules.RULES,
+                               datetime(2026, 10, day, 9, 0), date(2026, 10, day), sleep=lambda s: None)
+            r.plan()
+            r.book.save()
+        t = r.book.s("peerc-500")["closed"][0]
+        self.assertEqual((len(calls), t["exit_price"], t["repriced"].get("failed") is not None), (3, 32.53, True))   # three tries, then stop
+        b.stock_bars = lambda *a, **k: (_ for _ in ()).throw(RuntimeError("bars down"))
+        book2 = sleeves.Book(self.root / "p2.json", spec)
+        book2.s("peerc-500").update(closed=[dict(late)])
+        sleeves.Runner(b, Journal(self.root), self.cfg, spec, book2, sleeve_rules.RULES, datetime(2026, 10, 27, 9, 0),
+                       date(2026, 10, 27), sleep=lambda s: None).plan()
+        log = [json.loads(l) for l in (self.root / "trades.jsonl").read_text().splitlines()]
+        err = [e for e in log if e["kind"] == "alert_error" and e.get("source") == "sleeves:reprice"]
+        self.assertTrue(err and all(e["dry_run"] for e in err))                              # dry_run: notify never pushes it
+
+    def test_review_d_retiring_an_id_twice_keeps_both_records(self):
+        from hero import sleeves
+        book = sleeves.Book(self.root / "plan.json", [{"id": "x-500", "kind": "zdte", "start": 500}])
+        book.retire(set(), "2026-10-28")
+        book.d["sleeves"]["x-500"] = {"start": 500, "cash": 300.0, "open": [], "closed": [], "slots": {}}
+        book.retire(set(), "2026-11-02")
+        self.assertEqual(sorted(v["retired"] for v in book.d["retired"].values()), ["2026-10-28", "2026-11-02"])
+
+    def test_review_d_the_hero_table_shows_a_stopped_ledger_as_stopped_not_at_zero(self):
+        from hero import research_hero_game as hg
+        book = {"sleeves": {"q-500": {"start": 500, "cash": 0.0, "round": 1, "closed": [], "stopped": {"end": "zero", "returned": 127.0},
+                                      "rounds": [{"round": 1, "end": "zero", "peak": 600.0, "trades": 3}]}}}
+        md = hg.live_markdown(hg.live_rounds(book, "实盘"))
+        self.assertIn("已停（$127 退回池子）", md)
+        self.assertNotIn("0.00 /", md)
+
 
 class EarningsShares(unittest.TestCase):
     """Owner, 10-19: earnings only in shares or 2x funds; no option held through a report."""
@@ -4747,6 +4807,20 @@ class SleeveRules(unittest.TestCase):
             slot, picks = sr.Pead().entries(self.run_at(date(2026, 10, 12), 10, 0, b), spec, {**s, "slots": {}})
             self.assertEqual([p["und"] for p in picks], ["AAA"])
             b.bars["AAA"].append({"t": "2026-10-12T04:00:00Z", "o": 115.0, "c": 117.0})
+            self.assertEqual(sr.Pead().entries(self.run_at(date(2026, 10, 13), 10, 0, b), spec, {**s, "slots": {}}), ("2026-10-13", []))
+
+    def test_review_d_pead_judges_an_unknown_report_day_by_its_own_gap_not_the_entry_gap(self):
+        # review 10-28: pead-500 enters on a 10% gap; a 6% gap on the report day is still the reaction, so the next day is not
+        from hero import sleeve_rules as sr
+        with tempfile.TemporaryDirectory() as tmp:
+            cal = Path(tmp) / "earnings.json"
+            cal.write_text(json.dumps({"reports": {"AAA": [{"date": "2026-10-09", "time": "unknown"}]}}))
+            spec, s = {"earnings": str(cal), "gap": 0.10}, {"slots": {}, "open": [], "cash": 500.0}
+            b = self.broker()
+            sr.Pead().entries(self.run_at(date(2026, 10, 9), 9, 30, b), spec, s)
+            b.snaps["AAA"]["latestTrade"]["p"] = 120.0
+            b.bars["AAA"] = [{"t": "2026-10-08T04:00:00Z", "o": 99.0, "c": 100.0}, {"t": "2026-10-09T04:00:00Z", "o": 106.0, "c": 107.0},
+                             {"t": "2026-10-12T04:00:00Z", "o": 118.0, "c": 119.0}]                # 10-12 gaps 10.3% over 10-09
             self.assertEqual(sr.Pead().entries(self.run_at(date(2026, 10, 13), 10, 0, b), spec, {**s, "slots": {}}), ("2026-10-13", []))
 
     def test_relay_bets_the_weeks_strongest_reporter_then_switches_to_soxl(self):

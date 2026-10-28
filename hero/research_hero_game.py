@@ -133,7 +133,10 @@ def live_rounds(book: dict, label: str) -> list[dict]:
                     "trades": len(tails), "x2": sum(r >= 1 for r in tails) / len(tails) if tails else None,
                     "x5": sum(r >= 4 for r in tails) / len(tails) if tails else None,
                     "now": {"round": s.get("round", 1), "cash": round(float(s.get("cash", start)) / start, 2),
-                            "peak": round(float(s.get("best", start)) / start, 2), "trades": len(s.get("closed", [])) - s.get("round_from", 0)}})
+                            "peak": round(float(s.get("best", start)) / start, 2), "trades": len(s.get("closed", [])) - s.get("round_from", 0),
+                            # review 10-28: a stopped ledger handed its cash to the pool -- not a round at 0.00x
+                            **({"stopped": float((s.get("stopped") or {}).get("returned") or 0.0)}
+                               if s.get("stopped") and not s.get("open") else {})}})
     return out
 
 
@@ -154,7 +157,9 @@ def live_markdown(rows: list[dict]) -> str:
             other = "，".join(f"{k} {r[key]}" for k, key in (("停", "stopped"), ("换规则", "rule")) if r.get(key))
             zeros = f"{r['zeros']}（{other}）" if other else str(r["zeros"])
             out.append(f"| {r['id']} | {r['book']} | {r['trades']} | {fmt(r['x2'])} | {fmt(r['x5'])} | {r['rounds']} | {r['heroes']} | {zeros} | {fmt(r['x2_rounds'])} | "
-                       f"{fmt(r['trades_per_round'], 'n')} | {fmt(r['cost_per_hero'], 'usd')} | 第 {n['round']} 轮 · {n['cash']:.2f} / {n['peak']:.2f} · {n['trades']} |")
+                       f"{fmt(r['trades_per_round'], 'n')} | {fmt(r['cost_per_hero'], 'usd')} | "
+                       + (f"已停（${n['stopped']:,.0f} 退回池子）" if n.get("stopped") is not None
+                          else f"第 {n['round']} 轮 · {n['cash']:.2f} / {n['peak']:.2f} · {n['trades']}") + " |")
     return "\n".join(out) + "\n"
 
 

@@ -189,8 +189,10 @@ class Book:
         """Audit 10-26 #8: ledgers no longer in the config move out of "sleeves" into "retired" -- kept, not deleted, and no
         longer managed (sleeves_plan.json held 41 such ids; an old dipweek NOK ticket was still being sold)."""
         gone = [sid for sid in self.d["sleeves"] if sid not in keep]
+        retired = self.d.setdefault("retired", {})
         for sid in gone:
-            self.d.setdefault("retired", {})[sid] = {**self.d["sleeves"].pop(sid), "retired": when}
+            key = sid if sid not in retired else f"{sid}@{when}"   # retired twice: keep the earlier record too
+            retired[key] = {**self.d["sleeves"].pop(sid), "retired": when}
         return gone
 
     def stop_round(self, sid: str, p: dict, when: str | None = None) -> str | None:
@@ -243,7 +245,7 @@ class Book:
         s = self.s(sid)
         if not rule_from or s.get("rule_from") == rule_from or s["open"] or s.get("stopped"):
             return None
-        if not s["closed"] and s["cash"] == s["start"]:
+        if len(s["closed"]) == s.get("round_from", 0) and s["cash"] == s["start"]:   # no trade in this round yet
             s["rule_from"] = rule_from
             return None
         cash = s["cash"]
@@ -448,8 +450,8 @@ class Runner:
         day = self.today.isoformat()
         for spec in self.specs:
             p = round_params(self.p, spec)
+            self.book.s(spec["id"])["target"] = target_of(p, spec["start"])   # before any round ends: its record carries x
             if spec.get("stop_entries"):   # audit 10-26 #2: no restart for a stopped rule; its round ends once it is flat
-                self.book.s(spec["id"])["target"] = target_of(p, spec["start"])
                 msg = self.book.stop_round(spec["id"], {**p, "stop_end": spec.get("stop_end")}, day)
             else:
                 msg = (self.book.resume(spec["id"], day) or self.book.rule_change(spec["id"], spec.get("rule_from"), day)
@@ -625,8 +627,10 @@ class Runner:
         self.plan_manage()
         for spec in self.specs:
             day = self.today.isoformat()
+            p = round_params(self.p, spec)
+            self.book.s(spec["id"])["target"] = target_of(p, spec["start"])
             msg = (self.book.rule_change(spec["id"], spec.get("rule_from"), day)
-                   or self.book.round_check(spec["id"], round_params(self.p, spec), day))
+                   or self.book.round_check(spec["id"], p, day))
             if msg:
                 self.j.event("sleeve_round", dry_run=True, sleeve=spec["id"], why=f"{msg}（演算）")
         for spec in self.specs:
@@ -716,10 +720,14 @@ class Runner:
                     bars = (self.c.stock_bars([t["sym"]], (end - timedelta(minutes=10)).strftime(fmt),
                                               (end + timedelta(minutes=1)).strftime(fmt), "1Min", "sip") or {}).get(t["sym"]) or []
                 except Exception as e:
-                    self.j.event("alert_error", source="sleeves:reprice", error=str(e)[:200])
+                    self.j.event("alert_error", dry_run=True, source="sleeves:reprice", error=str(e)[:200])   # plan only: not pushed
                     continue
                 before = [b for b in bars if b.get("t", "") < end.strftime(fmt) and b.get("c")]
                 if not before:
+                    # review 10-28: an exit day without bars (a holiday, a gap in the data) would be asked every cycle forever
+                    t["reprice_tries"] = int(t.get("reprice_tries", 0)) + 1
+                    if t["reprice_tries"] >= 3:
+                        t["repriced"] = {"failed": f"{t['exit_day']} {hh:02d}:{mm:02d} 没有分钟线，试了 3 次，按原价不改"}
                     continue
                 price = float(before[-1]["c"])
                 was, proceeds = float(t.get("exit_price") or 0), round(price * float(t["qty"]) * multiplier(t), 2)
