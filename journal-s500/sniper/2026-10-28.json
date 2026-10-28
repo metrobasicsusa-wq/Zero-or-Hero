@@ -1,0 +1,49 @@
+{
+ "date": "2026-10-28",
+ "sniper": {
+  "symbol": "MU",
+  "direction": "call",
+  "confidence": 0.2,
+  "catalyst_type": "sector move",
+  "catalyst": "AI 硬件对防守板块的轮动第 3 天（claude-b 盘前：MU +3.0%、AVGO +1.5%、AMD +1.6%，COST / UNH / LLY / WMT 各 -0.7% 到 -0.8%），MU 开盘 $962.20 对昨收 $928.76 +3.6%，约平时单日波动（2.8%）的 1.3 倍，没破 20 日高（10-01 的 $1,097）；没有它自己的新消息，消息分量弱，信心只给 0.2。今天 14:00 联储决议、盘后 MSFT / GOOGL / KLAC 财报会带动存储和芯片情绪。不拿过夜"
+ },
+ "candidates": [
+  {"rank": 1, "symbol": "MU", "direction": "call", "confidence": 0.2, "catalyst_type": "sector move",
+   "why": "AI 硬件轮动第 3 天，开盘 +3.6%（1.3 倍），没破 20 日高，没有自己的新消息；12-16 才财报"},
+  {"rank": 2, "symbol": "AMD", "direction": "call", "confidence": 0.15, "catalyst_type": "analyst rating",
+   "why": "Susquehanna 上调目标价（只有分析师评级，减分），开盘 +2.2%（0.8 倍），昨天 +5.5% 后连续第 2 天追（回测最差，减分）；11-03 财报"},
+  {"rank": 3, "symbol": "CRDO", "direction": "call", "confidence": 0.15, "catalyst_type": "sector move",
+   "why": "昨天我们的狙击（+10.8%），今天开盘再 +2.4%（0.5 倍），连续第 2 天追减分；Anthropic–博通融资消息的余温"}
+ ],
+ "skipped": [
+  {"symbol": "ENPH", "direction": "put", "gap": -0.197, "reason": "财报临近", "why_not": "三季报收入落在指引下沿、欧洲出货 -12%，开盘 -19.7%，破 20 日低、约平时波动 8.7 倍——是回测加分的形态，但它是财报反应，规则只选非财报消息；记下看后两天"},
+  {"symbol": "LOGI", "direction": "put", "gap": -0.102, "reason": "财报临近", "why_not": "财报反应 -10.2%（5.9 倍）"},
+  {"symbol": "FFIV", "direction": "put", "gap": -0.083, "reason": "财报临近", "why_not": "财报反应 -8.3%（5.3 倍），破 20 日低"},
+  {"symbol": "CHRW", "direction": "put", "gap": -0.080, "reason": "财报临近", "why_not": "财报反应 -8.0%"},
+  {"symbol": "MANH", "direction": "call", "gap": 0.071, "reason": "财报临近", "why_not": "财报反应 +7.1%，破 20 日高"},
+  {"symbol": "GEHC", "direction": "call", "gap": 0.069, "reason": "财报临近", "why_not": "财报反应 +6.9%，破 20 日高"},
+  {"symbol": "FLEX", "direction": "call", "gap": 0.074, "reason": "财报临近", "why_not": "财报反应 +7.4%"},
+  {"symbol": "PSX", "direction": "call", "gap": 0.067, "reason": "财报临近", "why_not": "财报反应 +6.7%"},
+  {"symbol": "TER", "direction": "put", "gap": -0.067, "reason": "财报临近", "why_not": "财报反应 -6.7%，破 20 日低"},
+  {"symbol": "NXPI", "direction": "put", "gap": -0.061, "reason": "财报临近", "why_not": "财报反应 -6.1%"},
+  {"symbol": "HOOD", "direction": "put", "gap": -0.056, "reason": "财报临近", "why_not": "财报反应 -5.6%，净存款 $160 亿对去年 $200 亿"},
+  {"symbol": "CAKE", "direction": "put", "gap": -0.060, "reason": "财报临近", "why_not": "财报反应 -6.0%"},
+  {"symbol": "PPG", "direction": "call", "gap": -0.042, "reason": "财报临近", "why_not": "盘后 +8% 但开盘 -4.2%，财报反应方向不定"},
+  {"symbol": "STX", "direction": "put", "gap": -0.029, "reason": "财报临近", "why_not": "财报反应 -2.9%"},
+  {"symbol": "V", "direction": "put", "gap": -0.014, "reason": "财报临近", "why_not": "财报反应，盘前 -1.4%"},
+  {"symbol": "GEV", "direction": "put", "gap": -0.027, "reason": "财报临近", "why_not": "盘前财报，盘前一度 $944 后回落，开盘 -2.7%"},
+  {"symbol": "VRT", "direction": "put", "gap": -0.027, "reason": "财报临近", "why_not": "盘前财报 -2.7%"},
+  {"symbol": "ULBI", "direction": "call", "gap": 1.45, "reason": "没有一周内期权", "why_not": "EnerSys $3.2 亿现金收购，+145%，微型股、跳空已吃掉"},
+  {"symbol": "NOW", "direction": "put", "gap": -0.021, "reason": "财报临近", "why_not": "今晚财报，盘前 -2.1%"}
+ ],
+ "claude_b_pick": null,
+ "notes": [
+  "**晚交**：会话进程在凌晨重启，09:01 的任务到 09:39 才处理，这个文件写于开盘后约 13 分钟。选股只用了盘前资料和开盘价（开盘对昨收的跳空），没有看开盘后的走势；但已经开盘，09:30–10:00 的进场窗口只剩一半，记分时请把这一天标为晚交。",
+  "claude-b 今天没有狙击（盘前只有 AMD 一条 Susquehanna 目标价上调，它判为弱催化剂），所以没有撞车问题。",
+  "今天所有大跳空都是财报反应（ENPH、LOGI、FFIV、CHRW、MANH、GEHC、FLEX、PSX、TER、NXPI、HOOD、CAKE），按规则不选；非财报的只有 AI 硬件轮动（MU、AMD、AVGO、INTC）和一笔微型股收购（ULBI），都弱。",
+  "宏观：联储决议 14:00、记者会 14:30；盘后 MSFT、GOOGL、KLAC、NOW、TMUS。",
+  "premarket 扫描没跑（开盘后再跑就不是盘前了），用 claude-b 的盘前文件、WebSearch 和 Yahoo 日线的开盘价代替。"
+ ],
+ "late": true,
+ "generated_at": "2026-10-28T09:41:09-04:00"
+}
