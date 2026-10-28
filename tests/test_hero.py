@@ -6311,3 +6311,70 @@ class ResearchBottomLedger(unittest.TestCase):
         p = bl.price_replay(evs, "SMH", "dd8", "l63", 1000.0)
         self.assertEqual((p["taken"], p["final"]), (2, 750.0))                                              # March's signal fell inside February's hold
         self.assertEqual(p["max_dd"], -0.5)
+
+
+class ResearchEarningsOvershoot(unittest.TestCase):
+    # owner, 10-28 (「所以同时买还是会赚的」「明天开盘会继续跌吗」「自己选个大研究去做」)
+    def test_straddle_floor_and_groups(self):
+        from hero import research_earnings_overshoot as eo
+        evs = [{"symbol": "NVDA", "reaction_day": "2024-02-22", "gap": 0.12, "move": 0.16, "implied_move": 0.08, "cheapness": 0.9,
+                "mom126": 0.5, "timing": "after close", "expiry": "2024-02-23"},
+               {"symbol": "JPM", "reaction_day": "2024-04-12", "gap": -0.01, "move": 0.02, "implied_move": 0.04, "cheapness": 1.5,
+                "mom126": -0.1, "timing": "before open", "expiry": "2024-04-12"},
+               {"symbol": "KO", "reaction_day": "2024-04-30", "gap": 0.01, "move": 0.01}]                  # no straddle priced
+        rows = eo.straddle_rows(evs)
+        self.assertEqual([r["symbol"] for r in rows], ["NVDA", "JPM"])
+        self.assertAlmostEqual(rows[0]["open"], 0.5); self.assertAlmostEqual(rows[0]["close"], 1.0)        # |12%| / 8% - 1, |16%| / 8% - 1
+        self.assertAlmostEqual(rows[1]["open"], -0.75); self.assertAlmostEqual(rows[1]["close"], -0.5)
+        self.assertEqual((rows[0]["group"], rows[0]["same_day"], rows[1]["same_day"]), ("芯片", False, True))
+        self.assertEqual(eo.ratio_label(0.4), "没超过定价"); self.assertEqual(eo.ratio_label(1.7), "定价的 1.5–2 倍")
+        self.assertEqual(eo.ratio_label(3.0), "定价的 2 倍以上"); self.assertIsNone(eo.ratio_label(None))
+
+    def test_forward_is_from_the_reaction_close_and_net_of_spy(self):
+        from hero import research_earnings_overshoot as eo
+        days = ["2024-02-21", "2024-02-22", "2024-02-23", "2024-02-26"]
+        bars = {"NVDA": {d: {"o": o, "c": c} for d, o, c in zip(days, (90, 110, 116, 120), (100, 116, 118, 124))},
+                "SPY": {d: {"o": 1, "c": c} for d, c in zip(days, (500, 500, 505, 510))}}
+        evs = [{"symbol": "NVDA", "reaction_day": "2024-02-22", "gap": 0.10, "move": 0.16, "implied_move": 0.08},
+               {"symbol": "NVDA", "reaction_day": "2024-03-01", "gap": 0.01, "move": 0.01}]                    # no bar that day: dropped
+        fw = eo.forward(evs, bars, horizons=(1, 2, 5))
+        self.assertEqual(len(fw), 1)
+        r = fw[0]
+        self.assertTrue(r["held"])                                                                          # closed 116 above its 110 open, in the move's direction
+        self.assertAlmostEqual(r["ratio"], 2.0)
+        self.assertAlmostEqual(r["fwd"][1], 118 / 116 - 1); self.assertAlmostEqual(r["exc"][1], 118 / 116 - 1 - 0.01)
+        self.assertAlmostEqual(r["exc"][2], 124 / 116 - 1 - 0.02)
+        self.assertNotIn(5, r["fwd"])                                                                       # not enough days yet
+        down = eo.forward([{"symbol": "NVDA", "reaction_day": "2024-02-23", "gap": -0.05, "move": -0.04}], bars, horizons=(1,))[0]
+        self.assertEqual(down["sign"], -1); self.assertFalse(down["held"])                                  # fell, but closed above its open
+
+
+class ResearchBeatDrift(unittest.TestCase):
+    # owner, 10-28 (「自己选个大研究去做」): the option version of the chip / AI-hardware beat drift
+    def test_events_tags_and_groups(self):
+        from hero import research_beat_drift as bd
+        rep = {"events": [
+            {"symbol": "NVDA", "reaction_day": "2024-02-22", "move": 0.16, "implied_move": 0.08},    # 2x up, chips
+            {"symbol": "NVDA", "reaction_day": "2023-11-22", "move": 0.16, "implied_move": 0.08},    # before options data
+            {"symbol": "JPM", "reaction_day": "2024-04-12", "move": 0.07, "implied_move": 0.04},     # 1.75x up, banks
+            {"symbol": "MU", "reaction_day": "2024-06-27", "move": -0.07, "implied_move": 0.04},     # 1.75x down, chips
+            {"symbol": "AMD", "reaction_day": "2024-07-31", "move": 0.03, "implied_move": 0.06},     # under the price: dropped
+            {"symbol": "KO", "reaction_day": "2024-07-23", "move": 0.03}]}                           # no straddle: dropped
+        evs = bd.events(rep)
+        self.assertEqual([(e["und"], e["kind"], e["ratio"], e["group"]) for e in evs],
+                         [("NVDA", "C", 2.0, "芯片"), ("JPM", "C", 1.75, "银行 / 支付"), ("MU", "P", 1.75, "芯片")])
+        rows = [{**e, "leg": leg, "day": "x", "res": {}} for e in evs for leg in ("atm", "otm5")]
+        g = bd.groups(rows)
+        self.assertEqual([r["und"] for r in g["芯片 / AI 硬件 涨超定价 1.5 倍 · 平值看涨"]], ["NVDA"])
+        self.assertEqual([r["und"] for r in g["　其中 2 倍以上 · 价外 5%"]], ["NVDA"])
+        self.assertEqual([r["und"] for r in g["对照：其他板块 涨超定价 1.5 倍 · 平值看涨"]], ["JPM"])
+        self.assertEqual([r["und"] for r in g["对照：芯片 / AI 硬件 跌超定价 1.5 倍 · 平值看跌"]], ["MU"])
+
+    def test_exits_hold_twenty_sessions_and_report_the_tenth(self):
+        from hero import research_beat_drift as bd
+        days = [{"o": 1.0, "c": 1.0 + 0.05 * i} for i in range(25)]                                  # creeps up 5c a day
+        res = bd.exits(1.0, days)
+        self.assertAlmostEqual(res["close_d10"], round(1.45 * 0.9 - 1, 4))                           # 10th close 1.45, sold 10% under
+        self.assertAlmostEqual(res["close_d20"], round(1.95 * 0.9 - 1, 4))                           # 20th close 1.95, never 2x
+        self.assertEqual(res["take2"], res["close_d20"])
+        self.assertIsNone(bd.exits(1.0, []))
