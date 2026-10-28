@@ -1,0 +1,2891 @@
+{
+ "date": "2026-10-28",
+ "written": "2026-10-28T15:21-04:00",
+ "calls": [
+  {
+   "symbol": "GOOGL",
+   "direction": "up",
+   "big": false,
+   "confidence": 0.55,
+   "evidence": "news",
+   "tags": [
+    "profile_bar",
+    "news"
+   ],
+   "why": "门槛：谷歌云增速不从上季 +82% 明显放缓、云利润率守住约 31%、全年资本开支不再上调或给出自由现金流转正的路径；判断：本周有公司自身的需求证据——OpenAI 10-21 宣布前沿模型和 Codex 上 Google Cloud、甲骨文 10-27 起把 Google TPU 放进自己的云，判涨；风险是资本开支再上调（Meta 10-21 因此 -7%）（InsiderFinance 预览、甲骨文 AI World 公告）"
+  },
+  {
+   "symbol": "MSFT",
+   "direction": "up",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "profile",
+   "tags": [
+    "profile_bar"
+   ],
+   "why": "门槛：Azure 固定汇率 ≥47%（公司指引约 45%，一致预期 44.9%）、本季资本开支超 $500 亿但说清回报、营业利润率降不超过一个点；判断：过去两年 Azure 落在指引 -1 到 +5 个点，按习惯略超，但一致预期已经贴着指引、市场本周对资本开支最敏感，没有新的公司证据，信心 0.5（S&P Global、Morgan Stanley 预览）"
+  },
+  {
+   "symbol": "GOOG",
+   "direction": "up",
+   "big": false,
+   "confidence": 0.55,
+   "evidence": "news",
+   "tags": [
+    "profile_bar",
+    "news"
+   ],
+   "why": "同 GOOGL（同一家公司的 C 类股）：门槛是云增速和资本开支；OpenAI、甲骨文本周都在用 Google 云 / TPU，判涨"
+  },
+  {
+   "symbol": "MA",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.55,
+   "evidence": "profile",
+   "tags": [
+    "profile_bar"
+   ],
+   "why": "门槛：净收入增速 ≥13%（一致预期约 +12%、$96.4 亿）、跨境交易量不再从二季度的 12% 放缓、增值服务守住约 20%；判断：股价在历史新高附近，同一驱动的 Visa 本周净收入 +13% 只是符合预期，Mastercard 大概率也只是符合，跨不过高位的门槛，判跌（247wallst、Visa 8-K 10-27）"
+  },
+  {
+   "symbol": "LLY",
+   "direction": "up",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "profile",
+   "tags": [
+    "profile_bar",
+    "last_guide_raise"
+   ],
+   "why": "门槛：收入超约 $224 亿、全年指引再上调（8 月已上调到 $850–870 亿）、Mounjaro / Zepbound 价格侵蚀不超低到中双位数；判断：连续超预期并上调的习惯，门槛在「再上调」，没有新的公司证据，信心 0.5（Hudson Labs、公司 8-05 公告）"
+  },
+  {
+   "symbol": "NOW",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "profile",
+   "tags": [
+    "profile_bar"
+   ],
+   "why": "门槛：cRPO 增速超 20%（公司指引 19.5%，二季度 21.5% 固定汇率，摩根大通说是「奇怪的停顿」）、全年订阅指引再上调、AI 产品 ACV 有新数字；判断：软件股在 AI 冲击叙事下只符合就跌，指引本身就放缓，判跌，信心 0.5（公司 8-K 7 月、Invezz）"
+  },
+  {
+   "symbol": "CAT",
+   "direction": "up",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "profile",
+   "tags": [
+    "profile_bar"
+   ],
+   "why": "门槛：EPS 超约 $6.9、三大部门销量都正、四季度展望不提关税和利润率压力；判断：连续 4 季双超，本周 GE Vernova 订单 +96%、Vertiv 订单翻倍说明数据中心发电需求还在，但 GEV 数字全好仍低开，股价在新高附近，信心 0.5（Benzinga、GEV / VRT 8-K）"
+  },
+  {
+   "symbol": "KLAC",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.55,
+   "evidence": "profile",
+   "tags": [
+    "profile_bar"
+   ],
+   "why": "门槛：收入超指引上沿 $42 亿且下季指引明显上调；判断：同一驱动（晶圆厂设备开支）的 Lam Research 10-21 给出持平指引，设备股本季「指引不上调就是坏消息」，KLA 7 月超预期也跌 6%，判跌（公司档案、LRCX 10-21）"
+  },
+  {
+   "symbol": "EQIX",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "LNG",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "STM",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "MRK",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "TMUS",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "profile",
+   "tags": [
+    "profile_bar"
+   ],
+   "why": "门槛：后付费账户净增明显超约 26 万（摩根大通预期）、服务收入不低于约 $193 亿、对 SpaceX 卫星网络的威胁给出可信回应；判断：财报前股价跌到两年多低点、摩根大通下调服务收入预期，只达标大概率不够，信心 0.5（Stocktwits / 摩根大通、公司档案）"
+  },
+  {
+   "symbol": "SHEL",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "CVNA",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "LIN",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "PWR",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "TT",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "ATI",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "HWM",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "CMG",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "FDX",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "ICE",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "ASX",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "BMY",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "THC",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "CTSH",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "F",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "MO",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "EGO",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "AR",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "XEL",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "HONA",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "ALNY",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "NCLH",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "WTW",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "AWK",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "STRL",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "INSM",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "AMRZ",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "CARR",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "FTNT",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "AMP",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "ORLY",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "WCC",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "WST",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "EBAY",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "LHX",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "GKOS",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "CP",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "ENTG",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "HSY",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "FTAI",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "INVH",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "EME",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "EG",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "SIRI",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "TYL",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "EPD",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "NXT",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "MUSA",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "SIMO",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "AGI",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "INCY",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "LKQ",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "TECK",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "AEM",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "DHI",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "QSR",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "BUD",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "XPO",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "OWL",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "CRH",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "TW",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "HLN",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "H",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "ALGM",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "KGC",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "TROW",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "VICI",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "TENB",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "ARES",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "SFM",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "WEC",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "VMC",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "MGM",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "POR",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "SAIA",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "GFL",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "KIM",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "PBF",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "FTI",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "WEX",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "BLDR",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "BOOT",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "DTM",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "BAX",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "KYMR",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "TTE",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "HII",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "RJF",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "MAA",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "AGCO",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "FLS",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "CHDN",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "CSL",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "BWA",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "AVY",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "ALGN",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "FORM",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "DAR",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "MYRG",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "EHC",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "HLI",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "GEN",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "CROX",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "HAPN",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "MORN",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "NEU",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "OLED",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "LTH",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "BNL",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "TPG",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "SCI",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "KBR",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "MKL",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "APG",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "AUR",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "ING",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "CNX",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "AXTA",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "TXT",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "LYG",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "PTEN",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "OSK",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "AXS",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "QTWO",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "HOG",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "VKTX",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "AOS",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "TAL",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "BG",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "COHU",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "INDV",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "BXMT",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "CFR",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "FTRE",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "PI",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "BC",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "RSI",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "PATK",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "MBLY",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "FCN",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "MTH",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "PLXS",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "AM",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "ARXS",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "PGY",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "THG",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "IDA",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "BFLY",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "LGND",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "GTX",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "TAK",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "BBVA",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "CSW",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "IDCC",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "DRS",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "PWP",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "BHE",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "MGRC",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "HGV",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "BELFB",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "EPAC",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "EPR",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "GVA",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "ALKT",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "NEO",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "ESTA",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "SLGN",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "BAND",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "EFOR",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "TDOC",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "NSP",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "VIST",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "NVCR",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "FCPT",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "PHIN",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "SAH",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "WHD",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "FSS",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "UFPI",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "PBI",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "AAMI",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "NMRK",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "PPC",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "LAUR",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "UPBD",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "MD",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "CNMD",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "TNET",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "MAX",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "DFIN",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "BDC",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "MNRO",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "TRN",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "GATX",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "OMCL",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "AIN",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "NEXT",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "LXU",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "PRCH",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "NWPX",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "MRAM",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "CMPR",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "BHC",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "PFS",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "ADAM",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "WFG",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "RYZ",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "CNXN",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "STGW",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "GRBK",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "FVRR",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "FBRT",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "MCHB",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "TRS",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "CLPT",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "CCB",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "JBSS",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "AMSF",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "ILPT",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "CLB",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "JOE",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "EFXT",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "HRTG",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "PRLB",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "EIG",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "WNC",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "CWT",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "MYE",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "UVSP",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "HIPO",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "CCS",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "FPI",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "MBIN",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "DGICA",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "TSAT",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "NEWT",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "SBSI",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "QUAD",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "ALRS",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "CQP",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "MCS",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "FOR",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "HDSN",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "GBFH",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "SPOK",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "RM",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "CBAN",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "WTBA",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  },
+  {
+   "symbol": "ESCA",
+   "direction": "down",
+   "big": false,
+   "confidence": 0.5,
+   "evidence": "default",
+   "tags": [
+    "default"
+   ],
+   "why": "默认方向：最近 60 次已记分财报正好一半开盘涨（30/60），按全部 346 次的 46% 开盘涨判跌；没有细判"
+  }
+ ]
+}
