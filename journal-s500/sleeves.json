@@ -6992,7 +6992,7 @@
      "exit_day": "2026-10-30",
      "exit_at": "15:30",
      "trail": false,
-     "best_bid": 0.79,
+     "best_bid": 0.92,
      "expiry_out": null
     }
    ],
@@ -7029,7 +7029,7 @@
      "exit_day": "2026-10-30",
      "exit_at": "15:30",
      "trail": false,
-     "best_bid": 0.79,
+     "best_bid": 0.92,
      "expiry_out": null
     }
    ],
@@ -7109,11 +7109,12 @@
   },
   "dipweek-1000": {
    "start": 1000.0,
-   "cash": 80.0,
+   "cash": 1550.0,
    "round": 1,
    "heroes": 0,
    "zeros": 0,
-   "open": [
+   "open": [],
+   "closed": [
     {
      "tid": "20261023-92139a",
      "kind": "dipweek",
@@ -7130,17 +7131,24 @@
      "exit_at": "15:30",
      "trail": true,
      "best_bid": 24.14,
-     "expiry_out": null
+     "expiry_out": null,
+     "sell_cid": "sl-dipweek-1000-20261023-92139a-xf3b5",
+     "sell_why": "翻倍后从最高 $24.14 回撤 40%",
+     "state": "closed",
+     "exit_price": 14.7,
+     "proceeds": 1470.0,
+     "how": "翻倍后从最高 $24.14 回撤 40%",
+     "closed": "2026-10-29 14:20",
+     "ret": 0.598
     }
    ],
-   "closed": [],
    "slots": {
     "2026-10-23": "2026-10-23T15:50-04:00",
     "2026-10-26": "2026-10-26T15:50-04:00",
     "2026-10-27": "2026-10-27T15:50-04:00",
     "2026-10-28": "2026-10-28T15:50-04:00"
    },
-   "best": 1000.0,
+   "best": 1550.0,
    "created": null
   },
   "dipweek-hold-500": {
