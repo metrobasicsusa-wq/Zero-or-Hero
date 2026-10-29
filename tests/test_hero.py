@@ -6538,7 +6538,8 @@ class ResearchChipBeat(unittest.TestCase):
         closes = {"MU": {d: 100.0 + i for i, d in enumerate(days)}}
         spy = {d: 100.0 for d in days}
         ev = [{"symbol": "MU", "reaction_day": days[0], "move": 0.2, "ratio": 2.0, "group": "核心"},
-              {"symbol": "MU", "reaction_day": days[1], "move": 0.05, "ratio": 1.2, "group": "核心"}]
+              {"symbol": "MU", "reaction_day": days[1], "move": 0.05, "ratio": 1.2, "group": "核心"},
+              {"symbol": "MU", "reaction_day": days[2], "move": 0.05, "group": "核心"}]       # no straddle price: no ratio
         fw = cb.forward(ev, closes, spy)
         self.assertAlmostEqual(fw[0]["exc"][20], 120 / 100 - 1)
         g = cb.stock_groups(fw)

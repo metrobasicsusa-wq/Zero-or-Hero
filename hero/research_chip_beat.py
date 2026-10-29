@@ -155,7 +155,7 @@ def is_new(e: dict) -> bool:
 
 
 def stock_groups(fw: list[dict]) -> dict[str, list[dict]]:
-    up = lambda lo, hi=99.0: (lambda r: r["ratio"] is not None and lo <= r["ratio"] < hi)
+    up = lambda lo, hi=99.0: (lambda r: r.get("ratio") is not None and lo <= r["ratio"] < hi)
     g = {}
     for scope, keep in (("全部", lambda r: True), ("新样本（扩展名单 + 10-02 之后）", is_new),
                         ("核心名单", lambda r: r["symbol"] in CORE), ("扩展名单", lambda r: r["symbol"] not in CORE)):
@@ -164,7 +164,7 @@ def stock_groups(fw: list[dict]) -> dict[str, list[dict]]:
         g[f"{scope} · 涨超定价 2 倍"] = [r for r in rs if up(2.0)(r)]
         g[f"{scope} · 对照：涨 1–1.5 倍"] = [r for r in rs if up(1.0, BEAT)(r)]
         g[f"{scope} · 对照：涨了但没超过定价"] = [r for r in rs if up(0.0, 1.0)(r)]
-        g[f"{scope} · 对照：跌超定价 1.5 倍"] = [r for r in rs if r["ratio"] is not None and r["ratio"] <= -BEAT]
+        g[f"{scope} · 对照：跌超定价 1.5 倍"] = [r for r in rs if r.get("ratio") is not None and r["ratio"] <= -BEAT]
     for name in EXTRA:
         g[f"{name} · 涨超定价 1.5 倍"] = [r for r in fw if r["group"] == name and up(BEAT)(r)]
     return g
