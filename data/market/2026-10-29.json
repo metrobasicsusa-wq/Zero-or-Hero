@@ -1,0 +1,2821 @@
+{
+ "source": "alphavantage+alpaca-news",
+ "fetched_at": "2026-10-29T09:01:13-04:00",
+ "fetched_on": "2026-10-29",
+ "symbols": [
+  "AAPL",
+  "ABBV",
+  "ABT",
+  "ACN",
+  "ADBE",
+  "ADI",
+  "ALAB",
+  "AMAT",
+  "AMD",
+  "AMZN",
+  "ANET",
+  "APH",
+  "APP",
+  "ARM",
+  "ASML",
+  "AVGO",
+  "BA",
+  "BAC",
+  "BE",
+  "BKNG",
+  "BSX",
+  "C",
+  "CAT",
+  "COHR",
+  "COIN",
+  "COST",
+  "CRDO",
+  "CRM",
+  "CRWD",
+  "CRWV",
+  "CSCO",
+  "CVX",
+  "DDOG",
+  "DELL",
+  "DHR",
+  "DIA",
+  "FCX",
+  "GE",
+  "GEV",
+  "GLW",
+  "GOOGL",
+  "GS",
+  "HD",
+  "HOOD",
+  "HPE",
+  "IBM",
+  "INTC",
+  "INTU",
+  "IONQ",
+  "IREN",
+  "ISRG",
+  "IWM",
+  "JNJ",
+  "JPM",
+  "KLAC",
+  "KO",
+  "LITE",
+  "LLY",
+  "LRCX",
+  "MA",
+  "MDT",
+  "META",
+  "MRNA",
+  "MRVL",
+  "MS",
+  "MSFT",
+  "MSTR",
+  "MU",
+  "NBIS",
+  "NEE",
+  "NET",
+  "NFLX",
+  "NKE",
+  "NOK",
+  "NOW",
+  "NVDA",
+  "ORCL",
+  "PANW",
+  "PFE",
+  "PG",
+  "PLTR",
+  "QCOM",
+  "QQQ",
+  "RKLB",
+  "SHOP",
+  "SMCI",
+  "SMH",
+  "SNDK",
+  "SNOW",
+  "SOFI",
+  "SOXL",
+  "SPOT",
+  "SPY",
+  "STX",
+  "T",
+  "TMO",
+  "TQQQ",
+  "TSLA",
+  "TSM",
+  "TXN",
+  "UBER",
+  "UNH",
+  "V",
+  "VLO",
+  "VRT",
+  "VZ",
+  "WBD",
+  "WDC",
+  "WFC",
+  "WMT",
+  "XLB",
+  "XLC",
+  "XLE",
+  "XLF",
+  "XLI",
+  "XLK",
+  "XLP",
+  "XLRE",
+  "XLU",
+  "XLV",
+  "XLY",
+  "XOM"
+ ],
+ "series": {
+  "us2y": {
+   "unit": "%",
+   "date": "2026-10-27",
+   "latest": 4.7,
+   "chg_1d": 0.02,
+   "chg_20d": -0.22
+  },
+  "us10y": {
+   "unit": "%",
+   "date": "2026-10-27",
+   "latest": 4.99,
+   "chg_1d": -0.01,
+   "chg_20d": -0.25
+  },
+  "wti": {
+   "unit": "$",
+   "date": "2026-10-27",
+   "latest": 103.37,
+   "chg_1d": -1.88,
+   "chg_20d": 7.21
+  }
+ },
+ "errors": {},
+ "gauges": {
+  "putcall": {
+   "date": "2026-10-28",
+   "total": 0.9,
+   "equity": 0.54,
+   "index": 1.06,
+   "spx": 1.14
+  },
+  "aaii": {
+   "date": "2026-10-28",
+   "bullish": 37.8,
+   "neutral": 20.7,
+   "bearish": 41.4,
+   "spread": -3.6
+  }
+ },
+ "news": {
+  "BA": {
+   "articles": 15,
+   "sentiment": -0.233,
+   "label": "略偏空",
+   "top": [
+    {
+     "score": -1.0,
+     "title": "Wells Fargo Maintains Overweight on Boeing, Lowers Price Target to $210",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/news/26/10/62656078/wells-fargo-maintains-overweight-boeing-lowers-price-target-210",
+     "published": "2026-10-28T13:48:02Z"
+    },
+    {
+     "score": 1.0,
+     "title": "Boeing CEO Says High Oil Prices Could Actually Boost Jet Orders — Here's Why",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/trading-ideas/long-ideas/26/10/62659274/boeing-oil-prices-jet-orders",
+     "published": "2026-10-28T14:40:08Z"
+    },
+    {
+     "score": -1.0,
+     "title": "Barclays Maintains Overweight on Boeing, Lowers Price Target to $250",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/news/26/10/62663536/barclays-maintains-overweight-boeing-lowers-price-target-250",
+     "published": "2026-10-28T16:02:07Z"
+    }
+   ]
+  },
+  "INTC": {
+   "articles": 7,
+   "sentiment": 0.286,
+   "label": "略偏多",
+   "top": [
+    {
+     "score": 1.0,
+     "title": "What Is Going on With Intel Stock on Wednesday?",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/tech/26/10/62660728/what-is-going-on-with-intel-stock-on-wednesday-3",
+     "published": "2026-10-28T15:05:01Z"
+    },
+    {
+     "score": 1.0,
+     "title": "Intel Q3 Earnings Preview: Stock Down 34% From Highs, Could a Rally Get President Trump to Highlight Shares?",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/trading-ideas/previews/26/10/62667492/intel-q3-earnings-preview-stock-down-34-from-highs-could-a-rally-get-president-trump-to-highlight-shares",
+     "published": "2026-10-28T17:41:32Z"
+    },
+    {
+     "score": 1.0,
+     "title": "Amazon, Eli Lilly On Deck Thursday As AWS Growth, Drug Demand Face Test",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/news/26/10/62671513/amazon-eli-lilly-on-deck-thursday-as-aws-growth-drug-demand-face-test",
+     "published": "2026-10-28T19:30:28Z"
+    }
+   ]
+  },
+  "BAC": {
+   "articles": 3,
+   "sentiment": 0.0,
+   "label": "中性",
+   "top": [
+    {
+     "score": 1.0,
+     "title": "Bank of America Expands Financial Center Network",
+     "source": "fiscal.ai",
+     "url": "https://www.prnewswire.com/news-releases/bank-of-america-opens-first-financial-centers-in-wisconsin-sets-2027-entry-into-alabama-and-louisiana-302922113.html",
+     "published": "2026-10-28T18:01:37Z"
+    },
+    {
+     "score": -1.0,
+     "title": "Bank of America Issues Security Warning Regarding AI Agents",
+     "source": "fiscal.ai",
+     "url": "https://glenbrook.com/payments-news/all-payments-news/",
+     "published": "2026-10-29T10:31:35Z"
+    },
+    {
+     "score": 0.0,
+     "title": "Bank Of America Opens First Financial Centers In Wisconsin, Sets 2027 Entry Into Alabama & Louisiana; Plans 19 Financial Centers Across Wisconsin Through 2030, Creating Nearly 130 New Jobs; To Open 10 Financial Centers Across Alabama Beginning In Q1 2027 & 8 In Greater New Orleans In H2 2027; Plans To Open About 50 New Financial Centers A Year",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/news/26/10/62653700/bank-america-opens-first-financial-centers-wisconsin-sets-2027-entry-alabama-louisiana-plans-19-fina",
+     "published": "2026-10-28T13:10:45Z"
+    }
+   ]
+  },
+  "BSX": {
+   "articles": 6,
+   "sentiment": 0.111,
+   "label": "中性",
+   "top": [
+    {
+     "score": 1.0,
+     "title": "Baird Maintains Outperform on Boston Scientific, Raises Price Target to $51",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/news/26/10/62689025/baird-maintains-outperform-boston-scientific-raises-price-target-51",
+     "published": "2026-10-29T11:12:41Z"
+    },
+    {
+     "score": -0.333,
+     "title": "These Analysts Revise Their Forecasts On Boston Scientific After Q3 Results",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/analyst-stock-ratings/price-target/26/10/62689589/these-analysts-revise-their-forecasts-on-boston-scientific-after-q3-results",
+     "published": "2026-10-29T11:30:59Z"
+    },
+    {
+     "score": 0.0,
+     "title": "Boston Scientific Q3 2026 Earnings Call Transcript",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/news/26/10/62653815/boston-scientific-q3-2026-earnings-call-transcript",
+     "published": "2026-10-28T13:12:47Z"
+    }
+   ]
+  },
+  "ABT": {
+   "articles": 1,
+   "sentiment": 1.0,
+   "label": "偏多",
+   "top": [
+    {
+     "score": 1.0,
+     "title": "Abbott Receives FDA Approval For First And Only Device In The U.S. To Treat Leaks After Heart Valve Replacement Without Additional Surgery",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/news/26/10/62653878/abbott-receives-fda-approval-first-and-only-device-u-s-treat-leaks-after-heart-valve-replacement-wit",
+     "published": "2026-10-28T13:13:55Z"
+    }
+   ]
+  },
+  "IREN": {
+   "articles": 2,
+   "sentiment": -0.5,
+   "label": "偏空",
+   "top": [
+    {
+     "score": -1.0,
+     "title": "GOOGL, MSFT AI Capex Worries Hammer Neocloud Stocks: CRWV, NBIS, IREN, APLD Give Up Best Week in Over 2 Months",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/equities/26/10/62691867/googl-msft-q3-results-capex-crwv-nbis-iren-apld-stocks-fall",
+     "published": "2026-10-29T12:10:58Z"
+    },
+    {
+     "score": 0.0,
+     "title": "IREN Closes $363M Equipment Funding Deal With Wingspire Equipment Finance For Its AI Compute Business",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/news/26/10/62654387/iren-closes-363m-equipment-funding-deal-wingspire-equipment-finance-its-ai-compute-business",
+     "published": "2026-10-28T13:20:49Z"
+    }
+   ]
+  },
+  "HOOD": {
+   "articles": 9,
+   "sentiment": -0.3,
+   "label": "略偏空",
+   "top": [
+    {
+     "score": -1.0,
+     "title": "Wells Fargo Maintains Equal-Weight on Robinhood Markets, Lowers Price Target to $100",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/news/26/10/62654479/wells-fargo-maintains-equal-weight-robinhood-markets-lowers-price-target-100",
+     "published": "2026-10-28T13:22:49Z"
+    },
+    {
+     "score": 1.0,
+     "title": "Ripple Expands From Robinhood to Coinbase as RLUSD Gains Ground",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/crypto/cryptocurrency/26/10/62662185/ripple-expands-from-robinhood-to-coinbase-as-rlusd-gains-ground",
+     "published": "2026-10-28T15:36:14Z"
+    },
+    {
+     "score": -1.0,
+     "title": "Barclays Maintains Overweight on Robinhood Markets, Lowers Price Target to $115",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/news/26/10/62662878/barclays-maintains-overweight-robinhood-markets-lowers-price-target-115",
+     "published": "2026-10-28T15:49:17Z"
+    }
+   ]
+  },
+  "APH": {
+   "articles": 8,
+   "sentiment": 0.375,
+   "label": "偏多",
+   "top": [
+    {
+     "score": 1.0,
+     "title": "Amphenol Hikes Shareholder Returns With Dividend and Buybacks",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/earnings/26/10/62654826/amphenol-hikes-shareholder-returns-with-dividend-and-buybacks",
+     "published": "2026-10-28T13:29:38Z"
+    },
+    {
+     "score": 1.0,
+     "title": "Amphenol Reports Record Third Quarter 2026 Results, Dividend Increase, and New Stock Repurchase Program",
+     "source": "fiscal.ai",
+     "url": "https://www.businesswire.com/newsroom/industry/technology/semiconductor",
+     "published": "2026-10-28T13:31:45Z"
+    },
+    {
+     "score": 1.0,
+     "title": "Truist Securities Adjusts Price Target on Amphenol to $112 From $107.50",
+     "source": "fiscal.ai",
+     "url": "https://www.marketscreener.com/news/truist-securities-adjusts-price-target-on-amphenol-to-112-from-107-50-keeps-buy-rating-ce785cd3df8ef12c",
+     "published": "2026-10-29T10:31:35Z"
+    }
+   ]
+  },
+  "AAPL": {
+   "articles": 10,
+   "sentiment": 0.2,
+   "label": "略偏多",
+   "top": [
+    {
+     "score": 1.0,
+     "title": "Apple Increases Education Store Pricing for MacBook Neo",
+     "source": "fiscal.ai",
+     "url": "https://appleosophy.com/wire/gnibw4u/",
+     "published": "2026-10-28T15:01:30Z"
+    },
+    {
+     "score": 1.0,
+     "title": "STMicroelectronics Lifts Forecast Thanks To Data Center Revenue Growth",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/earnings/26/10/62692828/stmicroelectronics-lifts-forecast-thanks-to-data-center-revenue-growth",
+     "published": "2026-10-29T12:32:24Z"
+    },
+    {
+     "score": 0.0,
+     "title": "Apple Teases Redesigned MacBook Pro Launch",
+     "source": "fiscal.ai",
+     "url": "https://appleosophy.com/wire/3canuxq/",
+     "published": "2026-10-28T13:31:16Z"
+    }
+   ]
+  },
+  "AMZN": {
+   "articles": 24,
+   "sentiment": 0.125,
+   "label": "中性",
+   "top": [
+    {
+     "score": 1.0,
+     "title": "iBusiness Funding Expands SBA Financing Access for Amazon Sellers",
+     "source": "fiscal.ai",
+     "url": "https://www.prnewswire.com/news-releases/ibusiness-funding-expands-access-to-sba-financing-for-amazon-sellers--offered-through-amazon-seller-central-302921220.html",
+     "published": "2026-10-28T15:01:36Z"
+    },
+    {
+     "score": -1.0,
+     "title": "'Amazon cuts more jobs, in devices unit, after flurry of product rollouts' - Reuters",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/news/26/10/62661467/amazon-cuts-more-jobs-devices-unit-after-flurry-product-rollouts-reuters",
+     "published": "2026-10-28T15:20:11Z"
+    },
+    {
+     "score": 1.0,
+     "title": "Amazon Q3 Earnings Preview: All Eyes on AWS After Posting Best Growth in Years in Q2",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/trading-ideas/previews/26/10/62663775/amazon-q3-earnings-preview-all-eyes-aws-after-posting-best-growth-years-q2",
+     "published": "2026-10-28T16:07:10Z"
+    }
+   ]
+  },
+  "ABBV": {
+   "articles": 4,
+   "sentiment": -0.25,
+   "label": "略偏空",
+   "top": [
+    {
+     "score": -1.0,
+     "title": "Steve Jobs' Son Says GLP-1 Weight Loss Drugs Could Be Among Most Important Medicines Ever, With Potential Impact on Cancer",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/news/health-care/26/10/62686263/steve-jobs-son-says-glp-1-drugs-could-be-among-most-important-medicines-ever-with-potential-impact-on-cancer",
+     "published": "2026-10-29T10:28:57Z"
+    },
+    {
+     "score": 0.0,
+     "title": "Allergan Aesthetics Announces Return of BOTOX Cosmetic Day",
+     "source": "fiscal.ai",
+     "url": "https://www.prnewswire.com/news-releases/the-countdown-is-on-botox-cosmetic-onabotulinumtoxina-day-is-back-nov-18-302921467.html",
+     "published": "2026-10-28T13:31:21Z"
+    },
+    {
+     "score": 0.0,
+     "title": "AbbVie Announces Publication Of Results From Phase 3 TEMPLE Study In The Lancet Neurology; Study Results Showed Atogepant Outperformed Topiramate In Migraine Prevention",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/news/26/10/62685681/abbvie-announces-publication-results-phase-3-temple-study-lancet-neurology-study-results-showed-atog",
+     "published": "2026-10-29T10:09:00Z"
+    }
+   ]
+  },
+  "AMD": {
+   "articles": 5,
+   "sentiment": 0.0,
+   "label": "中性",
+   "top": [
+    {
+     "score": 0.0,
+     "title": "Susquehanna Adjusts Price Target on Advanced Micro Devices to $650 From $620",
+     "source": "fiscal.ai",
+     "url": "https://www.marketscreener.com/news/susquehanna-adjusts-price-target-on-advanced-micro-devices-to-650-from-620-ce785cd2dc8cf020",
+     "published": "2026-10-28T13:31:35Z"
+    },
+    {
+     "score": 0.0,
+     "title": "Microsoft Earnings Prediction Market Preview: What Will Satya Nadella Say?",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/prediction-markets/26/10/62658800/microsoft-earnings-preview",
+     "published": "2026-10-28T14:31:59Z"
+    },
+    {
+     "score": 0.0,
+     "title": "Michael Burry Finds a $537 Billion Hole in Anthropic’s IPO Story",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/ipos/26/10/62659397/michael-burry-finds-a-537-billion-hole-in-anthropics-ipo-story",
+     "published": "2026-10-28T14:43:01Z"
+    }
+   ]
+  },
+  "CAT": {
+   "articles": 11,
+   "sentiment": 0.182,
+   "label": "略偏多",
+   "top": [
+    {
+     "score": 1.0,
+     "title": "Amazon, Eli Lilly On Deck Thursday As AWS Growth, Drug Demand Face Test",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/news/26/10/62671513/amazon-eli-lilly-on-deck-thursday-as-aws-growth-drug-demand-face-test",
+     "published": "2026-10-28T19:30:28Z"
+    },
+    {
+     "score": 1.0,
+     "title": "Dow Gains For Third Session Following Fed Decision: Investor Sentiment Improves, Greed Index Remains In ‘Fear’ Zone",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/market-summary/26/10/62682622/dow-gains-for-third-session-following-fed-decision-investor-sentiment-improves-greed-index-remains-in-fear-zone",
+     "published": "2026-10-29T05:33:20Z"
+    },
+    {
+     "score": -1.0,
+     "title": "Stock Market: Will S&P 500 Open Up or Down Today?",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/prediction-markets/26/10/62682843/stock-market-will-sp-500-open-up-or-down-today-68",
+     "published": "2026-10-29T06:04:17Z"
+    }
+   ]
+  },
+  "HD": {
+   "articles": 2,
+   "sentiment": 0.0,
+   "label": "中性",
+   "top": [
+    {
+     "score": 0.0,
+     "title": "Kreate Launches New Waste and Recycling Collection for Home Depot's HDX and Husky Brands",
+     "source": "fiscal.ai",
+     "url": "https://www.prnewswire.com/news-releases/kreate-expands-the-home-depots-hdx-and-husky-lines-with-new-waste-and-recycling-solutions-302921175.html",
+     "published": "2026-10-28T13:31:41Z"
+    },
+    {
+     "score": 0.0,
+     "title": "Here's How Much $100 Invested In Home Depot 15 Years Ago Would Be Worth Today",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/news/26/10/62664176/here-s-how-much-100-invested-home-depot-15-years-ago-would-be-worth-today",
+     "published": "2026-10-28T16:15:36Z"
+    }
+   ]
+  },
+  "GS": {
+   "articles": 6,
+   "sentiment": 0.0,
+   "label": "中性",
+   "top": [
+    {
+     "score": 0.0,
+     "title": "Goldman Sachs Joins Equilend's 1Source DLT Platform",
+     "source": "fiscal.ai",
+     "url": "https://www.prnewswire.com/news-releases/equilends-1source-dlt-adds-goldman-sachs-302922167.html",
+     "published": "2026-10-28T13:31:45Z"
+    },
+    {
+     "score": 0.0,
+     "title": "Goldman Sachs Beverage Bytes Survey Indicates C-Store Retailer Optimism",
+     "source": "fiscal.ai",
+     "url": "https://www.brewbound.com/news/c-store-retailers-feeling-optimistic-about-beer-to-close-2026-craft-to-lose-shelf-space-to-rtds-in-2027-per-goldman-sachs",
+     "published": "2026-10-28T18:01:54Z"
+    },
+    {
+     "score": 0.0,
+     "title": "The Goldman Sachs Group, Inc. Discloses New Position in ASOS PLC",
+     "source": "fiscal.ai",
+     "url": "https://www.investegate.co.uk/announcement/rns/asos--asc/holding-s-in-company/9846113",
+     "published": "2026-10-28T19:01:46Z"
+    }
+   ]
+  },
+  "COIN": {
+   "articles": 4,
+   "sentiment": 0.5,
+   "label": "偏多",
+   "top": [
+    {
+     "score": 1.0,
+     "title": "Ripple Expands From Robinhood to Coinbase as RLUSD Gains Ground",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/crypto/cryptocurrency/26/10/62662185/ripple-expands-from-robinhood-to-coinbase-as-rlusd-gains-ground",
+     "published": "2026-10-28T15:36:14Z"
+    },
+    {
+     "score": 1.0,
+     "title": "Amazon, Eli Lilly On Deck Thursday As AWS Growth, Drug Demand Face Test",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/news/26/10/62671513/amazon-eli-lilly-on-deck-thursday-as-aws-growth-drug-demand-face-test",
+     "published": "2026-10-28T19:30:28Z"
+    },
+    {
+     "score": 0.0,
+     "title": "Coinbase Adds Support for Ripple's RLUSD Stablecoin",
+     "source": "fiscal.ai",
+     "url": "https://www.moomoo.com/hans/news/flash/1002652670/coinbase-global-starting-today-retail-institutional-clients-can-trade-manage",
+     "published": "2026-10-28T13:31:50Z"
+    }
+   ]
+  },
+  "HPE": {
+   "articles": 3,
+   "sentiment": -0.333,
+   "label": "略偏空",
+   "top": [
+    {
+     "score": -1.0,
+     "title": "Why Is ServiceNow Stock Sinking Thursday?",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/tech/26/10/62687315/why-is-servicenow-stock-sinking-thursday",
+     "published": "2026-10-29T10:48:02Z"
+    },
+    {
+     "score": 0.0,
+     "title": "Evercore ISI Adjusts Hewlett Packard Enterprise Price Target",
+     "source": "fiscal.ai",
+     "url": "https://www.moomoo.com/ja/news/post/1002659341/evercore-isi-adjusts-hewlett-packard-enterprise-price-target-to-65",
+     "published": "2026-10-28T13:31:53Z"
+    },
+    {
+     "score": 0.0,
+     "title": "ServiceNow Announces Five-Year Contract With HPE For Support Services In HPE’s Cloud And AI Business; Value Not Disclosed",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/quote/HPE",
+     "published": "2026-10-28T20:23:03Z"
+    }
+   ]
+  },
+  "BKNG": {
+   "articles": 1,
+   "sentiment": 1.0,
+   "label": "偏多",
+   "top": [
+    {
+     "score": 1.0,
+     "title": "FareHarbor Announces Inaugural Pinnacle Experience Award Winners",
+     "source": "fiscal.ai",
+     "url": "https://www.einnews.com/pr_news/952674989/fareharbor-announces-winners-of-the-2026-pinnacle-experience-award",
+     "published": "2026-10-28T13:32:21Z"
+    }
+   ]
+  },
+  "GOOGL": {
+   "articles": 53,
+   "sentiment": 0.126,
+   "label": "中性",
+   "top": [
+    {
+     "score": 1.0,
+     "title": "SK Hynix, Vertiv Rescue AI Trade As Oil Tops $102 Before Fed: Stock Market Today",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/equities/26/10/62664656/stock-market-today-sk-hynix-vertiv-ai-trade-oil-fed",
+     "published": "2026-10-28T16:30:24Z"
+    },
+    {
+     "score": 1.0,
+     "title": "Alphabet Stock Rises Ahead of Earnings: What's Going On?",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/trading-ideas/movers/26/10/62665347/alphabet-stock-rises-ahead-of-earnings-whats-going-on",
+     "published": "2026-10-28T16:47:25Z"
+    },
+    {
+     "score": 1.0,
+     "title": "Alphabet’s $514 Billion Google Cloud Backlog, AI Spending Put 2027 Growth in Focus, Says Analyst",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/tech/26/10/62667232/alphabets-514-billion-google-cloud-backlog-ai-spending-put-2027-growth-in-focus-says-analyst",
+     "published": "2026-10-28T17:35:47Z"
+    }
+   ]
+  },
+  "NVDA": {
+   "articles": 23,
+   "sentiment": 0.0,
+   "label": "中性",
+   "top": [
+    {
+     "score": 1.0,
+     "title": "Lumentum Stock Soars 17% on Marvell Takeover Talk",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/m-a/26/10/62680188/lumentum-stock-soars-17-on-marvell-takeover-talk",
+     "published": "2026-10-28T21:55:11Z"
+    },
+    {
+     "score": -1.0,
+     "title": "Why Is ServiceNow Stock Sinking Thursday?",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/tech/26/10/62687315/why-is-servicenow-stock-sinking-thursday",
+     "published": "2026-10-29T10:48:02Z"
+    },
+    {
+     "score": -1.0,
+     "title": "Scott Bessent Brushes Off Concerns Over AI Debt Amid CoreWeave Slump, Calls Neoclouds a ‘Small Component’",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/market-summary/26/10/62692369/scott-bessent-brushes-off-concerns-over-ai-debt-amid-coreweave-slump-calls-neoclouds-a-small-component",
+     "published": "2026-10-29T12:25:16Z"
+    }
+   ]
+  },
+  "ORCL": {
+   "articles": 13,
+   "sentiment": 0.385,
+   "label": "偏多",
+   "top": [
+    {
+     "score": 1.0,
+     "title": "What Is Going on With Intel Stock on Wednesday?",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/tech/26/10/62660728/what-is-going-on-with-intel-stock-on-wednesday-3",
+     "published": "2026-10-28T15:05:01Z"
+    },
+    {
+     "score": 1.0,
+     "title": "Oracle Targets $30B+ Free Cash Flow In FY29; Reaffirms FY27 Outlook: $90 B+ Revenue, $8.1 Non-Gaap EPS; To Limit Additional Capital Raises To $20B Through FY30; Expects Capital Expenses To Decrease In FY29 Supporting $30B+ Free Cash Flow; To Self-fund Growth Beginning FY29; Net Debt To Adj EBITDA Below 3.5x In FY29",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/news/26/10/62669191/oracle-targets-30b-free-cash-flow-fy29-reaffirms-fy27-outlook-90-b-revenue-8-1-non-gaap-eps-limit-ad",
+     "published": "2026-10-28T18:30:34Z"
+    },
+    {
+     "score": 1.0,
+     "title": "Oracle Hosts 2026 Investor Day to Outline Strategic Growth",
+     "source": "fiscal.ai",
+     "url": "https://www.prnewswire.com/news-releases/oracle-investor-day-2026-accelerating-value-creation-302922564.html",
+     "published": "2026-10-28T19:01:50Z"
+    }
+   ]
+  },
+  "RKLB": {
+   "articles": 2,
+   "sentiment": -0.5,
+   "label": "偏空",
+   "top": [
+    {
+     "score": -1.0,
+     "title": "SpaceX Could Keep Starship Cost Savings Instead of Cutting Launch Prices, Varda Executive Says",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/prediction-markets/26/10/62663410/spacex-starship-prices",
+     "published": "2026-10-28T16:00:23Z"
+    },
+    {
+     "score": 0.0,
+     "title": "Google Earnings Prediction Market Preview: What Will Sundar Pichai Say?",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/prediction-markets/26/10/62655122/google-earnings-preview",
+     "published": "2026-10-28T13:35:47Z"
+    }
+   ]
+  },
+  "DIA": {
+   "articles": 7,
+   "sentiment": -0.286,
+   "label": "略偏空",
+   "top": [
+    {
+     "score": -1.0,
+     "title": "Cyclicals Lead Sectors In Wednesday Trading As Real Estate Trails",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/etfs/sector-etfs/26/10/62660436/cyclicals-lead-sectors-in-wednesday-trading-as-real-estate-trails",
+     "published": "2026-10-28T15:00:23Z"
+    },
+    {
+     "score": 1.0,
+     "title": "SK Hynix, Vertiv Rescue AI Trade As Oil Tops $102 Before Fed: Stock Market Today",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/equities/26/10/62664656/stock-market-today-sk-hynix-vertiv-ai-trade-oil-fed",
+     "published": "2026-10-28T16:30:24Z"
+    },
+    {
+     "score": -1.0,
+     "title": "Stock Market: Will S&P 500 Open Up or Down Today?",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/prediction-markets/26/10/62682843/stock-market-will-sp-500-open-up-or-down-today-68",
+     "published": "2026-10-29T06:04:17Z"
+    }
+   ]
+  },
+  "QQQ": {
+   "articles": 10,
+   "sentiment": -0.1,
+   "label": "中性",
+   "top": [
+    {
+     "score": -1.0,
+     "title": "Cyclicals Lead Sectors In Wednesday Trading As Real Estate Trails",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/etfs/sector-etfs/26/10/62660436/cyclicals-lead-sectors-in-wednesday-trading-as-real-estate-trails",
+     "published": "2026-10-28T15:00:23Z"
+    },
+    {
+     "score": 1.0,
+     "title": "SK Hynix, Vertiv Rescue AI Trade As Oil Tops $102 Before Fed: Stock Market Today",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/equities/26/10/62664656/stock-market-today-sk-hynix-vertiv-ai-trade-oil-fed",
+     "published": "2026-10-28T16:30:24Z"
+    },
+    {
+     "score": -1.0,
+     "title": "Stock Market: Will S&P 500 Open Up or Down Today?",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/prediction-markets/26/10/62682843/stock-market-will-sp-500-open-up-or-down-today-68",
+     "published": "2026-10-29T06:04:17Z"
+    }
+   ]
+  },
+  "SPY": {
+   "articles": 59,
+   "sentiment": 0.0,
+   "label": "中性",
+   "top": [
+    {
+     "score": -1.0,
+     "title": "Cyclicals Lead Sectors In Wednesday Trading As Real Estate Trails",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/etfs/sector-etfs/26/10/62660436/cyclicals-lead-sectors-in-wednesday-trading-as-real-estate-trails",
+     "published": "2026-10-28T15:00:23Z"
+    },
+    {
+     "score": -1.0,
+     "title": "Stock Market: Will S&P 500 Open Up or Down Today?",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/prediction-markets/26/10/62682843/stock-market-will-sp-500-open-up-or-down-today-68",
+     "published": "2026-10-29T06:04:17Z"
+    },
+    {
+     "score": 1.0,
+     "title": "Tom Lee Sees 'Big Beats' Ahead, Says Kevin Warsh-Led Fed Won't Slow AI Growth Despite Inflation: 'Good News Is Good News'",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/economic-data/26/10/62684176/tom-lee-sees-big-beats-ahead-says-kevin-warsh-led-fed-wont-slow-ai-growth-despite-inflation-good-news-is-good-news",
+     "published": "2026-10-29T08:51:08Z"
+    }
+   ]
+  },
+  "MA": {
+   "articles": 8,
+   "sentiment": 0.125,
+   "label": "中性",
+   "top": [
+    {
+     "score": -1.0,
+     "title": "Cyclicals Lead Sectors In Wednesday Trading As Real Estate Trails",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/etfs/sector-etfs/26/10/62660436/cyclicals-lead-sectors-in-wednesday-trading-as-real-estate-trails",
+     "published": "2026-10-28T15:00:23Z"
+    },
+    {
+     "score": 1.0,
+     "title": "Amazon, Eli Lilly On Deck Thursday As AWS Growth, Drug Demand Face Test",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/news/26/10/62671513/amazon-eli-lilly-on-deck-thursday-as-aws-growth-drug-demand-face-test",
+     "published": "2026-10-28T19:30:28Z"
+    },
+    {
+     "score": -1.0,
+     "title": "Stock Market: Will S&P 500 Open Up or Down Today?",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/prediction-markets/26/10/62682843/stock-market-will-sp-500-open-up-or-down-today-68",
+     "published": "2026-10-29T06:04:17Z"
+    }
+   ]
+  },
+  "META": {
+   "articles": 13,
+   "sentiment": -0.154,
+   "label": "略偏空",
+   "top": [
+    {
+     "score": -1.0,
+     "title": "Cyclicals Lead Sectors In Wednesday Trading As Real Estate Trails",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/etfs/sector-etfs/26/10/62660436/cyclicals-lead-sectors-in-wednesday-trading-as-real-estate-trails",
+     "published": "2026-10-28T15:00:23Z"
+    },
+    {
+     "score": -1.0,
+     "title": "Scott Bessent Brushes Off Concerns Over AI Debt Amid CoreWeave Slump, Calls Neoclouds a ‘Small Component’",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/market-summary/26/10/62692369/scott-bessent-brushes-off-concerns-over-ai-debt-amid-coreweave-slump-calls-neoclouds-a-small-component",
+     "published": "2026-10-29T12:25:16Z"
+    },
+    {
+     "score": -1.0,
+     "title": "Meta Platforms Delaying Indefinitely Rollout Of Its New Commercial Terms; Consultation With Publishers' On This Topic Could Extend Beyond November 20, In Which Case Meta Would Delay Implementation Of Updated Terms; Until Then, Meta's Existing Terms Remain In Place",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/news/26/10/62669436/meta-platforms-delaying-indefinitely-rollout-its-new-commercial-terms-consultation-publishers-topic-",
+     "published": "2026-10-28T18:36:27Z"
+    }
+   ]
+  },
+  "MSFT": {
+   "articles": 39,
+   "sentiment": 0.205,
+   "label": "略偏多",
+   "top": [
+    {
+     "score": 1.0,
+     "title": "SK Hynix, Vertiv Rescue AI Trade As Oil Tops $102 Before Fed: Stock Market Today",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/equities/26/10/62664656/stock-market-today-sk-hynix-vertiv-ai-trade-oil-fed",
+     "published": "2026-10-28T16:30:24Z"
+    },
+    {
+     "score": -1.0,
+     "title": "GOOGL, MSFT AI Capex Worries Hammer Neocloud Stocks: CRWV, NBIS, IREN, APLD Give Up Best Week in Over 2 Months",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/equities/26/10/62691867/googl-msft-q3-results-capex-crwv-nbis-iren-apld-stocks-fall",
+     "published": "2026-10-29T12:10:58Z"
+    },
+    {
+     "score": -1.0,
+     "title": "Stock Market Today: Dow Jones, S&P 500, Nasdaq 100 Futures Drop After Fed Keeps Rates Unchanged — MSFT, GOOG, TMUS in Focus (UPDATED)",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/equities/26/10/62684592/stock-market-today-dow-jones-sp-500-futures-trade-mixed-after-fed-keeps-rates-unchanged-msft-goog-tmus-in-focus",
+     "published": "2026-10-29T12:41:48Z"
+    }
+   ]
+  },
+  "NFLX": {
+   "articles": 6,
+   "sentiment": -0.167,
+   "label": "略偏空",
+   "top": [
+    {
+     "score": -1.0,
+     "title": "Cyclicals Lead Sectors In Wednesday Trading As Real Estate Trails",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/etfs/sector-etfs/26/10/62660436/cyclicals-lead-sectors-in-wednesday-trading-as-real-estate-trails",
+     "published": "2026-10-28T15:00:23Z"
+    },
+    {
+     "score": 0.0,
+     "title": "Bill Ackman’s Test for a Great Stock: Should Be 'Enormously Valuable' Even if Markets Shut for 20 Years",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/equities/26/10/62656252/bill-ackmans-test-for-a-great-stock-should-be-enormously-valuable-even-if-markets-shut-for-20-years",
+     "published": "2026-10-28T13:50:57Z"
+    },
+    {
+     "score": 0.0,
+     "title": "10 Communication Services Stocks Whale Activity In Today’s Session",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/options/26/10/62667211/10-communication-services-stocks-whale-activity-today-s-session",
+     "published": "2026-10-28T17:35:11Z"
+    }
+   ]
+  },
+  "UBER": {
+   "articles": 7,
+   "sentiment": 0.0,
+   "label": "中性",
+   "top": [
+    {
+     "score": 0.0,
+     "title": "Bill Ackman’s Test for a Great Stock: Should Be 'Enormously Valuable' Even if Markets Shut for 20 Years",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/equities/26/10/62656252/bill-ackmans-test-for-a-great-stock-should-be-enormously-valuable-even-if-markets-shut-for-20-years",
+     "published": "2026-10-28T13:50:57Z"
+    },
+    {
+     "score": 0.0,
+     "title": "'U.S. Federal Trade Commission Is Demanding Information On Personalized Pricing And Wage Setting Strategies From Walmart, Target, Uber, Lyft, DoorDash, Instacart, Delta, United And JetBlue' - Reuters Exclusive",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/news/26/10/62668884/u-s-federal-trade-commission-demanding-information-personalized-pricing-and-wage-setting-strategies-",
+     "published": "2026-10-28T18:19:03Z"
+    },
+    {
+     "score": 0.0,
+     "title": "BofA Securities Notes Uber's Position Ahead of Q3 Results",
+     "source": "fiscal.ai",
+     "url": "https://www.marketscreener.com/news/uber-positioned-to-meet-q3-forecasts-amid-autonomous-vehicle-competition-bofa-securities-says-ce785cd2d180fe22",
+     "published": "2026-10-28T19:01:54Z"
+    }
+   ]
+  },
+  "V": {
+   "articles": 16,
+   "sentiment": 0.5,
+   "label": "偏多",
+   "top": [
+    {
+     "score": -1.0,
+     "title": "Cyclicals Lead Sectors In Wednesday Trading As Real Estate Trails",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/etfs/sector-etfs/26/10/62660436/cyclicals-lead-sectors-in-wednesday-trading-as-real-estate-trails",
+     "published": "2026-10-28T15:00:23Z"
+    },
+    {
+     "score": 1.0,
+     "title": "Analyst Signals Favorable Earnings Setup for Mastercard After Visa's Results",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/analyst-stock-ratings/analyst-color/26/10/62669907/analyst-signals-favorable-earnings-setup-for-mastercard-after-visas-results",
+     "published": "2026-10-28T18:48:02Z"
+    },
+    {
+     "score": 1.0,
+     "title": "Visa Eyes Another Big Year After Record Revenue, Wall Street Turns More Bullish",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/large-cap/26/10/62656399/visa-eyes-another-big-year-after-record-revenue-wall-street-turns-more-bullish",
+     "published": "2026-10-28T13:53:03Z"
+    }
+   ]
+  },
+  "ACN": {
+   "articles": 3,
+   "sentiment": 0.0,
+   "label": "中性",
+   "top": [
+    {
+     "score": 0.0,
+     "title": "Accenture Insider Purchases Shares Worth Over $3 Million",
+     "source": "fiscal.ai",
+     "url": "https://www.marketscreener.com/news/accenture-insider-bought-shares-worth-3-001-041-according-to-a-recent-sec-filing-ce785cd2dd8ff220",
+     "published": "2026-10-28T14:01:44Z"
+    },
+    {
+     "score": 0.0,
+     "title": "Accenture Named to 2026 Fortune Best Workplaces for Women List",
+     "source": "fiscal.ai",
+     "url": "https://www.globenewswire.com/news-release/2026/10/28/3390006/0/en/announcing-the-2026-fortune-best-workplaces-for-women.html",
+     "published": "2026-10-28T19:01:59Z"
+    },
+    {
+     "score": 0.0,
+     "title": "Accenture Ventures Invests in Replit's Series D Funding Round",
+     "source": "fiscal.ai",
+     "url": "https://aimagazine.com/news/replit-ai-agents-vibe-coding-and-a-us-9bn-valuation",
+     "published": "2026-10-29T11:01:42Z"
+    }
+   ]
+  },
+  "GEV": {
+   "articles": 9,
+   "sentiment": 0.333,
+   "label": "略偏多",
+   "top": [
+    {
+     "score": 1.0,
+     "title": "US Stocks Mixed; GE Vernova Earnings Top Views",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/market-summary/26/10/62657053/us-stocks-mixed-ge-vernova-earnings-top-views",
+     "published": "2026-10-28T14:02:55Z"
+    },
+    {
+     "score": 1.0,
+     "title": "Jim Cramer Says People Selling This Stock Don't Have Brains",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/earnings/26/10/62657484/jim-cramer-says-people-selling-this-stock-dont-have-brains",
+     "published": "2026-10-28T14:08:29Z"
+    },
+    {
+     "score": 1.0,
+     "title": "GE Vernova Stock Slides After A Blowout Quarter—Is Trench Deal The Real Story?",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/earnings/26/10/62659948/ge-vernova-stock-slides-after-a-blowout-quarter-is-trench-deal-the-real-story",
+     "published": "2026-10-28T14:53:33Z"
+    }
+   ]
+  },
+  "FCX": {
+   "articles": 5,
+   "sentiment": -0.4,
+   "label": "偏空",
+   "top": [
+    {
+     "score": -1.0,
+     "title": "Wells Fargo Maintains Overweight on Freeport-McMoRan, Lowers Price Target to $79",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/news/26/10/62657234/wells-fargo-maintains-overweight-freeport-mcmoran-lowers-price-target-79",
+     "published": "2026-10-28T14:05:20Z"
+    },
+    {
+     "score": -1.0,
+     "title": "JP Morgan Maintains Overweight on Freeport-McMoRan, Lowers Price Target to $90",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/news/26/10/62671931/jp-morgan-maintains-overweight-freeport-mcmoran-lowers-price-target-90",
+     "published": "2026-10-28T19:40:39Z"
+    },
+    {
+     "score": 0.0,
+     "title": "Scotiabank Maintains Sector Outperform on Freeport-McMoRan, Lowers Price Target to $78",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/news/26/10/62665689/scotiabank-maintains-sector-outperform-freeport-mcmoran-lowers-price-target-78",
+     "published": "2026-10-28T16:55:32Z"
+    }
+   ]
+  },
+  "CRM": {
+   "articles": 4,
+   "sentiment": 0.25,
+   "label": "略偏多",
+   "top": [
+    {
+     "score": 1.0,
+     "title": "OpenAI Jumps 32%, Airtable Crashes 56% As Private Market Returns Diverge",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/private-markets/26/10/62670039/openai-jumps-32-airtable-crashes-56-as-private-market-returns-diverge",
+     "published": "2026-10-28T18:51:01Z"
+    },
+    {
+     "score": 0.0,
+     "title": "Salesforce To Purchase 500,000 Methane-Reduction Carbon Credits From Mitti Labs By 2030",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/news/26/10/62657370/salesforce-purchase-500-000-methane-reduction-carbon-credits-mitti-labs-2030",
+     "published": "2026-10-28T14:07:11Z"
+    },
+    {
+     "score": 0.0,
+     "title": "Salesforce Enters Carbon Credit Offtake Agreement with Mitti Labs",
+     "source": "fiscal.ai",
+     "url": "https://www.prnewswire.com/news-releases/mitti-labs--salesforce-partner-to-scale-water-saving-rice-farming-practices-that-reduce-methane-emissions-302919088.html",
+     "published": "2026-10-28T18:01:45Z"
+    }
+   ]
+  },
+  "DDOG": {
+   "articles": 2,
+   "sentiment": 1.0,
+   "label": "偏多",
+   "top": [
+    {
+     "score": 1.0,
+     "title": "Wells Fargo Maintains Overweight on Datadog, Raises Price Target to $325",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/news/26/10/62658451/wells-fargo-maintains-overweight-datadog-raises-price-target-325",
+     "published": "2026-10-28T14:25:28Z"
+    },
+    {
+     "score": 1.0,
+     "title": "Macquarie Analyst Highlights Datadog Ahead of Earnings",
+     "source": "fiscal.ai",
+     "url": "https://www.morningstar.com/news/marketwatch/20261028127/these-software-stocks-could-be-winners-as-earnings-season-kicks-into-high-gear",
+     "published": "2026-10-28T18:01:46Z"
+    }
+   ]
+  },
+  "APP": {
+   "articles": 3,
+   "sentiment": 0.0,
+   "label": "中性",
+   "top": [
+    {
+     "score": 0.0,
+     "title": "RBC Capital Maintains Outperform on AppLovin, Lowers Price Target to $500",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/news/26/10/62659306/rbc-capital-maintains-outperform-applovin-lowers-price-target-500",
+     "published": "2026-10-28T14:40:45Z"
+    },
+    {
+     "score": 0.0,
+     "title": "Analysts Adjust Price Targets for AppLovin Corporation",
+     "source": "fiscal.ai",
+     "url": "https://www.marketscreener.com/news/ubs-adjusts-applovin-price-target-to-414-from-790-maintains-buy-rating-ce785cd2de88f120",
+     "published": "2026-10-28T15:02:03Z"
+    },
+    {
+     "score": 0.0,
+     "title": "UBS Maintains Buy on AppLovin, Lowers Price Target to $414",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/news/26/10/62678390/ubs-maintains-buy-applovin-lowers-price-target-414",
+     "published": "2026-10-28T21:05:12Z"
+    }
+   ]
+  },
+  "IONQ": {
+   "articles": 1,
+   "sentiment": 1.0,
+   "label": "偏多",
+   "top": [
+    {
+     "score": 1.0,
+     "title": "Why Is IonQ Stock Falling on Wednesday?",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/trading-ideas/movers/26/10/62659320/why-is-ionq-stock-falling-on-wednesday-2",
+     "published": "2026-10-28T14:41:06Z"
+    }
+   ]
+  },
+  "AVGO": {
+   "articles": 6,
+   "sentiment": 0.083,
+   "label": "中性",
+   "top": [
+    {
+     "score": 1.0,
+     "title": "Steve Eisman Says Anthropic Left Q3 Figures Out of IPO Filing on Purpose: 'Very Intentional'",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/prediction-markets/26/10/62667278/eisman-anthropic-ipo",
+     "published": "2026-10-28T17:36:38Z"
+    },
+    {
+     "score": -1.0,
+     "title": "Jim Cramer: This Tech Stock Has Been ‘One of the Greatest Performers of All Time’",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/trading-ideas/long-ideas/26/10/62692199/jim-cramer-this-tech-stock-has-been-one-of-the-greatest-performers-of-all-time",
+     "published": "2026-10-29T12:17:57Z"
+    },
+    {
+     "score": 0.5,
+     "title": "This Pentair Analyst Is No Longer Bearish; Here Are Top 2 Upgrades For Wednesday",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/analyst-stock-ratings/upgrades/26/10/62665649/this-pentair-analyst-is-no-longer-bearish-here-are-top-2-upgrades-for-wednesday",
+     "published": "2026-10-28T16:54:17Z"
+    }
+   ]
+  },
+  "CVX": {
+   "articles": 7,
+   "sentiment": 0.333,
+   "label": "略偏多",
+   "top": [
+    {
+     "score": -1.0,
+     "title": "Cyclicals Lead Sectors In Wednesday Trading As Real Estate Trails",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/etfs/sector-etfs/26/10/62660436/cyclicals-lead-sectors-in-wednesday-trading-as-real-estate-trails",
+     "published": "2026-10-28T15:00:23Z"
+    },
+    {
+     "score": 1.0,
+     "title": "TotalEnergies Expands US Exploration Footprint With 26 Offshore Leases",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/large-cap/26/10/62660864/totalenergies-expands-us-exploration-footprint-with-26-offshore-leases",
+     "published": "2026-10-28T15:07:37Z"
+    },
+    {
+     "score": 1.0,
+     "title": "Kevin Warsh Admits Rising Oil Prices Are Fueling Inflation Expectations as Trump's Energy Holdings Reportedly Soar 3X Amid Iran War",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/news/politics/26/10/62684420/kevin-warsh-admits-rising-oil-prices-are-fueling-inflation-expectations-as-trumps-energy-holdings-reportedly-soar-3x-amid-iran-war",
+     "published": "2026-10-29T09:11:20Z"
+    }
+   ]
+  },
+  "IWM": {
+   "articles": 2,
+   "sentiment": 0.0,
+   "label": "中性",
+   "top": [
+    {
+     "score": -1.0,
+     "title": "Cyclicals Lead Sectors In Wednesday Trading As Real Estate Trails",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/etfs/sector-etfs/26/10/62660436/cyclicals-lead-sectors-in-wednesday-trading-as-real-estate-trails",
+     "published": "2026-10-28T15:00:23Z"
+    },
+    {
+     "score": 1.0,
+     "title": "SK Hynix, Vertiv Rescue AI Trade As Oil Tops $102 Before Fed: Stock Market Today",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/equities/26/10/62664656/stock-market-today-sk-hynix-vertiv-ai-trade-oil-fed",
+     "published": "2026-10-28T16:30:24Z"
+    }
+   ]
+  },
+  "JNJ": {
+   "articles": 4,
+   "sentiment": 0.0,
+   "label": "中性",
+   "top": [
+    {
+     "score": -1.0,
+     "title": "Cyclicals Lead Sectors In Wednesday Trading As Real Estate Trails",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/etfs/sector-etfs/26/10/62660436/cyclicals-lead-sectors-in-wednesday-trading-as-real-estate-trails",
+     "published": "2026-10-28T15:00:23Z"
+    },
+    {
+     "score": 1.0,
+     "title": "Leerink Partners Maintains Buy Rating on Johnson & Johnson",
+     "source": "fiscal.ai",
+     "url": "https://www.moomoo.com/news/post/1002618350/leerink-partners-maintains-johnson-johnson-jnjus-with-buy-rating-maintains",
+     "published": "2026-10-28T13:31:39Z"
+    },
+    {
+     "score": 0.0,
+     "title": "Johnson & Johnson Sponsors LUNGevity Foundation's 'Every Breath Forward' Initiative",
+     "source": "fiscal.ai",
+     "url": "https://www.prnewswire.com/news-releases/lungevity-foundation-launches-every-breath-forward-to-advance-progress-and-improve-lives-nationwide-302922888.html",
+     "published": "2026-10-29T12:02:01Z"
+    }
+   ]
+  },
+  "JPM": {
+   "articles": 3,
+   "sentiment": -0.333,
+   "label": "略偏空",
+   "top": [
+    {
+     "score": -1.0,
+     "title": "Cyclicals Lead Sectors In Wednesday Trading As Real Estate Trails",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/etfs/sector-etfs/26/10/62660436/cyclicals-lead-sectors-in-wednesday-trading-as-real-estate-trails",
+     "published": "2026-10-28T15:00:23Z"
+    },
+    {
+     "score": 0.0,
+     "title": "JPMorgan Chase's New York Headquarters Valued at Estimated $6 Billion",
+     "source": "fiscal.ai",
+     "url": "https://www.marketscreener.com/news/jpmorgan-chase-s-new-york-headquarters-carries-estimated-6-billion-price-tag-ce785cd2da80f525",
+     "published": "2026-10-28T13:31:42Z"
+    },
+    {
+     "score": 0.0,
+     "title": "Sky News' Mark Kleinman Posts On X \"Exclusive: JPMorgan Chase faces paying an additional sum in the region of £100m-£150m as a result of chancellor John Healey's decision to double the corporation tax surcharge on banks, a possible obstacle to the firm proceeding with its new London headquarters...\"",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/news/26/10/62658603/sky-news-mark-kleinman-posts-x-exclusive-jpmorgan-chase-faces-paying-additional-sum-region-100m-150m",
+     "published": "2026-10-28T14:28:01Z"
+    }
+   ]
+  },
+  "LLY": {
+   "articles": 16,
+   "sentiment": 0.0,
+   "label": "中性",
+   "top": [
+    {
+     "score": -1.0,
+     "title": "Cyclicals Lead Sectors In Wednesday Trading As Real Estate Trails",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/etfs/sector-etfs/26/10/62660436/cyclicals-lead-sectors-in-wednesday-trading-as-real-estate-trails",
+     "published": "2026-10-28T15:00:23Z"
+    },
+    {
+     "score": 1.0,
+     "title": "Amazon, Eli Lilly On Deck Thursday As AWS Growth, Drug Demand Face Test",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/news/26/10/62671513/amazon-eli-lilly-on-deck-thursday-as-aws-growth-drug-demand-face-test",
+     "published": "2026-10-28T19:30:28Z"
+    },
+    {
+     "score": 1.0,
+     "title": "Dow Gains For Third Session Following Fed Decision: Investor Sentiment Improves, Greed Index Remains In ‘Fear’ Zone",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/market-summary/26/10/62682622/dow-gains-for-third-session-following-fed-decision-investor-sentiment-improves-greed-index-remains-in-fear-zone",
+     "published": "2026-10-29T05:33:20Z"
+    }
+   ]
+  },
+  "UNH": {
+   "articles": 2,
+   "sentiment": -0.5,
+   "label": "偏空",
+   "top": [
+    {
+     "score": -1.0,
+     "title": "Cyclicals Lead Sectors In Wednesday Trading As Real Estate Trails",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/etfs/sector-etfs/26/10/62660436/cyclicals-lead-sectors-in-wednesday-trading-as-real-estate-trails",
+     "published": "2026-10-28T15:00:23Z"
+    },
+    {
+     "score": 0.0,
+     "title": "10 Health Care Stocks Whale Activity In Today’s Session",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/options/26/10/62667210/10-health-care-stocks-whale-activity-today-s-session",
+     "published": "2026-10-28T17:35:11Z"
+    }
+   ]
+  },
+  "XLB": {
+   "articles": 1,
+   "sentiment": -1.0,
+   "label": "偏空",
+   "top": [
+    {
+     "score": -1.0,
+     "title": "Cyclicals Lead Sectors In Wednesday Trading As Real Estate Trails",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/etfs/sector-etfs/26/10/62660436/cyclicals-lead-sectors-in-wednesday-trading-as-real-estate-trails",
+     "published": "2026-10-28T15:00:23Z"
+    }
+   ]
+  },
+  "XLC": {
+   "articles": 1,
+   "sentiment": -1.0,
+   "label": "偏空",
+   "top": [
+    {
+     "score": -1.0,
+     "title": "Cyclicals Lead Sectors In Wednesday Trading As Real Estate Trails",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/etfs/sector-etfs/26/10/62660436/cyclicals-lead-sectors-in-wednesday-trading-as-real-estate-trails",
+     "published": "2026-10-28T15:00:23Z"
+    }
+   ]
+  },
+  "XLE": {
+   "articles": 4,
+   "sentiment": 0.5,
+   "label": "偏多",
+   "top": [
+    {
+     "score": -1.0,
+     "title": "Cyclicals Lead Sectors In Wednesday Trading As Real Estate Trails",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/etfs/sector-etfs/26/10/62660436/cyclicals-lead-sectors-in-wednesday-trading-as-real-estate-trails",
+     "published": "2026-10-28T15:00:23Z"
+    },
+    {
+     "score": 1.0,
+     "title": "SK Hynix, Vertiv Rescue AI Trade As Oil Tops $102 Before Fed: Stock Market Today",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/equities/26/10/62664656/stock-market-today-sk-hynix-vertiv-ai-trade-oil-fed",
+     "published": "2026-10-28T16:30:24Z"
+    },
+    {
+     "score": 1.0,
+     "title": "Fed Just Paused, But Prediction Markets Aren't Buying It—Polymarket Sees 82% December Hike Odds",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/prediction-markets/26/10/62669263/fed-december-hike",
+     "published": "2026-10-28T18:31:33Z"
+    }
+   ]
+  },
+  "XLF": {
+   "articles": 2,
+   "sentiment": 0.0,
+   "label": "中性",
+   "top": [
+    {
+     "score": -1.0,
+     "title": "Cyclicals Lead Sectors In Wednesday Trading As Real Estate Trails",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/etfs/sector-etfs/26/10/62660436/cyclicals-lead-sectors-in-wednesday-trading-as-real-estate-trails",
+     "published": "2026-10-28T15:00:23Z"
+    },
+    {
+     "score": 1.0,
+     "title": "Beyond the Fed’s Pause: Savers Win, Borrowers Pay, and Oil Fuels the Dollar",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/economic-data/26/10/62684635/beyond-the-feds-pause-savers-win-borrowers-pay-and-oil-fuels-the-dollar",
+     "published": "2026-10-29T09:36:46Z"
+    }
+   ]
+  },
+  "XLI": {
+   "articles": 1,
+   "sentiment": -1.0,
+   "label": "偏空",
+   "top": [
+    {
+     "score": -1.0,
+     "title": "Cyclicals Lead Sectors In Wednesday Trading As Real Estate Trails",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/etfs/sector-etfs/26/10/62660436/cyclicals-lead-sectors-in-wednesday-trading-as-real-estate-trails",
+     "published": "2026-10-28T15:00:23Z"
+    }
+   ]
+  },
+  "XLK": {
+   "articles": 1,
+   "sentiment": -1.0,
+   "label": "偏空",
+   "top": [
+    {
+     "score": -1.0,
+     "title": "Cyclicals Lead Sectors In Wednesday Trading As Real Estate Trails",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/etfs/sector-etfs/26/10/62660436/cyclicals-lead-sectors-in-wednesday-trading-as-real-estate-trails",
+     "published": "2026-10-28T15:00:23Z"
+    }
+   ]
+  },
+  "XLP": {
+   "articles": 2,
+   "sentiment": -1.0,
+   "label": "偏空",
+   "top": [
+    {
+     "score": -1.0,
+     "title": "Cyclicals Lead Sectors In Wednesday Trading As Real Estate Trails",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/etfs/sector-etfs/26/10/62660436/cyclicals-lead-sectors-in-wednesday-trading-as-real-estate-trails",
+     "published": "2026-10-28T15:00:23Z"
+    },
+    {
+     "score": -1.0,
+     "title": "Forget the Halloween Indicator? 5 ETFs to Consider As ‘Sell in May’ Loses Its Edge",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/etfs/sector-etfs/26/10/62670499/forget-the-halloween-indicator-5-etfs-to-consider-as-sell-in-may-loses-its-edge",
+     "published": "2026-10-28T19:03:11Z"
+    }
+   ]
+  },
+  "XLRE": {
+   "articles": 3,
+   "sentiment": 0.0,
+   "label": "中性",
+   "top": [
+    {
+     "score": -1.0,
+     "title": "Cyclicals Lead Sectors In Wednesday Trading As Real Estate Trails",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/etfs/sector-etfs/26/10/62660436/cyclicals-lead-sectors-in-wednesday-trading-as-real-estate-trails",
+     "published": "2026-10-28T15:00:23Z"
+    },
+    {
+     "score": 1.0,
+     "title": "SK Hynix, Vertiv Rescue AI Trade As Oil Tops $102 Before Fed: Stock Market Today",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/equities/26/10/62664656/stock-market-today-sk-hynix-vertiv-ai-trade-oil-fed",
+     "published": "2026-10-28T16:30:24Z"
+    },
+    {
+     "score": 0.0,
+     "title": "Fed Holds Rate at 3.75%-4%, Two Officials Push for a Hike (UPDATED)",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/news/macro-notification/26/10/62668427/fed-meeting-interest-rate-decision-fomc-october-2026",
+     "published": "2026-10-28T18:40:45Z"
+    }
+   ]
+  },
+  "XLU": {
+   "articles": 1,
+   "sentiment": -1.0,
+   "label": "偏空",
+   "top": [
+    {
+     "score": -1.0,
+     "title": "Cyclicals Lead Sectors In Wednesday Trading As Real Estate Trails",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/etfs/sector-etfs/26/10/62660436/cyclicals-lead-sectors-in-wednesday-trading-as-real-estate-trails",
+     "published": "2026-10-28T15:00:23Z"
+    }
+   ]
+  },
+  "XLV": {
+   "articles": 2,
+   "sentiment": 0.0,
+   "label": "中性",
+   "top": [
+    {
+     "score": -1.0,
+     "title": "Cyclicals Lead Sectors In Wednesday Trading As Real Estate Trails",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/etfs/sector-etfs/26/10/62660436/cyclicals-lead-sectors-in-wednesday-trading-as-real-estate-trails",
+     "published": "2026-10-28T15:00:23Z"
+    },
+    {
+     "score": 1.0,
+     "title": "SK Hynix, Vertiv Rescue AI Trade As Oil Tops $102 Before Fed: Stock Market Today",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/equities/26/10/62664656/stock-market-today-sk-hynix-vertiv-ai-trade-oil-fed",
+     "published": "2026-10-28T16:30:24Z"
+    }
+   ]
+  },
+  "XLY": {
+   "articles": 2,
+   "sentiment": -0.5,
+   "label": "偏空",
+   "top": [
+    {
+     "score": -1.0,
+     "title": "Cyclicals Lead Sectors In Wednesday Trading As Real Estate Trails",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/etfs/sector-etfs/26/10/62660436/cyclicals-lead-sectors-in-wednesday-trading-as-real-estate-trails",
+     "published": "2026-10-28T15:00:23Z"
+    },
+    {
+     "score": 0.0,
+     "title": "Auxly Announces Third Quarter 2026 Financial Results Conference Call",
+     "source": "fiscal.ai",
+     "url": "https://www.morningstar.com/news/pr-newswire/20261028va82192/auxly-to-report-third-quarter-2026-financial-results-on-november-12-2026",
+     "published": "2026-10-28T13:03:14Z"
+    }
+   ]
+  },
+  "XOM": {
+   "articles": 4,
+   "sentiment": 0.083,
+   "label": "中性",
+   "top": [
+    {
+     "score": -1.0,
+     "title": "Cyclicals Lead Sectors In Wednesday Trading As Real Estate Trails",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/etfs/sector-etfs/26/10/62660436/cyclicals-lead-sectors-in-wednesday-trading-as-real-estate-trails",
+     "published": "2026-10-28T15:00:23Z"
+    },
+    {
+     "score": 1.0,
+     "title": "Kevin Warsh Admits Rising Oil Prices Are Fueling Inflation Expectations as Trump's Energy Holdings Reportedly Soar 3X Amid Iran War",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/news/politics/26/10/62684420/kevin-warsh-admits-rising-oil-prices-are-fueling-inflation-expectations-as-trumps-energy-holdings-reportedly-soar-3x-amid-iran-war",
+     "published": "2026-10-29T09:11:20Z"
+    },
+    {
+     "score": 0.333,
+     "title": "Top 3 Energy Stocks You May Want To Dump In Q4",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/trading-ideas/short-ideas/26/10/62694114/top-3-energy-stocks-you-may-want-to-dump-in-q4-2",
+     "published": "2026-10-29T12:57:27Z"
+    }
+   ]
+  },
+  "ANET": {
+   "articles": 1,
+   "sentiment": 0.0,
+   "label": "中性",
+   "top": [
+    {
+     "score": 0.0,
+     "title": "Options Technology Integrates Arista Networks' EOS into AtlasVision Platform",
+     "source": "fiscal.ai",
+     "url": "https://natlawreview.com/press-releases/options-technology-announces-major-upgrade-its-global-layer-1-switching",
+     "published": "2026-10-28T15:01:31Z"
+    }
+   ]
+  },
+  "IBM": {
+   "articles": 3,
+   "sentiment": 0.0,
+   "label": "中性",
+   "top": [
+    {
+     "score": 0.0,
+     "title": "USTA and IBM Announce Five-Year Renewal of Longstanding Partnership",
+     "source": "fiscal.ai",
+     "url": "https://www.prnewswire.com/news-releases/usta-and-ibm-announce-five-year-renewal-of-longstanding-partnership-302922203.html",
+     "published": "2026-10-28T15:01:47Z"
+    },
+    {
+     "score": 0.0,
+     "title": "Why Can't Bitcoin Break $80,000? Kevin O'Leary Points To Two Reasons",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/crypto/cryptocurrency/26/10/62671474/why-cant-bitcoin-break-80000-kevin-oleary-points-to-two-reasons",
+     "published": "2026-10-28T19:29:28Z"
+    },
+    {
+     "score": 0.0,
+     "title": "IBM Launches Agent Identity Security Solution",
+     "source": "fiscal.ai",
+     "url": "https://www.tradingview.com/news/gurufocus:a19b264a9094b:0-ibm-stocks-edge-higher-with-new-ai-agent-controls/",
+     "published": "2026-10-29T02:01:56Z"
+    }
+   ]
+  },
+  "DHR": {
+   "articles": 3,
+   "sentiment": 0.0,
+   "label": "中性",
+   "top": [
+    {
+     "score": 0.0,
+     "title": "Evercore ISI Adjusts Price Target on Danaher to $205 From $242",
+     "source": "fiscal.ai",
+     "url": "https://www.marketscreener.com/news/evercore-isi-adjusts-price-target-on-danaher-to-205-from-242-ce785cd2df80f021",
+     "published": "2026-10-28T15:02:02Z"
+    },
+    {
+     "score": 0.0,
+     "title": "Genedata Launches New Electronic Lab Notebook Integrated into Its Platform",
+     "source": "fiscal.ai",
+     "url": "https://www.prnewswire.com/news-releases/genedata-launches-fully-integrated-electronic-lab-notebook-to-help-biopharma-rd-teams-move-faster-302922550.html",
+     "published": "2026-10-28T20:31:42Z"
+    },
+    {
+     "score": 0.0,
+     "title": "Danaher Officer Files Form 144 for Stock Sale",
+     "source": "fiscal.ai",
+     "url": "https://www.moomoo.com/news/flash/1002684986/form-144-danaher-dhrus-officer-proposes-to-sell-7-01",
+     "published": "2026-10-29T02:01:53Z"
+    }
+   ]
+  },
+  "TSLA": {
+   "articles": 13,
+   "sentiment": 0.154,
+   "label": "略偏多",
+   "top": [
+    {
+     "score": -1.0,
+     "title": "GOOGL Stock Headed for Worst Single-Day Decline in Over Six Years as Waymo, Other Bets Widens Q3 Loss to Over $2 Billion",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/earnings/26/10/62683676/googl-stock-headed-for-worst-single-day-decline-in-over-six-years-as-waymo-other-bets-widens-q3-loss-to-over-2-billion",
+     "published": "2026-10-29T07:50:48Z"
+    },
+    {
+     "score": 1.0,
+     "title": "STMicroelectronics Lifts Forecast Thanks To Data Center Revenue Growth",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/earnings/26/10/62692828/stmicroelectronics-lifts-forecast-thanks-to-data-center-revenue-growth",
+     "published": "2026-10-29T12:32:24Z"
+    },
+    {
+     "score": 1.0,
+     "title": "CFTC Approves Rothera to List KPI Swaps Tied to Tesla Performance",
+     "source": "fiscal.ai",
+     "url": "https://www.prnewswire.com/news-releases/rothera-receives-cftc-approval-for-first-kpi-swap-302922230.html",
+     "published": "2026-10-28T18:01:25Z"
+    }
+   ]
+  },
+  "GLW": {
+   "articles": 3,
+   "sentiment": 0.333,
+   "label": "略偏多",
+   "top": [
+    {
+     "score": 1.0,
+     "title": "Barclays Maintains Equal-Weight on Corning, Raises Price Target to $132",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/news/26/10/62662098/barclays-maintains-equal-weight-corning-raises-price-target-132",
+     "published": "2026-10-28T15:33:38Z"
+    },
+    {
+     "score": 0.0,
+     "title": "Truist Securities Reiterates Buy on Corning, Lowers Price Target to $175",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/news/26/10/62665703/truist-securities-reiterates-buy-corning-lowers-price-target-175",
+     "published": "2026-10-28T16:55:58Z"
+    },
+    {
+     "score": 0.0,
+     "title": "UBS Maintains Buy on Corning, Lowers Price Target to $192",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/news/26/10/62679828/ubs-maintains-buy-corning-lowers-price-target-192",
+     "published": "2026-10-28T21:42:13Z"
+    }
+   ]
+  },
+  "KLAC": {
+   "articles": 13,
+   "sentiment": 0.077,
+   "label": "中性",
+   "top": [
+    {
+     "score": 1.0,
+     "title": "SK Hynix, Vertiv Rescue AI Trade As Oil Tops $102 Before Fed: Stock Market Today",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/equities/26/10/62664656/stock-market-today-sk-hynix-vertiv-ai-trade-oil-fed",
+     "published": "2026-10-28T16:30:24Z"
+    },
+    {
+     "score": -1.0,
+     "title": "Stock Market Today: Dow Jones, S&P 500, Nasdaq 100 Futures Drop After Fed Keeps Rates Unchanged — MSFT, GOOG, TMUS in Focus (UPDATED)",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/equities/26/10/62684592/stock-market-today-dow-jones-sp-500-futures-trade-mixed-after-fed-keeps-rates-unchanged-msft-goog-tmus-in-focus",
+     "published": "2026-10-29T12:41:48Z"
+    },
+    {
+     "score": 1.0,
+     "title": "KLA Q1 Adj. EPS $1.22 Beats $1.18 Estimate, Sales $4.136B Beat $4.039B Estimate",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/news/earnings/26/10/62673520/kla-q1-adj-eps-1-22-beats-1-18-estimate-sales-4-136b-beat-4-039b-estimate",
+     "published": "2026-10-28T20:07:18Z"
+    }
+   ]
+  },
+  "MU": {
+   "articles": 6,
+   "sentiment": 0.5,
+   "label": "偏多",
+   "top": [
+    {
+     "score": 1.0,
+     "title": "SK Hynix, Vertiv Rescue AI Trade As Oil Tops $102 Before Fed: Stock Market Today",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/equities/26/10/62664656/stock-market-today-sk-hynix-vertiv-ai-trade-oil-fed",
+     "published": "2026-10-28T16:30:24Z"
+    },
+    {
+     "score": 1.0,
+     "title": "Micron Stock Gains as SK Hynix Reports Record Revenue Above 100 Trillion Won",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/trading-ideas/movers/26/10/62657416/micron-stock-gains-as-sk-hynix-reports-record-revenue-above-100-trillion-won",
+     "published": "2026-10-28T14:07:56Z"
+    },
+    {
+     "score": 1.0,
+     "title": "Sandisk Stock Jumps 4% As AI Memory Demand Heats Up Ahead of Earnings",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/tech/26/10/62659916/sandisk-stock-jumps-4-as-ai-memory-demand-heats-up-ahead-of-earnings",
+     "published": "2026-10-28T14:53:16Z"
+    }
+   ]
+  },
+  "SMH": {
+   "articles": 2,
+   "sentiment": 0.5,
+   "label": "偏多",
+   "top": [
+    {
+     "score": 1.0,
+     "title": "SK Hynix, Vertiv Rescue AI Trade As Oil Tops $102 Before Fed: Stock Market Today",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/equities/26/10/62664656/stock-market-today-sk-hynix-vertiv-ai-trade-oil-fed",
+     "published": "2026-10-28T16:30:24Z"
+    },
+    {
+     "score": 0.0,
+     "title": "Fed Holds Rate at 3.75%-4%, Two Officials Push for a Hike (UPDATED)",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/news/macro-notification/26/10/62668427/fed-meeting-interest-rate-decision-fomc-october-2026",
+     "published": "2026-10-28T18:40:45Z"
+    }
+   ]
+  },
+  "SNDK": {
+   "articles": 6,
+   "sentiment": 0.667,
+   "label": "偏多",
+   "top": [
+    {
+     "score": 1.0,
+     "title": "SK Hynix, Vertiv Rescue AI Trade As Oil Tops $102 Before Fed: Stock Market Today",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/equities/26/10/62664656/stock-market-today-sk-hynix-vertiv-ai-trade-oil-fed",
+     "published": "2026-10-28T16:30:24Z"
+    },
+    {
+     "score": 1.0,
+     "title": "Amazon, Eli Lilly On Deck Thursday As AWS Growth, Drug Demand Face Test",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/news/26/10/62671513/amazon-eli-lilly-on-deck-thursday-as-aws-growth-drug-demand-face-test",
+     "published": "2026-10-28T19:30:28Z"
+    },
+    {
+     "score": 1.0,
+     "title": "Sandisk Stock Jumps 4% As AI Memory Demand Heats Up Ahead of Earnings",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/tech/26/10/62659916/sandisk-stock-jumps-4-as-ai-memory-demand-heats-up-ahead-of-earnings",
+     "published": "2026-10-28T14:53:16Z"
+    }
+   ]
+  },
+  "VRT": {
+   "articles": 9,
+   "sentiment": 0.593,
+   "label": "偏多",
+   "top": [
+    {
+     "score": 1.0,
+     "title": "SK Hynix, Vertiv Rescue AI Trade As Oil Tops $102 Before Fed: Stock Market Today",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/equities/26/10/62664656/stock-market-today-sk-hynix-vertiv-ai-trade-oil-fed",
+     "published": "2026-10-28T16:30:24Z"
+    },
+    {
+     "score": 1.0,
+     "title": "Dow Gains For Third Session Following Fed Decision: Investor Sentiment Improves, Greed Index Remains In ‘Fear’ Zone",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/market-summary/26/10/62682622/dow-gains-for-third-session-following-fed-decision-investor-sentiment-improves-greed-index-remains-in-fear-zone",
+     "published": "2026-10-29T05:33:20Z"
+    },
+    {
+     "score": -1.0,
+     "title": "Stock Market: Will S&P 500 Open Up or Down Today?",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/prediction-markets/26/10/62682843/stock-market-will-sp-500-open-up-or-down-today-68",
+     "published": "2026-10-29T06:04:17Z"
+    }
+   ]
+  },
+  "CRWD": {
+   "articles": 5,
+   "sentiment": -0.1,
+   "label": "中性",
+   "top": [
+    {
+     "score": -1.0,
+     "title": "Cybersecurity Stocks Drop After Hours: Here's Why",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/trading-ideas/movers/26/10/62679877/cybersecurity-stocks-drop-after-hours-heres-why",
+     "published": "2026-10-28T21:43:46Z"
+    },
+    {
+     "score": 1.0,
+     "title": "CrowdStrike Releases 2026 Legal Threat Landscape Report",
+     "source": "fiscal.ai",
+     "url": "https://natlawreview.com/press-releases/crowdstrike-2026-legal-threat-landscape-report-cybercriminals-blur-digital",
+     "published": "2026-10-28T23:01:30Z"
+    },
+    {
+     "score": -0.5,
+     "title": "Why Is Fortinet Stock Falling Thursday?",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/trading-ideas/movers/26/10/62690238/why-is-fortinet-stock-falling-thursday",
+     "published": "2026-10-29T11:41:50Z"
+    }
+   ]
+  },
+  "CRWV": {
+   "articles": 6,
+   "sentiment": -0.167,
+   "label": "略偏空",
+   "top": [
+    {
+     "score": 1.0,
+     "title": "Galaxy Stock Jumps Wednesday: What's Going On?",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/trading-ideas/movers/26/10/62667163/galaxy-stock-jumps-wednesday-whats-going-on",
+     "published": "2026-10-28T17:34:38Z"
+    },
+    {
+     "score": -1.0,
+     "title": "Fed's Warsh Falls Short of Calling a December Hike: The Market Is Doing It for Him",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/macro-economic-events/26/10/62672193/warsh-december-hike-bond-market-tightening-credit-spreads",
+     "published": "2026-10-28T19:49:20Z"
+    },
+    {
+     "score": 1.0,
+     "title": "QUICK SPARK: CoreWeave Stock Soars 7% as Fed Holds Rates Steady, Warsh Fails to Signal a December Hike",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/equities/26/10/62676195/coreweave-stock-soars-fed-holds-warsh-december-hike",
+     "published": "2026-10-28T20:27:30Z"
+    }
+   ]
+  },
+  "NBIS": {
+   "articles": 3,
+   "sentiment": 0.0,
+   "label": "中性",
+   "top": [
+    {
+     "score": -1.0,
+     "title": "GOOGL, MSFT AI Capex Worries Hammer Neocloud Stocks: CRWV, NBIS, IREN, APLD Give Up Best Week in Over 2 Months",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/equities/26/10/62691867/googl-msft-q3-results-capex-crwv-nbis-iren-apld-stocks-fall",
+     "published": "2026-10-29T12:10:58Z"
+    },
+    {
+     "score": 1.0,
+     "title": "Nebius Group Secures Funding for France Data Center",
+     "source": "fiscal.ai",
+     "url": "https://www.streetinsider.com/news.php?id=27244124&classic=1",
+     "published": "2026-10-28T13:02:18Z"
+    },
+    {
+     "score": 0.0,
+     "title": "10 Information Technology Stocks Whale Activity In Today’s Session",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/options/26/10/62667208/10-information-technology-stocks-whale-activity-today-s-session",
+     "published": "2026-10-28T17:35:11Z"
+    }
+   ]
+  },
+  "PLTR": {
+   "articles": 5,
+   "sentiment": 0.0,
+   "label": "中性",
+   "top": [
+    {
+     "score": 0.0,
+     "title": "10 Information Technology Stocks Whale Activity In Today’s Session",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/options/26/10/62667208/10-information-technology-stocks-whale-activity-today-s-session",
+     "published": "2026-10-28T17:35:11Z"
+    },
+    {
+     "score": 0.0,
+     "title": "BMO Asset Management Launches BMO Autocallable Income Palantir ETF",
+     "source": "fiscal.ai",
+     "url": "https://www.newswire.ca/fr/news-releases/bmo-launches-canada-s-first-single-stock-autocallable-income-etfs-880304531.html",
+     "published": "2026-10-28T15:01:26Z"
+    },
+    {
+     "score": 0.0,
+     "title": "Why Is Palantir Stock Falling on Wednesday?",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/trading-ideas/movers/26/10/62667544/why-is-palantir-stock-falling-on-wednesday-3",
+     "published": "2026-10-28T17:42:59Z"
+    }
+   ]
+  },
+  "T": {
+   "articles": 2,
+   "sentiment": 0.0,
+   "label": "中性",
+   "top": [
+    {
+     "score": 0.0,
+     "title": "10 Communication Services Stocks Whale Activity In Today’s Session",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/options/26/10/62667211/10-communication-services-stocks-whale-activity-today-s-session",
+     "published": "2026-10-28T17:35:11Z"
+    },
+    {
+     "score": 0.0,
+     "title": "ATB Cormark Capital Markets Adjusts TELUS Target Price",
+     "source": "fiscal.ai",
+     "url": "https://www.moomoo.com/news/post/1002618336/atb-cormark-capital-markets-maintains-telus-tuus-with-hold-rating",
+     "published": "2026-10-28T13:32:08Z"
+    }
+   ]
+  },
+  "DELL": {
+   "articles": 3,
+   "sentiment": 0.333,
+   "label": "略偏多",
+   "top": [
+    {
+     "score": 1.0,
+     "title": "Dell Technologies Expands AI-Focused Cybersecurity and PC Offerings",
+     "source": "fiscal.ai",
+     "url": "https://www.barchart.com/story/news/8500234/what-you-need-to-know-ahead-of-dell-technologies-earnings-release",
+     "published": "2026-10-28T23:01:41Z"
+    },
+    {
+     "score": 0.0,
+     "title": "Dell Technologies Joins Pushback Against OKX-ICE Tokenized Stock Trading Plan",
+     "source": "fiscal.ai",
+     "url": "https://www.moomoo.com/news/post/1002660739/jpmorgan-coca-cola-dell-also-say-no-to-okx-ice",
+     "published": "2026-10-28T18:01:42Z"
+    },
+    {
+     "score": 0.0,
+     "title": "Dell Technologies Reportedly Evaluating PC Manufacturing Strategy",
+     "source": "fiscal.ai",
+     "url": "https://www.moomoo.com/options/DELL261030P550000-US/news?chain_id=Name1K9-3FXPhg.1l1ka40&global_content=%7B%22promote_id%22%3A13764,%22sub_promote_id%22%3A57,%22f%22%3A%22www.moomoo.com%2Fstock%2F8923-BMS%22%7D",
+     "published": "2026-10-29T02:03:28Z"
+    }
+   ]
+  },
+  "MSTR": {
+   "articles": 3,
+   "sentiment": 0.333,
+   "label": "略偏多",
+   "top": [
+    {
+     "score": 1.0,
+     "title": "Amazon, Eli Lilly On Deck Thursday As AWS Growth, Drug Demand Face Test",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/news/26/10/62671513/amazon-eli-lilly-on-deck-thursday-as-aws-growth-drug-demand-face-test",
+     "published": "2026-10-28T19:30:28Z"
+    },
+    {
+     "score": 0.0,
+     "title": "Scaramucci Calls Elizabeth Warren ‘the Joke of Jokes,’ Accuses Her of Echoing Bank Lobbyists",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/crypto/cryptocurrency/26/10/62657897/scaramucci-calls-elizabeth-warren-the-joke-of-jokes-accuses-her-of-echoing-bank-lobbyists",
+     "published": "2026-10-28T14:15:37Z"
+    },
+    {
+     "score": 0.0,
+     "title": "Bitcoin, Ethereum, Dogecoin Gain, but XRP Falls as Kevin Warsh-Led Fed Holds Rates Steady: Analyst Puts $95,000 Bitcoin on the Table for Q4",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/crypto/cryptocurrency/26/10/62681984/bitcoin-ethereum-xrp-dogecoin-crypto-market-recap-3",
+     "published": "2026-10-29T01:58:02Z"
+    }
+   ]
+  },
+  "NOW": {
+   "articles": 21,
+   "sentiment": -0.143,
+   "label": "中性",
+   "top": [
+    {
+     "score": -1.0,
+     "title": "Why Is ServiceNow Stock Sinking Thursday?",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/tech/26/10/62687315/why-is-servicenow-stock-sinking-thursday",
+     "published": "2026-10-29T10:48:02Z"
+    },
+    {
+     "score": -1.0,
+     "title": "ServiceNow Posts Downbeat Q3 Earnings, Joins Sprouts Farmers Market, Alphabet And Other Big Stocks Moving Lower In Thursday’s Pre-Market Session",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/trading-ideas/movers/26/10/62691088/servicenow-posts-downbeat-q3-earnings-joins-sprouts-farmers-market-alphabet-and-other-big-stocks-moving-lower-in-thursdays-pre-market-session",
+     "published": "2026-10-29T12:01:13Z"
+    },
+    {
+     "score": -1.0,
+     "title": "ServiceNow Slips Ahead of AI-Heavy Earnings, What Is Going On?",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/tech/26/10/62661997/servicenow-slips-ahead-of-ai-heavy-earnings-what-is-going-on",
+     "published": "2026-10-28T15:31:26Z"
+    }
+   ]
+  },
+  "CSCO": {
+   "articles": 3,
+   "sentiment": -0.333,
+   "label": "略偏空",
+   "top": [
+    {
+     "score": -1.0,
+     "title": "Why Is ServiceNow Stock Sinking Thursday?",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/tech/26/10/62687315/why-is-servicenow-stock-sinking-thursday",
+     "published": "2026-10-29T10:48:02Z"
+    },
+    {
+     "score": 0.0,
+     "title": "NTT DATA and Cisco Collaborate on AI Factory Infrastructure",
+     "source": "fiscal.ai",
+     "url": "https://datacentremagazine.com/news/ntt-data-expands-ai-factory-footprint-with-cisco-and-nvidia",
+     "published": "2026-10-28T20:31:36Z"
+    },
+    {
+     "score": 0.0,
+     "title": "Cisco Announces 2026 Partner Summit Award Winners",
+     "source": "fiscal.ai",
+     "url": "https://natlawreview.com/press-releases/world-wide-technology-and-softchoice-win-global-one-cisco-partner-year-and",
+     "published": "2026-10-28T21:31:43Z"
+    }
+   ]
+  },
+  "BE": {
+   "articles": 1,
+   "sentiment": 0.0,
+   "label": "中性",
+   "top": [
+    {
+     "score": 0.0,
+     "title": "Koses Extends Equipment Supply Contract with Bloom Energy",
+     "source": "fiscal.ai",
+     "url": "https://www.moomoo.com/stock/BE-US/news?chain_id=Name1K9-3FXPhg.1le2eo0&global_content=%7B%22promote_id%22%3A%2213764%22,%22sub_promote_id%22%3A%2280%22,%22f%22%3A%22www.moomoo.com%2Fus%2Fhans%2Flearn%2Fdetail-options-and-futures-117282-240763069%22%7D",
+     "published": "2026-10-28T20:32:20Z"
+    }
+   ]
+  },
+  "PANW": {
+   "articles": 4,
+   "sentiment": -0.375,
+   "label": "偏空",
+   "top": [
+    {
+     "score": -1.0,
+     "title": "Cybersecurity Stocks Drop After Hours: Here's Why",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/trading-ideas/movers/26/10/62679877/cybersecurity-stocks-drop-after-hours-heres-why",
+     "published": "2026-10-28T21:43:46Z"
+    },
+    {
+     "score": -0.5,
+     "title": "Why Is Fortinet Stock Falling Thursday?",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/trading-ideas/movers/26/10/62690238/why-is-fortinet-stock-falling-thursday",
+     "published": "2026-10-29T11:41:50Z"
+    },
+    {
+     "score": 0.0,
+     "title": "Palo Alto Networks Addresses Active Exploitation of PAN-OS Management Interfaces",
+     "source": "fiscal.ai",
+     "url": "https://tecnologiageek.com/php2shell-palo-alto-networks/",
+     "published": "2026-10-29T10:31:37Z"
+    }
+   ]
+  },
+  "COHR": {
+   "articles": 2,
+   "sentiment": 0.5,
+   "label": "偏多",
+   "top": [
+    {
+     "score": 1.0,
+     "title": "Lumentum Stock Soars 17% on Marvell Takeover Talk",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/m-a/26/10/62680188/lumentum-stock-soars-17-on-marvell-takeover-talk",
+     "published": "2026-10-28T21:55:11Z"
+    },
+    {
+     "score": 0.0,
+     "title": "Lumentum Stock Lights Up Thursday: What's Going On?",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/trading-ideas/movers/26/10/62687945/lumentum-stock-lights-up-thursday-whats-going-on",
+     "published": "2026-10-29T11:00:23Z"
+    }
+   ]
+  },
+  "LITE": {
+   "articles": 7,
+   "sentiment": 0.0,
+   "label": "中性",
+   "top": [
+    {
+     "score": 1.0,
+     "title": "Lumentum Stock Soars 17% on Marvell Takeover Talk",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/m-a/26/10/62680188/lumentum-stock-soars-17-on-marvell-takeover-talk",
+     "published": "2026-10-28T21:55:11Z"
+    },
+    {
+     "score": -1.0,
+     "title": "ServiceNow Posts Downbeat Q3 Earnings, Joins Sprouts Farmers Market, Alphabet And Other Big Stocks Moving Lower In Thursday’s Pre-Market Session",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/trading-ideas/movers/26/10/62691088/servicenow-posts-downbeat-q3-earnings-joins-sprouts-farmers-market-alphabet-and-other-big-stocks-moving-lower-in-thursdays-pre-market-session",
+     "published": "2026-10-29T12:01:13Z"
+    },
+    {
+     "score": 0.0,
+     "title": "Alphabet, Microsoft, ServiceNow, Lumentum Holdings and Oracle: Why These 5 Stocks Are on Investors' Radars Today",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/equities/26/10/62681846/alphabet-microsoft-servicenow-lumentum-holdings-and-oracle-why-these-5-stocks-are-on-investors-radars-today",
+     "published": "2026-10-29T01:08:43Z"
+    }
+   ]
+  },
+  "MRVL": {
+   "articles": 7,
+   "sentiment": 0.0,
+   "label": "中性",
+   "top": [
+    {
+     "score": 1.0,
+     "title": "Lumentum Stock Soars 17% on Marvell Takeover Talk",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/m-a/26/10/62680188/lumentum-stock-soars-17-on-marvell-takeover-talk",
+     "published": "2026-10-28T21:55:11Z"
+    },
+    {
+     "score": -1.0,
+     "title": "ServiceNow Posts Downbeat Q3 Earnings, Joins Sprouts Farmers Market, Alphabet And Other Big Stocks Moving Lower In Thursday’s Pre-Market Session",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/trading-ideas/movers/26/10/62691088/servicenow-posts-downbeat-q3-earnings-joins-sprouts-farmers-market-alphabet-and-other-big-stocks-moving-lower-in-thursdays-pre-market-session",
+     "published": "2026-10-29T12:01:13Z"
+    },
+    {
+     "score": 0.0,
+     "title": "Lumentum Stock Lights Up Thursday: What's Going On?",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/trading-ideas/movers/26/10/62687945/lumentum-stock-lights-up-thursday-whats-going-on",
+     "published": "2026-10-29T11:00:23Z"
+    }
+   ]
+  },
+  "ADI": {
+   "articles": 1,
+   "sentiment": 0.0,
+   "label": "中性",
+   "top": [
+    {
+     "score": 0.0,
+     "title": "Analog Devices Adopts ChipAgents AI Platform for Semiconductor Design",
+     "source": "fiscal.ai",
+     "url": "https://ittech-pulse.com/news/chipagents-agentic-ai-digital-analog-chip-design/",
+     "published": "2026-10-28T23:01:35Z"
+    }
+   ]
+  },
+  "AMAT": {
+   "articles": 1,
+   "sentiment": 0.0,
+   "label": "中性",
+   "top": [
+    {
+     "score": 0.0,
+     "title": "If You Invested $1000 In Applied Materials Stock 15 Years Ago, You Would Have This Much Today",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/news/26/10/62681300/if-you-invested-1000-applied-materials-stock-15-years-ago-you-would-have-much-today",
+     "published": "2026-10-28T23:15:18Z"
+    }
+   ]
+  },
+  "TSM": {
+   "articles": 2,
+   "sentiment": 0.0,
+   "label": "中性",
+   "top": [
+    {
+     "score": 0.0,
+     "title": "Cathie Wood Piles Into Archer, Joby for Third Straight Day as Ark Dumps AMD, TSMC Shares",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/etfs/broad-u-s-equity-etfs/26/10/62682081/cathie-wood-ark-buys-archer-joby-sells-amd-tsmc",
+     "published": "2026-10-29T02:27:04Z"
+    },
+    {
+     "score": 0.0,
+     "title": "TSMC to Acquire Property from AUO for NT$38.8 Billion",
+     "source": "fiscal.ai",
+     "url": "https://www.marketscreener.com/news/tsmc-to-buy-property-from-auo-worth-nt-38-8-billion-ce785cd3de88f521",
+     "published": "2026-10-29T11:01:55Z"
+    }
+   ]
+  },
+  "ASML": {
+   "articles": 1,
+   "sentiment": 0.143,
+   "label": "中性",
+   "top": [
+    {
+     "score": 0.143,
+     "title": "Samsung Stock Drops 6% in Seoul as Record Profit Narrowly Misses Analyst Estimates, Memory Supply Seen Tightening in 2027",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/earnings/26/10/62682254/samsung-profit-jumps-nearly-ninefold-misses-estimates-stock-falls",
+     "published": "2026-10-29T03:15:14Z"
+    }
+   ]
+  },
+  "SHOP": {
+   "articles": 4,
+   "sentiment": 0.0,
+   "label": "中性",
+   "top": [
+    {
+     "score": 1.0,
+     "title": "Citigroup Maintains Buy on Shopify, Raises Price Target to $216",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/news/26/10/62677711/citigroup-maintains-buy-shopify-raises-price-target-216",
+     "published": "2026-10-28T20:46:53Z"
+    },
+    {
+     "score": -1.0,
+     "title": "Shopify Unveils New Features in Fall '26 Edition",
+     "source": "fiscal.ai",
+     "url": "https://smallbiztrends.com/shopify-unveils-new-features-empowering-entrepreneurs-through-collective-insight/",
+     "published": "2026-10-29T10:31:45Z"
+    },
+    {
+     "score": 0.0,
+     "title": "Shopify CEO Doesn't Trust the AI Cloud With His Data — So He Built a Server in His Wine Cellar",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/markets/tech/26/10/62687674/shopify-ceo-doesnt-trust-the-ai-cloud-with-his-data-so-he-built-a-server-in-his-wine-cellar",
+     "published": "2026-10-29T10:56:50Z"
+    }
+   ]
+  },
+  "KO": {
+   "articles": 10,
+   "sentiment": 0.7,
+   "label": "偏多",
+   "top": [
+    {
+     "score": -1.0,
+     "title": "Jim Cramer: This Tech Stock Has Been ‘One of the Greatest Performers of All Time’",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/trading-ideas/long-ideas/26/10/62692199/jim-cramer-this-tech-stock-has-been-one-of-the-greatest-performers-of-all-time",
+     "published": "2026-10-29T12:17:57Z"
+    },
+    {
+     "score": 1.0,
+     "title": "Wells Fargo Maintains Overweight on Coca-Cola, Raises Price Target to $100",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/news/26/10/62653838/wells-fargo-maintains-overweight-coca-cola-raises-price-target-100",
+     "published": "2026-10-28T13:13:05Z"
+    },
+    {
+     "score": 1.0,
+     "title": "UBS Adjusts Price Target on Coca-Cola to $106 From $104, Maintains Buy Rating",
+     "source": "fiscal.ai",
+     "url": "https://www.marketscreener.com/news/ubs-adjusts-price-target-on-coca-cola-to-106-from-104-maintains-buy-rating-ce785cd2de8bf220",
+     "published": "2026-10-28T15:01:39Z"
+    }
+   ]
+  },
+  "SPOT": {
+   "articles": 2,
+   "sentiment": 0.0,
+   "label": "中性",
+   "top": [
+    {
+     "score": 0.0,
+     "title": "President Capital Management Downgrades Spotify Technology to Neutral From Buy",
+     "source": "fiscal.ai",
+     "url": "https://www.marketscreener.com/news/president-capital-management-downgrades-spotify-technology-to-neutral-from-buy-price-target-is-608-ce785cd2dc8df620",
+     "published": "2026-10-28T13:01:42Z"
+    },
+    {
+     "score": 0.0,
+     "title": "Spotify Launches 'Spotify 360' Premium Experience",
+     "source": "fiscal.ai",
+     "url": "https://www.manilatimes.net/2026/10/29/entertainment-lifestyle/show-times/spotify-gives-arthur-nerys-binhis-an-intimate-live-experience/2456185",
+     "published": "2026-10-28T16:31:56Z"
+    }
+   ]
+  },
+  "SOFI": {
+   "articles": 6,
+   "sentiment": 0.667,
+   "label": "偏多",
+   "top": [
+    {
+     "score": 1.0,
+     "title": "Wells Fargo Maintains Equal-Weight on SoFi Technologies, Raises Price Target to $18",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/news/26/10/62654162/wells-fargo-maintains-equal-weight-sofi-technologies-raises-price-target-18",
+     "published": "2026-10-28T13:17:58Z"
+    },
+    {
+     "score": 1.0,
+     "title": "StoneX Maintains Buy on SoFi Technologies, Raises Price Target to $27",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/news/26/10/62659015/stonex-maintains-buy-sofi-technologies-raises-price-target-27",
+     "published": "2026-10-28T14:36:31Z"
+    },
+    {
+     "score": 1.0,
+     "title": "Scotiabank Maintains Sector Outperform on SoFi Technologies, Raises Price Target to $26",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/news/26/10/62665953/scotiabank-maintains-sector-outperform-sofi-technologies-raises-price-target-26",
+     "published": "2026-10-28T17:00:54Z"
+    }
+   ]
+  },
+  "PG": {
+   "articles": 1,
+   "sentiment": 1.0,
+   "label": "偏多",
+   "top": [
+    {
+     "score": 1.0,
+     "title": "Berenberg Raises Price Target on Procter & Gamble",
+     "source": "fiscal.ai",
+     "url": "https://www.moomoo.com/hans/news/post/1002657611/berenberg-lifts-price-target-on-procter-gamble-to-151-from",
+     "published": "2026-10-28T13:31:41Z"
+    }
+   ]
+  },
+  "TMO": {
+   "articles": 2,
+   "sentiment": 0.5,
+   "label": "偏多",
+   "top": [
+    {
+     "score": 1.0,
+     "title": "15-year-old wins top award at 2026 Thermo Fisher Scientific Junior Innovators Challenge",
+     "source": "fiscal.ai",
+     "url": "https://rss.globenewswire.com/news/heathcare",
+     "published": "2026-10-28T13:31:46Z"
+    },
+    {
+     "score": 0.0,
+     "title": "Evercore ISI Adjusts Thermo Fisher Scientific Price Target",
+     "source": "fiscal.ai",
+     "url": "https://www.marketscreener.com/news/evercore-isi-adjusts-thermo-fisher-scientific-price-target-to-615-from-720-ce785cd2df81f122",
+     "published": "2026-10-28T15:01:34Z"
+    }
+   ]
+  },
+  "STX": {
+   "articles": 5,
+   "sentiment": -0.267,
+   "label": "略偏空",
+   "top": [
+    {
+     "score": -1.0,
+     "title": "Wells Fargo Maintains Overweight on Seagate Technology Hldgs, Lowers Price Target to $820",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/news/26/10/62660316/wells-fargo-maintains-overweight-seagate-technology-hldgs-lowers-price-target-820",
+     "published": "2026-10-28T14:58:34Z"
+    },
+    {
+     "score": -1.0,
+     "title": "UBS Maintains Neutral on Seagate Technology Hldgs, Lowers Price Target to $750",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/news/26/10/62678894/ubs-maintains-neutral-seagate-technology-hldgs-lowers-price-target-750",
+     "published": "2026-10-28T21:13:57Z"
+    },
+    {
+     "score": 0.667,
+     "title": "Seagate Technology’s Solid Q1 Results Fall Short Of High Expectations; Guidance Reflects ‘Steep Slowdown’",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/analyst-stock-ratings/price-target/26/10/62664420/seagate-technologys-solid-q1-results-fall-short-of-high-expectations-guidance-reflects-steep-slowdown",
+     "published": "2026-10-28T16:23:31Z"
+    }
+   ]
+  },
+  "NET": {
+   "articles": 1,
+   "sentiment": 1.0,
+   "label": "偏多",
+   "top": [
+    {
+     "score": 1.0,
+     "title": "Wells Fargo Maintains Overweight on Cloudflare, Raises Price Target to $400",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/news/26/10/62657982/wells-fargo-maintains-overweight-cloudflare-raises-price-target-400",
+     "published": "2026-10-28T14:16:48Z"
+    }
+   ]
+  },
+  "NOK": {
+   "articles": 3,
+   "sentiment": 0.333,
+   "label": "略偏多",
+   "top": [
+    {
+     "score": 1.0,
+     "title": "UPDATE: On October 22, 2026 Nokia Reported Q3 Adj. EPS $0.10 Beats $0.08 Estimate, Sales $5.931B Beat $5.800B Estimate",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/news/earnings/26/10/62658410/update-october-22-2026-nokia-reported-q3-adj-eps-0-10-beats-0-08-estimate-sales-5-931b-beat-5-800b-e",
+     "published": "2026-10-28T14:24:52Z"
+    },
+    {
+     "score": 0.0,
+     "title": "Nokia Showcases Connected Mobility Technologies at 5GAA Event",
+     "source": "fiscal.ai",
+     "url": "https://www.prnewswire.com/news-releases/5gaa-showcases-connected-mobility-technologies-to-support-safer-roads-and-future-transportation-in-india-302922467.html",
+     "published": "2026-10-29T12:01:54Z"
+    },
+    {
+     "score": 0.0,
+     "title": "Nokia and Semidynamics Sign MoU to Explore Sovereign AI Infrastructure",
+     "source": "fiscal.ai",
+     "url": "https://www.einpresswire.com/article/953077319/semidynamics-and-nokia-explore-collaboration-to-strengthen-europe-s-sovereign-ai-capabilities",
+     "published": "2026-10-29T12:01:54Z"
+    }
+   ]
+  },
+  "SMCI": {
+   "articles": 2,
+   "sentiment": -0.5,
+   "label": "偏空",
+   "top": [
+    {
+     "score": -1.0,
+     "title": "Super Micro Earnings Due Next Week: Here's What to Watch",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/trading-ideas/movers/26/10/62659550/super-micro-earnings-due-next-week-heres-what-to-watch",
+     "published": "2026-10-28T14:45:41Z"
+    },
+    {
+     "score": 0.0,
+     "title": "Nvidia CEO Jensen Huang Was Target of Chinese Intelligence Asset, Raising Questions Over Potential AI Chip Diversion: Report",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/news/politics/26/10/62693879/nvidia-ceo-jensen-huang-was-target-of-chinese-intelligence-asset-raising-questions-over-potential-ai-chip-diversion-report",
+     "published": "2026-10-29T12:52:24Z"
+    }
+   ]
+  },
+  "ISRG": {
+   "articles": 1,
+   "sentiment": 0.0,
+   "label": "中性",
+   "top": [
+    {
+     "score": 0.0,
+     "title": "Evercore ISI Adjusts Intuitive Surgical Price Target to $375 From $385",
+     "source": "fiscal.ai",
+     "url": "https://www.marketscreener.com/news/evercore-isi-adjusts-intuitive-surgical-price-target-to-375-from-385-ce785cd2df80ff2d",
+     "published": "2026-10-28T15:01:42Z"
+    }
+   ]
+  },
+  "SNOW": {
+   "articles": 4,
+   "sentiment": 0.25,
+   "label": "略偏多",
+   "top": [
+    {
+     "score": 1.0,
+     "title": "Monte Carlo Expands Partnership with Snowflake to Enhance AI Agent Reliability",
+     "source": "fiscal.ai",
+     "url": "https://www.globenewswire.com/news-release/2026/10/28/3390345/0/en/monte-carlo-launches-bayes-an-ai-teammate-that-fixes-production-ai-agents-and-their-data.html",
+     "published": "2026-10-28T18:02:00Z"
+    },
+    {
+     "score": 0.0,
+     "title": "Snowflake Partners with Bidgely and AWS for IDC InfoBrief on Utility Digital Transformation",
+     "source": "fiscal.ai",
+     "url": "https://www.businesswire.com/newsroom/industry/energy/utilities",
+     "published": "2026-10-28T15:01:45Z"
+    },
+    {
+     "score": 0.0,
+     "title": "Snowflake Names Monte Carlo 2026 Data & AI Governance Partner of the Year",
+     "source": "fiscal.ai",
+     "url": "https://martechseries.com/predictive-ai/ai-platforms-machine-learning/monte-carlo-launches-bayes-an-ai-teammate-that-fixes-production-ai-agents-and-their-data/",
+     "published": "2026-10-29T10:31:50Z"
+    }
+   ]
+  },
+  "NEE": {
+   "articles": 3,
+   "sentiment": 0.333,
+   "label": "略偏多",
+   "top": [
+    {
+     "score": 1.0,
+     "title": "The Election Trade Isn't Just About Who Wins. These Stocks Could React to What Comes Next",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/trading-ideas/long-ideas/26/10/62670878/election-stocks-ceg-nee-lmt",
+     "published": "2026-10-28T19:12:49Z"
+    },
+    {
+     "score": 0.0,
+     "title": "Argus Research Adjusts NextEra Energy Price Target to $96 From $102",
+     "source": "fiscal.ai",
+     "url": "https://www.marketscreener.com/news/argus-research-adjusts-nextera-energy-price-target-to-96-from-102-ce785cd2df8cfe2d",
+     "published": "2026-10-28T15:01:50Z"
+    },
+    {
+     "score": 0.0,
+     "title": "NextEra Energy Executive Participates in Nuclear Energy Conference & Expo",
+     "source": "fiscal.ai",
+     "url": "https://www.ans.org/news/article-8337/necx-2026-kicks-off-with-a-look-to-the-future/",
+     "published": "2026-10-29T00:02:48Z"
+    }
+   ]
+  },
+  "PFE": {
+   "articles": 3,
+   "sentiment": 0.0,
+   "label": "中性",
+   "top": [
+    {
+     "score": 0.0,
+     "title": "Pfizer Divests Stake in ViiV Healthcare",
+     "source": "fiscal.ai",
+     "url": "https://www.investegate.co.uk/announcement/rns/gsk--gsk/3rd-quarter-results/9844531",
+     "published": "2026-10-28T15:01:51Z"
+    },
+    {
+     "score": 0.0,
+     "title": "Pfizer Announces Corporate Restructuring and Clinical Trial Adjustments",
+     "source": "fiscal.ai",
+     "url": "https://www.abnewswire.com/pressreleases/alopecia-areata-pipeline-2026-inside-the-clinical-trial-landscape-therapeutic-assessment-and-key-companies-involved-pfizer-legacy-healthcare-anaptysbio-eli-lilly-and-company-incyte-novartis_844524.html",
+     "published": "2026-10-28T21:32:25Z"
+    },
+    {
+     "score": 0.0,
+     "title": "Pfizer Reports Reduction in Payments to Swiss Healthcare Professionals",
+     "source": "fiscal.ai",
+     "url": "https://www.finanzen.ch/nachrichten/finanzplanung/pharmaindustrie-zahlt-2025-weniger-an-aerzte-und-spitaler-1036683691",
+     "published": "2026-10-29T10:31:36Z"
+    }
+   ]
+  },
+  "WDC": {
+   "articles": 1,
+   "sentiment": 0.667,
+   "label": "偏多",
+   "top": [
+    {
+     "score": 0.667,
+     "title": "Seagate Technology’s Solid Q1 Results Fall Short Of High Expectations; Guidance Reflects ‘Steep Slowdown’",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/analyst-stock-ratings/price-target/26/10/62664420/seagate-technologys-solid-q1-results-fall-short-of-high-expectations-guidance-reflects-steep-slowdown",
+     "published": "2026-10-28T16:23:31Z"
+    }
+   ]
+  },
+  "MDT": {
+   "articles": 1,
+   "sentiment": 0.0,
+   "label": "中性",
+   "top": [
+    {
+     "score": 0.0,
+     "title": "Medtronic Opens Applications for Second Cohort of Spark Scholarship",
+     "source": "fiscal.ai",
+     "url": "https://www.morningstar.com/news/accesswire/1243253msn/medtronic-spark-scholarship-applications-now-open-for-students-pursuing-careers-in-healthcare-technology",
+     "published": "2026-10-28T18:01:36Z"
+    }
+   ]
+  },
+  "MS": {
+   "articles": 2,
+   "sentiment": 0.0,
+   "label": "中性",
+   "top": [
+    {
+     "score": 0.0,
+     "title": "Morgan Stanley Notifies Rotork PLC of Change in Major Holding",
+     "source": "fiscal.ai",
+     "url": "https://www.investegate.co.uk/announcement/rns/rotork--ror/holding-s-in-company/9846675",
+     "published": "2026-10-28T18:01:42Z"
+    },
+    {
+     "score": 0.0,
+     "title": "Here’s How Much You Would Have Made Owning Morgan Stanley Stock In The Last 10 Years",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/news/26/10/62678977/here-s-how-much-you-would-have-made-owning-morgan-stanley-stock-last-10-years",
+     "published": "2026-10-28T21:15:38Z"
+    }
+   ]
+  },
+  "QCOM": {
+   "articles": 2,
+   "sentiment": 0.0,
+   "label": "中性",
+   "top": [
+    {
+     "score": 0.0,
+     "title": "XREAL Launches AURA Smart Glasses Powered by Android XR and Qualcomm Snapdragon",
+     "source": "fiscal.ai",
+     "url": "https://ground.news/article/xreal-aura-is-a-new-wired-headset-powered-by-android-xr",
+     "published": "2026-10-28T21:31:32Z"
+    },
+    {
+     "score": 0.0,
+     "title": "Qualcomm Participates in 5GAA Connected Mobility Showcase in India",
+     "source": "fiscal.ai",
+     "url": "https://news.futunn.com/post/1002745174/5gaa-showcases-connected-mobility-technologies-to-support-safer-roads-and",
+     "published": "2026-10-29T12:01:56Z"
+    }
+   ]
+  },
+  "NKE": {
+   "articles": 2,
+   "sentiment": 0.5,
+   "label": "偏多",
+   "top": [
+    {
+     "score": 1.0,
+     "title": "Follett Higher Education Expands Nike and Jordan Brand Presence at University of Florida",
+     "source": "fiscal.ai",
+     "url": "https://www.prnewswire.com/news-releases/follett-higher-education-and-university-of-florida-celebrate-grand-reopening-of-the-uf-bookstore-302922748.html",
+     "published": "2026-10-28T21:31:58Z"
+    },
+    {
+     "score": 0.0,
+     "title": "Nike Launches First Fully Electric Barge in Vietnam",
+     "source": "fiscal.ai",
+     "url": "https://vir.com.vn/first-zero-direct-emission-electric-barge-operates-in-vietnam-163998.html",
+     "published": "2026-10-29T10:32:06Z"
+    }
+   ]
+  },
+  "MRNA": {
+   "articles": 2,
+   "sentiment": -0.5,
+   "label": "偏空",
+   "top": [
+    {
+     "score": -1.0,
+     "title": "Law Firm Announces Investigation into Moderna, Inc. Following Clinical Trial Data Leak",
+     "source": "fiscal.ai",
+     "url": "https://natlawreview.com/press-releases/bronstein-gewirtz-grossman-llc-investigating-moderna-inc-mrna-and-encourages",
+     "published": "2026-10-29T02:02:01Z"
+    },
+    {
+     "score": 0.0,
+     "title": "Moderna CEO Discusses Potential 2028 Launch for Skin Cancer Vaccine in Europe",
+     "source": "fiscal.ai",
+     "url": "https://www.moomoo.com/hans/news/flash/1002793908/moderna-ceo-says-for-germany-and-europe-launch-of-skin",
+     "published": "2026-10-29T10:31:54Z"
+    }
+   ]
+  },
+  "VLO": {
+   "articles": 2,
+   "sentiment": -0.5,
+   "label": "偏空",
+   "top": [
+    {
+     "score": -1.0,
+     "title": "What's Going On With Valero Energy Stock Wednesday?",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/trading-ideas/movers/26/10/62653893/whats-going-on-with-valero-energy-stock-wednesday",
+     "published": "2026-10-28T13:14:11Z"
+    },
+    {
+     "score": 0.0,
+     "title": "Evercore ISI Adjusts Price Target on Valero Energy to $325 From $385",
+     "source": "fiscal.ai",
+     "url": "https://www.marketscreener.com/news/evercore-isi-adjusts-price-target-on-valero-energy-to-325-from-385-ce785cd2dc80ff25",
+     "published": "2026-10-28T13:31:50Z"
+    }
+   ]
+  },
+  "WMT": {
+   "articles": 4,
+   "sentiment": 0.0,
+   "label": "中性",
+   "top": [
+    {
+     "score": 0.0,
+     "title": "Walmart Announces 2026 Holiday Meal Basket",
+     "source": "fiscal.ai",
+     "url": "https://www.barchart.com/press-releases/8497095/walmart-meal-basket-serves-10-for-35-3-50-per-person1-helping-families-celebrate-all-season-long",
+     "published": "2026-10-28T18:01:28Z"
+    },
+    {
+     "score": 0.0,
+     "title": "'U.S. Federal Trade Commission Is Demanding Information On Personalized Pricing And Wage Setting Strategies From Walmart, Target, Uber, Lyft, DoorDash, Instacart, Delta, United And JetBlue' - Reuters Exclusive",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/news/26/10/62668884/u-s-federal-trade-commission-demanding-information-personalized-pricing-and-wage-setting-strategies-",
+     "published": "2026-10-28T18:19:03Z"
+    },
+    {
+     "score": 0.0,
+     "title": "If You Invested $1000 In Walmart Stock 20 Years Ago, You Would Have This Much Today",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/news/26/10/62679475/if-you-invested-1000-walmart-stock-20-years-ago-you-would-have-much-today",
+     "published": "2026-10-28T21:30:27Z"
+    }
+   ]
+  },
+  "VZ": {
+   "articles": 3,
+   "sentiment": 0.0,
+   "label": "中性",
+   "top": [
+    {
+     "score": 0.0,
+     "title": "Verizon Frontline Launches Second Annual App Developer Challenge",
+     "source": "fiscal.ai",
+     "url": "https://www.globenewswire.com/news-release/2026/10/28/3390570/0/en/verizon-frontline-challenges-innovators-to-build-future-of-public-safety.html",
+     "published": "2026-10-28T18:01:38Z"
+    },
+    {
+     "score": 0.0,
+     "title": "Citigroup Maintains Buy on Verizon Communications, Lowers Price Target to $53",
+     "source": "benzinga",
+     "url": "https://www.benzinga.com/news/26/10/62675419/citigroup-maintains-buy-verizon-communications-lowers-price-target-53",
+     "published": "2026-10-28T20:19:27Z"
+    },
+    {
+     "score": 0.0,
+     "title": "Verizon CEO Comments on Competitive Outlook Regarding SpaceX",
+     "source": "fiscal.ai",
+     "url": "https://www.morningstar.com/news/marketwatch/20261028151/elon-musk-says-he-can-build-a-wireless-carrier-in-two-to-three-years-is-that-possible",
+     "published": "2026-10-28T20:31:56Z"
+    }
+   ]
+  },
+  "WFC": {
+   "articles": 3,
+   "sentiment": 0.333,
+   "label": "略偏多",
+   "top": [
+    {
+     "score": 1.0,
+     "title": "Wells Fargo Upgrades eBay to Equalweight",
+     "source": "fiscal.ai",
+     "url": "https://www.marketscreener.com/news/wells-fargo-upgrades-ebay-to-equalweight-from-underweight-106-price-target-ce785cd3de88f123",
+     "published": "2026-10-29T10:32:13Z"
+    },
+    {
+     "score": 0.0,
+     "title": "Wells Fargo Adjusts Price Target on Microsoft",
+     "source": "fiscal.ai",
+     "url": "https://www.marketscreener.com/news/wells-fargo-adjusts-price-target-on-microsoft-to-750-from-725-ce785cd3de88f52c",
+     "published": "2026-10-29T10:32:13Z"
+    },
+    {
+     "score": 0.0,
+     "title": "Wells Fargo Adjusts Price Target on KLA Corporation",
+     "source": "fiscal.ai",
+     "url": "https://www.marketscreener.com/news/wells-fargo-adjusts-price-target-on-kla-to-210-from-245-ce785cd3d18df526",
+     "published": "2026-10-29T12:01:50Z"
+    }
+   ]
+  }
+ },
+ "news_window": "since 2026-10-28T09:01-04:00 (Alpaca/Benzinga, 485 articles, word-list score)",
+ "attempts": 1,
+ "news_attempts": 1,
+ "gauge_attempts": 1
+}
