@@ -3944,7 +3944,7 @@
      "expiry_out": null,
      "take_x": 2,
      "take": 9.8,
-     "take_cid": "sl-wk-trend-500-2026W44-f735e5-tad7a"
+     "take_cid": "sl-wk-trend-500-2026W44-f735e5-td405"
     }
    ],
    "closed": [
@@ -4010,7 +4010,7 @@
      "expiry_out": null,
      "take_x": 3,
      "take": 22.5,
-     "take_cid": "sl-wk-trend-1000-2026W44-2d0f9f-t0bc0"
+     "take_cid": "sl-wk-trend-1000-2026W44-2d0f9f-tfeef"
     },
     {
      "tid": "2026W44-f0cc6c",
@@ -4031,7 +4031,7 @@
      "expiry_out": null,
      "take_x": 3,
      "take": 14.7,
-     "take_cid": "sl-wk-trend-1000-2026W44-f0cc6c-t0038"
+     "take_cid": "sl-wk-trend-1000-2026W44-f0cc6c-tdff0"
     }
    ],
    "closed": [
@@ -4193,7 +4193,7 @@
      "expiry_out": null,
      "take_x": 2,
      "take": 18.0,
-     "take_cid": "sl-wk-momo-1000-2026W44-5717ea-t600f"
+     "take_cid": "sl-wk-momo-1000-2026W44-5717ea-tc9ee"
     }
    ],
    "closed": [],
@@ -4274,7 +4274,7 @@
      "expiry_out": null,
      "take_x": 2,
      "take": 9.5,
-     "take_cid": "sl-wk-news-1000-2026W44-1ef88c-t284b"
+     "take_cid": "sl-wk-news-1000-2026W44-1ef88c-t1e8b"
     },
     {
      "tid": "2026W44-c3189f",
@@ -4295,7 +4295,7 @@
      "expiry_out": null,
      "take_x": 2,
      "take": 11.9,
-     "take_cid": "sl-wk-news-1000-2026W44-c3189f-t91d7"
+     "take_cid": "sl-wk-news-1000-2026W44-c3189f-tec8d"
     }
    ],
    "closed": [
@@ -6182,18 +6182,38 @@
     "2026-10-23": "2026-10-23T09:30-04:00",
     "2026-10-26": "2026-10-26T09:30-04:00",
     "2026-10-27": "2026-10-27T09:30-04:00",
-    "2026-10-28": "2026-10-28T09:30-04:00"
+    "2026-10-28": "2026-10-28T09:30-04:00",
+    "2026-10-29": "2026-10-29T09:30-04:00"
    },
    "best": 500.0,
    "created": null
   },
   "sniper-1000": {
    "start": 1000.0,
-   "cash": 174.0,
-   "round": 1,
+   "cash": 615.0,
+   "round": 2,
    "heroes": 0,
-   "zeros": 0,
-   "open": [],
+   "zeros": 1,
+   "open": [
+    {
+     "tid": "20261029-9549cc",
+     "kind": "sniper",
+     "sym": "MRVL261030P00217500",
+     "asset": "option",
+     "und": "MRVL",
+     "qty": 1,
+     "cost": 3.85,
+     "paid": 385.0,
+     "opened": "2026-10-29 09:30",
+     "why": "开盘狙击 MRVL看跌 217.5（2026-10-30 到期，离现价 3.2%（平时一天波动 3.1% 的一半），delta 0.30）：Bloomberg 10-28 17:21 ET：Marvell 正在深入谈判收购 Lumentum（claude-b 盘前、premarket 扫描），收购方盘前 -10.8% 到 $224.5，约平时单日波动（3.0%）的 3.6 倍，；翻倍后回撤 40% 卖，否则到期日 15:30 卖",
+     "expiry": "2026-10-30",
+     "exit_day": "2026-10-30",
+     "exit_at": "15:30",
+     "trail": true,
+     "best_bid": 0.0,
+     "expiry_out": null
+    }
+   ],
    "closed": [
     {
      "tid": "20261015-41b7fe",
@@ -6337,10 +6357,22 @@
     "2026-10-23": "2026-10-23T09:30-04:00",
     "2026-10-26": "2026-10-26T09:30-04:00",
     "2026-10-27": "2026-10-27T09:30-04:00",
-    "2026-10-28": "2026-10-28T09:30-04:00"
+    "2026-10-28": "2026-10-28T09:30-04:00",
+    "2026-10-29": "2026-10-29T09:30-04:00"
    },
    "best": 1000.0,
-   "created": null
+   "created": null,
+   "rounds": [
+    {
+     "round": 1,
+     "end": "zero",
+     "cash": 174.0,
+     "peak": 1000.0,
+     "trades": 5,
+     "day": "2026-10-29"
+    }
+   ],
+   "round_from": 5
   },
   "overnight-500": {
    "start": 500.0,
@@ -6472,7 +6504,7 @@
      "exit_day": "2026-11-02",
      "exit_at": "15:30",
      "trail": true,
-     "best_bid": 0.0,
+     "best_bid": 2.06,
      "expiry_out": null
     }
    ],
@@ -6766,6 +6798,12 @@
      "SMCI",
      "DDOG",
      "UBER"
+    ],
+    "2026-11-05": [
+     "APP",
+     "ARM",
+     "COHR",
+     "QCOM"
     ]
    }
   },
@@ -7143,5 +7181,5 @@
    "created": null
   }
  },
- "topups": 1437.0
+ "topups": 2263.0
 }
