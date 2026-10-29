@@ -6358,3 +6358,46 @@ class ResearchStockGuard(unittest.TestCase):
         first = lambda mode: dict(g.simulate(closes, dates, p, "SPY", 1.0, 20, soon, mode)["rets"])[dates[21]]
         self.assertEqual(first("no-entry"), 0.0)
         self.assertAlmostEqual(first("hold"), 0.01 - 0.0005, places=9)
+
+
+class ResearchYearend(unittest.TestCase):
+    # owner, 10-29 (「这到年底 要研究下」)
+    def test_window_and_conditions(self):
+        from hero import research_yearend as ye
+        px = {f"2023-{m:02d}-15": 100.0 for m in range(1, 13)}
+        px.update({"2024-10-28": 100.0, "2024-11-15": 95.0, "2024-12-10": 105.0, "2024-12-31": 102.0})
+        w = ye.window(px, 2024)
+        self.assertEqual((w["start"], w["end"], w["sessions"]), ("2024-10-28", "2024-12-31", 3))
+        self.assertAlmostEqual(w["r"], 0.02); self.assertAlmostEqual(w["dip"], -0.05); self.assertAlmostEqual(w["dd"], -0.05); self.assertAlmostEqual(w["best"], 0.05)
+        self.assertIsNone(ye.window(px, 2022))                                            # no closes that year
+        self.assertEqual(ye.on_or_before(sorted(px), "2024-11-20"), sorted(px).index("2024-11-15"))
+        c = ye.conditions(px, {"2024-04-30": 5.0, "2024-10-28": 5.3}, 2024)
+        self.assertEqual((c["midterm"], c["rates_up"]), (False, True))
+        self.assertAlmostEqual(c["rates"], 0.3); self.assertAlmostEqual(c["ytd"], 0.0); self.assertAlmostEqual(c["off_high"], 0.0)
+        self.assertEqual((ye.ytd_band(0.2), ye.ytd_band(-0.1)), ("年初至今涨 15% 以上", "年初至今是跌的"))
+
+    def test_groups_follow_this_years_conditions(self):
+        from hero import research_yearend as ye
+        rows = [{"year": y, "r": 0.01 * i, "dip": -0.01, "dd": -0.02, "end": f"{y}-12-31", "midterm": y % 4 == 2, "rates_up": i % 2 == 0, "ytd": 0.1, "off_high": -0.01}
+                for i, y in enumerate(range(2000, 2012))]
+        g = ye.groups(rows, {"midterm": True, "rates_up": True, "ytd": 0.1, "off_high": -0.01})
+        self.assertEqual([r["year"] for r in g["中期选举年且利率在升"]], [2002, 2006, 2010])
+        self.assertEqual(len(g["离一年高点 3% 以内"]), 12)
+        s = ye.stats(rows)
+        self.assertEqual((s["n"], s["years"][0], s["up"]), (12, 2000, 11 / 12))
+        self.assertAlmostEqual(s["trim"], sum(0.01 * i for i in range(9)) / 9)                 # the best three years dropped
+        g2 = ye.groups(rows, {"midterm": False, "rates_up": False, "ytd": -0.1, "off_high": -0.05})
+        self.assertNotIn("中期选举年", g2); self.assertIn("离一年高点 3%–10%", g2); self.assertEqual(g2["年初至今是跌的"], [])
+        self.assertIn("2002 +2%", "\n".join(ye.table(g)))                                      # small groups list their years
+
+    def test_losers_are_measured_against_spy(self):
+        from hero import research_yearend as ye
+        hist = {(date(2018, 1, 1) + timedelta(days=i)).isoformat(): 100.0 for i in range(400)}   # a year of 100s for the high
+        spy = {**hist, "2020-10-28": 100.0, "2020-11-30": 102.0, "2020-12-15": 102.0, "2020-12-31": 104.0}
+        loser = {**hist, "2020-10-28": 70.0, "2020-11-30": 77.0, "2020-12-15": 77.0, "2020-12-31": 77.0}   # 30% below its high
+        winner = {**hist, "2020-10-28": 95.0, "2020-11-30": 95.0, "2020-12-15": 95.0, "2020-12-31": 95.0}
+        res = ye.losers({"L": loser, "W": winner}, spy, [2020])
+        self.assertEqual((res["跌了 20% 以上的"]["n"], res["离高点 10% 以内的"]["n"]), (1, 1))
+        self.assertAlmostEqual(res["跌了 20% 以上的"]["11 月（10-29 到 11-30）"]["mean"], 0.10 - 0.02)
+        self.assertAlmostEqual(res["离高点 10% 以内的"]["整段（10-29 到 12-31）"]["mean"], 0.0 - 0.04)
+        self.assertEqual(ye.losers({"L": loser}, spy, [2017]), {"跌了 20% 以上的": {"n": 0}, "离高点 10% 以内的": {"n": 0}})   # no closes in 2017
