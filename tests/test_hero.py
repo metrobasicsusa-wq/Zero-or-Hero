@@ -6453,3 +6453,40 @@ class EarningsSignals(unittest.TestCase):
         self.assertEqual(rows[1]["signals"], ["held"])
         self.assertIn("1.6×", markdown(rows))
         self.assertIn("没有符合条件", markdown([]))
+
+
+class ResearchSupport(unittest.TestCase):
+    # owner, 10-29 (「那要研究下」: do support levels hold?)
+    @staticmethod
+    def bar(d, o, h, l, c, v=100):
+        return {"d": d, "o": o, "h": h, "l": l, "c": c, "v": v}
+
+    def test_pivots_and_stop(self):
+        from hero import research_support as rs
+        ls = [10, 9, 8, 7, 6, 5, 6, 7, 8, 9, 10, 11]
+        bars = [self.bar(f"2020-01-{i + 1:02d}", x + 1, x + 2, x, x + 1) for i, x in enumerate(ls)]
+        self.assertEqual(rs.pivots(bars), [5])
+        flat = [self.bar(f"2020-02-{i + 1:02d}", 100, 101, 99, 100) for i in range(25)]
+        flat[0] = self.bar("2020-02-01", 100, 101, 94, 100)     # buy at 98 (limit); low 94 < stop 93.1? no -> held
+        res = rs.outcome(flat, 0, 98)
+        self.assertTrue(res["held"])
+        self.assertAlmostEqual(res["r20"], 100 / 98 - 1)
+        flat[3] = self.bar("2020-02-04", 90, 91, 89, 90)        # gaps under the stop: out at the open
+        self.assertAlmostEqual(rs.outcome(flat, 0, 98)["stop20"], 90 / 98 - 1)
+        flat[0] = self.bar("2020-02-01", 96, 101, 90, 95)       # opened below the level: bought at 96, stopped the same day
+        res = rs.outcome(flat, 0, 98)
+        self.assertFalse(res["held"])
+        self.assertAlmostEqual(res["stop20"], -rs.STOP)
+
+    def test_scan_finds_a_touch_and_a_control(self):
+        from hero import research_support as rs
+        bars = []
+        for i in range(400):
+            px = 100 + (i % 40 if (i // 40) % 2 == 0 else 40 - i % 40) * 0.5     # a zigzag: swing lows near 100
+            bars.append(self.bar(f"d{i:04d}", px, px + 1, px - 1, px))
+        events, control = rs.scan("XYZ", bars)
+        self.assertTrue(any(e["type"] == "pivot" for e in events))
+        e = next(e for e in events if e["type"] == "pivot")
+        self.assertGreaterEqual(e["depth"], rs.APPROACH * 0.99)
+        rs.attach_control(events, {"XYZ": control})
+        self.assertTrue(all("ctrl" in x for x in events))
