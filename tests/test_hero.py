@@ -6432,3 +6432,24 @@ class ResearchMag7Iv(unittest.TestCase):
         m7.ranks(rows, n=50)
         self.assertIsNone(rows[10]["rank"]); self.assertEqual(rows[25]["rank"], 1.0)                       # higher than all 25 before it
         self.assertEqual((rows[0]["tercile"], rows[15]["tercile"], rows[29]["tercile"]), ("低", "中", "高"))
+
+
+class EarningsSignals(unittest.TestCase):
+    def test_beat_and_held(self):
+        from hero.earnings_signals import markdown, signals
+        rep = {"reports": [
+            {"symbol": "MU", "reaction_day": "2026-10-29", "implied_move": 0.08, "weekly": True,
+             "result": {"gap": 0.06, "move": 0.13}},                      # chip, 1.6x implied: beat
+            {"symbol": "KO", "reaction_day": "2026-10-29", "implied_move": 0.03, "weekly": True,
+             "result": {"gap": 0.11, "move": 0.12}},                      # opened +11%, closed above the open: held
+            {"symbol": "XYZ", "reaction_day": "2026-10-29", "implied_move": 0.05, "weekly": False,
+             "result": {"gap": 0.12, "move": 0.08}},                      # gave back part of the gap: nothing
+            {"symbol": "AMD", "reaction_day": "2026-10-29", "implied_move": 0.10, "weekly": True,
+             "result": {"gap": 0.05, "move": 0.12}},                      # chip but only 1.2x: nothing
+            {"symbol": "NVDA", "reaction_day": "2026-10-30", "implied_move": 0.07}]}   # not scored yet
+        rows = signals(rep)
+        self.assertEqual([r["symbol"] for r in rows], ["MU", "KO"])
+        self.assertEqual(rows[0]["signals"], ["beat"])
+        self.assertEqual(rows[1]["signals"], ["held"])
+        self.assertIn("1.6×", markdown(rows))
+        self.assertIn("没有符合条件", markdown([]))
