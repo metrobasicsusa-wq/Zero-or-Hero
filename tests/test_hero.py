@@ -6490,3 +6490,12 @@ class ResearchSupport(unittest.TestCase):
         self.assertGreaterEqual(e["depth"], rs.APPROACH * 0.99)
         rs.attach_control(events, {"XYZ": control})
         self.assertTrue(all("ctrl" in x for x in events))
+
+    def test_long_holds_only_when_the_bars_reach(self):
+        from hero import research_support as rs
+        bars = [self.bar(f"d{i:04d}", 100 + i, 101 + i, 99 + i, 100 + i) for i in range(80)]
+        res = rs.outcome(bars, 5, 104)
+        self.assertAlmostEqual(res["r60"], bars[65]["c"] / 104 - 1)
+        self.assertIsNone(res["r120"])
+        base = rs.baseline({"X": [self.bar(f"d{i:04d}", 100, 101, 99, 100 + i) for i in range(rs.WARM + 300)]})
+        self.assertGreater(base["r250"], base["r20"])

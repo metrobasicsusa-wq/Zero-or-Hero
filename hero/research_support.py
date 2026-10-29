@@ -44,6 +44,8 @@ MAXD = 0.15
 NEAR = 0.015
 COOL = 10
 HOLDS = (5, 10, 20)
+LONG = (60, 120, 250)   # owner, 10-29: 「但就是拿久一点」 -- 3 months, 6 months, a year (when the bars reach that far)
+BASE_STEP = 5           # the "any day" baseline buys every 5th close
 STOP = 0.05
 STEP = 0.005
 STOCK_COST = 0.001
@@ -100,8 +102,8 @@ def outcome(bars: list[dict], i: int, level: float) -> dict | None:
     if e <= 0 or i + max(HOLDS) >= len(bars):
         return None
     res = {"held": b["c"] >= level}
-    for h in HOLDS:
-        res[f"r{h}"] = bars[i + h]["c"] / e - 1
+    for h in HOLDS + LONG:
+        res[f"r{h}"] = bars[i + h]["c"] / e - 1 if i + h < len(bars) else None
     stop, out = e * (1 - STOP), None
     if b["l"] <= stop:
         out = stop
@@ -186,8 +188,14 @@ def attach_control(events: list[dict], control: dict[str, dict[tuple, list[dict]
     """Each touch gets the mean outcome of control trades in its cell (same depth to 0.5%, same side of the 200-day
     average, same distance band from the 20-day high, same crash-in-the-last-10-days flag): its own stock's when it
     has at least 5 there, else all stocks'."""
-    keys = ["held", "r5", "r10", "r20", "stop20"]
-    mean = lambda rows: {x: statistics.mean(float(r[x]) for r in rows) for x in keys}
+    keys = ["held", "r5", "r10", "r20", "stop20"] + [f"r{h}" for h in LONG]
+
+    def mean(rows):
+        out = {}
+        for x in keys:
+            v = [float(r[x]) for r in rows if r.get(x) is not None]
+            out[x] = statistics.mean(v) if len(v) >= 3 else None
+        return out
     pooled_rows: dict[tuple, list[dict]] = {}
     for c in control.values():
         for cell, rows in c.items():
@@ -204,7 +212,8 @@ def attach_control(events: list[dict], control: dict[str, dict[tuple, list[dict]
         e["ctrl"] = c
         if c:
             for x in keys:
-                e[f"x_{x}"] = float(e[x]) - c[x]
+                if e.get(x) is not None and c.get(x) is not None:
+                    e[f"x_{x}"] = float(e[x]) - c[x]
 
 
 def first_touch(events: list[dict]) -> list[dict]:
@@ -248,7 +257,7 @@ def row(es: list[dict]) -> dict | None:
 def per_day(es: list[dict], key: str) -> list[tuple[str, float]]:
     by: dict[str, list[float]] = {}
     for e in es:
-        if key in e:
+        if e.get(key) is not None:
             by.setdefault(e["day"], []).append(float(e[key]))
     return [(d, statistics.mean(v)) for d, v in sorted(by.items())]
 
@@ -273,6 +282,47 @@ def report(events: list[dict], control: dict[str, dict[tuple, list[dict]]], end:
         rob[f"{name.strip()} · 拿 20 天"] = robust.summary(per_day(es, "r20"), end, extra_cost=STOCK_COST)
         rob[f"{name.strip()} · 比对照多（20 天）"] = robust.summary(per_day(es, "x_r20"), end, extra_cost=STOCK_COST)
     return {"groups": tab, "robust": rob}, "\n".join(md) + "\n\n" + robust.table(rob, "稳健性检查（每天一笔：当天所有碰线的平均）") + "\n"
+
+
+def baseline(data: dict[str, list[dict]]) -> dict[str, float]:
+    """Buy at the close every BASE_STEP-th session (after the same warm-up), no condition: the drift of these names."""
+    out = {}
+    for h in (20,) + LONG:
+        v = [bars[i + h]["c"] / bars[i]["c"] - 1 for bars in data.values() for i in range(WARM, len(bars) - h, BASE_STEP)]
+        out[f"r{h}"] = statistics.mean(v) if v else None
+    return out
+
+
+def long_table(events: list[dict], base: dict[str, float], end: str) -> tuple[dict, str]:
+    g = groups(events)
+    names = ["全部（同一天同一只只算最先碰到的那条线）", "　前低（一年内的波段低点）", "　200 日均线", "几条线重合（1.5% 内还有别的线）",
+             "股价在 200 日均线下方（下降趋势）", "前 10 天里有一天跌了 8% 以上（像谷歌今天）", "七巨头"]
+    md = ["| 情况 | " + " | ".join(f"{h} 天：碰线 / 对照 / 差（次数）" for h in (20,) + LONG) + " |",
+          "|---|" + "---|" * (1 + len(LONG))]
+    tab = {}
+    for name in names:
+        es = g.get(name) or []
+        cells, row_ = [], {}
+        for h in (20,) + LONG:
+            xs = [e for e in es if e.get(f"x_r{h}") is not None]
+            if len(xs) < 20:
+                cells.append("—")
+                continue
+            m = statistics.mean(e[f"r{h}"] for e in xs)
+            x = statistics.mean(e[f"x_r{h}"] for e in xs)
+            row_[h] = {"n": len(xs), "mean": m, "ctrl": m - x, "x": x, "median": statistics.median(e[f"r{h}"] for e in xs)}
+            cells.append(f"{m:+.1%} / {m - x:+.1%} / **{x:+.1%}**（{len(xs)}）")
+        tab[name] = row_
+        md.append(f"| {name.strip()} | " + " | ".join(cells) + " |")
+    md.append("| 对照二：随便哪天收盘买（同一批股票，每 5 天一次） | " + " | ".join(
+        f"{base[f'r{h}']:+.1%}" if base.get(f"r{h}") is not None else "—" for h in (20,) + LONG) + " |")
+    rob = {}
+    for name in names[:1] + names[5:6]:
+        es = g.get(name) or []
+        for h in LONG:
+            rob[f"{name.strip()} · 拿 {h} 天"] = robust.summary(per_day(es, f"r{h}"), end, extra_cost=STOCK_COST)
+            rob[f"{name.strip()} · 拿 {h} 天比对照多"] = robust.summary(per_day(es, f"x_r{h}"), end, extra_cost=STOCK_COST)
+    return {"long": tab, "base": base, "long_robust": rob}, "\n".join(md) + "\n\n" + robust.table(rob, "稳健性检查（拿得久的版本，每天一笔）") + "\n"
 
 
 def per_name(events: list[dict], names: list[str]) -> str:
@@ -305,9 +355,10 @@ def main() -> None:
             control[s] = ctl
     end = max(e["day"] for e in events)
     tab, body = report(events, control, end)
+    ltab, lbody = long_table(events, baseline(data), end)
     names = ["MSFT", "GOOGL", "META", "AMZN", "ORCL", "NVDA"]
     rep = {"generated": date.today().isoformat(), "start": START, "end": end, "symbols": len([s for s in data if data[s]]),
-           "events": len(events), "control": sum(len(v) for c in control.values() for v in c.values()), **tab}
+           "events": len(events), "control": sum(len(v) for c in control.values() for v in c.values()), **tab, **ltab}
     head = [f"# 碰到支撑位买，有用吗？ {rep['generated']}", "",
             f"{rep['symbols']} 只大公司（research/2026-10-02-earnings-reactions.json 的名单），Yahoo 日线 {START[:4]} 年起。"
             "每天只用之前的数据找出各类支撑线里离现价最近的一条：一年内的波段低点、50 / 100 / 200 日均线、半年成交密集区、没补的跳空缺口。"
@@ -319,7 +370,10 @@ def main() -> None:
             "「比对照多」才是这条线本身的作用。「当天收在线上」= 当天收盘守住了这条线。"
             "稳健性每天只算一笔（当天所有碰线的平均），因为大跌的时候很多股票同时碰线。正股成本按买卖各 0.1%。"
             "幸存者偏差：都是今天的大公司，过去跌下去没回来的不在名单里。只研究，不改交易。", ""]
-    md = "\n".join(head) + "\n" + body + "\n## 这六只自己的历史（所有类型合在一起）\n\n" + per_name(events, names)
+    md = ("\n".join(head) + "\n" + body + "\n## 拿久一点：3 个月、半年、一年（用户 10-29「但就是拿久一点」）\n\n"
+          "同样的碰线和对照，拿 60 / 120 / 250 个交易日收盘卖（数据够长的才算）。「对照二」是同一批股票随便哪天收盘买，看这批股票本身涨了多少。"
+          "拿得越久，每笔重叠越多，各年份那一栏比平均数更可信。\n\n" + lbody
+          + "\n## 这六只自己的历史（所有类型合在一起）\n\n" + per_name(events, names))
     save("support", rep, md)
 
 
