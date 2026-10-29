@@ -6554,11 +6554,14 @@ class ResearchChipBeat(unittest.TestCase):
         yes = ["HSINCHU, Taiwan, Oct. 15, 2026 -- TSMC (NYSE: TSM) today announced consolidated revenue of NT$1.2 trillion, "
                "net income and diluted EPS of NT$20 for the third quarter ended September 30, 2026.",
                "FOR IMMEDIATE RELEASE CAMTEK ANNOUNCES RECORD RESULTS FOR THE THIRD QUARTER OF 2025",
-               "ASML reports €7.5 billion total net sales and €2.1 billion net income in Q3 2026"]
+               "ASML reports €7.5 billion total net sales and €2.1 billion net income in Q3 2026",
+               "GlobalFoundries Reports Second Quarter 2026 Financial Results Malta, New York, August 5, 2026 - GLOBALFOUNDRIES Inc. "
+               "today announced preliminary financial results for the second quarter ended June 30, 2026."]
         no = ["FOR IMMEDIATE RELEASE CAMTEK PRE-ANNOUNCES RECORD Q3 REVENUES ABOVE GUIDANCE; results will be reported with the "
               "Company's quarterly results announcement expected in early November.",
               "TSMC September 2026 Revenue Report: TSMC today announced net revenue for September 2026.",
               "Nova to announce third quarter 2026 financial results on November 5.",
+              "XYZ announces preliminary third quarter 2026 revenue below its outlook.",
               "The system delivers faster time to results for process control."]
         for t in yes:
             self.assertIsNotNone(cb.earnings_title(t), t)

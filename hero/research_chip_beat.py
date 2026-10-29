@@ -65,7 +65,8 @@ def earnings_title(text: str) -> str | None:
         return None
     for m in _HIT.finditer(head):
         span = head[max(0, m.start() - 120):m.end() + 120]
-        if _PERIOD.search(span) and not _NOT.search(span):
+        own = head[max(0, m.start() - 60):m.end()]   # the headline itself and what leads into it ("to announce", "Revenue Report:")
+        if _PERIOD.search(span) and not _NOT.search(own):
             return span
     return None
 
