@@ -6499,3 +6499,16 @@ class ResearchSupport(unittest.TestCase):
         self.assertIsNone(res["r120"])
         base = rs.baseline({"X": [self.bar(f"d{i:04d}", 100, 101, 99, 100 + i) for i in range(rs.WARM + 300)]})
         self.assertGreater(base["r250"], base["r20"])
+
+
+class ResearchWeeklyTrail(unittest.TestCase):
+    # owner, 10-29 (「今天都有机会」: the DDOG weekly call doubled, then expired near zero)
+    def test_trail_sells_after_a_double_gives_back_40pct(self):
+        from hero import research_weekly as w
+        m = {"2026-01-05 10:00": {"c": 1.0}, "2026-01-06 11:00": {"c": 2.5, "h": 2.6},     # cost 1.10; a 2.5 close arms it
+             "2026-01-07 11:00": {"c": 1.4}, "2026-01-08 15:50": {"c": 0.2}}              # 1.4 <= 0.6 x 2.5: out at 1.4
+        self.assertAlmostEqual(w.buy_trade(m, None, "2026-01-08 15:50", 0.4), (1.4 - 0.14) / 1.1 - 1)
+        self.assertAlmostEqual(w.buy_trade(m, 3, "2026-01-08 15:50", 0.4), (1.4 - 0.14) / 1.1 - 1)   # 2.6 < 3.3: no take
+        self.assertAlmostEqual(w.buy_trade(m, 3, "2026-01-08 15:50"), (0.2 - 0.02) / 1.1 - 1)        # no trail: rides to 0.2
+        flat = {"2026-01-05 10:00": {"c": 1.0}, "2026-01-06 11:00": {"c": 1.8}, "2026-01-08 15:50": {"c": 0.5}}
+        self.assertAlmostEqual(w.buy_trade(flat, None, "2026-01-08 15:50", 0.4), (0.5 - 0.05) / 1.1 - 1)  # never armed

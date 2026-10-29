@@ -32,6 +32,10 @@ SELL_NAMES = ("SPY", "QQQ")
 ENTRY = "10:00"
 OFFSETS = (0.005, 0.01, 0.02)
 TAKES = (2, 3)
+# exits by label: (take-profit multiple or None, giveback after the first 2x close or 0). Owner, 10-29 (「今天都有机会」):
+# the live DDOG weekly call doubled mid-week and was worth 0.14x on its last day -- the weekly ledgers have no trail.
+EXITS = {"2": (2, 0.0), "3": (3, 0.0), "t": (None, 0.4), "3t": (3, 0.4)}
+EXIT_NAMES = {"2": "2 倍止盈", "3": "3 倍止盈", "t": "翻倍后回撤 40% 卖", "3t": "3 倍止盈 + 翻倍后回撤 40% 卖"}
 MODES = ("trend", "calls")
 SLIP = 0.10
 WIDTHS = (1, 2, 5)
@@ -54,18 +58,27 @@ def week_starts(spy_days: list[str]) -> list[str]:
     return out
 
 
-def buy_trade(opt: dict[str, dict], take: float, last_key: str) -> float | None:
-    """opt: {'YYYY-MM-DD HH:MM': bar} across the week; bought at the first minute at/after the entry key."""
+def buy_trade(opt: dict[str, dict], take: float | None, last_key: str, trail: float = 0.0) -> float | None:
+    """opt: {'YYYY-MM-DD HH:MM': bar} across the week; bought at the first minute at/after the entry key.
+    A resting limit at `take` x the cost (filled when a minute's high reaches it); with `trail`, once a minute
+    closes at 2x the cost or more, sell at the first minute close `trail` below the best close so far."""
     keys = sorted(opt)
     if not keys:
         return None
     k0 = keys[0]
     cost = float(opt[k0]["c"]) + max(float(opt[k0]["c"]) * SLIP, 0.01)
+    best, armed = 0.0, False
     for k in keys[1:]:
         if k > last_key:
             break
-        if float(opt[k].get("h", opt[k]["c"])) >= take * cost:
+        if take and float(opt[k].get("h", opt[k]["c"])) >= take * cost:
             return take - 1
+        if trail:
+            c = float(opt[k]["c"])
+            best = max(best, c)
+            armed = armed or best >= 2 * cost
+            if armed and c <= (1 - trail) * best:
+                return max(c - max(c * SLIP, 0.01), 0.0) / cost - 1
     later = [k for k in keys[1:] if k <= last_key]
     px = float(opt[later[-1]]["c"]) if later else 0.0
     return max(px - max(px * SLIP, 0.01), 0.0) / cost - 1
@@ -172,10 +185,10 @@ def run(client) -> dict:
                 first = sorted(m)[:1]
                 if not first or first[0] > f"{d0} 10:05":
                     continue
-                for take in TAKES:
-                    r = buy_trade(m, take, last_key)
+                for label, (take, trail) in EXITS.items():
+                    r = buy_trade(m, take, last_key, trail)
                     if r is not None:
-                        buys.setdefault(f"{und}|{mode}|{off}|{take}", []).append((d0, r))
+                        buys.setdefault(f"{und}|{mode}|{off}|{label}", []).append((d0, r))
             settle = daily[und].get(exp)
             if settle is None:
                 continue
@@ -197,7 +210,7 @@ def run(client) -> dict:
 def buy_table(rep: dict) -> dict:
     out = {}
     for key, ts in rep["buys"].items():
-        take = int(key.split("|")[3])
+        take = EXITS.get(key.split("|")[3], (2, 0.0))[0] or 2   # trail-only: "hit" = closed at 2x or more
         rets = [r for _, r in ts]
         row = {"n": len(rets), "mean": round(statistics.mean(rets), 3), "median": round(statistics.median(rets), 3),
                "win": round(sum(r > 0 for r in rets) / len(rets), 3), "hit": round(sum(r >= take - 1 for r in rets) / len(rets), 3)}
@@ -230,19 +243,44 @@ def sell_table(rep: dict) -> dict:
     return out
 
 
+def exit_compare(rep: dict) -> str:
+    """The same trades under each exit, pooled over names, directions and strikes, with hero.robust checks."""
+    from hero import robust
+    end = rep.get("end")
+    md = ["## 同一批交易，换不同的卖法（全部标的、方向、行权价合在一起）", "",
+          "| 卖法 | 笔数 | 平均每 $1 | 中位数 | 赚钱比例 | 收在 2 倍以上 |", "|---|---|---|---|---|---|"]
+    rob = {}
+    for label, name in EXIT_NAMES.items():
+        xs = [(d, r) for key, ts in rep["buys"].items() if key.split("|")[3] == label for d, r in ts]
+        if not xs:
+            continue
+        v = [r for _, r in xs]
+        md.append(f"| {name} | {len(v)} | {statistics.mean(v):+.0%} | {statistics.median(v):+.0%} | "
+                  f"{sum(r > 0 for r in v) / len(v):.0%} | {sum(r >= 1 for r in v) / len(v):.0%} |")
+        rob[name] = robust.summary(xs, end)
+    for und in BUY_NAMES:
+        for label in ("2", "3", "t", "3t"):
+            xs = [(d, r) for key, ts in rep["buys"].items() if key.startswith(f"{und}|") and key.split("|")[3] == label for d, r in ts]
+            if xs:
+                md.append(f"| 　{und} · {EXIT_NAMES[label]} | {len(xs)} | {statistics.mean(r for _, r in xs):+.0%} | "
+                          f"{statistics.median(r for _, r in xs):+.0%} | {sum(r > 0 for _, r in xs) / len(xs):.0%} | "
+                          f"{sum(r >= 1 for _, r in xs) / len(xs):.0%} |")
+    return "\n".join(md) + "\n\n" + robust.table(rob, "稳健性检查（各卖法，全部交易）")
+
+
 def markdown(rep: dict, bt: dict, st: dict) -> str:
     out = [f"# 周内期权：买方 vs 卖方 {rep['generated']}", "",
            f"{rep['start']} 至 {rep['end']}，{rep['weeks']} 周。每周第一个交易日 10:00 进场，用当周最后一个到期日（通常周五）。只研究，不改交易。", "",
-           "## 买方：顺势（涨买看涨、跌买看跌）或只买看涨，止盈 2 / 3 倍，没到就在到期前一天 15:50 卖", "",
+           "## 买方：顺势（涨买看涨、跌买看跌）或只买看涨，止盈 2 / 3 倍（或翻倍后回撤 40% 卖），没到就在到期前一天 15:50 卖", "",
            "买入多付 10%、卖出少拿 10%。玩法：$500，每笔押一半，低于 $50 归零，到 $1,000 / $10,000 成功。", "",
            "| 标的 | 方向 | 离现价 | 止盈 | 笔数 | 平均每 $1 | 中位数 | 赚钱比例 | 碰到止盈 | 到 $1,000：成功 / 归零 | 到 $10,000：成功 / 归零 |",
            "|---|---|---|---|---|---|---|---|---|---|---|"]
     for key, r in sorted(bt.items(), key=lambda x: -x[1]["mean"]):
         und, mode, off, take = key.split("|")
-        out.append(f"| {und} | {'顺势' if mode == 'trend' else '只买看涨'} | {float(off):.1%} | {take} 倍 | {r['n']} | {r['mean']:+.0%} | "
+        out.append(f"| {und} | {'顺势' if mode == 'trend' else '只买看涨'} | {float(off):.1%} | {EXIT_NAMES.get(take, take)} | {r['n']} | {r['mean']:+.0%} | "
                    f"{r['median']:+.0%} | {r['win']:.0%} | {r['hit']:.0%} | {r['t2']['heroes']} / {r['t2']['zeros']} | "
                    f"{r['t20']['heroes']} / {r['t20']['zeros']} |")
-    out += ["", f"共 {len(bt)} 种，平均为正的 {sum(r['mean'] > 0 for r in bt.values())} 种。", "",
+    out += ["", f"共 {len(bt)} 种，平均为正的 {sum(r['mean'] > 0 for r in bt.values())} 种。", "", exit_compare(rep), "",
             "## 卖方：卖看跌价差，拿到期", "",
             "卖出离现价 1% / 2% / 3% 以下的看跌、买再低 $1 / $2 / $5 的看跌，每腿 max($0.01, 3%) 成本，到期按当天收盘结算。"
             "账户 $500，每周最大亏损合计占账户 25% / 50%，只能买整组（账户小时常常一组都开不了）。", "",
