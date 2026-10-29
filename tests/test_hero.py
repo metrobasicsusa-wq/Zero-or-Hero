@@ -5506,6 +5506,44 @@ class EarningsReasons(unittest.TestCase):
             self.assertIn("| 成本 | 1 | 0% |", md)
 
 
+class EarningsReasonsEvolve(unittest.TestCase):
+    def test_backtest_vetoes_hindsight_signs_and_guide_calls_are_scored(self):
+        from unittest import mock
+        from hero import earnings_reasons as er
+        with tempfile.TemporaryDirectory() as d:
+            folder = Path(d)
+            feats = [{"gap": 0.01 if i % 10 < 6 else -0.01, "run20": -0.08, "peers": None} for i in range(40)]     # 60% up
+            feats += [{"gap": 0.01 if i % 2 else -0.01, "run20": 0.0, "peers": "down"} for i in range(40)]           # 50% up
+            (folder / "bt.json").write_text(json.dumps({"features": feats}))
+            bt = er.backtest(folder / "bt.json")
+            self.assertEqual(bt["run20"]["跌了 5% 以上"], (40, 0.6))
+            self.assertEqual(bt["_base"]["all"], (80, 0.55))
+            rows = [{"date": "2026-10-30", "symbol": f"S{i}", "run20": -0.08, "last_guide": "keep", "gap": -0.02, "up": False}
+                    for i in range(4)]
+            with mock.patch.object(er, "MIN_N", 4):
+                rules, no = er.usable(rows, bt), er.not_supported(rows, bt)
+            self.assertFalse(any("进财报前 20 天" in x for x in rules))        # 0% up here, 60% over five years: vetoed
+            self.assertTrue(any("上次指引「维持」" in x and "判跌" in x for x in rules))   # no backtest for it: still listed
+            self.assertTrue(any("进财报前 20 天「跌了 5% 以上」" in x and "60%" in x for x in no))
+            reports = [{"symbol": s, "result": {"gap_pre": g, "move": g}} for s, g in (("A", -0.05), ("B", 0.03), ("C", 0.01))]
+            calls = [{"symbol": "A", "direction": "down", "evidence": "profile", "guide_call": "below"},
+                     {"symbol": "B", "direction": "down", "evidence": "profile", "guide_call": "below"},
+                     {"symbol": "C", "direction": "up", "evidence": "default"}]
+            (folder / "2026-10-30.json").write_text(json.dumps({"date": "2026-10-30", "reports": reports}))
+            (folder / "2026-10-30.judgment.json").write_text(json.dumps({"date": "2026-10-30", "calls": calls}))
+            lines = [{"date": "2026-10-30", "symbol": "A", "guide_vs_est": "below", "reason": "a"},
+                     {"date": "2026-10-30", "symbol": "B", "guide_vs_est": "above", "reason": "b"},
+                     {"date": "2026-10-30", "symbol": "C", "guide_vs_est": "inline", "reason": "c"}]
+            (folder / "reasons.jsonl").write_text("\n".join(json.dumps(x) for x in lines) + "\n")
+            res = er.outcomes(folder)
+            joined = [{**r, **res.get((r["date"], r["symbol"]), {})} for r in er.load_reasons(folder)]
+            n, right, table = er.guide_calls(joined)
+            self.assertEqual((n, right), (2, 1))                              # C made no guide call
+            self.assertTrue(table[0].startswith("| 2026-10-30 | B | 低于预期 | 高于预期 | ✗ | +3.0% |"))
+            md = er.render(folder)
+            self.assertIn("2 次里猜对 1 次（50%）", md)
+
+
 class EarningsFillMissing(unittest.TestCase):
     def test_yahoo_adds_what_both_calendars_missed(self):
         from hero import earnings as earn

@@ -485,6 +485,10 @@ def reason_tables(rows: list[dict], jr: list[dict]) -> list[str]:
     md.append(line("我们的判断，全部", dirs))
     for key, name in EVIDENCE.items():
         md.append(line(f"　证据：{name}", [r for r in dirs if r["judgment"].get("evidence") == key]))
+    researched = [r for r in dirs if r["judgment"].get("evidence") in ("profile", "news")]
+    md.append(line("　细判（档案 + 新闻）", researched))
+    md.append(line("　　细判 · 判涨", [r for r in researched if r["judgment"]["direction"] == "up"]))
+    md.append(line("　　细判 · 判跌", [r for r in researched if r["judgment"]["direction"] == "down"]))
     for lo, hi, name in ((0.0, 0.505, "信心 0.5（默认 / 机械）"), (0.505, 0.575, "信心 0.55"), (0.575, 1.01, "信心 0.6 以上")):
         md.append(line(f"　{name}", [r for r in dirs if lo <= float(r["judgment"].get("confidence") or 0) < hi]))
     byday = {}
