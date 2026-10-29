@@ -6597,3 +6597,24 @@ class ResearchRunup(unittest.TestCase):
         self.assertEqual(len(g["财报前 20 天涨 10% 以上"]), 1)
         self.assertEqual(len(g["　板块推上去的（板块同期也涨 5% 以上）"]), 1)     # sector +14%
         self.assertEqual(len(g["　个股自己涨的（板块同期不到 3%）"]), 0)
+
+
+class ResearchFundamentals(unittest.TestCase):
+    # owner, 10-29 (「财报后续要怎么看 基本面 没坏都可以」)
+    def test_quarters_growth_and_label(self):
+        from datetime import date
+        from hero import research_fundamentals as fu
+        facts = []
+        for y, base in ((2024, 100.0), (2025, 120.0)):
+            for k, (s, e) in enumerate(((f"{y}-01-01", f"{y}-03-31"), (f"{y}-04-01", f"{y}-06-30"), (f"{y}-07-01", f"{y}-09-30"))):
+                facts.append({"start": s, "end": e, "val": base + k * 10, "filed": f"{y}-11-01"})
+            facts.append({"start": f"{y}-01-01", "end": f"{y}-12-31", "val": 4 * base + 60, "filed": f"{y + 1}-02-01"})  # Q4 = base + 30
+        q = fu.quarterly(facts)
+        self.assertAlmostEqual(q["2025-12-31"], 150.0)                        # the year less three quarters
+        gr = fu.growth(q, date(2026, 1, 28))                                   # reports Q4 2025
+        self.assertAlmostEqual(gr["growth"], 150 / 130 - 1)
+        self.assertAlmostEqual(gr["prev"], 140 / 120 - 1)                      # Q3 against Q3
+        self.assertEqual(fu.label(gr), "intact")                               # +15.4% after +16.7%
+        self.assertEqual(fu.label({"growth": 0.10, "change": -0.08}), "slowing")
+        self.assertEqual(fu.label({"growth": -0.02, "change": 0.01}), "shrinking")
+        self.assertIsNone(fu.growth(q, date(2023, 5, 1)))                      # no quarter before it
