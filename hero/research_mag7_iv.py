@@ -4,8 +4,8 @@ mag7 iv 低呢」, after research/2026-10-29-low-iv.md found that low VIX is not
 Single-stock volatility indexes are gone from Yahoo, so this prices the options themselves (Alpaca option bars, from
 2024-02). Every `STEP`th session for AAPL, MSFT, GOOGL, AMZN, META, NVDA and TSLA: at that close buy the at-the-money
 call and put (the strike nearest the close, the monthly expiry 25 to 50 days out, the nearest one if there is no monthly),
-then sell at the close `HOLD` sessions later (or the last bar before expiry). Buying pays 10% more and selling gets
-10% less (research_ideas). The straddle's implied move (call + put) / spot, annualized, is the stock's implied
+then sell at the close `HOLD` sessions later (or the last bar before expiry). Buying pays `COST` (2%) more and selling
+gets 2% less: these are the most liquid single-stock options (the 10% our 0DTE studies pay would swamp the answer). The straddle's implied move (call + put) / spot, annualized, is the stock's implied
 volatility; it is ranked against the same stock's samples over the previous `RANK_N` samples (about a year), and the
 whole-period terciles per stock are reported too. Windows with an earnings reaction inside are kept apart, since a
 report lifts implied volatility beforehand and moves the stock. Record only. Run: python -m hero.research_mag7_iv
@@ -21,13 +21,14 @@ import time
 from datetime import date, timedelta
 
 from hero import robust
-from hero.research_ideas import ROOT, cost_of, out_of
+from hero.research_ideas import ROOT
 
 NAMES = ("AAPL", "MSFT", "GOOGL", "AMZN", "META", "NVDA", "TSLA")
 START = "2024-02-01"
 STEP = 5
 HOLD = 21
 RANK_N = 50
+COST = 0.02   # per side: these at-the-money monthlies on the biggest names trade about 1-2% wide (not the 10% our 0DTE studies pay)
 EVENTS = ROOT / "research" / "2026-10-02-earnings-reactions.json"
 
 
@@ -61,7 +62,7 @@ def trade(c_bars: list[dict], p_bars: list[dict], day: str, hold: int = HOLD) ->
     if not later:
         return None
     out = later[min(hold, len(later)) - 1]
-    c0, p0, c1, p1 = cost_of(cb[day]), cost_of(pb[day]), out_of(cb[out]), out_of(pb[out])
+    c0, p0, c1, p1 = cb[day] * (1 + COST), pb[day] * (1 + COST), cb[out] * (1 - COST), pb[out] * (1 - COST)
     return {"out": out, "straddle": (c1 + p1) / (c0 + p0) - 1, "call": c1 / c0 - 1, "put": p1 / p0 - 1,
             "mid": cb[day] + pb[day]}
 
@@ -170,7 +171,7 @@ def main() -> None:
     rep["table"] = tab
     head = [f"# 七巨头 IV 低的时候买期权划算吗？ {rep['generated']}", "",
             f"{rep['start']} 到 {rep['end']}，AAPL、MSFT、GOOGL、AMZN、META、NVDA、TSLA，每 {STEP} 个交易日取一个样本：收盘买平值看涨和看跌"
-            f"（25–50 天到期，优先月度到期），{HOLD} 个交易日后收盘卖；买入多付 10%、卖出少拿 10%。IV = 两边价格之和 ÷ 股价，按年化折算；"
+            f"（25–50 天到期，优先月度到期），{HOLD} 个交易日后收盘卖；买入多付 2%、卖出少拿 2%（七巨头月度平值期权的买卖价差大约 1%–2%）。IV = 两边价格之和 ÷ 股价，按年化折算；"
             "「低 / 中 / 高三分之一」是在同一只股票这两年半的样本里比，「过去一年」是和它前 50 个样本比。窗口里有财报的单独算。只研究，不改交易。", ""]
     save("mag7-iv", rep, "\n".join(head) + "\n" + body)
 

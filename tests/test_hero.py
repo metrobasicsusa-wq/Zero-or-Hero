@@ -6425,8 +6425,8 @@ class ResearchMag7Iv(unittest.TestCase):
         p = [{"t": f"2024-03-{d:02d}T00:00:00Z", "c": v} for d, v in ((1, 2.0), (4, 1.0), (5, 0.5))]
         t = m7.trade(c, p, "2024-03-01", hold=2)
         self.assertEqual(t["out"], "2024-03-05")
-        self.assertAlmostEqual(t["straddle"], (4.0 * 0.9 + 0.5 * 0.9) / (2.2 + 2.2) - 1)                    # sold 10% under, bought 10% over
-        self.assertAlmostEqual(t["call"], 3.6 / 2.2 - 1); self.assertEqual(t["mid"], 4.0)
+        self.assertAlmostEqual(t["straddle"], (4.0 * 0.98 + 0.5 * 0.98) / (2.04 + 2.04) - 1)                # sold 2% under, bought 2% over
+        self.assertAlmostEqual(t["call"], 3.92 / 2.04 - 1); self.assertEqual(t["mid"], 4.0)
         self.assertIsNone(m7.trade(c, p, "2024-02-28"))
         rows = [{"und": "AAPL", "day": f"2024-{1 + i // 28:02d}-{1 + i % 28:02d}", "iv": 0.2 + 0.01 * i} for i in range(30)]
         m7.ranks(rows, n=50)
