@@ -6405,3 +6405,30 @@ class ResearchLowIv(unittest.TestCase):
         self.assertAlmostEqual(r["straddle"], 0.10 / cost - 1)
         self.assertAlmostEqual(r["call"], 0.10 / (cost / 2) - 1); self.assertAlmostEqual(r["put"], -1.0)
         self.assertEqual(len(li.monthly(rs)), len(range(0, len(rs), li.H)))                               # one sample every 21 sessions
+
+
+class ResearchMag7Iv(unittest.TestCase):
+    # owner, 10-29 (「但如果是mag7 iv 低呢」)
+    def test_pick_pair_prefers_the_monthly_and_a_strike_with_both_legs(self):
+        from hero import research_mag7_iv as m7
+        cs = [{"expiration_date": "2024-03-08", "type": "call", "strike_price": "100", "symbol": "W100C"},
+              {"expiration_date": "2024-03-08", "type": "put", "strike_price": "100", "symbol": "W100P"},
+              {"expiration_date": "2024-03-15", "type": "call", "strike_price": "100", "symbol": "M100C"},     # no put at 100
+              {"expiration_date": "2024-03-15", "type": "call", "strike_price": "102.5", "symbol": "M102C"},
+              {"expiration_date": "2024-03-15", "type": "put", "strike_price": "102.5", "symbol": "M102P"}]
+        self.assertEqual(m7.pick_pair(cs, 100.4), ("M102C", "M102P", "2024-03-15", 102.5))
+        self.assertIsNone(m7.pick_pair([], 100.0))
+
+    def test_trade_and_ranks(self):
+        from hero import research_mag7_iv as m7
+        c = [{"t": f"2024-03-{d:02d}T00:00:00Z", "c": v} for d, v in ((1, 2.0), (4, 3.0), (5, 4.0))]
+        p = [{"t": f"2024-03-{d:02d}T00:00:00Z", "c": v} for d, v in ((1, 2.0), (4, 1.0), (5, 0.5))]
+        t = m7.trade(c, p, "2024-03-01", hold=2)
+        self.assertEqual(t["out"], "2024-03-05")
+        self.assertAlmostEqual(t["straddle"], (4.0 * 0.9 + 0.5 * 0.9) / (2.2 + 2.2) - 1)                    # sold 10% under, bought 10% over
+        self.assertAlmostEqual(t["call"], 3.6 / 2.2 - 1); self.assertEqual(t["mid"], 4.0)
+        self.assertIsNone(m7.trade(c, p, "2024-02-28"))
+        rows = [{"und": "AAPL", "day": f"2024-{1 + i // 28:02d}-{1 + i % 28:02d}", "iv": 0.2 + 0.01 * i} for i in range(30)]
+        m7.ranks(rows, n=50)
+        self.assertIsNone(rows[10]["rank"]); self.assertEqual(rows[25]["rank"], 1.0)                       # higher than all 25 before it
+        self.assertEqual((rows[0]["tercile"], rows[15]["tercile"], rows[29]["tercile"]), ("低", "中", "高"))
