@@ -6386,3 +6386,22 @@ class ResearchBeatDrift(unittest.TestCase):
         mins = {"10:41": {"c": 2.0}, "11:30": {"c": 3.0}}
         self.assertEqual(bd.entry(mins)[0], "10:41")                                                     # the first trade within the hour
         self.assertIsNone(bd.entry({"11:30": {"c": 3.0}}))
+
+
+class ResearchLowIv(unittest.TestCase):
+    # owner, 10-29 (「做个测试 iv 低是机会吗」)
+    def test_rows_price_the_options_off_vix_and_rank_it(self):
+        import math
+        from hero import research_low_iv as li
+        days = [f"2000-{1 + k // 28:02d}-{1 + k % 28:02d}" for k in range(330)]
+        spx = {d: 100.0 for d in days}
+        vix = {d: 20.0 for d in days}
+        vix[days[280]] = 10.0                                                                              # the lowest of the year
+        spx[days[280 + li.H]] = 110.0                                                                      # +10% over the 21 sessions
+        rs = li.rows(spx, vix, start="1900-01-01")
+        r = next(x for x in rs if x["day"] == days[280])
+        self.assertEqual(r["rank"], 0.0)
+        cost = 0.8 * 0.10 * math.sqrt(30 / 365)
+        self.assertAlmostEqual(r["straddle"], 0.10 / cost - 1)
+        self.assertAlmostEqual(r["call"], 0.10 / (cost / 2) - 1); self.assertAlmostEqual(r["put"], -1.0)
+        self.assertEqual(len(li.monthly(rs)), len(range(0, len(rs), li.H)))                               # one sample every 21 sessions
