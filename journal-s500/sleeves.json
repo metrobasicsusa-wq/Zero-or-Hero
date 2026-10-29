@@ -2846,11 +2846,51 @@
   },
   "spy0dte-near-1000": {
    "start": 1000.0,
-   "cash": 226.0,
+   "cash": 48.0,
    "round": 1,
    "heroes": 0,
    "zeros": 0,
-   "open": [],
+   "open": [
+    {
+     "tid": "20261029-da75cc",
+     "kind": "zdte",
+     "sym": "SPY261029P00765000",
+     "asset": "option",
+     "und": "SPY",
+     "qty": 1,
+     "cost": 0.89,
+     "paid": 89.0,
+     "opened": "2026-10-29 09:40",
+     "why": "SPY 开盘 $768.78、现在 $767.88，顺势买当天到期看跌 765（离现价 0.4%），3 倍止盈，15:30 平仓",
+     "expiry": "2026-10-29",
+     "exit_day": "2026-10-29",
+     "exit_at": "15:30",
+     "trail": false,
+     "best_bid": 0.0,
+     "expiry_out": null,
+     "take_x": 3,
+     "take": 2.67,
+     "take_cid": "sl-spy0dte-near-1000-20261029-da75cc-tcc4c"
+    },
+    {
+     "tid": "20261029-da75ccr",
+     "kind": "zdte",
+     "sym": "SPY261029P00765000",
+     "asset": "option",
+     "und": "SPY",
+     "qty": 1,
+     "cost": 0.89,
+     "paid": 89.0,
+     "opened": "2026-10-29 09:40",
+     "why": "SPY 开盘 $768.78、现在 $767.88，顺势买当天到期看跌 765（离现价 0.4%），3 倍止盈，15:30 平仓",
+     "expiry": "2026-10-29",
+     "exit_day": "2026-10-29",
+     "exit_at": "15:30",
+     "trail": true,
+     "best_bid": 0.0,
+     "expiry_out": null
+    }
+   ],
    "closed": [
     {
      "tid": "a4cab2ccb2",
@@ -3510,7 +3550,8 @@
     "2026-10-23": "2026-10-23T09:40-04:00",
     "2026-10-26": "2026-10-26T09:40-04:00",
     "2026-10-27": "2026-10-27T09:40-04:00",
-    "2026-10-28": "2026-10-28T09:40-04:00"
+    "2026-10-28": "2026-10-28T09:40-04:00",
+    "2026-10-29": "2026-10-29T09:40-04:00"
    },
    "best": 2173.0,
    "created": null
@@ -4270,7 +4311,7 @@
      "exit_day": "2026-10-29",
      "exit_at": "15:50",
      "trail": false,
-     "best_bid": 3.81,
+     "best_bid": 4.18,
      "expiry_out": null,
      "take_x": 2,
      "take": 9.5,
@@ -5868,27 +5909,11 @@
   },
   "relay-500": {
    "start": 500.0,
-   "cash": 6.96,
-   "round": 2,
+   "cash": 500.0,
+   "round": 3,
    "heroes": 0,
-   "zeros": 1,
-   "open": [
-    {
-     "tid": "relay2026W44-866605",
-     "kind": "relay",
-     "sym": "NOWL",
-     "asset": "stock",
-     "und": "NOW",
-     "qty": 57.0,
-     "cost": 8.47,
-     "paid": 482.79,
-     "opened": "2026-10-28 15:40",
-     "why": "接力第一段：本周财报里 126 日动量最强的 NOW（+71%），全仓，买两倍 ETF NOWL，第二天 09:35 卖（10-19 起财报只做正股 / 两倍）；账本到起点 3 倍就转 SOXL",
-     "exit_at": "09:35",
-     "best_bid": 8.57,
-     "exit_day": "2026-10-29"
-    }
-   ],
+   "zeros": 2,
+   "open": [],
    "closed": [
     {
      "tid": "f62efc9b71",
@@ -5937,6 +5962,29 @@
      "how": "2026-10-22 09:35 到时卖出",
      "closed": "2026-10-22 09:40",
      "ret": -0.021
+    },
+    {
+     "tid": "relay2026W44-866605",
+     "kind": "relay",
+     "sym": "NOWL",
+     "asset": "stock",
+     "und": "NOW",
+     "qty": 57.0,
+     "cost": 8.47,
+     "paid": 482.79,
+     "opened": "2026-10-28 15:40",
+     "why": "接力第一段：本周财报里 126 日动量最强的 NOW（+71%），全仓，买两倍 ETF NOWL，第二天 09:35 卖（10-19 起财报只做正股 / 两倍）；账本到起点 3 倍就转 SOXL",
+     "exit_at": "09:35",
+     "best_bid": 8.57,
+     "exit_day": "2026-10-29",
+     "sell_cid": "sl-relay-500-relay2026W44-866605-x233b",
+     "sell_why": "2026-10-29 09:35 到时卖出",
+     "state": "closed",
+     "exit_price": 4.424561,
+     "proceeds": 252.2,
+     "how": "2026-10-29 09:35 到时卖出",
+     "closed": "2026-10-29 09:40",
+     "ret": -0.478
     }
    ],
    "slots": {
@@ -5946,32 +5994,27 @@
    },
    "best": 500.0,
    "created": null,
-   "relay_round": 2,
-   "relay_phase": "lotto"
+   "relay_round": 3,
+   "relay_phase": "lotto",
+   "rounds": [
+    {
+     "round": 2,
+     "end": "zero",
+     "cash": 259.16,
+     "peak": 500.0,
+     "trades": 3,
+     "day": "2026-10-29"
+    }
+   ],
+   "round_from": 3
   },
   "relay-1000": {
    "start": 1000.0,
-   "cash": 5.72,
-   "round": 2,
+   "cash": 1000.0,
+   "round": 3,
    "heroes": 0,
-   "zeros": 1,
-   "open": [
-    {
-     "tid": "relay2026W44-342810",
-     "kind": "relay",
-     "sym": "NOWL",
-     "asset": "stock",
-     "und": "NOW",
-     "qty": 115.0,
-     "cost": 8.47,
-     "paid": 974.05,
-     "opened": "2026-10-28 15:40",
-     "why": "接力第一段：本周财报里 126 日动量最强的 NOW（+71%），全仓，买两倍 ETF NOWL，第二天 09:35 卖（10-19 起财报只做正股 / 两倍）；账本到起点 2 倍就转 SOXL",
-     "exit_at": "09:35",
-     "best_bid": 8.57,
-     "exit_day": "2026-10-29"
-    }
-   ],
+   "zeros": 2,
+   "open": [],
    "closed": [
     {
      "tid": "1b723c0088",
@@ -6020,6 +6063,29 @@
      "how": "2026-10-22 09:35 到时卖出",
      "closed": "2026-10-22 09:40",
      "ret": -0.02
+    },
+    {
+     "tid": "relay2026W44-342810",
+     "kind": "relay",
+     "sym": "NOWL",
+     "asset": "stock",
+     "und": "NOW",
+     "qty": 115.0,
+     "cost": 8.47,
+     "paid": 974.05,
+     "opened": "2026-10-28 15:40",
+     "why": "接力第一段：本周财报里 126 日动量最强的 NOW（+71%），全仓，买两倍 ETF NOWL，第二天 09:35 卖（10-19 起财报只做正股 / 两倍）；账本到起点 2 倍就转 SOXL",
+     "exit_at": "09:35",
+     "best_bid": 8.57,
+     "exit_day": "2026-10-29",
+     "sell_cid": "sl-relay-1000-relay2026W44-342810-x8549",
+     "sell_why": "2026-10-29 09:35 到时卖出",
+     "state": "closed",
+     "exit_price": 4.42,
+     "proceeds": 508.3,
+     "how": "2026-10-29 09:35 到时卖出",
+     "closed": "2026-10-29 09:40",
+     "ret": -0.478
     }
    ],
    "slots": {
@@ -6029,8 +6095,19 @@
    },
    "best": 1000.0,
    "created": null,
-   "relay_round": 2,
-   "relay_phase": "lotto"
+   "relay_round": 3,
+   "relay_phase": "lotto",
+   "rounds": [
+    {
+     "round": 2,
+     "end": "zero",
+     "cash": 514.02,
+     "peak": 1000.0,
+     "trades": 3,
+     "day": "2026-10-29"
+    }
+   ],
+   "round_from": 3
   },
   "sniper-500": {
    "start": 500.0,
@@ -6210,7 +6287,7 @@
      "exit_day": "2026-10-30",
      "exit_at": "15:30",
      "trail": true,
-     "best_bid": 0.0,
+     "best_bid": 3.46,
      "expiry_out": null
     }
    ],
@@ -6504,7 +6581,7 @@
      "exit_day": "2026-11-02",
      "exit_at": "15:30",
      "trail": true,
-     "best_bid": 2.06,
+     "best_bid": 3.53,
      "expiry_out": null
     }
    ],
@@ -6732,7 +6809,7 @@
      "exit_day": "2026-11-02",
      "exit_at": "15:50",
      "trail": true,
-     "best_bid": 0.37,
+     "best_bid": 0.4,
      "expiry_out": null
     }
    ],
@@ -6863,28 +6940,67 @@
   },
   "breakgap-500": {
    "start": 500.0,
-   "cash": 500.0,
+   "cash": 350.0,
    "round": 1,
    "heroes": 0,
    "zeros": 0,
-   "open": [],
+   "open": [
+    {
+     "tid": "20261029-3270fc",
+     "kind": "breakgap",
+     "sym": "GOOGL261030P00275000",
+     "asset": "option",
+     "und": "GOOGL",
+     "qty": 1,
+     "cost": 1.5,
+     "paid": 150.0,
+     "opened": "2026-10-29 09:40",
+     "why": "突破大跳空：GOOGL 低开 -11.8%（平时一天波动的 10.0 倍），低于 20 日最低 316.61，开盘后继续跌；买看跌 275（2026-10-30 到期），拿到 10-30 15:30 卖",
+     "expiry": "2026-10-30",
+     "exit_day": "2026-10-30",
+     "exit_at": "15:30",
+     "trail": false,
+     "best_bid": 0.0,
+     "expiry_out": null
+    }
+   ],
    "closed": [],
    "slots": {
     "2026-10-23": "2026-10-23T09:40-04:00",
     "2026-10-26": "2026-10-26T09:40-04:00",
     "2026-10-27": "2026-10-27T09:40-04:00",
-    "2026-10-28": "2026-10-28T09:40-04:00"
+    "2026-10-28": "2026-10-28T09:40-04:00",
+    "2026-10-29": "2026-10-29T09:40-04:00"
    },
    "best": 500.0,
    "created": null
   },
   "breakgap-1000": {
    "start": 1000.0,
-   "cash": 499.0,
+   "cash": 349.0,
    "round": 1,
    "heroes": 0,
    "zeros": 0,
-   "open": [],
+   "open": [
+    {
+     "tid": "20261029-3bad9c",
+     "kind": "breakgap",
+     "sym": "GOOGL261030P00275000",
+     "asset": "option",
+     "und": "GOOGL",
+     "qty": 1,
+     "cost": 1.5,
+     "paid": 150.0,
+     "opened": "2026-10-29 09:40",
+     "why": "突破大跳空：GOOGL 低开 -11.8%（平时一天波动的 10.0 倍），低于 20 日最低 316.61，开盘后继续跌；买看跌 275（2026-10-30 到期），拿到 10-30 15:30 卖",
+     "expiry": "2026-10-30",
+     "exit_day": "2026-10-30",
+     "exit_at": "15:30",
+     "trail": false,
+     "best_bid": 0.0,
+     "expiry_out": null
+    }
+   ],
    "closed": [
     {
      "tid": "20261023-4492fb",
@@ -6917,7 +7033,8 @@
     "2026-10-23": "2026-10-23T09:40-04:00",
     "2026-10-26": "2026-10-26T09:40-04:00",
     "2026-10-27": "2026-10-27T09:40-04:00",
-    "2026-10-28": "2026-10-28T09:40-04:00"
+    "2026-10-28": "2026-10-28T09:40-04:00",
+    "2026-10-29": "2026-10-29T09:40-04:00"
    },
    "best": 1000.0,
    "created": null
@@ -7181,5 +7298,5 @@
    "created": null
   }
  },
- "topups": 2263.0
+ "topups": 2989.82
 }
