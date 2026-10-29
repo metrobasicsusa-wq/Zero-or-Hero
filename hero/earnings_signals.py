@@ -5,7 +5,9 @@ beat 52% over 1,880 reports; our own calls 49% over 314), and both sides of the 
 -20% per $1 in docs/earnings-after-2026-10-28.md, selling an iron fly -11% to -29% in research/2026-10-06-ironfly.md).
 What has had an edge uses the market's reaction, which only exists after the report:
   - beat: a chip / AI-hardware stock that closed the reaction day up at least 1.5x its implied move (20 sessions
-    after: +9% vs SPY on average, median +3%, 70% of 30; research/2026-10-28-earnings-overshoot.md);
+    after: +9% vs SPY on average, median +3%, 70% of 30; research/2026-10-28-earnings-overshoot.md) -- but on the
+    wider 89-name list (research/2026-10-29-chip-beat.md) the 24 reports that study never saw gave only +1.7% (54%),
+    so the 30 were mostly that list's AI winners: listed for reference, no ledger;
   - held: opened up 10% or more and closed at or above the open (the PEAD rule our s500 ledger already trades:
     research/2026-10-13-pead.md).
 Record only. Run: python -m hero.earnings_signals [YYYY-MM-DD]  (default: the newest scored forecast file)
