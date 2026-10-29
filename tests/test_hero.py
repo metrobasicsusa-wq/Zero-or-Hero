@@ -6512,3 +6512,38 @@ class ResearchWeeklyTrail(unittest.TestCase):
         self.assertAlmostEqual(w.buy_trade(m, 3, "2026-01-08 15:50"), (0.2 - 0.02) / 1.1 - 1)        # no trail: rides to 0.2
         flat = {"2026-01-05 10:00": {"c": 1.0}, "2026-01-06 11:00": {"c": 1.8}, "2026-01-08 15:50": {"c": 0.5}}
         self.assertAlmostEqual(w.buy_trade(flat, None, "2026-01-08 15:50", 0.4), (0.5 - 0.05) / 1.1 - 1)  # never armed
+
+
+class ResearchChipBeat(unittest.TestCase):
+    # owner, 10-29 (「跑吧 扩大版回测」: the chip / AI-hardware beat drift on a wider list)
+    def test_events_ratio_and_new_sample(self):
+        from datetime import datetime
+        from zoneinfo import ZoneInfo
+        from hero import research_chip_beat as cb
+        et = ZoneInfo("America/New_York")
+        bars = [{"t": f"2026-10-{d:02d}T04:00:00Z", "o": 100.0, "c": c} for d, c in ((26, 100.0), (27, 100.0), (28, 112.0))]
+        rel = [datetime(2026, 10, 27, 16, 5, tzinfo=et)]                    # after the close: reacts 10-28
+        got = cb.build_events("TER", bars, {"2026-10-27": 100.0}, rel, lambda spot, on, react: {"implied_move": 0.08})
+        self.assertEqual(len(got), 1)
+        e = got[0]
+        self.assertEqual(e["reaction_day"], "2026-10-28")
+        self.assertAlmostEqual(e["ratio"], 1.5)                             # +12% over 8%
+        self.assertTrue(cb.is_new(e))                                       # TER is outside the original groups
+        self.assertFalse(cb.is_new({"symbol": "NVDA", "reaction_day": "2025-05-29"}))
+        self.assertTrue(cb.is_new({"symbol": "NVDA", "reaction_day": "2026-11-19"}))
+
+    def test_forward_and_groups(self):
+        from hero import research_chip_beat as cb
+        days = [f"2026-01-{d:02d}" for d in range(1, 31)]
+        closes = {"MU": {d: 100.0 + i for i, d in enumerate(days)}}
+        spy = {d: 100.0 for d in days}
+        ev = [{"symbol": "MU", "reaction_day": days[0], "move": 0.2, "ratio": 2.0, "group": "核心"},
+              {"symbol": "MU", "reaction_day": days[1], "move": 0.05, "ratio": 1.2, "group": "核心"}]
+        fw = cb.forward(ev, closes, spy)
+        self.assertAlmostEqual(fw[0]["exc"][20], 120 / 100 - 1)
+        g = cb.stock_groups(fw)
+        self.assertEqual(len(g["全部 · 涨超定价 1.5 倍"]), 1)
+        self.assertEqual(len(g["全部 · 对照：涨 1–1.5 倍"]), 1)
+        self.assertEqual(len(g["新样本（扩展名单 + 10-02 之后） · 涨超定价 1.5 倍"]), 0)   # MU in January: seen before
+        og = cb.option_groups([{"symbol": "TER", "reaction_day": "2025-01-30", "ratio": 1.8, "leg": "atm", "day": "2025-01-31", "res": {}}])
+        self.assertEqual(len(og["　扩展名单 · 涨超 1.5 倍 · 平值"]), 1)
