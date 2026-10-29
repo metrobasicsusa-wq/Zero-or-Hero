@@ -6575,3 +6575,25 @@ class ResearchChipBeat(unittest.TestCase):
         from hero import research_chip_beat as cb
         ts = [datetime(2025, 8, 7, 7, 30), datetime(2025, 9, 2, 7, 1), datetime(2025, 11, 6, 7, 30), datetime(2025, 11, 6, 7, 35)]
         self.assertEqual(cb.spaced(ts), [ts[0], ts[2]])
+
+
+class ResearchRunup(unittest.TestCase):
+    # owner, 10-29 (「会利好出尽吗」「研究下」: stocks that ran into their report)
+    def test_features_and_groups(self):
+        from hero import research_runup as ru
+        days = [f"d{i:03d}" for i in range(110)]
+        stock = {d: {"o": 100 + i, "c": 100 + i} for i, d in enumerate(days)}       # +1 a day
+        stock["d080"] = {"o": 170.0, "c": 175.0}                                    # reaction day: gap down from 179
+        spy = {d: {"o": 100.0, "c": 100.0} for d in days}
+        sec = {d: {"o": 100.0, "c": 100.0 + i * 0.5} for i, d in enumerate(days)}
+        self.assertEqual(ru.pre_index(days, "d080"), 79)
+        r = ru.features({"symbol": "X", "reaction_day": "d080", "implied_move": 0.05}, stock, sec, spy)
+        self.assertAlmostEqual(r["run"], 179 / 159 - 1)
+        self.assertTrue(r["near_high"])
+        self.assertAlmostEqual(r["gap"], 170 / 179 - 1)
+        self.assertAlmostEqual(r["sector"], (100 + 79 * 0.5) / (100 + 59 * 0.5) - 1)
+        self.assertAlmostEqual(r["after"], 200 / 175 - 1)                          # 20 sessions on, SPY flat
+        g = ru.groups([r])
+        self.assertEqual(len(g["财报前 20 天涨 10% 以上"]), 1)
+        self.assertEqual(len(g["　板块推上去的（板块同期也涨 5% 以上）"]), 1)     # sector +14%
+        self.assertEqual(len(g["　个股自己涨的（板块同期不到 3%）"]), 0)
