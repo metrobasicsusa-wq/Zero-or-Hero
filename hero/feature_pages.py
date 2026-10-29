@@ -31,7 +31,7 @@ GROUPS = [
                           "iwm0dte", "dia0dte", "amd0dte", "amzn0dte", "meta0dte", "msft0dte",
                           "spydip", "oneshot", "vixspike"]),
     ("周内期权", ["wk-trend", "wk-momo", "wk-news", "net"]),
-    ("抄底和跳空", ["fadelotto", "gap", "flush", "opengap", "breakgap", "dipweek", "dipweek-hold", "dipweek-take", "pullback", "bottom", "green", "bounce", "ladder"]),
+    ("抄底和跳空", ["fadelotto", "gap", "flush", "opengap", "breakgap", "dipweek", "dipweek-hold", "dipweek-take", "pullback", "bottom", "green", "bounce", "ladder", "depth", "depth-semi", "depth-letf"]),
     ("财报", ["earn", "pead", "relay"]),
     ("狙击和隔夜", ["sniper", "overnight"]),
     ("杠杆 ETF", ["tqqq", "hikerally"]),
@@ -46,12 +46,16 @@ TITLE = {"spy0dte": "SPY 末日单", "spy0dte-near": "SPY 末日单（离现价 
          "opengap": "开盘跳空延续", "breakgap": "突破大跳空", "dipweek": "抄底给一周", "dipweek-hold": "抄底给一周（拿满 5 天）",
          "dipweek-take": "抄底给一周（2 倍止盈）", "pullback": "强势股回调", "bottom": "抄底三连跌", "green": "抄底第一根阳线", "bounce": "板块反弹日龙头", "ladder": "阶梯账本（$500 起按余额换玩法，只演算）", "earn": "财报正股 / 两倍",
          "pead": "财报后漂移", "relay": "接力", "sniper": "开盘狙击", "overnight": "隔夜动量", "tqqq": "TQQQ 均线",
-         "hikerally": "加息期快涨", "fadelotto": "高开回落彩票", "peerc": "跟 claude-c 的方向"}
+         "hikerally": "加息期快涨", "fadelotto": "高开回落彩票", "peerc": "跟 claude-c 的方向",
+         "depth": "深度抄底（跌 8% / 20% 买三个月：第一次收在 20 日高点下 8%，买 75–130 天月度平值看涨拿 63 天）",
+         "depth-semi": "深度抄底·半导体股（第一次跌 20% 买三个月平值，只演算）",
+         "depth-letf": "深度抄底·3 倍基金正股（跌 8% 买 SOXL / TQQQ / TNA / SPXL 拿 63 天，只演算）"}
 EVENT_KINDS = {"lotto_alert": "提醒", "sleeve_skip": "跳过", "sleeve_plan": "演算", "sleeve_round": "换轮",
                "sleeve_plan_fill": "演算买进", "sleeve_plan_result": "演算结果"}
 MAX_EVENTS = 40
 SHOW_SPEC = ("und", "offset", "min_move", "take", "half_take", "entry", "side", "after_drop", "n", "mode", "fraction",
-             "switch_at", "zero_line", "sym", "ma", "gap", "hold", "unds", "instrument", "stop_entries", "stop_if_losing")
+             "switch_at", "zero_line", "sym", "ma", "gap", "hold", "unds", "instrument", "stop_entries", "stop_if_losing",
+             "level", "dte", "max_spread", "shares")
 
 
 def family(sleeve_id: str) -> str:

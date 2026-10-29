@@ -1419,6 +1419,25 @@ def bid_ask(run, sym: str) -> tuple[float, float]:
     return float(lq.get("bp") or 0), float(lq.get("ap") or 0)
 
 
+def monthly_calls(run, und: str, spot: float, lo: int = 75, hi: int = 130, hi_k: float = 1.12) -> tuple[str, list[dict]] | None:
+    """The depth line's expiry and chain (research/2026-10-27-bottom-2m.md; Ladder's bag A, Depth): the nearest monthly
+    expiry `lo` to `hi` days out (the third Friday, or the Thursday before a holiday: hero.signals.is_monthly) and its
+    listed calls from the price to `hi_k` x the price, strikes ascending -- one contracts request a cycle, shared by
+    every rule asking the same window, covers every strike shift. None when no monthly is listed in the window."""
+    gte, lte = (run.today + timedelta(days=lo)).isoformat(), (run.today + timedelta(days=hi)).isoformat()
+    cs = contracts(run, und, gte, lte, spot * 0.995, spot * hi_k, "call")
+    listed = {c["expiration_date"] for c in cs}
+    exps = sorted(e for e in listed if is_monthly(e, listed))
+    if not exps:
+        return None
+    return exps[0], sorted((c for c in cs if c["expiration_date"] == exps[0]), key=lambda c: float(c["strike_price"]))
+
+
+def strike_at(ks: list[dict], spot: float, off: float = 0.0) -> dict | None:
+    """The first listed strike at or above spot x (1 + off): the at-the-money call at 0, the 5% out call at 0.05."""
+    return next((c for c in ks if float(c["strike_price"]) >= spot * (1 + off) - 1e-9), None)
+
+
 class Ladder:
     """The ladder ledger (owner, 10-28: 「我想从低做到高」; docs/questions/2026-10-28-ladder-and-opportunities.md task 3;
     hero/research_ladder.py, research/2026-10-28-ladder.md). One ledger that changes play with its balance -- the cash
@@ -1444,19 +1463,16 @@ class Ladder:
     BAGS = {"atm63": (0.25, 0.5), "spread": (0.25, 0.25), "fast": (0.125, 0.25)}   # (stake, bag) shares of the balance
 
     def depth_legs(self, run, und: str, spot: float) -> tuple[str, dict, dict | None] | None:
-        """The nearest monthly expiry 75-130 days out, its at-the-money call and the call $5 above."""
-        gte, lte = (run.today + timedelta(days=75)).isoformat(), (run.today + timedelta(days=130)).isoformat()
-        cs = contracts(run, und, gte, lte, spot * 0.995, spot * 1.12, "call")
-        listed = {c["expiration_date"] for c in cs}
-        exps = sorted(e for e in listed if is_monthly(e, listed))
-        if not exps:
+        """The nearest monthly expiry 75-130 days out (monthly_calls), its at-the-money call and the call $5 above."""
+        got = monthly_calls(run, und, spot)
+        if not got:
             return None
-        ks = sorted((c for c in cs if c["expiration_date"] == exps[0]), key=lambda c: float(c["strike_price"]))
-        atm = next((c for c in ks if float(c["strike_price"]) >= spot - 1e-9), None)
+        exp, ks = got
+        atm = strike_at(ks, spot)
         if not atm:
             return None
         k1 = float(atm["strike_price"])
-        return exps[0], atm, next((c for c in ks if abs(float(c["strike_price"]) - k1 - 5) < 1e-6), None)
+        return exp, atm, next((c for c in ks if abs(float(c["strike_price"]) - k1 - 5) < 1e-6), None)
 
     def entries(self, run, spec, s):
         day = run.today.isoformat()
@@ -1533,8 +1549,117 @@ class Ladder:
         return (day, picks)
 
 
+class Depth:
+    """The depth ledgers (docs/bottom-depth-2026-10-27.md; owner, 10-27: 「回测下低点 买期权拿两个月」「写到 github 上 我让 ultracode
+    本地看下」; research/2026-10-27-bottom-2m.md, -bottom-semi.md, -bottom-ledger.md). Of the five bottom studies only one
+    variable mattered: depth -- not how many down days, not the first green close, not the day's bounce. At 15:50, every
+    one of `unds` not already held in this ledger whose price now sits `level` under its 20-session high for the first
+    time (hero.signals.depth: 21 closes with the price now; yesterday was still above the line, and the high is the
+    last 20 sessions', not the 52-week high, which did worse than buying any day) gets the call on the nearest monthly
+    expiry `dte` (75-130) days out (the third Friday: monthly_calls) at the money, its strike moved out of the money
+    through `shifts` (0, 5%, 10%) until one contract fits the ledger's cash -- none fitting is logged 「买不起」 -- held
+    `hold` (63) sessions or to its expiry if that comes first (held_out: 15:50 that day, 15:30 on the expiry), no take,
+    no trail (a 3x take cut +190% to +86%). Half the cash a pick (`fraction` 0.5, the pick's `each`; hero.sleeves buys
+    one on all of it when half cannot), each name once a break: its ticket must leave before the same name buys again,
+    another name's break the same day buys too. `shares` {und: fund} buys the 3x fund's shares instead of a call
+    (SMH -> SOXL ...), held the same 63 sessions: the steady reference line (2017 on, $1,000 -> $32,687, -60% drawdown).
+    The four ETFs since 2024-02, the monthly at-the-money call held 63 sessions: 29 trades, +190% per $1, without the
+    best three +137%, median +166%, 76% winners, every year positive (+55% / +98% / +417%) against +82% for buying every
+    tenth day; 5% out held 42 sessions +193%; 14 semiconductor names 20% under (`level` 0.2) 76 trades +173%, without the
+    best three +133%, 63% winners, 2024 only +11%. Caveats from the same reports: 29 trades are 8 declines; four zeros in
+    a row in 2025-01..03 killed the all-in ledger, so half; the option data starts 2024-02 and is mostly a rising tape.
+    The live `depth-2000` waits for the owner's nod: config/s500.json carries the plan ledgers only."""
+
+    UNDS = ("SMH", "QQQ", "IWM", "SPY")
+    SHIFTS = (0.0, 0.05, 0.10)
+
+    def entries(self, run, spec, s):
+        day = run.today.isoformat()
+        if day in s["slots"] or not (spec.get("entry", "15:45") <= run.hhmm < "15:58"):
+            return None
+        if calm(run, spec, s):
+            return (day, [])
+        sid = spec.get("id", spec.get("kind", "depth"))
+        held = {t.get("und") for t in s["open"]}
+        unds = [u for u in spec.get("unds", self.UNDS) if u not in held]
+        if not unds:
+            return (day, [])
+        level, hold = float(spec.get("level", 0.08)), int(spec.get("hold", 63))
+        lo, hi = spec.get("dte", (75, 130))
+        base = float(spec.get("offset", 0.0))
+        shifts = [x for x in spec.get("shifts", self.SHIFTS) if x >= base - 1e-9] or [base]
+        shares = spec.get("shares") or {}
+        hist = history(run, unds, days=60)   # 21 closes needed; 40 calendar days leave little room over a holiday week
+        snap = snaps(run, sorted(set(unds) | {shares[u] for u in unds if u in shares}))
+        each = round(spec.get("fraction", 0.5) * s["cash"], 2)   # half the cash a pick, every pick of the day (the runner reads `each`)
+        room = budget(run, spec, s, 1)   # what is left to spend today: each pick taken below takes its cost out of it
+        picks = []
+        for und in unds:
+            cs = [c for c, _ in hist.get(und) or []]
+            spot = spot_open(snap.get(und) or {})[0]
+            if not spot or len(cs) < 21:
+                continue
+            d = depth(cs, spot, level)
+            if not d["first"]:
+                continue
+            head = f"深度抄底：{und} 首次收在 20 日高点下 {-d['dd']:.1%}（线 {level:.0%}，高点 {d['hi']:,.2f} → 现价 {spot:,.2f}）"
+            if und in shares:   # the 3x fund's shares, the steady line (research/2026-10-27-bottom-ledger.md)
+                fund = shares[und]
+                px = spot_open(snap.get(fund) or {})[0]
+                if px and room > 0:
+                    out = business_days_after(run.today, hold).isoformat()
+                    spend = round(min(each, room), 2)
+                    room -= spend
+                    picks.append({"sym": fund, "asset": "stock", "und": und, "ask": px, "whole": False, "each": spend,
+                                  "exit_day": out, "exit_at": "15:50",
+                                  "why": f"{head}；买三倍基金 {fund} 正股（${px:,.2f}）；拿到第 {hold} 个交易日（{out[5:]} 15:50）卖，不止盈"})
+                continue
+            got = monthly_calls(run, und, spot, lo, hi, max(1.12, 1 + max(shifts) + 0.02))   # 1.12 is Ladder's: one request serves both
+            if not got:
+                run.j.event("sleeve_skip", dry_run=bool(spec.get("plan_only")), sleeve=sid, symbol=und,
+                            why=f"{sid}：{und} {lo}–{hi} 天内没有月度到期的看涨合约，跳过")
+                continue
+            exp, ks = got
+            chosen, dear = None, []
+            for off in shifts:   # at the money, then out of the money, until one contract fits the ledger
+                c = strike_at(ks, spot, off)
+                if not c:
+                    continue
+                ask = ask_of(run, c["symbol"])
+                if ask <= 0:
+                    continue
+                if ask * 100 <= room:
+                    chosen = (c, ask, off)
+                    break
+                line = f"{float(c['strike_price']):g} 一张 ${ask * 100:,.0f}"
+                if line not in dear:   # coarse strikes can give two shifts the same contract
+                    dear.append(line)
+            if not chosen:
+                run.j.event("sleeve_skip", dry_run=bool(spec.get("plan_only")), sleeve=sid, symbol=und,
+                            why=f"{sid}：{und} {exp} 到期平值到价外 {max(shifts):.0%} 的看涨（{'、'.join(dear) or '没有报价'}）"
+                                f"都超过账本剩下的 ${room:,.2f}，买不起，跳过")
+                continue
+            c, ask, off = chosen
+            bid, skip = too_wide(run, spec, c, ask)
+            if skip:
+                continue
+            k, (out, at) = float(c["strike_price"]), held_out(run, exp, hold)
+            dte = (date.fromisoformat(exp) - run.today).days
+            quote = f"，买价 ${bid:.2f} / 卖价 ${ask:.2f}" if bid > 0 else f"，卖价 ${ask:.2f}"
+            leg = "平值" if off < 1e-9 else f"价外 {off:.0%}（平值买不起）"
+            # one contract a name (2.1 「四只各最多一张」): the pick's money is half the cash, capped at one contract,
+            # and the next name's affordability is judged on what is left after this one
+            spend = round(min(each, room, ask * 100), 2)
+            room -= ask * 100
+            picks.append({"sym": c["symbol"], "asset": "option", "und": und, "ask": ask, "each": spend, "expiry": exp,
+                          "exit_day": out, "exit_at": at, "trail": False,
+                          "why": f"{head}；买 {exp} 到期{leg}看涨 {k:g}（{dte} 天，离现价 {k / spot - 1:+.1%}{quote}）；"
+                                 f"拿到第 {hold} 个交易日或到期（{out[5:]} {at}），不止盈"})
+        return (day, picks)
+
+
 RULES = {"zdte": ZeroDTE(), "weekly": Weekly(), "net": Net(), "gap": Gap(), "flush": Flush(), "earnings": EarningsLotto(),
          "letf": LETF(), "relay": Relay(), "opengap": OpenGap(), "sniper": Sniper(), "oneshot": OneShot(),
          "overnight": Overnight(), "pead": Pead(), "vixspike": VixSpike(), "breakgap": BreakGap(),
          "hikerally": HikeRally(), "dipweek": DipWeek(), "fadelotto": FadeLotto(), "peer": Peer(), "pullback": Pullback(),
-         "bottom": Streak(), "bounce": Bounce(), "ladder": Ladder()}
+         "bottom": Streak(), "bounce": Bounce(), "ladder": Ladder(), "depth": Depth()}

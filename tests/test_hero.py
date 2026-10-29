@@ -6580,6 +6580,231 @@ class Ladder(unittest.TestCase):
         tmp.cleanup()
 
 
+class SleeveDepth(unittest.TestCase):
+    """docs/bottom-depth-2026-10-27.md section 4 item 6: the Depth rule's picks on a fake market, and section 5's acceptance days."""
+
+    EXPS = ("2026-11-20", "2027-01-08", "2027-01-15", "2027-02-19")   # 01-08 is a weekly inside the window; 01-15 / 02-19 monthlies
+    SPEC = {"id": "depth-plan-2000", "kind": "depth", "unds": ["SMH", "QQQ", "IWM", "SPY"], "level": 0.08,
+            "dte": [75, 130], "hold": 63, "offset": 0.0, "fraction": 0.5, "max_spread": 0.1, "plan_only": True}
+
+    def broker(self, quotes=None, exps=EXPS, strikes=range(80, 121)):
+        q = dict(quotes or {})
+        b = SleeveBroker(lambda s: q.get(s, (3.0, 3.2)))   # 6% wide: inside max_spread 0.1
+
+        def contracts(und, **kw):
+            lo, hi = float(kw["strike_price_gte"]), float(kw["strike_price_lte"])
+            return [{"symbol": f"{und}{e}C{k}", "strike_price": str(k), "expiration_date": e, "type": "call"}
+                    for e in exps if kw["expiration_date_gte"] <= e <= kw["expiration_date_lte"] for k in strikes if lo <= k <= hi]
+        b.option_contracts = contracts
+        return b
+
+    @staticmethod
+    def tape(*last, base=100.0, n=40):
+        """n completed closes dated 2026-08/09 (before any October `today`): flat at `base`, then `last` (oldest first)."""
+        cs = [base] * (n - len(last)) + list(last)
+        return [{"t": f"2026-{8 + i // 28:02d}-{i % 28 + 1:02d}T04:00:00Z", "c": c, "h": c} for i, c in enumerate(cs)]
+
+    @staticmethod
+    def snap(p, prev):
+        return {"dailyBar": {"o": prev, "l": p}, "latestTrade": {"p": p}, "prevDailyBar": {"c": prev}}
+
+    def run_at(self, b, day=date(2026, 10, 16), hh=15, mm=50, events=None):
+        from types import SimpleNamespace
+        ev = (lambda kind, **k: events.append((kind, k))) if events is not None else (lambda *a, **k: None)
+        return SimpleNamespace(c=b, today=day, hhmm=f"{hh:02d}:{mm:02d}", j=SimpleNamespace(event=ev), specs=[], cache={})
+
+    @staticmethod
+    def ledger(cash=5000.0, open_=()):
+        return {"slots": {}, "cash": cash, "open": list(open_)}
+
+    def test_the_first_break_buys_the_monthly_at_the_money_call_once(self):
+        from hero import sleeve_rules as sr
+        b = self.broker()
+        b.bars = {"SMH": self.tape(93.0), "QQQ": self.tape(), "IWM": self.tape(), "SPY": self.tape()}   # SMH closed -7% yesterday
+        b.snaps = {"SMH": self.snap(91.9, 93.0), **{u: self.snap(100.0, 100.0) for u in ("QQQ", "IWM", "SPY")}}   # now -8.1%
+        self.assertIsNone(sr.Depth().entries(self.run_at(b, hh=10, mm=0), self.SPEC, self.ledger()))   # 15:45 to 15:58 only
+        slot, picks = sr.Depth().entries(self.run_at(b), self.SPEC, self.ledger())
+        self.assertEqual((slot, [p["und"] for p in picks]), ("2026-10-16", ["SMH"]))
+        p = picks[0]
+        self.assertEqual((p["sym"], p["expiry"], p["asset"], p["trail"], p["ask"], p["each"]),
+                         ("SMH2027-01-15C92", "2027-01-15", "option", False, 3.2, 320.0))   # at the money: the first strike >= 91.9; one contract a name
+        self.assertNotIn("take", p)
+        for piece in ("深度抄底：SMH 首次收在 20 日高点下 8.1%", "高点 100.00 → 现价 91.90", "买 2027-01-15 到期平值看涨 92（91 天",
+                      "拿到第 63 个交易日或到期（01-13 15:50），不止盈"):
+            self.assertIn(piece, p["why"])
+        b.bars["SMH"], b.snaps["SMH"] = self.tape(93.0, 91.9), self.snap(91.0, 91.9)   # the next day: yesterday was already under the line
+        self.assertEqual(sr.Depth().entries(self.run_at(b, day=date(2026, 10, 19)), self.SPEC, self.ledger()), ("2026-10-19", []))
+        s = self.ledger()
+        s["slots"]["2026-10-16"] = "x"
+        self.assertIsNone(sr.Depth().entries(self.run_at(b), self.SPEC, s))   # one try a day
+
+    def test_a_name_already_held_is_not_bought_again(self):
+        from hero import sleeve_rules as sr
+        b = self.broker()
+        b.bars = {"SMH": self.tape(93.0), "QQQ": self.tape(93.0), "IWM": self.tape(), "SPY": self.tape()}
+        b.snaps = {"SMH": self.snap(91.9, 93.0), "QQQ": self.snap(91.5, 93.0), "IWM": self.snap(100.0, 100.0), "SPY": self.snap(100.0, 100.0)}
+        both = sr.Depth().entries(self.run_at(b), self.SPEC, self.ledger())[1]
+        self.assertEqual([p["und"] for p in both], ["SMH", "QQQ"])   # two breaks the same day: both, in the spec's order
+        self.assertEqual([p["each"] for p in both], [320.0, 320.0])   # one $320 contract each (2.1 「各最多一张」; the plan runner sizes from `each`)
+        held = sr.Depth().entries(self.run_at(b), self.SPEC, self.ledger(open_=[{"und": "SMH", "kind": "depth"}]))
+        self.assertEqual([p["und"] for p in held[1]], ["QQQ"])
+        self.assertEqual(sr.Depth().entries(self.run_at(b), self.SPEC, self.ledger(open_=[{"und": "SMH"}, {"und": "QQQ"}])), ("2026-10-16", []))
+
+    def test_the_nearest_monthly_expiry_in_the_window(self):
+        from hero import sleeve_rules as sr
+        b = self.broker()
+        b.bars, b.snaps = {"SMH": self.tape(93.0)}, {"SMH": self.snap(91.9, 93.0)}
+        one = {**self.SPEC, "unds": ["SMH"]}
+        self.assertEqual(sr.Depth().entries(self.run_at(b), one, self.ledger())[1][0]["expiry"], "2027-01-15")   # not the 84-day weekly 01-08
+        b2 = self.broker(exps=("2026-11-20", "2027-01-08", "2027-02-19"))   # 01-15 not listed: the next monthly
+        b2.bars, b2.snaps = b.bars, b.snaps
+        self.assertEqual(sr.Depth().entries(self.run_at(b2), one, self.ledger())[1][0]["expiry"], "2027-02-19")
+        b3 = self.broker(exps=("2027-01-15", "2027-02-19", "2027-03-19"))   # from 12-01 the window is 02-14 to 04-10
+        b3.bars, b3.snaps = b.bars, b.snaps
+        self.assertEqual(sr.Depth().entries(self.run_at(b3, day=date(2026, 12, 1)), one, self.ledger())[1][0]["expiry"], "2027-02-19")
+        b4 = self.broker(exps=("2026-11-20", "2027-01-08"))   # no monthly in the window: skipped and logged
+        b4.bars, b4.snaps = b.bars, b.snaps
+        events = []
+        self.assertEqual(sr.Depth().entries(self.run_at(b4, events=events), one, self.ledger()), ("2026-10-16", []))
+        self.assertTrue(any(k == "sleeve_skip" and "没有月度到期" in e["why"] for k, e in events))
+        # the ladder's bag A reads the same helper: its legs are unchanged
+        self.assertEqual([c["strike_price"] for c in sr.Ladder().depth_legs(self.run_at(b), "SMH", 91.9)[1:]], ["92", "97"])
+
+    def test_too_dear_moves_out_of_the_money_then_skips(self):
+        from hero import sleeve_rules as sr
+        # closes flat at 110, yesterday 103 (-6.4%), now 100 (-9.1%): at the money 100, 5% out 105, 10% out 110
+        q = {"SMH2027-01-15C100": (30.0, 31.0), "SMH2027-01-15C105": (20.0, 21.0), "SMH2027-01-15C110": (12.0, 13.0)}   # $3,100 / $2,100 / $1,300
+        b = self.broker(quotes=q)
+        b.bars, b.snaps = {"SMH": self.tape(103.0, base=110.0)}, {"SMH": self.snap(100.0, 103.0)}
+        one = {**self.SPEC, "unds": ["SMH"]}
+        p = sr.Depth().entries(self.run_at(b), one, self.ledger(5000.0))[1][0]
+        self.assertEqual((p["sym"], p["ask"]), ("SMH2027-01-15C100", 31.0))   # affordable: at the money
+        self.assertIn("到期平值看涨 100（", p["why"])
+        p = sr.Depth().entries(self.run_at(b), one, self.ledger(2500.0))[1][0]
+        self.assertEqual((p["sym"], p["ask"]), ("SMH2027-01-15C105", 21.0))   # $3,100 > $2,500: 5% out
+        self.assertIn("价外 5%（平值买不起）看涨 105", p["why"])
+        p = sr.Depth().entries(self.run_at(b), one, self.ledger(2000.0))[1][0]
+        self.assertEqual((p["sym"], p["ask"]), ("SMH2027-01-15C110", 13.0))   # 10% out
+        events = []
+        self.assertEqual(sr.Depth().entries(self.run_at(b, events=events), one, self.ledger(1000.0)), ("2026-10-16", []))
+        skips = [e for k, e in events if k == "sleeve_skip"]
+        self.assertEqual((skips[0]["sleeve"], skips[0]["symbol"], skips[0]["dry_run"]), ("depth-plan-2000", "SMH", True))
+        self.assertIn("买不起", skips[0]["why"])
+        self.assertIn("110 一张 $1,300", skips[0]["why"])
+        only_atm = sr.Depth().entries(self.run_at(b), {**one, "shifts": [0.0]}, self.ledger(2500.0))   # no shifting allowed: skipped
+        self.assertEqual(only_atm, ("2026-10-16", []))
+
+    def test_the_second_break_of_the_day_spends_what_is_left(self):
+        from hero import sleeve_rules as sr
+        # SMH and QQQ break the same day, both chains priced $3,100 / $2,100 / $1,300 (at the money, 5% out, 10% out)
+        q = {f"{u}2027-01-15C{k}": px for u in ("SMH", "QQQ") for k, px in ((100, (30.0, 31.0)), (105, (20.0, 21.0)), (110, (12.0, 13.0)))}
+        b = self.broker(quotes=q)
+        b.bars = {u: self.tape(103.0, base=110.0) for u in ("SMH", "QQQ")}
+        b.snaps = {u: self.snap(100.0, 103.0) for u in ("SMH", "QQQ")}
+        two = {**self.SPEC, "unds": ["SMH", "QQQ"]}
+        picks = sr.Depth().entries(self.run_at(b), two, self.ledger(4500.0))[1]
+        # SMH takes the $3,100 at-the-money call; $1,400 is left, so QQQ is judged on that and moves to the $1,300 10% out call
+        self.assertEqual([(p["und"], p["sym"], p["each"]) for p in picks], [("SMH", "SMH2027-01-15C100", 2250.0), ("QQQ", "QQQ2027-01-15C110", 1300.0)])
+        events = []
+        picks = sr.Depth().entries(self.run_at(b, events=events), two, self.ledger(3500.0))[1]   # $400 left after SMH: QQQ cannot buy any
+        self.assertEqual([p["und"] for p in picks], ["SMH"])
+        skip = next(e for k, e in events if k == "sleeve_skip")
+        self.assertEqual(skip["symbol"], "QQQ")
+        self.assertIn("超过账本剩下的 $400.00，买不起", skip["why"])
+
+    def test_the_exit_is_the_63rd_session_or_the_expiry(self):
+        from hero import sleeve_rules as sr
+        b = self.broker()
+        b.bars, b.snaps = {"SMH": self.tape(93.0)}, {"SMH": self.snap(91.9, 93.0)}
+        one = {**self.SPEC, "unds": ["SMH"]}
+        p = sr.Depth().entries(self.run_at(b, day=date(2026, 10, 16)), one, self.ledger())[1][0]
+        self.assertEqual((p["expiry"], p["exit_day"], p["exit_at"]), ("2027-01-15", "2027-01-13", "15:50"))   # the 63rd session is before the expiry
+        p = sr.Depth().entries(self.run_at(b, day=date(2026, 10, 22)), one, self.ledger())[1][0]
+        self.assertEqual((p["expiry"], p["exit_day"], p["exit_at"]), ("2027-01-15", "2027-01-15", "15:30"))   # the 63rd session (01-19) is past it
+
+    def test_the_acceptance_days(self):
+        from hero import sleeve_rules as sr
+        monthly = ("2026-12-18", "2027-01-15", "2027-02-19")
+        # 2026-10-14 SMH: the 20-day high 632.5 two sessions back, 10-13 closed 590 (-6.7%, above the line), 15:50 at 564.74 (-10.7%)
+        smh = self.broker(exps=monthly, strikes=range(500, 701, 5))
+        smh.bars, smh.snaps = {"SMH": self.tape(632.5, 590.0, base=600.0)}, {"SMH": self.snap(564.74, 590.0)}
+        one = {**self.SPEC, "unds": ["SMH"]}
+        p = sr.Depth().entries(self.run_at(smh, day=date(2026, 10, 14)), one, self.ledger(10_000.0))[1][0]
+        self.assertEqual((p["sym"], p["expiry"], p["exit_day"], p["exit_at"]), ("SMH2027-01-15C565", "2027-01-15", "2027-01-11", "15:50"))
+        for piece in ("SMH 首次收在 20 日高点下 10.7%", "高点 632.50 → 现价 564.74", "平值看涨 565（93 天"):
+            self.assertIn(piece, p["why"])
+        # 2026-10-15: 564.74 is now yesterday's close, already under the line: no SMH
+        smh.bars["SMH"], smh.snaps["SMH"] = self.tape(632.5, 590.0, 564.74, base=600.0), self.snap(560.0, 564.74)
+        self.assertEqual(sr.Depth().entries(self.run_at(smh, day=date(2026, 10, 15)), one, self.ledger(10_000.0)), ("2026-10-15", []))
+        # 2026-10-22 AMD at the 20% line: high 640, 10-21 closed 520 (-18.75%), now 507.93 (-20.6%)
+        amd = self.broker(exps=monthly, strikes=range(400, 701, 5))
+        amd.bars, amd.snaps = {"AMD": self.tape(640.0, 520.0, base=600.0)}, {"AMD": self.snap(507.93, 520.0)}
+        semi = {**self.SPEC, "id": "depth-semi-plan-2000", "unds": ["AMD"], "level": 0.20}
+        p = sr.Depth().entries(self.run_at(amd, day=date(2026, 10, 22)), semi, self.ledger(10_000.0))[1][0]
+        self.assertEqual((p["sym"], p["expiry"], p["exit_day"], p["exit_at"]), ("AMD2027-01-15C510", "2027-01-15", "2027-01-15", "15:30"))
+        self.assertIn("AMD 首次收在 20 日高点下 20.6%（线 20%", p["why"])
+        self.assertEqual(sr.Depth().entries(self.run_at(amd, day=date(2026, 10, 22)), {**semi, "level": 0.08}, self.ledger(10_000.0)),
+                         ("2026-10-22", []))   # at the 8% line AMD broke long ago: not a first break
+
+    def test_the_letf_plan_buys_the_fund_s_shares(self):
+        from hero import sleeve_rules as sr
+        b = self.broker()
+        b.bars = {"SMH": self.tape(93.0), "QQQ": self.tape(), "IWM": self.tape(), "SPY": self.tape()}
+        b.snaps = {"SMH": self.snap(91.9, 93.0), "SOXL": self.snap(40.0, 44.0), **{u: self.snap(100.0, 100.0) for u in ("QQQ", "IWM", "SPY")}}
+        spec = {"id": "depth-letf-plan-2000", "kind": "depth", "unds": ["SMH", "QQQ", "IWM", "SPY"], "level": 0.08, "hold": 63,
+                "shares": {"SMH": "SOXL", "QQQ": "TQQQ", "IWM": "TNA", "SPY": "SPXL"}, "fraction": 0.5, "plan_only": True}
+        slot, picks = sr.Depth().entries(self.run_at(b), spec, self.ledger(2000.0))
+        self.assertEqual([(p["sym"], p["asset"], p["und"], p["ask"], p["whole"], p["each"], p["exit_day"], p["exit_at"]) for p in picks],
+                         [("SOXL", "stock", "SMH", 40.0, False, 1000.0, "2027-01-13", "15:50")])
+        self.assertNotIn("expiry", picks[0])
+        self.assertIn("买三倍基金 SOXL 正股（$40.00）；拿到第 63 个交易日（01-13 15:50）卖，不止盈", picks[0]["why"])
+        held = sr.Depth().entries(self.run_at(b), spec, self.ledger(2000.0, [{"und": "SMH", "sym": "SOXL"}]))   # the ticket's und is the signal
+        self.assertEqual(held, ("2026-10-16", []))
+        self.assertEqual(b.orders, {})
+
+    def test_the_plan_book_records_the_pick(self):
+        """Section 5: the plan ledger (journal-s500/sleeves_plan.json) keeps why / expiry / exit_day; half cannot buy one, the ledger can."""
+        from hero import sleeve_rules as sr, sleeves
+        tmp = tempfile.TemporaryDirectory()
+        root = Path(tmp.name)
+        b = self.broker(quotes={"SMH2027-01-15C92": (15.0, 15.5)})   # one contract $1,551 at the limit: over half of $2,000, under all of it
+        b.bars, b.snaps = {"SMH": self.tape(93.0)}, {"SMH": self.snap(91.9, 93.0)}
+        spec = {"id": "depth-plan-2000", "kind": "depth", "start": 2000, "fraction": 0.5, "plan_only": True, "unds": ["SMH"],
+                "level": 0.08, "dte": [75, 130], "hold": 63, "offset": 0.0, "max_spread": 0.1}
+        book = sleeves.Book(root / "plan.json", [spec])
+        j = Journal(root)
+        sleeves.Runner(b, j, {"sleeves": {"fill_wait_s": 0}}, [spec], book, {"depth": sr.Depth()},
+                       datetime(2026, 10, 16, 15, 50), date(2026, 10, 16), sleep=lambda s: None).plan()
+        s = book.s("depth-plan-2000")
+        t = s["open"][0]
+        self.assertEqual((t["sym"], t["qty"], t["cost"], t["paid"], s["cash"]), ("SMH2027-01-15C92", 1, 15.5, 1550.0, 450.0))
+        self.assertEqual((t["expiry"], t["exit_day"], t["exit_at"], t["trail"], t["und"], t["sim"]), ("2027-01-15", "2027-01-13", "15:50", False, "SMH", True))
+        self.assertNotIn("take", t)
+        self.assertIn("深度抄底：SMH 首次收在 20 日高点下 8.1%", t["why"])
+        plan = [e for e in map(json.loads, (root / "trades.jsonl").read_text().splitlines()) if e["kind"] == "sleeve_plan"]
+        self.assertIn("一半 $1,000.00 买不起一张，押上账本", plan[-1]["why"])
+        self.assertEqual(b.orders, {})   # nothing sent
+        tmp.cleanup()
+
+    def test_the_ids_resolve_to_their_pages(self):
+        from hero import feature_pages, notify, sleeve_rules as sr
+        self.assertIsInstance(sr.RULES["depth"], sr.Depth)
+        self.assertEqual([notify.direction(x) for x in ("depth-2000", "depth-plan-2000", "depth-plan-500", "depth-semi-plan-2000", "depth-letf-plan-2000")],
+                         ["depth", "depth", "depth", "depth-semi", "depth-letf"])
+        self.assertEqual(feature_pages.SIZE.sub("", "depth-letf-plan-2000"), "depth-letf-plan")
+        self.assertEqual((notify.SLEEVE["depth"], notify.sleeve_name("depth-2000")), ("深度抄底", "深度抄底 $2k"))
+        for k in ("depth", "depth-semi", "depth-letf"):
+            self.assertIn(k, feature_pages.TITLE)
+            self.assertIn(k, dict(feature_pages.GROUPS)["抄底和跳空"])
+        cfg = json.loads((Path(__file__).resolve().parent.parent / "config" / "s500.json").read_text(encoding="utf-8"))
+        by = {s["id"]: s for s in cfg["sleeves"]["list"]}
+        for sid in ("depth-plan-2000", "depth-plan-500", "depth-semi-plan-2000", "depth-letf-plan-2000"):
+            self.assertEqual((by[sid]["kind"], by[sid].get("plan_only"), by[sid]["fraction"], by[sid]["hold"]), ("depth", True, 0.5, 63), sid)
+        self.assertEqual((by["depth-plan-2000"]["level"], by["depth-semi-plan-2000"]["level"], len(by["depth-semi-plan-2000"]["unds"])), (0.08, 0.2, 14))
+        self.assertEqual(by["depth-letf-plan-2000"]["shares"], {"SMH": "SOXL", "QQQ": "TQQQ", "IWM": "TNA", "SPY": "SPXL"})
+        self.assertNotIn("depth-2000", by)   # the live ledger waits for the owner's nod
+
+
 class Opportunities(unittest.TestCase):
     """docs/questions/2026-10-28-ladder-and-opportunities.md: the opportunity log's scan, its scorer, the backfill."""
 
