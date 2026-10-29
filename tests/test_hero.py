@@ -6547,3 +6547,27 @@ class ResearchChipBeat(unittest.TestCase):
         self.assertEqual(len(g["新样本（扩展名单 + 10-02 之后） · 涨超定价 1.5 倍"]), 0)   # MU in January: seen before
         og = cb.option_groups([{"symbol": "TER", "reaction_day": "2025-01-30", "ratio": 1.8, "leg": "atm", "day": "2025-01-31", "res": {}}])
         self.assertEqual(len(og["　扩展名单 · 涨超 1.5 倍 · 平值"]), 1)
+
+    def test_foreign_earnings_6k_titles(self):
+        from hero import research_chip_beat as cb
+        yes = ["HSINCHU, Taiwan, Oct. 15, 2026 -- TSMC (NYSE: TSM) today announced consolidated revenue of NT$1.2 trillion, "
+               "net income and diluted EPS of NT$20 for the third quarter ended September 30, 2026.",
+               "FOR IMMEDIATE RELEASE CAMTEK ANNOUNCES RECORD RESULTS FOR THE THIRD QUARTER OF 2025",
+               "ASML reports €7.5 billion total net sales and €2.1 billion net income in Q3 2026"]
+        no = ["FOR IMMEDIATE RELEASE CAMTEK PRE-ANNOUNCES RECORD Q3 REVENUES ABOVE GUIDANCE; results will be reported with the "
+              "Company's quarterly results announcement expected in early November.",
+              "TSMC September 2026 Revenue Report: TSMC today announced net revenue for September 2026.",
+              "Nova to announce third quarter 2026 financial results on November 5.",
+              "The system delivers faster time to results for process control."]
+        for t in yes:
+            self.assertIsNotNone(cb.earnings_title(t), t)
+        for t in no:
+            self.assertIsNone(cb.earnings_title(t), t)
+        order = cb.exhibit_order(["a.htm", "R1.htm", "pressreleasefinancialresul.htm", "x-index.html", "logo.jpg"], "a.htm")
+        self.assertEqual(order, ["pressreleasefinancialresul.htm"])
+
+    def test_spaced_releases(self):
+        from datetime import datetime
+        from hero import research_chip_beat as cb
+        ts = [datetime(2025, 8, 7, 7, 30), datetime(2025, 9, 2, 7, 1), datetime(2025, 11, 6, 7, 30), datetime(2025, 11, 6, 7, 35)]
+        self.assertEqual(cb.spaced(ts), [ts[0], ts[2]])

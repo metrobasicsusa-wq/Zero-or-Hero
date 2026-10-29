@@ -12,12 +12,17 @@ at-the-money straddle on the close before (research_earnings.straddle), and repe
            monthly expiry when listed; out after 10 / 20 sessions, a 2x take or a 2x-then-40%-giveback trail on daily
            option bars; 10% paid over / taken under (research_beat_drift, research_ideas).
 What the earlier study could not see is reported apart: the names outside the original groups, and every report
-after 2026-10-02 (out of sample). Foreign issuers file 6-Ks, not 8-Ks, and drop out (listed as missing).
+after 2026-10-02 (out of sample). Foreign issuers (TSM, ASML, ARM, NVMI, CAMT, GFS) furnish 6-Ks with no item codes,
+so their earnings 6-K is recognised by its press release: a title like "<company> reports ... quarter ... results /
+EPS / net sales" in the filing or in an exhibit whose name says press release / earnings / results, excluding
+pre-announcements, monthly revenue reports and "to announce" notices (owner, 10-29: 「TSM 为什么不可以」).
 Survivorship: today's listings. Record only. Run: python -m hero.research_chip_beat
 """
 
 from __future__ import annotations
 
+import html
+import re
 import statistics
 import sys
 import time
@@ -37,7 +42,85 @@ EXTRA = {
 }
 EXTRA_GROUP = {s: g for g, ss in EXTRA.items() for s in ss.split()}
 NAMES = sorted(set(CORE) | set(EXTRA_GROUP))
+FOREIGN = ("TSM", "ASML", "ARM", "NVMI", "CAMT", "GFS")
 HORIZONS = (1, 5, 10, 20, 60)
+_HIT = re.compile(r"\b(reports?|reported|announce[sd]?)\b(?:[^.\n]|\.(?=\d)){0,160}?\b(results|EPS|net sales|net income|revenue)\b", re.I)
+_PERIOD = re.compile(r"\b(quarter|Q[1-4]|fiscal|full year)\b", re.I)
+_NOT = re.compile(r"\b(pre-?announce\w*|preliminary|to (announce|report|release|host)|will (announce|report|release|host)|invitation|"
+                  r"monthly revenue|revenue report|(january|february|march|april|may|june|july|august|september|october|november|"
+                  r"december) (\d{4} )?revenue)\b", re.I)
+_EXHIBIT = re.compile(r"press|release|earn|result|ex-?99|exhibit", re.I)
+
+
+def page_text(raw: bytes, limit: int = 80000) -> str:
+    t = re.sub(rb"<[^>]+>", b" ", raw[:limit]).decode("utf-8", "ignore")
+    return re.sub(r"\s+", " ", html.unescape(t))
+
+
+def earnings_title(text: str) -> str | None:
+    """The press-release headline of a quarterly earnings report, or None (pre-announcements, monthly revenue,
+    'to announce' notices and product news fail)."""
+    head = text[:8000]
+    if re.search(r"pre-?announc", head[:3000], re.I):
+        return None
+    for m in _HIT.finditer(head):
+        span = head[max(0, m.start() - 120):m.end() + 120]
+        if _PERIOD.search(span) and not _NOT.search(span):
+            return span
+    return None
+
+
+def exhibit_order(names: list[str], primary: str) -> list[str]:
+    """A 6-K's other HTML documents, press-release-looking names first (no XBRL R pages)."""
+    docs = [n for n in names if n.lower().endswith((".htm", ".html")) and n != primary and "index" not in n.lower()
+            and not re.match(r"R\d+\.htm$", n)]
+    return sorted(docs, key=lambda n: (not _EXHIBIT.search(n), n))[:3]
+
+
+def releases_6k(cik: int, since: str) -> list:
+    """Acceptance times (ET) of a foreign issuer's earnings 6-Ks."""
+    import requests
+    from datetime import datetime
+    from hero import research_earnings as re_
+    data = re_._sec(f"https://data.sec.gov/submissions/CIK{cik:010d}.json")
+    blocks = [data["filings"]["recent"]] + [re_._sec(f"https://data.sec.gov/submissions/{f['name']}")
+                                            for f in data["filings"].get("files", []) if f.get("filingTo", "9999") >= since]
+
+    def raw(url):
+        r = requests.get(url, headers=re_.SEC_HEADERS, timeout=60)
+        r.raise_for_status()
+        time.sleep(0.12)
+        return r.content
+    out = []
+    for b in blocks:
+        for form, filed, accepted, acc, doc in zip(b["form"], b["filingDate"], b["acceptanceDateTime"], b["accessionNumber"],
+                                                   b["primaryDocument"]):
+            if form != "6-K" or filed < since:
+                continue
+            base = f"https://www.sec.gov/Archives/edgar/data/{cik}/{acc.replace('-', '')}/"
+            try:
+                found = earnings_title(page_text(raw(base + doc)))
+                if not found:
+                    items = [x["name"] for x in re_._sec(base + "index.json")["directory"]["item"]]
+                    for n in exhibit_order(items, doc):
+                        found = earnings_title(page_text(raw(base + n)))
+                        if found:
+                            break
+            except Exception:
+                continue
+            if found:
+                out.append(datetime.fromisoformat(accepted.replace("Z", "+00:00")).astimezone(re_.ET))
+    return spaced(sorted(set(out)))
+
+
+def spaced(times: list, days: int = 40) -> list:
+    """Quarterly reports are ~3 months apart: drop a release within `days` of the last one kept (a second press
+    release the same day, or other news that reads like results)."""
+    kept = []
+    for t in sorted(times):
+        if not kept or (t - kept[-1]).days >= days:
+            kept.append(t)
+    return kept
 STOCK_COST = 0.001
 BEAT = 1.5
 
@@ -163,7 +246,7 @@ def run(client) -> dict:
             missing.append(s)
             continue
         try:
-            rel = re_.releases(ciks[s], since)
+            rel = releases_6k(ciks[s], since) if s in FOREIGN else re_.releases(ciks[s], since)
         except Exception:
             missing.append(s)
             continue
@@ -224,7 +307,7 @@ def main() -> None:
     head = [f"# 芯片 / AI 硬件财报大超之后：扩大名单 {rep['generated']}", "",
             f"{rep['names']} 只美国上市的芯片、设备、网络 / 光通信、存储、服务器、代工和数据中心电力散热公司（原研究是自己分组里的 {len(CORE)} 只），"
             f"SEC 8-K 财报公告，{START} 起（Alpaca 期权数据从这时开始）；{len(rep['events'])} 次财报，{len(priced)} 次有财报前一天收盘的平值跨式定价。"
-            f"没有 8-K 的外国公司（交 6-K）：{'、'.join(rep['missing']) or '无'}。"
+            f"外国公司（{'、'.join(FOREIGN)}）交的是 6-K，按新闻稿标题认财报；找不到财报公告或行情的：{'、'.join(rep['missing']) or '无'}。"
             "「涨超定价 1.5 倍」= 反应日收盘涨幅 ≥ 1.5 × 期权定价。「新样本」= 原研究没见过的：扩展名单的公司，加上 10-02 之后的财报。"
             "正股从反应日收盘算，减去 SPY 同期；稳健性检查的成本按买卖各 0.1%。幸存者偏差：都是今天还在交易的公司。只研究，不改交易。", "",
             "## 正股版", "", smd, "## 每一次涨超 1.5 倍（减 SPY：第 5 / 20 / 60 天）", "",
