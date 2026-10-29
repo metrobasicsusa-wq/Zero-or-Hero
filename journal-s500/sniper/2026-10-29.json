@@ -1,0 +1,178 @@
+{
+ "date": "2026-10-29",
+ "sniper": {
+  "symbol": "MRVL",
+  "direction": "put",
+  "confidence": 0.3,
+  "catalyst_type": "company news",
+  "catalyst": "Bloomberg 10-28 17:21 ET：Marvell 正在深入谈判收购 Lumentum（claude-b 盘前、premarket 扫描），收购方盘前 -10.8% 到 $224.5，约平时单日波动（3.0%）的 3.6 倍，贴着 20 日收盘低点 $223.47 但还没跌破；大额收购常被当作稀释和溢价担忧，今天芯片板块也在被卖（SMH 盘前 -1.9%）。没破 20 日低，不拿过夜（当天到期）"
+ },
+ "candidates": [
+  {
+   "rank": 1,
+   "symbol": "MRVL",
+   "direction": "put",
+   "confidence": 0.3,
+   "catalyst_type": "company news",
+   "why": "收购 Lumentum 的谈判（Bloomberg），收购方盘前 -10.8%（约 3.6 倍平时波动），贴着 20 日低点没破；跳空大可能已吃掉一部分"
+  },
+  {
+   "rank": 2,
+   "symbol": "LITE",
+   "direction": "call",
+   "confidence": 0.2,
+   "catalyst_type": "company news",
+   "why": "被收购方，盘前 +7.1%（1.6 倍），离 20 日高 $1,143 还远；收购价没公布，被收购股常贴着报价不动，跳空超过 6% 常已反映"
+  },
+  {
+   "rank": 3,
+   "symbol": "NBIS",
+   "direction": "put",
+   "confidence": 0.15,
+   "catalyst_type": "sector move",
+   "why": "谷歌、微软资本开支担忧砸新云股（Benzinga），盘前 -5.9%（1.3 倍），没破 20 日低；没有自己的消息"
+  },
+  {
+   "rank": 4,
+   "symbol": "COHR",
+   "direction": "call",
+   "confidence": 0.1,
+   "catalyst_type": "peer plan hits a group",
+   "why": "光模块同行被收购的连带溢价，盘前 +1.8%（0.4 倍），离 20 日高远；芯片今天整体被卖，力度弱"
+  }
+ ],
+ "skipped": [
+  {
+   "symbol": "V",
+   "direction": "call",
+   "gap": 0.018,
+   "reason": "claude-b 已选",
+   "why_not": "Visa 与腾讯全球支付合作 + 万事达财报超预期，claude-b 今天选了它"
+  },
+  {
+   "symbol": "NOW",
+   "direction": "put",
+   "gap": -0.185,
+   "reason": "财报临近",
+   "why_not": "财报反应 -18.5%，四季度 cRPO 指引放缓；规则只选非财报消息"
+  },
+  {
+   "symbol": "GOOGL",
+   "direction": "put",
+   "gap": -0.118,
+   "reason": "财报临近",
+   "why_not": "财报反应 -11.8%（资本开支 $514 亿、自由现金流为负）"
+  },
+  {
+   "symbol": "CAT",
+   "direction": "put",
+   "gap": -0.102,
+   "reason": "财报临近",
+   "why_not": "今早财报 -10.2%，关税和中东"
+  },
+  {
+   "symbol": "FTNT",
+   "direction": "put",
+   "gap": -0.25,
+   "reason": "财报临近",
+   "why_not": "财报反应约 -25%"
+  },
+  {
+   "symbol": "MSFT",
+   "direction": "call",
+   "gap": 0.024,
+   "reason": "财报临近",
+   "why_not": "财报反应 +2.4%，盘后 +4% 回吐一半；另有 $250 亿发债消息"
+  },
+  {
+   "symbol": "AMZN",
+   "direction": "put",
+   "gap": -0.022,
+   "reason": "财报临近",
+   "why_not": "今晚财报"
+  },
+  {
+   "symbol": "INTC",
+   "direction": "put",
+   "gap": -0.03,
+   "reason": "财报临近",
+   "why_not": "今晚财报"
+  },
+  {
+   "symbol": "LLY",
+   "direction": "call",
+   "gap": 0.04,
+   "reason": "财报临近",
+   "why_not": "今早财报超预期上调，+4%"
+  },
+  {
+   "symbol": "MA",
+   "direction": "call",
+   "gap": 0.03,
+   "reason": "财报临近",
+   "why_not": "今早财报 +3%"
+  },
+  {
+   "symbol": "PLTR",
+   "direction": "call",
+   "gap": 0.011,
+   "reason": "分析师评级",
+   "why_not": "摩根大通首次覆盖增持，软件今天被卖，11-02 财报"
+  },
+  {
+   "symbol": "STX",
+   "direction": "put",
+   "gap": -0.029,
+   "reason": "分析师评级",
+   "why_not": "UBS、花旗下调目标价，只有评级"
+  },
+  {
+   "symbol": "AVGO",
+   "direction": "put",
+   "gap": -0.028,
+   "reason": "消息太弱",
+   "why_not": "板块跟跌，没有自己的消息"
+  },
+  {
+   "symbol": "MU",
+   "direction": "put",
+   "gap": -0.03,
+   "reason": "消息太弱",
+   "why_not": "板块跟跌；三星利润略不及（同行），连续第 2 天看 MU 减分"
+  },
+  {
+   "symbol": "BE",
+   "direction": "put",
+   "gap": -0.044,
+   "reason": "消息太弱",
+   "why_not": "Koses 续签设备合同（利好）但盘前跌，跟着新云股走"
+  },
+  {
+   "symbol": "VRT",
+   "direction": "put",
+   "gap": -0.034,
+   "reason": "消息太弱",
+   "why_not": "没有自己的消息，资本开支担忧连带"
+  },
+  {
+   "symbol": "CIEN",
+   "direction": "put",
+   "gap": -0.039,
+   "reason": "消息太弱",
+   "why_not": "光通信同行但盘前反而跌，方向和 LITE 收购相反，看不清"
+  }
+ ],
+ "claude_b_pick": {
+  "symbol": "V",
+  "direction": "call",
+  "confidence": 0.3
+ },
+ "notes": [
+  "**晚交约 15 分钟**：09:01 的任务 09:14 才到，这个文件写于 09:17 前后，仍在开盘前。",
+  "今天是轮动日：资金从 AI 资本开支和软件（谷歌 -11.8%、NOW -18.5%、芯片 -2% 到 -3%）流向医疗、必需消费、支付和银行（claude-b 盘前）。大跳空大多是财报反应，按规则不选。",
+  "非财报消息只有一条有分量：Marvell 收购 Lumentum 的谈判。收购方 MRVL 跳空 3.6 倍、贴着 20 日低；被收购方 LITE 跳空 1.6 倍。选收购方的看跌，因为它更接近回测加分形态（破 20 日低 + 3 倍以上），但还没破低，所以不拿过夜。",
+  "08:30 的三季度 GDP 3.4%、9 月 PCE 符合预期（Benzinga 标题），盘前 SPY -0.4%、QQQ -1.2%。"
+ ],
+ "late": true,
+ "generated_at": "2026-10-29T09:16:38-04:00"
+}
