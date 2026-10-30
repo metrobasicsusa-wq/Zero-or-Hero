@@ -93,19 +93,28 @@ def bs_delta(s: float, k: float, t: float, sigma: float, call: bool, r: float = 
 
 
 # ---------------------------------------------------------------- calendar and earnings
-def friday_expiry(sessions: list[str], earliest: date, latest: date) -> str | None:
-    """The first weekly expiry between the two dates: the Friday on or after `earliest`, or the session before it when
-    that Friday is a holiday (Good Friday, 2025-07-04); the next week if the chain turns out empty is the caller's."""
+def friday_expiries(sessions: list[str], earliest: date, latest: date) -> list[str]:
+    """The weekly expiries between the two dates, nearest first: each Friday on or after `earliest`, or the session
+    before it when that Friday is a holiday (Good Friday, 2025-07-04). The caller tries them in turn: a sector ETF's
+    near weekly often has no trades while its monthly (the third Friday) does, and the live engine scans the whole
+    window and takes whatever has quotes."""
+    out = []
     d = earliest + timedelta(days=(4 - earliest.weekday()) % 7)
     while d <= latest:
         iso = d.isoformat()
         if iso in sessions:
-            return iso
-        prev = [x for x in sessions if x < iso]
-        if prev and date.fromisoformat(prev[-1]) >= earliest:
-            return prev[-1]
+            out.append(iso)
+        else:
+            prev = [x for x in sessions if x < iso]
+            if prev and date.fromisoformat(prev[-1]) >= earliest and prev[-1] not in out:
+                out.append(prev[-1])
         d += timedelta(days=7)
-    return None
+    return out
+
+
+def friday_expiry(sessions: list[str], earliest: date, latest: date) -> str | None:
+    xs = friday_expiries(sessions, earliest, latest)
+    return xs[0] if xs else None
 
 
 def report_calendar(events_path: Path = EVENTS, upcoming: Path | None = None) -> dict[str, list[tuple[str, str]]]:
@@ -233,6 +242,7 @@ def simulate(opt: dict, cfg: dict, days: list[str], adj: dict[str, list[float]],
     budget = opt["allocation"] * EQUITY / opt["max_positions"]
     open_pos: dict[str, dict] = {}   # und -> position
     trades, pnl = [], []
+    skips: dict[str, int] = {}       # why a candidate produced no entry, summed over the replay
     for t in range(start, end - 1):
         day = days[t]
         day_pnl = 0.0   # the day's change in the option book: marks moving, exits (with their slippage), entry slippage
@@ -288,20 +298,28 @@ def simulate(opt: dict, cfg: dict, days: list[str], adj: dict[str, list[float]],
                 if safe and date.fromisoformat(safe) < latest:
                     latest = date.fromisoformat(safe)
                     if latest < today + timedelta(days=lo_dte):
+                        skips["earnings_guard"] = skips.get("earnings_guard", 0) + 1
                         continue
-                exp = friday_expiry(days, today + timedelta(days=lo_dte), latest)
-                if not exp:
-                    continue
-                if und in SPLITS and day < SPLITS[und] <= exp:
+                exps = [e for e in friday_expiries(days, today + timedelta(days=lo_dte), latest)
+                        if not (und in SPLITS and day < SPLITS[und] <= e)][:4]
+                if not exps:
+                    skips["no_expiry"] = skips.get("no_expiry", 0) + 1
                     continue
                 spot = raw[und][t]
-                chain = chains.chain(und, exp, "call" if call else "put", spot)
-                pick = pick_strike(chain, day, spot, exp, call, opt["target_delta"])
+                pick, exp, chain = None, None, None
+                for e in exps:   # the first expiry in the window with a strike that traded today
+                    chain = chains.chain(und, e, "call" if call else "put", spot)
+                    pick = pick_strike(chain, day, spot, e, call, opt["target_delta"])
+                    if pick:
+                        exp = e
+                        break
                 if not pick:
+                    skips["no_traded_strike"] = skips.get("no_traded_strike", 0) + 1
                     continue
                 k, px, d = pick
                 qty = math.floor(budget / (px * 100))
                 if qty < 1:
+                    skips["over_budget"] = skips.get("over_budget", 0) + 1
                     continue
                 open_pos[und] = {"day": day, "expiry": exp, "strike": float(k), "call": call, "qty": qty, "entry": px,
                                  "mark": px, "bars": chain[k]["bars"], "delta": round(d, 2)}
@@ -310,7 +328,9 @@ def simulate(opt: dict, cfg: dict, days: list[str], adj: dict[str, list[float]],
         pnl.append(day_pnl)
     stock = stock if stock is not None else stock_returns(adj, p, cfg, start, end, macro_closes)
     combined = [s + o / EQUITY for s, o in zip(stock, pnl)]
-    return {"pnl": pnl, "trades": trades, "stock_rets": stock, "combined": combined}
+    still = [{"und": u, "call": x["call"], "in": x["day"], "expiry": x["expiry"], "strike": x["strike"], "qty": x["qty"],
+              "entry": x["entry"], "mark": round(x["mark"], 4), "per_dollar": round(x["mark"] / x["entry"] - 1, 4)} for u, x in open_pos.items()]
+    return {"pnl": pnl, "trades": trades, "stock_rets": stock, "combined": combined, "skips": skips, "open": still}
 
 
 def score(res: dict, split: int) -> dict:
@@ -347,10 +367,12 @@ def run(client, cfg: dict, pace=None) -> dict:
         res = simulate(opt, cfg, days, adj, raw, chains, reports, start, n, stock=stock)
         res["val_from"] = val_from
         sc = score(res, split - start)
-        results.append({"params": {k: opt[k] for k in GRID}, "live": i == 0, **sc,
-                        "trades_list": res["trades"] if i == 0 else None})
+        results.append({"params": {k: opt[k] for k in GRID}, "live": i == 0, **sc, "skips": res["skips"],
+                        "open_at_end": len(res["open"]), "trades_list": res["trades"] if i == 0 else None})
         if i == 0:
             results[0]["pnl"] = [round(x, 2) for x in res["pnl"]]
+            results[0]["open_list"] = res["open"]
+            results[0]["pnl_days"] = days[start:n - 1]
     chains.save()
     cur = results[0]
     best = max(results[1:], key=lambda r: r["score"])
@@ -397,6 +419,17 @@ def markdown(rep: dict) -> str:
             if xs:
                 md.append(f"| {k} | {v} | {statistics.mean(r['score'] for r in xs):.2f} | {statistics.mean(r['opt_pnl'] for r in xs):+,.0f} |")
     tl = cur.get("trades_list") or []
+    pd, pl = cur.get("pnl_days") or [], cur.get("pnl") or []
+    if pd:
+        last = [(d, x) for d, x in zip(pd, pl)][-22:]
+        md += ["", "## 对照实盘（现在的参数，最近 22 个交易日）", "",
+               f"重放里这段期权盈亏合计 {sum(x for _, x in last):+,.0f}，{sum(1 for _, x in last if abs(x) > 0.5)} 天有仓位变动；"
+               f"重放结束时还拿着 {cur.get('open_at_end', 0)} 个仓位。实盘 10-01 起约 10 笔期权、合计约 +$10,400，两边对不上就说明重放哪里和引擎不一样（优先怀疑：到期选择、成交价、停损用的收盘价）。",
+               "", "没买成的原因（现在的参数，整段合计）：" + "、".join(f"{k} {v}" for k, v in sorted((cur.get("skips") or {}).items(), key=lambda kv: -kv[1])) + "。"]
+        if cur.get("open_list"):
+            md += ["", "| 还拿着 | 买入 | 到期 | 行权价 | 张 | 买价 | 现价 | 每 $1 |", "|---|---|---|---|---|---|---|---|"]
+            for x in cur["open_list"]:
+                md.append(f"| {x['und']} {'看涨' if x['call'] else '看跌'} | {x['in']} | {x['expiry']} | {x['strike']:g} | {x['qty']} | {x['entry']:.2f} | {x['mark']:.2f} | {x['per_dollar']:+.0%} |")
     if tl:
         end = max(x["out"] for x in tl)
         rob = {"现在的参数：每笔每 $1": robust.summary([(x["out"], x["per_dollar"]) for x in tl], end)}
