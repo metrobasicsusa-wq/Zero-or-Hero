@@ -169,7 +169,7 @@ class Chains:
 
     def chain(self, und: str, expiry: str, kind: str, spot: float) -> dict[str, dict]:
         key = f"{und}|{expiry}|{kind}"
-        if key in self.data:
+        if key in self.data and ("_partial" not in self.data[key] or expiry > date.today().isoformat()):
             return self.data[key]
         band = 0.12 if und in ETFS else 0.22   # where a 0.3-0.7 delta lives at 30-120 days: index ETFs ~15% vol, single names ~50%
         cs = []
@@ -186,8 +186,9 @@ class Chains:
         bars = {}
         if syms:
             start = (date.fromisoformat(expiry) - timedelta(days=130)).isoformat()
+            until = min(date.fromisoformat(expiry), date.today())   # an end date in the future is refused
             try:
-                bars = self.c.option_bars(syms, start, f"{expiry}T23:59:00Z", timeframe="1Day")
+                bars = self.c.option_bars(syms, start, f"{until.isoformat()}T23:59:00Z", timeframe="1Day")
             except Exception:
                 bars = {}
             if self.pace:
@@ -195,6 +196,8 @@ class Chains:
         for c in cs:
             k = f"{float(c['strike_price']):g}"
             out[k] = {"sym": c["symbol"], "bars": {b["t"][:10]: float(b["c"]) for b in bars.get(c["symbol"], [])}}
+        if syms and until < date.fromisoformat(expiry):
+            out["_partial"] = {"sym": "", "bars": {}}   # still trading: a later run fetches it again
         self.data[key] = out
         self.dirty += 1
         if self.dirty % 25 == 0:
@@ -227,6 +230,8 @@ def pick_strike(chain: dict[str, dict], day: str, spot: float, expiry: str, call
     t = (date.fromisoformat(expiry) - date.fromisoformat(day)).days / 365
     best = None
     for k, c in chain.items():
+        if k.startswith("_"):
+            continue
         px = c["bars"].get(day)
         if not px or px <= 0:
             continue
