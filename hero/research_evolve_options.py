@@ -392,10 +392,12 @@ def run(client, cfg: dict, pace=None) -> dict:
             results[0]["pnl_days"] = days[start:n - 1]
     chains.save()
     cur = results[0]
-    best = max(results[1:], key=lambda r: r["score"])
-    adopt = best["score"] >= cur["score"] + MIN_IMPROVEMENT and best["val_trades"] >= MIN_VAL_TRADES
+    qual = [r for r in results[1:] if r["val_trades"] >= MIN_VAL_TRADES]   # a set has to have traded enough to be judged
+    best = max(qual or results[1:], key=lambda r: r["score"])
+    adopt = bool(qual) and best["score"] >= cur["score"] + MIN_IMPROVEMENT
     return {"generated": date.today().isoformat(), "days": [days[start], days[n - 1]], "val_from": val_from,
             "sessions": n - start, "current": cur, "best": best, "would_adopt": adopt,
+            "best_any": max(results[1:], key=lambda r: r["score"]),
             "top": sorted(results[1:], key=lambda r: -r["score"])[:15],
             "results": [{k: v for k, v in r.items() if k not in ("trades_list", "pnl")} for r in results],
             "chains_cached": len(chains.data)}
@@ -421,8 +423,10 @@ def markdown(rep: dict) -> str:
                   f"{r['opt_pnl']:+,.0f} | {r['opt_pnl_val']:+,.0f} | {r['trades']}（{r['val_trades']}） | {r['win']:.0%} |" if r['win'] is not None else
                   f"| {name} | {f(r)} | {r['score']:.2f} | {r['train']:.2f} | {r['val']:.2f} | {r['stock_only_train']:.2f} / {r['stock_only_val']:.2f} | "
                   f"{r['opt_pnl']:+,.0f} | {r['opt_pnl_val']:+,.0f} | {r['trades']}（{r['val_trades']}） | — |")
-    md += ["", f"**结论：{'最好的一组够格换' if rep['would_adopt'] else '没有一组够格换'}**（最好 {best['score']:.2f} 对现在 {cur['score']:.2f}，差 {best['score'] - cur['score']:+.2f}；"
-           f"验证期 {best['val_trades']} 笔）。", "", "## 前 15 组", "",
+    md += ["", f"**结论：{'最好的一组够格换' if rep['would_adopt'] else '没有一组够格换'}**（验证期 ≥{MIN_VAL_TRADES} 笔的里面最好 {best['score']:.2f} 对现在 {cur['score']:.2f}，"
+           f"差 {best['score'] - cur['score']:+.2f}；验证期 {best['val_trades']} 笔"
+           + (f"；不限笔数的最高分是 {rep['best_any']['score']:.2f}（{f(rep['best_any'])}，验证期 {rep['best_any']['val_trades']} 笔）" if rep.get("best_any") and rep["best_any"] is not best else "")
+           + "）。这是 486 组里挑出来的，有选择偏差；验证期只有 2026-03 起的一段行情。", "", "## 前 15 组", "",
            "| 参数 | 分数 | 训练 | 验证 | 期权盈亏 $ | 笔数 | 胜率 |", "|---|---|---|---|---|---|---|"]
     for r in rep["top"]:
         md.append(f"| {f(r)} | {r['score']:.2f} | {r['train']:.2f} | {r['val']:.2f} | {r['opt_pnl']:+,.0f} | {r['trades']} | {r['win']:.0%} |" if r['win'] is not None
