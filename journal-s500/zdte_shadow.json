@@ -891,7 +891,7 @@
     "ret": 2
    },
    "NVDA": {
-    "status": "open",
+    "status": "closed",
     "contract": "NVDA261030P00205000",
     "kind": "P",
     "strike": 205.0,
@@ -901,7 +901,11 @@
     "ask": 0.33,
     "spread": 0.0625,
     "opened_at": "10:00",
-    "best_bid": 0.69
+    "best_bid": 0.99,
+    "exit": "take",
+    "exit_bid": 0.99,
+    "exit_at": "12:20",
+    "ret": 2
    },
    "AMZN": {
     "status": "open",
