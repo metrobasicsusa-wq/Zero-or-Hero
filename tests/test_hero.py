@@ -5574,6 +5574,82 @@ class EarningsReasonsEvolve(unittest.TestCase):
             self.assertIn("2 次里猜对 1 次（50%）", md)
 
 
+class ResearchEvolveOptions(unittest.TestCase):
+    def test_black_scholes_round_trip_and_calendar_helpers(self):
+        from hero import research_evolve_options as eo
+        px = eo.bs_price(100, 105, 45 / 365, 0.35, True)
+        iv = eo.implied_vol(px, 100, 105, 45 / 365, True)
+        self.assertAlmostEqual(iv, 0.35, places=3)
+        self.assertTrue(0.3 < eo.bs_delta(100, 105, 45 / 365, 0.35, True) < 0.5)
+        self.assertIsNone(eo.implied_vol(0.5, 100, 105, 45 / 365, False))          # under intrinsic
+        sessions = ["2024-03-25", "2024-03-26", "2024-03-27", "2024-03-28", "2024-04-01", "2024-04-05", "2024-04-12"]
+        self.assertEqual(eo.friday_expiry(sessions, date(2024, 3, 25), date(2024, 4, 20)), "2024-03-28")   # Good Friday: Thursday
+        self.assertEqual(eo.friday_expiry(sessions, date(2024, 3, 30), date(2024, 4, 20)), "2024-04-05")
+        self.assertIsNone(eo.friday_expiry(sessions, date(2024, 4, 13), date(2024, 4, 18)))
+        reps = [("2024-04-25", "post"), ("2024-07-30", "pre")]
+        self.assertEqual(eo.last_safe_expiry(reps, "2024-04-01"), "2024-04-25")
+        self.assertEqual(eo.last_safe_expiry(reps, "2024-05-01"), "2024-07-29")
+        self.assertIsNone(eo.last_safe_expiry([], "2024-05-01"))
+
+    def test_replay_buys_the_target_delta_call_and_takes_profit(self):
+        from hero import research_evolve_options as eo
+        from datetime import timedelta
+        d0, days = date(2024, 1, 2), []
+        while len(days) < 300:
+            if d0.weekday() < 5:
+                days.append(d0.isoformat())
+            d0 += timedelta(days=1)
+        import random
+        rnd, aaa, spy = random.Random(1), [100.0], [400.0]
+        for _ in range(299):                                        # a drifting random walk: up, but with down days (RSI < 80)
+            aaa.append(aaa[-1] * (1 + 0.004 + 0.012 * rnd.gauss(0, 1)))
+            spy.append(spy[-1] * (1 + 0.001 + 0.006 * rnd.gauss(0, 1)))
+        adj = {"AAA": aaa, "SPY": spy}
+        px_of = {d: x for d, x in zip(days, aaa)}
+
+        class Fake:
+            def option_contracts(self, und, **kw):
+                exp = kw["expiration_date_gte"]
+                spot = px_of[[d for d in days if d <= exp][-1]]
+                return [{"symbol": f"{und}{exp}C{k}", "strike_price": str(k), "expiration_date": exp}
+                        for k in range(int(spot * 0.85), int(spot * 1.15) + 1, 2)]
+
+            def option_bars(self, syms, start, end, timeframe="1Day"):
+                out = {}
+                for s in syms:
+                    exp, k = s[3:13], float(s[14:])
+                    out[s] = [{"t": d, "c": eo.bs_price(px_of[d], k, max((date.fromisoformat(exp) - date.fromisoformat(d)).days, 0) / 365, 0.3, True)}
+                              for d in days if start[:10] <= d <= exp]
+                return out
+
+        cfg = {"regime_symbol": "SPY", "universe": ["AAA", "SPY"],
+               "stocks": {"momentum_lookback": 63, "trend_sma": 50, "top_n": 8, "rsi_max": 80, "gross_exposure": 0.8,
+                          "rebalance_drift": 0.25, "rsi_applies_to_holdings": False, "macro_scale": 1.0},
+               "risk": {"max_position_pct": 0.2},
+               "options": {"allocation": 0.1, "max_positions": 3, "min_dte": 30, "max_dte": 60, "target_delta": 0.5,
+                           "take_profit": 0.6, "stop_loss": -0.4, "exit_dte": 7}}
+        with tempfile.TemporaryDirectory() as tmp:
+            chains = eo.Chains(Fake(), path=Path(tmp) / "c.json.gz")
+            opt = {**cfg["options"], "dte": (30, 60)}
+            res = eo.simulate(opt, cfg, days, adj, adj, chains, {}, 210, len(days))
+            self.assertTrue(res["trades"], "a climbing stock above its lines should get a call")
+            first = res["trades"][0]
+            self.assertEqual((first["und"], first["call"], first["reason"]), ("AAA", True, "take_profit"))
+            self.assertGreater(first["pnl"], 0)
+            self.assertEqual(len(res["combined"]), len(days) - 1 - 210)
+            closed = sum(x["pnl"] for x in res["trades"])
+            self.assertGreater(sum(res["pnl"]), 0)                                   # closed wins plus whatever is still open
+            self.assertLess(abs(sum(res["pnl"]) - closed), max(50.0, 0.5 * abs(closed)) + 20_000)   # open marks may remain
+            sc = eo.score({**res, "val_from": days[270]}, 60)
+            self.assertIn("score", sc)
+            # a report inside every window: no entry at all
+            reps = {"AAA": [(d, "pre") for d in days[211::5]]}
+            self.assertEqual(eo.simulate(opt, cfg, days, adj, adj, chains, reps, 210, len(days))["trades"], [])
+            chains.save()
+            self.assertTrue((Path(tmp) / "c.json.gz").exists())
+            self.assertEqual(len(eo.Chains(Fake(), path=Path(tmp) / "c.json.gz").data), len(chains.data))
+
+
 class EarningsFillMissing(unittest.TestCase):
     def test_yahoo_adds_what_both_calendars_missed(self):
         from hero import earnings as earn
