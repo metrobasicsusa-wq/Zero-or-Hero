@@ -30,6 +30,11 @@
 离现价约为这只股票平时单日波动一半的期权（AAPL 约 0.5%、CRWV 约 3%；最少 0.3%，delta 低于 0.30 就往价内挪，用户 10-15：
 固定 0.10 delta 对慢的大盘股是彩票），账本一半的钱；翻倍后从最高价回撤 40% 卖，否则到期日 15:30 卖。
 
+**财报反应日不做（用户 10-30）**：昨晚盘后或今早盘前发财报的股票，不进候选、不选为 sniper。规则端 `hero/sleeve_rules.py`
+`earnings_reaction` 也会拦：买入前查 `data/earnings.json` 和最近两天的 `research/earnings-forecast/*.json`（reaction_day = 今天），
+中了就记 `sleeve_skip`、当天不买。教训是 10-30 的 AMZN 看跌：财报后跳空 −4.6% 开盘买进，跳空已经反映、期权又在最贵的时候，
+10:00 前亏九成；10-29 的 GOOGL 275 认沽（突破大跳空账本）也是同一类。
+
 怎么选（用户 10-13：要和 claude-b 不一样，否则两边结果一样没意义）：
 - **扫描全市场**（用户 10-13）：每个交易日约 09:01 先跑盘前扫描（research.yml 的 premarket，结果在
   `research/premarket/YYYY-MM-DD.md`）：券商涨跌榜、成交榜和 data/universe.json 里盘前离昨收 2% 以上的股票和它们的新闻。

@@ -4118,6 +4118,36 @@ class SleeveRules(unittest.TestCase):
             self.assertIn("a downgrade", picks[0]["why"])
             self.assertIsNone(sr.Sniper().entries(r(10, 0), spec, {"slots": {}}))     # past the cutoff
 
+    def test_sniper_skips_a_stock_on_its_earnings_reaction_day(self):
+        # 10-30: the AMZN put bought into its post-earnings gap lost 90% by 10:00; the owner: never on a reaction day.
+        from hero import sleeve_rules as sr
+        from types import SimpleNamespace
+        with tempfile.TemporaryDirectory() as tmp:
+            d = Path(tmp)
+            (d / "2026-10-13.json").write_text(json.dumps({"sniper": {"symbol": "AAA", "direction": "put", "catalyst": "x"}}))
+            (d / "earn.json").write_text(json.dumps({"reports": {"AAA": [{"date": "2026-10-12", "time": "post-market"}]}}))
+            (d / "fc").mkdir()
+            spec = {"id": "sniper-500", "dir": tmp, "earnings": str(d / "earn.json"), "forecast_dir": str(d / "fc")}
+            b = self.broker()
+            b.snaps["AAA"]["latestTrade"]["p"] = 96.0
+            b.option_snapshots = lambda syms: {x: {"latestQuote": {"ap": 0.3}, "greeks": {"delta": -0.4}} for x in syms}
+            events = []
+            r = self.run_at(date(2026, 10, 13), 9, 40, b)
+            r.j = SimpleNamespace(event=lambda kind, **k: events.append((kind, k)))
+            self.assertEqual(sr.Sniper().entries(r, spec, {"slots": {}}), ("2026-10-13", []))     # reported after Monday's close
+            self.assertEqual(events[0][0], "sleeve_skip")
+            self.assertIn("昨晚盘后发财报", events[0][1]["why"])
+            # the watched list is clean but the forecast file (every optionable stock) has it reacting today: still skipped
+            (d / "earn.json").write_text(json.dumps({"reports": {}}))
+            (d / "fc" / "2026-10-12.json").write_text(json.dumps({"reports": [{"symbol": "AAA", "reaction_day": "2026-10-13", "time": "pre-market"}]}))
+            self.assertEqual(sr.Sniper().entries(r, spec, {"slots": {}}), ("2026-10-13", []))
+            self.assertIn("今早盘前发财报", events[-1][1]["why"])
+            # a report whose reaction day was yesterday does not block today
+            (d / "fc" / "2026-10-12.json").write_text(json.dumps({"reports": [{"symbol": "AAA", "reaction_day": "2026-10-12", "time": "pre-market"}]}))
+            slot, picks = sr.Sniper().entries(r, spec, {"slots": {}})
+            self.assertEqual(picks[0]["und"], "AAA")
+            self.assertIsNone(sr.earnings_reaction(date(2026, 10, 13), "BBB", d / "earn.json", d / "fc"))
+
     def test_sniper_holds_overnight_or_to_a_named_expiry_when_the_pick_says_so(self):
         # 10-23: the T pick said 10-30 in prose; the rule bought the day's $0.01 contract. Now the file can say it.
         from hero import sleeve_rules as sr

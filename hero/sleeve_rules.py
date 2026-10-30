@@ -958,6 +958,35 @@ class OpenGap:
         return (day, [])
 
 
+def earnings_reaction(today: date, und: str, earnings: Path | None = None, forecast_dir: Path | None = None) -> str | None:
+    """Why `und` is reacting to its own report today ("昨晚盘后" / "今早盘前"), or None. Sources: data/earnings.json
+    (the 122 watched names) and the two newest research/earnings-forecast files (every optionable US stock the 15:05
+    routine listed), a report after the previous session's close or before today's open. Owner, 10-30: the AMZN put
+    bought into its post-earnings gap lost 90% by 10:00 -- the gap is already priced and the options are at their
+    dearest -- so the sniper never trades a reaction day."""
+    day, prev = today.isoformat(), business_day_before(today).isoformat()
+    try:
+        reports = json.loads((earnings or ROOT / "data" / "earnings.json").read_text()).get("reports") or {}
+    except Exception:
+        reports = {}
+    for r in reports.get(und) or []:
+        when = str(r.get("time") or "")
+        if r.get("date") == day and "pre" in when:
+            return "今早盘前"
+        if r.get("date") == prev and "post" in when:
+            return "昨晚盘后"
+    folder = forecast_dir or ROOT / "research" / "earnings-forecast"
+    for f in (folder / f"{prev}.json", folder / f"{day}.json"):
+        try:
+            rows = json.loads(f.read_text()).get("reports") or []
+        except Exception:
+            continue
+        for r in rows:
+            if r.get("symbol") == und and r.get("reaction_day") == day:
+                return "今早盘前" if "pre" in str(r.get("time") or "") else "昨晚盘后"
+    return None
+
+
 class Sniper:
     """claude-b's catalyst_open, our form: a pre-market Claude session writes at most one pick a day to
     journal-s500/sniper/YYYY-MM-DD.json ({"sniper": {"symbol", "direction", "catalyst", "confidence"} or null}).
@@ -965,7 +994,8 @@ class Sniper:
     (the day's if listed), the first strike `swing_frac` (half) of the stock's average daily move (20 sessions) out of
     the money -- never further out than `min_delta` (0.30): owner, 10-15, a fixed 0.10 delta is a lottery ticket on a
     slow mega-cap (AAPL 355C at 345.5) -- and ride it on the trail (after 2x, out on a 40% giveback), else out at 15:30
-    on its expiry day. The pick may say `"overnight": true` (the nearest expiry after today, held to the next session's
+    on its expiry day. A pick on a stock reacting to its own report (earnings_reaction) is skipped and logged (owner,
+    10-30). The pick may say `"overnight": true` (the nearest expiry after today, held to the next session's
     15:50: research/2026-10-15-sniper-factors3.md, a 20-day break with a 3x gap pays into the next close) or name an
     `"expiry"` (the first listed on or after it); 10-23 the T pick said 10-30 in prose and the rule bought the day's
     $0.01 contract."""
@@ -987,6 +1017,13 @@ class Sniper:
         if not pk or pk.get("direction") not in ("call", "put") or not pk.get("symbol"):
             return (day, [])  # no pick today
         und, kind = pk["symbol"], "C" if pk["direction"] == "call" else "P"
+        sid = spec.get("id", "sniper")
+        when = earnings_reaction(run.today, und, Path(spec["earnings"]) if spec.get("earnings") else None,
+                                 Path(spec["forecast_dir"]) if spec.get("forecast_dir") else None)
+        if when:
+            run.j.event("sleeve_skip", dry_run=bool(spec.get("plan_only")), sleeve=sid, symbol=und,
+                        why=f"{sid}：{und} {when}发财报，今天是财报反应日，不狙击（用户 10-30：跳空已反映、期权最贵）")
+            return (day, [])
         spot, o, _, _ = spot_open(snaps(run, [und]).get(und) or {})
         if not spot or not o or (spot < o if kind == "C" else spot > o):
             return None  # going against the pick: wait for a later cycle, until the cutoff
