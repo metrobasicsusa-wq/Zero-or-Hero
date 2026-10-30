@@ -1,0 +1,92 @@
+{
+ "date": "2026-10-30",
+ "generated_at": "2026-10-30T09:27:17-04:00",
+ "sniper": {
+  "symbol": "AMZN",
+  "direction": "put",
+  "confidence": 0.3,
+  "catalyst_type": "company news",
+  "overnight": true,
+  "catalyst": "亚马逊 10-29 盘后三季度：AWS +39%、营业利润 $281 亿超，但过去 12 个月自由现金流流出 $424 亿、没说何时转正（公司 8-K）；盘前约 $228.7，对 10-29 收盘 $243.79 约 −6.2%，约平时单日波动（1.7%）的 3.6 倍，已跌破 20 日低 $246.1 → 按回测加分项拿过夜"
+ },
+ "candidates": [
+  {
+   "rank": 1,
+   "symbol": "AMZN",
+   "direction": "put",
+   "confidence": 0.3,
+   "catalyst_type": "company news",
+   "why": "财报后自由现金流担忧，盘前 −6.2%（3.6 倍平时波动），已破 20 日低；大盘股、周期权流动性好"
+  },
+  {
+   "rank": 2,
+   "symbol": "INTC",
+   "direction": "put",
+   "confidence": 0.25,
+   "catalyst_type": "company news",
+   "why": "四季度每股盈利指引砍半（公司 8-K），盘前约 −26%（约 9 倍），已破 20 日低；跳空太大、期权很贵，可能已吃掉"
+  },
+  {
+   "rank": 3,
+   "symbol": "TWLO",
+   "direction": "put",
+   "confidence": 0.2,
+   "catalyst_type": "company news",
+   "why": "财报后盘前约 −20%（约 6 倍），已破 20 日低；原因没查，跳空大"
+  },
+  {
+   "rank": 4,
+   "symbol": "RDDT",
+   "direction": "put",
+   "confidence": 0.15,
+   "catalyst_type": "company news",
+   "why": "财报后盘前约 −24%（约 10 倍），已破 20 日低；原因没查，跳空大"
+  }
+ ],
+ "skipped": [
+  {
+   "symbol": "RBLX",
+   "direction": "put",
+   "gap": -0.13,
+   "reason": "其他",
+   "why_not": "财报后盘前约 −13%，时间不够没查原因"
+  },
+  {
+   "symbol": "ILMN",
+   "direction": "put",
+   "gap": -0.12,
+   "reason": "其他",
+   "why_not": "财报后盘前约 −12%，时间不够没查原因"
+  },
+  {
+   "symbol": "SYK",
+   "direction": "put",
+   "gap": -0.09,
+   "reason": "其他",
+   "why_not": "财报后盘前约 −9%，时间不够没查原因"
+  },
+  {
+   "symbol": "PINS",
+   "direction": "put",
+   "gap": -0.08,
+   "reason": "其他",
+   "why_not": "财报后盘前约 −8%，时间不够没查原因"
+  },
+  {
+   "symbol": "SNDK",
+   "direction": "put",
+   "gap": -0.08,
+   "reason": "消息太弱",
+   "why_not": "财报后盘前约 −8%，数字不差，主要跟着英特尔和芯片跌"
+  },
+  {
+   "symbol": "COIN",
+   "direction": "put",
+   "gap": -0.07,
+   "reason": "消息太弱",
+   "why_not": "财报后盘前约 −7%，约 2.8 倍，没破 20 日低以外的加分"
+  }
+ ],
+ "claude_b_pick": null,
+ "notes": "09:01 的定时任务 09:26 才送到这个会话，来不及触发 premarket 扫描和 WebSearch，只看了昨晚盘后财报大动的 10 只的盘前价（Yahoo，09:26）。claude-b 今天的 journal/bias 文件 09:27 还没有，没法核对它选了谁；如果它也选了 AMZN，记为撞车。跳空倍数按过去 20 天平均单日涨跌算，前收用 10-29 正式收盘。模拟盘，不是投资建议。"
+}
