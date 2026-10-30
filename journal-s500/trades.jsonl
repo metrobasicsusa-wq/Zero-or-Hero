@@ -2375,3 +2375,37 @@
 {"dry_run": true, "kind": "sleeve_plan", "sleeve": "earn-1000", "ts": "2026-10-30T19:40:35+00:00", "why": "earn-1000（演算）：2026-10-30 没有要买的"}
 {"dry_run": true, "kind": "sleeve_plan", "sleeve": "earn-opt-plan-500", "ts": "2026-10-30T19:40:35+00:00", "why": "earn-opt-plan-500（演算）：2026-10-30 没有要买的"}
 {"dry_run": true, "kind": "sleeve_plan", "sleeve": "earn-opt-plan-1000", "ts": "2026-10-30T19:40:35+00:00", "why": "earn-opt-plan-1000（演算）：2026-10-30 没有要买的"}
+{"bid": 0.32, "dry_run": false, "kind": "sleeve_exit", "sleeve": "overnight-500", "symbol": "TSLA261102C00420000", "ts": "2026-10-30T19:50:32+00:00", "why": "overnight-500：TSLA261102C00420000 2026-10-30 15:50 到时卖出，卖 1"}
+{"dry_run": false, "kind": "sleeve_result", "ret": -0.9, "sleeve": "overnight-500", "symbol": "TSLA261102C00420000", "ts": "2026-10-30T19:50:34+00:00", "why": "overnight-500：TSLA261102C00420000 2026-10-30 15:50 到时卖出，花 $299.00、收回 $30.00（-90%），账本 $435.00"}
+{"bid": 0.32, "dry_run": false, "kind": "sleeve_exit", "sleeve": "overnight-1000", "symbol": "TSLA261102C00420000", "ts": "2026-10-30T19:50:35+00:00", "why": "overnight-1000：TSLA261102C00420000 2026-10-30 15:50 到时卖出，卖 2"}
+{"dry_run": false, "kind": "sleeve_result", "ret": -0.9, "sleeve": "overnight-1000", "symbol": "TSLA261102C00420000", "ts": "2026-10-30T19:50:37+00:00", "why": "overnight-1000：TSLA261102C00420000 2026-10-30 15:50 到时卖出，花 $598.00、收回 $60.00（-90%），账本 $397.00"}
+{"dry_run": true, "kind": "sleeve_skip", "sleeve": "dipweek-500", "symbol": "SPY", "ts": "2026-10-30T19:50:45+00:00", "why": "dipweek-500：SPY 20 日实现波动 9.8% 低于 10.3%（回测里最低的三分之一，这段平均每 $1 -19%），今天不做"}
+{"dry_run": true, "kind": "sleeve_skip", "sleeve": "dipweek-1000", "symbol": "SPY", "ts": "2026-10-30T19:50:45+00:00", "why": "dipweek-1000：SPY 20 日实现波动 9.8% 低于 10.3%（回测里最低的三分之一，这段平均每 $1 -19%），今天不做"}
+{"dry_run": true, "kind": "sleeve_skip", "sleeve": "dipweek-hold-500", "symbol": "SPY", "ts": "2026-10-30T19:50:45+00:00", "why": "dipweek-hold-500：SPY 20 日实现波动 9.8% 低于 10.3%（回测里最低的三分之一，这段平均每 $1 -19%），今天不做"}
+{"dry_run": true, "kind": "sleeve_skip", "sleeve": "dipweek-hold-1000", "symbol": "SPY", "ts": "2026-10-30T19:50:45+00:00", "why": "dipweek-hold-1000：SPY 20 日实现波动 9.8% 低于 10.3%（回测里最低的三分之一，这段平均每 $1 -19%），今天不做"}
+{"dry_run": true, "kind": "sleeve_skip", "sleeve": "dipweek-take-500", "symbol": "SPY", "ts": "2026-10-30T19:50:45+00:00", "why": "dipweek-take-500：SPY 20 日实现波动 9.8% 低于 10.3%（回测里最低的三分之一，这段平均每 $1 -19%），今天不做"}
+{"dry_run": true, "kind": "sleeve_skip", "sleeve": "dipweek-take-1000", "symbol": "SPY", "ts": "2026-10-30T19:50:45+00:00", "why": "dipweek-take-1000：SPY 20 日实现波动 9.8% 低于 10.3%（回测里最低的三分之一，这段平均每 $1 -19%），今天不做"}
+{"dry_run": true, "kind": "sleeve_plan_result", "ret": -1.0, "sleeve": "oneshot-500", "symbol": "QQQ261030C00706000", "ts": "2026-10-30T19:50:54+00:00", "why": "oneshot-500（演算）：QQQ261030C00706000 到期日最后一轮（15:50 以后没有交易轮）卖出，花 $42.00、收回 $0.00（-100%），演算账本 $24.00"}
+{"dry_run": true, "kind": "sleeve_plan_result", "ret": -1.0, "sleeve": "oneshot-1000", "symbol": "QQQ261030C00706000", "ts": "2026-10-30T19:50:54+00:00", "why": "oneshot-1000（演算）：QQQ261030C00706000 到期日最后一轮（15:50 以后没有交易轮）卖出，花 $966.00、收回 $0.00（-100%），演算账本 $34.00"}
+{"dry_run": true, "kind": "sleeve_plan_result", "ret": -0.907, "sleeve": "overnight-plan-1000", "symbol": "TSLA261102C00420000", "ts": "2026-10-30T19:50:54+00:00", "why": "overnight-plan-1000（演算）：TSLA261102C00420000 2026-10-30 15:50 到时卖出，花 $300.00、收回 $28.00（-91%），演算账本 $65.00"}
+{"dry_run": true, "kind": "sleeve_plan_result", "ret": 0.006, "sleeve": "peerc-500", "symbol": "SH", "ts": "2026-10-30T19:50:54+00:00", "why": "peerc-500（演算）：SH 2026-10-30 15:50 到时卖出，花 $166.97、收回 $168.04（+1%），演算账本 $279.38"}
+{"dry_run": true, "kind": "sleeve_plan_result", "ret": 0.059, "sleeve": "peerc-500", "symbol": "SOXS", "ts": "2026-10-30T19:50:54+00:00", "why": "peerc-500（演算）：SOXS 2026-10-30 15:50 到时卖出，花 $55.65、收回 $58.96（+6%），演算账本 $338.34"}
+{"dry_run": true, "kind": "sleeve_plan_result", "ret": -0.006, "sleeve": "peerc-500", "symbol": "XLP", "ts": "2026-10-30T19:50:54+00:00", "why": "peerc-500（演算）：XLP 2026-10-30 15:50 到时卖出，花 $166.97、收回 $166.04（-1%），演算账本 $504.38"}
+{"dry_run": true, "kind": "sleeve_plan_result", "ret": 0.006, "sleeve": "peerc-1000", "symbol": "SH", "ts": "2026-10-30T19:50:54+00:00", "why": "peerc-1000（演算）：SH 2026-10-30 15:50 到时卖出，花 $333.95、收回 $336.10（+1%），演算账本 $558.76"}
+{"dry_run": true, "kind": "sleeve_plan_result", "ret": 0.059, "sleeve": "peerc-1000", "symbol": "SOXS", "ts": "2026-10-30T19:50:54+00:00", "why": "peerc-1000（演算）：SOXS 2026-10-30 15:50 到时卖出，花 $111.31、收回 $117.93（+6%），演算账本 $676.69"}
+{"dry_run": true, "kind": "sleeve_plan_result", "ret": -0.006, "sleeve": "peerc-1000", "symbol": "XLP", "ts": "2026-10-30T19:50:54+00:00", "why": "peerc-1000（演算）：XLP 2026-10-30 15:50 到时卖出，花 $333.95、收回 $332.09（-1%），演算账本 $1,008.78"}
+{"dry_run": true, "kind": "sleeve_round", "sleeve": "oneshot-500", "ts": "2026-10-30T19:50:54+00:00", "why": "oneshot-500 第 5 轮低于 $50，归零（$24.00），从 $500 重开第 6 轮（演算）"}
+{"dry_run": true, "kind": "sleeve_round", "sleeve": "oneshot-1000", "ts": "2026-10-30T19:50:54+00:00", "why": "oneshot-1000 第 6 轮低于 $100，归零（$34.00），从 $1,000 重开第 7 轮（演算）"}
+{"dry_run": true, "kind": "sleeve_plan", "sleeve": "overnight-plan-500", "ts": "2026-10-30T19:51:01+00:00", "why": "overnight-plan-500（演算）：2026-10-30 没有要买的"}
+{"dry_run": true, "kind": "sleeve_plan", "sleeve": "overnight-plan-1000", "ts": "2026-10-30T19:51:01+00:00", "why": "overnight-plan-1000（演算）：2026-10-30 没有要买的"}
+{"dry_run": true, "kind": "sleeve_skip", "sleeve": "pullback-plan-500", "symbol": "SPY", "ts": "2026-10-30T19:51:01+00:00", "why": "pullback-plan-500：SPY 20 日实现波动 9.8% 低于 10.3%（回测里最低的三分之一，这段平均每 $1 -19%），今天不做"}
+{"dry_run": true, "kind": "sleeve_plan", "sleeve": "pullback-plan-500", "ts": "2026-10-30T19:51:01+00:00", "why": "pullback-plan-500（演算）：2026-10-30 没有要买的"}
+{"dry_run": true, "kind": "sleeve_skip", "sleeve": "pullback-plan-1000", "symbol": "SPY", "ts": "2026-10-30T19:51:01+00:00", "why": "pullback-plan-1000：SPY 20 日实现波动 9.8% 低于 10.3%（回测里最低的三分之一，这段平均每 $1 -19%），今天不做"}
+{"dry_run": true, "kind": "sleeve_plan", "sleeve": "pullback-plan-1000", "ts": "2026-10-30T19:51:01+00:00", "why": "pullback-plan-1000（演算）：2026-10-30 没有要买的"}
+{"dry_run": true, "kind": "sleeve_skip", "sleeve": "bottom-plan-500", "symbol": "SPY", "ts": "2026-10-30T19:51:01+00:00", "why": "bottom-plan-500：SPY 20 日实现波动 9.8% 低于 10.3%（回测里最低的三分之一，这段平均每 $1 -19%），今天不做"}
+{"dry_run": true, "kind": "sleeve_plan", "sleeve": "bottom-plan-500", "ts": "2026-10-30T19:51:01+00:00", "why": "bottom-plan-500（演算）：2026-10-30 没有要买的"}
+{"dry_run": true, "kind": "sleeve_plan", "sleeve": "bottom-plan-1000", "ts": "2026-10-30T19:51:02+00:00", "why": "bottom-plan-1000（演算）：2026-10-30 没有要买的"}
+{"dry_run": true, "kind": "sleeve_plan", "sleeve": "bottom-plan-2000", "ts": "2026-10-30T19:51:03+00:00", "why": "bottom-plan-2000（演算）：2026-10-30 没有要买的"}
+{"dry_run": true, "kind": "sleeve_plan", "sleeve": "green-plan-2000", "ts": "2026-10-30T19:51:03+00:00", "why": "green-plan-2000（演算）：2026-10-30 没有要买的"}
+{"dry_run": true, "kind": "sleeve_plan", "sleeve": "hikerally-500", "ts": "2026-10-30T19:51:03+00:00", "why": "hikerally-500（演算）：2026-10-30 没有要买的"}
+{"dry_run": true, "kind": "sleeve_plan", "sleeve": "hikerally-1000", "ts": "2026-10-30T19:51:03+00:00", "why": "hikerally-1000（演算）：2026-10-30 没有要买的"}
