@@ -28,7 +28,7 @@ import math
 import statistics
 import sys
 import time
-from datetime import date, datetime, timedelta
+from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 
 from hero import backtest, robust
@@ -187,8 +187,11 @@ class Chains:
         if syms:
             start = (date.fromisoformat(expiry) - timedelta(days=130)).isoformat()
             until = min(date.fromisoformat(expiry), date.today())   # an end date in the future is refused
+            end = f"{until.isoformat()}T23:59:00Z"
+            if until >= date.today():                                  # today: 23:59Z is still ahead of a run at 21:30Z
+                end = (datetime.now(timezone.utc) - timedelta(minutes=16)).strftime("%Y-%m-%dT%H:%M:%SZ")
             try:
-                bars = self.c.option_bars(syms, start, f"{until.isoformat()}T23:59:00Z", timeframe="1Day")
+                bars = self.c.option_bars(syms, start, end, timeframe="1Day")
             except Exception:
                 bars = {}
             if self.pace:
