@@ -2941,32 +2941,11 @@
   },
   "spy0dte-near-1000": {
    "start": 1000.0,
-   "cash": 60.0,
+   "cash": 1475.0,
    "round": 2,
    "heroes": 0,
    "zeros": 1,
    "open": [
-    {
-     "tid": "20261030-60fddf",
-     "kind": "zdte",
-     "sym": "SPY261030P00758000",
-     "asset": "option",
-     "und": "SPY",
-     "qty": 5,
-     "cost": 0.94,
-     "paid": 470.0,
-     "opened": "2026-10-30 09:40",
-     "why": "SPY 开盘 $761.37、现在 $760.70，顺势买当天到期看跌 758（离现价 0.4%），3 倍止盈，15:30 平仓",
-     "expiry": "2026-10-30",
-     "exit_day": "2026-10-30",
-     "exit_at": "15:30",
-     "trail": false,
-     "best_bid": 2.57,
-     "expiry_out": null,
-     "take_x": 3,
-     "take": 2.82,
-     "take_cid": "sl-spy0dte-near-1000-20261030-60fddf-t19de"
-    },
     {
      "tid": "20261030-60fddfr",
      "kind": "zdte",
@@ -2982,7 +2961,7 @@
      "exit_day": "2026-10-30",
      "exit_at": "15:30",
      "trail": true,
-     "best_bid": 2.57,
+     "best_bid": 2.75,
      "expiry_out": null
     }
    ],
@@ -3684,6 +3663,33 @@
      "how": "2026-10-29 15:30 到时卖出",
      "closed": "2026-10-29 15:30",
      "ret": -0.854
+    },
+    {
+     "tid": "20261030-60fddf",
+     "kind": "zdte",
+     "sym": "SPY261030P00758000",
+     "asset": "option",
+     "und": "SPY",
+     "qty": 5,
+     "cost": 0.94,
+     "paid": 470.0,
+     "opened": "2026-10-30 09:40",
+     "why": "SPY 开盘 $761.37、现在 $760.70，顺势买当天到期看跌 758（离现价 0.4%），3 倍止盈，15:30 平仓",
+     "expiry": "2026-10-30",
+     "exit_day": "2026-10-30",
+     "exit_at": "15:30",
+     "trail": false,
+     "best_bid": 2.57,
+     "expiry_out": null,
+     "take_x": 3,
+     "take": 2.82,
+     "take_cid": "sl-spy0dte-near-1000-20261030-60fddf-t19de",
+     "state": "closed",
+     "exit_price": 2.83,
+     "proceeds": 1415.0,
+     "how": "3 倍止盈（券商挂单成交）",
+     "closed": "2026-10-30 13:00",
+     "ret": 2.011
     }
    ],
    "slots": {
@@ -3703,7 +3709,7 @@
     "2026-10-29": "2026-10-29T09:40-04:00",
     "2026-10-30": "2026-10-30T09:40-04:00"
    },
-   "best": 1000.0,
+   "best": 1475.0,
    "created": null,
    "rounds": [
     {
@@ -6519,7 +6525,7 @@
      "exit_day": "2026-10-30",
      "exit_at": "15:30",
      "trail": true,
-     "best_bid": 21.5,
+     "best_bid": 21.71,
      "expiry_out": null
     },
     {
