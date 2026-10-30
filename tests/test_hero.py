@@ -5586,6 +5586,9 @@ class ResearchEvolveOptions(unittest.TestCase):
         self.assertEqual(eo.friday_expiry(sessions, date(2024, 3, 25), date(2024, 4, 20)), "2024-03-28")   # Good Friday: Thursday
         self.assertEqual(eo.friday_expiry(sessions, date(2024, 3, 30), date(2024, 4, 20)), "2024-04-05")
         self.assertIsNone(eo.friday_expiry(sessions, date(2024, 4, 13), date(2024, 4, 18)))
+        # past the last session (an entry late in the sample) the calendar supplies the Fridays, holidays moved to Thursday
+        self.assertEqual(eo.friday_expiries(sessions, date(2026, 12, 20), date(2027, 1, 3)), ["2026-12-24", "2026-12-31"])
+        self.assertEqual(eo.friday_expiries(sessions, date(2024, 4, 13), date(2024, 5, 3)), ["2024-04-19", "2024-04-26", "2024-05-03"])
         reps = [("2024-04-25", "post"), ("2024-07-30", "pre")]
         self.assertEqual(eo.last_safe_expiry(reps, "2024-04-01"), "2024-04-25")
         self.assertEqual(eo.last_safe_expiry(reps, "2024-05-01"), "2024-07-29")

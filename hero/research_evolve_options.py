@@ -93,16 +93,25 @@ def bs_delta(s: float, k: float, t: float, sigma: float, call: bool, r: float = 
 
 
 # ---------------------------------------------------------------- calendar and earnings
+FRIDAY_HOLIDAYS = {"2024-03-29", "2025-04-18", "2025-07-04", "2026-04-03", "2026-07-03", "2026-12-25", "2027-01-01",
+                   "2027-03-26"}   # Fridays the market is shut: the expiry moves to Thursday
+
+
 def friday_expiries(sessions: list[str], earliest: date, latest: date) -> list[str]:
     """The weekly expiries between the two dates, nearest first: each Friday on or after `earliest`, or the session
-    before it when that Friday is a holiday (Good Friday, 2025-07-04). The caller tries them in turn: a sector ETF's
-    near weekly often has no trades while its monthly (the third Friday) does, and the live engine scans the whole
-    window and takes whatever has quotes."""
-    out = []
+    before it when that Friday is a holiday (Good Friday, 2025-07-04). Past the last session in `sessions` (an entry
+    near the end of the sample, whose expiry is still in the future) the Fridays come from the calendar and the
+    holiday list. The caller tries them in turn: a sector ETF's near weekly often has no trades while its monthly
+    (the third Friday) does, and the live engine scans the whole window and takes whatever has quotes."""
+    out, last = [], sessions[-1] if sessions else ""
     d = earliest + timedelta(days=(4 - earliest.weekday()) % 7)
     while d <= latest:
         iso = d.isoformat()
-        if iso in sessions:
+        if iso > last:
+            pick = (d - timedelta(days=1)).isoformat() if iso in FRIDAY_HOLIDAYS else iso
+            if pick not in out:
+                out.append(pick)
+        elif iso in sessions:
             out.append(iso)
         else:
             prev = [x for x in sessions if x < iso]
