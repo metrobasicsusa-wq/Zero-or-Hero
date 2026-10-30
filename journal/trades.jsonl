@@ -536,3 +536,5 @@
 {"dry_run": false, "kind": "cancel", "order_key": "bba663b3a3efc659", "qty": "18", "reason": "protective_stop", "stop_price": "483.14", "symbol": "AMD", "ts": "2026-10-30T13:30:29+00:00", "why": "盘中 -11.9%（线 -8%），止损收紧到 $492.86"}
 {"kind": "cancel_ack", "order_key": "bba663b3a3efc659", "status": "pending_cancel", "symbol": "AMD", "ts": "2026-10-30T13:30:34+00:00"}
 {"dry_run": false, "kind": "stop_deferred", "symbol": "AMD", "ts": "2026-10-30T13:30:34+00:00", "why": "AMD 旧止损单还没撤销完（券商还占着股份），新止损单下一轮再挂"}
+{"dry_run": false, "evidence": {"avg_entry_price": 568.59, "current_price": 519.295, "daily_vol": 0.039931647212928786, "stop_pct": 0.15, "tightened": true}, "intent_key": "a16a650c6039847a", "kind": "order", "qty": "18", "reason": "protective_stop", "side": "sell", "stop_price": "503.72", "symbol": "AMD", "time_in_force": "gtc", "ts": "2026-10-30T13:40:21+00:00", "type": "stop", "why": "保护性止损（挂在券商端，GTC 长期有效）：成本 $568.59，现价 $519.29；止损距离 15.0%（4 倍日波动率 4.0%，限制在 8%–15%），止损价 $503.72；盘中 -8.4%（线 -8%），收紧到现价下方 3%（只收紧不放松）"}
+{"intent_key": "a16a650c6039847a", "kind": "order_ack", "order_key": "b73e315b6331feab", "status": "pending_new", "ts": "2026-10-30T13:40:21+00:00"}
