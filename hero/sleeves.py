@@ -373,7 +373,13 @@ class Runner:
                     to_exit.append((sid, t, t.get("sell_why", "重新卖出")))
                 elif t["sym"] not in held and o.get("status") in (None, "expired", "canceled", "rejected", "done_for_day"):
                     part = float(o.get("filled_qty") or 0) * float(o.get("filled_avg_price") or 0)  # a $0.01 sell may fill in part
-                    self.closed(sid, t, round(part / t["qty"], 4), "券商已无持仓（到期作废）")
+                    q, got = self.sold_today(t["sym"])
+                    if q >= float(t["qty"]) - 1e-9 and got > part:
+                        # 10-30: the MRVL put's 15:30 sell filled at $23.10, the next cycle could not read the order
+                        # and booked the vanished position as expired worthless. The broker's fills settle it.
+                        self.closed(sid, t, round(got / q, 4), t.get("sell_why", "卖出") + "（按券商成交记录）")
+                    else:
+                        self.closed(sid, t, round(part / t["qty"], 4), "券商已无持仓（到期作废）")
                 continue
             if t.get("take_cid"):
                 o = self.order(t["take_cid"])
@@ -439,6 +445,23 @@ class Runner:
                     self.closed(sid, t, float(o.get("filled_avg_price") or 0), why)
                     return
                 self.sleep(2)
+
+    def sold_today(self, sym: str) -> tuple[float, float]:
+        """(quantity, proceeds) of today's sells of `sym` the broker reports: the journal's recorded fills first, else
+        the broker's fill activities. Several ledgers selling the same contract add up; the caller uses the average."""
+        rows: list[dict] = []
+        try:
+            rows = [f for f in self.j.fills(self.today.isoformat()) if f.get("symbol") == sym and f.get("side") == "sell"]
+        except Exception:
+            rows = []
+        if not rows and hasattr(self.c, "fill_activities"):
+            try:
+                rows = [f for f in self.c.fill_activities(self.today.isoformat()) if f.get("symbol") == sym and f.get("side") == "sell"]
+            except Exception:
+                rows = []
+        q = sum(float(f.get("qty") or 0) for f in rows)
+        got = sum(float(f.get("qty") or 0) * float(f.get("price") or 0) for f in rows)
+        return q, got
 
     def closed(self, sid: str, t: dict, price: float, how: str) -> None:
         done = self.book.close_ticket(sid, t, price, how, f"{self.today.isoformat()} {self.hhmm}")

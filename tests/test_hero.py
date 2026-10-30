@@ -3168,6 +3168,41 @@ class Sleeves(unittest.TestCase):
         self.assertEqual(book.s("spy0dte-500")["cash"], round(279 - 132 + 12 * 2, 2))
         self.assertTrue(all(not s["open"] for s in book.d["sleeves"].values()))
 
+    def test_a_vanished_position_whose_sell_the_broker_filled_is_booked_at_the_fill(self):
+        # 10-30: the MRVL put's 15:30 sell filled at $23.10; the 15:40 cycle could not read the order, saw no position
+        # and booked "expired worthless". The journal's fills (recorded each cycle) say what really happened.
+        from datetime import datetime
+        from hero import sleeve_rules, sleeves
+        b = SleeveBroker(lambda s: (0.08, 0.10))
+        self.cycle(b, 10, 0, self.specs[:1])
+        sym = next(iter(b.pos))
+        for o in b.orders.values():
+            if o["side"] == "sell":
+                o["status"] = "expired"
+        b.quotes = lambda s: (0.05, 0.06)
+        real = b.submit_order
+
+        def unconfirmed(**o):                                                        # the sell goes out but never confirms
+            if o["side"] == "sell" and o["type"] == "market":
+                oid = f"id{len(b.orders)}"
+                b.orders[o["client_order_id"]] = {**o, "id": oid, "status": "new", "filled_qty": "0", "filled_avg_price": None}
+                return {"id": oid}
+            return real(**o)
+        b.submit_order = unconfirmed
+        book, log = self.cycle(b, 15, 30, self.specs[:1])                            # the time exit goes out
+        sell = [o for o in b.orders.values() if o["side"] == "sell" and o["type"] == "market"][-1]
+        sell["status"] = None                                                        # the next cycle cannot read it...
+        b.pos[sym] = 0                                                               # ...and the position is gone
+        (self.root / "fills.jsonl").write_text(json.dumps({"symbol": sym, "side": "sell", "qty": "12", "price": "0.07",
+                                                            "transaction_time": "2026-10-09T19:30:39Z", "type": "fill"}) + "\n")
+        book = sleeves.Book(self.root / "sleeves.json", self.specs[:1])
+        sleeves.Runner(b, Journal(self.root), self.cfg, self.specs[:1], book, sleeve_rules.RULES, datetime(2026, 10, 9, 15, 40),
+                       date(2026, 10, 9), sleep=lambda s: None).run()
+        s = book.s("spy0dte-500")
+        self.assertEqual(s["open"], [])
+        self.assertEqual(s["closed"][-1]["proceeds"], round(12 * 0.07 * 100, 2))
+        self.assertIn("按券商成交记录", s["closed"][-1]["how"])
+
     def test_with_no_bid_the_sell_is_a_one_cent_limit_then_booked_at_zero_once_expired(self):
         from datetime import datetime
         from hero import sleeve_rules, sleeves
