@@ -1,19 +1,36 @@
 {
   "account": {
-    "buying_power": "162848.44",
-    "cash": "40712.11",
-    "equity": "46863.11",
+    "buying_power": "183287.72",
+    "cash": "45821.93",
+    "equity": "46712.93",
     "last_equity": "42193.9",
-    "long_market_value": "6151",
-    "portfolio_value": "46863.11"
+    "long_market_value": "891",
+    "portfolio_value": "46712.93"
   },
   "benchmark": {
-    "close": 516.31,
+    "close": 517.135,
     "date": "2026-10-30",
     "prev_close": 561.62,
     "symbol": "SMH"
   },
-  "open_orders": [],
+  "open_orders": [
+    {
+      "asset_class": "us_option",
+      "filled_at": null,
+      "filled_avg_price": null,
+      "filled_qty": "0",
+      "limit_price": "0.01",
+      "protective_stop": false,
+      "qty": "19",
+      "side": "sell",
+      "status": "new",
+      "stop_price": null,
+      "submitted_at": "2026-10-30T19:30:49.53750007Z",
+      "symbol": "T261030C00022000",
+      "time_in_force": "day",
+      "type": "limit"
+    }
+  ],
   "positions": [
     {
       "asset_class": "us_option",
@@ -65,83 +82,35 @@
     },
     {
       "asset_class": "us_option",
-      "avg_entry_price": "1.5",
-      "cost_basis": "300",
-      "current_price": "0.06",
-      "fair_price": 0.06,
-      "lastday_price": "0.29",
-      "mark_source": "broker",
-      "market_value": "12",
-      "qty": "2",
-      "side": "long",
-      "symbol": "GOOGL261030P00275000",
-      "unrealized_intraday_pl": "-46",
-      "unrealized_pl": "-288",
-      "unrealized_plpc": "-0.96"
-    },
-    {
-      "asset_class": "us_option",
       "avg_entry_price": "2.72",
       "cost_basis": "544",
-      "current_price": "3.45",
-      "fair_price": 3.45,
+      "current_price": "3.25",
+      "fair_price": 3.25,
       "lastday_price": "0.04",
       "mark_source": "broker",
-      "market_value": "690",
+      "market_value": "650",
       "qty": "2",
       "side": "long",
       "symbol": "INTC261106P00065000",
-      "unrealized_intraday_pl": "146",
-      "unrealized_pl": "146",
-      "unrealized_plpc": "0.26838"
-    },
-    {
-      "asset_class": "us_option",
-      "avg_entry_price": "3.85",
-      "cost_basis": "385",
-      "current_price": "24.05",
-      "fair_price": 24.39,
-      "lastday_price": "3.65",
-      "mark_source": "intrinsic",
-      "market_value": "2405",
-      "qty": "1",
-      "side": "long",
-      "symbol": "MRVL261030P00217500",
-      "unrealized_intraday_pl": "2040",
-      "unrealized_pl": "2020",
-      "unrealized_plpc": "5.24675"
+      "unrealized_intraday_pl": "106",
+      "unrealized_pl": "106",
+      "unrealized_plpc": "0.19485"
     },
     {
       "asset_class": "us_option",
       "avg_entry_price": "0.35",
       "cost_basis": "210",
-      "current_price": "0.17",
-      "fair_price": 0.195,
+      "current_price": "0.19",
+      "fair_price": 0.19,
       "lastday_price": "0.54",
-      "mark_source": "mid",
-      "market_value": "102",
+      "mark_source": "broker",
+      "market_value": "114",
       "qty": "6",
       "side": "long",
       "symbol": "SOFI261106C00017500",
-      "unrealized_intraday_pl": "-222",
-      "unrealized_pl": "-108",
-      "unrealized_plpc": "-0.51429"
-    },
-    {
-      "asset_class": "us_option",
-      "avg_entry_price": "0.88375",
-      "cost_basis": "441.875",
-      "current_price": "5.63",
-      "fair_price": 5.63,
-      "lastday_price": "0.47",
-      "mark_source": "broker",
-      "market_value": "2815",
-      "qty": "5",
-      "side": "long",
-      "symbol": "SPY261030P00758000",
-      "unrealized_intraday_pl": "2373.125",
-      "unrealized_pl": "2373.125",
-      "unrealized_plpc": "5.37058"
+      "unrealized_intraday_pl": "-210",
+      "unrealized_pl": "-96",
+      "unrealized_plpc": "-0.45714"
     },
     {
       "asset_class": "us_option",
@@ -163,18 +132,18 @@
       "asset_class": "us_option",
       "avg_entry_price": "2.99",
       "cost_basis": "897",
-      "current_price": "0.33",
-      "fair_price": 0.33,
+      "current_price": "0.28",
+      "fair_price": 0.28,
       "lastday_price": "0.74",
       "mark_source": "broker",
-      "market_value": "99",
+      "market_value": "84",
       "qty": "3",
       "side": "long",
       "symbol": "TSLA261102C00420000",
-      "unrealized_intraday_pl": "-123",
-      "unrealized_pl": "-798",
-      "unrealized_plpc": "-0.88963"
+      "unrealized_intraday_pl": "-138",
+      "unrealized_pl": "-813",
+      "unrealized_plpc": "-0.90635"
     }
   ],
-  "ts": "2026-10-30T19:20:32+00:00"
+  "ts": "2026-10-30T19:31:00+00:00"
 }

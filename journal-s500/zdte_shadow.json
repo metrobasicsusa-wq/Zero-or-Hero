@@ -908,7 +908,7 @@
     "ret": 2
    },
    "AMZN": {
-    "status": "open",
+    "status": "closed",
     "contract": "AMZN261030C00242500",
     "kind": "C",
     "strike": 242.5,
@@ -918,7 +918,13 @@
     "ask": 0.67,
     "spread": 0.0303,
     "opened_at": "10:00",
-    "best_bid": 0.91
+    "best_bid": 0.91,
+    "exit": "time",
+    "exit_bid": 0.05,
+    "exit_ask": 0.06,
+    "exit_at": "15:30",
+    "exit_spread": 0.1818,
+    "ret": -0.925
    },
    "SPY": {
     "status": "closed",
