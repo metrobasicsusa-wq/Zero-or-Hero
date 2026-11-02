@@ -17,6 +17,10 @@
 
 还没有：细判从 10-30 起写 guide_call（above / inline / below），复盘时填 guide_vs_est 后在这里记分。
 
+## 前因记分（11-02 起：细判先写「市场会按什么打分」和「能不能过」，复盘填实际答案）
+
+还没有：细判从 11-02 起写 question（市场会按什么打分，一句话）和 expect（yes / no），复盘时在 reasons.jsonl 填 answer（yes / no / mixed）和 question_hit（开盘是不是真按这个问题走）后在这里记分。
+
 ## 财报前就知道的
 
 | 迹象 | 情况 | 次数 | 开盘涨的比例 | 平均开盘 | 我们判对 | 五年回测开盘涨 |

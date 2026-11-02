@@ -6840,3 +6840,31 @@ class ResearchChain(unittest.TestCase):
         self.assertEqual(s["up"], 0.0)
         self.assertEqual(s["big_down"], 0.0)
         self.assertIsNone(rc.boot_diff(hit, rest))                          # too few to resample
+
+
+class EarningsQuestionScoring(unittest.TestCase):
+    def test_question_and_answer_are_scored_apart_from_direction(self):
+        from hero import earnings_reasons as er
+        with tempfile.TemporaryDirectory() as d:
+            folder = Path(d)
+            reports = [{"symbol": s, "result": {"gap_pre": g, "move": g}} for s, g in (("A", -0.05), ("B", 0.03), ("C", -0.02), ("D", 0.04))]
+            calls = [{"symbol": "A", "direction": "down", "evidence": "profile", "question": "四季度指引对预期", "expect": "no"},
+                     {"symbol": "B", "direction": "up", "evidence": "news", "question": "毛利率守不守 47%", "expect": "yes"},
+                     {"symbol": "C", "direction": "up", "evidence": "profile", "question": "AWS 增速", "expect": "yes"},
+                     {"symbol": "D", "direction": "up", "evidence": "default"}]
+            (folder / "2026-11-02.json").write_text(json.dumps({"date": "2026-11-02", "reports": reports}))
+            (folder / "2026-11-02.judgment.json").write_text(json.dumps({"date": "2026-11-02", "calls": calls}))
+            lines = [{"date": "2026-11-02", "symbol": "A", "answer": "no", "question_hit": True, "reason": "a"},     # asked right, answered right, open down: all right
+                     {"date": "2026-11-02", "symbol": "B", "answer": "yes", "question_hit": False, "reason": "b"},   # answered right, but the open turned on something else
+                     {"date": "2026-11-02", "symbol": "C", "answer": "no", "question_hit": True, "reason": "c"},     # asked right, answered wrong, direction wrong
+                     {"date": "2026-11-02", "symbol": "D", "answer": "yes", "question_hit": True, "reason": "d"}]    # no question written: not scored
+            (folder / "reasons.jsonl").write_text("\n".join(json.dumps(x, ensure_ascii=False) for x in lines) + "\n")
+            res = er.outcomes(folder)
+            rows = [{**r, **res.get((r["date"], r["symbol"]), {})} for r in er.load_reasons(folder)]
+            t, table = er.questions(rows)
+            self.assertEqual((t["n"], t["asked"], t["answered"], t["both_n"], t["both_right"]), (3, 2, 2, 1, 1))
+            self.assertEqual(len(table), 3)
+            self.assertIn("| A | 四季度指引对预期 | 过不了 | 过不了 | ✓ | ✓ | -5.0% |", table[-1])
+            md = er.render(folder)
+            self.assertIn("## 前因记分", md)
+            self.assertIn("3 次：问对 2 次（67%", md)

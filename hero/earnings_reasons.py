@@ -10,7 +10,15 @@ research/earnings-forecast/reasons.jsonl:
    after the report (explains the move, not known at 16:00):
      "eps" / "rev": "beat" / "inline" / "miss" / null, "guide": "raise" / "keep" / "cut" / "none" / null,
      "guide_vs_est": "above" / "inline" / "below" / null, "tags": ["成本", "估值高", ...],
+     11-02 (owner, 「加这个字段开始记分」): "answer": "yes" / "no" / "mixed" / null -- did the company clear the question
+     the call wrote down (see below), "question_hit": true / false / null -- did the open really turn on that question,
    "reason": one line with its source}
+
+A researched call in <date>.judgment.json also carries, from 11-02, "question": the one thing the market will score
+the report on (the chain's question: the Q4 guide, capex and cash flow, memory cost...) and "expect": "yes" / "no",
+whether we think the company clears it. Scored here against "answer" and "question_hit": did we ask the right
+question, did we answer it right, and was the open right when both were -- the "know the cause" ledger, kept apart
+from the direction call.
 
 The outcome is not copied: it is read from research/earnings-forecast/<date>.json (the open against the last trade
 before the report, the close) and the judgment file, so a re-score never leaves two versions. This module tallies the
@@ -43,7 +51,8 @@ BACKTEST = ROOT / "research" / "2026-10-20-earnings-rules.json"
 BT_MIN_N = 30
 BEFORE = {"last_guide": "上次指引", "run20": "进财报前 20 天", "peers": "同行这周的反应"}
 AFTER = {"eps": "EPS 对预期", "rev": "收入对预期", "guide": "这次指引", "guide_vs_est": "指引对预期", "combo": "业绩 + 指引"}
-WORDS = {"beat": "超预期", "inline": "符合", "miss": "不及", "raise": "上调", "keep": "维持", "cut": "下调", "none": "没给",
+WORDS = {"yes": "能过", "no": "过不了", "mixed": "一半",
+         "beat": "超预期", "inline": "符合", "miss": "不及", "raise": "上调", "keep": "维持", "cut": "下调", "none": "没给",
          "above": "高于预期", "below": "低于预期", "up": "涨", "down": "跌", "mixed": "有涨有跌"}
 
 
@@ -72,7 +81,8 @@ def outcomes(folder: Path = FOLDER) -> dict[tuple[str, str], dict]:
         for r in rep.get("reports", []):
             res, c = r.get("result"), calls.get(r["symbol"], {})
             item = {"implied": r.get("implied_move"), "call": c.get("direction"), "confidence": c.get("confidence"),
-                    "evidence": c.get("evidence"), "guide_call": c.get("guide_call")}
+                    "evidence": c.get("evidence"), "guide_call": c.get("guide_call"),
+                    "question": c.get("question"), "expect": c.get("expect")}
             if res:
                 gap = res.get("gap_pre", res.get("gap"))
                 item.update({"gap": gap, "move": res.get("move"), "up": gap is not None and gap > 0})
@@ -179,6 +189,24 @@ def guide_calls(rows: list[dict]) -> tuple[int, int, list[str]]:
     return len(done), sum(r["guide_call"] == r["guide_vs_est"] for r in done), lines
 
 
+def questions(rows: list[dict]) -> tuple[dict, list[str]]:
+    """11-02: calls that wrote the question the market would score on and whether the company would clear it, against
+    the review's answer. Returns the tallies (n, asked right, answered right, both right and the open's direction) and
+    the table lines, newest first."""
+    done = [r for r in rows if r.get("question") and r.get("expect") in ("yes", "no") and r.get("answer") in ("yes", "no", "mixed")]
+    both = [r for r in done if r.get("question_hit") and r["expect"] == r["answer"] and r.get("right") is not None]
+    t = {"n": len(done), "asked": sum(bool(r.get("question_hit")) for r in done),
+         "answered": sum(r["expect"] == r["answer"] for r in done),
+         "both_n": len(both), "both_right": sum(bool(r["right"]) for r in both)}
+    lines = []
+    for r in sorted(done, key=lambda r: (r["date"], r["symbol"]), reverse=True):
+        gap = "待记分" if r.get("gap") is None else f"{r['gap']:+.1%}"
+        right = "—" if r.get("right") is None else ("✓" if r["right"] else "✗")
+        lines.append(f"| {r['date']} | {r['symbol']} | {str(r['question'])[:48]} | {WORDS[r['expect']]} | {WORDS[r['answer']]} | "
+                     f"{'✓' if r.get('question_hit') else '✗'} | {right} | {gap} |")
+    return t, lines
+
+
 def render(folder: Path = FOLDER) -> str:
     reasons, res = load_reasons(folder), outcomes(folder)
     rows = [{**r, **res.get((r["date"], r["symbol"]), {})} for r in reasons]
@@ -204,6 +232,16 @@ def render(folder: Path = FOLDER) -> str:
                "| 日期 | 股票 | 我们猜指引 | 实际指引对预期 | 对不对 | 开盘 |", "|---|---|---|---|---|---|"] + lines_g
     else:
         md.append("还没有：细判从 10-30 起写 guide_call（above / inline / below），复盘时填 guide_vs_est 后在这里记分。")
+    q, lines_q = questions(rows)
+    md += ["", "## 前因记分（11-02 起：细判先写「市场会按什么打分」和「能不能过」，复盘填实际答案）", ""]
+    if q["n"]:
+        md += [f"{q['n']} 次：问对 {q['asked']} 次（{q['asked'] / q['n']:.0%}，开盘确实按那个问题走）、答对 {q['answered']} 次"
+               f"（{q['answered'] / q['n']:.0%}）；问对又答对的 {q['both_n']} 次里开盘方向对 {q['both_right']} 次。"
+               "问对答对还判错方向，说明问题没问到点上；问错但方向对，是运气。", "",
+               "| 日期 | 股票 | 市场会问什么 | 我们猜 | 实际 | 问对 | 方向对 | 开盘 |", "|---|---|---|---|---|---|---|---|"] + lines_q
+    else:
+        md.append("还没有：细判从 11-02 起写 question（市场会按什么打分，一句话）和 expect（yes / no），复盘时在 reasons.jsonl 填 answer（yes / no / mixed）"
+                  "和 question_hit（开盘是不是真按这个问题走）后在这里记分。")
     for title, keys in (("财报前就知道的", BEFORE), ("财报后才知道的", AFTER)):
         before = keys is BEFORE
         md += ["", f"## {title}", "", "| 迹象 | 情况 | 次数 | 开盘涨的比例 | 平均开盘 | 我们判对 |" + (" 五年回测开盘涨 |" if before else ""),
