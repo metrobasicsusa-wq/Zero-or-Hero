@@ -2992,30 +2992,11 @@
   },
   "spy0dte-near-1000": {
    "start": 1000.0,
-   "cash": 6257.0,
-   "round": 2,
-   "heroes": 0,
+   "cash": 1000.0,
+   "round": 3,
+   "heroes": 1,
    "zeros": 1,
-   "open": [
-    {
-     "tid": "20261102-5f52d4r",
-     "kind": "zdte",
-     "sym": "SPY261102P00756000",
-     "asset": "option",
-     "und": "SPY",
-     "qty": 26,
-     "cost": 0.83,
-     "paid": 2158.0,
-     "opened": "2026-11-02 09:40",
-     "why": "SPY 开盘 $759.49、现在 $759.10，顺势买当天到期看跌 756（离现价 0.4%），3 倍止盈，15:30 平仓",
-     "expiry": "2026-11-02",
-     "exit_day": "2026-11-02",
-     "exit_at": "15:30",
-     "trail": true,
-     "best_bid": 3.24,
-     "expiry_out": null
-    }
-   ],
+   "open": [],
    "closed": [
     {
      "tid": "a4cab2ccb2",
@@ -3794,6 +3775,32 @@
      "how": "3 倍止盈（券商挂单成交）",
      "closed": "2026-11-02 14:30",
      "ret": 2.0
+    },
+    {
+     "tid": "20261102-5f52d4r",
+     "kind": "zdte",
+     "sym": "SPY261102P00756000",
+     "asset": "option",
+     "und": "SPY",
+     "qty": 26,
+     "cost": 0.83,
+     "paid": 2158.0,
+     "opened": "2026-11-02 09:40",
+     "why": "SPY 开盘 $759.49、现在 $759.10，顺势买当天到期看跌 756（离现价 0.4%），3 倍止盈，15:30 平仓",
+     "expiry": "2026-11-02",
+     "exit_day": "2026-11-02",
+     "exit_at": "15:30",
+     "trail": true,
+     "best_bid": 3.24,
+     "expiry_out": null,
+     "sell_cid": "sl-spy0dte-near-1000-20261102-5f52d4r-xeaac",
+     "sell_why": "翻倍后从最高 $3.24 回撤 40%",
+     "state": "closed",
+     "exit_price": 1.7,
+     "proceeds": 4420.0,
+     "how": "翻倍后从最高 $3.24 回撤 40%",
+     "closed": "2026-11-02 15:10",
+     "ret": 1.048
     }
    ],
    "slots": {
@@ -3814,7 +3821,7 @@
     "2026-10-30": "2026-10-30T09:40-04:00",
     "2026-11-02": "2026-11-02T09:40-05:00"
    },
-   "best": 6257.0,
+   "best": 1000.0,
    "created": null,
    "rounds": [
     {
@@ -3824,9 +3831,17 @@
      "peak": 2173.0,
      "trades": 26,
      "day": "2026-10-29"
+    },
+    {
+     "round": 2,
+     "end": "hero",
+     "cash": 10677.0,
+     "peak": 10677.0,
+     "trades": 4,
+     "day": "2026-11-02"
     }
    ],
-   "round_from": 26
+   "round_from": 30
   },
   "tsla0dte-5x-500": {
    "start": 500.0,
@@ -7988,5 +8003,5 @@
    "created": null
   }
  },
- "topups": 5829.82
+ "topups": -3847.18
 }
