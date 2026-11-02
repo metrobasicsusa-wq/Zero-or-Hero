@@ -7130,9 +7130,11 @@ class BounceFailAndVix(unittest.TestCase):
         self.assertEqual(vd.classify(r1, 0.05), "high_only")
         r2 = next(r for r in rows if r["day"] == d2)
         self.assertEqual(vd.classify(r2, 0.03), "div_only")
+        self.assertEqual(vd.classify(r2, 0.03, 0.01), "div_only")                       # 99.0 is 2% off the 101 high
         rep = vd.run(rows, today=date(2026, 11, 2))
-        self.assertEqual(rep["stock"][0.03]["signal"]["n"], 1)
-        self.assertLess(rep["stock"][0.03]["signal"]["mean"], 0)
+        self.assertEqual(rep["stock"]["0.003|0.03"]["signal"]["n"], 1)
+        self.assertEqual(rep["stock"]["0.01|0.03"]["signal"]["n"], 1)
+        self.assertLess(rep["stock"]["0.003|0.03"]["signal"]["mean"], 0)
         md = vd.markdown(rep)
         for key in ("股票层面", "期权层面", "最近 25 个信号日", "读法"):
             self.assertIn(key, md)

@@ -28,6 +28,7 @@ from hero.research_zdte_timing import OUT, game
 UND = "SPY"
 CHECK = "11:30"
 THRESHOLDS = (0.02, 0.03, 0.05)
+BANDS = (0.003, 0.01)      # "near the high": within 0.3% (the first run: 2 days in 7 years, 11-02 itself not among them) or 1%
 GROUPS = ("signal", "div_only", "high_only", "neither")
 ZH = {"signal": "背离 + 指数在高点附近", "div_only": "只有背离", "high_only": "只在高点附近", "neither": "都没有"}
 
@@ -43,18 +44,19 @@ def features(days: dict[str, dict], vix: dict[str, dict]) -> list[dict]:
             continue
         c1130 = float(b["c"])
         rows.append({"day": d, "vix_div": vix_div(vix.get(d), CHECK), "near_high": c1130 >= f["hi1130"] * (1 - NEAR_HIGH),
-                     "c1130": c1130, "pm": round(f["c1530"] / c1130 - 1, 4), "pm_close": round(f["close"] / c1130 - 1, 4),
+                     "off_high": round(c1130 / f["hi1130"] - 1, 4), "c1130": c1130, "pm": round(f["c1530"] / c1130 - 1, 4), "pm_close": round(f["close"] / c1130 - 1, 4),
                      "open_to_1130": round(c1130 / f["open"] - 1, 4)})
     return rows
 
 
-def classify(r: dict, thr: float) -> str:
+def classify(r: dict, thr: float, band: float = NEAR_HIGH) -> str:
     div = r["vix_div"] is not None and r["vix_div"] >= thr
-    if div and r["near_high"]:
+    near = r["near_high"] if band == NEAR_HIGH else r.get("off_high", -1.0) >= -band
+    if div and near:
         return "signal"
     if div:
         return "div_only"
-    if r["near_high"]:
+    if near:
         return "high_only"
     return "neither"
 
@@ -104,7 +106,7 @@ def gather(client, pace=None, start: str = STOCK_START, end: str | None = None, 
     log(UND, len(days), VIX_PROXY, len(vix))
     rows = features(days, vix)
     for r in rows:
-        if r["day"] >= OPT_START and classify(r, min(THRESHOLDS)) == "signal":
+        if r["day"] >= OPT_START and classify(r, min(THRESHOLDS), max(BANDS)) == "signal":
             r["options"] = option_day(client, r["day"], days[r["day"]], pace)
     log("signal days with options", sum(1 for r in rows if r.get("options")))
     return rows
@@ -130,20 +132,23 @@ def option_cell(rs: list[dict], key: str) -> dict | None:
 
 
 def run(rows: list[dict], today: date | None = None) -> dict:
-    stock = {thr: {g: cell([r for r in rows if classify(r, thr) == g]) for g in GROUPS} for thr in THRESHOLDS}
-    opt = {thr: {"take3": option_cell([r for r in rows if classify(r, thr) == "signal"], "take3"),
-                 "hold": option_cell([r for r in rows if classify(r, thr) == "signal"], "hold")} for thr in THRESHOLDS}
+    stock = {f"{band}|{thr}": {g: cell([r for r in rows if classify(r, thr, band) == g]) for g in GROUPS}
+             for band in BANDS for thr in THRESHOLDS}
+    opt = {f"{band}|{thr}": {"take3": option_cell([r for r in rows if classify(r, thr, band) == "signal"], "take3"),
+                             "hold": option_cell([r for r in rows if classify(r, thr, band) == "signal"], "hold")}
+           for band in BANDS for thr in THRESHOLDS}
+    wide = max(BANDS)
     years = {}
     for r in rows:
-        if classify(r, 0.03) == "signal":
+        if classify(r, 0.03, wide) == "signal":
             y = years.setdefault(r["day"][:4], [0, 0])
             y[0] += 1
             y[1] += r["pm"] < 0
-    recent = sorted([r for r in rows if classify(r, 0.03) == "signal"], key=lambda r: r["day"], reverse=True)[:25]
+    recent = sorted([r for r in rows if classify(r, 0.03, wide) == "signal"], key=lambda r: r["day"], reverse=True)[:25]
     rob = {}
     for thr in THRESHOLDS:
-        rs = [r for r in rows if classify(r, thr) == "signal" and r.get("options")]
-        rob[f"背离 ≥{thr:.0%} · 11:30 看跌 3 倍止盈"] = robust.summary([(r["day"], r["options"]["take3"]) for r in rs])
+        rs = [r for r in rows if classify(r, thr, wide) == "signal" and r.get("options")]
+        rob[f"背离 ≥{thr:.0%}、离高点 {wide:.0%} 内 · 11:30 看跌 3 倍止盈"] = robust.summary([(r["day"], r["options"]["take3"]) for r in rs])
     return {"generated": (today or date.today()).isoformat(), "n_rows": len(rows), "stock": stock, "options": opt,
             "signal_years": years, "recent": recent, "robust": rob,
             "days": [min(r["day"] for r in rows), max(r["day"] for r in rows)] if rows else None}
@@ -158,28 +163,30 @@ def markdown(rep: dict) -> str:
           f"{UND} 每个交易日（{rep['days'][0] if rep.get('days') else '—'} 到 {rep['days'][1] if rep.get('days') else '—'}，{rep['n_rows']} 天），"
           f"{VIX_PROXY} 当 VIX 的代理。背离 = 11:30 时 {VIX_PROXY} 比 10:00–11:30 的最低点高出门槛（2% / 3% / 5%）；在高点附近 = 11:30 的 SPY 离当天到那时的最高价不到 {NEAR_HIGH:.1%}。"
           "下午 = 11:30 到 15:30。只研究，不改规则。", "",
-          "## 股票层面", "", "每格：天数 / 下午平均 / 中位数 / 下午收跌的比例 / 下午跌 0.5% 以上的比例。", "",
-          "| 门槛 | " + " | ".join(ZH[g] for g in GROUPS) + " |", "|---|" + "---|" * len(GROUPS)]
-    for thr in THRESHOLDS:
-        cells = []
-        for g in GROUPS:
-            c = rep["stock"][thr].get(g)
-            cells.append("—" if not c else f"{c['n']} / {_pct(c['mean'])} / {_pct(c['median'])} / {c['neg']:.0%} / {c['big_neg']:.0%}")
-        md.append(f"| ≥{thr:.0%} | " + " | ".join(cells) + " |")
-    md += ["", "各年份（门槛 3%）：" + "、".join(f"{y} {n} 天（下午跌 {k}）" for y, (n, k) in sorted(rep["signal_years"].items())), "",
+          "## 股票层面", "", "每格：天数 / 下午平均 / 中位数 / 下午收跌的比例 / 下午跌 0.5% 以上的比例。「在高点附近」分两档带宽：离当天到 11:30 的最高价 0.3% 内、1% 内。", "",
+          "| 带宽 | 门槛 | " + " | ".join(ZH[g] for g in GROUPS) + " |", "|---|---|" + "---|" * len(GROUPS)]
+    for band in BANDS:
+        for thr in THRESHOLDS:
+            cells = []
+            for g in GROUPS:
+                c = rep["stock"][f"{band}|{thr}"].get(g)
+                cells.append("—" if not c else f"{c['n']} / {_pct(c['mean'])} / {_pct(c['median'])} / {c['neg']:.0%} / {c['big_neg']:.0%}")
+            md.append(f"| {band:.1%} | ≥{thr:.0%} | " + " | ".join(cells) + " |")
+    md += ["", f"各年份（门槛 3%、带宽 {max(BANDS):.0%}）：" + "、".join(f"{y} {n} 天（下午跌 {k}）" for y, (n, k) in sorted(rep["signal_years"].items())), "",
            f"## 期权层面（{OPT_START} 起）：SPY 当天到期、离 11:30 价 {OFF:.1%} 的看跌", "",
            "每格：张数 / 平均每 $1 / 中位数 / 赚钱比例 / 到 2 倍的比例 / 账本玩法到 2 倍 成功·归零。", "",
-           "| 门槛 | 3 倍止盈、15:30 平 | 拿到 15:30 |", "|---|---|---|"]
-    for thr in THRESHOLDS:
-        cells = []
-        for k in ("take3", "hold"):
-            c = rep["options"][thr].get(k)
-            cells.append("—" if not c else f"{c['n']} / {_pct(c['mean'], 0)} / {_pct(c['median'], 0)} / {c['win']:.0%} / {c['x2']:.0%} / {c['h2']}·{c['z2']}")
-        md.append(f"| ≥{thr:.0%} | " + " | ".join(cells) + " |")
-    md += ["", "## 最近 25 个信号日（门槛 3%）", "", "| 日期 | 背离 | 开盘到 11:30 | 下午 11:30→15:30 | 到收盘 | 看跌 3 倍 / 拿到 15:30 |", "|---|---|---|---|---|---|"]
+           "| 带宽 | 门槛 | 3 倍止盈、15:30 平 | 拿到 15:30 |", "|---|---|---|---|"]
+    for band in BANDS:
+        for thr in THRESHOLDS:
+            cells = []
+            for k in ("take3", "hold"):
+                c = rep["options"][f"{band}|{thr}"].get(k)
+                cells.append("—" if not c else f"{c['n']} / {_pct(c['mean'], 0)} / {_pct(c['median'], 0)} / {c['win']:.0%} / {c['x2']:.0%} / {c['h2']}·{c['z2']}")
+            md.append(f"| {band:.1%} | ≥{thr:.0%} | " + " | ".join(cells) + " |")
+    md += ["", f"## 最近 25 个信号日（门槛 3%、带宽 {max(BANDS):.0%}）", "", "| 日期 | 背离 | 离高点 | 开盘到 11:30 | 下午 11:30→15:30 | 到收盘 | 看跌 3 倍 / 拿到 15:30 |", "|---|---|---|---|---|---|---|"]
     for r in rep["recent"]:
         o = r.get("options") or {}
-        md.append(f"| {r['day']} | {_pct(r['vix_div'])} | {_pct(r['open_to_1130'])} | {_pct(r['pm'])} | {_pct(r['pm_close'])} | "
+        md.append(f"| {r['day']} | {_pct(r['vix_div'])} | {_pct(r.get('off_high'))} | {_pct(r['open_to_1130'])} | {_pct(r['pm'])} | {_pct(r['pm_close'])} | "
                   f"{(_pct(o['take3'], 0) + ' / ' + _pct(o['hold'], 0)) if o else '—'} |")
     md += ["", robust.table(rep["robust"], "稳健性检查（每张票一笔，每 $1 的收益）"),
            "## 读法", "",
@@ -195,7 +202,7 @@ def main() -> None:
     client = Alpaca()
     rows = gather(client, pace=Pace(client), log=lambda *a: print(*a, file=sys.stderr))
     rep = run(rows)
-    rep["rows"] = [r for r in rows if classify(r, min(THRESHOLDS)) != "neither"]
+    rep["rows"] = [r for r in rows if classify(r, min(THRESHOLDS), max(BANDS)) != "neither"]
     save("vix-divergence", rep, markdown(rep))
 
 
