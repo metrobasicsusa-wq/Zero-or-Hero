@@ -48,13 +48,20 @@
       "as_of": "2026-11-02T09:38:29.216847483-05:00",
       "equity_usd": 103352.05,
       "cash_usd": 93099.01,
-      "source": "archived observation; not official close"
+      "source": "first archived equity-event observation used for the reported window; not the earliest broker snapshot or official open"
     },
     "post_session_observation": {
       "as_of": "2026-11-02T16:53:21.18287524-05:00",
       "equity_usd": 103288.81,
       "cash_usd": 103288.81,
       "source": "archived observation; not official close"
+    },
+    "first_broker_snapshot": {
+      "as_of": "2026-11-02T09:35:50.654453455-05:00",
+      "recorded_at": "2026-11-02T14:36:00.039561+00:00",
+      "equity_usd": "103362.59",
+      "cash_usd": "93099.01",
+      "source": "earlier broker snapshot, reported separately from equity-event performance window"
     }
   },
   "fills": [
@@ -167,6 +174,11 @@
         "oct22_start_change_seconds": 97.36735099999999
       },
       "root_cause": "Exit1 cause still unknown; recovery confirmed by archive and successful natural cycles. Overall gap not resolved."
+    },
+    "sample_cutoff_explanation": "118 session-started cycles each have60 rows (7080 total); the last cycle began15:59:59.408675 ET and recorded60 samples at16:00:11.312805 ET. Strict session cutoff retains117 sample rounds /7020 rows.",
+    "timestamp_clarification": {
+      "supersedes_commit": "c1cf0a792ec726c82350708af14e9a60fb7b29a0",
+      "reason": "Clarify earliest broker snapshot versus first equity event and the final cycle crossing close; no changes to FILL or reported observation-window returns."
     }
   },
   "replies": [
