@@ -4,6 +4,7 @@ import math
 import random
 import tempfile
 import unittest
+import unittest.mock
 from datetime import date, datetime, timedelta
 from pathlib import Path
 
@@ -144,6 +145,46 @@ class Strategy(unittest.TestCase):
         calm_w = mom.target_weights(closes, {**p, "macro_scale": 0.5}, "SPY", 1.0, macro_closes=calm)["UP1"]
         self.assertAlmostEqual(calm_w, p["gross_exposure"])
 
+    def test_momentum_exit_buffer_and_confirm(self):
+        # 300 flat days, then a close just under the 50-day line: dropped today without a buffer,
+        # kept with a 3% buffer or a 2-day confirmation, dropped once it is 5% under for 2 days.
+        flat = [100.0] * 300
+        p = {**CFG["stocks"], "trend_sma": 50, "momentum_lookback": 63, "rsi_max": 101}
+        held = frozenset({"A"})
+        dip = {"A": flat[:-1] + [99.0]}
+        self.assertEqual(mom.rank(dip, p, held), [])                                         # today's rule
+        self.assertEqual(mom.rank(dip, {**p, "exit_buffer": 0.03}, held), [])               # mom <= 0 still fails
+        up = [100.0 + i * 0.1 for i in range(300)]                                           # rising: mom > 0
+        under = up[:-1] + [sma(up[:-1], 50) * 0.985]                                        # ~1.4% under the line
+        self.assertEqual(mom.rank({"A": under}, p, held), [])
+        self.assertEqual(mom.rank({"A": under}, {**p, "exit_buffer": 0.03}, held), ["A"])
+        self.assertEqual(mom.rank({"A": under}, {**p, "exit_confirm": 2}, held), ["A"])
+        self.assertEqual(mom.rank({"A": under}, {**p, "exit_buffer": 0.03}, frozenset()), [])  # new entry: no buffer
+        deep = up[:-2] + [up[-3] * 0.9, up[-3] * 0.9]
+        self.assertEqual(mom.rank({"A": deep}, {**p, "exit_buffer": 0.03, "exit_confirm": 2}, held), [])
+        s = mom.scores({"A": deep}, {**p, "exit_buffer": 0.03, "exit_confirm": 2}, held)["A"]
+        self.assertIn("连续 2 天", s["fail"][0])
+
+    def test_momentum_rank_buffer_and_group_cap(self):
+        ranked = ["NVDA", "AMD", "AVGO", "XLE", "XLF", "MSFT", "JPM"]
+        p = {**CFG["stocks"], "top_n": 3}
+        self.assertEqual(mom.select(ranked, p), ["NVDA", "AMD", "AVGO"])
+        self.assertEqual(mom.select(ranked, p, frozenset({"XLE"})), ["NVDA", "AMD", "AVGO"])          # no hysteresis
+        self.assertEqual(mom.select(ranked, {**p, "rank_buffer": 2}, frozenset({"XLE"})), ["NVDA", "AMD", "XLE"])
+        self.assertEqual(mom.select(ranked, {**p, "rank_buffer": 1}, frozenset({"XLE"})), ["NVDA", "AMD", "XLE"])
+        self.assertEqual(mom.select(ranked, {**p, "rank_buffer": 1}, frozenset({"XLF"})), ["NVDA", "AMD", "AVGO"])
+        self.assertEqual(mom.select(ranked, {**p, "group_cap": 2}), ["NVDA", "AMD", "XLE"])
+        self.assertEqual(mom.select(ranked, {**p, "group_cap": 1}), ["NVDA", "XLE", "XLF"])
+        self.assertEqual(mom.select(ranked, {**p, "group_cap": 2, "rank_buffer": 3}, frozenset({"XLF"})),
+                         ["NVDA", "AMD", "XLF"])
+        why = mom.why_dropped("AVGO", {"rank": 3, "fail": []}, {**p, "group_cap": 2})
+        self.assertIn("已有 2 只", why)
+        # Through target_weights: equal weights over the selected names only.
+        closes = {s: series(0.002 + i * 0.0005, seed=i) for i, s in enumerate(ranked)}
+        w = mom.target_weights(closes, {**p, "rsi_max": 101, "group_cap": 2}, "SPY", 1.0)
+        self.assertEqual(len(w), 3)
+        self.assertLessEqual(sum(s in mom.GROUPS["大型科技 / AI"] for s in w), 2)
+
     def test_option_helpers(self):
         self.assertEqual(opt.occ_expiration("AAPL261120C00150000"), "2026-11-20")
         self.assertIsNone(opt.mid({"latestQuote": {"bp": 1.0, "ap": 2.0}}))  # too wide
@@ -154,6 +195,73 @@ class Strategy(unittest.TestCase):
         self.assertTrue(opt.should_exit({"unrealized_plpc": "-0.5"}, TODAY, "2026-12-01", p).startswith("stop"))
         self.assertTrue(opt.should_exit({"unrealized_plpc": "0"}, TODAY, "2026-10-05", p).startswith("dte"))
         self.assertIsNone(opt.should_exit({"unrealized_plpc": "0.1"}, TODAY, "2026-12-01", p))
+
+
+class MomentumFixes(unittest.TestCase):
+    """hero/research_momentum_fixes: the four execution timings and the evolve-style metrics."""
+
+    def setUp(self):
+        from hero import research_momentum_fixes as m
+        self.m = m
+        n = 320
+        self.days = [(date(2025, 1, 1) + timedelta(days=i)).isoformat() for i in range(n)]
+        syms = ["A", "B", "C", "SPY"]
+        self.closes = {s: series(0.001 * (i + 1), n, seed=i) for i, s in enumerate(syms)}
+        self.opens = {s: [x * 1.001 for x in xs] for s, xs in self.closes.items()}
+        self.cfg = {"regime_symbol": "SPY", "risk": {"max_position_pct": 0.5}, "universe": syms,
+                    "stocks": {**CFG["stocks"], "momentum_lookback": 20, "trend_sma": 20, "top_n": 2, "rsi_max": 101}}
+
+    def test_simulate_modes(self):
+        m = self.m
+        for mode in m.TIMING:
+            res = m.simulate(self.days, self.opens, self.closes, self.cfg["stocks"], self.cfg, 30, len(self.days), mode)
+            self.assertEqual(len(res["rets"]), len(self.days) - 32)
+            self.assertEqual(len(res["equity"]), len(res["rets"]) + 1)
+            self.assertTrue(res["trades"], mode)                       # every open position is closed out at the end
+            self.assertTrue(all(0 <= x <= 2 for x in res["turnover"]))
+        # close mode labels the decision day, the open modes the next session (the fill day)
+        c = m.simulate(self.days, self.opens, self.closes, self.cfg["stocks"], self.cfg, 30, len(self.days), "close")
+        o = m.simulate(self.days, self.opens, self.closes, self.cfg["stocks"], self.cfg, 30, len(self.days), "open")
+        self.assertEqual(c["days"][0], self.days[30])
+        self.assertEqual(o["days"][0], self.days[31])
+        # flat opens: the open-fill modes earn nothing (and pay only turnover costs)
+        flat = {s: [100.0] * len(self.days) for s in self.closes}
+        f = m.simulate(self.days, flat, self.closes, self.cfg["stocks"], self.cfg, 30, len(self.days), "open")
+        self.assertTrue(all(r <= 0 for r in f["rets"]))
+        self.assertLess(f["equity"][-1], 1.0)
+        with self.assertRaises(ValueError):
+            m.simulate(self.days, self.opens, self.closes, self.cfg["stocks"], self.cfg, 30, len(self.days), "noon")
+
+    def test_metrics_and_window(self):
+        m = self.m
+        res = m.simulate(self.days, self.opens, self.closes, self.cfg["stocks"], self.cfg, 30, len(self.days), "close")
+        full = m.metrics(res)
+        self.assertEqual(full["n"], len(res["rets"]))
+        self.assertEqual(full["score"], min(full["train"], full["val"]))
+        self.assertAlmostEqual(full["total"], res["equity"][-1] - 1, places=3)
+        self.assertIn("2025", full["years"])
+        self.assertIsNone(full["live"])                                 # nothing on or after 2026-10-01
+        later = m.metrics(res, since=self.days[200])
+        self.assertEqual(later["from"], self.days[200])
+        self.assertLess(later["n"], full["n"])
+        self.assertEqual(m.metrics(res, since="2099-01-01"), {"n": 0})
+        self.assertEqual(m.window_start(self.days, date(2025, 11, 1)), m.WARMUP)   # all history is inside 3 years
+
+    def test_run_and_markdown(self):
+        m = self.m
+        n = len(self.days)
+        with unittest.mock.patch.object(m, "WARMUP", 30), unittest.mock.patch.object(m, "EXIT_GRID", {
+                "exit_buffer": [0, 0.02], "exit_confirm": [1], "rank_buffer": [0, 2]}), \
+                unittest.mock.patch.object(m, "CAP_GRID", [0, 1]):
+            rep = m.run(self.cfg, self.days, self.opens, self.closes, today=date(2025, 11, 1))
+        self.assertEqual(len(rep["timing"]), 4)
+        self.assertEqual(len(rep["exits"]["open_partial"]), 4)
+        self.assertEqual(rep["current"]["params"], {"exit_buffer": 0, "exit_confirm": 1, "rank_buffer": 0})
+        self.assertIn(rep["best_cap"]["params"]["group_cap"], (0, 1))
+        self.assertIsInstance(rep["would_adopt"]["cap"], bool)
+        md = m.markdown(rep)
+        for key in ("成交时点", "同组上限", "稳健性检查", "提醒", "读法"):
+            self.assertIn(key, md)
 
 
 class EngineTests(unittest.TestCase):
@@ -267,13 +375,47 @@ class Evolution(unittest.TestCase):
         dates, closes = backtest.align(raw, "SPY")
         self.assertEqual(len(dates), 700)
         c = cfg()
-        new, report = evolve.evolve(c, closes, [100, 110], TODAY)
-        self.assertIn("decision:", report)
-        self.assertIn("+10.00%", report)
-        self.assertIn(new["generation"], (0, 1))
-        mc = {"TLT": series(0, 700, 11), "USO": series(0, 700, 12), "VIXY": series(0, 700, 13), "UUP": series(0, 700, 14)}
-        new, report = evolve.evolve(c, closes, [], TODAY, mc)
+        # the live grid is 648 combos (~30 s here); two values per knob keeps the test quick
+        small = {k: v[:2] for k, v in evolve.GRID.items()}
+        self.assertEqual(set(small), {"momentum_lookback", "trend_sma", "top_n", "rsi_applies_to_holdings",
+                                      "macro_scale", "rank_buffer", "group_cap"})
+        with unittest.mock.patch.object(evolve, "GRID", small):
+            new, report = evolve.evolve(c, closes, [100, 110], TODAY)
+            self.assertIn("decision:", report)
+            self.assertIn("+10.00%", report)
+            self.assertIn(new["generation"], (0, 1))
+            self.assertNotIn("None ->", report)          # a config without rank_buffer / group_cap trades like 0
+            mc = {"TLT": series(0, 700, 11), "USO": series(0, 700, 12), "VIXY": series(0, 700, 13), "UUP": series(0, 700, 14)}
+            new, report = evolve.evolve(c, closes, [], TODAY, mc)
         self.assertIn(new["stocks"]["macro_scale"], (1.0, 0.5))
+        self.assertIn(new["stocks"].get("group_cap", 0), (0, 2))
+
+    def test_evolve_options_gate(self):
+        c = cfg()
+        c["options"] = {"enabled": True, "allocation": 0.1, "max_positions": 3, "min_dte": 30, "max_dte": 60,
+                        "target_delta": 0.5, "take_profit": 0.6, "stop_loss": -0.4, "exit_dte": 7, "earnings_guard": True}
+        cur = {"params": {"target_delta": 0.5, "dte": (30, 60), "take_profit": 0.6, "stop_loss": -0.4, "exit_dte": 7,
+                          "allocation": 0.1}, "score": 0.27, "val": 0.27, "val_trades": 40, "opt_pnl": -11371}
+        best = {"params": {"target_delta": 0.7, "dte": (60, 120), "take_profit": 0.4, "stop_loss": -0.6, "exit_dte": 7,
+                           "allocation": 0.05}, "score": 1.54, "val": 1.9, "val_trades": 22, "opt_pnl": 15504}
+        new, report = evolve.evolve_options(c, {"current": cur, "best": best, "would_adopt": False})
+        self.assertEqual(new, c)                                       # keep: nothing changes
+        self.assertIn("options decision: keep", report)
+        self.assertIn("needs >= 20 validation trades", report)
+        self.assertIn("'dte': '[30, 60] -> [60, 120]'", report)
+        new, report = evolve.evolve_options(c, {"current": cur, "best": best, "would_adopt": True})
+        self.assertIn("options decision: ADOPT", report)
+        self.assertEqual(new["generation"], c["generation"] + 1)
+        o = new["options"]
+        self.assertEqual((o["min_dte"], o["max_dte"], o["target_delta"], o["take_profit"], o["stop_loss"],
+                          o["exit_dte"], o["allocation"]), (60, 120, 0.7, 0.4, -0.6, 7, 0.05))
+        self.assertEqual((o["max_positions"], o["earnings_guard"], o["enabled"]), (3, True, True))  # untouched
+        self.assertEqual(c["options"]["min_dte"], 30)                   # the input config is not mutated
+        # a JSON round trip turns the dte tuple into a list: the same verdict, no spurious "changed"
+        same = {**best, "params": {**cur["params"], "dte": [30, 60]}}
+        _, report = evolve.evolve_options(c, {"current": cur, "best": same, "would_adopt": False})
+        self.assertIn("options decision: keep\n", report)
+        self.assertNotIn("->", report)
 
     def test_briefing_accuracy_is_reported(self):
         with tempfile.TemporaryDirectory() as d:

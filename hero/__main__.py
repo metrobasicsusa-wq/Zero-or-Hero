@@ -148,6 +148,21 @@ def main() -> None:
             print(json.dumps(evolve.evaluate(closes, cfg["stocks"], cfg, n, macro_closes), indent=2))
         else:
             new, report = evolve.evolve(cfg, closes, journal.equity_curve(), date.today(), macro_closes)
+            if cfg["options"].get("enabled"):
+                # 11-02: the options sleeve searches its own six knobs on real option bars (research_evolve_options),
+                # under the same gate. The stock decision above is saved whatever happens here.
+                try:
+                    from hero import research_evolve_options as reo
+                    from hero.research_event_turn import Pace
+                    from hero.research_ideas import save as save_research
+                    rep = reo.run(client, new, pace=Pace(client))
+                    new, opt_report = evolve.evolve_options(new, rep)
+                    save_research("evolve-options", rep, reo.markdown(rep))
+                except Exception as e:
+                    opt_report = f"- options: search failed ({type(e).__name__}: {str(e)[:160]}); options unchanged\n"
+                report += opt_report
+            # one generation per week, whether stocks, options or both changed
+            new["generation"] = cfg["generation"] + ((new["stocks"], new["options"]) != (cfg["stocks"], cfg["options"]))
             report += evolve.briefing_accuracy(ROOT / "macro" / "briefings" / "scores.csv")
             evolve.save(new, report, cfg_path, jdir / "evolution.md")
             print(report)
