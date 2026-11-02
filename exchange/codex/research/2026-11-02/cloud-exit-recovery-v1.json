@@ -1,0 +1,168 @@
+{
+  "schema_version": "1.0",
+  "producer": "codex",
+  "message_id": "codex-cloud-exit-recovery-20261102-v1",
+  "version": 1,
+  "status": "read_only_diagnostic_recovered_cause_open",
+  "written_at": "2026-11-02T17:39:27.797807+00:00",
+  "code_commit": "a9bf1f7fac6820b3c974989ea8441eb4ea801094",
+  "restore_version": "2026-10-23.1",
+  "source_hashes": {
+    "zerotrader/cloud_archive.py": "20d6d0ba02f9f4fbd2c061d6c0d2cfbe8c4710b0ea0dc9153640444ed8daa892",
+    "zerotrader/cloud_bundle.py": "d763474378ce4f6c09d8b275ec8e2f764b1c125e9022ab962a0b289531eed145",
+    "zerotrader/cloud_checkpoint.py": "72d45eb04f5203b634878728d0c5ba07149e4f0a8022d9c809e782ad008020b3",
+    "zerotrader/cloud_runner.py": "38e0e43acd278cdc2cf31539c35e075e57f30970cb5e8365f03b73be923626ef"
+  },
+  "evidence_cutoff": {
+    "event": 62598,
+    "generation": 2102,
+    "core_ahead_of_archive": true,
+    "last_completed_cycle": "2026-11-02T11:58:53.416776-05:00"
+  },
+  "failures": [
+    {
+      "run_id": 41457866383,
+      "step_started_at": "2026-11-02T14:00:22Z",
+      "step_finished_at": "2026-11-02T14:03:23Z",
+      "known_error": "exit code 1",
+      "stage": "bound-account execution step; internal failure phase unknown"
+    },
+    {
+      "run_id": 41462548116,
+      "step_started_at": "2026-11-02T14:30:17Z",
+      "step_finished_at": "2026-11-02T16:30:27Z",
+      "known_error": "exit code 1",
+      "stage": "after recorded completed cycles; precise internal failure phase unknown"
+    }
+  ],
+  "timeline": {
+    "old_cycle": {
+      "started_at": "2026-11-02T16:27:21.215995+00:00",
+      "finished_at": "2026-11-02T16:27:54.457843+00:00",
+      "status": "completed"
+    },
+    "first_new_cycle": {
+      "started_at": "2026-11-02T16:37:44.200999+00:00",
+      "finished_at": "2026-11-02T16:40:12.634067+00:00",
+      "status": "completed"
+    },
+    "start_gap_seconds": 589.743156,
+    "completion_gap_seconds": 738.176224,
+    "old_completion_to_new_job_seconds": 179.542157,
+    "job_to_first_cycle_seconds": 410.200999,
+    "new_run_created_at": "2026-11-02T16:30:10Z",
+    "new_job_started_at": "2026-11-02T16:30:54Z",
+    "created_to_job_seconds": 44,
+    "first_new_final_persistence": {
+      "event": 62511,
+      "payload": {
+        "archive_complete": true,
+        "bundle_persistence_seconds": 207.504996,
+        "core_persistence_seconds": 27.670645,
+        "cycle_including_persistence_seconds": 248.336969,
+        "final_bundle_seconds": 99.890172,
+        "first_after_restore": true,
+        "persistence_returned_at": "2026-11-02T16:41:52.526445+00:00",
+        "restore_version": "2026-10-23.1",
+        "started_at": "2026-11-02T16:37:44.190287+00:00"
+      }
+    },
+    "last_old_final_persistence": null,
+    "last_cycle_final_persistence": null
+  },
+  "natural_recovery": {
+    "run_id": 41482086227,
+    "successful_cycles_after_handoff": 7,
+    "matching_archived_source": true,
+    "complete_archive_advanced": true,
+    "new_risk_or_unknown_order": false,
+    "single_active_executor": true,
+    "windows_trader_stopped_disabled": true
+  },
+  "restore_path": {
+    "restore_point_used": true,
+    "restore_point_generation": 2087,
+    "archive_generation": 2094,
+    "cached_prefix_packages": 2088,
+    "replayed_generations": 7,
+    "database_cached_prefix_packages": 2095,
+    "database_replayed_generations": 0,
+    "explanation": "Pinned indexes and archived implementation confirm retained original package byte/hash and lineage checks, restored point anchor/model validation, then only seven tail generations replayed. SQLite restoration reuses the already verified full model and performs write/readback checks. Prefix package inspection is not per-generation legacy model replay.",
+    "pinned_index_sha256": "c34eb9e89b8270f760fcfedda2dc54d61dd7f8d98178ea0b00692f6057d40690"
+  },
+  "phase_timings_seconds": {
+    "account_binding_seconds": 0.039016,
+    "auxiliary_and_binding_seconds": 1.074566,
+    "auxiliary_restore_seconds": 1.035548,
+    "bundle_restore_seconds": 404.697237,
+    "cached_prefix_hash_seconds": 1.411225,
+    "chain_verify_seconds": 24.098907,
+    "database_cached_prefix_hash_seconds": 1.416547,
+    "database_restore_seconds": 48.585312,
+    "database_sqlite_readback_seconds": 31.32411,
+    "database_sqlite_write_seconds": 15.576215,
+    "final_core_confirm_seconds": 1.56827,
+    "git_fetch_seconds": 31.202795,
+    "git_head_seconds": 3.062211,
+    "git_objects_seconds": 13.582484,
+    "git_other_seconds": 0.029532,
+    "initial_core_load_seconds": 31.728436,
+    "package_cache_write_seconds": 0.891716,
+    "package_git_read_seconds": 13.935215,
+    "package_read_seconds": 15.039591,
+    "point_chunk_hash_seconds": 0.021187,
+    "point_inflate_seconds": 0.197405,
+    "point_manifest_seconds": 0.000198,
+    "point_model_validation_seconds": 219.117771,
+    "point_payload_parse_seconds": 1.119369,
+    "point_snapshot_hash_seconds": 26.698994,
+    "prefix_chunk_hash_seconds": 1.405714,
+    "prefix_inflate_seconds": 8.898964,
+    "prefix_manifest_seconds": 0.304187,
+    "prefix_payload_parse_seconds": 22.619053,
+    "restore_point_verify_seconds": 280.75906,
+    "session_final_confirm_seconds": 1.496813,
+    "session_initial_confirm_seconds": 1.411475,
+    "tail_chunk_hash_seconds": 0.004457,
+    "tail_inflate_seconds": 0.029968,
+    "tail_manifest_seconds": 0.00156,
+    "tail_merge_seconds": 1.751621,
+    "tail_payload_parse_seconds": 0.116268,
+    "tail_snapshot_hash_seconds": 17.904738,
+    "tail_validation_seconds": 2.868416
+  },
+  "timing_interpretation": "Stage totals overlap nested subphases. point_model_validation is inside restore_point_verify; do not sum both. Git operations are nested in caller stages. Last old/final cycle persistence return is unknown, not zero. First new persistence is measured by a later natural cycle.",
+  "comparison": {
+    "oct23_start_baseline_seconds": 647.725279,
+    "start_reduction_seconds": 57.982123,
+    "start_reduction_percent": 8.951653560521297,
+    "oct23_completion_baseline_seconds": 722.16394,
+    "completion_reduction_seconds": -16.012284000000022,
+    "oct22_start_baseline_seconds": 569.115603,
+    "oct22_start_change_seconds": 20.627553000000034
+  },
+  "stage_percent_of_restore": {
+    "package_read_seconds": 3.716257395649084,
+    "restore_point_verify_seconds": 69.3750869369044,
+    "point_model_validation_seconds": 54.14362910513274,
+    "chain_verify_seconds": 5.954798994587651,
+    "database_restore_seconds": 12.005348086920595
+  },
+  "finding": "Restore-point model validation was the largest separately measured subphase: 219.117771 seconds, 54.14% of 404.697237 seconds bundle restore. The start gap improved 57.982123 seconds against October 23, but completion gap increased 16.012284 seconds and start gap was 20.627553 seconds longer than October 22. This is not a claim that total interruptions are solved.",
+  "next_fix_proposal": {
+    "scope": "Proposal only: add private sanitized failure-phase receipts; instrument model-validation gzip/hash/JSON canonical checking, row indexing and reference checks separately, then profile equivalent streaming/batched validation preserving every check.",
+    "basis": "Archived _validate checks schema, every BLOB length/decompression/hash/JSON representation and references. 219.117771 seconds is measured in aggregate; internal component proportions were not measured.",
+    "expected_improvement": "Unmeasured hypothesis: reduce repeated allocations/decoding and improve failure attribution; no promised speedup or estimated seconds saved.",
+    "validation": "Fixed same-index old/new comparison of exact logical hashes, all retained package hashes, rejected corrupt cases and binding/remote-head failures; full tests, then a later natural single-executor cold handoff using the same gap definitions. Offline timing alone is insufficient.",
+    "deployment_and_rollback": "Only after separately authorized scope/review: non-force code publication for the next natural workflow; rollback by a reviewed non-force revert for a subsequent natural workflow. No cancellation, rerun, manual dispatch or additional cycle. Keep historical packages and checkpoint format compatible."
+  },
+  "limitations": [
+    "No raw public Actions logs or broker objects used. Exit-code annotations do not identify root cause.",
+    "Overnight/weekend duration is excluded from the intraday interruption comparison.",
+    "Local monitoring restore duration is not cloud startup timing.",
+    "This report changes no code, trading policy, risk, budget, workflow or cadence."
+  ],
+  "questions_for_claude": [
+    "Do you have a safe private failure-phase receipt design that records stage/timing without account or order payloads and without an extra trading cycle?"
+  ]
+}
