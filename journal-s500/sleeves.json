@@ -2196,33 +2196,11 @@
   },
   "spy0dte-near-500": {
    "start": 500.0,
-   "cash": 455.0,
+   "cash": 467.0,
    "round": 3,
    "heroes": 0,
    "zeros": 2,
-   "open": [
-    {
-     "tid": "20261102-cdd0bc",
-     "kind": "zdte",
-     "sym": "SPY261102C00763000",
-     "asset": "option",
-     "und": "SPY",
-     "qty": 6,
-     "cost": 0.8,
-     "paid": 480.0,
-     "opened": "2026-11-02 10:00",
-     "why": "SPY 开盘 $759.49、现在 $760.67，顺势买当天到期看涨 763（离现价 0.3%），3 倍止盈，15:30 平仓",
-     "expiry": "2026-11-02",
-     "exit_day": "2026-11-02",
-     "exit_at": "15:30",
-     "trail": false,
-     "best_bid": 1.65,
-     "expiry_out": null,
-     "take_x": 3,
-     "take": 2.4,
-     "take_cid": "sl-spy0dte-near-500-20261102-cdd0bc-tacd8"
-    }
-   ],
+   "open": [],
    "closed": [
     {
      "tid": "271d9ed519",
@@ -2948,6 +2926,34 @@
      "how": "翻倍后从最高 $1.65 回撤 40%",
      "closed": "2026-11-02 11:00",
      "ret": -0.137
+    },
+    {
+     "tid": "20261102-cdd0bc",
+     "kind": "zdte",
+     "sym": "SPY261102C00763000",
+     "asset": "option",
+     "und": "SPY",
+     "qty": 6,
+     "cost": 0.8,
+     "paid": 480.0,
+     "opened": "2026-11-02 10:00",
+     "why": "SPY 开盘 $759.49、现在 $760.67，顺势买当天到期看涨 763（离现价 0.3%），3 倍止盈，15:30 平仓",
+     "expiry": "2026-11-02",
+     "exit_day": "2026-11-02",
+     "exit_at": "15:30",
+     "trail": false,
+     "best_bid": 1.65,
+     "expiry_out": null,
+     "take_x": 3,
+     "take": 2.4,
+     "sell_cid": "sl-spy0dte-near-500-20261102-cdd0bc-xf8d6",
+     "sell_why": "2026-11-02 15:30 到时卖出",
+     "state": "closed",
+     "exit_price": 0.02,
+     "proceeds": 12.0,
+     "how": "2026-11-02 15:30 到时卖出",
+     "closed": "2026-11-02 15:30",
+     "ret": -0.975
     }
    ],
    "slots": {
@@ -6643,7 +6649,9 @@
      "exit_at": "15:30",
      "trail": true,
      "best_bid": 0.79,
-     "expiry_out": null
+     "expiry_out": null,
+     "sell_cid": "sl-sniper-500-20261030-d1b096-x6251",
+     "sell_why": "2026-11-02 15:30 到时卖出"
     }
    ],
    "closed": [
@@ -6831,7 +6839,9 @@
      "exit_at": "15:30",
      "trail": true,
      "best_bid": 0.42,
-     "expiry_out": null
+     "expiry_out": null,
+     "sell_cid": "sl-sniper-1000-20261030-bac075-x82d4",
+     "sell_why": "2026-11-02 15:30 到时卖出"
     }
    ],
    "closed": [
@@ -7144,7 +7154,9 @@
      "exit_at": "15:30",
      "trail": true,
      "best_bid": 5.05,
-     "expiry_out": null
+     "expiry_out": null,
+     "sell_cid": "sl-overnight-1000-20261028-c7f7e4-x016d",
+     "sell_why": "2026-11-02 15:30 到时卖出"
     }
    ],
    "closed": [
