@@ -1,14 +1,12 @@
 {
  "source": "alphavantage EARNINGS_CALENDAR horizon=3month",
- "fetched_at": "2026-10-30T09:00:21-04:00",
- "fetched_on": "2026-10-30",
+ "fetched_at": "2026-11-02T09:01:29-05:00",
+ "fetched_on": "2026-11-02",
  "horizon_days": 90,
  "symbols": [
   "AAPL",
   "ABBV",
-  "ABT",
   "ACN",
-  "ADBE",
   "ADI",
   "ALAB",
   "AMAT",
@@ -25,8 +23,8 @@
   "BE",
   "BKNG",
   "BSX",
-  "C",
   "CAT",
+  "CIEN",
   "COHR",
   "COIN",
   "COST",
@@ -36,11 +34,12 @@
   "CRWV",
   "CSCO",
   "CVX",
+  "DASH",
   "DDOG",
   "DELL",
   "DHR",
   "DIA",
-  "FCX",
+  "ETN",
   "GE",
   "GEV",
   "GLW",
@@ -49,12 +48,10 @@
   "HD",
   "HOOD",
   "HPE",
-  "IBM",
   "INTC",
   "INTU",
   "IONQ",
   "IREN",
-  "ISRG",
   "IWM",
   "JNJ",
   "JPM",
@@ -64,8 +61,10 @@
   "LLY",
   "LRCX",
   "MA",
+  "MCD",
   "MDT",
   "META",
+  "MRK",
   "MRNA",
   "MRVL",
   "MS",
@@ -77,8 +76,8 @@
   "NET",
   "NFLX",
   "NKE",
-  "NOK",
   "NOW",
+  "NU",
   "NVDA",
   "ORCL",
   "PANW",
@@ -88,6 +87,7 @@
   "QCOM",
   "QQQ",
   "RKLB",
+  "SHEL",
   "SHOP",
   "SMCI",
   "SMH",
@@ -99,6 +99,7 @@
   "SPY",
   "STX",
   "T",
+  "TJX",
   "TMO",
   "TQQQ",
   "TSLA",
@@ -110,7 +111,6 @@
   "VLO",
   "VRT",
   "VZ",
-  "WBD",
   "WDC",
   "WFC",
   "WMT",
@@ -128,36 +128,6 @@
   "XOM"
  ],
  "reports": {
-  "ABBV": [
-   {
-    "date": "2026-10-30",
-    "time": "pre-market",
-    "estimate": "3.74",
-    "fiscal_end": "2026-09-30",
-    "checked": "nasdaq",
-    "confirmed": true
-   }
-  ],
-  "CVX": [
-   {
-    "date": "2026-10-30",
-    "time": "pre-market",
-    "estimate": "4.78",
-    "fiscal_end": "2026-09-30",
-    "checked": "nasdaq",
-    "confirmed": true
-   }
-  ],
-  "XOM": [
-   {
-    "date": "2026-10-30",
-    "time": "pre-market",
-    "estimate": "3.9",
-    "fiscal_end": "2026-09-30",
-    "checked": "nasdaq",
-    "confirmed": true
-   }
-  ],
   "AAPL": [
    {
     "date": "2026-11-02",
@@ -213,6 +183,16 @@
     "date": "2026-11-03",
     "time": "post-market",
     "estimate": "4.48",
+    "fiscal_end": "2026-09-30",
+    "checked": "nasdaq",
+    "confirmed": true
+   }
+  ],
+  "ETN": [
+   {
+    "date": "2026-11-03",
+    "time": "pre-market",
+    "estimate": "3.54",
     "fiscal_end": "2026-09-30",
     "checked": "nasdaq",
     "confirmed": true
@@ -288,6 +268,16 @@
     "confirmed": true
    }
   ],
+  "MCD": [
+   {
+    "date": "2026-11-04",
+    "time": "pre-market",
+    "estimate": "3.36",
+    "fiscal_end": "2026-09-30",
+    "checked": "nasdaq",
+    "confirmed": true
+   }
+  ],
   "QCOM": [
    {
     "date": "2026-11-04",
@@ -335,7 +325,8 @@
     "estimate": "3.82",
     "fiscal_end": "2026-09-30",
     "checked": "nasdaq",
-    "confirmed": true
+    "confirmed": false,
+    "yahoo_date": "2026-11-02"
    }
   ],
   "NET": [
@@ -380,8 +371,8 @@
   ],
   "NBIS": [
    {
-    "date": "2026-11-10",
-    "time": "unknown",
+    "date": "2026-11-12",
+    "time": "pre-market",
     "estimate": "-0.43",
     "fiscal_end": "2026-09-30",
     "checked": "nasdaq",
@@ -405,6 +396,16 @@
     "time": "post-market",
     "estimate": "4.06",
     "fiscal_end": "2026-10-31",
+    "checked": "nasdaq",
+    "confirmed": true
+   }
+  ],
+  "NU": [
+   {
+    "date": "2026-11-12",
+    "time": "unknown",
+    "estimate": "0.23",
+    "fiscal_end": "2026-09-30",
     "checked": "nasdaq",
     "confirmed": true
    }
@@ -449,10 +450,20 @@
     "confirmed": false
    }
   ],
+  "TJX": [
+   {
+    "date": "2026-11-18",
+    "time": "pre-market",
+    "estimate": "1.33",
+    "fiscal_end": "2026-10-31",
+    "checked": "nasdaq",
+    "confirmed": true
+   }
+  ],
   "INTU": [
    {
     "date": "2026-11-19",
-    "time": "unknown",
+    "time": "post-market",
     "estimate": "2.47",
     "fiscal_end": "2026-10-31",
     "checked": "nasdaq",
@@ -492,7 +503,8 @@
     "date": "2026-12-01",
     "time": "unknown",
     "estimate": "0.0",
-    "fiscal_end": "2026-10-31"
+    "fiscal_end": "2026-10-31",
+    "confirmed": false
    }
   ],
   "MRVL": [
@@ -500,7 +512,8 @@
     "date": "2026-12-01",
     "time": "unknown",
     "estimate": "0.79",
-    "fiscal_end": "2026-10-31"
+    "fiscal_end": "2026-10-31",
+    "confirmed": false
    }
   ],
   "CRM": [
@@ -508,7 +521,8 @@
     "date": "2026-12-02",
     "time": "unknown",
     "estimate": "2.41",
-    "fiscal_end": "2026-10-31"
+    "fiscal_end": "2026-10-31",
+    "confirmed": false
    }
   ],
   "SNOW": [
@@ -516,14 +530,15 @@
     "date": "2026-12-02",
     "time": "unknown",
     "estimate": "-0.32",
-    "fiscal_end": "2026-10-31"
+    "fiscal_end": "2026-10-31",
+    "confirmed": false
    }
   ],
   "HPE": [
    {
     "date": "2026-12-03",
     "time": "unknown",
-    "estimate": "1.16",
+    "estimate": "1.17",
     "fiscal_end": "2026-10-31"
    }
   ],
@@ -533,14 +548,6 @@
     "time": "unknown",
     "estimate": "1.03",
     "fiscal_end": "2026-10-31"
-   }
-  ],
-  "ADBE": [
-   {
-    "date": "2026-12-09",
-    "time": "unknown",
-    "estimate": "5.11",
-    "fiscal_end": "2026-11-30"
    }
   ],
   "ORCL": [
@@ -556,6 +563,14 @@
     "date": "2026-12-10",
     "time": "unknown",
     "estimate": "3.45",
+    "fiscal_end": "2026-10-31"
+   }
+  ],
+  "CIEN": [
+   {
+    "date": "2026-12-10",
+    "time": "unknown",
+    "estimate": "1.77",
     "fiscal_end": "2026-10-31"
    }
   ],
@@ -604,22 +619,33 @@
   "nasdaq_days": 16,
   "moved": [
    [
-    "NVDA",
-    "2026-11-18",
-    "2026-11-17"
+    "NBIS",
+    "2026-11-10",
+    "2026-11-12"
    ]
   ],
-  "time_filled": [],
+  "time_filled": [
+   [
+    "INTU",
+    "unknown",
+    "post-market"
+   ]
+  ],
   "disputed": [],
   "yahoo": {
-   "asked": 36,
-   "answered": 36,
-   "confirmed": 34,
+   "asked": 41,
+   "answered": 41,
+   "confirmed": 35,
    "conflicts": [
     [
      "CSCO",
      "2026-11-11",
      "2026-11-12"
+    ],
+    [
+     "LITE",
+     "2026-11-05",
+     "2026-11-02"
     ]
    ]
   }
