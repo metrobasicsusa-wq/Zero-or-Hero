@@ -7064,3 +7064,75 @@ class ZdteStop(unittest.TestCase):
         md = zs.markdown(rep)
         for key in ("离现价 0.3%", "离现价 0.6%", "稳健性检查", "读法", "现行"):
             self.assertIn(key, md)
+
+
+class BounceFailAndVix(unittest.TestCase):
+    """hero/research_bounce_fail and hero/research_vix_divergence on synthetic minute days."""
+
+    @staticmethod
+    def day(open_px, c1030, c1130, c1530, close, hi1130=None):
+        m = {}
+        for h in range(9, 16):
+            for mi in range(0, 60, 5):
+                k = f"{h:02d}:{mi:02d}"
+                if "09:30" <= k <= "15:55":
+                    px = c1030 if k <= "10:30" else c1130 if k <= "11:30" else c1530 if k <= "15:30" else close
+                    m[k] = {"o": px, "h": max(px, hi1130 or px) if k <= "11:30" else px, "l": px, "c": px}
+        m["09:30"] = {"o": open_px, "h": max(open_px, hi1130 or open_px), "l": open_px, "c": open_px}
+        return m
+
+    def test_bounce_fail_features(self):
+        from hero import research_bounce_fail as bf
+        days = {}
+        base = date(2026, 1, 5)
+        px = 100.0
+        for i in range(8):                               # six flat days, a down week, then the twin
+            d = (base + timedelta(days=i)).isoformat()
+            if i < 6:
+                px = 100.0 - i * 0.7                      # drifts down 3.5% over the window
+                days[d] = self.day(px, px, px, px, px)
+            elif i == 6:
+                days[d] = self.day(px * 1.01, px * 0.995, px * 0.99, px * 0.98, px * 0.975, hi1130=px * 1.012)   # twin: gap up, back under, falls
+            else:
+                days[d] = self.day(px * 1.01, px * 1.02, px * 1.025, px * 1.03, px * 1.03)                    # held
+        vix = {d: self.day(20, 19.0, 19.8, 20.5, 20.6) for d in days}   # VIXY 10:00 low 19.0, 11:30 19.8: +4.2%
+        rows = bf.features(days, vix, "SMH")
+        groups = {r["day"]: r["group"] for r in rows}
+        twin = (base + timedelta(days=6)).isoformat()
+        self.assertEqual(groups[twin], "twin")
+        self.assertEqual(groups[(base + timedelta(days=7)).isoformat()], "held")
+        r = next(x for x in rows if x["day"] == twin)
+        self.assertLess(r["week"], -0.03)
+        self.assertAlmostEqual(r["gap"], 0.01, places=3)
+        self.assertTrue(r["fail"])
+        self.assertLess(r["pm"], 0)
+        self.assertAlmostEqual(r["vix_div"], 19.8 / 19.0 - 1, places=3)
+        self.assertEqual(bf.classify(-0.01, 0.01, True, "SMH"), "fail_any")
+        self.assertEqual(bf.classify(-0.04, 0.001, True, "SMH"), "other")
+        rep = bf.run(rows, today=date(2026, 11, 2))
+        self.assertEqual(rep["stock"]["SMH"]["twin"]["n"], 1)
+        self.assertIn(twin, [x["day"] for x in rep["twins"]])
+        md = bf.markdown(rep)
+        for key in ("孪生日名单", "股票层面", "期权层面", "读法"):
+            self.assertIn(key, md)
+
+    def test_vix_divergence(self):
+        from hero import research_vix_divergence as vd
+        d1, d2 = "2026-01-05", "2026-01-06"
+        days = {d1: self.day(100, 100.5, 100.9, 99.5, 99.0, hi1130=101.0),   # near its high at 11:30, falls
+                d2: self.day(100, 100.5, 99.0, 99.2, 99.3, hi1130=101.0)}    # not near the high
+        vix = {d1: self.day(20, 19.0, 19.8, 20.5, 20.6), d2: self.day(20, 19.0, 19.8, 20.5, 20.6)}
+        rows = vd.features(days, vix)
+        self.assertEqual(len(rows), 2)
+        r1 = next(r for r in rows if r["day"] == d1)
+        self.assertTrue(r1["near_high"])
+        self.assertEqual(vd.classify(r1, 0.03), "signal")
+        self.assertEqual(vd.classify(r1, 0.05), "high_only")
+        r2 = next(r for r in rows if r["day"] == d2)
+        self.assertEqual(vd.classify(r2, 0.03), "div_only")
+        rep = vd.run(rows, today=date(2026, 11, 2))
+        self.assertEqual(rep["stock"][0.03]["signal"]["n"], 1)
+        self.assertLess(rep["stock"][0.03]["signal"]["mean"], 0)
+        md = vd.markdown(rep)
+        for key in ("股票层面", "期权层面", "最近 25 个信号日", "读法"):
+            self.assertIn(key, md)

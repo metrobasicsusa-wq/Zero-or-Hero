@@ -101,6 +101,7 @@ def play_all(opt: dict[str, dict], und: dict[str, dict], kind: str, open_px: flo
             trail = out_px(c) / cost - 1
             break
     res["take3_trail"] = (2.0 + trail) / 2 if res["take3"] == 2.0 else trail
+    res["hold"] = hold
     why["take3_trail"] = "half" if res["take3"] == 2.0 else ("trail" if trail != hold else "close")
     return {"res": {k: round(v, 4) for k, v in res.items()}, "why": why, "cost": round(cost, 3),
             "min_ratio": round(min(c for _, c in path) / cost, 3), "max_ratio": round(max(c for _, c in path) / cost, 3)}
