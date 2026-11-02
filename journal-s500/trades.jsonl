@@ -2410,3 +2410,9 @@
 {"dry_run": true, "kind": "sleeve_plan", "sleeve": "hikerally-500", "ts": "2026-10-30T19:51:03+00:00", "why": "hikerally-500（演算）：2026-10-30 没有要买的"}
 {"dry_run": true, "kind": "sleeve_plan", "sleeve": "hikerally-1000", "ts": "2026-10-30T19:51:03+00:00", "why": "hikerally-1000（演算）：2026-10-30 没有要买的"}
 {"dry_run": false, "kind": "sleeve_note", "sleeve": "sniper-1000", "symbol": "MRVL261030P00217500", "ts": "2026-10-30T21:32:59+00:00", "why": "sniper-1000：MRVL261030P00217500 更正——15:30 的卖单在券商成交 $23.10 × 1（+$1,925，+500%），15:40 那轮查不到卖单又看到仓位没了，误记为到期作废 −100%；账本现金 $356.00 → $2,666.00。hero/sleeves.py 已改成先查券商成交记录"}
+{"kind": "macro", "macro": {"dollar": {"flag": false, "symbol": "UUP", "text": "美元（UUP）20 日 +0.4%", "value": 0.0038}, "fear": {"flag": false, "symbol": "VIXY", "text": "恐慌指数（VIXY）比 20 日均值高 9%", "value": 0.091}, "oil": {"flag": false, "symbol": "USO", "text": "油价（USO）20 日 +14.6%", "value": 0.1456}, "rates": {"flag": false, "symbol": "TLT", "text": "长期美债（TLT）20 日 +5.6%", "value": 0.0564}}, "macro_applied": false, "macro_risk_off": false, "ts": "2026-11-02T14:30:42+00:00", "why": "宏观警报 0/4：无"}
+{"dry_run": false, "kind": "sleeve_result", "ret": -1.0, "sleeve": "dipweek-500", "symbol": "T261030C00022000", "ts": "2026-11-02T14:30:42+00:00", "why": "dipweek-500：T261030C00022000 券商已无持仓（到期作废），花 $190.00、收回 $0.00（-100%），账本 $310.00"}
+{"dry_run": true, "kind": "sleeve_plan", "sleeve": "sniper-plan-500", "ts": "2026-11-02T14:30:42+00:00", "why": "sniper-plan-500（演算）：2026-11-02 没有要买的"}
+{"dry_run": true, "kind": "sleeve_plan", "sleeve": "sniper-plan-1000", "ts": "2026-11-02T14:30:42+00:00", "why": "sniper-plan-1000（演算）：2026-11-02 没有要买的"}
+{"dry_run": true, "kind": "sleeve_plan", "sleeve": "sniper-r2-plan-500", "ts": "2026-11-02T14:30:42+00:00", "why": "sniper-r2-plan-500（演算）：2026-11-02 没有要买的"}
+{"dry_run": true, "kind": "sleeve_plan", "sleeve": "sniper-r3-plan-500", "ts": "2026-11-02T14:30:42+00:00", "why": "sniper-r3-plan-500（演算）：2026-11-02 没有要买的"}
