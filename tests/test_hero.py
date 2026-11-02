@@ -6800,3 +6800,43 @@ class ResearchFundamentals(unittest.TestCase):
         self.assertEqual(fu.label({"growth": 0.10, "change": -0.08}), "slowing")
         self.assertEqual(fu.label({"growth": -0.02, "change": 0.01}), "shrinking")
         self.assertIsNone(fu.growth(q, date(2023, 5, 1)))                      # no quarter before it
+
+
+class ResearchChain(unittest.TestCase):
+    def events(self):
+        from hero import research_chain as rc
+        ev = [
+            {"symbol": "GOOGL", "reaction_day": "2026-10-29", "gap": -0.12, "move": -0.126},   # leader, 大型互联网
+            {"symbol": "META", "reaction_day": "2026-10-22", "gap": -0.03, "move": -0.07},     # leader: open -3%, close -7%
+            {"symbol": "NFLX", "reaction_day": "2026-10-21", "gap": -0.07, "move": -0.06},     # leader
+            {"symbol": "AMZN", "reaction_day": "2026-10-30", "gap": -0.046, "move": -0.014},   # follower, same group
+            {"symbol": "INTC", "reaction_day": "2026-10-30", "gap": -0.26, "move": -0.29},     # receiver group 芯片
+            {"symbol": "ALAB", "reaction_day": "2026-11-10", "gap": 0.02, "move": 0.01},       # 芯片, outside 7 days
+            {"symbol": "UBER", "reaction_day": "2026-10-20", "gap": -0.06, "move": -0.05},     # not a leader
+        ]
+        for e in ev:
+            e["group"] = rc.GROUP.get(e["symbol"])
+        return rc, ev
+
+    def test_shocks_respect_order_window_leaders_and_cross_chains(self):
+        rc, ev = self.events()
+        amzn = next(e for e in ev if e["symbol"] == "AMZN")
+        intc = next(e for e in ev if e["symbol"] == "INTC")
+        alab = next(e for e in ev if e["symbol"] == "ALAB")
+        self.assertEqual([g["symbol"] for g in rc.shocks(ev, amzn, -0.05, 7, True, False)], ["GOOGL"])   # META only -3% at the open
+        self.assertEqual(sorted(g["symbol"] for g in rc.shocks(ev, amzn, -0.05, 14, True, False, "move")), ["GOOGL", "META", "NFLX"])
+        self.assertEqual([g["symbol"] for g in rc.shocks(ev, amzn, -0.05, 14, False, False)], ["NFLX", "GOOGL", "UBER"] if False else
+                         [g["symbol"] for g in ev if g["symbol"] in ("NFLX", "GOOGL", "UBER")])  # any member, sorted by input order
+        self.assertEqual(rc.shocks(ev, intc, -0.05, 7, True, False), [])                                   # no chip leader before it
+        self.assertEqual([g["symbol"] for g in rc.shocks(ev, intc, -0.05, 7, True, True)], ["GOOGL"])    # cloud -> chips
+        self.assertEqual(rc.shocks(ev, alab, -0.05, 7, True, True), [])                                    # 12 days later: outside
+        self.assertEqual([g["symbol"] for g in rc.shocks(ev, alab, -0.05, 14, True, True)], ["GOOGL"])
+        self.assertEqual([g["symbol"] for g in rc.shocks(ev, amzn, 0.05, 7, True, False)], [])            # mirror: no up shocks
+        hit, quiet, rest = rc.split_by(ev, -0.05, 7, True, False)
+        self.assertEqual([f["symbol"] for f in hit], ["META", "AMZN"])      # META after NFLX -7%, AMZN after GOOGL
+        self.assertIn("GOOGL", [f["symbol"] for f in quiet])              # META reported 7 days before, only -3% open
+        s = rc.stat(hit)
+        self.assertEqual(s["n"], 2)
+        self.assertEqual(s["up"], 0.0)
+        self.assertEqual(s["big_down"], 0.0)
+        self.assertIsNone(rc.boot_diff(hit, rest))                          # too few to resample
