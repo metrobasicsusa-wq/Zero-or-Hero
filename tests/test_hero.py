@@ -6868,3 +6868,57 @@ class EarningsQuestionScoring(unittest.TestCase):
             md = er.render(folder)
             self.assertIn("## 前因记分", md)
             self.assertIn("3 次：问对 2 次（67%", md)
+
+
+class ZdteStop(unittest.TestCase):
+    """hero/research_zdte_stop: every variant on one synthetic same-day ticket."""
+
+    def test_play_all_variants(self):
+        from hero import research_zdte_stop as zs
+        und = {f"{h:02d}:{m:02d}": {"c": 100 + (0.5 if h < 12 else -0.5) if h >= 10 else 100.3, "o": 100.3}
+               for h in range(9, 16) for m in range(0, 60, 5) if "09:30" <= f"{h:02d}:{m:02d}" <= "15:55"}
+        und["09:30"] = {"c": 100.3, "o": 100.0}
+        # the option: 1.00 at 10:00, down to 0.40 by 10:30, 3.50 at 11:00, 0.20 at 15:30
+        opt = {"10:00": {"c": 1.0}, "10:15": {"c": 0.7}, "10:30": {"c": 0.4}, "11:00": {"c": 3.5}, "12:00": {"c": 0.9},
+               "13:00": {"c": 0.8}, "15:30": {"c": 0.2}}
+        r = zs.play_all(opt, und, "C", 100.0)
+        cost = 1.0 * (1 + zs.SLIP)
+        self.assertEqual(r["res"]["take3"], 2.0)                                          # 3.5 >= 3x: the take
+        self.assertEqual(r["why"]["take3"], "take")
+        self.assertAlmostEqual(r["res"]["stop50"], round(zs.out_px(0.4) / cost - 1, 4))    # stopped at 10:30
+        self.assertEqual(r["why"]["stop50"], "stop")
+        self.assertAlmostEqual(r["res"]["stop30"], round(zs.out_px(0.7) / cost - 1, 4))    # stopped at 10:15
+        self.assertEqual(r["res"]["stop70"], 2.0)                                          # never 70% under
+        self.assertEqual(r["why"]["back_entry"], "back")                                   # und at 10:15 is back at the 10:00 price
+        self.assertEqual(r["res"]["back_open"], 2.0)                                       # und never back to 100.0 before 11:00
+        self.assertEqual(r["why"]["time12"], "take")                                       # the take came first
+        trail = zs.out_px(0.9) / cost - 1                                                  # armed at 11:00 (3.5 >= 2x), out at 12:00 (0.9 <= 60% of 3.5)
+        self.assertAlmostEqual(r["res"]["take3_trail"], (2.0 + trail) / 2, places=3)
+        self.assertEqual(r["why"]["take3_trail"], "half")
+        self.assertLess(r["min_ratio"], 0.5)
+        # a ticket that never recovers: time stops and the close
+        flat = {"10:00": {"c": 1.0}, "11:00": {"c": 0.9}, "12:00": {"c": 0.8}, "13:00": {"c": 0.6}, "15:30": {"c": 0.1}}
+        r = zs.play_all(flat, und, "C", 100.0)
+        self.assertEqual(r["why"]["time12"], "time")
+        self.assertAlmostEqual(r["res"]["time12"], round(zs.out_px(0.8) / cost - 1, 4))
+        self.assertEqual(r["why"]["take3"], "close")
+        self.assertAlmostEqual(r["res"]["take3"], round(zs.out_px(0.1) / cost - 1, 4))
+        self.assertIsNone(zs.play_all({"09:45": {"c": 1.0}}, und, "C", 100.0))              # no bar at or after 10:00
+
+    def test_run_and_markdown(self):
+        from hero import research_zdte_stop as zs
+        rows = []
+        for i in range(40):
+            und, off = ("SPY", "QQQ", "TSLA", "NVDA", "META")[i % 5], (0.003, 0.006)[i % 2]
+            res = {v: (2.0 if i % 7 == 0 else -0.6 - 0.01 * (i % 4)) for v in zs.VARIANTS}
+            why = {v: ("take" if i % 7 == 0 else ("stop" if v.startswith("stop") else "close")) for v in zs.VARIANTS}
+            rows.append({"und": und, "day": f"2025-{1 + i % 12:02d}-{1 + i % 27:02d}", "off": off, "kind": "C",
+                         "res": res, "why": why, "cost": 0.5, "min_ratio": 0.3, "max_ratio": 3.2})
+        rep = zs.run(rows, today=date(2026, 11, 2))
+        self.assertEqual(rep["n_rows"], 40)
+        c = rep["table"]["0.003|全部|stop50"]
+        self.assertEqual(c["n"], 20)
+        self.assertGreater(c["fired"], 0)
+        md = zs.markdown(rep)
+        for key in ("离现价 0.3%", "离现价 0.6%", "稳健性检查", "读法", "现行"):
+            self.assertIn(key, md)
