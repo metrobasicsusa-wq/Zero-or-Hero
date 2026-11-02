@@ -7138,3 +7138,51 @@ class BounceFailAndVix(unittest.TestCase):
         md = vd.markdown(rep)
         for key in ("股票层面", "期权层面", "最近 25 个信号日", "读法"):
             self.assertIn(key, md)
+
+
+class Signals(unittest.TestCase):
+    """hero/research_signals on synthetic minute days: features, buckets, votes, the report."""
+
+    def test_signals_end_to_end(self):
+        from hero import research_signals as sg
+        rng = random.Random(3)
+        mk = BounceFailAndVix.day
+        spy, others = {}, {s: {} for s in sg.OTHERS}
+        d = date(2024, 6, 3)
+        px = 500.0
+        n = 0
+        while n < 160:
+            if d.weekday() < 5:
+                o = px * (1 + rng.gauss(0, 0.004))
+                c1030 = o * (1 + rng.gauss(0, 0.003)); c1130 = c1030 * (1 + rng.gauss(0, 0.002))
+                c1530 = c1130 * (1 + rng.gauss(0, 0.004)); close = c1530 * (1 + rng.gauss(0, 0.001))
+                spy[d.isoformat()] = mk(o, c1030, c1130, c1530, close, hi1130=max(o, c1030, c1130) * 1.001)
+                for s_ in sg.OTHERS:
+                    base = 20.0 if s_ == sg.VIX_PROXY else 100.0
+                    oo = base * (1 + rng.gauss(0, 0.005))
+                    others[s_][d.isoformat()] = mk(oo, oo * (1 + rng.gauss(0, 0.01)), oo * (1 + rng.gauss(0, 0.01)), oo, oo)
+                px = close
+                n += 1
+            d += timedelta(days=1)
+        rows = sg.features(spy, others)
+        self.assertGreater(len(rows), 120)
+        r = rows[-1]
+        for k in sg.SIGNALS:
+            self.assertIn(k, r)
+        self.assertIn(r["monday"], (True, False))
+        train = [x for x in rows if x["day"] <= sg.TRAIN_UNTIL]
+        val = [x for x in rows if x["day"] > sg.TRAIN_UNTIL]
+        self.assertTrue(train and val)
+        ranked = sg.rank(train, val)
+        self.assertEqual(set(ranked), set(sg.SIGNALS))
+        self.assertIn(ranked["gap"]["bear"], ("low", "mid", "high", None))
+        for x in rows:
+            x["vote"] = sg.vote(x, ranked)
+        self.assertTrue(all(isinstance(x["vote"], int) for x in rows))
+        rep = sg.run({"rows": rows, "ranked": ranked, "spy_days": len(spy)}, today=date(2026, 11, 2))
+        self.assertEqual(rep["n_train"] + rep["n_val"], len(rows))
+        self.assertIn("≤ −3（偏空）", rep["by_vote"])
+        md = sg.markdown(rep)
+        for key in ("单个信号", "投票", "两两组合", "期权层面", "最后一天", "读法"):
+            self.assertIn(key, md)
+        self.assertTrue(sg.opex_day("2026-10-16") and not sg.opex_day("2026-10-09"))
