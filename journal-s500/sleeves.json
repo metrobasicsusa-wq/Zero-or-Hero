@@ -7931,7 +7931,7 @@
      "exit_day": "2026-11-09",
      "exit_at": "15:50",
      "trail": true,
-     "best_bid": 9.74,
+     "best_bid": 9.87,
      "expiry_out": null
     }
    ],
@@ -7997,7 +7997,7 @@
      "exit_day": "2026-11-09",
      "exit_at": "15:50",
      "trail": false,
-     "best_bid": 7.39,
+     "best_bid": 7.75,
      "expiry_out": null
     }
    ],
@@ -8035,7 +8035,7 @@
      "exit_day": "2026-11-09",
      "exit_at": "15:50",
      "trail": false,
-     "best_bid": 9.74,
+     "best_bid": 9.87,
      "expiry_out": null
     }
    ],
@@ -8072,11 +8072,12 @@
   },
   "dipweek-take-1000": {
    "start": 1000.0,
-   "cash": 615.0,
+   "cash": 1385.0,
    "round": 1,
    "heroes": 0,
    "zeros": 0,
-   "open": [
+   "open": [],
+   "closed": [
     {
      "tid": "20261102-95f97c",
      "kind": "dipweek",
@@ -8096,10 +8097,15 @@
      "expiry_out": null,
      "take_x": 2,
      "take": 7.7,
-     "take_cid": "sl-dipweek-take-1000-20261102-95f97c-t99e7"
+     "take_cid": "sl-dipweek-take-1000-20261102-95f97c-t99e7",
+     "state": "closed",
+     "exit_price": 7.7,
+     "proceeds": 770.0,
+     "how": "2 倍止盈（券商挂单成交）",
+     "closed": "2026-11-03 12:20",
+     "ret": 1.0
     }
    ],
-   "closed": [],
    "slots": {
     "2026-10-26": "2026-10-26T15:50-04:00",
     "2026-10-27": "2026-10-27T15:50-04:00",
@@ -8108,7 +8114,7 @@
     "2026-10-30": "2026-10-30T15:50-04:00",
     "2026-11-02": "2026-11-02T15:50-05:00"
    },
-   "best": 1000.0,
+   "best": 1385.0,
    "created": null
   },
   "pullback-500": {
