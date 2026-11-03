@@ -221,14 +221,17 @@ class Runner:
                 self._cal = (json.loads((ROOT / "data" / "earnings.json").read_text()).get("reports") or {})
             except Exception:
                 self._cal = {}
+        def next_session(d: date) -> date:
+            d += timedelta(days=1)
+            while d.weekday() >= 5:
+                d += timedelta(days=1)
+            return d
         for r in self._cal.get(und, []):
-            d = date.fromisoformat(r["date"])
-            react = d
-            if "post" in (r.get("time") or ""):
-                react = d + timedelta(days=1)
-                while react.weekday() >= 5:
-                    react += timedelta(days=1)
-            if self.today < react and react.isoformat() <= until:
+            d, when = date.fromisoformat(r["date"]), r.get("time") or ""
+            # a report without a known time could be before the open (reaction that day) or after the close (the
+            # next session): either one inside the holding period is enough to stay out
+            reacts = [d] if "pre" in when else [next_session(d)] if "post" in when else [d, next_session(d)]
+            if any(self.today < x and x.isoformat() <= until for x in reacts):
                 return r
         return None
 

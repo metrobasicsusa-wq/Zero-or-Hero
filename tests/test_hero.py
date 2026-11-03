@@ -7405,3 +7405,30 @@ class FirstCycleTodayBar(unittest.TestCase):
             eng2.run(today=TODAY)
             self.assertEqual(eng2.rank_closes["UP1"][-1], closes["UP1"][-1])
             self.assertIn("UP1", {o["symbol"] for o in c2.orders if o["type"] == "market"})
+
+
+class ReportInside(unittest.TestCase):
+    """hero/sleeves.Runner.report_inside: an option ticket is skipped when a report's reaction falls inside its
+    holding period; a report with no known time counts both ways (before the open or after the close)."""
+
+    def check(self, today, until, rows):
+        from types import SimpleNamespace
+        from hero import sleeves
+        me = SimpleNamespace(today=today, _cal={"AAA": rows})
+        return sleeves.Runner.report_inside(me, "AAA", until)
+
+    def test_known_and_unknown_times(self):
+        mon, tue, wed = date(2026, 11, 2), date(2026, 11, 3), date(2026, 11, 4)
+        post_today = [{"date": tue.isoformat(), "time": "post-market"}]
+        pre_tomorrow = [{"date": wed.isoformat(), "time": "pre-market"}]
+        unknown_today = [{"date": tue.isoformat(), "time": "unknown"}]
+        unknown_tomorrow = [{"date": wed.isoformat(), "time": ""}]
+        self.assertIsNotNone(self.check(tue, "2026-11-06", post_today))        # reacts Wednesday: inside
+        self.assertIsNone(self.check(tue, "2026-11-03", post_today))            # sold today before it reacts
+        self.assertIsNotNone(self.check(tue, "2026-11-04", pre_tomorrow))
+        self.assertIsNotNone(self.check(tue, "2026-11-06", unknown_today))     # was missed before: could be after the close
+        self.assertIsNotNone(self.check(tue, "2026-11-04", unknown_tomorrow))  # could be before tomorrow's open
+        self.assertIsNone(self.check(wed, "2026-11-06", [{"date": mon.isoformat(), "time": "unknown"}]))   # already out
+        fri = [{"date": "2026-11-06", "time": "post-market"}]
+        self.assertIsNotNone(self.check(wed, "2026-11-09", fri))              # Friday after the close reacts Monday
+        self.assertIsNone(self.check(wed, "2026-11-06", fri))
