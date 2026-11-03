@@ -7186,3 +7186,73 @@ class Signals(unittest.TestCase):
         for key in ("单个信号", "投票", "两两组合", "期权层面", "最后一天", "读法"):
             self.assertIn(key, md)
         self.assertTrue(sg.opex_day("2026-10-16") and not sg.opex_day("2026-10-09"))
+
+
+class YearEnd(unittest.TestCase):
+    """hero/research_yearend on synthetic daily bars: the calendar helpers, one year's windows, the slices."""
+
+    @staticmethod
+    def bars(start, days, step=0.001, dips=None):
+        from datetime import timedelta
+        out, px, d = [], 100.0, start
+        n = 0
+        while n < days:
+            if d.weekday() < 5:
+                px *= 1 + step + (dips or {}).get(d.isoformat(), 0.0)
+                out.append({"d": d.isoformat(), "c": round(px, 4)})
+                n += 1
+            d += timedelta(days=1)
+        return out
+
+    def test_calendar_and_windows(self):
+        from hero import research_yearend as ye
+        self.assertEqual(ye.thanksgiving(2026).isoformat(), "2026-11-26")
+        self.assertEqual(ye.thanksgiving(2024).isoformat(), "2024-11-28")
+        self.assertTrue(ye.is_midterm(2026) and ye.is_midterm(2022) and not ye.is_midterm(2024))
+        bars = self.bars(date(2019, 1, 2), 800)        # into 2022
+        i, c = ye.close_on_or_before(bars, "2020-11-02")
+        self.assertEqual(bars[i]["d"], "2020-11-02")
+        self.assertIsNone(ye.close_on_or_before(bars, "2018-12-31"))
+        w = ye.windows(2020)
+        self.assertEqual(w["nov_dec"], ("2020-11-02", "2020-12-31"))
+        self.assertEqual(w["jan"], ("2020-12-31", "2021-01-31"))
+        r = ye.ret(bars, "2020-11-02", "2020-12-31")
+        self.assertAlmostEqual(r, 1.001 ** 43 - 1, places=6)   # 43 weekdays Nov 3 - Dec 31 (no holidays in the synthetic calendar)
+        self.assertIsNone(ye.ret(bars, "2022-11-02", "2022-12-31"))  # the data ends before the window does
+        row = ye.year_row(bars, 2020)
+        self.assertAlmostEqual(row["nov_dec"], r)
+        self.assertGreater(row["ytd"], 0)
+        self.assertAlmostEqual(row["dd20"], 0.0, places=6)      # a steady climb sits at its 20-day high
+        self.assertIsNone(ye.year_row(bars, 2018))
+
+    def test_slices_and_stats(self):
+        from hero import research_yearend as ye
+        rows = [{"year": y, "nov_dec": 0.02 if y % 2 else -0.01, "nov": 0.01, "dec_1h": 0.0, "dec_2h": 0.0, "tg_week": 0.0, "jan": 0.0,
+                 "dip": -0.03, "ytd": 0.15 if y % 4 == 2 else 0.05, "oct": -0.01, "dd20": -0.06 if y == 2022 else 0.0, "r5": 0.0}
+                for y in range(2010, 2026)]
+        this = {"year": 2026, "ytd": 0.10, "oct": -0.009, "dd20": -0.035, "r5": -0.017}
+        cs = ye.conditions(rows + [{**this, "nov_dec": None}], this)
+        by = {c["name"]: c for c in cs}
+        self.assertEqual(by["中期选举年"]["years"], [2010, 2014, 2018, 2022])
+        self.assertTrue(by["中期选举年"]["this_year"] and by["到 11-02 今年涨 ≥10%"]["this_year"])
+        self.assertFalse(by["11-02 离 20 日高点 ≥5%"]["this_year"])
+        self.assertEqual(by["11-02 离 20 日高点 ≥5%"]["years"], [2022])
+        s = by["全部年份"]["nov_dec"]
+        self.assertEqual(s["n"], 16)
+        self.assertAlmostEqual(s["up"], 0.5)
+        self.assertEqual(ye.stats([None, None]), None)
+        se = ye.seasonal(rows)
+        self.assertAlmostEqual(se["dip"]["mean"], -0.03)
+
+    def test_momentum_and_vix(self):
+        from hero import research_yearend as ye
+        bars = {s: self.bars(date(2018, 1, 2), 800, step=0.0005 * (k + 1)) for k, s in enumerate(ye.MOMENTUM)}
+        m = ye.momentum_yearend(bars, range(2019, 2021))
+        self.assertEqual([r["year"] for r in m["years"]], [2019, 2020])
+        self.assertEqual(len(m["years"][0]["picks"]), 8)
+        self.assertGreater(m["years"][0]["top"], m["years"][0]["bottom"])   # the fastest climbers keep climbing
+        self.assertEqual(m["top_beats_ew"], 1.0)
+        vix = [{"d": d["d"], "c": 20 + (i % 7)} for i, d in enumerate(self.bars(date(2018, 1, 2), 800))]
+        v = ye.vix_yearend(vix, range(2019, 2021))
+        self.assertEqual(len(v["years"]), 2)
+        self.assertIn("≥ 20", v["by_start"])
