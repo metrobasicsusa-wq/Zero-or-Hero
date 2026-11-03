@@ -1,0 +1,182 @@
+{
+ "date": "2026-11-03",
+ "generated_at": "2026-11-03T09:03-05:00",
+ "sniper": {
+  "symbol": "WDC",
+  "direction": "call",
+  "confidence": 0.3,
+  "catalyst_type": "company news",
+  "catalyst": "西部数据盘前发布 HAMR 产品认证进展更新（Benzinga 标题），同时苹果财报说内存成本涨幅『前所未有』、会持续到 12 月季以后，存储 / 内存股盘前集体反弹（MU +3.7%、SNDK +4.6%、WDC +3.2%）；昨天存储股是 AI 里被卖最狠的一组（WDC −5%、STX −6%），今天有自己的消息加同组读穿"
+ },
+ "candidates": [
+  {
+   "rank": 1,
+   "symbol": "WDC",
+   "direction": "call",
+   "confidence": 0.3,
+   "catalyst_type": "company news",
+   "why": "自己的消息（HAMR 认证进展）+ 苹果内存成本评论的读穿；盘前 +3.2% 约为平时单日波动 0.8 倍，未破 20 日高；风险是昨天同样的芯片反抽中午就退了"
+  },
+  {
+   "rank": 2,
+   "symbol": "MU",
+   "direction": "call",
+   "confidence": 0.25,
+   "catalyst_type": "peer plan hits a group",
+   "why": "苹果说内存涨价『前所未有』，是对 MU 的直接读穿；盘前 +3.7% 约平时波动 1 倍；但它是超大盘、主题在降温（SMH 一个月 −19%），claude-b 也因此排除"
+  },
+  {
+   "rank": 3,
+   "symbol": "BE",
+   "direction": "call",
+   "confidence": 0.2,
+   "catalyst_type": "analyst rating",
+   "why": "Barclays 升到超配但下调目标价到 $289；盘前 +7.1%，中盘股跳空超过 6% 常已反映，只有评级消息减分"
+  },
+  {
+   "rank": 4,
+   "symbol": "NVDA",
+   "direction": "call",
+   "confidence": 0.15,
+   "catalyst_type": "sector move",
+   "why": "芯片第二天反抽（SMH 盘前 +3%），自己的新闻是对中国 AI 访问的新限制（偏负面）；连续第 2 天追减分"
+  }
+ ],
+ "skipped": [
+  {
+   "symbol": "SHOP",
+   "direction": "put",
+   "gap": -0.168,
+   "reason": "财报反应日",
+   "why_not": "三季度财报后 −17%，规则不做"
+  },
+  {
+   "symbol": "GRAB",
+   "direction": "call",
+   "gap": 0.101,
+   "reason": "财报反应日",
+   "why_not": "三段业务首次全部盈利，财报跳空"
+  },
+  {
+   "symbol": "AAPL",
+   "direction": "put",
+   "gap": -0.042,
+   "reason": "财报反应日",
+   "why_not": "内存成本压毛利，财报反应"
+  },
+  {
+   "symbol": "PLTR",
+   "direction": "put",
+   "gap": -0.059,
+   "reason": "财报反应日",
+   "why_not": "财报后跌"
+  },
+  {
+   "symbol": "ORCL",
+   "direction": "put",
+   "gap": 0.0,
+   "reason": "跳空已吃掉",
+   "why_not": "$200 亿发行定在 $116（折价 11%），昨天 −8.8% 已反映，连续第 2 天追减分"
+  },
+  {
+   "symbol": "MRVL",
+   "direction": "put",
+   "gap": 0.0,
+   "reason": "分析师评级",
+   "why_not": "美银、TD Cowen 降级是并购的第二天，只有评级消息且连续第 2 天"
+  },
+  {
+   "symbol": "INTC",
+   "direction": "call",
+   "gap": 0.043,
+   "reason": "消息太弱",
+   "why_not": "昨天 −7% 后反抽，没有自己的新消息"
+  },
+  {
+   "symbol": "SNDK",
+   "direction": "call",
+   "gap": 0.046,
+   "reason": "消息太弱",
+   "why_not": "只有『是不是底』的评论，读穿已由 WDC 代表"
+  },
+  {
+   "symbol": "SMCI",
+   "direction": "call",
+   "gap": 0.037,
+   "reason": "财报临近",
+   "why_not": "今晚盘后财报"
+  },
+  {
+   "symbol": "ALAB",
+   "direction": "call",
+   "gap": 0.045,
+   "reason": "财报临近",
+   "why_not": "日历 11-03 / 11-10 有争议，不冒险"
+  },
+  {
+   "symbol": "AMAT",
+   "direction": "call",
+   "gap": 0.042,
+   "reason": "消息太弱",
+   "why_not": "芯片设备跟着反抽，没有自己的消息"
+  },
+  {
+   "symbol": "COHR",
+   "direction": "call",
+   "gap": 0.044,
+   "reason": "财报临近",
+   "why_not": "光模块跟涨，财报 11-04 / 11-11 有争议"
+  },
+  {
+   "symbol": "NBIS",
+   "direction": "call",
+   "gap": 0.04,
+   "reason": "消息太弱",
+   "why_not": "Cramer 评论不算消息"
+  },
+  {
+   "symbol": "IREN",
+   "direction": "call",
+   "gap": 0.043,
+   "reason": "消息太弱",
+   "why_not": "无新闻，财报 11-05"
+  },
+  {
+   "symbol": "SOXL",
+   "direction": "call",
+   "gap": 0.104,
+   "reason": "其他",
+   "why_not": "杠杆 ETF，不在狙击范围"
+  }
+ ],
+ "claude_b_pick": "无（bias none，信心 0.2；它排除了财报名字、ORCL / MRVL 的负面和 MU 的读穿）",
+ "earnings_reaction_today": [
+  "AAPL",
+  "PLTR",
+  "VRTX",
+  "SHOP",
+  "ETN",
+  "KDP",
+  "PFE",
+  "WAT",
+  "MPC",
+  "RVTY",
+  "AME",
+  "ON",
+  "DT",
+  "FISV",
+  "WMB",
+  "ZBRA",
+  "GRAB",
+  "O",
+  "RIG",
+  "FN",
+  "CLX",
+  "TEVA",
+  "YUM",
+  "APO",
+  "LSCC",
+  "MTCH"
+ ],
+ "notes": "选举日，10:00 JOLTS 和工厂订单，今晚 AMD / SMCI 财报、选举结果。盘前芯片第二天反抽（SMH +3%），昨天同样的反抽 55 分钟就退了，所以只选有自己消息的 WDC，不选纯反抽的 INTC / AMAT。不拿过夜（跳空不到平时波动 3 倍、没破 20 日高）。模拟盘，不是投资建议。"
+}
