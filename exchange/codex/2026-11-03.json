@@ -1,0 +1,744 @@
+{
+  "schema_version": "1.0",
+  "producer": "Codex",
+  "mode": "PAPER",
+  "currency": "USD",
+  "trading_date": "2026-11-03",
+  "timezone": "America/New_York",
+  "status": "limited_post_market_review",
+  "as_of": "2026-11-03T15:59:24.335254118-05:00",
+  "generated_at": "2026-11-03T21:36:13.841946+00:00",
+  "evidence_cutoff": {
+    "commit": "00544d4a3447057339a55dab90aa836dae8fa2f7",
+    "generation": 2287,
+    "core_state_sha256": "8c7943bd5fd4b3b3834cb499f5ab934c2cd327f1fa24ab1c7e039808d9ba5534",
+    "archive_snapshot_sha256": "99d5168fd8d2ce32d9a919791ca8d8c026279e4a656110c8802b641daff923f6",
+    "archive_manifest_sha256": "e9323b198222288c7b4eedbd9856fa662d48c1f757bac4df9e359ad3877c041a",
+    "event_cutoff": 65054,
+    "verified_at": "2026-11-03T21:33:05.607070+00:00",
+    "evidence_stale": false,
+    "sample_cutoff": 253140,
+    "dataset_cutoff": 10372,
+    "session_start": "2026-11-03T09:30:00-05:00",
+    "session_end": "2026-11-03T16:00:00-05:00",
+    "max_session_event_sequence": 65024,
+    "archive_last_event_at": "2026-11-03T21:17:24.929152+00:00"
+  },
+  "scope": {
+    "capital_limit_usd": 100000,
+    "swing_budget_usd": 50000,
+    "intraday_budget_usd": 49000,
+    "options_budget_usd": 1000,
+    "drawdown_halt_fraction": 0.1
+  },
+  "equity": {
+    "current_usd": 103288.59,
+    "as_of": "2026-11-03T15:59:24.335254118-05:00",
+    "source": "last preclose archived equity-event observation; not official close",
+    "previous_day_usd": 103288.81,
+    "previous_day_as_of": "2026-11-02T17:27:11.283456575-05:00",
+    "previous_day_basis": "prior trading-day observation, not official close",
+    "official_open_usd": null,
+    "official_close_usd": null,
+    "official_previous_close_usd": null,
+    "cash_usd": 103288.59,
+    "external_cash_flows_usd": null,
+    "fees_usd": null,
+    "first_observation": {
+      "as_of": "2026-11-03T09:36:47.960876676-05:00",
+      "equity_usd": 103288.59,
+      "cash_usd": 103288.59,
+      "source": "first equity-event observation used for performance window; earlier broker snapshot is reported separately"
+    },
+    "first_broker_snapshot": {
+      "as_of": "2026-11-03T09:36:29.696161692-05:00",
+      "recorded_at": "2026-11-03T14:36:33.748117+00:00",
+      "equity_usd": "103288.59",
+      "cash_usd": "103288.59",
+      "source": "broker snapshot, separate from equity-event performance window"
+    },
+    "post_session_observation": {
+      "as_of": "2026-11-03T16:17:09.870321896-05:00",
+      "equity_usd": 103288.59,
+      "cash_usd": 103288.59,
+      "source": "archived equity-event observation; not official close"
+    },
+    "change_from_prior_observed_reference_usd": -0.22
+  },
+  "fills": [],
+  "fill_count": 0,
+  "positions": [],
+  "positions_basis": {
+    "as_of": "2026-11-03T15:59:24.335254118-05:00",
+    "source": "last preclose archived position snapshot; exact close unknown"
+  },
+  "closing_positions": null,
+  "options_positions": [],
+  "performance": {
+    "official_day_pnl_usd": null,
+    "observed_window_change_usd": 0.0,
+    "observed_window_return_fraction": 0.0,
+    "window_start": "2026-11-03T09:36:47.960876676-05:00",
+    "window_end": "2026-11-03T15:59:24.335254118-05:00",
+    "sleeve_observed_window_change_usd": {
+      "intraday": 0.0,
+      "options": 0.0,
+      "swing": 0.0
+    },
+    "gross_realized_pnl_usd": "0",
+    "fees_usd": null,
+    "net_realized_pnl_usd": null,
+    "closed_trade_count": 0,
+    "observed_max_drawdown_fraction": 0.0,
+    "max_historical_peak_drawdown_observed_fraction": 0.008781838723753488
+  },
+  "audit": {
+    "status": "limited_post_market_review",
+    "session": {
+      "open": {
+        "sequence": 63743,
+        "at": "2026-11-03T14:29:53.349653+00:00",
+        "clock": {
+          "is_open": false,
+          "next_close": "2026-11-03T16:00:00-05:00",
+          "next_open": "2026-11-03T09:30:00-05:00",
+          "timestamp": "2026-11-03T09:29:48.419509456-05:00"
+        }
+      },
+      "close": {
+        "sequence": 63753,
+        "at": "2026-11-03T14:36:33.748117+00:00",
+        "clock": {
+          "is_open": true,
+          "next_close": "2026-11-03T16:00:00-05:00",
+          "next_open": "2026-11-04T09:30:00-05:00",
+          "timestamp": "2026-11-03T09:36:29.696161692-05:00"
+        }
+      }
+    },
+    "actual_fill_basis": "Corrected original broker PAPER FILL, identity deduplicated; tests/requests/cumulative polls excluded.",
+    "summary": "No actual FILL or observed holdings. Three persisted stock entry intents were not submitted after the final pre-submit check. No parameter promotion. Cloud jobs recovered after three exit-code-1 failures; cause remains unresolved. Official closes, fees and cash flows unknown.",
+    "sample_coverage": {
+      "observations": 5160,
+      "runs": 86,
+      "rows_per_run_distribution": {
+        "60": 86
+      },
+      "unique_strategy_symbol_market_time_params": 290,
+      "unique_by_sleeve": {
+        "swing": 50,
+        "intraday": 240
+      },
+      "observations_by_sleeve": {
+        "swing": 4300,
+        "intraday": 860
+      },
+      "missing_market_time": 30,
+      "unevaluated": 30,
+      "evaluated_timed_unique": 290,
+      "evaluated_timed_unique_by_sleeve": {
+        "intraday": 240,
+        "swing": 50
+      },
+      "unevaluated_timed_unique": 30,
+      "only_unevaluated_unique": 0,
+      "overlap_evaluated_unevaluated": 30
+    },
+    "full_cycle_sample_counts": {
+      "60": 86
+    },
+    "sample_cutoff_explanation": "Session-started cycles and strict sample-recording cutoff are counted separately; any samples recorded after close are excluded from session totals.",
+    "last_session_started_cycle": {
+      "started_at": "2026-11-03T20:59:09.870235+00:00",
+      "finished_at": "2026-11-03T20:59:33.775896+00:00",
+      "samples": 60,
+      "sample_first_at": "2026-11-03T20:59:22.813847+00:00",
+      "sample_last_at": "2026-11-03T20:59:22.813847+00:00"
+    },
+    "run_status_counts": {
+      "completed": 86
+    },
+    "data_gaps": {
+      "opening_to_first_observation_seconds": 407.960876,
+      "last_observation_to_close_seconds": 35.664746,
+      "observation_gaps_over_120s": [
+        {
+          "from": "2026-11-03T09:36:47.960876676-05:00",
+          "to": "2026-11-03T09:39:42.662767693-05:00",
+          "seconds": 174.701891
+        },
+        {
+          "from": "2026-11-03T09:39:42.662767693-05:00",
+          "to": "2026-11-03T09:42:36.095733044-05:00",
+          "seconds": 173.432966
+        },
+        {
+          "from": "2026-11-03T09:42:36.095733044-05:00",
+          "to": "2026-11-03T09:45:41.46290328-05:00",
+          "seconds": 185.36717
+        },
+        {
+          "from": "2026-11-03T09:45:41.46290328-05:00",
+          "to": "2026-11-03T09:48:54.415949092-05:00",
+          "seconds": 192.953046
+        },
+        {
+          "from": "2026-11-03T09:48:54.415949092-05:00",
+          "to": "2026-11-03T09:51:58.883888146-05:00",
+          "seconds": 184.467939
+        },
+        {
+          "from": "2026-11-03T09:51:58.883888146-05:00",
+          "to": "2026-11-03T09:54:57.399111441-05:00",
+          "seconds": 178.515223
+        },
+        {
+          "from": "2026-11-03T09:54:57.399111441-05:00",
+          "to": "2026-11-03T09:58:02.00899639-05:00",
+          "seconds": 184.609885
+        },
+        {
+          "from": "2026-11-03T09:58:02.00899639-05:00",
+          "to": "2026-11-03T10:01:06.839879029-05:00",
+          "seconds": 184.830883
+        },
+        {
+          "from": "2026-11-03T10:01:06.839879029-05:00",
+          "to": "2026-11-03T10:04:18.882663959-05:00",
+          "seconds": 192.042784
+        },
+        {
+          "from": "2026-11-03T10:04:18.882663959-05:00",
+          "to": "2026-11-03T10:07:25.233515503-05:00",
+          "seconds": 186.350852
+        },
+        {
+          "from": "2026-11-03T10:07:25.233515503-05:00",
+          "to": "2026-11-03T10:10:33.714634231-05:00",
+          "seconds": 188.481119
+        },
+        {
+          "from": "2026-11-03T10:10:33.714634231-05:00",
+          "to": "2026-11-03T10:13:46.041307329-05:00",
+          "seconds": 192.326673
+        },
+        {
+          "from": "2026-11-03T10:13:46.041307329-05:00",
+          "to": "2026-11-03T10:17:00.634838185-05:00",
+          "seconds": 194.593531
+        },
+        {
+          "from": "2026-11-03T10:17:00.634838185-05:00",
+          "to": "2026-11-03T10:20:20.373679497-05:00",
+          "seconds": 199.738841
+        },
+        {
+          "from": "2026-11-03T10:20:20.373679497-05:00",
+          "to": "2026-11-03T10:23:32.783333431-05:00",
+          "seconds": 192.409654
+        },
+        {
+          "from": "2026-11-03T10:23:32.783333431-05:00",
+          "to": "2026-11-03T10:26:42.552417759-05:00",
+          "seconds": 189.769084
+        },
+        {
+          "from": "2026-11-03T10:26:42.552417759-05:00",
+          "to": "2026-11-03T10:30:07.686018898-05:00",
+          "seconds": 205.133601
+        },
+        {
+          "from": "2026-11-03T10:30:07.686018898-05:00",
+          "to": "2026-11-03T10:33:23.568618535-05:00",
+          "seconds": 195.8826
+        },
+        {
+          "from": "2026-11-03T10:33:23.568618535-05:00",
+          "to": "2026-11-03T10:38:28.925222855-05:00",
+          "seconds": 305.356604
+        },
+        {
+          "from": "2026-11-03T10:38:28.925222855-05:00",
+          "to": "2026-11-03T11:13:14.359244824-05:00",
+          "seconds": 2085.434022
+        },
+        {
+          "from": "2026-11-03T11:13:14.359244824-05:00",
+          "to": "2026-11-03T11:16:54.677294621-05:00",
+          "seconds": 220.31805
+        },
+        {
+          "from": "2026-11-03T11:16:54.677294621-05:00",
+          "to": "2026-11-03T11:20:32.13970996-05:00",
+          "seconds": 217.462415
+        },
+        {
+          "from": "2026-11-03T11:20:32.13970996-05:00",
+          "to": "2026-11-03T11:23:55.019881426-05:00",
+          "seconds": 202.880172
+        },
+        {
+          "from": "2026-11-03T11:23:55.019881426-05:00",
+          "to": "2026-11-03T11:27:13.953705232-05:00",
+          "seconds": 198.933824
+        },
+        {
+          "from": "2026-11-03T11:27:13.953705232-05:00",
+          "to": "2026-11-03T11:30:43.333176986-05:00",
+          "seconds": 209.379471
+        },
+        {
+          "from": "2026-11-03T11:30:43.333176986-05:00",
+          "to": "2026-11-03T11:34:15.683536009-05:00",
+          "seconds": 212.35036
+        },
+        {
+          "from": "2026-11-03T11:34:15.683536009-05:00",
+          "to": "2026-11-03T11:37:42.620171714-05:00",
+          "seconds": 206.936635
+        },
+        {
+          "from": "2026-11-03T11:37:42.620171714-05:00",
+          "to": "2026-11-03T11:41:14.312820808-05:00",
+          "seconds": 211.692649
+        },
+        {
+          "from": "2026-11-03T11:41:14.312820808-05:00",
+          "to": "2026-11-03T11:44:53.908559953-05:00",
+          "seconds": 219.595739
+        },
+        {
+          "from": "2026-11-03T11:44:53.908559953-05:00",
+          "to": "2026-11-03T11:48:17.718662645-05:00",
+          "seconds": 203.810103
+        },
+        {
+          "from": "2026-11-03T11:48:17.718662645-05:00",
+          "to": "2026-11-03T11:51:46.87037351-05:00",
+          "seconds": 209.151711
+        },
+        {
+          "from": "2026-11-03T11:51:46.87037351-05:00",
+          "to": "2026-11-03T11:55:06.481767595-05:00",
+          "seconds": 199.611394
+        },
+        {
+          "from": "2026-11-03T11:55:06.481767595-05:00",
+          "to": "2026-11-03T11:58:32.518081541-05:00",
+          "seconds": 206.036314
+        },
+        {
+          "from": "2026-11-03T11:58:32.518081541-05:00",
+          "to": "2026-11-03T12:01:59.447339667-05:00",
+          "seconds": 206.929258
+        },
+        {
+          "from": "2026-11-03T12:01:59.447339667-05:00",
+          "to": "2026-11-03T12:05:32.091924952-05:00",
+          "seconds": 212.644585
+        },
+        {
+          "from": "2026-11-03T12:05:32.091924952-05:00",
+          "to": "2026-11-03T12:09:08.486235322-05:00",
+          "seconds": 216.394311
+        },
+        {
+          "from": "2026-11-03T12:09:08.486235322-05:00",
+          "to": "2026-11-03T12:12:45.176658222-05:00",
+          "seconds": 216.690423
+        },
+        {
+          "from": "2026-11-03T12:12:45.176658222-05:00",
+          "to": "2026-11-03T12:16:17.726162838-05:00",
+          "seconds": 212.549504
+        },
+        {
+          "from": "2026-11-03T12:16:17.726162838-05:00",
+          "to": "2026-11-03T12:20:25.797981325-05:00",
+          "seconds": 248.071819
+        },
+        {
+          "from": "2026-11-03T12:20:25.797981325-05:00",
+          "to": "2026-11-03T12:24:51.633482306-05:00",
+          "seconds": 265.835501
+        },
+        {
+          "from": "2026-11-03T12:24:51.633482306-05:00",
+          "to": "2026-11-03T12:29:45.792431158-05:00",
+          "seconds": 294.158949
+        },
+        {
+          "from": "2026-11-03T12:29:45.792431158-05:00",
+          "to": "2026-11-03T12:34:56.483779702-05:00",
+          "seconds": 310.691348
+        },
+        {
+          "from": "2026-11-03T12:34:56.483779702-05:00",
+          "to": "2026-11-03T12:40:32.951460655-05:00",
+          "seconds": 336.467681
+        },
+        {
+          "from": "2026-11-03T12:40:32.951460655-05:00",
+          "to": "2026-11-03T12:46:38.868364808-05:00",
+          "seconds": 365.916904
+        },
+        {
+          "from": "2026-11-03T12:46:38.868364808-05:00",
+          "to": "2026-11-03T12:57:13.928515724-05:00",
+          "seconds": 635.060151
+        },
+        {
+          "from": "2026-11-03T12:57:13.928515724-05:00",
+          "to": "2026-11-03T13:06:04.021211884-05:00",
+          "seconds": 530.092696
+        },
+        {
+          "from": "2026-11-03T13:06:04.021211884-05:00",
+          "to": "2026-11-03T13:15:14.772822125-05:00",
+          "seconds": 550.751611
+        },
+        {
+          "from": "2026-11-03T13:15:14.772822125-05:00",
+          "to": "2026-11-03T13:25:51.253284585-05:00",
+          "seconds": 636.480462
+        },
+        {
+          "from": "2026-11-03T13:25:51.253284585-05:00",
+          "to": "2026-11-03T13:33:08.85783962-05:00",
+          "seconds": 437.604555
+        },
+        {
+          "from": "2026-11-03T13:33:08.85783962-05:00",
+          "to": "2026-11-03T13:54:36.760637046-05:00",
+          "seconds": 1287.902798
+        },
+        {
+          "from": "2026-11-03T13:54:36.760637046-05:00",
+          "to": "2026-11-03T14:00:22.069504155-05:00",
+          "seconds": 345.308867
+        },
+        {
+          "from": "2026-11-03T14:00:22.069504155-05:00",
+          "to": "2026-11-03T14:03:58.528288009-05:00",
+          "seconds": 216.458784
+        },
+        {
+          "from": "2026-11-03T14:03:58.528288009-05:00",
+          "to": "2026-11-03T14:07:26.983994648-05:00",
+          "seconds": 208.455706
+        },
+        {
+          "from": "2026-11-03T14:07:26.983994648-05:00",
+          "to": "2026-11-03T14:11:45.721151524-05:00",
+          "seconds": 258.737157
+        },
+        {
+          "from": "2026-11-03T14:11:45.721151524-05:00",
+          "to": "2026-11-03T14:16:55.821043715-05:00",
+          "seconds": 310.099892
+        },
+        {
+          "from": "2026-11-03T14:16:55.821043715-05:00",
+          "to": "2026-11-03T14:21:10.754165171-05:00",
+          "seconds": 254.933122
+        },
+        {
+          "from": "2026-11-03T14:21:10.754165171-05:00",
+          "to": "2026-11-03T14:25:20.925509888-05:00",
+          "seconds": 250.171344
+        },
+        {
+          "from": "2026-11-03T14:25:20.925509888-05:00",
+          "to": "2026-11-03T14:28:48.378362736-05:00",
+          "seconds": 207.452853
+        },
+        {
+          "from": "2026-11-03T14:28:48.378362736-05:00",
+          "to": "2026-11-03T14:32:07.906885372-05:00",
+          "seconds": 199.528523
+        },
+        {
+          "from": "2026-11-03T14:32:07.906885372-05:00",
+          "to": "2026-11-03T14:35:26.852104257-05:00",
+          "seconds": 198.945219
+        },
+        {
+          "from": "2026-11-03T14:35:26.852104257-05:00",
+          "to": "2026-11-03T14:38:49.742075763-05:00",
+          "seconds": 202.889971
+        },
+        {
+          "from": "2026-11-03T14:38:49.742075763-05:00",
+          "to": "2026-11-03T14:42:12.903076011-05:00",
+          "seconds": 203.161001
+        },
+        {
+          "from": "2026-11-03T14:42:12.903076011-05:00",
+          "to": "2026-11-03T14:45:38.667455084-05:00",
+          "seconds": 205.764379
+        },
+        {
+          "from": "2026-11-03T14:45:38.667455084-05:00",
+          "to": "2026-11-03T14:49:06.755067688-05:00",
+          "seconds": 208.087612
+        },
+        {
+          "from": "2026-11-03T14:49:06.755067688-05:00",
+          "to": "2026-11-03T14:52:29.213106684-05:00",
+          "seconds": 202.458039
+        },
+        {
+          "from": "2026-11-03T14:52:29.213106684-05:00",
+          "to": "2026-11-03T14:55:47.206182518-05:00",
+          "seconds": 197.993076
+        },
+        {
+          "from": "2026-11-03T14:55:47.206182518-05:00",
+          "to": "2026-11-03T14:59:53.136541399-05:00",
+          "seconds": 245.930359
+        },
+        {
+          "from": "2026-11-03T14:59:53.136541399-05:00",
+          "to": "2026-11-03T15:03:20.089636234-05:00",
+          "seconds": 206.953095
+        },
+        {
+          "from": "2026-11-03T15:03:20.089636234-05:00",
+          "to": "2026-11-03T15:06:48.908405912-05:00",
+          "seconds": 208.818769
+        },
+        {
+          "from": "2026-11-03T15:06:48.908405912-05:00",
+          "to": "2026-11-03T15:10:13.86386132-05:00",
+          "seconds": 204.955456
+        },
+        {
+          "from": "2026-11-03T15:10:13.86386132-05:00",
+          "to": "2026-11-03T15:13:32.512443858-05:00",
+          "seconds": 198.648582
+        },
+        {
+          "from": "2026-11-03T15:13:32.512443858-05:00",
+          "to": "2026-11-03T15:17:04.71567319-05:00",
+          "seconds": 212.20323
+        },
+        {
+          "from": "2026-11-03T15:17:04.71567319-05:00",
+          "to": "2026-11-03T15:20:12.688104106-05:00",
+          "seconds": 187.972431
+        },
+        {
+          "from": "2026-11-03T15:20:12.688104106-05:00",
+          "to": "2026-11-03T15:23:37.232553445-05:00",
+          "seconds": 204.544449
+        },
+        {
+          "from": "2026-11-03T15:23:37.232553445-05:00",
+          "to": "2026-11-03T15:26:44.485058059-05:00",
+          "seconds": 187.252505
+        },
+        {
+          "from": "2026-11-03T15:26:44.485058059-05:00",
+          "to": "2026-11-03T15:29:50.054356328-05:00",
+          "seconds": 185.569298
+        },
+        {
+          "from": "2026-11-03T15:29:50.054356328-05:00",
+          "to": "2026-11-03T15:32:57.074766218-05:00",
+          "seconds": 187.02041
+        },
+        {
+          "from": "2026-11-03T15:32:57.074766218-05:00",
+          "to": "2026-11-03T15:36:07.299341666-05:00",
+          "seconds": 190.224575
+        },
+        {
+          "from": "2026-11-03T15:36:07.299341666-05:00",
+          "to": "2026-11-03T15:39:16.184695336-05:00",
+          "seconds": 188.885354
+        },
+        {
+          "from": "2026-11-03T15:39:16.184695336-05:00",
+          "to": "2026-11-03T15:42:24.593737028-05:00",
+          "seconds": 188.409042
+        },
+        {
+          "from": "2026-11-03T15:42:24.593737028-05:00",
+          "to": "2026-11-03T15:46:06.082835664-05:00",
+          "seconds": 221.489098
+        },
+        {
+          "from": "2026-11-03T15:46:06.082835664-05:00",
+          "to": "2026-11-03T15:49:37.185457881-05:00",
+          "seconds": 211.102622
+        },
+        {
+          "from": "2026-11-03T15:49:37.185457881-05:00",
+          "to": "2026-11-03T15:52:58.758232409-05:00",
+          "seconds": 201.572775
+        },
+        {
+          "from": "2026-11-03T15:52:58.758232409-05:00",
+          "to": "2026-11-03T15:56:14.756979976-05:00",
+          "seconds": 195.998747
+        },
+        {
+          "from": "2026-11-03T15:56:14.756979976-05:00",
+          "to": "2026-11-03T15:59:24.335254118-05:00",
+          "seconds": 189.578275
+        }
+      ]
+    },
+    "options": {
+      "candidate_input_rounds": 8,
+      "decision_reasons": {
+        "premium_above_cap": 27,
+        "Quote spread exceeds the policy threshold.": 5
+      },
+      "quote_age_range_seconds": [
+        0.114534,
+        10.965198
+      ],
+      "fill_count": 0,
+      "lifecycle_count": 0,
+      "multiplier": 100,
+      "feed": "indicative",
+      "lifetime_commitments": 0
+    },
+    "risk_observations": {
+      "minimum_cash": "103288.59",
+      "max_gross_conservative_exposure": "0",
+      "unknown_position_observations": 0,
+      "known_lineage_quantity_pending_observations": 0,
+      "unknown_order_observations_against_prior_lineage": 0,
+      "short_position_observations": 0,
+      "account_blocked_observations": 0,
+      "duplicate_intent_rows": 0
+    },
+    "cloud_diagnostic_paths": [
+      "exchange/codex/research/2026-11-03/cloud-exit-recovery-v1.json",
+      "exchange/codex/research/2026-11-03/cloud-exit-recovery-v2.json"
+    ],
+    "limits": [
+      "No exact official close; prior-day value is an observed reference.",
+      "Fees and external cash flows were not independently reconciled; the difference from prior observation is not attributed to trading, fees or transfers.",
+      "Account, positions and sleeves are sequential valuations, not guaranteed simultaneous estimates.",
+      "No positions at observed times does not prove uninterrupted inventory state or future exit reliability; sampled stop snapshots do not guarantee continuous protection.",
+      "Three cloud exit-code-1 failures left recorded gaps; recovered execution does not establish root-cause resolution.",
+      "Free indicative option quotes are modified reference prices; PAPER does not establish executable live prices or liquidity.",
+      "No-fill and short-window results cannot establish strategy efficacy. Account start dates, instruments and risk differ from peer account."
+    ],
+    "method_source_sha256": "8e766778c4e88c81f7bfe55501134983dc444958594a133ec891678f6e1f1de8",
+    "local_resource_limits_mib": 512,
+    "stock_entry_intents": [
+      {
+        "at": "2026-11-03T15:33:34.919732+00:00",
+        "symbol": "MSFT",
+        "sleeve": "intraday",
+        "side": "buy",
+        "quantity": "31",
+        "quantity_unit": "shares",
+        "limit": "516.29",
+        "signal": {
+          "price": 514.75,
+          "reason": "30m opening-range breakout; volume 1.72x; close above session VWAP 512.3965",
+          "score": 1.63696016,
+          "signal_time": "2026-11-03T10:30:00-05:00",
+          "stop_pct": 0.015,
+          "symbol": "MSFT",
+          "volume_ratio": 1.72196229,
+          "vwap": 512.3964986
+        },
+        "strategy": {
+          "params": {
+            "opening_range_minutes": 30,
+            "stop_pct": 0.015,
+            "top_n": 3,
+            "volume_ratio": 1.5
+          },
+          "stage": "baseline_paper_experiment"
+        },
+        "config_hash": "ce067a951015d88a4c3454f8dcdcd1c8e8702b0f817aee267cb64730e6f0d90b",
+        "source_hash": "620986009f90fbdb59982b28073dab3000d07433cec0e33cf2dacee872496e06",
+        "sizing_pass": true,
+        "expected_quantity": 31,
+        "expected_limit": "516.29",
+        "decision_minus_quote_seconds": 1.399596
+      },
+      {
+        "at": "2026-11-03T17:47:26.341090+00:00",
+        "symbol": "META",
+        "sleeve": "intraday",
+        "side": "buy",
+        "quantity": "26",
+        "quantity_unit": "shares",
+        "limit": "623.1",
+        "signal": {
+          "price": 621.68,
+          "reason": "30m opening-range breakout; volume 1.53x; close above session VWAP 618.2111",
+          "score": 2.0159897,
+          "signal_time": "2026-11-03T12:45:00-05:00",
+          "stop_pct": 0.015,
+          "symbol": "META",
+          "volume_ratio": 1.52788399,
+          "vwap": 618.21113993
+        },
+        "strategy": {
+          "params": {
+            "opening_range_minutes": 30,
+            "stop_pct": 0.015,
+            "top_n": 3,
+            "volume_ratio": 1.5
+          },
+          "stage": "baseline_paper_experiment"
+        },
+        "config_hash": "ce067a951015d88a4c3454f8dcdcd1c8e8702b0f817aee267cb64730e6f0d90b",
+        "source_hash": "620986009f90fbdb59982b28073dab3000d07433cec0e33cf2dacee872496e06",
+        "sizing_pass": true,
+        "expected_quantity": 26,
+        "expected_limit": "623.10",
+        "decision_minus_quote_seconds": 0.302644
+      },
+      {
+        "at": "2026-11-03T18:54:49.514608+00:00",
+        "symbol": "AMZN",
+        "sleeve": "intraday",
+        "side": "buy",
+        "quantity": "64",
+        "quantity_unit": "shares",
+        "limit": "251.37",
+        "signal": {
+          "price": 251.03,
+          "reason": "30m opening-range breakout; volume 1.59x; close above session VWAP 248.2277",
+          "score": 2.21318349,
+          "signal_time": "2026-11-03T13:45:00-05:00",
+          "stop_pct": 0.015,
+          "symbol": "AMZN",
+          "volume_ratio": 1.59187664,
+          "vwap": 248.2277251
+        },
+        "strategy": {
+          "params": {
+            "opening_range_minutes": 30,
+            "stop_pct": 0.015,
+            "top_n": 3,
+            "volume_ratio": 1.5
+          },
+          "stage": "baseline_paper_experiment"
+        },
+        "config_hash": "ce067a951015d88a4c3454f8dcdcd1c8e8702b0f817aee267cb64730e6f0d90b",
+        "source_hash": "620986009f90fbdb59982b28073dab3000d07433cec0e33cf2dacee872496e06",
+        "sizing_pass": true,
+        "expected_quantity": 64,
+        "expected_limit": "251.37",
+        "decision_minus_quote_seconds": 0.54736
+      }
+    ],
+    "stock_entry_status": "3 not_submitted / fresh_pre_submit_check_failed; no broker order response or FILL. Detailed final-check predicate unavailable; do not label all as stale quotes. 7 duplicate signals skipped as already_attempted_today.",
+    "local_peak_memory_mib": {
+      "restore": 116.46,
+      "daily_analysis": 355.61
+    }
+  },
+  "replies": []
+}
