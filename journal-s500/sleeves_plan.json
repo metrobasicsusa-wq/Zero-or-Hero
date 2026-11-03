@@ -4365,33 +4365,11 @@
   },
   "spy0dte-old-plan-500": {
    "start": 500.0,
-   "cash": 414.0,
+   "cash": 422.0,
    "round": 2,
    "heroes": 0,
    "zeros": 1,
-   "open": [
-    {
-     "tid": "20261103-abb384",
-     "kind": "zdte",
-     "sym": "SPY261103C00758000",
-     "asset": "option",
-     "und": "SPY",
-     "qty": 2,
-     "cost": 0.42,
-     "paid": 84.0,
-     "opened": "2026-11-03 10:00",
-     "why": "SPY 开盘 $752.61、现在 $753.14，顺势买当天到期看涨 758（离现价 0.6%），3 倍止盈，15:30 平仓",
-     "best_bid": 0.84,
-     "sim": true,
-     "expiry": "2026-11-03",
-     "exit_day": "2026-11-03",
-     "exit_at": "15:30",
-     "trail": false,
-     "expiry_out": null,
-     "take_x": 3,
-     "take": 1.26
-    }
-   ],
+   "open": [],
    "closed": [
     {
      "tid": "20261022-93ed6e",
@@ -4783,6 +4761,33 @@
      "how": "翻倍后从最高 $0.84 回撤 40%",
      "closed": "2026-11-03 11:40",
      "ret": -0.071
+    },
+    {
+     "tid": "20261103-abb384",
+     "kind": "zdte",
+     "sym": "SPY261103C00758000",
+     "asset": "option",
+     "und": "SPY",
+     "qty": 2,
+     "cost": 0.42,
+     "paid": 84.0,
+     "opened": "2026-11-03 10:00",
+     "why": "SPY 开盘 $752.61、现在 $753.14，顺势买当天到期看涨 758（离现价 0.6%），3 倍止盈，15:30 平仓",
+     "best_bid": 0.84,
+     "sim": true,
+     "expiry": "2026-11-03",
+     "exit_day": "2026-11-03",
+     "exit_at": "15:30",
+     "trail": false,
+     "expiry_out": null,
+     "take_x": 3,
+     "take": 1.26,
+     "state": "closed",
+     "exit_price": 0.04,
+     "proceeds": 8.0,
+     "how": "2026-11-03 15:30 到时卖出",
+     "closed": "2026-11-03 15:30",
+     "ret": -0.905
     }
    ],
    "slots": {
@@ -4812,33 +4817,11 @@
   },
   "spy0dte-old-plan-1000": {
    "start": 1000.0,
-   "cash": 117.0,
+   "cash": 121.0,
    "round": 1,
    "heroes": 0,
    "zeros": 0,
-   "open": [
-    {
-     "tid": "20261103-3bcde1",
-     "kind": "zdte",
-     "sym": "SPY261103C00758000",
-     "asset": "option",
-     "und": "SPY",
-     "qty": 1,
-     "cost": 0.42,
-     "paid": 42.0,
-     "opened": "2026-11-03 10:00",
-     "why": "SPY 开盘 $752.61、现在 $753.14，顺势买当天到期看涨 758（离现价 0.6%），3 倍止盈，15:30 平仓",
-     "best_bid": 0.84,
-     "sim": true,
-     "expiry": "2026-11-03",
-     "exit_day": "2026-11-03",
-     "exit_at": "15:30",
-     "trail": false,
-     "expiry_out": null,
-     "take_x": 3,
-     "take": 1.26
-    }
-   ],
+   "open": [],
    "closed": [
     {
      "tid": "20261022-fb0bdb",
@@ -5205,6 +5188,33 @@
      "how": "2026-11-02 15:30 到时卖出",
      "closed": "2026-11-02 15:30",
      "ret": -0.969
+    },
+    {
+     "tid": "20261103-3bcde1",
+     "kind": "zdte",
+     "sym": "SPY261103C00758000",
+     "asset": "option",
+     "und": "SPY",
+     "qty": 1,
+     "cost": 0.42,
+     "paid": 42.0,
+     "opened": "2026-11-03 10:00",
+     "why": "SPY 开盘 $752.61、现在 $753.14，顺势买当天到期看涨 758（离现价 0.6%），3 倍止盈，15:30 平仓",
+     "best_bid": 0.84,
+     "sim": true,
+     "expiry": "2026-11-03",
+     "exit_day": "2026-11-03",
+     "exit_at": "15:30",
+     "trail": false,
+     "expiry_out": null,
+     "take_x": 3,
+     "take": 1.26,
+     "state": "closed",
+     "exit_price": 0.04,
+     "proceeds": 4.0,
+     "how": "2026-11-03 15:30 到时卖出",
+     "closed": "2026-11-03 15:30",
+     "ret": -0.905
     }
    ],
    "slots": {
@@ -8117,33 +8127,11 @@
   },
   "dia0dte-plan-500": {
    "start": 500.0,
-   "cash": 393.0,
+   "cash": 663.0,
    "round": 2,
    "heroes": 0,
    "zeros": 1,
-   "open": [
-    {
-     "tid": "20261103-0050bf",
-     "kind": "zdte",
-     "sym": "DIA261106P00514000",
-     "asset": "option",
-     "und": "DIA",
-     "qty": 1,
-     "cost": 3.38,
-     "paid": 338.0,
-     "opened": "2026-11-03 10:00",
-     "why": "DIA 开盘 $517.42、现在 $515.76，顺势买最近到期（11-06，今天没有当天到期的）看跌 514（离现价 0.3%），3 倍止盈，15:30 平仓",
-     "best_bid": 3.04,
-     "sim": true,
-     "expiry": "2026-11-06",
-     "exit_day": "2026-11-03",
-     "exit_at": "15:30",
-     "trail": false,
-     "expiry_out": null,
-     "take_x": 3,
-     "take": 10.15
-    }
-   ],
+   "open": [],
    "closed": [
     {
      "tid": "20261023-605bcbr",
@@ -8408,6 +8396,33 @@
      "how": "2026-11-02 15:30 到时卖出",
      "closed": "2026-11-02 15:30",
      "ret": -0.207
+    },
+    {
+     "tid": "20261103-0050bf",
+     "kind": "zdte",
+     "sym": "DIA261106P00514000",
+     "asset": "option",
+     "und": "DIA",
+     "qty": 1,
+     "cost": 3.38,
+     "paid": 338.0,
+     "opened": "2026-11-03 10:00",
+     "why": "DIA 开盘 $517.42、现在 $515.76，顺势买最近到期（11-06，今天没有当天到期的）看跌 514（离现价 0.3%），3 倍止盈，15:30 平仓",
+     "best_bid": 3.04,
+     "sim": true,
+     "expiry": "2026-11-06",
+     "exit_day": "2026-11-03",
+     "exit_at": "15:30",
+     "trail": false,
+     "expiry_out": null,
+     "take_x": 3,
+     "take": 10.15,
+     "state": "closed",
+     "exit_price": 2.7,
+     "proceeds": 270.0,
+     "how": "2026-11-03 15:30 到时卖出",
+     "closed": "2026-11-03 15:30",
+     "ret": -0.201
     }
    ],
    "slots": {
@@ -8692,33 +8707,11 @@
   },
   "nvda0dte-plan-500": {
    "start": 500.0,
-   "cash": 503.0,
+   "cash": 703.0,
    "round": 1,
    "heroes": 0,
    "zeros": 0,
-   "open": [
-    {
-     "tid": "20261103-22363e",
-     "kind": "zdte",
-     "sym": "NVDA261104P00205000",
-     "asset": "option",
-     "und": "NVDA",
-     "qty": 1,
-     "cost": 1.9,
-     "paid": 190.0,
-     "opened": "2026-11-03 10:00",
-     "why": "NVDA 开盘 $207.71、现在 $207.55，顺势买最近到期（11-04，今天没有当天到期的）看跌 205（离现价 1.2%），3 倍止盈，15:30 平仓",
-     "best_bid": 2.09,
-     "sim": true,
-     "expiry": "2026-11-04",
-     "exit_day": "2026-11-03",
-     "exit_at": "15:30",
-     "trail": false,
-     "expiry_out": null,
-     "take_x": 3,
-     "take": 5.7
-    }
-   ],
+   "open": [],
    "closed": [
     {
      "tid": "20261026-c569af",
@@ -9031,6 +9024,33 @@
      "how": "2026-11-02 15:30 到时卖出",
      "closed": "2026-11-02 15:30",
      "ret": -1.0
+    },
+    {
+     "tid": "20261103-22363e",
+     "kind": "zdte",
+     "sym": "NVDA261104P00205000",
+     "asset": "option",
+     "und": "NVDA",
+     "qty": 1,
+     "cost": 1.9,
+     "paid": 190.0,
+     "opened": "2026-11-03 10:00",
+     "why": "NVDA 开盘 $207.71、现在 $207.55，顺势买最近到期（11-04，今天没有当天到期的）看跌 205（离现价 1.2%），3 倍止盈，15:30 平仓",
+     "best_bid": 2.09,
+     "sim": true,
+     "expiry": "2026-11-04",
+     "exit_day": "2026-11-03",
+     "exit_at": "15:30",
+     "trail": false,
+     "expiry_out": null,
+     "take_x": 3,
+     "take": 5.7,
+     "state": "closed",
+     "exit_price": 2.0,
+     "proceeds": 200.0,
+     "how": "2026-11-03 15:30 到时卖出",
+     "closed": "2026-11-03 15:30",
+     "ret": 0.053
     }
    ],
    "slots": {
@@ -9047,33 +9067,11 @@
   },
   "tsla0dte-5x-plan-500": {
    "start": 500.0,
-   "cash": 3.0,
+   "cash": 564.0,
    "round": 3,
    "heroes": 0,
    "zeros": 2,
-   "open": [
-    {
-     "tid": "20261103-8cb7bc",
-     "kind": "zdte",
-     "sym": "TSLA261104P00397500",
-     "asset": "option",
-     "und": "TSLA",
-     "qty": 1,
-     "cost": 4.97,
-     "paid": 497.0,
-     "opened": "2026-11-03 10:00",
-     "why": "TSLA 开盘 $406.40、现在 $401.16，顺势买最近到期（11-04，今天没有当天到期的）看跌 397.5（离现价 0.9%），5 倍止盈，15:30 平仓",
-     "best_bid": 6.5,
-     "sim": true,
-     "expiry": "2026-11-04",
-     "exit_day": "2026-11-03",
-     "exit_at": "15:30",
-     "trail": false,
-     "expiry_out": null,
-     "take_x": 5,
-     "take": 24.85
-    }
-   ],
+   "open": [],
    "closed": [
     {
      "tid": "20261026-5d1d1b",
@@ -9261,6 +9259,33 @@
      "how": "2026-11-02 15:30 到时卖出",
      "closed": "2026-11-02 15:30",
      "ret": -0.936
+    },
+    {
+     "tid": "20261103-8cb7bc",
+     "kind": "zdte",
+     "sym": "TSLA261104P00397500",
+     "asset": "option",
+     "und": "TSLA",
+     "qty": 1,
+     "cost": 4.97,
+     "paid": 497.0,
+     "opened": "2026-11-03 10:00",
+     "why": "TSLA 开盘 $406.40、现在 $401.16，顺势买最近到期（11-04，今天没有当天到期的）看跌 397.5（离现价 0.9%），5 倍止盈，15:30 平仓",
+     "best_bid": 6.5,
+     "sim": true,
+     "expiry": "2026-11-04",
+     "exit_day": "2026-11-03",
+     "exit_at": "15:30",
+     "trail": false,
+     "expiry_out": null,
+     "take_x": 5,
+     "take": 24.85,
+     "state": "closed",
+     "exit_price": 5.61,
+     "proceeds": 561.0,
+     "how": "2026-11-03 15:30 到时卖出",
+     "closed": "2026-11-03 15:30",
+     "ret": 0.129
     }
    ],
    "slots": {
@@ -9272,7 +9297,7 @@
     "2026-11-02": "2026-11-02T10:00-05:00",
     "2026-11-03": "2026-11-03T10:00-05:00"
    },
-   "best": 500.0,
+   "best": 564.0,
    "created": null,
    "rounds": [
     {
@@ -9488,33 +9513,11 @@
   },
   "qqq0dte-plan-500": {
    "start": 500.0,
-   "cash": 207.0,
+   "cash": 215.0,
    "round": 1,
    "heroes": 0,
    "zeros": 0,
-   "open": [
-    {
-     "tid": "20261103-590dec",
-     "kind": "zdte",
-     "sym": "QQQ261103C00690000",
-     "asset": "option",
-     "und": "QQQ",
-     "qty": 1,
-     "cost": 1.32,
-     "paid": 132.0,
-     "opened": "2026-11-03 09:40",
-     "why": "QQQ 开盘 $684.13、现在 $685.49，顺势买当天到期看涨 690（离现价 0.7%），3 倍止盈，15:30 平仓",
-     "best_bid": 1.37,
-     "sim": true,
-     "expiry": "2026-11-03",
-     "exit_day": "2026-11-03",
-     "exit_at": "15:30",
-     "trail": false,
-     "expiry_out": null,
-     "take_x": 3,
-     "take": 3.95
-    }
-   ],
+   "open": [],
    "closed": [
     {
      "tid": "20261026-c3314b",
@@ -9752,6 +9755,33 @@
      "how": "3 倍止盈（买价到了止盈价）",
      "closed": "2026-11-02 14:20",
      "ret": 1.991
+    },
+    {
+     "tid": "20261103-590dec",
+     "kind": "zdte",
+     "sym": "QQQ261103C00690000",
+     "asset": "option",
+     "und": "QQQ",
+     "qty": 1,
+     "cost": 1.32,
+     "paid": 132.0,
+     "opened": "2026-11-03 09:40",
+     "why": "QQQ 开盘 $684.13、现在 $685.49，顺势买当天到期看涨 690（离现价 0.7%），3 倍止盈，15:30 平仓",
+     "best_bid": 1.37,
+     "sim": true,
+     "expiry": "2026-11-03",
+     "exit_day": "2026-11-03",
+     "exit_at": "15:30",
+     "trail": false,
+     "expiry_out": null,
+     "take_x": 3,
+     "take": 3.95,
+     "state": "closed",
+     "exit_price": 0.08,
+     "proceeds": 8.0,
+     "how": "2026-11-03 15:30 到时卖出",
+     "closed": "2026-11-03 15:30",
+     "ret": -0.939
     }
    ],
    "slots": {
@@ -9768,33 +9798,11 @@
   },
   "tsla0dte-plan-500": {
    "start": 500.0,
-   "cash": 3.0,
+   "cash": 564.0,
    "round": 2,
    "heroes": 0,
    "zeros": 1,
-   "open": [
-    {
-     "tid": "20261103-346aac",
-     "kind": "zdte",
-     "sym": "TSLA261104P00397500",
-     "asset": "option",
-     "und": "TSLA",
-     "qty": 1,
-     "cost": 4.97,
-     "paid": 497.0,
-     "opened": "2026-11-03 10:00",
-     "why": "TSLA 开盘 $406.40、现在 $401.16，顺势买最近到期（11-04，今天没有当天到期的）看跌 397.5（离现价 0.9%），3 倍止盈，15:30 平仓",
-     "best_bid": 6.5,
-     "sim": true,
-     "expiry": "2026-11-04",
-     "exit_day": "2026-11-03",
-     "exit_at": "15:30",
-     "trail": false,
-     "expiry_out": null,
-     "take_x": 3,
-     "take": 14.9
-    }
-   ],
+   "open": [],
    "closed": [
     {
      "tid": "20261026-1b25c2",
@@ -9982,6 +9990,33 @@
      "how": "2026-11-02 15:30 到时卖出",
      "closed": "2026-11-02 15:30",
      "ret": -0.936
+    },
+    {
+     "tid": "20261103-346aac",
+     "kind": "zdte",
+     "sym": "TSLA261104P00397500",
+     "asset": "option",
+     "und": "TSLA",
+     "qty": 1,
+     "cost": 4.97,
+     "paid": 497.0,
+     "opened": "2026-11-03 10:00",
+     "why": "TSLA 开盘 $406.40、现在 $401.16，顺势买最近到期（11-04，今天没有当天到期的）看跌 397.5（离现价 0.9%），3 倍止盈，15:30 平仓",
+     "best_bid": 6.5,
+     "sim": true,
+     "expiry": "2026-11-04",
+     "exit_day": "2026-11-03",
+     "exit_at": "15:30",
+     "trail": false,
+     "expiry_out": null,
+     "take_x": 3,
+     "take": 14.9,
+     "state": "closed",
+     "exit_price": 5.61,
+     "proceeds": 561.0,
+     "how": "2026-11-03 15:30 到时卖出",
+     "closed": "2026-11-03 15:30",
+     "ret": 0.129
     }
    ],
    "slots": {
@@ -9993,7 +10028,7 @@
     "2026-11-02": "2026-11-02T10:00-05:00",
     "2026-11-03": "2026-11-03T10:00-05:00"
    },
-   "best": 500.0,
+   "best": 564.0,
    "created": null,
    "rounds": [
     {
