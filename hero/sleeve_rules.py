@@ -1447,8 +1447,76 @@ class Peer:
         return (day, picks)
 
 
+class Era:
+    """Owner, 11-03 (「所以不能按以前环境思考了」, 「你决定开不开」; research/2026-11-03-yearend-plan.md): the two answers to
+    「现在是 2019 还是 2000」, each a plan book, so the scorecard says which decade this is before real money does. At 15:50,
+    a name of `unds` not held (nor exited within `cooldown` calendar days) whose `signal` (the name itself) sits `depth`
+    (15%) or more under its 20-session high (the last 20 closes and now). `side` "call" (the 2010s answer: SMH's first
+    close 15% under its high, 37 signals since 2010, +10% in 42 sessions, 76% up; -7.5% / 42% in 2000-2009): the call
+    `offset` (at the money) out on the nearest expiry `dte` (60, 95) days away, held `hold` (42) sessions. `side` "put" (the
+    2000s answer: a close `bounce` (3%) or more above yesterday's while still that far under the high; 41 such days in
+    2000-2009, the next 21 sessions -2.6% and 68% down; six since 2010, +10%): the put `offset` out on the nearest expiry
+    `dte` (30, 60) days away, held `hold` (15) sessions. Exits and `max_spread` as DipWeek; one ticket per name and no
+    second batch (the backtest's second batch changed nothing). A contract the ledger cannot pay for is passed over, so
+    the long side buys the 3x fund on SMH's signal (an SMH call 60-95 days out costs more than a $2,000 ledger)."""
+
+    def entries(self, run, spec, s):
+        day = run.today.isoformat()
+        if day in s["slots"] or not (spec.get("entry", "15:45") <= run.hhmm < "15:58"):
+            return None
+        kind = "C" if spec.get("side", "call") == "call" else "P"
+        held = {t.get("und") for t in s["open"]}
+        cut = (run.today - timedelta(days=int(spec.get("cooldown", 28)))).isoformat()
+        recent = {t.get("und") for t in s.get("closed", []) if str(t.get("closed") or "")[:10] >= cut}
+        unds = [x for x in spec.get("unds", ("SMH",)) if x not in held and x not in recent]
+        if not unds:
+            return (day, [])
+        signal = {x: spec.get("signal", {}).get(x, x) if isinstance(spec.get("signal"), dict) else spec.get("signal") or x for x in unds}
+        hist = history(run, sorted(set(unds) | set(signal.values())), days=45)
+        snap = snaps(run, sorted(set(unds) | set(signal.values())))
+        each = budget(run, spec, s, 1)
+        exit_ = spec.get("exit", "trail")
+        lo, hi = spec.get("dte", (60, 95) if kind == "C" else (30, 60))
+        for und in unds:
+            sig = signal[und]
+            cs = [c for c, _ in hist.get(sig) or []]
+            sspot, _, _, sprev = spot_open(snap.get(sig) or {})
+            spot, _, _, prev = spot_open(snap.get(und) or {})
+            if not spot or not sspot or len(cs) < 20:
+                continue
+            dd = sspot / max(cs[-20:] + [sspot]) - 1
+            if dd > -spec.get("depth", 0.15):
+                continue
+            up = sspot / (sprev or cs[-1]) - 1
+            if kind == "P" and up < spec.get("bounce", 0.03):
+                continue
+            got = option_pick(run, und, kind, spot, spec.get("offset", 0.0), (run.today + timedelta(days=lo)).isoformat(),
+                              (run.today + timedelta(days=hi)).isoformat())
+            if not got or got[1] * 100 > each:
+                continue
+            c, ask = got
+            bid, skip = too_wide(run, spec, c, ask)
+            if skip:
+                continue
+            spread = f"，买价 ${bid:.2f} / 卖价 ${ask:.2f}（价差占中间价 {(ask - bid) / ((ask + bid) / 2):.0%}）" if bid > 0 else ""
+            exp = c["expiration_date"]
+            out, at = held_out(run, exp, spec.get("hold", 42 if kind == "C" else 15))
+            k = float(c["strike_price"])
+            pk = {"sym": c["symbol"], "asset": "option", "und": und, "ask": ask, "trail": exit_ == "trail", "expiry": exp,
+                  "exit_day": out, "exit_at": at}
+            if exit_ == "take2":
+                pk["take"] = 2
+            sell = {"hold": "拿到", "take2": "2 倍止盈，否则"}.get(exit_, "翻倍后回撤 40% 卖，否则")
+            where = f"{sig} 在 20 日高点下 {-dd:.1%}" + (f"（买 {und}）" if und != sig else "")
+            head = f"年代之赌·2019 那边：{where}" if kind == "C" else f"年代之赌·2000 那边：{where}、今天反弹 {up:+.1%}"
+            pk["why"] = (f"{head}；买{'看涨' if kind == 'C' else '看跌'} {k:g}（{exp} 到期，离现价 {k / spot - 1:+.1%}）{spread}；"
+                         f"{sell} {out[5:]} {at} 卖")
+            return (day, [pk])
+        return (day, [])
+
+
 RULES = {"zdte": ZeroDTE(), "weekly": Weekly(), "net": Net(), "gap": Gap(), "flush": Flush(), "earnings": EarningsLotto(),
          "letf": LETF(), "relay": Relay(), "opengap": OpenGap(), "sniper": Sniper(), "oneshot": OneShot(),
          "overnight": Overnight(), "pead": Pead(), "vixspike": VixSpike(), "breakgap": BreakGap(),
          "hikerally": HikeRally(), "dipweek": DipWeek(), "fadelotto": FadeLotto(), "peer": Peer(), "pullback": Pullback(),
-         "bottom": Streak(), "bounce": Bounce()}
+         "bottom": Streak(), "bounce": Bounce(), "era": Era()}

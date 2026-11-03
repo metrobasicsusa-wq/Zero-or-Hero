@@ -7295,3 +7295,61 @@ class YearEndPlan(unittest.TestCase):
         self.assertIn("2010 起|dd15|all", eras)
         md = yp.markdown({"price": {"events": evs, "tables": t, "eras": eras, "px_from": days[21], "px_to": days[-1]}, "options": None})
         self.assertIn("本机没有券商钥匙", md)
+
+
+class EraRule(unittest.TestCase):
+    """hero/sleeve_rules.Era: the 2019 side buys the 3x fund's call on SMH's 15% drawdown, the 2000 side buys a put on a
+    bounce inside the slide; cooldown, depth and bounce gates."""
+
+    def setUp(self):
+        self.sr_tests = SleeveRules()
+        self.sr_tests.setUp() if hasattr(self.sr_tests, "setUp") else None
+
+    def broker(self, smh_high=600.0, smh=500.0, smh_prev=505.0):
+        b = self.sr_tests.broker()                                      # its option chain lists strikes 70-130
+        b.bars["SMH"] = [{"t": f"2026-09-{d:02d}T04:00:00Z", "c": smh_high} for d in range(1, 29)]     # a flat 20-day high
+        b.snaps["SMH"] = {"dailyBar": {"o": smh, "l": smh}, "latestTrade": {"p": smh}, "prevDailyBar": {"c": smh_prev}}
+        b.snaps["SOXL"] = {"dailyBar": {"o": 100.0, "l": 99.0}, "latestTrade": {"p": 100.0}, "prevDailyBar": {"c": 101.0}}
+        b.bars["MRVL"] = [{"t": f"2026-09-{d:02d}T04:00:00Z", "c": 140.0} for d in range(1, 29)]
+        b.snaps["MRVL"] = {"dailyBar": {"o": 97.0, "l": 96.0}, "latestTrade": {"p": 100.0}, "prevDailyBar": {"c": 96.0}}   # +4.2%
+        return b
+
+    def test_long_side_buys_the_3x_fund_call_on_smh_drawdown(self):
+        from hero import sleeve_rules as sr
+        b = self.broker()
+        r = lambda hh, mm: self.sr_tests.run_at(date(2026, 10, 16), hh, mm, b)
+        spec = {"side": "call", "unds": ["SOXL"], "signal": "SMH", "dte": [60, 95], "hold": 42}
+        s = {"slots": {}, "cash": 2000.0, "open": [], "closed": []}
+        self.assertIsNone(sr.Era().entries(r(10, 0), spec, s))
+        slot, picks = sr.Era().entries(r(15, 50), spec, s)
+        p = picks[0]
+        self.assertEqual((p["und"], p["asset"], p["trail"]), ("SOXL", "option", True))
+        self.assertTrue(p["sym"].endswith("C100"))                                                 # at the money on the fund
+        self.assertEqual(p["expiry"], "2027-01-19")                                                # the fake lists the window's far end
+        self.assertEqual((p["exit_day"], p["exit_at"]), (sr.business_days_after(date(2026, 10, 16), 42).isoformat(), "15:50"))
+        self.assertIn("年代之赌·2019 那边：SMH 在 20 日高点下 16.7%（买 SOXL）", p["why"])                # 500 / 600
+        self.assertIn("翻倍后回撤 40% 卖", p["why"])
+        # not deep enough: 500 under a 560 high is 11%
+        b2 = self.broker(smh_high=560.0)
+        r2 = self.sr_tests.run_at(date(2026, 10, 16), 15, 50, b2)
+        self.assertEqual(sr.Era().entries(r2, spec, {"slots": {}, "cash": 2000.0, "open": [], "closed": []}), ("2026-10-16", []))
+        # held or recently exited: no second ticket
+        self.assertEqual(sr.Era().entries(r(15, 50), spec, {"slots": {}, "cash": 2000.0, "open": [{"und": "SOXL"}], "closed": []}), ("2026-10-16", []))
+        self.assertEqual(sr.Era().entries(r(15, 50), spec, {"slots": {}, "cash": 2000.0, "open": [], "closed": [{"und": "SOXL", "closed": "2026-10-01T19:50:00Z"}]}), ("2026-10-16", []))
+        slot, picks = sr.Era().entries(r(15, 50), spec, {"slots": {}, "cash": 2000.0, "open": [], "closed": [{"und": "SOXL", "closed": "2026-09-01T19:50:00Z"}]})
+        self.assertEqual(picks[0]["und"], "SOXL")                                                   # the cooldown has passed
+
+    def test_short_side_needs_the_bounce_inside_the_slide(self):
+        from hero import sleeve_rules as sr
+        b = self.broker()
+        r = self.sr_tests.run_at(date(2026, 10, 16), 15, 50, b)
+        spec = {"side": "put", "unds": ["MRVL"], "dte": [30, 60], "hold": 15, "bounce": 0.03}
+        slot, picks = sr.Era().entries(r, spec, {"slots": {}, "cash": 2000.0, "open": [], "closed": []})
+        p = picks[0]
+        self.assertEqual(p["und"], "MRVL")
+        self.assertTrue(p["sym"].endswith("P100") and p["trail"])
+        self.assertEqual(p["expiry"], "2026-12-15")
+        self.assertEqual(p["exit_day"], sr.business_days_after(date(2026, 10, 16), 15).isoformat())
+        self.assertIn("年代之赌·2000 那边：MRVL 在 20 日高点下 28.6%、今天反弹 +4.2%", p["why"])      # 100 / 140
+        b.snaps["MRVL"]["prevDailyBar"]["c"] = 99.5                                                # +0.5%: no bounce
+        self.assertEqual(sr.Era().entries(r, spec, {"slots": {}, "cash": 2000.0, "open": [], "closed": []}), ("2026-10-16", []))
