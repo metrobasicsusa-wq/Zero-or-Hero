@@ -7256,3 +7256,42 @@ class YearEnd(unittest.TestCase):
         v = ye.vix_yearend(vix, range(2019, 2021))
         self.assertEqual(len(v["years"]), 2)
         self.assertIn("≥ 20", v["by_start"])
+
+
+class YearEndPlan(unittest.TestCase):
+    """hero/research_yearend_plan on synthetic bars: the depth events, the SPY gate, the second batch, the tables."""
+
+    def test_events_gate_and_second_batch(self):
+        from hero import research_yearend_plan as yp
+        from datetime import timedelta
+        days, etf, spy = [], [], {}
+        d, px = date(2024, 1, 2), 100.0
+        n = 0
+        while n < 160:
+            if d.weekday() < 5:
+                # a climb, then a 20% slide over sessions 60-80 (each close a new low: the second batch), then a slow recovery
+                px *= 0.988 if 60 <= n < 80 else 1.003
+                days.append(d.isoformat()); etf.append(round(px, 4))
+                spy[d.isoformat()] = 100 + n * 0.1            # SPY keeps climbing: always healthy
+                n += 1
+            d += timedelta(days=1)
+        evs = yp.events(days, etf, spy, {"MU": {k: v * 2 for k, v in zip(days, etf)}})
+        tags = [t for e in evs for t in e["tags"]]
+        self.assertEqual(tags.count("dd10"), 1)
+        self.assertEqual(tags.count("dd15"), 1)
+        self.assertEqual(tags.count("dd20"), 1)
+        e15 = next(e for e in evs if "dd15" in e["tags"])
+        self.assertTrue(e15["healthy"])
+        self.assertIsNotNone(e15["batch2"])               # the slide keeps making new lows while SPY is fine
+        self.assertLess(e15["batch2"]["px"], 0)
+        self.assertAlmostEqual(e15["MU_f42"], e15["f42"], places=6)   # MU is twice the ETF here, same returns
+        self.assertLessEqual(e15["mae42"], e15["batch2"]["px"])
+        t = yp.price_tables(evs)
+        self.assertIn("dd15|healthy", t)
+        self.assertEqual(t["dd15|healthy"]["n"], 1)
+        self.assertEqual(t["dd15|healthy"]["batch2_rate"], 1.0)
+        self.assertNotIn("dd15|sick", t)
+        eras = yp.era_tables(evs)
+        self.assertIn("2010 起|dd15|all", eras)
+        md = yp.markdown({"price": {"events": evs, "tables": t, "eras": eras, "px_from": days[21], "px_to": days[-1]}, "options": None})
+        self.assertIn("本机没有券商钥匙", md)
