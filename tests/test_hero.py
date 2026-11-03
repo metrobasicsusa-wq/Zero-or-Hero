@@ -7353,3 +7353,55 @@ class EraRule(unittest.TestCase):
         self.assertIn("年代之赌·2000 那边：MRVL 在 20 日高点下 28.6%、今天反弹 +4.2%", p["why"])      # 100 / 140
         b.snaps["MRVL"]["prevDailyBar"]["c"] = 99.5                                                # +0.5%: no bounce
         self.assertEqual(sr.Era().entries(r, spec, {"slots": {}, "cash": 2000.0, "open": [], "closed": []}), ("2026-10-16", []))
+
+
+class FirstCycleTodayBar(unittest.TestCase):
+    """hero/engine.with_today and the first cycle after the open (11-03 AAPL: ranked on yesterday's close at 09:30,
+    sold at 09:40 once today's bar arrived)."""
+
+    def test_with_today_fills_only_a_regular_session_trade_from_today(self):
+        from hero.engine import with_today
+        day = date(2026, 11, 3)
+        b = {"AAA": [{"t": "2026-11-02T05:00:00Z", "c": 100.0}],
+             "BBB": [{"t": "2026-11-02T05:00:00Z", "c": 50.0}],
+             "CCC": [{"t": "2026-11-02T05:00:00Z", "c": 20.0}],
+             "DDD": [{"t": "2026-11-02T05:00:00Z", "c": 30.0}, {"t": "2026-11-03T05:00:00Z", "c": 31.0}],
+             "EEE": []}
+        snaps = {"AAA": {"latestTrade": {"p": 96.2, "t": "2026-11-03T14:30:21.123456789Z"}},   # 09:30:21 ET: filled
+                 "BBB": {"latestTrade": {"p": 48.0, "t": "2026-11-03T13:15:00Z"}},              # 08:15 ET, pre-market: no
+                 "CCC": {"latestTrade": {"p": 19.0, "t": "2026-11-02T20:59:00Z"}},              # yesterday: no
+                 "DDD": {"latestTrade": {"p": 29.0, "t": "2026-11-03T15:00:00Z"}},              # today's bar exists: no
+                 "EEE": {"latestTrade": {"p": 5.0, "t": "2026-11-03T15:00:00Z"}}}               # no history: no
+        out, filled = with_today(b, snaps, day)
+        self.assertEqual(filled, ["AAA"])
+        self.assertEqual(out["AAA"][-1], {"t": "2026-11-03T05:00:00Z", "c": 96.2, "provisional": True})
+        self.assertEqual(len(b["AAA"]), 1)                                  # the input is not changed
+        for s in ("BBB", "CCC", "DDD", "EEE"):
+            self.assertIs(out[s], b[s])
+        self.assertEqual(with_today(b, {}, day), (b, []))
+        bad = {"AAA": {"latestTrade": {"p": 96.2, "t": "not a time at all, no"}}}
+        self.assertEqual(with_today(b, bad, day)[1], [])
+
+    def test_first_cycle_ranks_on_the_open_not_yesterdays_close(self):
+        with tempfile.TemporaryDirectory() as d:
+            closes = {"SPY": series(0.001, seed=5), "UP1": series(0.002, seed=1),
+                      "UP2": series(0.0015, seed=2), "DOWN": series(-0.002, seed=3)}
+            gap = closes["UP1"][-1] * 0.80                              # a 20% gap down on the open: under its 50-day line
+            c = FakeClient(closes)
+            c.snaps = {"UP1": {"latestTrade": {"p": gap, "t": f"{TODAY.isoformat()}T13:31:00Z"}}}   # 09:31 ET (EDT)
+            j = Journal(Path(d))
+            eng = Engine(c, cfg(stocks={"rsi_max": 101}), j)
+            eng.run(today=TODAY)
+            self.assertAlmostEqual(eng.rank_closes["UP1"][-1], gap)
+            self.assertNotIn("UP1", mom.rank(eng.rank_closes, {**CFG["stocks"], "rsi_max": 101}))
+            self.assertNotIn("UP1", {o["symbol"] for o in c.orders if o["type"] == "market"})
+            self.assertFalse(any(o["symbol"].startswith("UP1") for o in c.orders if o["type"] == "limit"))
+            logged = [json.loads(l) for l in (Path(d) / "trades.jsonl").read_text().splitlines()]
+            ev = next(e for e in logged if e["kind"] == "today_bar")
+            self.assertEqual(ev["symbols"], ["UP1"])
+            # without a trade from today's session nothing changes: yesterday's close, UP1 ranks and is bought
+            c2 = FakeClient(closes)
+            eng2 = Engine(c2, cfg(stocks={"rsi_max": 101}), Journal(Path(d) / "b"))
+            eng2.run(today=TODAY)
+            self.assertEqual(eng2.rank_closes["UP1"][-1], closes["UP1"][-1])
+            self.assertIn("UP1", {o["symbol"] for o in c2.orders if o["type"] == "market"})

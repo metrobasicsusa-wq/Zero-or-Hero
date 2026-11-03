@@ -28,6 +28,35 @@ def closes_from_bars(bars: dict[str, list[dict]]) -> dict[str, list[float]]:
     return {s: [float(b["c"]) for b in bs] for s, bs in bars.items() if bs}
 
 
+SESSION = ("09:30", "16:00")
+
+
+def with_today(bars: dict[str, list[dict]], snaps: dict, today: date) -> tuple[dict[str, list[dict]], list[str]]:
+    """Each symbol whose daily bars stop before today gets a provisional bar for today at its latest trade, when that
+    trade is from today's regular session. The broker's daily bar for today is not there yet in the first cycle after
+    the open, so the ranking would run on yesterday's close: 11-03 AAPL gapped -3.8% on its report; at 09:30 it still
+    ranked 4th on yesterday's close (1.5% over its 50-day line) and the option leg bought a call, at 09:40 the bar had
+    arrived (1.3% under the line) and the stock leg sold the shares. Returns new bars and the symbols filled."""
+    out, filled, day = dict(bars), [], today.isoformat()
+    et = ZoneInfo("America/New_York")
+    for s, bs in bars.items():
+        if not bs or bs[-1]["t"][:10] >= day:
+            continue
+        tr = (snaps.get(s) or {}).get("latestTrade") or {}
+        px, t = tr.get("p"), str(tr.get("t") or "")
+        if not px or len(t) < 19:
+            continue
+        try:
+            when = datetime.strptime(t[:19], "%Y-%m-%dT%H:%M:%S").replace(tzinfo=timezone.utc).astimezone(et)
+        except ValueError:
+            continue
+        if when.date() != today or not (SESSION[0] <= when.strftime("%H:%M") <= SESSION[1]):
+            continue
+        out[s] = bs + [{"t": f"{day}T05:00:00Z", "c": float(px), "provisional": True}]
+        filled.append(s)
+    return out, filled
+
+
 EXIT_PREFIX = "hero-exit-"
 
 
@@ -144,6 +173,19 @@ class Engine:
         start = (today - timedelta(days=HISTORY_DAYS)).isoformat()
         macro_syms = [s for s in macro.SYMBOLS.values() if s not in universe]
         bars = self.c.daily_bars(universe + macro_syms, start)
+        missing = [s for s in universe if bars.get(s) and bars[s][-1]["t"][:10] < today.isoformat()]
+        if missing:
+            # The first cycle after the open runs before the broker has today's daily bar: rank on the latest trade,
+            # as every later cycle does, instead of yesterday's close (see with_today).
+            try:
+                now_snaps = self.c.stock_snapshots(missing)
+            except Exception as e:
+                now_snaps = {}
+                self.j.event("alert_error", source="today_bar", error=str(e)[:200])
+            bars, filled = with_today(bars, now_snaps, today)
+            if filled:
+                self.j.event("today_bar", dry_run=self.dry, symbols=filled,
+                             why=f"今天的日线还没出来（开盘后第一轮），{len(filled)} 只按最新成交价当今天的收盘排名：" + "、".join(filled))
         closes = closes_from_bars({s: b for s, b in bars.items() if s in universe})
         # Only the configured universe competes for a place; held names outside it can only be sold.
         ranked_pool = set(self.cfg["universe"]) | {self.cfg["regime_symbol"]}
