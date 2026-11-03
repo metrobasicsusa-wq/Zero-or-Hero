@@ -4278,7 +4278,7 @@
      "expiry_out": null,
      "take_x": 2,
      "take": 6.6,
-     "take_cid": "sl-wk-trend-500-2026W45-0cd82b-tfb47"
+     "take_cid": "sl-wk-trend-500-2026W45-0cd82b-tdafe"
     }
    ],
    "closed": [
@@ -4384,7 +4384,7 @@
      "expiry_out": null,
      "take_x": 3,
      "take": 9.9,
-     "take_cid": "sl-wk-trend-1000-2026W45-82f44a-tc9fc"
+     "take_cid": "sl-wk-trend-1000-2026W45-82f44a-tfa67"
     }
    ],
    "closed": [
@@ -4615,7 +4615,7 @@
      "expiry_out": null,
      "take_x": 2,
      "take": 19.6,
-     "take_cid": "sl-wk-momo-1000-2026W45-449bf5-t057f"
+     "take_cid": "sl-wk-momo-1000-2026W45-449bf5-te12a"
     },
     {
      "tid": "2026W45-5608c3",
@@ -4636,7 +4636,7 @@
      "expiry_out": null,
      "take_x": 2,
      "take": 11.6,
-     "take_cid": "sl-wk-momo-1000-2026W45-5608c3-ta460"
+     "take_cid": "sl-wk-momo-1000-2026W45-5608c3-t9a61"
     }
    ],
    "closed": [
@@ -4703,7 +4703,7 @@
      "expiry_out": null,
      "take_x": 2,
      "take": 10.0,
-     "take_cid": "sl-wk-news-500-2026W45-127de4-t6d3e"
+     "take_cid": "sl-wk-news-500-2026W45-127de4-td6b1"
     }
    ],
    "closed": [
@@ -4769,7 +4769,7 @@
      "expiry_out": null,
      "take_x": 2,
      "take": 5.4,
-     "take_cid": "sl-wk-news-1000-2026W45-c1a09a-t8f64"
+     "take_cid": "sl-wk-news-1000-2026W45-c1a09a-te5d7"
     },
     {
      "tid": "2026W45-95c55c",
@@ -4790,7 +4790,7 @@
      "expiry_out": null,
      "take_x": 2,
      "take": 1.3,
-     "take_cid": "sl-wk-news-1000-2026W45-95c55c-tf811"
+     "take_cid": "sl-wk-news-1000-2026W45-95c55c-t53f7"
     }
    ],
    "closed": [
@@ -6634,28 +6634,7 @@
    "round": 2,
    "heroes": 0,
    "zeros": 1,
-   "open": [
-    {
-     "tid": "20261030-d1b096",
-     "kind": "sniper",
-     "sym": "AMZN261102P00227500",
-     "asset": "option",
-     "und": "AMZN",
-     "qty": 1,
-     "cost": 3.85,
-     "paid": 385.0,
-     "opened": "2026-10-30 09:30",
-     "why": "开盘狙击 AMZN看跌 227.5（2026-11-02 到期，离现价 1.0%（平时一天波动 1.7% 的一半），delta 0.41）：亚马逊 10-29 盘后三季度：AWS +39%、营业利润 $281 亿超，但过去 12 个月自由现金流流出 $424 亿、没说何时转正（公司 8-K）；盘前约 $228.7，对 10-29 收盘 $243.79 约 −6.2%，约平时单日；翻倍后回撤 40% 卖，否则到期日 15:30 卖；一半 $250.00 买不起一张，押上账本买 1 张",
-     "expiry": "2026-11-02",
-     "exit_day": "2026-11-02",
-     "exit_at": "15:30",
-     "trail": true,
-     "best_bid": 0.79,
-     "expiry_out": null,
-     "sell_cid": "sl-sniper-500-20261030-d1b096-x6251",
-     "sell_why": "2026-11-02 15:30 到时卖出"
-    }
-   ],
+   "open": [],
    "closed": [
     {
      "tid": "20261015-eb4d57",
@@ -6786,6 +6765,32 @@
      "how": "2026-10-27 15:50 到时卖出",
      "closed": "2026-10-27 15:50",
      "ret": -0.971
+    },
+    {
+     "tid": "20261030-d1b096",
+     "kind": "sniper",
+     "sym": "AMZN261102P00227500",
+     "asset": "option",
+     "und": "AMZN",
+     "qty": 1,
+     "cost": 3.85,
+     "paid": 385.0,
+     "opened": "2026-10-30 09:30",
+     "why": "开盘狙击 AMZN看跌 227.5（2026-11-02 到期，离现价 1.0%（平时一天波动 1.7% 的一半），delta 0.41）：亚马逊 10-29 盘后三季度：AWS +39%、营业利润 $281 亿超，但过去 12 个月自由现金流流出 $424 亿、没说何时转正（公司 8-K）；盘前约 $228.7，对 10-29 收盘 $243.79 约 −6.2%，约平时单日；翻倍后回撤 40% 卖，否则到期日 15:30 卖；一半 $250.00 买不起一张，押上账本买 1 张",
+     "expiry": "2026-11-02",
+     "exit_day": "2026-11-02",
+     "exit_at": "15:30",
+     "trail": true,
+     "best_bid": 0.79,
+     "expiry_out": null,
+     "sell_cid": "sl-sniper-500-20261030-d1b096-x6251",
+     "sell_why": "2026-11-02 15:30 到时卖出",
+     "state": "closed",
+     "exit_price": 0.0,
+     "proceeds": 0.0,
+     "how": "券商已无持仓（到期作废）",
+     "closed": "2026-11-03 09:30",
+     "ret": -1.0
     }
    ],
    "slots": {
@@ -6824,28 +6829,7 @@
    "round": 2,
    "heroes": 0,
    "zeros": 1,
-   "open": [
-    {
-     "tid": "20261030-bac075",
-     "kind": "sniper",
-     "sym": "AMZN261102P00225000",
-     "asset": "option",
-     "und": "AMZN",
-     "qty": 1,
-     "cost": 2.59,
-     "paid": 259.0,
-     "opened": "2026-10-30 09:30",
-     "why": "开盘狙击 AMZN看跌 225（2026-11-02 到期，离现价 2.1%（平时一天波动 1.7% 的一半），delta 0.33）：亚马逊 10-29 盘后三季度：AWS +39%、营业利润 $281 亿超，但过去 12 个月自由现金流流出 $424 亿、没说何时转正（公司 8-K）；盘前约 $228.7，对 10-29 收盘 $243.79 约 −6.2%，约平时单日；翻倍后回撤 40% 卖，否则到期日 15:30 卖",
-     "expiry": "2026-11-02",
-     "exit_day": "2026-11-02",
-     "exit_at": "15:30",
-     "trail": true,
-     "best_bid": 0.42,
-     "expiry_out": null,
-     "sell_cid": "sl-sniper-1000-20261030-bac075-x82d4",
-     "sell_why": "2026-11-02 15:30 到时卖出"
-    }
-   ],
+   "open": [],
    "closed": [
     {
      "tid": "20261015-41b7fe",
@@ -7002,6 +6986,32 @@
      "how": "2026-10-30 15:30 到时卖出（券商成交 $23.10；15:40 那轮查不到卖单、误记到期作废，10-30 晚按成交记录更正）",
      "closed": "2026-10-30 15:40",
      "ret": 5.0
+    },
+    {
+     "tid": "20261030-bac075",
+     "kind": "sniper",
+     "sym": "AMZN261102P00225000",
+     "asset": "option",
+     "und": "AMZN",
+     "qty": 1,
+     "cost": 2.59,
+     "paid": 259.0,
+     "opened": "2026-10-30 09:30",
+     "why": "开盘狙击 AMZN看跌 225（2026-11-02 到期，离现价 2.1%（平时一天波动 1.7% 的一半），delta 0.33）：亚马逊 10-29 盘后三季度：AWS +39%、营业利润 $281 亿超，但过去 12 个月自由现金流流出 $424 亿、没说何时转正（公司 8-K）；盘前约 $228.7，对 10-29 收盘 $243.79 约 −6.2%，约平时单日；翻倍后回撤 40% 卖，否则到期日 15:30 卖",
+     "expiry": "2026-11-02",
+     "exit_day": "2026-11-02",
+     "exit_at": "15:30",
+     "trail": true,
+     "best_bid": 0.42,
+     "expiry_out": null,
+     "sell_cid": "sl-sniper-1000-20261030-bac075-x82d4",
+     "sell_why": "2026-11-02 15:30 到时卖出",
+     "state": "closed",
+     "exit_price": 0.0,
+     "proceeds": 0.0,
+     "how": "券商已无持仓（到期作废）",
+     "closed": "2026-11-03 09:30",
+     "ret": -1.0
     }
    ],
    "slots": {
@@ -7140,28 +7150,7 @@
    "round": 1,
    "heroes": 0,
    "zeros": 0,
-   "open": [
-    {
-     "tid": "20261028-c7f7e4",
-     "kind": "overnight",
-     "sym": "AMD261102C00595000",
-     "asset": "option",
-     "und": "AMD",
-     "qty": 1,
-     "cost": 7.65,
-     "paid": 765.0,
-     "opened": "2026-10-28 15:50",
-     "why": "隔夜动量：AMD 今天涨 +3.0%、收在当天区间 91% 处、在 50 日均线上方，买看涨 595（2026-11-02 到期），买价 $7.45 / 卖价 $7.72；翻倍后回撤 40% 卖，否则 11-02 15:30 卖；一半 $551.00 买不起一张，押上账本买 1 张",
-     "expiry": "2026-11-02",
-     "exit_day": "2026-11-02",
-     "exit_at": "15:30",
-     "trail": true,
-     "best_bid": 5.05,
-     "expiry_out": null,
-     "sell_cid": "sl-overnight-1000-20261028-c7f7e4-x016d",
-     "sell_why": "2026-11-02 15:30 到时卖出"
-    }
-   ],
+   "open": [],
    "closed": [
     {
      "tid": "016b6721f5",
@@ -7240,6 +7229,32 @@
      "how": "2026-10-30 15:50 到时卖出",
      "closed": "2026-10-30 15:50",
      "ret": -0.9
+    },
+    {
+     "tid": "20261028-c7f7e4",
+     "kind": "overnight",
+     "sym": "AMD261102C00595000",
+     "asset": "option",
+     "und": "AMD",
+     "qty": 1,
+     "cost": 7.65,
+     "paid": 765.0,
+     "opened": "2026-10-28 15:50",
+     "why": "隔夜动量：AMD 今天涨 +3.0%、收在当天区间 91% 处、在 50 日均线上方，买看涨 595（2026-11-02 到期），买价 $7.45 / 卖价 $7.72；翻倍后回撤 40% 卖，否则 11-02 15:30 卖；一半 $551.00 买不起一张，押上账本买 1 张",
+     "expiry": "2026-11-02",
+     "exit_day": "2026-11-02",
+     "exit_at": "15:30",
+     "trail": true,
+     "best_bid": 5.05,
+     "expiry_out": null,
+     "sell_cid": "sl-overnight-1000-20261028-c7f7e4-x016d",
+     "sell_why": "2026-11-02 15:30 到时卖出",
+     "state": "closed",
+     "exit_price": 0.0,
+     "proceeds": 0.0,
+     "how": "券商已无持仓（到期作废）",
+     "closed": "2026-11-03 09:30",
+     "ret": -1.0
     }
    ],
    "slots": {
@@ -7507,6 +7522,9 @@
      "LITE",
      "NET",
      "MRNA"
+    ],
+    "2026-11-10": [
+     "RKLB"
     ]
    }
   },
@@ -7805,7 +7823,7 @@
      "exit_day": "2026-11-09",
      "exit_at": "15:50",
      "trail": true,
-     "best_bid": 0.0,
+     "best_bid": 6.73,
      "expiry_out": null
     }
    ],
@@ -7871,7 +7889,7 @@
      "exit_day": "2026-11-09",
      "exit_at": "15:50",
      "trail": false,
-     "best_bid": 0.0,
+     "best_bid": 4.57,
      "expiry_out": null
     }
    ],
@@ -7909,7 +7927,7 @@
      "exit_day": "2026-11-09",
      "exit_at": "15:50",
      "trail": false,
-     "best_bid": 0.0,
+     "best_bid": 6.73,
      "expiry_out": null
     }
    ],
@@ -7966,11 +7984,11 @@
      "exit_day": "2026-11-09",
      "exit_at": "15:50",
      "trail": false,
-     "best_bid": 0.0,
+     "best_bid": 4.57,
      "expiry_out": null,
      "take_x": 2,
      "take": 7.7,
-     "take_cid": "sl-dipweek-take-1000-20261102-95f97c-t75f7"
+     "take_cid": "sl-dipweek-take-1000-20261102-95f97c-t99e7"
     }
    ],
    "closed": [],
@@ -8063,7 +8081,7 @@
      "exit_day": "2026-11-09",
      "exit_at": "15:30",
      "trail": false,
-     "best_bid": 0.0,
+     "best_bid": 6.26,
      "expiry_out": null
     }
    ],
