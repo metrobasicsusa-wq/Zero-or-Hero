@@ -33,7 +33,9 @@ mechanical) the same two signs opened up 57% of 279 and 56% of 479. So a sign th
 counts when the backtest leans the same way; otherwise it is listed as not supported. And because what decides the
 open is the guide against expectations (below: up 13%, above: 86%; an EPS beat: 49%), each researched call also says
 where it expects the guide (`guide_call`: above / inline / below), scored here against `guide_vs_est`: whether we can
-read the company, apart from whether we can read the market. Record only. Run: python -m hero.earnings_reasons
+read the company, apart from whether we can read the market. 11-04 with 57 rows: below opened up 12% of 24, inline
+55% of 11, above 64% of 22 -- so an in-line guide is no reason for "down" (the 15:05 routine now calls it by the
+default direction). Record only. Run: python -m hero.earnings_reasons
 """
 
 from __future__ import annotations
