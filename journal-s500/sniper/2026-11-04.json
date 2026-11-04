@@ -1,0 +1,274 @@
+{
+ "date": "2026-11-04",
+ "generated_at": "2026-11-04T09:04-05:00",
+ "sniper": {
+  "symbol": "FSLR",
+  "direction": "call",
+  "confidence": 0.35,
+  "catalyst_type": "sector move",
+  "overnight": true,
+  "catalyst": "民主党拿下参众两院（CNN 23:35 ET 判参院、NBC 判众院），市场押清洁能源政策不再被削：First Solar 盘前 +7.6% 到 $200、Sunrun +8.6%、Canadian Solar +7%（Investing.com 盘前异动）；FSLR 盘前价破 20 日高 $188.68，跳空约为平时单日波动（1.7%）的 4.5 倍，符合回测加分，拿过夜",
+  "wrong_if": "10:00 前跌回开盘价下方、或回补一半跳空（跌到约 $193 以下）——政策题材开盘就被卖"
+ },
+ "candidates": [
+  {
+   "rank": 1,
+   "symbol": "FSLR",
+   "direction": "call",
+   "confidence": 0.35,
+   "catalyst_type": "sector move",
+   "why": "选举结果直接利好清洁能源（同组 RUN、CSIQ 一起涨）；破 20 日高 $188.68，跳空 +7.6% 约平时波动 4.5 倍（回测加分、拿过夜）；减分：中盘股跳空超过 6% 常已反映",
+   "wrong_if": "10:00 前跌回开盘价下方、或跌到约 $193 以下"
+  },
+  {
+   "rank": 2,
+   "symbol": "ORCL",
+   "direction": "put",
+   "confidence": 0.25,
+   "catalyst_type": "company news",
+   "why": "自己的新消息：在白宫压力下取消和腾讯的 $70 亿 AI 芯片租赁合同（FT / Benzinga），$200 亿增发今天交割、昨天刚涨 5.8%；跳空 −3.1% 只有平时波动 0.8 倍，没破 20 日低 $118.43；减分：大盘涨日做看跌",
+   "wrong_if": "10:00 前站回昨收 $126 以上"
+  },
+  {
+   "rank": 3,
+   "symbol": "TSLA",
+   "direction": "put",
+   "confidence": 0.2,
+   "catalyst_type": "legal-regulatory",
+   "why": "选举打击「川普交易」（马斯克、得州结果）加韩国指控 FSD 误导宣传；跳空 −5.4% 约平时波动 2.9 倍，没破 20 日低 $349",
+   "wrong_if": "开盘 30 分钟内收回一半跳空（约 $388 以上）"
+  },
+  {
+   "rank": 4,
+   "symbol": "GEV",
+   "direction": "put",
+   "confidence": 0.15,
+   "catalyst_type": "sector move",
+   "why": "得州新州长谈数据中心暂停、Gerstner 说 10–15 GW 数据中心有风险，电力设备被卖；跳空 −7.0% 约 2.5 倍，没破 20 日低；只是政治读穿、没有自己的消息",
+   "wrong_if": "10:00 前回到 $880 以上"
+  },
+  {
+   "rank": 5,
+   "symbol": "CRWV",
+   "direction": "put",
+   "confidence": 0.12,
+   "catalyst_type": "sector move",
+   "why": "Gerstner 警告民主党控制国会可能让 10–15 GW AI 数据中心受阻，CRWV / IREN / APLD 盘前跌；跳空 −6.6%，中盘股跳空超过 6% 常已反映；11-10 财报临近",
+   "wrong_if": "10:00 前回到 $52 以上"
+  }
+ ],
+ "skipped": [
+  {
+   "symbol": "RUN",
+   "direction": "call",
+   "gap": 0.066,
+   "reason": "其他",
+   "why_not": "同一题材的二线股，跳空只有平时波动 1.9 倍，选龙头 FSLR"
+  },
+  {
+   "symbol": "CSIQ",
+   "direction": "call",
+   "gap": 0.077,
+   "reason": "跳空已吃掉",
+   "why_not": "同题材，小盘股跳空 7.7%、没破 20 日高"
+  },
+  {
+   "symbol": "VRT",
+   "direction": "put",
+   "gap": -0.069,
+   "reason": "消息太弱",
+   "why_not": "自己的消息（和英飞凌签三年功率半导体供货）偏正面，跌的是数据中心政治风险，方向不清"
+  },
+  {
+   "symbol": "SPCX",
+   "direction": "put",
+   "gap": -0.065,
+   "reason": "其他",
+   "why_not": "选举打击「川普交易」，但同时有和高通的 Starlink 合作新闻，方向混杂"
+  },
+  {
+   "symbol": "PLTR",
+   "direction": "put",
+   "gap": -0.053,
+   "reason": "其他",
+   "why_not": "财报后第 2 天，连续第 2 天追减分"
+  },
+  {
+   "symbol": "IREN",
+   "direction": "put",
+   "gap": -0.053,
+   "reason": "财报临近",
+   "why_not": "11-05 盘后财报"
+  },
+  {
+   "symbol": "AMZN",
+   "direction": "call",
+   "gap": 0.038,
+   "reason": "消息太弱",
+   "why_not": "只有 AWS 更新和 CNBC 节目提到，claude-b 也没找到实质消息"
+  },
+  {
+   "symbol": "QCOM",
+   "direction": "call",
+   "gap": 0.037,
+   "reason": "财报临近",
+   "why_not": "今晚财报；和 SpaceX 的 Starlink 合作是自己的消息，但财报前不追"
+  },
+  {
+   "symbol": "MRVL",
+   "direction": "put",
+   "gap": -0.038,
+   "reason": "消息太弱",
+   "why_not": "跟着芯片和 AI 数据中心一起跌，没有新的自己的消息"
+  },
+  {
+   "symbol": "LITE",
+   "direction": "put",
+   "gap": -0.035,
+   "reason": "其他",
+   "why_not": "被 MRVL 全股票收购，跟着 MRVL 走；律所调查不算消息"
+  },
+  {
+   "symbol": "SNDK",
+   "direction": "put",
+   "gap": -0.035,
+   "reason": "分析师评级",
+   "why_not": "Fox Advisors 降到持平，只有评级"
+  },
+  {
+   "symbol": "MU",
+   "direction": "put",
+   "gap": -0.029,
+   "reason": "消息太弱",
+   "why_not": "AMD 说明年电脑出货两位数下降是负面读穿，但 AMD 也说内存涨价、签长约，方向不清"
+  },
+  {
+   "symbol": "INTC",
+   "direction": "put",
+   "gap": -0.027,
+   "reason": "消息太弱",
+   "why_not": "AMD 的电脑评论读穿，太弱"
+  },
+  {
+   "symbol": "BE",
+   "direction": "put",
+   "gap": -0.04,
+   "reason": "消息太弱",
+   "why_not": "只有佩洛西不再参选的新闻"
+  },
+  {
+   "symbol": "GLW",
+   "direction": "put",
+   "gap": -0.029,
+   "reason": "消息太弱",
+   "why_not": "新闻是一个窗户产品线"
+  },
+  {
+   "symbol": "JNJ",
+   "direction": "call",
+   "gap": 0.028,
+   "reason": "消息太弱",
+   "why_not": "医疗板块整体上涨，没有自己的消息"
+  },
+  {
+   "symbol": "NBIS",
+   "direction": "put",
+   "gap": -0.033,
+   "reason": "消息太弱",
+   "why_not": "只是数据中心题材一起跌"
+  },
+  {
+   "symbol": "CIFR",
+   "direction": "put",
+   "gap": -0.149,
+   "reason": "分析师评级",
+   "why_not": "两家下调目标价，跳空已吃掉"
+  },
+  {
+   "symbol": "DDOG",
+   "direction": "put",
+   "gap": -0.106,
+   "reason": "财报反应日",
+   "why_not": "四季度收入指引偏软，财报跳空"
+  },
+  {
+   "symbol": "ALAB",
+   "direction": "put",
+   "gap": -0.076,
+   "reason": "财报反应日",
+   "why_not": "财报后分析师下调目标价"
+  },
+  {
+   "symbol": "ANET",
+   "direction": "call",
+   "gap": 0.053,
+   "reason": "财报反应日",
+   "why_not": "三季度超预期"
+  },
+  {
+   "symbol": "RIOT",
+   "direction": "call",
+   "gap": 0.172,
+   "reason": "财报反应日",
+   "why_not": "三季度超预期、卖比特币建数据中心"
+  },
+  {
+   "symbol": "AMD",
+   "direction": "call",
+   "gap": 0.0,
+   "reason": "财报反应日",
+   "why_not": "盘后 +9% 到盘前已回到平盘"
+  },
+  {
+   "symbol": "SOXL",
+   "direction": "put",
+   "gap": -0.052,
+   "reason": "其他",
+   "why_not": "杠杆 ETF，不在狙击范围"
+  }
+ ],
+ "claude_b_pick": "无（bias none，p_up 0.54；它把 ORCL / TSLA / GEV 列为看跌机会但大盘涨日不做，AMD / ANET / SMCI 是财报名字）",
+ "earnings_reaction_today": [
+  "AMD",
+  "UBER",
+  "BKNG",
+  "ANET",
+  "MLM",
+  "DDOG",
+  "SMCI",
+  "MCD",
+  "CVS",
+  "ALAB",
+  "CRL",
+  "XYZ",
+  "NVO",
+  "IFF",
+  "AMGN",
+  "SU",
+  "FLUT",
+  "CRCL",
+  "TOST",
+  "W",
+  "SN",
+  "EMR",
+  "COR",
+  "MDLN",
+  "FIS",
+  "CVE",
+  "SWKS",
+  "OVV",
+  "ZBH",
+  "CDW",
+  "KHC",
+  "PODD",
+  "MOD",
+  "SWK",
+  "HL",
+  "HUT",
+  "FBIN",
+  "AIG",
+  "UTHR",
+  "GWW"
+ ],
+ "notes": "选举后第一天：民主党拿下参众两院，期指夜里一度 −1.4% 后翻红，盘前 SPY 约 +0.9%、QQQ +0.3%，资金从 AI 硬件和「川普交易」转到医疗、必需消费、银行、小盘和清洁能源；10:00 ISM 服务业。08:35 没写预选（今早的大动作是财报或板块整体跳空）。第 1 名 FSLR 是板块消息不是公司消息，但满足回测的两条加分（破 20 日高 + 跳空 4.5 倍），按规则拿过夜（今天之后最近的到期日）。财报反应日一律不选（AMD、SMCI、ANET、DDOG、ALAB、RIOT、UBER、BKNG 等，见 earnings_reaction_today）。模拟盘，不是投资建议。"
+}
