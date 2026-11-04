@@ -4643,7 +4643,7 @@
      "exit_day": "2026-11-05",
      "exit_at": "15:50",
      "trail": false,
-     "best_bid": 8.43,
+     "best_bid": 9.39,
      "expiry_out": null,
      "take_x": 3,
      "take": 9.9,
@@ -4948,33 +4948,11 @@
   },
   "wk-news-500": {
    "start": 500.0,
-   "cash": 65.0,
+   "cash": 1065.0,
    "round": 1,
    "heroes": 0,
    "zeros": 0,
-   "open": [
-    {
-     "tid": "2026W45-127de4",
-     "kind": "weekly",
-     "sym": "MA261106C00660000",
-     "asset": "option",
-     "und": "MA",
-     "qty": 1,
-     "cost": 5.0,
-     "paid": 500.0,
-     "opened": "2026-11-02 10:00",
-     "why": "MA 周末 15 篇新闻，情绪 +0.67；买 11-06 到期看涨 660，2 倍止盈，到期前一天 15:50 卖；一半 $94.17 买不起一张，押上账本买 1 张",
-     "expiry": "2026-11-06",
-     "exit_day": "2026-11-05",
-     "exit_at": "15:50",
-     "trail": false,
-     "best_bid": 9.13,
-     "expiry_out": null,
-     "take_x": 2,
-     "take": 10.0,
-     "take_cid": "sl-wk-news-500-2026W45-127de4-t11ca"
-    }
-   ],
+   "open": [],
    "closed": [
     {
      "tid": "24c4d60137",
@@ -5001,6 +4979,33 @@
      "how": "2 倍止盈（券商挂单成交）",
      "closed": "2026-10-15 11:00",
      "ret": 1.0
+    },
+    {
+     "tid": "2026W45-127de4",
+     "kind": "weekly",
+     "sym": "MA261106C00660000",
+     "asset": "option",
+     "und": "MA",
+     "qty": 1,
+     "cost": 5.0,
+     "paid": 500.0,
+     "opened": "2026-11-02 10:00",
+     "why": "MA 周末 15 篇新闻，情绪 +0.67；买 11-06 到期看涨 660，2 倍止盈，到期前一天 15:50 卖；一半 $94.17 买不起一张，押上账本买 1 张",
+     "expiry": "2026-11-06",
+     "exit_day": "2026-11-05",
+     "exit_at": "15:50",
+     "trail": false,
+     "best_bid": 9.13,
+     "expiry_out": null,
+     "take_x": 2,
+     "take": 10.0,
+     "take_cid": "sl-wk-news-500-2026W45-127de4-t11ca",
+     "state": "closed",
+     "exit_price": 10.0,
+     "proceeds": 1000.0,
+     "how": "2 倍止盈（券商挂单成交）",
+     "closed": "2026-11-04 11:40",
+     "ret": 1.0
     }
    ],
    "slots": {
@@ -5009,7 +5014,7 @@
     "2026-W44": "2026-10-26T10:00-04:00",
     "2026-W45": "2026-11-02T10:00-05:00"
    },
-   "best": 565.0,
+   "best": 1065.0,
    "created": null
   },
   "wk-news-1000": {
@@ -8004,7 +8009,7 @@
      "exit_day": "2026-11-05",
      "exit_at": "15:50",
      "trail": false,
-     "best_bid": 1.87,
+     "best_bid": 3.51,
      "expiry_out": null
     }
    ],
