@@ -1,0 +1,896 @@
+{
+  "schema_version": "1.0",
+  "producer": "Codex",
+  "mode": "PAPER",
+  "currency": "USD",
+  "trading_date": "2026-11-04",
+  "timezone": "America/New_York",
+  "status": "limited_post_market_review",
+  "as_of": "2026-11-04T15:57:48.168425711-05:00",
+  "generated_at": "2026-11-04T21:34:04.872780+00:00",
+  "evidence_cutoff": {
+    "commit": "6326cbe06dfae3ed0d88964c34a9c8bce9c3ae3f",
+    "generation": 2408,
+    "core_state_sha256": "20f852f9f716c52d678c13688f22407b677e18f152cace7dfec20a7801352bcf",
+    "archive_snapshot_sha256": "3207d29611da94b3839050e43a41e4f66443c2298f68492339c07e3eaa7dd46c",
+    "archive_manifest_sha256": "bd2f4d39aca95e55111764d27a73c571b372d904ca71a4399a3f1c090aa818f5",
+    "event_cutoff": 67612,
+    "verified_at": "2026-11-04T21:31:06.991965+00:00",
+    "evidence_stale": false,
+    "sample_cutoff": 258960,
+    "dataset_cutoff": 10663,
+    "session_start": "2026-11-04T09:30:00-05:00",
+    "session_end": "2026-11-04T16:00:00-05:00",
+    "max_session_event_sequence": 67582,
+    "archive_last_event_at": "2026-11-04T21:15:31.303038+00:00"
+  },
+  "scope": {
+    "capital_limit_usd": 100000,
+    "swing_budget_usd": 50000,
+    "intraday_budget_usd": 49000,
+    "options_budget_usd": 1000,
+    "drawdown_halt_fraction": 0.1
+  },
+  "equity": {
+    "current_usd": 103288.59,
+    "as_of": "2026-11-04T15:57:48.168425711-05:00",
+    "source": "last preclose archived equity-event observation; not official close",
+    "previous_day_usd": 103288.59,
+    "previous_day_as_of": "2026-11-03T17:27:29.93101632-05:00",
+    "previous_day_basis": "prior trading-day observation, not official close",
+    "official_open_usd": null,
+    "official_close_usd": null,
+    "official_previous_close_usd": null,
+    "cash_usd": 103288.59,
+    "external_cash_flows_usd": null,
+    "fees_usd": null,
+    "first_observation": {
+      "as_of": "2026-11-04T09:32:57.175558832-05:00",
+      "equity_usd": 103288.59,
+      "cash_usd": 103288.59,
+      "source": "first equity-event observation used for performance window; earlier broker snapshot is reported separately"
+    },
+    "first_broker_snapshot": {
+      "as_of": "2026-11-04T09:32:34.248833536-05:00",
+      "recorded_at": "2026-11-04T14:32:40.532879+00:00",
+      "equity_usd": "103288.59",
+      "cash_usd": "103288.59",
+      "source": "broker snapshot, separate from equity-event performance window"
+    },
+    "post_session_observation": {
+      "as_of": "2026-11-04T16:15:19.230757862-05:00",
+      "equity_usd": 103288.59,
+      "cash_usd": 103288.59,
+      "source": "archived equity-event observation; not official close"
+    },
+    "change_from_prior_observed_reference_usd": 0.0
+  },
+  "fills": [],
+  "fill_count": 0,
+  "positions": [],
+  "positions_basis": {
+    "as_of": "2026-11-04T15:57:48.168425711-05:00",
+    "source": "last preclose archived position snapshot; exact close unknown"
+  },
+  "closing_positions": null,
+  "options_positions": [],
+  "performance": {
+    "official_day_pnl_usd": null,
+    "observed_window_change_usd": 0.0,
+    "observed_window_return_fraction": 0.0,
+    "window_start": "2026-11-04T09:32:57.175558832-05:00",
+    "window_end": "2026-11-04T15:57:48.168425711-05:00",
+    "sleeve_observed_window_change_usd": {
+      "intraday": 0.0,
+      "options": 0.0,
+      "swing": 0.0
+    },
+    "gross_realized_pnl_usd": "0",
+    "fees_usd": null,
+    "net_realized_pnl_usd": null,
+    "closed_trade_count": 0,
+    "observed_max_drawdown_fraction": 0.0,
+    "max_historical_peak_drawdown_observed_fraction": 0.008781838723753488
+  },
+  "audit": {
+    "status": "limited_post_market_review",
+    "session": {
+      "open": {
+        "sequence": 65178,
+        "at": "2026-11-04T14:25:37.272534+00:00",
+        "clock": {
+          "is_open": false,
+          "next_close": "2026-11-04T16:00:00-05:00",
+          "next_open": "2026-11-04T09:30:00-05:00",
+          "timestamp": "2026-11-04T09:25:32.47489511-05:00"
+        }
+      },
+      "close": {
+        "sequence": 65188,
+        "at": "2026-11-04T14:32:40.532879+00:00",
+        "clock": {
+          "is_open": true,
+          "next_close": "2026-11-04T16:00:00-05:00",
+          "next_open": "2026-11-05T09:30:00-05:00",
+          "timestamp": "2026-11-04T09:32:34.248833536-05:00"
+        }
+      }
+    },
+    "actual_fill_basis": "Corrected original broker PAPER FILL, identity deduplicated; tests/requests/cumulative polls excluded.",
+    "summary": "No actual FILL or observed holdings. Persisted stock entry intents were not submitted after the final pre-submit check. No parameter promotion. The successor to a cancelled trading step has at least three verified natural cycles and matching archive advancement; the cancellation cause remains unresolved. Official closes, fees and cash flows unknown.",
+    "sample_coverage": {
+      "observations": 5820,
+      "runs": 97,
+      "rows_per_run_distribution": {
+        "60": 97
+      },
+      "unique_strategy_symbol_market_time_params": 300,
+      "unique_by_sleeve": {
+        "swing": 50,
+        "intraday": 250
+      },
+      "observations_by_sleeve": {
+        "swing": 4850,
+        "intraday": 970
+      },
+      "missing_market_time": 40,
+      "unevaluated": 40,
+      "evaluated_timed_unique": 300,
+      "evaluated_timed_unique_by_sleeve": {
+        "intraday": 250,
+        "swing": 50
+      },
+      "unevaluated_timed_unique": 40,
+      "only_unevaluated_unique": 0,
+      "overlap_evaluated_unevaluated": 40
+    },
+    "full_cycle_sample_counts": {
+      "60": 97
+    },
+    "sample_cutoff_explanation": "Session-started cycles and strict sample-recording cutoff are counted separately; any samples recorded after close are excluded from session totals.",
+    "last_session_started_cycle": {
+      "started_at": "2026-11-04T20:57:34.108866+00:00",
+      "finished_at": "2026-11-04T20:57:57.401709+00:00",
+      "samples": 60,
+      "sample_first_at": "2026-11-04T20:57:47.060250+00:00",
+      "sample_last_at": "2026-11-04T20:57:47.060250+00:00"
+    },
+    "run_status_counts": {
+      "completed": 97
+    },
+    "data_gaps": {
+      "opening_to_first_observation_seconds": 177.175558,
+      "last_observation_to_close_seconds": 131.831575,
+      "observation_gaps_over_120s": [
+        {
+          "from": "2026-11-04T09:32:57.175558832-05:00",
+          "to": "2026-11-04T09:36:16.292239387-05:00",
+          "seconds": 199.116681
+        },
+        {
+          "from": "2026-11-04T09:36:16.292239387-05:00",
+          "to": "2026-11-04T09:39:33.255371112-05:00",
+          "seconds": 196.963132
+        },
+        {
+          "from": "2026-11-04T09:39:33.255371112-05:00",
+          "to": "2026-11-04T09:42:51.019299589-05:00",
+          "seconds": 197.763928
+        },
+        {
+          "from": "2026-11-04T09:42:51.019299589-05:00",
+          "to": "2026-11-04T09:46:14.721106923-05:00",
+          "seconds": 203.701807
+        },
+        {
+          "from": "2026-11-04T09:46:14.721106923-05:00",
+          "to": "2026-11-04T09:49:48.610920873-05:00",
+          "seconds": 213.889814
+        },
+        {
+          "from": "2026-11-04T09:49:48.610920873-05:00",
+          "to": "2026-11-04T09:53:22.954472274-05:00",
+          "seconds": 214.343552
+        },
+        {
+          "from": "2026-11-04T09:53:22.954472274-05:00",
+          "to": "2026-11-04T09:56:52.097939199-05:00",
+          "seconds": 209.143467
+        },
+        {
+          "from": "2026-11-04T09:56:52.097939199-05:00",
+          "to": "2026-11-04T10:00:38.656095535-05:00",
+          "seconds": 226.558156
+        },
+        {
+          "from": "2026-11-04T10:00:38.656095535-05:00",
+          "to": "2026-11-04T10:04:17.740515347-05:00",
+          "seconds": 219.08442
+        },
+        {
+          "from": "2026-11-04T10:04:17.740515347-05:00",
+          "to": "2026-11-04T10:08:26.563991812-05:00",
+          "seconds": 248.823476
+        },
+        {
+          "from": "2026-11-04T10:08:26.563991812-05:00",
+          "to": "2026-11-04T10:12:22.592639628-05:00",
+          "seconds": 236.028648
+        },
+        {
+          "from": "2026-11-04T10:12:22.592639628-05:00",
+          "to": "2026-11-04T10:16:05.144261776-05:00",
+          "seconds": 222.551622
+        },
+        {
+          "from": "2026-11-04T10:16:05.144261776-05:00",
+          "to": "2026-11-04T10:26:11.331658782-05:00",
+          "seconds": 606.187397
+        },
+        {
+          "from": "2026-11-04T10:26:11.331658782-05:00",
+          "to": "2026-11-04T10:29:56.880270544-05:00",
+          "seconds": 225.548612
+        },
+        {
+          "from": "2026-11-04T10:29:56.880270544-05:00",
+          "to": "2026-11-04T10:33:42.063381325-05:00",
+          "seconds": 225.183111
+        },
+        {
+          "from": "2026-11-04T10:33:42.063381325-05:00",
+          "to": "2026-11-04T10:39:34.560245052-05:00",
+          "seconds": 352.496864
+        },
+        {
+          "from": "2026-11-04T10:39:34.560245052-05:00",
+          "to": "2026-11-04T10:43:13.940191051-05:00",
+          "seconds": 219.379946
+        },
+        {
+          "from": "2026-11-04T10:43:13.940191051-05:00",
+          "to": "2026-11-04T10:47:02.314839086-05:00",
+          "seconds": 228.374648
+        },
+        {
+          "from": "2026-11-04T10:47:02.314839086-05:00",
+          "to": "2026-11-04T10:50:48.901044241-05:00",
+          "seconds": 226.586205
+        },
+        {
+          "from": "2026-11-04T10:50:48.901044241-05:00",
+          "to": "2026-11-04T10:54:32.247852961-05:00",
+          "seconds": 223.346808
+        },
+        {
+          "from": "2026-11-04T10:54:32.247852961-05:00",
+          "to": "2026-11-04T10:58:15.910073332-05:00",
+          "seconds": 223.662221
+        },
+        {
+          "from": "2026-11-04T10:58:15.910073332-05:00",
+          "to": "2026-11-04T11:01:59.911568436-05:00",
+          "seconds": 224.001495
+        },
+        {
+          "from": "2026-11-04T11:01:59.911568436-05:00",
+          "to": "2026-11-04T11:05:44.68724959-05:00",
+          "seconds": 224.775681
+        },
+        {
+          "from": "2026-11-04T11:05:44.68724959-05:00",
+          "to": "2026-11-04T11:09:21.159879079-05:00",
+          "seconds": 216.47263
+        },
+        {
+          "from": "2026-11-04T11:09:21.159879079-05:00",
+          "to": "2026-11-04T11:12:58.344968758-05:00",
+          "seconds": 217.185089
+        },
+        {
+          "from": "2026-11-04T11:12:58.344968758-05:00",
+          "to": "2026-11-04T11:16:38.469993577-05:00",
+          "seconds": 220.125025
+        },
+        {
+          "from": "2026-11-04T11:16:38.469993577-05:00",
+          "to": "2026-11-04T11:20:31.916583776-05:00",
+          "seconds": 233.44659
+        },
+        {
+          "from": "2026-11-04T11:20:31.916583776-05:00",
+          "to": "2026-11-04T11:26:22.540839295-05:00",
+          "seconds": 350.624256
+        },
+        {
+          "from": "2026-11-04T11:26:22.540839295-05:00",
+          "to": "2026-11-04T11:30:04.490878888-05:00",
+          "seconds": 221.950039
+        },
+        {
+          "from": "2026-11-04T11:30:04.490878888-05:00",
+          "to": "2026-11-04T11:33:47.232442108-05:00",
+          "seconds": 222.741564
+        },
+        {
+          "from": "2026-11-04T11:33:47.232442108-05:00",
+          "to": "2026-11-04T11:37:46.562374439-05:00",
+          "seconds": 239.329932
+        },
+        {
+          "from": "2026-11-04T11:37:46.562374439-05:00",
+          "to": "2026-11-04T11:41:43.147578646-05:00",
+          "seconds": 236.585204
+        },
+        {
+          "from": "2026-11-04T11:41:43.147578646-05:00",
+          "to": "2026-11-04T11:45:37.75219801-05:00",
+          "seconds": 234.60462
+        },
+        {
+          "from": "2026-11-04T11:45:37.75219801-05:00",
+          "to": "2026-11-04T11:49:44.302931993-05:00",
+          "seconds": 246.550733
+        },
+        {
+          "from": "2026-11-04T11:49:44.302931993-05:00",
+          "to": "2026-11-04T11:53:41.029938967-05:00",
+          "seconds": 236.727007
+        },
+        {
+          "from": "2026-11-04T11:53:41.029938967-05:00",
+          "to": "2026-11-04T11:57:43.465662747-05:00",
+          "seconds": 242.435724
+        },
+        {
+          "from": "2026-11-04T11:57:43.465662747-05:00",
+          "to": "2026-11-04T12:02:31.737327946-05:00",
+          "seconds": 288.271665
+        },
+        {
+          "from": "2026-11-04T12:02:31.737327946-05:00",
+          "to": "2026-11-04T12:06:42.823012206-05:00",
+          "seconds": 251.085685
+        },
+        {
+          "from": "2026-11-04T12:06:42.823012206-05:00",
+          "to": "2026-11-04T12:10:30.843544021-05:00",
+          "seconds": 228.020532
+        },
+        {
+          "from": "2026-11-04T12:10:30.843544021-05:00",
+          "to": "2026-11-04T12:14:36.994517955-05:00",
+          "seconds": 246.150973
+        },
+        {
+          "from": "2026-11-04T12:14:36.994517955-05:00",
+          "to": "2026-11-04T12:18:39.832535355-05:00",
+          "seconds": 242.838018
+        },
+        {
+          "from": "2026-11-04T12:18:39.832535355-05:00",
+          "to": "2026-11-04T12:22:39.190676398-05:00",
+          "seconds": 239.358141
+        },
+        {
+          "from": "2026-11-04T12:22:39.190676398-05:00",
+          "to": "2026-11-04T12:26:27.941354463-05:00",
+          "seconds": 228.750678
+        },
+        {
+          "from": "2026-11-04T12:26:27.941354463-05:00",
+          "to": "2026-11-04T12:30:18.674274365-05:00",
+          "seconds": 230.73292
+        },
+        {
+          "from": "2026-11-04T12:30:18.674274365-05:00",
+          "to": "2026-11-04T12:33:56.536811685-05:00",
+          "seconds": 217.862537
+        },
+        {
+          "from": "2026-11-04T12:33:56.536811685-05:00",
+          "to": "2026-11-04T12:37:38.612416521-05:00",
+          "seconds": 222.075605
+        },
+        {
+          "from": "2026-11-04T12:37:38.612416521-05:00",
+          "to": "2026-11-04T12:41:21.70827688-05:00",
+          "seconds": 223.09586
+        },
+        {
+          "from": "2026-11-04T12:41:21.70827688-05:00",
+          "to": "2026-11-04T12:45:14.560598245-05:00",
+          "seconds": 232.852322
+        },
+        {
+          "from": "2026-11-04T12:45:14.560598245-05:00",
+          "to": "2026-11-04T12:48:59.690345137-05:00",
+          "seconds": 225.129747
+        },
+        {
+          "from": "2026-11-04T12:48:59.690345137-05:00",
+          "to": "2026-11-04T12:52:45.914248155-05:00",
+          "seconds": 226.223903
+        },
+        {
+          "from": "2026-11-04T12:52:45.914248155-05:00",
+          "to": "2026-11-04T12:56:28.229300727-05:00",
+          "seconds": 222.315052
+        },
+        {
+          "from": "2026-11-04T12:56:28.229300727-05:00",
+          "to": "2026-11-04T13:00:16.722376792-05:00",
+          "seconds": 228.493076
+        },
+        {
+          "from": "2026-11-04T13:00:16.722376792-05:00",
+          "to": "2026-11-04T13:04:08.766715034-05:00",
+          "seconds": 232.044339
+        },
+        {
+          "from": "2026-11-04T13:04:08.766715034-05:00",
+          "to": "2026-11-04T13:08:05.765781401-05:00",
+          "seconds": 236.999066
+        },
+        {
+          "from": "2026-11-04T13:08:05.765781401-05:00",
+          "to": "2026-11-04T13:11:56.291464129-05:00",
+          "seconds": 230.525683
+        },
+        {
+          "from": "2026-11-04T13:11:56.291464129-05:00",
+          "to": "2026-11-04T13:15:39.31728736-05:00",
+          "seconds": 223.025823
+        },
+        {
+          "from": "2026-11-04T13:15:39.31728736-05:00",
+          "to": "2026-11-04T13:19:25.582879324-05:00",
+          "seconds": 226.265592
+        },
+        {
+          "from": "2026-11-04T13:19:25.582879324-05:00",
+          "to": "2026-11-04T13:23:06.926711086-05:00",
+          "seconds": 221.343832
+        },
+        {
+          "from": "2026-11-04T13:23:06.926711086-05:00",
+          "to": "2026-11-04T13:26:53.282300588-05:00",
+          "seconds": 226.355589
+        },
+        {
+          "from": "2026-11-04T13:26:53.282300588-05:00",
+          "to": "2026-11-04T13:30:32.674553592-05:00",
+          "seconds": 219.392253
+        },
+        {
+          "from": "2026-11-04T13:30:32.674553592-05:00",
+          "to": "2026-11-04T13:34:25.867534667-05:00",
+          "seconds": 233.192981
+        },
+        {
+          "from": "2026-11-04T13:34:25.867534667-05:00",
+          "to": "2026-11-04T13:38:10.590402267-05:00",
+          "seconds": 224.722868
+        },
+        {
+          "from": "2026-11-04T13:38:10.590402267-05:00",
+          "to": "2026-11-04T13:41:54.45788047-05:00",
+          "seconds": 223.867478
+        },
+        {
+          "from": "2026-11-04T13:41:54.45788047-05:00",
+          "to": "2026-11-04T13:45:42.997576918-05:00",
+          "seconds": 228.539696
+        },
+        {
+          "from": "2026-11-04T13:45:42.997576918-05:00",
+          "to": "2026-11-04T13:49:30.664214823-05:00",
+          "seconds": 227.666638
+        },
+        {
+          "from": "2026-11-04T13:49:30.664214823-05:00",
+          "to": "2026-11-04T13:53:16.785937729-05:00",
+          "seconds": 226.121723
+        },
+        {
+          "from": "2026-11-04T13:53:16.785937729-05:00",
+          "to": "2026-11-04T13:56:55.380742867-05:00",
+          "seconds": 218.594805
+        },
+        {
+          "from": "2026-11-04T13:56:55.380742867-05:00",
+          "to": "2026-11-04T14:00:48.607549295-05:00",
+          "seconds": 233.226807
+        },
+        {
+          "from": "2026-11-04T14:00:48.607549295-05:00",
+          "to": "2026-11-04T14:14:23.585648563-05:00",
+          "seconds": 814.978099
+        },
+        {
+          "from": "2026-11-04T14:14:23.585648563-05:00",
+          "to": "2026-11-04T14:17:53.044827433-05:00",
+          "seconds": 209.459179
+        },
+        {
+          "from": "2026-11-04T14:17:53.044827433-05:00",
+          "to": "2026-11-04T14:21:23.6396427-05:00",
+          "seconds": 210.594815
+        },
+        {
+          "from": "2026-11-04T14:21:23.6396427-05:00",
+          "to": "2026-11-04T14:24:48.581536571-05:00",
+          "seconds": 204.941894
+        },
+        {
+          "from": "2026-11-04T14:24:48.581536571-05:00",
+          "to": "2026-11-04T14:28:18.909922839-05:00",
+          "seconds": 210.328386
+        },
+        {
+          "from": "2026-11-04T14:28:18.909922839-05:00",
+          "to": "2026-11-04T14:31:46.49893022-05:00",
+          "seconds": 207.589008
+        },
+        {
+          "from": "2026-11-04T14:31:46.49893022-05:00",
+          "to": "2026-11-04T14:35:12.054949562-05:00",
+          "seconds": 205.556019
+        },
+        {
+          "from": "2026-11-04T14:35:12.054949562-05:00",
+          "to": "2026-11-04T14:38:39.921767724-05:00",
+          "seconds": 207.866818
+        },
+        {
+          "from": "2026-11-04T14:38:39.921767724-05:00",
+          "to": "2026-11-04T14:42:06.84701844-05:00",
+          "seconds": 206.925251
+        },
+        {
+          "from": "2026-11-04T14:42:06.84701844-05:00",
+          "to": "2026-11-04T14:45:36.327105951-05:00",
+          "seconds": 209.480087
+        },
+        {
+          "from": "2026-11-04T14:45:36.327105951-05:00",
+          "to": "2026-11-04T14:49:04.887595697-05:00",
+          "seconds": 208.56049
+        },
+        {
+          "from": "2026-11-04T14:49:04.887595697-05:00",
+          "to": "2026-11-04T14:52:36.340117423-05:00",
+          "seconds": 211.452522
+        },
+        {
+          "from": "2026-11-04T14:52:36.340117423-05:00",
+          "to": "2026-11-04T14:56:07.961118793-05:00",
+          "seconds": 211.621001
+        },
+        {
+          "from": "2026-11-04T14:56:07.961118793-05:00",
+          "to": "2026-11-04T14:59:38.868767339-05:00",
+          "seconds": 210.907649
+        },
+        {
+          "from": "2026-11-04T14:59:38.868767339-05:00",
+          "to": "2026-11-04T15:03:11.547247376-05:00",
+          "seconds": 212.67848
+        },
+        {
+          "from": "2026-11-04T15:03:11.547247376-05:00",
+          "to": "2026-11-04T15:06:41.250692401-05:00",
+          "seconds": 209.703445
+        },
+        {
+          "from": "2026-11-04T15:06:41.250692401-05:00",
+          "to": "2026-11-04T15:10:19.670611645-05:00",
+          "seconds": 218.419919
+        },
+        {
+          "from": "2026-11-04T15:10:19.670611645-05:00",
+          "to": "2026-11-04T15:14:25.682190336-05:00",
+          "seconds": 246.011579
+        },
+        {
+          "from": "2026-11-04T15:14:25.682190336-05:00",
+          "to": "2026-11-04T15:28:29.75144805-05:00",
+          "seconds": 844.069258
+        },
+        {
+          "from": "2026-11-04T15:28:29.75144805-05:00",
+          "to": "2026-11-04T15:31:39.887616272-05:00",
+          "seconds": 190.136168
+        },
+        {
+          "from": "2026-11-04T15:31:39.887616272-05:00",
+          "to": "2026-11-04T15:35:00.219024512-05:00",
+          "seconds": 200.331408
+        },
+        {
+          "from": "2026-11-04T15:35:00.219024512-05:00",
+          "to": "2026-11-04T15:38:15.939459178-05:00",
+          "seconds": 195.720435
+        },
+        {
+          "from": "2026-11-04T15:38:15.939459178-05:00",
+          "to": "2026-11-04T15:41:31.642049339-05:00",
+          "seconds": 195.70259
+        },
+        {
+          "from": "2026-11-04T15:41:31.642049339-05:00",
+          "to": "2026-11-04T15:44:47.239195031-05:00",
+          "seconds": 195.597146
+        },
+        {
+          "from": "2026-11-04T15:44:47.239195031-05:00",
+          "to": "2026-11-04T15:48:01.427536696-05:00",
+          "seconds": 194.188341
+        },
+        {
+          "from": "2026-11-04T15:48:01.427536696-05:00",
+          "to": "2026-11-04T15:51:20.613084351-05:00",
+          "seconds": 199.185548
+        },
+        {
+          "from": "2026-11-04T15:51:20.613084351-05:00",
+          "to": "2026-11-04T15:54:38.688692089-05:00",
+          "seconds": 198.075608
+        },
+        {
+          "from": "2026-11-04T15:54:38.688692089-05:00",
+          "to": "2026-11-04T15:57:48.168425711-05:00",
+          "seconds": 189.479733
+        }
+      ]
+    },
+    "options": {
+      "candidate_input_rounds": 99,
+      "decision_reasons": {
+        "Quote spread exceeds the policy threshold.": 211,
+        "premium_above_cap": 185
+      },
+      "quote_age_range_seconds": [
+        0.066333,
+        21.423714
+      ],
+      "fill_count": 0,
+      "lifecycle_count": 0,
+      "multiplier": 100,
+      "feed": "indicative",
+      "lifetime_commitments": 0
+    },
+    "risk_observations": {
+      "minimum_cash": "103288.59",
+      "max_gross_conservative_exposure": "0",
+      "unknown_position_observations": 0,
+      "known_lineage_quantity_pending_observations": 0,
+      "unknown_order_observations_against_prior_lineage": 0,
+      "short_position_observations": 0,
+      "account_blocked_observations": 0,
+      "duplicate_intent_rows": 0
+    },
+    "cloud_diagnostic_paths": [
+      "exchange/codex/research/2026-11-04/cloud-cancellation-v1.json",
+      "exchange/codex/research/2026-11-04/cloud-cancellation-v2.json"
+    ],
+    "limits": [
+      "No exact official close; prior-day value is an observed reference.",
+      "Fees and external cash flows were not independently reconciled; the difference from prior observation is not attributed to trading, fees or transfers.",
+      "Account, positions and sleeves are sequential valuations, not guaranteed simultaneous estimates.",
+      "No positions at observed times does not prove uninterrupted inventory state or future exit reliability; sampled stop snapshots do not guarantee continuous protection.",
+      "Natural handoffs and a cancelled trading step left measured gaps; verified continuation does not establish root-cause resolution.",
+      "Free indicative option quotes are modified reference prices; PAPER does not establish executable live prices or liquidity.",
+      "No-fill and short-window results cannot establish strategy efficacy. Account start dates, instruments and risk differ from peer account."
+    ],
+    "method_source_sha256": "8e766778c4e88c81f7bfe55501134983dc444958594a133ec891678f6e1f1de8",
+    "local_resource_limits_mib": 512,
+    "stock_entry_intents": [
+      {
+        "at": "2026-11-04T15:16:23.877666+00:00",
+        "symbol": "MSFT",
+        "sleeve": "intraday",
+        "side": "buy",
+        "quantity": "29",
+        "quantity_unit": "shares",
+        "limit": "554.91",
+        "signal": {
+          "price": 554.12,
+          "reason": "30m opening-range breakout; volume 5.03x; close above session VWAP 550.9985",
+          "score": 4.6468862,
+          "signal_time": "2026-11-04T10:15:00-05:00",
+          "stop_pct": 0.015,
+          "symbol": "MSFT",
+          "volume_ratio": 5.03151228,
+          "vwap": 550.9985155
+        },
+        "strategy": {
+          "params": {
+            "opening_range_minutes": 30,
+            "stop_pct": 0.015,
+            "top_n": 3,
+            "volume_ratio": 1.5
+          },
+          "stage": "baseline_paper_experiment"
+        },
+        "config_hash": "ce067a951015d88a4c3454f8dcdcd1c8e8702b0f817aee267cb64730e6f0d90b",
+        "source_hash": "620986009f90fbdb59982b28073dab3000d07433cec0e33cf2dacee872496e06",
+        "sizing_pass": true,
+        "expected_quantity": 29,
+        "expected_limit": "554.91",
+        "decision_minus_quote_seconds": -0.181215
+      },
+      {
+        "at": "2026-11-04T15:18:36.032393+00:00",
+        "symbol": "GOOGL",
+        "sleeve": "intraday",
+        "side": "buy",
+        "quantity": "55",
+        "quantity_unit": "shares",
+        "limit": "295.82",
+        "signal": {
+          "price": 295.71,
+          "reason": "30m opening-range breakout; volume 2.29x; close above session VWAP 290.7001",
+          "score": 4.15675836,
+          "signal_time": "2026-11-04T10:15:00-05:00",
+          "stop_pct": 0.015,
+          "symbol": "GOOGL",
+          "volume_ratio": 2.28751033,
+          "vwap": 290.70007365
+        },
+        "strategy": {
+          "params": {
+            "opening_range_minutes": 30,
+            "stop_pct": 0.015,
+            "top_n": 3,
+            "volume_ratio": 1.5
+          },
+          "stage": "baseline_paper_experiment"
+        },
+        "config_hash": "ce067a951015d88a4c3454f8dcdcd1c8e8702b0f817aee267cb64730e6f0d90b",
+        "source_hash": "620986009f90fbdb59982b28073dab3000d07433cec0e33cf2dacee872496e06",
+        "sizing_pass": true,
+        "expected_quantity": 55,
+        "expected_limit": "295.82",
+        "decision_minus_quote_seconds": -0.182414
+      },
+      {
+        "at": "2026-11-04T15:20:39.857624+00:00",
+        "symbol": "AAPL",
+        "sleeve": "intraday",
+        "side": "buy",
+        "quantity": "46",
+        "quantity_unit": "shares",
+        "limit": "353.65",
+        "signal": {
+          "price": 353.03,
+          "reason": "30m opening-range breakout; volume 2.73x; close above session VWAP 349.6706",
+          "score": 3.05910085,
+          "signal_time": "2026-11-04T10:15:00-05:00",
+          "stop_pct": 0.015,
+          "symbol": "AAPL",
+          "volume_ratio": 2.72877695,
+          "vwap": 349.67063649
+        },
+        "strategy": {
+          "params": {
+            "opening_range_minutes": 30,
+            "stop_pct": 0.015,
+            "top_n": 3,
+            "volume_ratio": 1.5
+          },
+          "stage": "baseline_paper_experiment"
+        },
+        "config_hash": "ce067a951015d88a4c3454f8dcdcd1c8e8702b0f817aee267cb64730e6f0d90b",
+        "source_hash": "620986009f90fbdb59982b28073dab3000d07433cec0e33cf2dacee872496e06",
+        "sizing_pass": true,
+        "expected_quantity": 46,
+        "expected_limit": "353.65",
+        "decision_minus_quote_seconds": 0.121059
+      },
+      {
+        "at": "2026-11-04T15:33:57.254600+00:00",
+        "symbol": "TSLA",
+        "sleeve": "intraday",
+        "side": "buy",
+        "quantity": "41",
+        "quantity_unit": "shares",
+        "limit": "389.5",
+        "signal": {
+          "price": 388.84,
+          "reason": "30m opening-range breakout; volume 1.82x; close above session VWAP 383.4270",
+          "score": 3.19336294,
+          "signal_time": "2026-11-04T10:30:00-05:00",
+          "stop_pct": 0.015,
+          "symbol": "TSLA",
+          "volume_ratio": 1.82225295,
+          "vwap": 383.42704141
+        },
+        "strategy": {
+          "params": {
+            "opening_range_minutes": 30,
+            "stop_pct": 0.015,
+            "top_n": 3,
+            "volume_ratio": 1.5
+          },
+          "stage": "baseline_paper_experiment"
+        },
+        "config_hash": "ce067a951015d88a4c3454f8dcdcd1c8e8702b0f817aee267cb64730e6f0d90b",
+        "source_hash": "620986009f90fbdb59982b28073dab3000d07433cec0e33cf2dacee872496e06",
+        "sizing_pass": true,
+        "expected_quantity": 41,
+        "expected_limit": "389.50",
+        "decision_minus_quote_seconds": -0.118134
+      },
+      {
+        "at": "2026-11-04T16:20:47.758244+00:00",
+        "symbol": "JPM",
+        "sleeve": "intraday",
+        "side": "buy",
+        "quantity": "46",
+        "quantity_unit": "shares",
+        "limit": "350.7",
+        "signal": {
+          "price": 350.49,
+          "reason": "30m opening-range breakout; volume 3.07x; close above session VWAP 346.5750",
+          "score": 3.87018058,
+          "signal_time": "2026-11-04T11:15:00-05:00",
+          "stop_pct": 0.015,
+          "symbol": "JPM",
+          "volume_ratio": 3.07421353,
+          "vwap": 346.57499906
+        },
+        "strategy": {
+          "params": {
+            "opening_range_minutes": 30,
+            "stop_pct": 0.015,
+            "top_n": 3,
+            "volume_ratio": 1.5
+          },
+          "stage": "baseline_paper_experiment"
+        },
+        "config_hash": "ce067a951015d88a4c3454f8dcdcd1c8e8702b0f817aee267cb64730e6f0d90b",
+        "source_hash": "620986009f90fbdb59982b28073dab3000d07433cec0e33cf2dacee872496e06",
+        "sizing_pass": true,
+        "expected_quantity": 46,
+        "expected_limit": "350.70",
+        "decision_minus_quote_seconds": 0.540338
+      }
+    ],
+    "stock_entry_status": "5 not_submitted / fresh_pre_submit_check_failed; no broker order response or FILL. Detailed final-check predicate unavailable; do not label all as stale quotes.",
+    "operational_recovery": {
+      "successful_natural_cycles": 13,
+      "verified": true,
+      "root_cause_resolved": false,
+      "source_event_cutoff": 67612,
+      "first_cycle_final_persistence": [
+        {
+          "event": 67447,
+          "payload": {
+            "archive_complete": true,
+            "bundle_persistence_seconds": 227.671254,
+            "core_persistence_seconds": 17.486172,
+            "cycle_including_persistence_seconds": 254.81047,
+            "final_bundle_seconds": 105.005043,
+            "first_after_restore": true,
+            "persistence_returned_at": "2026-11-04T20:30:24.222786+00:00",
+            "restore_version": "2026-10-23.1",
+            "started_at": "2026-11-04T20:26:09.412578+00:00"
+          }
+        }
+      ]
+    },
+    "local_peak_memory_mib": {
+      "restore": 115.44,
+      "daily_analysis": 362.02
+    },
+    "signal_occurrences": {
+      "selected": 119,
+      "persisted_not_submitted": 5,
+      "duplicate_signals_suppressed": 113,
+      "pre_intent_spread_rejections": 1,
+      "independent_opportunities": false
+    }
+  },
+  "replies": []
+}
