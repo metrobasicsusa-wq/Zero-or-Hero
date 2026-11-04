@@ -4623,33 +4623,11 @@
   },
   "wk-trend-1000": {
    "start": 1000.0,
-   "cash": 670.0,
+   "cash": 1665.0,
    "round": 2,
    "heroes": 0,
    "zeros": 1,
-   "open": [
-    {
-     "tid": "2026W45-82f44a",
-     "kind": "weekly",
-     "sym": "HD261106C00342500",
-     "asset": "option",
-     "und": "HD",
-     "qty": 1,
-     "cost": 3.3,
-     "paid": 330.0,
-     "opened": "2026-11-02 10:00",
-     "why": "随机挑中 HD，20 日涨；买 11-06 到期看涨 342.5，3 倍止盈，到期前一天 15:50 卖；一半 $166.67 买不起一张，押上账本买 1 张",
-     "expiry": "2026-11-06",
-     "exit_day": "2026-11-05",
-     "exit_at": "15:50",
-     "trail": false,
-     "best_bid": 9.48,
-     "expiry_out": null,
-     "take_x": 3,
-     "take": 9.9,
-     "take_cid": "sl-wk-trend-1000-2026W45-82f44a-t7c62"
-    }
-   ],
+   "open": [],
    "closed": [
     {
      "tid": "fc29b774a1",
@@ -4813,6 +4791,33 @@
      "how": "2026-10-29 15:50 到时卖出",
      "closed": "2026-10-29 15:50",
      "ret": -0.984
+    },
+    {
+     "tid": "2026W45-82f44a",
+     "kind": "weekly",
+     "sym": "HD261106C00342500",
+     "asset": "option",
+     "und": "HD",
+     "qty": 1,
+     "cost": 3.3,
+     "paid": 330.0,
+     "opened": "2026-11-02 10:00",
+     "why": "随机挑中 HD，20 日涨；买 11-06 到期看涨 342.5，3 倍止盈，到期前一天 15:50 卖；一半 $166.67 买不起一张，押上账本买 1 张",
+     "expiry": "2026-11-06",
+     "exit_day": "2026-11-05",
+     "exit_at": "15:50",
+     "trail": false,
+     "best_bid": 9.48,
+     "expiry_out": null,
+     "take_x": 3,
+     "take": 9.9,
+     "take_cid": "sl-wk-trend-1000-2026W45-82f44a-t7c62",
+     "state": "closed",
+     "exit_price": 9.95,
+     "proceeds": 995.0,
+     "how": "3 倍止盈（券商挂单成交）",
+     "closed": "2026-11-04 12:30",
+     "ret": 2.015
     }
    ],
    "slots": {
@@ -4821,7 +4826,7 @@
     "2026-W44": "2026-10-26T10:00-04:00",
     "2026-W45": "2026-11-02T10:00-05:00"
    },
-   "best": 1000.0,
+   "best": 1665.0,
    "created": null,
    "rounds": [
     {
@@ -8572,7 +8577,7 @@
      "exit_day": "2026-11-09",
      "exit_at": "15:30",
      "trail": false,
-     "best_bid": 14.82,
+     "best_bid": 15.14,
      "expiry_out": null
     }
    ],
