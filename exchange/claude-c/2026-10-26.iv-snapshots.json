@@ -1,0 +1,923 @@
+{
+ "date": "2026-10-26",
+ "open": {
+  "label": "open",
+  "taken_at": "2026-10-26T09:32:24-04:00",
+  "source": "Moomoo OpenD get_market_snapshot on the ATM pair of the nearest expiry",
+  "symbols": {
+   "SPY": {
+    "underlying_last": 761.86,
+    "expiry": "2026-10-26",
+    "days_to_expiry": 0,
+    "atm_strike": 762.0,
+    "legs": [
+     {
+      "code": "US.SPY261026C762000",
+      "last_price": 1.83,
+      "bid_price": 1.83,
+      "ask_price": 1.84,
+      "volume": 4206.0,
+      "option_open_interest": 4965,
+      "option_implied_volatility": 25.426,
+      "option_delta": 0.506210344,
+      "option_type": "CALL"
+     },
+     {
+      "code": "US.SPY261026P762000",
+      "last_price": 1.89,
+      "bid_price": 1.89,
+      "ask_price": 1.9,
+      "volume": 5501.0,
+      "option_open_interest": 10354,
+      "option_implied_volatility": 19.186,
+      "option_delta": -0.49273632,
+      "option_type": "PUT"
+     }
+    ]
+   },
+   "QQQ": {
+    "underlying_last": 706.51,
+    "expiry": "2026-10-26",
+    "days_to_expiry": 0,
+    "atm_strike": 707.0,
+    "legs": [
+     {
+      "code": "US.QQQ261026C707000",
+      "last_price": 2.81,
+      "bid_price": 2.8,
+      "ask_price": 2.83,
+      "volume": 2537.0,
+      "option_open_interest": 1983,
+      "option_implied_volatility": 38.309,
+      "option_delta": 0.457634411,
+      "option_type": "CALL"
+     },
+     {
+      "code": "US.QQQ261026P707000",
+      "last_price": 3.12,
+      "bid_price": 3.12,
+      "ask_price": 3.15,
+      "volume": 2143.0,
+      "option_open_interest": 1914,
+      "option_implied_volatility": 37.761,
+      "option_delta": -0.543114718,
+      "option_type": "PUT"
+     }
+    ]
+   },
+   "NVDA": {
+    "underlying_last": 213.4678,
+    "expiry": "2026-10-26",
+    "days_to_expiry": 0,
+    "atm_strike": 212.5,
+    "legs": [
+     {
+      "code": "US.NVDA261026C212500",
+      "last_price": 1.93,
+      "bid_price": 1.92,
+      "ask_price": 1.96,
+      "volume": 3155.0,
+      "option_open_interest": 5599,
+      "option_implied_volatility": 52.438,
+      "option_delta": 0.630994777,
+      "option_type": "CALL"
+     },
+     {
+      "code": "US.NVDA261026P212500",
+      "last_price": 0.92,
+      "bid_price": 0.9,
+      "ask_price": 0.94,
+      "volume": 1496.0,
+      "option_open_interest": 6399,
+      "option_implied_volatility": 60.754,
+      "option_delta": -0.385606484,
+      "option_type": "PUT"
+     }
+    ]
+   },
+   "TSLA": {
+    "underlying_last": 387.18,
+    "expiry": "2026-10-26",
+    "days_to_expiry": 0,
+    "atm_strike": 387.5,
+    "legs": [
+     {
+      "code": "US.TSLA261026C387500",
+      "last_price": 3.52,
+      "bid_price": 3.4,
+      "ask_price": 3.6,
+      "volume": 5700.0,
+      "option_open_interest": 1947,
+      "option_implied_volatility": 82.793,
+      "option_delta": 0.473012268,
+      "option_type": "CALL"
+     },
+     {
+      "code": "US.TSLA261026P387500",
+      "last_price": 3.8,
+      "bid_price": 3.8,
+      "ask_price": 3.9,
+      "volume": 897.0,
+      "option_open_interest": 829,
+      "option_implied_volatility": 82.731,
+      "option_delta": -0.527038951,
+      "option_type": "PUT"
+     }
+    ]
+   },
+   "META": {
+    "underlying_last": 632.8733,
+    "expiry": "2026-10-26",
+    "days_to_expiry": 0,
+    "atm_strike": 632.5,
+    "legs": [
+     {
+      "code": "US.META261026C632500",
+      "last_price": 5.0,
+      "bid_price": 4.65,
+      "ask_price": 5.55,
+      "volume": 6.0,
+      "option_open_interest": 42,
+      "option_implied_volatility": 60.981,
+      "option_delta": 0.613151718,
+      "option_type": "CALL"
+     },
+     {
+      "code": "US.META261026P632500",
+      "last_price": 5.01,
+      "bid_price": 4.8,
+      "ask_price": 5.35,
+      "volume": 320.0,
+      "option_open_interest": 220,
+      "option_implied_volatility": 85.742,
+      "option_delta": -0.416706077,
+      "option_type": "PUT"
+     }
+    ]
+   },
+   "AAPL": {
+    "underlying_last": 342.46,
+    "expiry": "2026-10-26",
+    "days_to_expiry": 0,
+    "atm_strike": 342.5,
+    "legs": [
+     {
+      "code": "US.AAPL261026C342500",
+      "last_price": 1.51,
+      "bid_price": 1.51,
+      "ask_price": 1.58,
+      "volume": 766.0,
+      "option_open_interest": 955,
+      "option_implied_volatility": 32.407,
+      "option_delta": 0.561409753,
+      "option_type": "CALL"
+     },
+     {
+      "code": "US.AAPL261026P342500",
+      "last_price": 1.48,
+      "bid_price": 1.47,
+      "ask_price": 1.63,
+      "volume": 2114.0,
+      "option_open_interest": 2516,
+      "option_implied_volatility": 47.087,
+      "option_delta": -0.456327767,
+      "option_type": "PUT"
+     }
+    ]
+   },
+   "AMD": {
+    "underlying_last": 521.99,
+    "expiry": "2026-10-26",
+    "days_to_expiry": 0,
+    "atm_strike": 522.5,
+    "legs": [
+     {
+      "code": "US.AMD261026C522500",
+      "last_price": 4.9,
+      "bid_price": 4.5,
+      "ask_price": 5.05,
+      "volume": 194.0,
+      "option_open_interest": 469,
+      "option_implied_volatility": 93.501,
+      "option_delta": 0.47556391,
+      "option_type": "CALL"
+     },
+     {
+      "code": "US.AMD261026P522500",
+      "last_price": 4.8,
+      "bid_price": 5.05,
+      "ask_price": 5.3,
+      "volume": 42.0,
+      "option_open_interest": 227,
+      "option_implied_volatility": 74.734,
+      "option_delta": -0.532914117,
+      "option_type": "PUT"
+     }
+    ]
+   },
+   "MSFT": {
+    "underlying_last": 526.645,
+    "expiry": "2026-10-26",
+    "days_to_expiry": 0,
+    "atm_strike": 527.5,
+    "legs": [
+     {
+      "code": "US.MSFT261026C527500",
+      "last_price": 1.9,
+      "bid_price": 1.75,
+      "ask_price": 1.9,
+      "volume": 350.0,
+      "option_open_interest": 1531,
+      "option_implied_volatility": 46.295,
+      "option_delta": 0.391346657,
+      "option_type": "CALL"
+     },
+     {
+      "code": "US.MSFT261026P527500",
+      "last_price": 3.6,
+      "bid_price": 2.78,
+      "ask_price": 3.2,
+      "volume": 66.0,
+      "option_open_interest": 595,
+      "option_implied_volatility": 34.247,
+      "option_delta": -0.646951612,
+      "option_type": "PUT"
+     }
+    ]
+   },
+   "GOOGL": {
+    "underlying_last": 319.625,
+    "expiry": "2026-10-26",
+    "days_to_expiry": 0,
+    "atm_strike": 320.0,
+    "legs": [
+     {
+      "code": "US.GOOGL261026C320000",
+      "last_price": 1.43,
+      "bid_price": 1.37,
+      "ask_price": 1.43,
+      "volume": 506.0,
+      "option_open_interest": 391,
+      "option_implied_volatility": 43.447,
+      "option_delta": 0.489982963,
+      "option_type": "CALL"
+     },
+     {
+      "code": "US.GOOGL261026P320000",
+      "last_price": 1.77,
+      "bid_price": 1.76,
+      "ask_price": 1.91,
+      "volume": 577.0,
+      "option_open_interest": 3178,
+      "option_implied_volatility": 50.677,
+      "option_delta": -0.507891359,
+      "option_type": "PUT"
+     }
+    ]
+   },
+   "AMZN": {
+    "underlying_last": 248.495,
+    "expiry": "2026-10-26",
+    "days_to_expiry": 0,
+    "atm_strike": 247.5,
+    "legs": [
+     {
+      "code": "US.AMZN261026C247500",
+      "last_price": 1.98,
+      "bid_price": 1.9,
+      "ask_price": 2.04,
+      "volume": 246.0,
+      "option_open_interest": 2435,
+      "option_implied_volatility": 61.991,
+      "option_delta": 0.568116639,
+      "option_type": "CALL"
+     },
+     {
+      "code": "US.AMZN261026P247500",
+      "last_price": 0.96,
+      "bid_price": 0.96,
+      "ask_price": 1.04,
+      "volume": 478.0,
+      "option_open_interest": 2507,
+      "option_implied_volatility": 47.408,
+      "option_delta": -0.413085806,
+      "option_type": "PUT"
+     }
+    ]
+   },
+   "AVGO": {
+    "underlying_last": 324.04,
+    "expiry": "2026-10-26",
+    "days_to_expiry": 0,
+    "atm_strike": 325.0,
+    "legs": [
+     {
+      "code": "US.AVGO261026C325000",
+      "last_price": 1.87,
+      "bid_price": 1.79,
+      "ask_price": 1.9,
+      "volume": 298.0,
+      "option_open_interest": 652,
+      "option_implied_volatility": 56.025,
+      "option_delta": 0.487280206,
+      "option_type": "CALL"
+     },
+     {
+      "code": "US.AVGO261026P325000",
+      "last_price": 2.83,
+      "bid_price": 2.68,
+      "ask_price": 2.9,
+      "volume": 72.0,
+      "option_open_interest": 543,
+      "option_implied_volatility": 73.762,
+      "option_delta": -0.507967198,
+      "option_type": "PUT"
+     }
+    ]
+   },
+   "MU": {
+    "underlying_last": 891.69,
+    "expiry": "2026-10-26",
+    "days_to_expiry": 0,
+    "atm_strike": 890.0,
+    "legs": [
+     {
+      "code": "US.MU261026C890000",
+      "last_price": 9.6,
+      "bid_price": 9.5,
+      "ask_price": 9.7,
+      "volume": 1216.0,
+      "option_open_interest": 875,
+      "option_implied_volatility": 111.265,
+      "option_delta": 0.468600135,
+      "option_type": "CALL"
+     },
+     {
+      "code": "US.MU261026P890000",
+      "last_price": 8.19,
+      "bid_price": 8.1,
+      "ask_price": 8.2,
+      "volume": 264.0,
+      "option_open_interest": 927,
+      "option_implied_volatility": 71.207,
+      "option_delta": -0.554641749,
+      "option_type": "PUT"
+     }
+    ]
+   },
+   "ORCL": {
+    "underlying_last": 126.275,
+    "expiry": "2026-10-30",
+    "days_to_expiry": 4,
+    "atm_strike": 126.0,
+    "legs": [
+     {
+      "code": "US.ORCL261030C126000",
+      "last_price": 4.85,
+      "bid_price": 4.7,
+      "ask_price": 5.5,
+      "volume": 10.0,
+      "option_open_interest": 480,
+      "option_implied_volatility": 91.926,
+      "option_delta": 0.515305867,
+      "option_type": "CALL"
+     },
+     {
+      "code": "US.ORCL261030P126000",
+      "last_price": 5.0,
+      "bid_price": 4.65,
+      "ask_price": 4.95,
+      "volume": 3.0,
+      "option_open_interest": 2766,
+      "option_implied_volatility": 88.352,
+      "option_delta": -0.48580342,
+      "option_type": "PUT"
+     }
+    ]
+   },
+   "PLTR": {
+    "underlying_last": 196.08,
+    "expiry": "2026-10-30",
+    "days_to_expiry": 4,
+    "atm_strike": 195.0,
+    "legs": [
+     {
+      "code": "US.PLTR261030C195000",
+      "last_price": 5.46,
+      "bid_price": 5.45,
+      "ask_price": 5.75,
+      "volume": 202.0,
+      "option_open_interest": 2443,
+      "option_implied_volatility": 56.073,
+      "option_delta": 0.55474221,
+      "option_type": "CALL"
+     },
+     {
+      "code": "US.PLTR261030P195000",
+      "last_price": 4.35,
+      "bid_price": 4.25,
+      "ask_price": 4.45,
+      "volume": 99.0,
+      "option_open_interest": 2252,
+      "option_implied_volatility": 61.692,
+      "option_delta": -0.448129262,
+      "option_type": "PUT"
+     }
+    ]
+   },
+   "JPM": {
+    "underlying_last": 334.195,
+    "expiry": "2026-10-30",
+    "days_to_expiry": 4,
+    "atm_strike": 335.0,
+    "legs": [
+     {
+      "code": "US.JPM261030C335000",
+      "last_price": 3.5,
+      "bid_price": 3.2,
+      "ask_price": 3.75,
+      "volume": 4.0,
+      "option_open_interest": 718,
+      "option_implied_volatility": 25.483,
+      "option_delta": 0.474035362,
+      "option_type": "CALL"
+     },
+     {
+      "code": "US.JPM261030P335000",
+      "last_price": 5.5374,
+      "bid_price": 3.3,
+      "ask_price": 5.1,
+      "volume": 0.0,
+      "option_open_interest": 433,
+      "option_implied_volatility": 26.468,
+      "option_delta": -0.525469232,
+      "option_type": "PUT"
+     }
+    ]
+   }
+  },
+  "market_state": "AFTERNOON"
+ },
+ "1000": {
+  "label": "1000",
+  "taken_at": "2026-10-26T10:00:26-04:00",
+  "source": "Moomoo OpenD get_market_snapshot on the ATM pair of the nearest expiry",
+  "symbols": {
+   "SPY": {
+    "underlying_last": 763.36,
+    "expiry": "2026-10-26",
+    "days_to_expiry": 0,
+    "atm_strike": 763.0,
+    "legs": [
+     {
+      "code": "US.SPY261026C763000",
+      "last_price": 1.81,
+      "bid_price": 1.8,
+      "ask_price": 1.81,
+      "volume": 68410.0,
+      "option_open_interest": 6798,
+      "option_implied_volatility": 20.127,
+      "option_delta": 0.504279705,
+      "option_type": "CALL"
+     },
+     {
+      "code": "US.SPY261026P763000",
+      "last_price": 1.44,
+      "bid_price": 1.45,
+      "ask_price": 1.46,
+      "volume": 48168.0,
+      "option_open_interest": 2801,
+      "option_implied_volatility": 20.035,
+      "option_delta": -0.495858765,
+      "option_type": "PUT"
+     }
+    ]
+   },
+   "QQQ": {
+    "underlying_last": 707.0085,
+    "expiry": "2026-10-26",
+    "days_to_expiry": 0,
+    "atm_strike": 707.0,
+    "legs": [
+     {
+      "code": "US.QQQ261026C707000",
+      "last_price": 2.32,
+      "bid_price": 2.31,
+      "ask_price": 2.33,
+      "volume": 20494.0,
+      "option_open_interest": 1983,
+      "option_implied_volatility": 30.028,
+      "option_delta": 0.481990777,
+      "option_type": "CALL"
+     },
+     {
+      "code": "US.QQQ261026P707000",
+      "last_price": 2.32,
+      "bid_price": 2.3,
+      "ask_price": 2.32,
+      "volume": 26859.0,
+      "option_open_interest": 1914,
+      "option_implied_volatility": 31.236,
+      "option_delta": -0.517271885,
+      "option_type": "PUT"
+     }
+    ]
+   },
+   "NVDA": {
+    "underlying_last": 214.77,
+    "expiry": "2026-10-26",
+    "days_to_expiry": 0,
+    "atm_strike": 215.0,
+    "legs": [
+     {
+      "code": "US.NVDA261026C215000",
+      "last_price": 0.91,
+      "bid_price": 0.9,
+      "ask_price": 0.92,
+      "volume": 62239.0,
+      "option_open_interest": 12238,
+      "option_implied_volatility": 48.636,
+      "option_delta": 0.472093179,
+      "option_type": "CALL"
+     },
+     {
+      "code": "US.NVDA261026P215000",
+      "last_price": 1.3,
+      "bid_price": 1.28,
+      "ask_price": 1.3,
+      "volume": 16687.0,
+      "option_open_interest": 2966,
+      "option_implied_volatility": 46.725,
+      "option_delta": -0.529304438,
+      "option_type": "PUT"
+     }
+    ]
+   },
+   "TSLA": {
+    "underlying_last": 394.2544,
+    "expiry": "2026-10-26",
+    "days_to_expiry": 0,
+    "atm_strike": 395.0,
+    "legs": [
+     {
+      "code": "US.TSLA261026C395000",
+      "last_price": 2.47,
+      "bid_price": 2.47,
+      "ask_price": 2.48,
+      "volume": 65606.0,
+      "option_open_interest": 1925,
+      "option_implied_volatility": 66.931,
+      "option_delta": 0.401038809,
+      "option_type": "CALL"
+     },
+     {
+      "code": "US.TSLA261026P395000",
+      "last_price": 3.2,
+      "bid_price": 3.15,
+      "ask_price": 3.2,
+      "volume": 5912.0,
+      "option_open_interest": 168,
+      "option_implied_volatility": 71.385,
+      "option_delta": -0.592491438,
+      "option_type": "PUT"
+     }
+    ]
+   },
+   "META": {
+    "underlying_last": 631.165,
+    "expiry": "2026-10-26",
+    "days_to_expiry": 0,
+    "atm_strike": 630.0,
+    "legs": [
+     {
+      "code": "US.META261026C630000",
+      "last_price": 5.0,
+      "bid_price": 5.0,
+      "ask_price": 5.15,
+      "volume": 788.0,
+      "option_open_interest": 50,
+      "option_implied_volatility": 60.239,
+      "option_delta": 0.559203883,
+      "option_type": "CALL"
+     },
+     {
+      "code": "US.META261026P630000",
+      "last_price": 3.31,
+      "bid_price": 3.2,
+      "ask_price": 3.45,
+      "volume": 3749.0,
+      "option_open_interest": 1044,
+      "option_implied_volatility": 62.55,
+      "option_delta": -0.442754232,
+      "option_type": "PUT"
+     }
+    ]
+   },
+   "AAPL": {
+    "underlying_last": 343.15,
+    "expiry": "2026-10-26",
+    "days_to_expiry": 0,
+    "atm_strike": 342.5,
+    "legs": [
+     {
+      "code": "US.AAPL261026C342500",
+      "last_price": 1.6,
+      "bid_price": 1.56,
+      "ask_price": 1.62,
+      "volume": 9006.0,
+      "option_open_interest": 955,
+      "option_implied_volatility": 35.381,
+      "option_delta": 0.595270891,
+      "option_type": "CALL"
+     },
+     {
+      "code": "US.AAPL261026P342500",
+      "last_price": 0.86,
+      "bid_price": 0.84,
+      "ask_price": 0.89,
+      "volume": 23236.0,
+      "option_open_interest": 2516,
+      "option_implied_volatility": 31.002,
+      "option_delta": -0.392122264,
+      "option_type": "PUT"
+     }
+    ]
+   },
+   "AMD": {
+    "underlying_last": 515.1201,
+    "expiry": "2026-10-26",
+    "days_to_expiry": 0,
+    "atm_strike": 515.0,
+    "legs": [
+     {
+      "code": "US.AMD261026C515000",
+      "last_price": 4.52,
+      "bid_price": 4.35,
+      "ask_price": 4.7,
+      "volume": 124.0,
+      "option_open_interest": 360,
+      "option_implied_volatility": 74.968,
+      "option_delta": 0.604735473,
+      "option_type": "CALL"
+     },
+     {
+      "code": "US.AMD261026P515000",
+      "last_price": 4.2,
+      "bid_price": 4.1,
+      "ask_price": 4.2,
+      "volume": 1855.0,
+      "option_open_interest": 535,
+      "option_implied_volatility": 78.072,
+      "option_delta": -0.399039387,
+      "option_type": "PUT"
+     }
+    ]
+   },
+   "MSFT": {
+    "underlying_last": 524.04,
+    "expiry": "2026-10-26",
+    "days_to_expiry": 0,
+    "atm_strike": 525.0,
+    "legs": [
+     {
+      "code": "US.MSFT261026C525000",
+      "last_price": 1.28,
+      "bid_price": 1.22,
+      "ask_price": 1.28,
+      "volume": 3470.0,
+      "option_open_interest": 1807,
+      "option_implied_volatility": 28.793,
+      "option_delta": 0.450623802,
+      "option_type": "CALL"
+     },
+     {
+      "code": "US.MSFT261026P525000",
+      "last_price": 2.48,
+      "bid_price": 2.47,
+      "ask_price": 2.64,
+      "volume": 1549.0,
+      "option_open_interest": 1711,
+      "option_implied_volatility": 38.553,
+      "option_delta": -0.536084059,
+      "option_type": "PUT"
+     }
+    ]
+   },
+   "GOOGL": {
+    "underlying_last": 317.92,
+    "expiry": "2026-10-26",
+    "days_to_expiry": 0,
+    "atm_strike": 317.5,
+    "legs": [
+     {
+      "code": "US.GOOGL261026C317500",
+      "last_price": 1.48,
+      "bid_price": 1.48,
+      "ask_price": 1.49,
+      "volume": 1797.0,
+      "option_open_interest": 162,
+      "option_implied_volatility": 32.582,
+      "option_delta": 0.579307882,
+      "option_type": "CALL"
+     },
+     {
+      "code": "US.GOOGL261026P317500",
+      "last_price": 1.06,
+      "bid_price": 1.04,
+      "ask_price": 1.1,
+      "volume": 4801.0,
+      "option_open_interest": 1207,
+      "option_implied_volatility": 43.538,
+      "option_delta": -0.439510739,
+      "option_type": "PUT"
+     }
+    ]
+   },
+   "AMZN": {
+    "underlying_last": 248.135,
+    "expiry": "2026-10-26",
+    "days_to_expiry": 0,
+    "atm_strike": 247.5,
+    "legs": [
+     {
+      "code": "US.AMZN261026C247500",
+      "last_price": 1.37,
+      "bid_price": 1.39,
+      "ask_price": 1.46,
+      "volume": 3238.0,
+      "option_open_interest": 2435,
+      "option_implied_volatility": 31.244,
+      "option_delta": 0.705087077,
+      "option_type": "CALL"
+     },
+     {
+      "code": "US.AMZN261026P247500",
+      "last_price": 0.82,
+      "bid_price": 0.78,
+      "ask_price": 0.82,
+      "volume": 3704.0,
+      "option_open_interest": 2507,
+      "option_implied_volatility": 47.652,
+      "option_delta": -0.360539877,
+      "option_type": "PUT"
+     }
+    ]
+   },
+   "AVGO": {
+    "underlying_last": 324.67,
+    "expiry": "2026-10-26",
+    "days_to_expiry": 0,
+    "atm_strike": 325.0,
+    "legs": [
+     {
+      "code": "US.AVGO261026C325000",
+      "last_price": 1.65,
+      "bid_price": 1.6,
+      "ask_price": 1.65,
+      "volume": 1628.0,
+      "option_open_interest": 652,
+      "option_implied_volatility": 43.295,
+      "option_delta": 0.519304898,
+      "option_type": "CALL"
+     },
+     {
+      "code": "US.AVGO261026P325000",
+      "last_price": 1.96,
+      "bid_price": 1.94,
+      "ask_price": 2.02,
+      "volume": 1008.0,
+      "option_open_interest": 543,
+      "option_implied_volatility": 62.714,
+      "option_delta": -0.484957833,
+      "option_type": "PUT"
+     }
+    ]
+   },
+   "MU": {
+    "underlying_last": 887.47,
+    "expiry": "2026-10-26",
+    "days_to_expiry": 0,
+    "atm_strike": 885.0,
+    "legs": [
+     {
+      "code": "US.MU261026C885000",
+      "last_price": 8.85,
+      "bid_price": 8.7,
+      "ask_price": 8.85,
+      "volume": 1527.0,
+      "option_open_interest": 829,
+      "option_implied_volatility": 56.94,
+      "option_delta": 0.651638801,
+      "option_type": "CALL"
+     },
+     {
+      "code": "US.MU261026P885000",
+      "last_price": 6.45,
+      "bid_price": 6.45,
+      "ask_price": 6.55,
+      "volume": 3088.0,
+      "option_open_interest": 1042,
+      "option_implied_volatility": 104.046,
+      "option_delta": -0.411780146,
+      "option_type": "PUT"
+     }
+    ]
+   },
+   "ORCL": {
+    "underlying_last": 123.89,
+    "expiry": "2026-10-30",
+    "days_to_expiry": 4,
+    "atm_strike": 124.0,
+    "legs": [
+     {
+      "code": "US.ORCL261030C124000",
+      "last_price": 4.7,
+      "bid_price": 4.65,
+      "ask_price": 4.75,
+      "volume": 44.0,
+      "option_open_interest": 281,
+      "option_implied_volatility": 84.993,
+      "option_delta": 0.534054413,
+      "option_type": "CALL"
+     },
+     {
+      "code": "US.ORCL261030P124000",
+      "last_price": 4.65,
+      "bid_price": 4.65,
+      "ask_price": 4.8,
+      "volume": 138.0,
+      "option_open_interest": 1083,
+      "option_implied_volatility": 91.542,
+      "option_delta": -0.465801298,
+      "option_type": "PUT"
+     }
+    ]
+   },
+   "PLTR": {
+    "underlying_last": 193.98,
+    "expiry": "2026-10-30",
+    "days_to_expiry": 4,
+    "atm_strike": 195.0,
+    "legs": [
+     {
+      "code": "US.PLTR261030C195000",
+      "last_price": 4.11,
+      "bid_price": 4.1,
+      "ask_price": 4.25,
+      "volume": 2300.0,
+      "option_open_interest": 2443,
+      "option_implied_volatility": 54.789,
+      "option_delta": 0.48567663,
+      "option_type": "CALL"
+     },
+     {
+      "code": "US.PLTR261030P195000",
+      "last_price": 5.04,
+      "bid_price": 5.05,
+      "ask_price": 5.2,
+      "volume": 768.0,
+      "option_open_interest": 2252,
+      "option_implied_volatility": 55.606,
+      "option_delta": -0.514069684,
+      "option_type": "PUT"
+     }
+    ]
+   },
+   "JPM": {
+    "underlying_last": 335.275,
+    "expiry": "2026-10-30",
+    "days_to_expiry": 4,
+    "atm_strike": 335.0,
+    "legs": [
+     {
+      "code": "US.JPM261030C335000",
+      "last_price": 4.06,
+      "bid_price": 3.8,
+      "ask_price": 4.15,
+      "volume": 150.0,
+      "option_open_interest": 718,
+      "option_implied_volatility": 23.304,
+      "option_delta": 0.54041694,
+      "option_type": "CALL"
+     },
+     {
+      "code": "US.JPM261030P335000",
+      "last_price": 3.38,
+      "bid_price": 3.3,
+      "ask_price": 3.75,
+      "volume": 38.0,
+      "option_open_interest": 433,
+      "option_implied_volatility": 26.049,
+      "option_delta": -0.463435883,
+      "option_type": "PUT"
+     }
+    ]
+   }
+  },
+  "market_state": "AFTERNOON"
+ },
+ "close": null,
+ "missing": [
+  "close"
+ ]
+}
