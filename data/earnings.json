@@ -1,7 +1,7 @@
 {
  "source": "alphavantage EARNINGS_CALENDAR horizon=3month",
- "fetched_at": "2026-11-03T09:00:25-05:00",
- "fetched_on": "2026-11-03",
+ "fetched_at": "2026-11-04T09:00:26-05:00",
+ "fetched_on": "2026-11-04",
  "horizon_days": 90,
  "symbols": [
   "AAPL",
@@ -128,86 +128,6 @@
   "XOM"
  ],
  "reports": {
-  "ALAB": [
-   {
-    "date": "2026-11-03",
-    "time": "post-market",
-    "estimate": "0.83",
-    "fiscal_end": "2026-09-30",
-    "checked": "nasdaq",
-    "confirmed": true
-   }
-  ],
-  "AMD": [
-   {
-    "date": "2026-11-03",
-    "time": "post-market",
-    "estimate": "1.68",
-    "fiscal_end": "2026-09-30",
-    "checked": "nasdaq",
-    "confirmed": true
-   }
-  ],
-  "ANET": [
-   {
-    "date": "2026-11-03",
-    "time": "post-market",
-    "estimate": "0.99",
-    "fiscal_end": "2026-09-30",
-    "checked": "nasdaq",
-    "confirmed": true
-   }
-  ],
-  "BKNG": [
-   {
-    "date": "2026-11-03",
-    "time": "post-market",
-    "estimate": "4.48",
-    "fiscal_end": "2026-09-30",
-    "checked": "nasdaq",
-    "confirmed": true
-   }
-  ],
-  "ETN": [
-   {
-    "date": "2026-11-03",
-    "time": "pre-market",
-    "estimate": "3.54",
-    "fiscal_end": "2026-09-30",
-    "checked": "nasdaq",
-    "confirmed": true
-   }
-  ],
-  "PFE": [
-   {
-    "date": "2026-11-03",
-    "time": "pre-market",
-    "estimate": "0.72",
-    "fiscal_end": "2026-09-30",
-    "checked": "nasdaq",
-    "confirmed": true
-   }
-  ],
-  "SHOP": [
-   {
-    "date": "2026-11-03",
-    "time": "pre-market",
-    "estimate": "0.33",
-    "fiscal_end": "2026-09-30",
-    "checked": "nasdaq",
-    "confirmed": true
-   }
-  ],
-  "SMCI": [
-   {
-    "date": "2026-11-03",
-    "time": "post-market",
-    "estimate": "1.04",
-    "fiscal_end": "2026-09-30",
-    "checked": "nasdaq",
-    "confirmed": true
-   }
-  ],
   "APP": [
    {
     "date": "2026-11-04",
@@ -298,16 +218,6 @@
     "confirmed": true
    }
   ],
-  "LITE": [
-   {
-    "date": "2026-11-05",
-    "time": "post-market",
-    "estimate": "3.82",
-    "fiscal_end": "2026-09-30",
-    "disputed": true,
-    "confirmed": false
-   }
-  ],
   "NET": [
    {
     "date": "2026-11-05",
@@ -373,7 +283,7 @@
    {
     "date": "2026-11-12",
     "time": "pre-market",
-    "estimate": "-0.43",
+    "estimate": "-0.61",
     "fiscal_end": "2026-09-30",
     "checked": "nasdaq",
     "confirmed": true
@@ -422,11 +332,11 @@
   "PANW": [
    {
     "date": "2026-11-18",
-    "time": "unknown",
+    "time": "post-market",
     "estimate": "0.52",
     "fiscal_end": "2026-10-31",
     "checked": "nasdaq",
-    "confirmed": false
+    "confirmed": true
    }
   ],
   "TJX": [
@@ -459,6 +369,16 @@
     "confirmed": true
    }
   ],
+  "HPE": [
+   {
+    "date": "2026-11-23",
+    "time": "post-market",
+    "estimate": "1.17",
+    "fiscal_end": "2026-10-31",
+    "checked": "nasdaq",
+    "confirmed": true
+   }
+  ],
   "ADI": [
    {
     "date": "2026-11-24",
@@ -485,7 +405,7 @@
     "time": "unknown",
     "estimate": "0.0",
     "fiscal_end": "2026-10-31",
-    "confirmed": false
+    "confirmed": true
    }
   ],
   "MRVL": [
@@ -509,19 +429,9 @@
   "SNOW": [
    {
     "date": "2026-12-02",
-    "time": "unknown",
+    "time": "post-market",
     "estimate": "-0.32",
     "fiscal_end": "2026-10-31",
-    "confirmed": true
-   }
-  ],
-  "HPE": [
-   {
-    "date": "2026-11-23",
-    "time": "post-market",
-    "estimate": "1.17",
-    "fiscal_end": "2026-10-31",
-    "checked": "nasdaq",
     "confirmed": true
    }
   ],
@@ -537,7 +447,7 @@
    {
     "date": "2026-12-09",
     "time": "unknown",
-    "estimate": "1.57",
+    "estimate": "1.56",
     "fiscal_end": "2026-11-30"
    }
   ],
@@ -600,21 +510,19 @@
  },
  "cross_check": {
   "nasdaq_days": 16,
-  "moved": [
+  "moved": [],
+  "time_filled": [
    [
-    "HPE",
-    "2026-12-03",
-    "2026-11-23"
+    "PANW",
+    "unknown",
+    "post-market"
    ]
   ],
-  "time_filled": [],
-  "disputed": [
-   "LITE"
-  ],
+  "disputed": [],
   "yahoo": {
-   "asked": 40,
-   "answered": 40,
-   "confirmed": 34,
+   "asked": 31,
+   "answered": 31,
+   "confirmed": 28,
    "conflicts": [
     [
      "CSCO",
