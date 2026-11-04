@@ -5272,6 +5272,38 @@ class EarningsForecastAroundTheReport(unittest.TestCase):
         self.assertEqual((r["before"], r["release"], r["up"]), (104.0, "2026-10-20T06:31-04:00", False))
 
 
+class EarningsMarketNet(unittest.TestCase):
+    def test_fill_market_keeps_the_spy_gap_and_the_net_open_and_the_scorecard_shows_it(self):
+        from hero import research_earnings_forecast as ef
+
+        class Client:
+            def daily_bars(self, syms, start, **kw):
+                assert syms == ["SPY"]
+                return {"SPY": [{"t": "2026-11-03T05:00:00Z", "o": 750.0, "c": 754.35},
+                                {"t": "2026-11-04T05:00:00Z", "o": 762.99, "c": 767.0}]}
+
+        with tempfile.TemporaryDirectory() as d:
+            root = Path(d)
+            (root / "2026-11-03.json").write_text(json.dumps({"date": "2026-11-03", "reports": [
+                {"symbol": "AMD", "time": "post-market", "reaction_day": "2026-11-04", "implied_move": 0.08,
+                 "p_big": 0.4, "weekly": True,
+                 "result": {"gap": 0.003, "gap_pre": 0.003, "move": 0.006, "big": False, "up": True, "up_close": True}},
+                {"symbol": "OLD", "time": "pre-market", "reaction_day": "2026-10-20", "implied_move": 0.05,
+                 "p_big": 0.4, "weekly": True,
+                 "result": {"gap": 0.01, "gap_pre": 0.01, "move": 0.0, "big": False, "up": True}}]}))
+            (root / "2026-11-03.judgment.json").write_text(json.dumps({"date": "2026-11-03", "written": "2026-11-03T15:20-05:00",
+                "calls": [{"symbol": "AMD", "direction": "down"}]}))
+            self.assertEqual(ef.fill_market(Client(), root), ["2026-11-03.json"])
+            reps = json.loads((root / "2026-11-03.json").read_text())["reports"]
+            amd, old = reps[0]["result"], reps[1]["result"]
+            self.assertEqual((amd["spy_gap"], amd["excess"], amd["up_excess"]), (0.0115, -0.0085, False))
+            self.assertNotIn("spy_gap", old)   # no SPY bar for that day: left for a later run
+            self.assertEqual(ef.fill_market(Client(), root), [])   # nothing new to fill
+            card = ef.scorecard(root)
+        self.assertIn("| 方向按开盘、扣掉大盘（个股开盘减 SPY 同期跳空；11-04 起只记录） | 1 | 100% |", card)
+        self.assertIn("| 方向（按开盘） | 1 | 0% |", card)   # the raw score is unchanged: AMD opened up
+
+
 class DiscordPost(unittest.TestCase):
     def test_page_to_cards_tables_footer_and_refusals(self):
         from hero import discord_post as dp

@@ -305,6 +305,45 @@ def score_due(client, today: date, root: Path = OUT, sec=releases_for) -> list[s
     return changed
 
 
+def fill_market(client, root: Path = OUT, today: date | None = None) -> list[str]:
+    """Owner, 11-04 (election day: the index opened +1.15% and most "down" calls were wrong at the open): next to each
+    scored result keep SPY's own gap over the same window (its open on the reaction day against the close before), the
+    stock's gap net of it, and whether that net gap was up. Record only: the direction is still scored on the raw open.
+    Fills every scored row that lacks it, so older files are backfilled on the next run; returns the files changed."""
+    files, need = [], []
+    for f in sorted(root.glob("20??-??-??.json")):
+        rep = json.loads(f.read_text())
+        rows = [r for r in rep.get("reports", []) if r.get("result") and "spy_gap" not in r["result"]]
+        if rows:
+            files.append((f, rep))
+            need += rows
+    if not need:
+        return []
+    first = date.fromisoformat(min(r["reaction_day"] for r in need)) - timedelta(days=7)
+    try:
+        bars = client.daily_bars(["SPY"], first.isoformat(), adjustment="raw", feed="sip").get("SPY") or []
+    except Exception:
+        return []
+    days = {b["t"][:10]: b for b in bars}
+    order = sorted(days)
+    gap = {d: float(days[d]["o"]) / float(days[order[i - 1]]["c"]) - 1 for i, d in enumerate(order) if i}
+    changed = []
+    for f, rep in files:
+        hit = False
+        for r in rep["reports"]:
+            res = r.get("result")
+            if not res or "spy_gap" in res or r["reaction_day"] not in gap:
+                continue
+            g = gap[r["reaction_day"]]
+            net = res.get("gap_pre", res["gap"]) - g
+            res.update({"spy_gap": round(g, 4), "excess": round(net, 4), "up_excess": net > 0})
+            hit = True
+        if hit:
+            f.write_text(json.dumps(rep, ensure_ascii=False) + "\n")
+            changed.append(f.name)
+    return changed
+
+
 CUTOFF = "16:00"   # ET on the forecast date: before tonight's after-close reports and tomorrow's early-morning ones
 EVERY_FROM = "2026-10-20"   # owner, 10-19: from this forecast day every report gets an up / down call
 
@@ -380,6 +419,12 @@ def scorecard(root: Path = OUT) -> str:
         if dirs:
             md.append(f"| 方向（按开盘） | {len(dirs)} | "
                       f"{sum((r['judgment']['direction'] == 'up') == r['result']['up'] for r in dirs) / len(dirs):.0%} |")
+            ex = [r for r in dirs if "up_excess" in r["result"]]
+            if ex:
+                md.append(f"| 方向按开盘、扣掉大盘（个股开盘减 SPY 同期跳空；11-04 起只记录） | {len(ex)} | "
+                          f"{sum((r['judgment']['direction'] == 'up') == r['result']['up_excess'] for r in ex) / len(ex):.0%} |")
+                md.append(f"| 　同一批扣掉大盘后开盘涨的比例（全部判涨会对的比例） | {len(ex)} | "
+                          f"{sum(r['result']['up_excess'] for r in ex) / len(ex):.0%} |")
             cl = [r for r in dirs if "up_close" in r["result"]]
             if cl:
                 md.append(f"| 方向（按收盘，参考） | {len(cl)} | "
@@ -574,6 +619,7 @@ def main() -> None:
     today = datetime.now(ZoneInfo("America/New_York")).date()
     OUT.mkdir(parents=True, exist_ok=True)
     changed = score_due(client, today)
+    changed += [f for f in fill_market(client) if f not in changed]
     rows, check = earn.cross_check(earn.fetch(os.environ["ALPHAVANTAGE_API_KEY"]), today, days=4)   # Nasdaq fixes dates / times
     rows, check["yahoo_added"] = earn.fill_missing(rows, today, big_names(client))   # what both calendars miss (SpaceX, 10-20)
     rep = forecast(client, rows, today, wait=Pace(client).wait,  # the main account's key: slow while the market is open
