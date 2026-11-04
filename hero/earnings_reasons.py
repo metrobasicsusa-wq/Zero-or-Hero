@@ -10,6 +10,10 @@ research/earnings-forecast/reasons.jsonl:
    after the report (explains the move, not known at 16:00):
      "eps" / "rev": "beat" / "inline" / "miss" / null, "guide": "raise" / "keep" / "cut" / "none" / null,
      "guide_vs_est": "above" / "inline" / "below" / null, "tags": ["成本", "估值高", ...],
+     11-04 (owner, 「优化下自己」): guide_vs_est is the implied next stretch against consensus -- the next-quarter
+     guide where the company gives one, else the new full year minus the quarters already reported; a full-year raise
+     no bigger than the quarter's beat is "inline", holding the year after a beat is "below" (the word "raise" alone
+     opened up 53% of 58, "keep" 25% of 24, "cut" 15% of 13),
      11-02 (owner, 「加这个字段开始记分」): "answer": "yes" / "no" / "mixed" / null -- did the company clear the question
      the call wrote down (see below), "question_hit": true / false / null -- did the open really turn on that question,
    "reason": one line with its source}
