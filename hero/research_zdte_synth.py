@@ -128,20 +128,27 @@ def run(client, vix: dict[str, dict] | None = None, real: dict[str, dict] | None
                      "close": float(m[max(m)]["c"]), "p1530": float(at_or_before(m, OUT)["c"])})
         prev_close = float(m[max(m)]["c"])
         vol30s.append(vol30)
-    # fit k per side: real 10:00 premium / modelled premium at k = 1
+    # fit k per side: for each day with a real 10:00 premium, the k that makes the model's 10:00 price equal it
+    # (bisection: an out-of-the-money price is convex in vol, so a ratio of prices is not a ratio of vols); median k
     ks = {}
     for kind in ("C", "P"):
-        ratios = []
+        fits = []
         for r in base:
             rr = real.get(r["day"])
-            if r["kind"] != kind or not rr or rr["kind"] != kind:
+            if r["kind"] != kind or not rr or rr["kind"] != kind or rr["prem"] <= 0.011:
                 continue
-            p1 = synth(r["m"], kind, r["strike"], r["vo"], r["vc"], 1.0).get(max(k for k in r["m"] if k <= "10:00"))
-            if p1 and p1["c"] > 0.011:
-                ratios.append(rr["prem"] / p1["c"])
-        ratios.sort()
-        ks[kind] = {"k": statistics.median(ratios) if ratios else 0.5, "n": len(ratios),
-                    "q1": ratios[len(ratios) // 4] if ratios else None, "q3": ratios[3 * len(ratios) // 4] if ratios else None}
+            t10 = max(k for k in r["m"] if k <= "10:00")
+            price = lambda k, r=r, t10=t10: synth({t10: r["m"][t10]}, kind, r["strike"], r["vo"], r["vc"], k)[t10]["c"]
+            lo, hi = 0.02, 4.0
+            if price(hi) < rr["prem"]:
+                continue
+            for _ in range(40):
+                mid = (lo + hi) / 2
+                lo, hi = (mid, hi) if price(mid) < rr["prem"] else (lo, mid)
+            fits.append((lo + hi) / 2)
+        fits.sort()
+        ks[kind] = {"k": statistics.median(fits) if fits else 0.5, "n": len(fits),
+                    "q1": fits[len(fits) // 4] if fits else None, "q3": fits[3 * len(fits) // 4] if fits else None}
     rows = []
     for r in base:
         opt = synth(r["m"], r["kind"], r["strike"], r["vo"], r["vc"], ks[r["kind"]]["k"])
