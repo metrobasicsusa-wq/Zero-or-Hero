@@ -1,0 +1,424 @@
+{
+  "schema_version": "1.0",
+  "producer": "Codex",
+  "mode": "PAPER",
+  "currency": "USD",
+  "trading_date": "2026-11-05",
+  "timezone": "America/New_York",
+  "status": "limited_post_market_review",
+  "as_of": "2026-11-05T14:43:39.285320969-05:00",
+  "generated_at": "2026-11-05T21:31:50.806608+00:00",
+  "evidence_cutoff": {
+    "commit": "780942c6682d6ec95cb552fe46d0bb260586eb1c",
+    "generation": 2444,
+    "core_state_sha256": "12e2f7d498bf09309d96113e9dd1263f07d97594f54c764a9d74936159850e2b",
+    "archive_snapshot_sha256": "fed03ca604e23e54664dec9d1e847e743079c3ce5a7975a7b52a3da669603cae",
+    "archive_manifest_sha256": "8cc8d6d3c9ac16323bb9822750c4fecea85cf75d2a17b8186f398e01f66de92c",
+    "event_cutoff": 67917,
+    "verified_at": "2026-11-05T21:30:03.357385+00:00",
+    "evidence_stale": false,
+    "sample_cutoff": 259320,
+    "dataset_cutoff": 10681,
+    "session_start": "2026-11-05T09:30:00-05:00",
+    "session_end": "2026-11-05T16:00:00-05:00",
+    "max_session_event_sequence": 67906
+  },
+  "scope": {
+    "capital_limit_usd": 100000,
+    "swing_budget_usd": 50000,
+    "intraday_budget_usd": 49000,
+    "options_budget_usd": 1000,
+    "drawdown_halt_fraction": 0.1
+  },
+  "equity": {
+    "current_usd": 103288.59,
+    "as_of": "2026-11-05T14:43:39.285320969-05:00",
+    "source": "last preclose archived equity-event observation; not official close",
+    "previous_day_usd": 103288.59,
+    "previous_day_as_of": "2026-11-04T17:26:23.96957385-05:00",
+    "previous_day_basis": "previous trading-day observed reference; not official close",
+    "official_open_usd": null,
+    "official_close_usd": null,
+    "official_previous_close_usd": null,
+    "cash_usd": 103288.59,
+    "external_cash_flows_usd": null,
+    "fees_usd": null,
+    "first_observation": {
+      "as_of": "2026-11-05T09:35:30.136967464-05:00",
+      "equity_usd": 103288.59,
+      "cash_usd": 103288.59,
+      "source": "archived equity-event observation; not official close"
+    },
+    "post_session_observation": {
+      "as_of": "2026-11-05T16:08:35.90406475-05:00",
+      "equity_usd": 103288.59,
+      "cash_usd": 103288.59,
+      "source": "archived equity-event observation; not official close"
+    },
+    "last_preclose_broker_observation": {
+      "as_of": "2026-11-05T15:38:51.266110235-05:00",
+      "equity_usd": "103288.59",
+      "cash_usd": "103288.59",
+      "source": "later broker snapshot; separate from equity-event and sleeve performance window, not official close"
+    }
+  },
+  "fills": [],
+  "fill_count": 0,
+  "positions": [],
+  "positions_basis": {
+    "as_of": "2026-11-05T15:38:51.266110235-05:00",
+    "source": "last preclose archived position snapshot; pending order outcome remains unresolved"
+  },
+  "closing_positions": null,
+  "options_positions": [],
+  "performance": {
+    "official_day_pnl_usd": null,
+    "observed_window_change_usd": 0.0,
+    "observed_window_return_fraction": 0.0,
+    "window_start": "2026-11-05T09:35:30.136967464-05:00",
+    "window_end": "2026-11-05T14:43:39.285320969-05:00",
+    "sleeve_observed_window_change_usd": {
+      "intraday": 0.0,
+      "options": 0.0,
+      "swing": 0.0
+    },
+    "gross_realized_pnl_usd": "0",
+    "fees_usd": null,
+    "net_realized_pnl_usd": null,
+    "closed_trade_count": 0,
+    "observed_max_drawdown_fraction": 0.0,
+    "max_historical_peak_drawdown_observed_fraction": 0.008781838723753488
+  },
+  "audit": {
+    "status": "limited_post_market_review",
+    "session": {
+      "open": {
+        "sequence": 67736,
+        "at": "2026-11-05T14:27:36.279813+00:00",
+        "clock": {
+          "is_open": false,
+          "next_close": "2026-11-05T16:00:00-05:00",
+          "next_open": "2026-11-05T09:30:00-05:00",
+          "timestamp": "2026-11-05T09:27:31.399892855-05:00"
+        }
+      },
+      "close": {
+        "sequence": 67746,
+        "at": "2026-11-05T14:34:59.957572+00:00",
+        "clock": {
+          "is_open": true,
+          "next_close": "2026-11-05T16:00:00-05:00",
+          "next_open": "2026-11-06T09:30:00-05:00",
+          "timestamp": "2026-11-05T09:34:55.359740844-05:00"
+        }
+      }
+    },
+    "summary": "No original broker FILL observed in the verified archive. TMO buy intent remains submitting; broker outcome is unresolved and new entries are blocked. Repeated cloud failures have not met recovery requirements. No parameter promotion. Official close, fees and external cash flows unknown.",
+    "actual_fill_basis": "Latest applicable corrected original broker executions, identity deduplicated; tests, requests and cumulative polls excluded.",
+    "stock_entry_intents": [
+      {
+        "at": "2026-11-05T14:57:59.619409+00:00",
+        "symbol": "V",
+        "sleeve": "swing",
+        "side": "buy",
+        "quantity": "22",
+        "quantity_unit": "shares",
+        "multiplier": 1,
+        "limit": "438.5",
+        "signal": {
+          "price": 436.655,
+          "reason": "60-session momentum 20.44%; volatility 24.01%; above SMA60; SPY above SMA120",
+          "score": 0.85132397,
+          "symbol": "V"
+        },
+        "strategy": {
+          "params": {
+            "momentum": 60,
+            "stop_pct": 0.05,
+            "top_n": 5,
+            "trend": 60
+          },
+          "stage": "baseline_paper_experiment"
+        },
+        "config_hash": "ce067a951015d88a4c3454f8dcdcd1c8e8702b0f817aee267cb64730e6f0d90b",
+        "source_hash": "c31e132a2d509158fc57769e36d0814ba3965ca1b8c1b26931d51d78b8837859",
+        "sizing_pass": true,
+        "expected_quantity": 22,
+        "expected_limit": "438.50",
+        "decision_minus_quote_seconds": 0.479491,
+        "limit_pass": null,
+        "ask_slippage_bps": null,
+        "bid_slippage_bps": null,
+        "preorder_quote": {
+          "t": "2026-11-05T14:57:55.35186396Z",
+          "ap": 438.29,
+          "bp": 437.73
+        }
+      },
+      {
+        "at": "2026-11-05T15:00:36.811735+00:00",
+        "symbol": "PFE",
+        "sleeve": "swing",
+        "side": "buy",
+        "quantity": "318",
+        "quantity_unit": "shares",
+        "multiplier": 1,
+        "limit": "31.43",
+        "signal": {
+          "price": 30.79,
+          "reason": "60-session momentum 15.73%; volatility 23.37%; above SMA60; SPY above SMA120",
+          "score": 0.67299524,
+          "symbol": "PFE"
+        },
+        "strategy": {
+          "params": {
+            "momentum": 60,
+            "stop_pct": 0.05,
+            "top_n": 5,
+            "trend": 60
+          },
+          "stage": "baseline_paper_experiment"
+        },
+        "config_hash": "ce067a951015d88a4c3454f8dcdcd1c8e8702b0f817aee267cb64730e6f0d90b",
+        "source_hash": "c31e132a2d509158fc57769e36d0814ba3965ca1b8c1b26931d51d78b8837859",
+        "sizing_pass": true,
+        "expected_quantity": 318,
+        "expected_limit": "31.43",
+        "decision_minus_quote_seconds": -0.020662,
+        "limit_pass": null,
+        "ask_slippage_bps": null,
+        "bid_slippage_bps": null,
+        "preorder_quote": {
+          "t": "2026-11-05T15:00:32.678835553Z",
+          "ap": 31.42,
+          "bp": 31.41
+        }
+      },
+      {
+        "at": "2026-11-05T15:07:34.950267+00:00",
+        "symbol": "ABBV",
+        "sleeve": "swing",
+        "side": "buy",
+        "quantity": "33",
+        "quantity_unit": "shares",
+        "multiplier": 1,
+        "limit": "301.75",
+        "signal": {
+          "price": 294.9,
+          "reason": "60-session momentum 17.97%; volatility 25.05%; above SMA60; SPY above SMA120",
+          "score": 0.71717684,
+          "symbol": "ABBV"
+        },
+        "strategy": {
+          "params": {
+            "momentum": 60,
+            "stop_pct": 0.05,
+            "top_n": 5,
+            "trend": 60
+          },
+          "stage": "baseline_paper_experiment"
+        },
+        "config_hash": "ce067a951015d88a4c3454f8dcdcd1c8e8702b0f817aee267cb64730e6f0d90b",
+        "source_hash": "c31e132a2d509158fc57769e36d0814ba3965ca1b8c1b26931d51d78b8837859",
+        "sizing_pass": true,
+        "expected_quantity": 33,
+        "expected_limit": "301.75",
+        "decision_minus_quote_seconds": 2.346259,
+        "limit_pass": null,
+        "ask_slippage_bps": null,
+        "bid_slippage_bps": null,
+        "preorder_quote": {
+          "t": "2026-11-05T15:07:28.555232687Z",
+          "ap": 301.6,
+          "bp": 300.94
+        }
+      }
+    ],
+    "stock_entry_latest_statuses": [
+      {
+        "symbol": "ABBV",
+        "sleeve": "swing",
+        "side": "buy",
+        "state_status": "not_submitted",
+        "broker_status": null,
+        "qty": "33",
+        "filled_qty": null,
+        "submitted_at": null,
+        "filled_at": null,
+        "canceled_at": null,
+        "reason": "fresh_pre_submit_check_failed"
+      },
+      {
+        "symbol": "PFE",
+        "sleeve": "swing",
+        "side": "buy",
+        "state_status": "not_submitted",
+        "broker_status": null,
+        "qty": "318",
+        "filled_qty": null,
+        "submitted_at": null,
+        "filled_at": null,
+        "canceled_at": null,
+        "reason": "fresh_pre_submit_check_failed"
+      },
+      {
+        "symbol": "TMO",
+        "sleeve": "swing",
+        "side": "buy",
+        "state_status": "submitting",
+        "broker_status": null,
+        "qty": "14",
+        "filled_qty": null,
+        "submitted_at": null,
+        "filled_at": null,
+        "canceled_at": null,
+        "reason": null
+      },
+      {
+        "symbol": "V",
+        "sleeve": "swing",
+        "side": "buy",
+        "state_status": "not_submitted",
+        "broker_status": null,
+        "qty": "22",
+        "filled_qty": null,
+        "submitted_at": null,
+        "filled_at": null,
+        "canceled_at": null,
+        "reason": "fresh_pre_submit_check_failed"
+      }
+    ],
+    "pending_intents": [
+      {
+        "symbol": "TMO",
+        "side": "buy",
+        "qty": "14",
+        "limit_price": "694.3",
+        "status": "submitting",
+        "created": "2026-11-05T11:45:59.730181-05:00",
+        "sleeve": "swing"
+      }
+    ],
+    "sample_coverage": {
+      "observations": 360,
+      "runs": 6,
+      "rows_per_run_distribution": {
+        "60": 6
+      },
+      "unique_strategy_symbol_market_time_params": 90,
+      "unique_by_sleeve": {
+        "swing": 50,
+        "intraday": 40
+      },
+      "observations_by_sleeve": {
+        "swing": 300,
+        "intraday": 60
+      },
+      "missing_market_time": 20,
+      "unevaluated": 0,
+      "evaluated_timed_unique": 90,
+      "evaluated_timed_unique_by_sleeve": {
+        "swing": 50,
+        "intraday": 40
+      },
+      "only_unevaluated_unique": 0,
+      "overlap_evaluated_unevaluated": 0
+    },
+    "full_cycle_sample_counts": {
+      "60": 6,
+      "0": 9
+    },
+    "missing_input_cycle_count": 9,
+    "missing_snapshot_cycle_count": 10,
+    "run_status_counts": {
+      "completed": 4,
+      "running": 10,
+      "completed_with_alerts": 1
+    },
+    "data_gaps": {
+      "opening_to_first_observation_seconds": 330.136967,
+      "last_observation_to_close_seconds": 4580.71468,
+      "observation_gaps_over_120s": [
+        {
+          "from": "2026-11-05T09:35:30.136967464-05:00",
+          "to": "2026-11-05T09:39:32.857441453-05:00",
+          "seconds": 242.720474
+        },
+        {
+          "from": "2026-11-05T09:39:32.857441453-05:00",
+          "to": "2026-11-05T09:57:46.636590262-05:00",
+          "seconds": 1093.779149
+        },
+        {
+          "from": "2026-11-05T09:57:46.636590262-05:00",
+          "to": "2026-11-05T11:42:23.299123185-05:00",
+          "seconds": 6276.662533
+        },
+        {
+          "from": "2026-11-05T11:42:23.299123185-05:00",
+          "to": "2026-11-05T14:43:39.285320969-05:00",
+          "seconds": 10875.986197
+        }
+      ]
+    },
+    "risk_observations": {
+      "minimum_cash": "103288.59",
+      "max_gross_conservative_exposure": "0",
+      "unknown_position_observations": 0,
+      "known_lineage_quantity_pending_observations": 0,
+      "unknown_order_observations_against_prior_lineage": 0,
+      "short_position_observations": 0,
+      "account_blocked_observations": 0,
+      "duplicate_intent_rows": 0
+    },
+    "workflow_failure_count_observed": 14,
+    "workflow_metadata_as_of": "2026-11-05T21:16:16.906933+00:00",
+    "recovery_verified": false,
+    "options": {
+      "candidate_input_rounds": 0,
+      "decision_reasons": {},
+      "quote_age_range_seconds": null,
+      "fill_count": 0,
+      "lifecycle_count": 0,
+      "quantity_unit": "contracts",
+      "multiplier": 100,
+      "feed": "indicative",
+      "lifetime_commitments": 0
+    },
+    "limits": [
+      "Observed empty positions do not resolve an uncertain original order; no blind resubmission.",
+      "No exact close; previous-day value is an observed reference.",
+      "Fees and cash flows were not independently verified.",
+      "Account, sleeves and holdings are sequential valuations, not exact simultaneous attribution.",
+      "Unfinished cycles, blocked entries and observation gaps limit evidence; no performance efficacy conclusion.",
+      "Stop snapshots cannot guarantee continuous protection; no observed intraday/options positions does not validate exit reliability.",
+      "Indicative quotes are modified reference data; PAPER fills cannot establish executable live prices or liquidity.",
+      "Peer start dates, instruments and risks differ; no same-close comparison from mismatched snapshots."
+    ],
+    "method_source_sha256": "8e766778c4e88c81f7bfe55501134983dc444958594a133ec891678f6e1f1de8",
+    "source_hashes": {
+      "c31e132a2d509158fc57769e36d0814ba3965ca1b8c1b26931d51d78b8837859": {
+        "zerotrader/cloud_archive.py": "20d6d0ba02f9f4fbd2c061d6c0d2cfbe8c4710b0ea0dc9153640444ed8daa892",
+        "zerotrader/cloud_bundle.py": "d763474378ce4f6c09d8b275ec8e2f764b1c125e9022ab962a0b289531eed145",
+        "zerotrader/cloud_checkpoint.py": "72d45eb04f5203b634878728d0c5ba07149e4f0a8022d9c809e782ad008020b3",
+        "zerotrader/cloud_runner.py": "38e0e43acd278cdc2cf31539c35e075e57f30970cb5e8365f03b73be923626ef"
+      }
+    },
+    "local_peak_memory_mib": {
+      "restore": 115.18,
+      "daily_analysis": 350.5
+    },
+    "missing_preorder_evidence": {
+      "symbol": "TMO",
+      "core_intent_present": true,
+      "archived_intent_event_present": false,
+      "signal_binding": null,
+      "preorder_quote": null,
+      "position_sizing_context": null,
+      "intended_notional_usd": 9720.2,
+      "protective_stop_status": "intent only; broker protection unverified",
+      "limitation": "Cannot reconstruct missing original rationale or complete budget calculation from later prices."
+    }
+  },
+  "replies": []
+}
