@@ -7464,3 +7464,60 @@ class ReportInside(unittest.TestCase):
         fri = [{"date": "2026-11-06", "time": "post-market"}]
         self.assertIsNotNone(self.check(wed, "2026-11-09", fri))              # Friday after the close reacts Monday
         self.assertIsNone(self.check(wed, "2026-11-06", fri))
+
+
+class ResearchZdteLogic(unittest.TestCase):
+    def test_signal_tables_and_both_option_legs(self):
+        from unittest import mock
+        from hero import research_zdte_logic as zl
+
+        def minute(day, hhmm, px, h=None, lo=None):   # an ET minute on a 2026-10 day (EDT, UTC-4)
+            hh, mm = map(int, hhmm.split(":"))
+            return {"t": f"{day}T{hh + 4:02d}:{mm:02d}:00Z", "o": px, "h": h or px, "l": lo or px, "c": px, "v": 100}
+
+        class Client:
+            def clock(self): return {"is_open": False}
+
+            def stock_bars(self, syms, start, end, feed=None):
+                out = {}
+                # 10-14: down 0.6% by 10:00 and it keeps falling to 15:30; 10-15: up 0.1%, drifts back
+                for day, ten, low_after, close in (("2026-10-14", 99.4, 98.0, 98.5), ("2026-10-15", 100.1, 99.9, 99.95)):
+                    if start[:10] <= day < end[:10]:
+                        out.setdefault("SPY", []).extend([minute(day, "09:30", 100.0), minute(day, "10:00", ten),
+                                                          minute(day, "12:00", close, lo=low_after), minute(day, "15:30", close),
+                                                          minute(day, "15:59", close)])
+                return out
+
+            def option_contracts(self, und, status, expiration_date_gte, **kw):
+                return [{"symbol": f"{und}{expiration_date_gte}{t[0].upper()}{k}", "expiration_date": expiration_date_gte,
+                         "strike_price": str(k), "type": t} for k in (97, 98, 99, 100, 101, 102) for t in ("call", "put")]
+
+            def option_bars(self, syms, start, end, timeframe=None):
+                day = start[:10]
+                return {s: [minute(day, "10:00", 1.0), minute(day, "12:00", 4.0 if "P" in s[-4:] else 0.3),
+                            minute(day, "15:30", 3.5 if "P" in s[-4:] else 0.1)] for s in syms}
+
+        with mock.patch.object(zl, "START", "2026-10-01"), mock.patch.object(zl, "OPT_START", "2026-10-01"), mock.patch("time.sleep"):
+            rows = zl.shares(Client())
+            opt = zl.options(Client(), rows)
+        self.assertEqual([r["day"] for r in rows], ["2026-10-14", "2026-10-15"])
+        s = zl.signal(rows[0])
+        self.assertEqual(s["side"], "down")
+        self.assertAlmostEqual(s["move"], -0.006, places=5)
+        self.assertAlmostEqual(s["cont"], 1 - 98.5 / 99.4, places=5)      # fell further: positive, in the move's direction
+        self.assertAlmostEqual(s["run"], 1 - 98.0 / 99.4, places=5)
+        t = zl.shares_table(rows)
+        self.assertEqual(t["bands"]["0.5%–0.75%|down"]["n"], 1)
+        self.assertEqual(t["bands"]["0.5%–0.75%|down"]["cont"], 1.0)
+        self.assertEqual(t["years"]["2026"]["n"], 1)
+        self.assertEqual(len(opt), 1)                                          # only the 0.6% day has both legs
+        self.assertTrue(opt[0]["syms"]["same"].endswith("P99"))               # put 0.3% under 99.4 -> strike 99
+        self.assertTrue(opt[0]["syms"]["opp"].endswith("C100"))               # call 0.3% over -> 100
+        self.assertAlmostEqual(opt[0]["res"]["same"]["take3"], 2.0)
+        lt = zl.legs_table(opt)
+        self.assertEqual(lt["down|take3_trail|same"]["n"], 1)
+        self.assertLess(lt["down|take3_trail|opp"]["mean"], 0)
+        md = zl.markdown({"generated": "2026-11-05", "start": "2026-10-01", "end": "2026-10-15", "shares": rows,
+                          "shares_table": t, "options": opt, "legs_table": lt})
+        self.assertIn("| 0.5%–0.75% | 低开走低（买看跌） | 1 | 100% |", md)
+        self.assertIn("两边各一半", md)
