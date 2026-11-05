@@ -7521,3 +7521,41 @@ class ResearchZdteLogic(unittest.TestCase):
                           "shares_table": t, "options": opt, "legs_table": lt})
         self.assertIn("| 0.5%–0.75% | 低开走低（买看跌） | 1 | 100% |", md)
         self.assertIn("两边各一半", md)
+
+
+class ResearchZdteSynth(unittest.TestCase):
+    def test_model_prices_the_card_and_checks_against_the_tape(self):
+        from unittest import mock
+        from hero import research_zdte_synth as zs
+
+        def minute(day, hhmm, px):
+            h, m = map(int, hhmm.split(":"))
+            return {"t": f"{day}T{h + 4:02d}:{m:02d}:00Z", "o": px, "h": px, "l": px, "c": px, "v": 100}
+
+        class Client:
+            def clock(self): return {"is_open": False}
+
+            def stock_bars(self, syms, start, end, feed=None):
+                out = {}
+                # 10-14: down 0.6% by 10:00 and on to -2% (a put pays); 10-15: up 0.1% then flat (no trigger)
+                for day, ten, close in (("2026-10-14", 99.4, 98.0), ("2026-10-15", 100.1, 100.1)):
+                    if start[:10] <= day < end[:10]:
+                        path = [("09:30", 100.0), ("10:00", ten), ("11:00", (ten + close) / 2), ("13:00", close), ("15:30", close), ("15:59", close)]
+                        out.setdefault("SPY", []).extend(minute(day, t, px) for t, px in path)
+                return out
+
+        vix = {"2026-10-14": {"o": 20.0, "c": 26.0}, "2026-10-15": {"o": 18.0, "c": 17.0}}
+        real = {"2026-10-14": {"kind": "P", "spot": 99.4, "prem": 0.30, "res": {"take3_trail": 1.5, "take3": 2.0, "hold": 3.0}}}
+        with mock.patch.object(zs, "START", "2026-10-01"), mock.patch("time.sleep"):
+            rep = zs.run(Client(), vix=vix, real=real)
+        self.assertEqual(len(rep["rows"]), 2)
+        r = {x["day"]: x for x in rep["rows"]}["2026-10-14"]
+        self.assertEqual(r["kind"], "P")
+        self.assertEqual(r["strike"], 99.0)                      # floor(99.4 * 0.997) = 99
+        self.assertGreater(r["res"]["hold"], 0)                   # SPY ended 1% under the strike: the put paid
+        self.assertAlmostEqual(rep["k"]["P"]["k"] * zs.synth({"10:00": {"c": 99.4}}, "P", 99.0, 20.0, 26.0, 1.0)["10:00"]["c"], 0.30, places=2)
+        self.assertGreater(zs.bs(100, 100, "C", 0.5 / 252, 0.2), zs.bs(100, 101, "C", 0.5 / 252, 0.2))
+        self.assertEqual(zs.bs(100, 99, "C", 0, 0.2), 1.0)
+        md = zs.markdown(rep)
+        self.assertIn("## 校准", md)
+        self.assertIn("2026-10-14 | 看跌 | -0.60%", md)
