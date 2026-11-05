@@ -4,7 +4,11 @@ research/2026-11-05-zdte-logic-review.md found the follow card's best day, 2026-
 0.020% of SPY -- about a tenth of what a 0.3%-out same-day option is worth with VIX at 16 -- and that without that
 one day the 52 trigger days net to zero. Ten more entries were under 40% of a VIX-based fair value. This dumps the
 minute bars around 10:00 for those contracts, plus two ordinary ones for comparison, so the entry prints can be
-read: a lone tiny print the replay bought at, or a real quote. Record only.
+read: a lone tiny print the replay bought at, or a real quote. Verdict (11-05 evening): all real -- the 08-03 call
+traded $0.13-0.21 every minute from 09:58 to 10:05 on one to two thousand contracts a minute, and the others sit
+inside their neighbouring bars. The VIX yardstick was wrong: a same-day option with five hours left trades at a
+third to a half of VIX in calm markets, so calm-day 0DTE premiums are pennies and one steady trend day pays
+15x. Check replay prices against neighbouring bars and volume, not VIX. Record only.
 Run: python -m hero.research_zdte_print
 """
 
