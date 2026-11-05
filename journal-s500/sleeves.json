@@ -22,7 +22,7 @@
      "exit_day": "2026-11-05",
      "exit_at": "15:30",
      "trail": true,
-     "best_bid": 5.85,
+     "best_bid": 11.54,
      "expiry_out": null
     }
    ],
@@ -441,33 +441,11 @@
   },
   "spy0dte-1000": {
    "start": 1000.0,
-   "cash": 120.0,
+   "cash": 856.0,
    "round": 1,
    "heroes": 0,
    "zeros": 0,
-   "open": [
-    {
-     "tid": "20261105-443657",
-     "kind": "zdte",
-     "sym": "SPY261105P00751000",
-     "asset": "option",
-     "und": "SPY",
-     "qty": 1,
-     "cost": 1.47,
-     "paid": 147.0,
-     "opened": "2026-11-05 10:00",
-     "why": "SPY 开盘 $765.54、现在 $754.25，顺势买当天到期看跌 751（离现价 0.4%），5 倍止盈，15:30 平仓",
-     "expiry": "2026-11-05",
-     "exit_day": "2026-11-05",
-     "exit_at": "15:30",
-     "trail": false,
-     "best_bid": 5.85,
-     "expiry_out": null,
-     "take_x": 5,
-     "take": 7.35,
-     "take_cid": "sl-spy0dte-1000-20261105-443657-t2525"
-    }
-   ],
+   "open": [],
    "closed": [
     {
      "tid": "40253e2547",
@@ -843,6 +821,33 @@
      "how": "2026-11-04 15:30 到时卖出",
      "closed": "2026-11-04 15:30",
      "ret": -0.958
+    },
+    {
+     "tid": "20261105-443657",
+     "kind": "zdte",
+     "sym": "SPY261105P00751000",
+     "asset": "option",
+     "und": "SPY",
+     "qty": 1,
+     "cost": 1.47,
+     "paid": 147.0,
+     "opened": "2026-11-05 10:00",
+     "why": "SPY 开盘 $765.54、现在 $754.25，顺势买当天到期看跌 751（离现价 0.4%），5 倍止盈，15:30 平仓",
+     "expiry": "2026-11-05",
+     "exit_day": "2026-11-05",
+     "exit_at": "15:30",
+     "trail": false,
+     "best_bid": 5.85,
+     "expiry_out": null,
+     "take_x": 5,
+     "take": 7.35,
+     "take_cid": "sl-spy0dte-1000-20261105-443657-t2525",
+     "state": "closed",
+     "exit_price": 7.36,
+     "proceeds": 736.0,
+     "how": "5 倍止盈（券商挂单成交）",
+     "closed": "2026-11-05 10:50",
+     "ret": 4.007
     }
    ],
    "slots": {
@@ -2409,7 +2414,7 @@
      "exit_day": "2026-11-05",
      "exit_at": "15:30",
      "trail": true,
-     "best_bid": 5.85,
+     "best_bid": 11.54,
      "expiry_out": null
     }
    ],
@@ -3350,7 +3355,7 @@
      "exit_day": "2026-11-05",
      "exit_at": "15:30",
      "trail": true,
-     "best_bid": 10.6,
+     "best_bid": 16.92,
      "expiry_out": null
     }
    ],
@@ -7178,7 +7183,7 @@
      "exit_day": "2026-11-06",
      "exit_at": "15:30",
      "trail": true,
-     "best_bid": 11.41,
+     "best_bid": 13.24,
      "expiry_out": null
     }
    ],
@@ -7439,7 +7444,7 @@
      "exit_day": "2026-11-06",
      "exit_at": "15:30",
      "trail": true,
-     "best_bid": 10.54,
+     "best_bid": 12.37,
      "expiry_out": null
     }
    ],
@@ -8410,30 +8415,11 @@
   },
   "dipweek-500": {
    "start": 500.0,
-   "cash": 220.0,
+   "cash": 930.0,
    "round": 1,
    "heroes": 0,
    "zeros": 0,
-   "open": [
-    {
-     "tid": "20261103-b66c03",
-     "kind": "dipweek",
-     "sym": "AAPL261109C00342500",
-     "asset": "option",
-     "und": "AAPL",
-     "qty": 1,
-     "cost": 0.9,
-     "paid": 90.0,
-     "opened": "2026-11-03 15:50",
-     "why": "抄底给一周：AAPL 低开 -3.9%，已回到开盘之上；买看涨 342.5（2026-11-09 到期，离现价 3.6%），买价 $0.85 / 卖价 $0.92（价差占中间价 8%）；翻倍后回撤 40% 卖，否则 11-09 15:30 卖",
-     "expiry": "2026-11-09",
-     "exit_day": "2026-11-09",
-     "exit_at": "15:30",
-     "trail": true,
-     "best_bid": 12.47,
-     "expiry_out": null
-    }
-   ],
+   "open": [],
    "closed": [
     {
      "tid": "20261023-9fc59d",
@@ -8460,6 +8446,32 @@
      "how": "券商已无持仓（到期作废）",
      "closed": "2026-11-02 09:30",
      "ret": -1.0
+    },
+    {
+     "tid": "20261103-b66c03",
+     "kind": "dipweek",
+     "sym": "AAPL261109C00342500",
+     "asset": "option",
+     "und": "AAPL",
+     "qty": 1,
+     "cost": 0.9,
+     "paid": 90.0,
+     "opened": "2026-11-03 15:50",
+     "why": "抄底给一周：AAPL 低开 -3.9%，已回到开盘之上；买看涨 342.5（2026-11-09 到期，离现价 3.6%），买价 $0.85 / 卖价 $0.92（价差占中间价 8%）；翻倍后回撤 40% 卖，否则 11-09 15:30 卖",
+     "expiry": "2026-11-09",
+     "exit_day": "2026-11-09",
+     "exit_at": "15:30",
+     "trail": true,
+     "best_bid": 12.47,
+     "expiry_out": null,
+     "sell_cid": "sl-dipweek-500-20261103-b66c03-x3f70",
+     "sell_why": "翻倍后从最高 $12.47 回撤 40%",
+     "state": "closed",
+     "exit_price": 7.1,
+     "proceeds": 710.0,
+     "how": "翻倍后从最高 $12.47 回撤 40%",
+     "closed": "2026-11-05 10:50",
+     "ret": 6.889
     }
    ],
    "slots": {
@@ -8473,7 +8485,7 @@
     "2026-11-03": "2026-11-03T15:50-05:00",
     "2026-11-04": "2026-11-04T15:50-05:00"
    },
-   "best": 500.0,
+   "best": 930.0,
    "created": null
   },
   "dipweek-1000": {
