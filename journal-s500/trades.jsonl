@@ -3070,3 +3070,7 @@
 {"dry_run": true, "kind": "sleeve_round", "sleeve": "qqq0dte-plan-500", "ts": "2026-11-05T14:40:55+00:00", "why": "qqq0dte-plan-500 第 1 轮剩 $86.00，连一张 $207.00 都买不起，算归零，从 $500 重开第 2 轮（演算）"}
 {"dry_run": true, "kind": "sleeve_plan", "sleeve": "qqq0dte-plan-500", "symbol": "QQQ261105P00669000", "ts": "2026-11-05T14:40:55+00:00", "why": "qqq0dte-plan-500（演算，不下单）：QQQ 开盘 $683.33、现在 $673.11，顺势买当天到期看跌 669（离现价 0.6%），3 倍止盈，15:30 平仓；1 张 × $2.07"}
 {"dry_run": true, "kind": "sleeve_plan_fill", "price": 2.06, "qty": 1, "sleeve": "qqq0dte-plan-500", "symbol": "QQQ261105P00669000", "ts": "2026-11-05T14:40:55+00:00", "why": "qqq0dte-plan-500（演算）：按卖价 $2.06 记作买进 1 张，花 $206.00；1 张 3 倍止盈 $6.20"}
+{"dry_run": true, "kind": "sleeve_plan", "sleeve": "gap-plan-500", "ts": "2026-11-05T14:50:47+00:00", "why": "gap-plan-500（演算）：2026-11-05 没有要买的"}
+{"dry_run": true, "kind": "sleeve_plan", "sleeve": "gap-plan-1000", "symbol": "QCOM261106C00160000", "ts": "2026-11-05T14:50:47+00:00", "why": "gap-plan-1000（演算，不下单）：QCOM 低开 -13.4%，买看涨 160（2026-11-06 到期），翻倍后回撤 40% 卖，最晚 15:50；1 张 × $3.15（一半 $120.00 买不起一张，押上账本）"}
+{"dry_run": true, "kind": "sleeve_plan_fill", "price": 3.14, "qty": 1, "sleeve": "gap-plan-1000", "symbol": "QCOM261106C00160000", "ts": "2026-11-05T14:50:47+00:00", "why": "gap-plan-1000（演算）：按卖价 $3.14 记作买进 1 张，花 $314.00"}
+{"dry_run": true, "kind": "sleeve_plan", "sleeve": "gap-plan-1000", "symbol": "ARM261106C00177500", "ts": "2026-11-05T14:50:47+00:00", "why": "gap-plan-1000（演算，不下单）：ARM 低开 -10.3%，买看涨 177.5（2026-11-06 到期），翻倍后回撤 40% 卖，最晚 15:50；一张 $395.00 超过账本剩下的 $166.00，买不起"}
