@@ -1,0 +1,170 @@
+{
+ "date": "2026-11-05",
+ "sniper": {
+  "symbol": "NBIS",
+  "direction": "put",
+  "confidence": 0.25,
+  "catalyst_type": "peer plan hits a group",
+  "catalyst": "微软的 AI 开支比计划少约 $50 亿、卫星图像显示数据中心工程延误（Benzinga 盘前标题，研究扫描 research/premarket/2026-11-05.md）——微软是 Nebius 的最大客户，直接读穿到它；盘前 $135.74、跌破 20 日低 $140.02，跳空 −4.1% 只有平时单日波动（5.5%）的 0.7 倍，消息还没被跳空吃掉；减分：选举后 AI 基建抛售的第 2 天",
+  "wrong_if": "10:00 前站回开盘价上方，或回到昨收 $141.5 以上（消息被市场当作旧闻）"
+ },
+ "candidates": [
+  {
+   "rank": 1,
+   "symbol": "NBIS",
+   "direction": "put",
+   "confidence": 0.25,
+   "catalyst_type": "peer plan hits a group",
+   "why": "最大客户微软的 AI 开支缺口和数据中心延误报道；盘前跌破 20 日低，跳空约平时波动 0.7 倍（不到 3 倍，不拿过夜）；AI 基建连跌第 2 天减分",
+   "wrong_if": "10:00 前站回开盘价上方"
+  },
+  {
+   "rank": 2,
+   "symbol": "MU",
+   "direction": "put",
+   "confidence": 0.2,
+   "catalyst_type": "company news",
+   "why": "自己的消息：台湾新厂因劳资纠纷停工（Benzinga）；盘前 $755.52 跌破 20 日低 $782，跳空 −5.0% 约平时波动 1.3 倍；但跌主要来自存储板块一起跌（SNDK −7%、WDC −4.6%），连跌第 2 天减分",
+   "wrong_if": "10:00 前站回开盘价上方"
+  },
+  {
+   "rank": 3,
+   "symbol": "DELL",
+   "direction": "put",
+   "confidence": 0.15,
+   "catalyst_type": "peer plan hits a group",
+   "why": "惠普说要应对芯片（内存）危机，读穿到电脑厂的内存成本；盘前 −5.2% 跌破 20 日低 $366.62，约平时波动 1.2 倍；消息偏弱",
+   "wrong_if": "10:00 前站回开盘价上方"
+  },
+  {
+   "rank": 4,
+   "symbol": "SNDK",
+   "direction": "put",
+   "confidence": 0.15,
+   "catalyst_type": "sector move",
+   "why": "存储板块跟着 MU 跌，盘前 −7.0% 跌破 20 日低，约平时波动 1.5 倍；没有自己的消息",
+   "wrong_if": "10:00 前站回开盘价上方"
+  }
+ ],
+ "skipped": [
+  {
+   "symbol": "AMZN",
+   "direction": "call",
+   "gap": 0.025,
+   "reason": "claude-b 已选",
+   "why_not": "claude-b 今天选了 AMZN 看涨（Uber Eats 合作），我们不选同一只"
+  },
+  {
+   "symbol": "IREN",
+   "direction": "put",
+   "gap": -0.056,
+   "reason": "财报临近",
+   "why_not": "同一条微软开支缺口的消息也点名它，但今晚盘后发财报"
+  },
+  {
+   "symbol": "CRWV",
+   "direction": "put",
+   "gap": -0.042,
+   "reason": "其他",
+   "why_not": "同一条消息的二线，跳空只有平时波动 0.7 倍，11-10 财报临近，排在 NBIS 后面"
+  },
+  {
+   "symbol": "QCOM",
+   "direction": "put",
+   "gap": -0.121,
+   "reason": "财报反应日",
+   "why_not": "昨晚财报"
+  },
+  {
+   "symbol": "ARM",
+   "direction": "put",
+   "gap": -0.069,
+   "reason": "财报反应日",
+   "why_not": "昨晚财报"
+  },
+  {
+   "symbol": "COHR",
+   "direction": "put",
+   "gap": -0.024,
+   "reason": "财报反应日",
+   "why_not": "昨晚财报，盘后 +9% 已全部吐回"
+  },
+  {
+   "symbol": "LRCX",
+   "direction": "put",
+   "gap": -0.052,
+   "reason": "消息太弱",
+   "why_not": "跌破 20 日低但没有自己的消息，跟板块"
+  },
+  {
+   "symbol": "AMAT",
+   "direction": "put",
+   "gap": -0.046,
+   "reason": "消息太弱",
+   "why_not": "跟板块，没有自己的消息"
+  },
+  {
+   "symbol": "STX",
+   "direction": "put",
+   "gap": -0.048,
+   "reason": "消息太弱",
+   "why_not": "跟着 MU 的存储板块"
+  },
+  {
+   "symbol": "WDC",
+   "direction": "put",
+   "gap": -0.046,
+   "reason": "消息太弱",
+   "why_not": "跟着 MU 的存储板块"
+  },
+  {
+   "symbol": "INTC",
+   "direction": "put",
+   "gap": -0.03,
+   "reason": "分析师评级",
+   "why_not": "只有 Dan Ives 说芯片还要跌 12% 的评论"
+  },
+  {
+   "symbol": "PLTR",
+   "direction": "put",
+   "gap": -0.028,
+   "reason": "分析师评级",
+   "why_not": "只有目标价调整"
+  },
+  {
+   "symbol": "AMD",
+   "direction": "put",
+   "gap": -0.055,
+   "reason": "消息太弱",
+   "why_not": "财报后第 2 天，新闻只有量子计算合作和策略师观点"
+  },
+  {
+   "symbol": "TSLA",
+   "direction": "put",
+   "gap": -0.026,
+   "reason": "消息太弱",
+   "why_not": "得州选举后的扩张风险评论、进入阿曼市场，都不够分量"
+  },
+  {
+   "symbol": "UBER",
+   "direction": "call",
+   "gap": 0.024,
+   "reason": "分析师评级",
+   "why_not": "昨天的财报反应日之后只剩目标价调整"
+  },
+  {
+   "symbol": "TXN",
+   "direction": "put",
+   "gap": -0.027,
+   "reason": "消息太弱",
+   "why_not": "新产品发布，跌是跟板块"
+  }
+ ],
+ "claude_b_pick": "AMZN call（信心 0.3，Uber Eats 和 Prime 的外卖合作）",
+ "notes": [
+  "08:35 没写预选（前因不清楚）。09:02 扫描：AI 芯片 / 数据中心连跌第 2 天，几乎每只都盘前跌破 20 日低，但跳空都只有平时波动的 0.6–1.5 倍，没有一只够「跳空 ≥3 倍」的加分，所以都按当天到期、不拿过夜。",
+  "排除的财报反应日（research/earnings-forecast/2026-11-04.json 里 reaction_day = 11-05 的 386 只）：QCOM、ARM、APP、MELI、COHR、MCK、MSI、EXPE、FICO、HUBS、EW、FIG、BROS、CAVA，以及今早盘前的 COP、SONY、PH、CMI、CI、APD、KMB、TM 等。",
+  "风险：AI 基建两天跌了不少，有策略师喊超跌（Tom Lee），反抽会让看跌单很快作废；信心按这个打低。"
+ ],
+ "generated_at": "2026-11-05T09:04-05:00"
+}
