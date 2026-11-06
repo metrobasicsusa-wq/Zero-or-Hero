@@ -5327,8 +5327,8 @@
      "expiry_out": null,
      "take_x": 2,
      "take": 1.3,
-     "sell_cid": "sl-wk-news-1000-2026W45-95c55c-xa5a0",
-     "sell_why": "2026-11-05 15:50 到时卖出"
+     "sell_why": "2026-11-05 15:50 到时卖出",
+     "sell_cid": "sl-wk-news-1000-2026W45-95c55c-x558c"
     }
    ],
    "closed": [
@@ -7016,7 +7016,7 @@
      "opened": "2026-11-05 15:40",
      "why": "接力第一段：本周财报里 126 日动量最强的 MRNA（+430%），全仓，买正股，第二天 09:35 卖（10-19 起财报只做正股 / 两倍）；账本到起点 3 倍就转 SOXL",
      "exit_at": "09:35",
-     "best_bid": 235.0,
+     "best_bid": 242.82,
      "exit_day": "2026-11-06"
     }
    ],
@@ -7134,7 +7134,7 @@
      "opened": "2026-11-05 15:40",
      "why": "接力第一段：本周财报里 126 日动量最强的 MRNA（+430%），全仓，买正股，第二天 09:35 卖（10-19 起财报只做正股 / 两倍）；账本到起点 2 倍就转 SOXL",
      "exit_at": "09:35",
-     "best_bid": 235.0,
+     "best_bid": 242.82,
      "exit_day": "2026-11-06"
     }
    ],
@@ -7235,30 +7235,11 @@
   },
   "sniper-500": {
    "start": 500.0,
-   "cash": 200.0,
+   "cash": 390.0,
    "round": 3,
    "heroes": 0,
    "zeros": 2,
-   "open": [
-    {
-     "tid": "20261105-70b182",
-     "kind": "sniper",
-     "sym": "NBIS261106P00128000",
-     "asset": "option",
-     "und": "NBIS",
-     "qty": 1,
-     "cost": 3.0,
-     "paid": 300.0,
-     "opened": "2026-11-05 09:30",
-     "why": "开盘狙击 NBIS看跌 128（2026-11-06 到期，离现价 3.1%（平时一天波动 5.5% 的一半），delta 0.35）：微软的 AI 开支比计划少约 $50 亿、卫星图像显示数据中心工程延误（Benzinga 盘前标题，研究扫描 research/premarket/2026-11-05.md）——微软是 Nebius 的最大客户，直接读穿到它；盘前 $13；翻倍后回撤 40% 卖，否则到期日 15:30 卖；一半 $250.00 买不起一张，押上账本买 1 张",
-     "expiry": "2026-11-06",
-     "exit_day": "2026-11-06",
-     "exit_at": "15:30",
-     "trail": true,
-     "best_bid": 13.24,
-     "expiry_out": null
-    }
-   ],
+   "open": [],
    "closed": [
     {
      "tid": "20261015-eb4d57",
@@ -7415,6 +7396,32 @@
      "how": "券商已无持仓（到期作废）",
      "closed": "2026-11-03 09:30",
      "ret": -1.0
+    },
+    {
+     "tid": "20261105-70b182",
+     "kind": "sniper",
+     "sym": "NBIS261106P00128000",
+     "asset": "option",
+     "und": "NBIS",
+     "qty": 1,
+     "cost": 3.0,
+     "paid": 300.0,
+     "opened": "2026-11-05 09:30",
+     "why": "开盘狙击 NBIS看跌 128（2026-11-06 到期，离现价 3.1%（平时一天波动 5.5% 的一半），delta 0.35）：微软的 AI 开支比计划少约 $50 亿、卫星图像显示数据中心工程延误（Benzinga 盘前标题，研究扫描 research/premarket/2026-11-05.md）——微软是 Nebius 的最大客户，直接读穿到它；盘前 $13；翻倍后回撤 40% 卖，否则到期日 15:30 卖；一半 $250.00 买不起一张，押上账本买 1 张",
+     "expiry": "2026-11-06",
+     "exit_day": "2026-11-06",
+     "exit_at": "15:30",
+     "trail": true,
+     "best_bid": 13.24,
+     "expiry_out": null,
+     "sell_cid": "sl-sniper-500-20261105-70b182-xe9b4",
+     "sell_why": "翻倍后从最高 $13.24 回撤 40%",
+     "state": "closed",
+     "exit_price": 1.9,
+     "proceeds": 190.0,
+     "how": "翻倍后从最高 $13.24 回撤 40%",
+     "closed": "2026-11-06 09:30",
+     "ret": -0.367
     }
    ],
    "slots": {
@@ -7460,7 +7467,7 @@
   },
   "sniper-1000": {
    "start": 1000.0,
-   "cash": 740.0,
+   "cash": 1062.0,
    "round": 2,
    "heroes": 0,
    "zeros": 1,
@@ -7500,26 +7507,8 @@
      "trail": true,
      "best_bid": 2.75,
      "expiry_out": null,
-     "sell_cid": "sl-sniper-1000-20261104-9656d6-xeace",
-     "sell_why": "2026-11-05 15:50 到时卖出"
-    },
-    {
-     "tid": "20261105-1d7133",
-     "kind": "sniper",
-     "sym": "NBIS261106P00127000",
-     "asset": "option",
-     "und": "NBIS",
-     "qty": 2,
-     "cost": 2.83,
-     "paid": 566.0,
-     "opened": "2026-11-05 09:30",
-     "why": "开盘狙击 NBIS看跌 127（2026-11-06 到期，离现价 3.9%（平时一天波动 5.5% 的一半），delta 0.32）：微软的 AI 开支比计划少约 $50 亿、卫星图像显示数据中心工程延误（Benzinga 盘前标题，研究扫描 research/premarket/2026-11-05.md）——微软是 Nebius 的最大客户，直接读穿到它；盘前 $13；翻倍后回撤 40% 卖，否则到期日 15:30 卖",
-     "expiry": "2026-11-06",
-     "exit_day": "2026-11-06",
-     "exit_at": "15:30",
-     "trail": true,
-     "best_bid": 12.74,
-     "expiry_out": null
+     "sell_why": "2026-11-05 15:50 到时卖出",
+     "sell_cid": "sl-sniper-1000-20261104-9656d6-x710d"
     }
    ],
    "closed": [
@@ -7704,6 +7693,32 @@
      "how": "券商已无持仓（到期作废）",
      "closed": "2026-11-03 09:30",
      "ret": -1.0
+    },
+    {
+     "tid": "20261105-1d7133",
+     "kind": "sniper",
+     "sym": "NBIS261106P00127000",
+     "asset": "option",
+     "und": "NBIS",
+     "qty": 2,
+     "cost": 2.83,
+     "paid": 566.0,
+     "opened": "2026-11-05 09:30",
+     "why": "开盘狙击 NBIS看跌 127（2026-11-06 到期，离现价 3.9%（平时一天波动 5.5% 的一半），delta 0.32）：微软的 AI 开支比计划少约 $50 亿、卫星图像显示数据中心工程延误（Benzinga 盘前标题，研究扫描 research/premarket/2026-11-05.md）——微软是 Nebius 的最大客户，直接读穿到它；盘前 $13；翻倍后回撤 40% 卖，否则到期日 15:30 卖",
+     "expiry": "2026-11-06",
+     "exit_day": "2026-11-06",
+     "exit_at": "15:30",
+     "trail": true,
+     "best_bid": 12.74,
+     "expiry_out": null,
+     "sell_cid": "sl-sniper-1000-20261105-1d7133-xef22",
+     "sell_why": "翻倍后从最高 $12.74 回撤 40%",
+     "state": "closed",
+     "exit_price": 1.61,
+     "proceeds": 322.0,
+     "how": "翻倍后从最高 $12.74 回撤 40%",
+     "closed": "2026-11-06 09:30",
+     "ret": -0.431
     }
    ],
    "slots": {
@@ -8159,9 +8174,6 @@
    "best": 500.0,
    "created": null,
    "pead_watch": {
-    "2026-10-26": [
-     "VZ"
-    ],
     "2026-10-27": [
      "BA",
      "FCX",
@@ -8235,6 +8247,10 @@
     ],
     "2026-11-12": [
      "NBIS"
+    ],
+    "2026-11-13": [
+     "AMAT",
+     "CSCO"
     ]
    }
   },
@@ -8518,7 +8534,7 @@
      "exit_day": "2026-11-12",
      "exit_at": "15:50",
      "trail": true,
-     "best_bid": 0.0,
+     "best_bid": 3.42,
      "expiry_out": null
     }
    ],
@@ -8822,7 +8838,7 @@
      "expiry_out": null,
      "take_x": 2,
      "take": 18.9,
-     "take_cid": "sl-dipweek-take-500-20261104-b287d9-tae11"
+     "take_cid": "sl-dipweek-take-500-20261104-b287d9-t078b"
     }
    ],
    "closed": [
@@ -8894,7 +8910,7 @@
      "expiry_out": null,
      "take_x": 2,
      "take": 9.1,
-     "take_cid": "sl-dipweek-take-1000-20261103-59bda0-t76cc"
+     "take_cid": "sl-dipweek-take-1000-20261103-59bda0-t3144"
     },
     {
      "tid": "20261105-e4f9e5",
@@ -8911,11 +8927,11 @@
      "exit_day": "2026-11-12",
      "exit_at": "15:50",
      "trail": false,
-     "best_bid": 0.0,
+     "best_bid": 3.42,
      "expiry_out": null,
      "take_x": 2,
      "take": 9.2,
-     "take_cid": "sl-dipweek-take-1000-20261105-e4f9e5-t3d32"
+     "take_cid": "sl-dipweek-take-1000-20261105-e4f9e5-t02c7"
     }
    ],
    "closed": [
