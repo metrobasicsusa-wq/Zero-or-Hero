@@ -272,13 +272,13 @@ class Engine:
             snaps = {}
             self.j.event("alert_error", source="snapshots", error=str(e)[:200])
 
-        self.breaker = alerts.market_breaker(snaps, c)
+        self.breaker = alerts.market_breaker(snaps, c, day)
         if self.breaker and not book.get("breaker"):
             self.j.event("circuit", dry_run=self.dry, why=f"市场熔断：{self.breaker}。今天停止买入和开期权，所有止损收紧到现价下方 "
                                                         f"{c['tight_stop_pct']:.0%}（只收紧不放松）；不主动卖出")
         book["breaker"] = book.get("breaker") or self.breaker
 
-        for sym, move in alerts.stock_drops(snaps, set(stocks), c).items():
+        for sym, move in alerts.stock_drops(snaps, set(stocks), c, day).items():
             why = f"盘中 {move:+.1%}（线 {c['stock_drop']:+.0%}）"
             self.cautious[sym] = why
             if sym not in book.setdefault("drops", {}):

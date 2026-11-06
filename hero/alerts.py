@@ -42,18 +42,26 @@ def settings(cfg: dict) -> dict:
     return {**DEFAULTS, **cfg.get("risk", {}).get("circuit", {})}
 
 
-def day_move(snap: dict | None) -> float | None:
-    """Today's move from the previous close to the latest trade."""
+def day_move(snap: dict | None, today: str | None = None) -> float | None:
+    """Today's move from the previous close to the latest trade.
+
+    Before the first trade of the day the IEX snapshot's dailyBar is still yesterday's bar and
+    prevDailyBar the bar before that: 2026-11-06 09:30:28 the SPY snapshot read 735 against the
+    11-04 close of 766.8 (-4.1%) and tripped the breaker on a +0.3% day. With `today` given
+    (ISO date), a dailyBar dated before today is the previous close; without it, the old reading."""
     if not snap:
         return None
     last = (snap.get("latestTrade") or {}).get("p")
-    prev = (snap.get("prevDailyBar") or {}).get("c")
+    bar, prev_bar = snap.get("dailyBar") or {}, snap.get("prevDailyBar") or {}
+    prev = prev_bar.get("c")
+    if today and bar.get("c") and bar.get("t") and str(bar["t"])[:10] < str(today)[:10]:
+        prev = bar["c"]
     return last / prev - 1 if last and prev else None
 
 
-def market_breaker(snaps: dict, c: dict) -> str | None:
+def market_breaker(snaps: dict, c: dict, today: str | None = None) -> str | None:
     """Why the market breaker is on, or None."""
-    idx, fear = day_move(snaps.get(c["index"])), day_move(snaps.get(c["fear"]))
+    idx, fear = day_move(snaps.get(c["index"]), today), day_move(snaps.get(c["fear"]), today)
     reasons = []
     if idx is not None and idx <= c["index_drop"]:
         reasons.append(f"{c['index']} 盘中 {idx:+.1%}（线 {c['index_drop']:+.0%}）")
@@ -62,10 +70,10 @@ def market_breaker(snaps: dict, c: dict) -> str | None:
     return "；".join(reasons) or None
 
 
-def stock_drops(snaps: dict, held: set[str], c: dict) -> dict[str, float]:
+def stock_drops(snaps: dict, held: set[str], c: dict, today: str | None = None) -> dict[str, float]:
     out = {}
     for sym in held:
-        m = day_move(snaps.get(sym))
+        m = day_move(snaps.get(sym), today)
         if m is not None and m <= c["stock_drop"]:
             out[sym] = m
     return out

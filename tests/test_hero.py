@@ -1649,6 +1649,22 @@ class Alerts(unittest.TestCase):
         self.assertEqual(new[0]["stop_price"], "194.00")  # 3% under the 200 current price
         self.assertEqual(c.closed, [])  # the breaker never sells by itself
 
+    def test_breaker_ignores_the_stale_snapshot_before_the_first_trade(self):
+        # 11-06 09:30:28: before SPY's first IEX trade the snapshot's dailyBar was still yesterday's bar and
+        # prevDailyBar the day before, so 735 read -4.1% against the 11-04 close on a +0.3% day.
+        yesterday = (TODAY - timedelta(days=1)).isoformat()
+        stale = {"dailyBar": {"t": f"{yesterday}T05:00:00Z", "c": 733.0, "o": 765.0, "l": 731.0},
+                 "prevDailyBar": {"c": 766.8}, "latestTrade": {"p": 735.0}}
+        self.assertAlmostEqual(alerts.day_move(stale, TODAY.isoformat()), 735.0 / 733.0 - 1)
+        self.assertAlmostEqual(alerts.day_move(stale), 735.0 / 766.8 - 1)  # the old reading, without the date
+        c, log = self.run_with(snaps={"SPY": stale})
+        self.assertNotIn("circuit", [e["kind"] for e in log])
+        self.assertTrue([o for o in c.orders if o["side"] == "buy"])  # buying went on as usual
+        fresh = {"dailyBar": {"t": f"{TODAY.isoformat()}T05:00:00Z", "c": 487.0, "o": 499.0, "l": 486.0},
+                 "prevDailyBar": {"c": 500.0}, "latestTrade": {"p": 487.0}}
+        c, log = self.run_with(snaps={"SPY": fresh})
+        self.assertIn("circuit", [e["kind"] for e in log])  # a real -2.6% day still trips it
+
     def test_news_alert_blocks_that_name_only_and_is_logged_once(self):
         h = {"id": 7, "headline": "UP1 slashes outlook on weak orders", "symbols": ["UP1"], "source": "benzinga",
              "url": "https://example.com/7", "created_at": "2026-10-01T12:00:00Z"}
