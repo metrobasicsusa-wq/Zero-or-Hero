@@ -1,0 +1,220 @@
+{
+ "date": "2026-11-06",
+ "sniper": {
+  "symbol": "HIMS",
+  "direction": "call",
+  "catalyst": "06:49 ET 礼来和 Hims & Hers 宣布合作：Zepbound（$299 / 月）和口服 Foundayo / orforglipron（$149 / 月）直接上 Hims & Hers 平台，按礼来自付价卖，平台承诺不再卖复方版（礼来新闻稿、Reuters）——HIMS 去年失去礼来和诺和的药后第一次拿回大厂正品，盘前约 +6–7%，只有它平时单日波动的 1 倍，消息没被跳空吃掉；claude-b 选的是另一边的 LLY",
+  "catalyst_type": "company news",
+  "confidence": 0.35,
+  "wrong_if": "10:00 前跌回开盘价下方，或礼来 / 公司把合作条款说小（只是导流、不是平台内销售）"
+ },
+ "candidates": [
+  {
+   "rank": 1,
+   "symbol": "HIMS",
+   "direction": "call",
+   "confidence": 0.35,
+   "catalyst_type": "company news",
+   "why": "礼来正品上平台（含 $149 口服药），盘前 +6–7%、约平时波动 1 倍、没破 20 日高，消息是它自己的；不拿过夜",
+   "wrong_if": "10:00 前跌回开盘价下方，或合作条款被说小"
+  },
+  {
+   "rank": 2,
+   "symbol": "BE",
+   "direction": "call",
+   "confidence": 0.25,
+   "catalyst_type": "company news",
+   "why": "AEP 约 $40 亿、702 MW 燃料电池项目供 Google（怀俄明，用 Bloom 技术，2028 年投运），盘前 +10.7%——中盘股跳空超过 6% 常已反映，而且昨天刚因数据中心政策被卖",
+   "wrong_if": "10:00 前回补一半跳空"
+  },
+  {
+   "rank": 3,
+   "symbol": "NVO",
+   "direction": "put",
+   "confidence": 0.2,
+   "catalyst_type": "peer plan hits a group",
+   "why": "礼来 $149 口服药进了诺和在用的渠道，诺和哥本哈根 −0.9%、ADR 盘前约 −1.5%，消息没吃掉；但 11-04 财报刚上调全年、开盘 +5.6%，连续第 2 天逆势减分",
+   "wrong_if": "10:00 前回到开盘价上方"
+  },
+  {
+   "rank": 4,
+   "symbol": "LRCX",
+   "direction": "call",
+   "confidence": 0.2,
+   "catalyst_type": "company news",
+   "why": "昨晚宣布 $250 亿回购（约流通股 9%）、季度股息 $0.33（SEC 8-K），盘前 +13.4%——约平时波动 3 倍，但是从 20 日低点反弹不是突破，跳空已反映，且整个芯片板块一起弹",
+   "wrong_if": "10:00 前回补一半跳空"
+  }
+ ],
+ "skipped": [
+  {
+   "symbol": "ORCL",
+   "direction": "call",
+   "gap": "+4.3%",
+   "reason": "消息太弱",
+   "why_not": "扫描里的「上调 2027 财年指引」标题是 9 月财报的旧闻；今天只有 OpenAI 融资传闻和超跌反弹"
+  },
+  {
+   "symbol": "TSM",
+   "direction": "call",
+   "gap": "+7.3%",
+   "reason": "跳空已吃掉",
+   "why_not": "台湾限制做空、板块反弹，不是公司消息"
+  },
+  {
+   "symbol": "AMD",
+   "direction": "call",
+   "gap": "+8.7%",
+   "reason": "跳空已吃掉",
+   "why_not": "昨天 −17% 后反弹，板块一起"
+  },
+  {
+   "symbol": "MU",
+   "direction": "call",
+   "gap": "+5.6%",
+   "reason": "其他",
+   "why_not": "板块反弹，没有自己的新消息"
+  },
+  {
+   "symbol": "SNDK",
+   "direction": "call",
+   "gap": "+10.4%",
+   "reason": "跳空已吃掉",
+   "why_not": "板块反弹"
+  },
+  {
+   "symbol": "WDC",
+   "direction": "call",
+   "gap": "+8.1%",
+   "reason": "跳空已吃掉",
+   "why_not": "板块反弹"
+  },
+  {
+   "symbol": "ARM",
+   "direction": "call",
+   "gap": "+7.4%",
+   "reason": "财报反应日",
+   "why_not": "11-04 盘后财报，第 2 天反弹"
+  },
+  {
+   "symbol": "MRVL",
+   "direction": "call",
+   "gap": "+9.1%",
+   "reason": "跳空已吃掉",
+   "why_not": "板块反弹"
+  },
+  {
+   "symbol": "ALAB",
+   "direction": "call",
+   "gap": "+8.9%",
+   "reason": "跳空已吃掉",
+   "why_not": "板块反弹"
+  },
+  {
+   "symbol": "AVGO",
+   "direction": "call",
+   "gap": "+5.7%",
+   "reason": "其他",
+   "why_not": "板块反弹"
+  },
+  {
+   "symbol": "NVDA",
+   "direction": "call",
+   "gap": "+4.3%",
+   "reason": "其他",
+   "why_not": "板块反弹，没有自己的消息"
+  },
+  {
+   "symbol": "CRWV",
+   "direction": "call",
+   "gap": "+9.4%",
+   "reason": "财报临近",
+   "why_not": "11-10 盘后财报；板块反弹，Cramer 点名担心"
+  },
+  {
+   "symbol": "NBIS",
+   "direction": "call",
+   "gap": "+9.7%",
+   "reason": "其他",
+   "why_not": "板块反弹；昨天的狙击看跌还拿着"
+  },
+  {
+   "symbol": "IREN",
+   "direction": "call",
+   "gap": "+15.1%",
+   "reason": "财报反应日",
+   "why_not": "昨晚盘后财报"
+  },
+  {
+   "symbol": "WULF",
+   "direction": "call",
+   "gap": "+12.2%",
+   "reason": "财报反应日",
+   "why_not": "今早财报"
+  },
+  {
+   "symbol": "COHR",
+   "direction": "call",
+   "gap": "+10.9%",
+   "reason": "财报反应日",
+   "why_not": "11-04 盘后财报；$200 亿长期协议是财报里的"
+  },
+  {
+   "symbol": "NET",
+   "direction": "call",
+   "gap": "+20.0%",
+   "reason": "财报反应日",
+   "why_not": "昨晚盘后财报"
+  },
+  {
+   "symbol": "GLW",
+   "direction": "call",
+   "gap": "+5.5%",
+   "reason": "分析师评级",
+   "why_not": "只有 Fox Advisors 上调"
+  },
+  {
+   "symbol": "CRWD",
+   "direction": "call",
+   "gap": "+5.2%",
+   "reason": "消息太弱",
+   "why_not": "没查到新闻"
+  },
+  {
+   "symbol": "SPCX",
+   "direction": "call",
+   "gap": "+5.6%",
+   "reason": "消息太弱",
+   "why_not": "合作伙伴网络、德电评论，分量小"
+  },
+  {
+   "symbol": "TSLA",
+   "direction": "call",
+   "gap": "+2.6%",
+   "reason": "消息太弱",
+   "why_not": "Cybertruck 停产、韩国份额，分量小"
+  },
+  {
+   "symbol": "BE",
+   "direction": "call",
+   "gap": "+10.7%",
+   "reason": "跳空已吃掉",
+   "why_not": "进了候选第 2 名，跳空太大没选"
+  },
+  {
+   "symbol": "LLY",
+   "direction": "call",
+   "gap": "−1.4%",
+   "reason": "claude-b 已选",
+   "why_not": "claude-b 选 LLY 看涨，我们选另一边的 HIMS"
+  }
+ ],
+ "claude_b_pick": "LLY call（信心 0.35，礼来 × Hims & Hers 合作）",
+ "notes": [
+  "08:35 没写预选：当时只看到 LRCX 回购（跳空已吃掉）和板块反弹；礼来 × HIMS 的消息 06:49 出，08:35 的搜索没抓到",
+  "今天财报反应日不选：NET、ABNB、TEAM、MCHP、IREN、AXON、AFRM、NTRA、MNST、EOG、DVN、SPG、DKNG、LYFT、AKAM、AAOI、HUM、VST、MRNA、ENB、BAM、PPL、CHTR、WULF、ELAN、COHR、ARM、QCOM、APP 等（research/earnings-forecast/2026-11-05.json 的 reaction_day = 今天的 200 多只，加 11-04 盘后那批）",
+  "盘前背景：10 月非农 +16.5 万（预期 6.5 万）、失业率 4.1%；纳指期货 +1.4%、标普 +0.2%、道指 −1.0%，芯片整体反弹（SMH 盘前 +5%）；昨天的 NBIS 看跌（11-06 到期）还拿着",
+  "HIMS 的期权：周五到期今天有；不写 overnight（没破 20 日高、跳空只约 1 倍平时波动）"
+ ],
+ "generated_at": "2026-11-06T09:05-05:00"
+}
