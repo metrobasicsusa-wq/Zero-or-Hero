@@ -1,0 +1,291 @@
+{
+  "schema_version": "1.0",
+  "producer": "Codex",
+  "mode": "PAPER",
+  "currency": "USD",
+  "trading_date": "2026-11-06",
+  "timezone": "America/New_York",
+  "status": "limited_post_market_review",
+  "as_of": "2026-11-06T15:44:08.230718169-05:00",
+  "generated_at": "2026-11-06T21:33:55.011383+00:00",
+  "evidence_cutoff": {
+    "commit": "c93cba5e2bb7ddd64ccc6a904d846568f2f9785a",
+    "generation": 2463,
+    "core_state_sha256": "417f909c78036408774dec99a5fcefeea75348fb8c38ac03f0f59ef652779752",
+    "archive_snapshot_sha256": "a6068f2c39f086bb25d819cde635bddf510c3636b926ea77f3d8398d5933f8b8",
+    "archive_manifest_sha256": "f361c742dba008866beca2d8702e075ff711647dcd3e072b43f60391a2c3d6f9",
+    "event_cutoff": 68035,
+    "verified_at": "2026-11-06T21:29:10.901727+00:00",
+    "evidence_stale": false,
+    "sample_cutoff": 259320,
+    "dataset_cutoff": 10681,
+    "session_start": "2026-11-06T09:30:00-05:00",
+    "session_end": "2026-11-06T16:00:00-05:00",
+    "max_session_event_sequence": 68029
+  },
+  "scope": {
+    "capital_limit_usd": 100000,
+    "swing_budget_usd": 50000,
+    "intraday_budget_usd": 49000,
+    "options_budget_usd": 1000,
+    "drawdown_halt_fraction": 0.1
+  },
+  "equity": {
+    "current_usd": 103288.59,
+    "as_of": "2026-11-06T15:44:08.230718169-05:00",
+    "source": "last preclose archived broker snapshot; no equity-event or official close available",
+    "previous_day_usd": 103288.59,
+    "previous_day_as_of": "2026-11-05T15:38:51.266110235-05:00",
+    "previous_day_basis": "previous trading-day preclose broker observation; not official close",
+    "official_open_usd": null,
+    "official_close_usd": null,
+    "official_previous_close_usd": null,
+    "cash_usd": 103288.59,
+    "external_cash_flows_usd": null,
+    "fees_usd": null,
+    "first_observation": {
+      "as_of": "2026-11-06T09:40:10.138370434-05:00",
+      "equity_usd": 103288.59,
+      "cash_usd": 103288.59,
+      "source": "archived broker snapshot observed reference; not official open or close"
+    },
+    "post_session_observation": {
+      "as_of": "2026-11-06T16:10:40.896974276-05:00",
+      "equity_usd": 103288.59,
+      "cash_usd": 103288.59,
+      "source": "archived broker snapshot observed reference; not official open or close"
+    }
+  },
+  "fills": [],
+  "fill_count": 0,
+  "positions": [],
+  "positions_basis": {
+    "as_of": "2026-11-06T15:44:08.230718169-05:00",
+    "source": "last preclose archived broker positions snapshot; uncertain submission outcome remains unresolved"
+  },
+  "closing_positions": null,
+  "options_positions": [],
+  "performance": {
+    "official_day_pnl_usd": null,
+    "observed_window_change_usd": 0.0,
+    "observed_window_return_fraction": 0.0,
+    "window_start": "2026-11-06T09:40:10.138370434-05:00",
+    "window_end": "2026-11-06T15:44:08.230718169-05:00",
+    "sleeve_observed_window_change_usd": {
+      "swing": null,
+      "intraday": null,
+      "options": null
+    },
+    "gross_realized_pnl_usd": 0,
+    "fees_usd": null,
+    "net_realized_pnl_usd": null,
+    "closed_trade_count": 0,
+    "observed_max_drawdown_fraction": 0.0,
+    "max_historical_peak_drawdown_observed_fraction": null,
+    "basis": "discrete broker observations and archived actual FILL only; not official daily return"
+  },
+  "audit": {
+    "status": "limited_post_market_review",
+    "session": {
+      "preopen": {
+        "is_open": false,
+        "next_close": "2026-11-06T16:00:00-05:00",
+        "next_open": "2026-11-06T09:30:00-05:00",
+        "timestamp": "2026-11-06T09:07:52.75326338-05:00"
+      },
+      "first_open": {
+        "is_open": true,
+        "next_close": "2026-11-06T16:00:00-05:00",
+        "next_open": "2026-11-09T09:30:00-05:00",
+        "timestamp": "2026-11-06T09:40:10.138370434-05:00"
+      }
+    },
+    "summary": "有限审核：归档未见当日实际成交；14个盘中启动周期均无完成记录、行情输入和样本。昨日TMO买入意图仍待对账，阻止新开仓；连续执行故障尚未恢复。缺少正式收盘及分策略估值。",
+    "actual_fill_basis": "Latest applicable corrected original broker FILL by activity identity at the fixed evidence cutoff; connection tests, order requests and cumulative polls excluded. No new original FILL or lifecycle activity observed.",
+    "stock_entry_intents": [],
+    "pending_intents": [
+      {
+        "symbol": "TMO",
+        "side": "buy",
+        "qty": "14",
+        "limit_price": "694.3",
+        "status": "submitting",
+        "created": "2026-11-05T11:45:59.730181-05:00",
+        "sleeve": "swing"
+      }
+    ],
+    "sample_coverage": {
+      "observations": 0,
+      "evaluated_runs": 0,
+      "full_cycle_rows_per_run": {
+        "0": 14
+      },
+      "unique_strategy_symbol_market_time_params": 0,
+      "missing_market_time": 0,
+      "unevaluated_sample_rows": 0,
+      "cycles_without_evaluation": 14
+    },
+    "run_status_counts": {
+      "running": 14
+    },
+    "missing_input_cycle_count": 14,
+    "missing_final_snapshot_cycle_count": 14,
+    "session_equity_event_count": 0,
+    "broker_snapshot_count": 14,
+    "data_gaps": {
+      "opening_to_first_broker_snapshot_seconds": 610.13837,
+      "last_broker_snapshot_to_close_seconds": 951.769282,
+      "snapshot_intervals": [
+        {
+          "from": "2026-11-06T09:40:10.138370434-05:00",
+          "to": "2026-11-06T10:09:20.266480787-05:00",
+          "seconds": 1750.12811
+        },
+        {
+          "from": "2026-11-06T10:09:20.266480787-05:00",
+          "to": "2026-11-06T10:40:35.358103855-05:00",
+          "seconds": 1875.091623
+        },
+        {
+          "from": "2026-11-06T10:40:35.358103855-05:00",
+          "to": "2026-11-06T11:09:35.580834829-05:00",
+          "seconds": 1740.222731
+        },
+        {
+          "from": "2026-11-06T11:09:35.580834829-05:00",
+          "to": "2026-11-06T11:39:54.694427782-05:00",
+          "seconds": 1819.113593
+        },
+        {
+          "from": "2026-11-06T11:39:54.694427782-05:00",
+          "to": "2026-11-06T12:09:21.747111433-05:00",
+          "seconds": 1767.052684
+        },
+        {
+          "from": "2026-11-06T12:09:21.747111433-05:00",
+          "to": "2026-11-06T12:37:19.919098601-05:00",
+          "seconds": 1678.171987
+        },
+        {
+          "from": "2026-11-06T12:37:19.919098601-05:00",
+          "to": "2026-11-06T13:08:54.310295843-05:00",
+          "seconds": 1894.391197
+        },
+        {
+          "from": "2026-11-06T13:08:54.310295843-05:00",
+          "to": "2026-11-06T13:37:58.538695375-05:00",
+          "seconds": 1744.2284
+        },
+        {
+          "from": "2026-11-06T13:37:58.538695375-05:00",
+          "to": "2026-11-06T14:07:25.93084901-05:00",
+          "seconds": 1767.392154
+        },
+        {
+          "from": "2026-11-06T14:07:25.93084901-05:00",
+          "to": "2026-11-06T14:41:03.384381926-05:00",
+          "seconds": 2017.453532
+        },
+        {
+          "from": "2026-11-06T14:41:03.384381926-05:00",
+          "to": "2026-11-06T15:09:59.184875859-05:00",
+          "seconds": 1735.800494
+        },
+        {
+          "from": "2026-11-06T15:09:59.184875859-05:00",
+          "to": "2026-11-06T15:30:20.972350506-05:00",
+          "seconds": 1221.787475
+        },
+        {
+          "from": "2026-11-06T15:30:20.972350506-05:00",
+          "to": "2026-11-06T15:44:08.230718169-05:00",
+          "seconds": 827.258368
+        }
+      ]
+    },
+    "recovery_verified": false,
+    "genuine_parameter_promotions": [],
+    "order_checks": {
+      "new_order_events": 0,
+      "new_rejection_or_cancellation_events": 0,
+      "prior_uncertain_submission_count": 1,
+      "limit_compliance": null,
+      "quote_relative_slippage": null,
+      "reason": "No actual current-day FILL; prior TMO intent has no verified final broker outcome or original quote/signal/sizing evidence. Empty order polls do not resolve it."
+    },
+    "risk_observations": {
+      "sampled_positions_empty": true,
+      "sampled_open_orders_empty": true,
+      "new_entries_blocked_by_uncertain_submission": true,
+      "unresolved_intended_notional_usd": 9720.2,
+      "allocation_configuration_unchanged": true,
+      "continuous_budget_and_protection_verified": false,
+      "intraday_flattening_verified": false,
+      "historical_peak_drawdown_reconstructed": null
+    },
+    "options": {
+      "quantity_unit": "contracts",
+      "multiplier": 100,
+      "feed": "indicative",
+      "fill_count": 0,
+      "lifecycle_count": 0,
+      "lifetime_commitments": 0,
+      "observed_contracts": 0,
+      "quote_events": 0,
+      "quote_age_range_seconds": null,
+      "policy_unchanged": true,
+      "max_premium_per_contract_usd": 240,
+      "fee_contingency_per_contract_usd": 10,
+      "max_lifetime_contracts": 4,
+      "max_simultaneous_contracts": 2,
+      "entry_cutoff_et": "14:30",
+      "exit_minutes_before_actual_close": 20,
+      "sale_proceeds_reused": false
+    },
+    "limits": [
+      "No archived equity-event valuation or official opening/closing equity; sleeve P&L remains unknown. Broker snapshots are separate observed references, not official closes.",
+      "No original FILL in the verified archive does not establish the final broker outcome of the prior uncertain TMO submission. No blind resubmission.",
+      "All 14 session-started cycles lack completion, market datasets, samples and final snapshots. Archive integrity is verified, but economic evidence is incomplete and market freshness cannot be assessed.",
+      "Fees and cash flows were not independently reconciled. Snapshot valuations and broker accounting times can differ; no forced sleeve attribution.",
+      "Empty sampled holdings do not prove continuous absence of exposure or successful intraday flattening. Stop snapshots would only prove protection at the observed instant.",
+      "Free indicative quotes are modified reference prices. PAPER fills, live executable liquidity and backtests are distinct; no profitability conclusion.",
+      "Peer start dates, instruments and risk differ. Different observation times cannot be compared as a common close."
+    ],
+    "method_source_sha256": "3e3e2608b281bb68062729b75b2bf6b85994dfa9b673c71e43ef77daeb7a075f",
+    "specified_audit_method_sha256": "8e766778c4e88c81f7bfe55501134983dc444958594a133ec891678f6e1f1de8",
+    "method_note": "Specified bounded audit refused missing equity_observation events; this capped read-only branch reports broker snapshots separately and leaves sleeve valuation and official closes unknown. No integrity/resource bypass.",
+    "code_commit": "a9bf1f7fac6820b3c974989ea8441eb4ea801094",
+    "versions": {
+      "c31e132a2d509158fc57769e36d0814ba3965ca1b8c1b26931d51d78b8837859": {
+        "source_hashes": {
+          "zerotrader/cloud_archive.py": "20d6d0ba02f9f4fbd2c061d6c0d2cfbe8c4710b0ea0dc9153640444ed8daa892",
+          "zerotrader/cloud_bundle.py": "d763474378ce4f6c09d8b275ec8e2f764b1c125e9022ab962a0b289531eed145",
+          "zerotrader/cloud_checkpoint.py": "72d45eb04f5203b634878728d0c5ba07149e4f0a8022d9c809e782ad008020b3",
+          "zerotrader/cloud_runner.py": "38e0e43acd278cdc2cf31539c35e075e57f30970cb5e8365f03b73be923626ef"
+        },
+        "configuration_hash": "ce067a951015d88a4c3454f8dcdcd1c8e8702b0f817aee267cb64730e6f0d90b",
+        "strategy_hash": "197138942c3433012e62d642f3bf87904e70245512edb000a39f1c87781ad274",
+        "options_policy": {
+          "allocation": 1000,
+          "enabled": true,
+          "fee_allowance_per_contract": 10,
+          "fee_contingency": 40,
+          "lifetime_premium_cap": 960,
+          "max_dte": 21,
+          "max_lifetime_contracts": 4,
+          "max_moneyness_fraction": 0.01,
+          "max_positions": 2,
+          "max_premium_per_contract": 240,
+          "max_quote_age_seconds": 90,
+          "max_spread_fraction": 0.1,
+          "min_dte": 7,
+          "quote_feed": "indicative"
+        }
+      }
+    },
+    "improvement_hypotheses": [
+      "After manual reconciliation of the original uncertain order, diagnose the repeatedly canceled execution phase using authorized read-only evidence; cancellation annotations alone do not establish root cause. No code or risk changes performed."
+    ]
+  },
+  "replies": []
+}
