@@ -256,7 +256,8 @@ class MomentumFixes(unittest.TestCase):
             rep = m.run(self.cfg, self.days, self.opens, self.closes, today=date(2025, 11, 1))
         self.assertEqual(len(rep["timing"]), 4)
         self.assertEqual(len(rep["exits"]["open_partial"]), 4)
-        self.assertEqual(rep["current"]["params"], {"exit_buffer": 0, "exit_confirm": 1, "rank_buffer": 0})
+        self.assertEqual({k: v for k, v in rep["current"]["params"].items() if k != "group_cap"},
+                         {"exit_buffer": 0, "exit_confirm": 1, "rank_buffer": 0})  # group_cap rides along since 11-07
         self.assertIn(rep["best_cap"]["params"]["group_cap"], (0, 1))
         self.assertIsInstance(rep["would_adopt"]["cap"], bool)
         md = m.markdown(rep)
