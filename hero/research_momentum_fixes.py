@@ -212,7 +212,8 @@ def run(cfg: dict, days: list[str], opens: dict, closes: dict, today: date | Non
 
     # the three best single fixes stacked, on the live timing
     live_rows = exits["open_partial"]
-    cur = next(r for r in live_rows if r["params"] == {"exit_buffer": 0, "exit_confirm": 1, "rank_buffer": 0})
+    off = {"exit_buffer": 0, "exit_confirm": 1, "rank_buffer": 0}   # the live rules; params may also carry group_cap since 11-07
+    cur = next(r for r in live_rows if all(r["params"].get(k) == v for k, v in off.items()))
     best_exit = best_of(live_rows)
     best_cap = best_of(caps["open_partial"])
     stacked = study("stack:open_partial", {**base, **best_exit["params"], **best_cap["params"]}, "open_partial")
