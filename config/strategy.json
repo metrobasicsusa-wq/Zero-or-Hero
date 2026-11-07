@@ -1,5 +1,5 @@
 {
-  "generation": 1,
+  "generation": 2,
   "universe": [
     "SPY",
     "QQQ",
@@ -31,18 +31,20 @@
     "gross_exposure": 0.8,
     "rebalance_drift": 0.25,
     "rsi_applies_to_holdings": false,
-    "macro_scale": 1.0
+    "macro_scale": 1.0,
+    "rank_buffer": 4,
+    "group_cap": 3
   },
   "options": {
     "enabled": true,
-    "allocation": 0.1,
+    "allocation": 0.05,
     "max_positions": 3,
-    "min_dte": 30,
-    "max_dte": 60,
-    "target_delta": 0.5,
-    "take_profit": 0.6,
+    "min_dte": 60,
+    "max_dte": 120,
+    "target_delta": 0.7,
+    "take_profit": 0.4,
     "stop_loss": -0.4,
-    "exit_dte": 7,
+    "exit_dte": 14,
     "earnings_guard": true
   },
   "risk": {
