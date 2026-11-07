@@ -7482,6 +7482,71 @@ class ReportInside(unittest.TestCase):
         self.assertIsNone(self.check(wed, "2026-11-06", fri))
 
 
+class ResearchSniperStop(unittest.TestCase):
+    def bars(self):
+        def minute(day, hhmm, px, o=None):
+            hh, mm = map(int, hhmm.split(":"))
+            return {"t": f"{day}T{hh + 4:02d}:{mm:02d}:00Z", "o": o if o is not None else px, "h": px, "l": px, "c": px, "v": 100}
+        d1, d2 = "2026-10-14", "2026-10-15"
+        und1 = {k: minute(d1, k, px, o) for k, px, o in (("09:30", 100.5, 100.0), ("09:35", 101.0, None), ("10:30", 101.0, None),
+                                                          ("11:00", 102.0, None), ("12:00", 99.8, None), ("15:59", 99.0, None))}
+        mins1 = {k: minute(d1, k, px) for k, px in (("09:35", 1.0), ("10:30", 1.5), ("11:00", 2.5), ("12:00", 2.0), ("15:59", 1.8))}
+        mins2 = {k: minute(d2, k, px) for k, px in (("09:30", 3.0), ("10:00", 4.0), ("11:00", 2.2), ("15:50", 2.5), ("15:59", 2.6))}
+        return und1, mins1, mins2
+
+    def test_play_every_exit(self):
+        from hero import research_sniper_stop as ss
+        und1, mins1, mins2 = self.bars()
+        res = ss.play(mins1, mins2, und1, "C", 100.0)
+        cost = 1.1  # 1.0 paid 10% over
+        self.assertAlmostEqual(res["next1550"], 2.5 * 0.9 / cost - 1, places=3)          # day 2, 15:50
+        self.assertAlmostEqual(res["stop_back"], 2.0 * 0.9 / cost - 1, places=3)         # 12:00 the stock is back under 100
+        self.assertAlmostEqual(res["d2_trail2"], 2.2 * 0.9 / cost - 1, places=3)         # high 4.0 on day 2, 2.2 is a 45% giveback
+        self.assertAlmostEqual(res["d2_take3_trail"], (2.0 + 2.2 * 0.9 / cost - 1) / 2, places=3)  # half at 3x (10:00), rest the trail
+        self.assertAlmostEqual(res["d2_half2"], (1.0 + 2.5 * 0.9 / cost - 1) / 2, places=3)       # half at 2x (09:30), rest 15:50
+        self.assertEqual(res["both_trail2"], res["stop_back"])
+        self.assertEqual(res["both_take3_trail"], res["stop_back"])
+        # a put: the stock never closes back above its open on day 1, so the stop never fires
+        put = ss.play(mins1, mins2, und1, "P", 103.0)
+        self.assertEqual(put["stop_back"], put["next1550"])
+        self.assertEqual(put["both_trail2"], put["d2_trail2"])
+        self.assertIsNone(ss.play(mins1, {}, und1, "C", 100.0))
+
+    def test_sample_and_run(self):
+        from hero import research_sniper_stop as ss
+        rows = [{"und": "ACME", "day": "2026-10-14", "kind": "C", "gap": 0.05, "gap_z": 3.5, "exp": "2026-10-16", "breakout": True,
+                 "with_gap": True, "headline": "deal", "res": {"next": 0.9}},
+                {"und": "ACME", "day": "2026-10-14", "kind": "C", "gap": 0.05, "gap_z": 1.0, "exp": "2026-10-14", "breakout": True, "with_gap": True},
+                {"und": "ACME", "day": "2026-10-14", "kind": "C", "gap": 0.05, "gap_z": 5.0, "exp": "2026-10-16", "breakout": False, "with_gap": True}]
+        g = ss.sample(rows)
+        self.assertEqual([len(g[ss.BIG]), len(g[ss.BASE])], [1, 1])
+        und1, mins1, mins2 = self.bars()
+
+        class Client:
+            def stock_bars(self, syms, start, end, feed=None):
+                out = []
+                if start[:10] <= "2026-10-14" < end[:10]:
+                    out += list(und1.values())
+                if start[:10] <= "2026-10-15" < end[:10]:
+                    out += [{**b, "t": b["t"].replace("2026-10-14", "2026-10-15")} for b in und1.values()]
+                return {"ACME": out}
+
+            def option_contracts(self, und, status, type, expiration_date_gte, expiration_date_lte, **kw):
+                return [{"symbol": f"ACME261016C{k}", "expiration_date": "2026-10-16", "strike_price": str(k), "type": "call"}
+                        for k in (100, 101, 102, 103)] if status == "active" else []
+
+            def option_bars(self, syms, start, end, timeframe=None):
+                return {s: list((mins1 if start[:10] == "2026-10-14" else mins2).values()) for s in syms}
+
+        rep = ss.run(Client(), rows=rows[:1], pace=0, end="2026-10-16")
+        self.assertEqual(len(rep["rows"]), 1)
+        r = rep["rows"][0]
+        self.assertEqual((r["sym"], r["day2"], r["next_old"]), ("ACME261016C102", "2026-10-15", 0.9))  # 101 * 1.006 -> 102
+        table, md = ss.markdown(rep)
+        self.assertIn("稳健性检查", md)
+        self.assertIn("校验", md)
+
+
 class ResearchZdteLogic(unittest.TestCase):
     def test_signal_tables_and_both_option_legs(self):
         from unittest import mock
