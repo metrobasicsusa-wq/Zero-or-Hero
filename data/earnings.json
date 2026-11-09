@@ -1,7 +1,7 @@
 {
  "source": "alphavantage EARNINGS_CALENDAR horizon=3month",
- "fetched_at": "2026-11-06T09:00:22-05:00",
- "fetched_on": "2026-11-06",
+ "fetched_at": "2026-11-09T09:00:26-05:00",
+ "fetched_on": "2026-11-09",
  "horizon_days": 90,
  "symbols": [
   "AAPL",
@@ -128,16 +128,6 @@
   "XOM"
  ],
  "reports": {
-  "MRNA": [
-   {
-    "date": "2026-11-06",
-    "time": "pre-market",
-    "estimate": "-1.1",
-    "fiscal_end": "2026-09-30",
-    "checked": "nasdaq",
-    "confirmed": true
-   }
-  ],
   "RKLB": [
    {
     "date": "2026-11-09",
@@ -191,7 +181,7 @@
   "NU": [
    {
     "date": "2026-11-12",
-    "time": "unknown",
+    "time": "post-market",
     "estimate": "0.22",
     "fiscal_end": "2026-09-30",
     "checked": "nasdaq",
@@ -203,16 +193,6 @@
     "date": "2026-11-17",
     "time": "pre-market",
     "estimate": "3.86",
-    "fiscal_end": "2026-10-31",
-    "checked": "nasdaq",
-    "confirmed": true
-   }
-  ],
-  "MDT": [
-   {
-    "date": "2026-11-24",
-    "time": "pre-market",
-    "estimate": "1.34",
     "fiscal_end": "2026-10-31",
     "checked": "nasdaq",
     "confirmed": true
@@ -298,6 +278,16 @@
     "confirmed": true
    }
   ],
+  "MDT": [
+   {
+    "date": "2026-11-24",
+    "time": "pre-market",
+    "estimate": "1.34",
+    "fiscal_end": "2026-10-31",
+    "checked": "nasdaq",
+    "confirmed": true
+   }
+  ],
   "CRWD": [
    {
     "date": "2026-12-01",
@@ -313,7 +303,7 @@
     "time": "unknown",
     "estimate": "0.79",
     "fiscal_end": "2026-10-31",
-    "confirmed": false
+    "confirmed": true
    }
   ],
   "CRM": [
@@ -339,7 +329,8 @@
     "date": "2026-12-07",
     "time": "unknown",
     "estimate": "1.03",
-    "fiscal_end": "2026-10-31"
+    "fiscal_end": "2026-10-31",
+    "confirmed": false
    }
   ],
   "ORCL": [
@@ -347,7 +338,9 @@
     "date": "2026-12-09",
     "time": "unknown",
     "estimate": "1.56",
-    "fiscal_end": "2026-11-30"
+    "fiscal_end": "2026-11-30",
+    "confirmed": false,
+    "yahoo_date": "2026-12-14"
    }
   ],
   "AVGO": [
@@ -409,20 +402,26 @@
  },
  "cross_check": {
   "nasdaq_days": 15,
-  "moved": [
+  "moved": [],
+  "time_filled": [
    [
-    "MDT",
-    "2026-11-17",
-    "2026-11-24"
+    "NU",
+    "unknown",
+    "post-market"
    ]
   ],
-  "time_filled": [],
   "disputed": [],
   "yahoo": {
-   "asked": 21,
-   "answered": 21,
-   "confirmed": 19,
-   "conflicts": []
+   "asked": 22,
+   "answered": 22,
+   "confirmed": 20,
+   "conflicts": [
+    [
+     "ORCL",
+     "2026-12-09",
+     "2026-12-14"
+    ]
+   ]
   }
  }
 }
