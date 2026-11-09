@@ -22,7 +22,7 @@
      "exit_day": "2026-11-09",
      "exit_at": "15:30",
      "trail": false,
-     "best_bid": 1.7,
+     "best_bid": 2.33,
      "expiry_out": null,
      "take_x": 3,
      "take": 3.1,
@@ -43,7 +43,7 @@
      "exit_day": "2026-11-09",
      "exit_at": "15:30",
      "trail": true,
-     "best_bid": 1.7,
+     "best_bid": 2.33,
      "expiry_out": null
     }
    ],
@@ -563,7 +563,7 @@
      "exit_day": "2026-11-09",
      "exit_at": "15:30",
      "trail": false,
-     "best_bid": 1.7,
+     "best_bid": 2.33,
      "expiry_out": null,
      "take_x": 5,
      "take": 5.2,
@@ -584,7 +584,7 @@
      "exit_day": "2026-11-09",
      "exit_at": "15:30",
      "trail": true,
-     "best_bid": 1.7,
+     "best_bid": 2.33,
      "expiry_out": null
     }
    ],
@@ -2622,7 +2622,7 @@
      "exit_day": "2026-11-09",
      "exit_at": "15:30",
      "trail": false,
-     "best_bid": 1.7,
+     "best_bid": 2.33,
      "expiry_out": null,
      "take_x": 3,
      "take": 3.1,
@@ -2643,7 +2643,7 @@
      "exit_day": "2026-11-09",
      "exit_at": "15:30",
      "trail": true,
-     "best_bid": 1.7,
+     "best_bid": 2.33,
      "expiry_out": null
     }
    ],
@@ -3645,33 +3645,11 @@
   },
   "spy0dte-near-1000": {
    "start": 1000.0,
-   "cash": 78.0,
+   "cash": 443.0,
    "round": 5,
    "heroes": 2,
    "zeros": 2,
-   "open": [
-    {
-     "tid": "20261109-316a49",
-     "kind": "zdte",
-     "sym": "SPY261109C00748000",
-     "asset": "option",
-     "und": "SPY",
-     "qty": 1,
-     "cost": 1.22,
-     "paid": 122.0,
-     "opened": "2026-11-09 09:40",
-     "why": "SPY 开盘 $741.93、现在 $745.12，顺势买当天到期看涨 748（离现价 0.4%），3 倍止盈，15:30 平仓",
-     "expiry": "2026-11-09",
-     "exit_day": "2026-11-09",
-     "exit_at": "15:30",
-     "trail": false,
-     "best_bid": 3.07,
-     "expiry_out": null,
-     "take_x": 3,
-     "take": 3.65,
-     "take_cid": "sl-spy0dte-near-1000-20261109-316a49-td916"
-    }
-   ],
+   "open": [],
    "closed": [
     {
      "tid": "a4cab2ccb2",
@@ -4691,6 +4669,33 @@
      "how": "2026-11-06 15:30 到时卖出",
      "closed": "2026-11-06 15:30",
      "ret": -0.966
+    },
+    {
+     "tid": "20261109-316a49",
+     "kind": "zdte",
+     "sym": "SPY261109C00748000",
+     "asset": "option",
+     "und": "SPY",
+     "qty": 1,
+     "cost": 1.22,
+     "paid": 122.0,
+     "opened": "2026-11-09 09:40",
+     "why": "SPY 开盘 $741.93、现在 $745.12，顺势买当天到期看涨 748（离现价 0.4%），3 倍止盈，15:30 平仓",
+     "expiry": "2026-11-09",
+     "exit_day": "2026-11-09",
+     "exit_at": "15:30",
+     "trail": false,
+     "best_bid": 3.07,
+     "expiry_out": null,
+     "take_x": 3,
+     "take": 3.65,
+     "take_cid": "sl-spy0dte-near-1000-20261109-316a49-td916",
+     "state": "closed",
+     "exit_price": 3.65,
+     "proceeds": 365.0,
+     "how": "3 倍止盈（券商挂单成交）",
+     "closed": "2026-11-09 11:00",
+     "ret": 1.992
     }
    ],
    "slots": {
@@ -5737,7 +5742,7 @@
      "exit_day": "2026-11-12",
      "exit_at": "15:50",
      "trail": false,
-     "best_bid": 7.0,
+     "best_bid": 8.47,
      "expiry_out": null,
      "take_x": 2,
      "take": 13.7,
@@ -5852,7 +5857,7 @@
      "exit_day": "2026-11-12",
      "exit_at": "15:50",
      "trail": false,
-     "best_bid": 7.0,
+     "best_bid": 8.47,
      "expiry_out": null,
      "take_x": 2,
      "take": 13.7,
@@ -7852,7 +7857,7 @@
      "exit_day": "2026-11-09",
      "exit_at": "15:30",
      "trail": true,
-     "best_bid": 8.84,
+     "best_bid": 11.42,
      "expiry_out": null
     }
    ],
@@ -8841,7 +8846,7 @@
      "exit_day": "2026-11-12",
      "exit_at": "15:50",
      "trail": true,
-     "best_bid": 1.9,
+     "best_bid": 2.05,
      "expiry_out": null
     }
    ],
@@ -9230,7 +9235,7 @@
      "exit_day": "2026-11-12",
      "exit_at": "15:50",
      "trail": true,
-     "best_bid": 10.86,
+     "best_bid": 11.97,
      "expiry_out": null
     },
     {
@@ -9570,7 +9575,7 @@
      "exit_day": "2026-11-11",
      "exit_at": "15:50",
      "trail": false,
-     "best_bid": 6.06,
+     "best_bid": 6.48,
      "expiry_out": null,
      "take_x": 2,
      "take": 18.9,
@@ -9623,7 +9628,7 @@
   },
   "dipweek-take-1000": {
    "start": 1000.0,
-   "cash": 1215.0,
+   "cash": 1575.0,
    "round": 1,
    "heroes": 0,
    "zeros": 0,
@@ -9648,27 +9653,6 @@
      "take_x": 2,
      "take": 9.1,
      "take_cid": "sl-dipweek-take-1000-20261103-59bda0-t9957"
-    },
-    {
-     "tid": "20261106-a62d5f",
-     "kind": "dipweek",
-     "sym": "NKE261113C00040000",
-     "asset": "option",
-     "und": "NKE",
-     "qty": 6,
-     "cost": 0.3,
-     "paid": 180.0,
-     "opened": "2026-11-06 15:50",
-     "why": "抄底给一周：NKE 低开 -3.2%，已回到开盘之上；买看涨 40（2026-11-13 到期，离现价 3.6%），买价 $0.30 / 卖价 $0.33（价差占中间价 10%）；2 倍止盈，否则 11-13 15:30 卖",
-     "expiry": "2026-11-13",
-     "exit_day": "2026-11-13",
-     "exit_at": "15:30",
-     "trail": false,
-     "best_bid": 0.57,
-     "expiry_out": null,
-     "take_x": 2,
-     "take": 0.6,
-     "take_cid": "sl-dipweek-take-1000-20261106-a62d5f-t0b2d"
     }
    ],
    "closed": [
@@ -9725,6 +9709,33 @@
      "how": "2 倍止盈（券商挂单成交）",
      "closed": "2026-11-09 10:00",
      "ret": 1.011
+    },
+    {
+     "tid": "20261106-a62d5f",
+     "kind": "dipweek",
+     "sym": "NKE261113C00040000",
+     "asset": "option",
+     "und": "NKE",
+     "qty": 6,
+     "cost": 0.3,
+     "paid": 180.0,
+     "opened": "2026-11-06 15:50",
+     "why": "抄底给一周：NKE 低开 -3.2%，已回到开盘之上；买看涨 40（2026-11-13 到期，离现价 3.6%），买价 $0.30 / 卖价 $0.33（价差占中间价 10%）；2 倍止盈，否则 11-13 15:30 卖",
+     "expiry": "2026-11-13",
+     "exit_day": "2026-11-13",
+     "exit_at": "15:30",
+     "trail": false,
+     "best_bid": 0.57,
+     "expiry_out": null,
+     "take_x": 2,
+     "take": 0.6,
+     "take_cid": "sl-dipweek-take-1000-20261106-a62d5f-t0b2d",
+     "state": "closed",
+     "exit_price": 0.6,
+     "proceeds": 360.0,
+     "how": "2 倍止盈（券商挂单成交）",
+     "closed": "2026-11-09 11:00",
+     "ret": 1.0
     }
    ],
    "slots": {
@@ -9739,7 +9750,7 @@
     "2026-11-05": "2026-11-05T15:50-05:00",
     "2026-11-06": "2026-11-06T15:50-05:00"
    },
-   "best": 1385.0,
+   "best": 1575.0,
    "created": null
   },
   "pullback-500": {
@@ -9873,7 +9884,7 @@
      "exit_day": "2026-11-09",
      "exit_at": "15:50",
      "trail": false,
-     "best_bid": 2.66,
+     "best_bid": 3.53,
      "expiry_out": "15:50"
     }
    ],
@@ -9942,7 +9953,7 @@
      "exit_day": "2026-11-09",
      "exit_at": "15:50",
      "trail": false,
-     "best_bid": 2.66,
+     "best_bid": 3.53,
      "expiry_out": "15:50"
     }
    ],
