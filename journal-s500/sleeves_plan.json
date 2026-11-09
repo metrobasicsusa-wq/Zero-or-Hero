@@ -5520,31 +5520,11 @@
   },
   "sniper-plan-1000": {
    "start": 1000.0,
-   "cash": 299.0,
+   "cash": 580.0,
    "round": 1,
    "heroes": 0,
    "zeros": 0,
-   "open": [
-    {
-     "tid": "20261109-72af65",
-     "kind": "sniper",
-     "sym": "AMD261109C00500000",
-     "asset": "option",
-     "und": "AMD",
-     "qty": 1,
-     "cost": 1.89,
-     "paid": 189.0,
-     "opened": "2026-11-09 09:30",
-     "why": "开盘狙击 AMD看涨 500（2026-11-09 到期，离现价 5.3%（平时一天波动 4.9% 的一半））：周日英伟达董事会宣布对黄仁勋独立调查（CNN / CNBC 11-08），NVDA 盘前 −5.6%；钱往「另一边」走：AMD 盘前 +3.9%（Oppenheimer 今早升到跑赢、目标 $600，TipRanks / Benzinga）；翻倍后回撤 40% 卖，否则到期日 15:30 卖",
-     "best_bid": 4.82,
-     "sim": true,
-     "expiry": "2026-11-09",
-     "exit_day": "2026-11-09",
-     "exit_at": "15:30",
-     "trail": true,
-     "expiry_out": null
-    }
-   ],
+   "open": [],
    "closed": [
     {
      "tid": "20261023-eb9d3a",
@@ -5770,6 +5750,31 @@
      "how": "2026-11-06 15:30 到时卖出",
      "closed": "2026-11-06 15:30",
      "ret": -1.0
+    },
+    {
+     "tid": "20261109-72af65",
+     "kind": "sniper",
+     "sym": "AMD261109C00500000",
+     "asset": "option",
+     "und": "AMD",
+     "qty": 1,
+     "cost": 1.89,
+     "paid": 189.0,
+     "opened": "2026-11-09 09:30",
+     "why": "开盘狙击 AMD看涨 500（2026-11-09 到期，离现价 5.3%（平时一天波动 4.9% 的一半））：周日英伟达董事会宣布对黄仁勋独立调查（CNN / CNBC 11-08），NVDA 盘前 −5.6%；钱往「另一边」走：AMD 盘前 +3.9%（Oppenheimer 今早升到跑赢、目标 $600，TipRanks / Benzinga）；翻倍后回撤 40% 卖，否则到期日 15:30 卖",
+     "best_bid": 4.82,
+     "sim": true,
+     "expiry": "2026-11-09",
+     "exit_day": "2026-11-09",
+     "exit_at": "15:30",
+     "trail": true,
+     "expiry_out": null,
+     "state": "closed",
+     "exit_price": 2.81,
+     "proceeds": 281.0,
+     "how": "翻倍后从最高 $4.82 回撤 40%",
+     "closed": "2026-11-09 11:40",
+     "ret": 0.487
     }
    ],
    "slots": {
