@@ -37,6 +37,16 @@ def sleeves_preview(cfg: dict, journal: Path) -> dict | None:
     return sleeves.Book(journal / "sleeves.preview-not-saved.json", specs, carry).d
 
 
+def reconcile(journal: Path, cfg: dict, book: dict | None, snap: dict | None) -> dict | None:
+    """Why the ledger table does not add up to the account, and each ledger over all its rounds (owner, 11-09:
+    「为什么别人看你多账本只有 46000」): hero.feature_pages.reconcile, for the account whose ledgers this page shows."""
+    if not book or not (journal / "sleeves.json").exists():
+        return None
+    from hero import feature_pages
+    target = float((cfg.get("sleeves") or {}).get("target") or 10000)
+    return feature_pages.reconcile(book, snap, feature_pages.first_equity(journal), target)
+
+
 def collect(journal: Path, cfg: dict) -> dict:
     show_sim = rehearsal(cfg)
     equity_path = journal / "equity.csv"
@@ -73,15 +83,18 @@ def collect(journal: Path, cfg: dict) -> dict:
     briefs = sorted(brief_dir.glob("20*.md")) if brief_dir.exists() else []
     zdte_path, net_path, sl_path = journal / "zdte.json", journal / "net.json", journal / "sleeves.json"
     plan_path = journal / "sleeves_plan.json"
+    book = json.loads(sl_path.read_text()) if sl_path.exists() else sleeves_preview(cfg, journal)
+    snap = json.loads(snap_path.read_text()) if snap_path.exists() else None
     return {
         "rehearsal": show_sim,
-        "sleeves": json.loads(sl_path.read_text()) if sl_path.exists() else sleeves_preview(cfg, journal),
+        "sleeves": book,
+        "reconcile": reconcile(journal, cfg, book, snap),
         "plan_sleeves": json.loads(plan_path.read_text()) if plan_path.exists() else None,   # plan-only: what they would have made
         "zdte": json.loads(zdte_path.read_text()) if zdte_path.exists() else None,
         "net": json.loads(net_path.read_text()) if net_path.exists() else None,
         "generated": datetime.now(timezone.utc).isoformat(timespec="seconds"),
         "equity": equity,
-        "snapshot": json.loads(snap_path.read_text()) if snap_path.exists() else None,
+        "snapshot": snap,
         "events": events[-MAX_EVENTS:][::-1],
         "targets": targets,
         "evolution": evo_path.read_text() if evo_path.exists() else "",

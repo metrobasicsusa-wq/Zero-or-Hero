@@ -14,6 +14,7 @@ Run: python -m hero.feature_pages --out site/f (pages.yml does it after every pu
 from __future__ import annotations
 
 import argparse
+import csv
 import json
 import re
 from datetime import datetime, timezone
@@ -95,7 +96,15 @@ def ledger_row(spec: dict, s: dict, plan: bool, prices: dict[str, float]) -> dic
     realized = sum(float(t.get("proceeds") or 0) - float(t.get("paid") or 0) for t in closed)
     start, cash = float(s.get("start") or spec.get("start") or 0), float(s.get("cash") or 0)
     value = cash + (now if now is not None else held)
+    # Owner, 11-09 (「为什么别人看你多账本只有 46000」): a ledger that ends a round restarts at its start, so "this
+    # round" hides what the finished rounds made or lost (the $1,000 near-strike SPY ledger reached $10,000 twice
+    # and showed -$576). "life" counts every round: all sold tickets plus the move on what it holds. Once
+    # Book.save has trimmed the oldest tickets (keep, 200) the finished rounds' end cash stands in for them.
+    life = realized + ((now - held) if now is not None else 0.0)
+    if len(closed) >= int(s.get("keep", 200)):
+        life = value - start + sum(float(r.get("cash") or 0) - start for r in s.get("rounds") or [])
     return {"id": spec["id"], "plan": plan, "start": start, "cash": cash, "held": held, "now": now, "value": value,
+            "life": round(life, 2), "restarted": int(s.get("round", 1) or 1) > 1,
             "ret": value / start - 1 if start else 0.0, "realized": round(realized, 2), "trades": len(closed),
             "wins": sum(1 for t in closed if float(t.get("ret") or 0) > 0), "open": len(opened),
             "round": s.get("round", 1), "heroes": s.get("heroes", 0), "zeros": s.get("zeros", 0),
@@ -152,19 +161,94 @@ def latest_backfill(root: Path) -> tuple[str, list[dict], dict[str, dict]]:
     return files[-1].stem, rows, d.get("ledgers") or {}
 
 
+def prices_of(snap: dict | None) -> dict[str, float]:
+    out = {}
+    for p in (snap or {}).get("positions") or []:
+        try:
+            out[p["symbol"]] = float(p["current_price"])
+        except Exception:
+            pass
+    return out
+
+
+def first_equity(journal: Path) -> float | None:
+    """The account before any ledger traded: the first row of equity.csv."""
+    path = journal / "equity.csv"
+    if not path.exists():
+        return None
+    with open(path) as f:
+        for r in csv.DictReader(f):
+            try:
+                return float(r["equity"])
+            except Exception:
+                continue
+    return None
+
+
+def reconcile(book: dict | None, snap: dict | None, began: float | None, target: float = 10000.0) -> dict | None:
+    """Why the ledgers do not add up to the account (owner, 11-09: 「为什么别人看你多账本只有 46000」).
+
+    The ledger table sums to cash + cost of what is held ($46,303 that day) while the broker said $61,467. The rest
+    is the shared pool -- account cash that is in no ledger: what was never handed to a ledger, plus the winnings a
+    ledger gives back when it reaches the target and restarts, less the refills of ledgers that went to zero
+    (Book.topups = refills - winnings) -- and positions carried at cost, not at the broker's price. So:
+    equity = ledger cash + positions at the broker's price + pool, with pool = broker cash - ledger cash; "other" is
+    what the three named parts of the pool leave over (fills not yet booked, a carried ledger's smaller first cash)."""
+    ledgers = (book or {}).get("sleeves") or {}
+    acct = (snap or {}).get("account") or {}
+    try:
+        equity, broker_cash = float(acct["equity"]), float(acct["cash"])
+    except Exception:
+        return None
+    if not ledgers:
+        return None
+    prices = prices_of(snap)
+    rows = {sid: ledger_row({"id": sid}, s, False, prices) for sid, s in ledgers.items()}
+    cash = sum(r["cash"] for r in rows.values())
+    cost = sum(r["held"] for r in rows.values())
+    start = sum(r["start"] for r in rows.values())
+    back = sum(float(r.get("cash") or 0) - float(s.get("start") or 0)
+               for s in ledgers.values() for r in s.get("rounds") or [] if r.get("end") == "hero")
+    refills = float((book or {}).get("topups") or 0) + back
+    pool = broker_cash - cash
+    unassigned = began - start if began is not None else None
+    out = {"n": len(rows), "start": start, "cash": cash, "cost": cost, "at_cost": cash + cost,
+           "market": equity - broker_cash, "equity": equity, "pool": pool, "began": began, "unassigned": unassigned,
+           "back": back, "heroes": sum(int(s.get("heroes") or 0) for s in ledgers.values()),
+           "refills": refills, "zeros": sum(int(s.get("zeros") or 0) for s in ledgers.values()),
+           "other": pool - unassigned - back + refills if unassigned is not None else None,
+           "life": {sid: r["life"] for sid, r in rows.items()}, "life_total": sum(r["life"] for r in rows.values()),
+           "target": target}
+    out = {k: round(v, 2) if isinstance(v, float) else v for k, v in out.items()}
+    out["html"] = reconcile_note(out)
+    return out
+
+
+def reconcile_note(r: dict) -> str:
+    """The reconciliation in plain words, for under the ledger table (s500.html) and the top of the directory."""
+    u = lambda x: ("-" if x < 0 else "") + f"${abs(x):,.0f}"
+    parts = []
+    if r.get("unassigned") is not None:
+        parts.append(f'开始时没分给账本的 {u(r["unassigned"])}')
+        parts.append(f'加上 {r["heroes"]} 次做到 {u(r["target"])} 的账本交回的 {u(r["back"])}')
+        parts.append(f'减去给 {r["zeros"]} 次归零的账本重开的 {u(r["refills"])}')
+        parts.append(f'其余 {u(r["other"])} 是刚成交还没记进账本的和零头')
+    life = r["life_total"]
+    return (f'<b>各个账本加起来不是账户净值。</b>{r["n"]} 个账本合计 {u(r["at_cost"])}（现金 {u(r["cash"])} + 持仓成本 {u(r["cost"])}）；'
+            f'账户净值 {u(r["equity"])} = 账本现金 {u(r["cash"])} + 持仓现价 {u(r["market"])} + 公共资金 {u(r["pool"])}。'
+            f'公共资金是账户里不属于任何账本的钱' + ("：" + "，".join(parts) if parts else "") + "。"
+            f'全部账本历轮累计（归零、成功重开之前的轮次也算）{"+" if life > 0 else ""}{u(life)}。')
+
+
 def collect(root: Path = ROOT) -> dict:
     cfg = _load(root / "config" / "s500.json", {})
     specs = (cfg.get("sleeves") or {}).get("list") or []
     jdir = root / "journal-s500"
-    live = (_load(jdir / "sleeves.json", {}) or {}).get("sleeves") or {}
+    book = _load(jdir / "sleeves.json", {}) or {}
+    live = book.get("sleeves") or {}
     plan = (_load(jdir / "sleeves_plan.json", {}) or {}).get("sleeves") or {}
     snap = _load(jdir / "snapshot.json", {}) or {}
-    prices = {}
-    for p in snap.get("positions") or []:
-        try:
-            prices[p["symbol"]] = float(p["current_price"])
-        except Exception:
-            pass
+    prices = prices_of(snap)
     ids = {s["id"]: family(s["id"]) for s in specs}
     events: dict[str, list[dict]] = {}
     tp = jdir / "trades.jsonl"
@@ -216,6 +300,7 @@ def collect(root: Path = ROOT) -> dict:
         lv = [r for r in f["ledgers"] if not r["plan"]]
         pl = [r for r in f["ledgers"] if r["plan"]]
         f["live_pl"] = round(sum(r["value"] - r["start"] for r in lv), 2) if lv else None
+        f["live_life"] = round(sum(r["life"] for r in lv), 2) if any(r["restarted"] for r in lv) else None   # every round
         f["plan_pl"] = round(sum(r["value"] - r["start"] for r in pl), 2) if pl else None
         f["n_trades"] = sum(r["trades"] for r in f["ledgers"])
         f["last"] = max([r["last"] for r in f["ledgers"]] + [""])
@@ -226,7 +311,8 @@ def collect(root: Path = ROOT) -> dict:
         groups.append(("其他", rest))
     common = {k: (cfg.get("sleeves") or {}).get(k) for k in ("fraction", "zero_line", "target")}
     return {"generated": datetime.now(timezone.utc).isoformat(timespec="seconds"), "snapshot_ts": snap.get("ts"),
-            "groups": [(g, fs) for g, fs in groups if fs], "families": fams, "common": common, "backfill_name": bf_name}
+            "groups": [(g, fs) for g, fs in groups if fs], "families": fams, "common": common, "backfill_name": bf_name,
+            "reconcile": reconcile(book, snap, first_equity(jdir), float(common.get("target") or 10000))}
 
 
 # ---- rendering ----
@@ -396,6 +482,8 @@ def directory(data: dict) -> str:
             nums = []
             if f["live_pl"] is not None:
                 nums.append(f'<div><span>实盘</span>{signed(f["live_pl"], 0)}</div>')
+            if f.get("live_life") is not None:
+                nums.append(f'<div><span>历轮累计</span>{signed(f["live_life"], 0)}</div>')
             if f["plan_pl"] is not None:
                 nums.append(f'<div><span>演算</span>{signed(f["plan_pl"], 0)}</div>')
             if f["backfill"]:
@@ -413,8 +501,11 @@ def directory(data: dict) -> str:
     c = data["common"]
     intro = ('<p class="meta">每个方向有 $500 和 $1,000 两个小账本；停掉的和新想法的规则另有「只演算」账本，不下单，只记会赚多少'
              '（10-22 起由引擎记录）。实盘 / 演算 = 两个账本现值合计减起始（持仓按最新价，演算持仓按成本；归零重开过的只算本轮）；'
+             '历轮累计 = 归零或成功重开过的方向，把之前各轮也算进去的实盘盈亏（没重开过的，实盘那个数就是累计）；'
              '补算 = 10-22 以前的演算选单按分钟线补算的笔数和赚钱的笔数；交易 = 已卖出的笔数。点进去看规则、每笔交易和每天为什么没做。</p>')
-    return page("各方向", "<b>各方向</b>", f'<section class="groups">{intro}{"".join(out)}</section>', data)
+    rec = data.get("reconcile")
+    note = f'<section class="card"><h2>账本和账户净值</h2><p>{rec["html"]}</p></section>' if rec else ""
+    return page("各方向", "<b>各方向</b>", f'{note}<section class="groups">{intro}{"".join(out)}</section>', data)
 
 
 def feature(data: dict, f: dict) -> str:
@@ -441,10 +532,10 @@ def feature(data: dict, f: dict) -> str:
                         f'{"——已停" if sl["done"] >= sl["after"] and sl["net"] < 0 else ""}</p>')
     lrows = [[f'<b>{esc(ledger_name(r))}</b><br><span class="meta">{esc(r["id"])}</span>', usd(r["start"], 0), usd(r["cash"]),
               usd(r["held"]) if r["open"] else "—", usd(r["now"]) if r["now"] is not None else ("按成本" if r["open"] else "—"),
-              usd(r["value"]), pct(r["ret"]), signed(r["realized"]), f'{r["trades"]}（赚 {r["wins"]}）',
+              usd(r["value"]), pct(r["ret"]), signed(r["life"]), signed(r["realized"]), f'{r["trades"]}（赚 {r["wins"]}）',
               f'第 {r["round"]} 轮 · {r["heroes"]} / {r["zeros"]}'] for r in f["ledgers"]]
     ledgers = table([("账本", ""), ("起始", "num"), ("现金", "num"), ("持仓成本", "num"), ("持仓现值", "num"), ("现值", "num"),
-                     ("本轮", "num"), ("已实现", "num"), ("卖出笔数", "num"), ("轮次 · 成功 / 归零", "")], lrows)
+                     ("本轮", "num"), ("历轮累计", "num"), ("已实现", "num"), ("卖出笔数", "num"), ("轮次 · 成功 / 归零", "")], lrows)
 
     def trow(r):
         note = f'买：{esc(r["why"])}' + (f'<br>卖：{esc(r["how"])}' if r["how"] else "")
@@ -486,7 +577,7 @@ def feature(data: dict, f: dict) -> str:
                             for _, fs in data["groups"] for x in fs)
     body = f"""<p class="meta"><a href="index.html">← 全部方向</a> · <span class="chip {f['tone']}">{esc(f['status'])}</span></p>
 <section class="card"><h2>规则</h2><div class="rule">{''.join(rule)}</div></section>
-<section class="card"><h2>账本</h2>{ledgers}<p class="meta">持仓现值按券商最新价（演算账本按成本）；本轮 = 现值对起始；已实现 = 卖出的收回减花费。</p></section>
+<section class="card"><h2>账本</h2>{ledgers}<p class="meta">持仓现值按券商最新价（演算账本按成本）；本轮 = 现值对起始，归零或成功重开后从头算；历轮累计 = 每一轮都算：已实现加持仓的浮动；已实现 = 卖出的收回减花费。成功的账本把赢的钱交回公共资金再重开，所以本轮看不到它。</p></section>
 <section class="card"><h2>累计已实现盈亏</h2>{chart(f)}</section>
 <section class="card"><h2>每笔交易（{len(trades)}）</h2>{tr}</section>
 <section class="card"><h2>最近的跳过和演算（为什么没做）</h2>{events}</section>

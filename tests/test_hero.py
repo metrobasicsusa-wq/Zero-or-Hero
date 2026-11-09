@@ -456,6 +456,31 @@ class Dashboard(unittest.TestCase):
             self.assertEqual((r["date"], r["points"], r["has_ai"]), ("2026-10-01", ["今日 +1.00%"], True))
 
 
+    def test_ledger_page_carries_the_reconciliation_with_the_account(self):
+        # 11-09: the ledger table summed to $46,303 while the account was $61,467; the page now says where the rest is
+        book = {"topups": -9020.0, "sleeves": {
+            "a-1000": {"start": 1000, "cash": 1000.0, "round": 2, "heroes": 1, "zeros": 0, "open": [], "closed": [
+                {"tid": "w", "sym": "SPY261105P00757000", "qty": 10, "paid": 500.0, "proceeds": 10000.0, "ret": 19.0}],
+                "rounds": [{"round": 1, "end": "hero", "cash": 10500.0}]},
+            "a-500": {"start": 500, "cash": 500.0, "round": 2, "heroes": 0, "zeros": 1, "open": [], "closed": [
+                {"tid": "l", "sym": "SPY261104C00771000", "qty": 4, "paid": 480.0, "proceeds": 0.0, "ret": -1.0}],
+                "rounds": [{"round": 1, "end": "zero", "cash": 20.0}]}}}
+        with tempfile.TemporaryDirectory() as d:
+            j = Journal(Path(d))
+            j.equity("2026-10-08", 2_000, 2_000, 0, 600.0)
+            j.snapshot({"account": {"equity": "11020", "cash": "11020"}, "positions": [], "open_orders": []})
+            self.assertIsNone(dashboard.collect(Path(d), cfg())["reconcile"])            # no ledgers: nothing to say
+            (Path(d) / "sleeves.json").write_text(json.dumps(book))
+            data = dashboard.collect(Path(d), cfg())
+            rec = data["reconcile"]
+            self.assertEqual((rec["at_cost"], rec["equity"], rec["pool"], rec["unassigned"], rec["back"], rec["refills"]),
+                             (1500.0, 11020.0, 9520.0, 500.0, 9500.0, 480.0))
+            self.assertEqual((rec["life"], rec["life_total"], rec["other"]), ({"a-1000": 9500.0, "a-500": -480.0}, 9020.0, 0.0))
+            self.assertIn("公共资金 $9,520", rec["html"])
+            html = dashboard.render(data)
+            self.assertIn('"pool":9520.0', html)                                          # the figures reach the page
+            self.assertIn('["历轮累计", 1]', html)                                         # ...and the table has the column
+
     def test_rehearsal_shows_simulated_events_once_a_day(self):
         with tempfile.TemporaryDirectory() as d:
             j = Journal(Path(d))
@@ -5523,6 +5548,73 @@ class FeaturePages(unittest.TestCase):
         self.assertIn("中位收益", one)
         self.assertIn("归零 1 次", one)
         self.assertIn("QQQ 看涨 731", one)
+
+    def test_every_round_counts_and_the_ledgers_reconcile_with_the_account(self):
+        # 11-09 (owner: 「为什么别人看你多账本只有 46000」): a ledger that reached $10,000 handed $9,500 back to the pool
+        # and restarted, another went to zero and was refilled; "this round" shows neither, and the ledgers sum to far
+        # less than the account. Every round is counted, and the note says where the rest of the account is.
+        from hero import feature_pages as fp
+        specs = [{"id": "spy0dte-near-500", "kind": "zdte", "start": 500, "name": "SPY 末日单，离现价 0.3%"},
+                 {"id": "spy0dte-near-1000", "kind": "zdte", "start": 1000, "name": "SPY 末日单，离现价 0.3%"},
+                 {"id": "gap-500", "kind": "gap", "start": 500, "name": "低开反弹"}]
+        win = {"tid": "w", "sym": "SPY261105P00757000", "asset": "option", "qty": 10, "cost": 0.5, "paid": 500.0,
+               "opened": "2026-11-05 09:40", "closed": "2026-11-05 15:30", "proceeds": 10000.0, "ret": 19.0}
+        loss = {"tid": "l", "sym": "SPY261104C00771000", "asset": "option", "qty": 4, "cost": 1.2, "paid": 480.0,
+                "opened": "2026-11-04 10:00", "closed": "2026-11-04 15:30", "proceeds": 0.0, "ret": -1.0}
+        held = {"tid": "h", "sym": "AMD261109C00490000", "asset": "option", "qty": 1, "cost": 4.0, "paid": 400.0,
+                "opened": "2026-11-09 09:30", "why": "开盘狙击"}
+        book = {"topups": -9020.0, "sleeves": {
+            "spy0dte-near-1000": {"start": 1000, "cash": 600.0, "round": 2, "heroes": 1, "zeros": 0, "open": [held],
+                                  "closed": [win], "rounds": [{"round": 1, "end": "hero", "cash": 10500.0}]},
+            "spy0dte-near-500": {"start": 500, "cash": 500.0, "round": 2, "heroes": 0, "zeros": 1, "open": [],
+                                 "closed": [loss], "rounds": [{"round": 1, "end": "zero", "cash": 20.0}]},
+            "gap-500": {"start": 500, "cash": 500.0, "round": 1, "heroes": 0, "zeros": 0, "open": [], "closed": []}}}
+        snap = {"ts": "2026-11-09T21:00:00+00:00", "account": {"equity": "11750", "cash": "11150"},
+                "positions": [{"symbol": "AMD261109C00490000", "current_price": "6.00"}]}
+        rec = fp.reconcile(book, snap, 2500.0)
+        self.assertEqual((rec["n"], rec["start"], rec["cash"], rec["cost"], rec["at_cost"]), (3, 2000.0, 1600.0, 400.0, 2000.0))
+        self.assertEqual((rec["market"], rec["equity"], rec["pool"]), (600.0, 11750.0, 9550.0))   # 1,600 + 600 + 9,550 = 11,750
+        self.assertEqual((rec["unassigned"], rec["back"], rec["heroes"], rec["refills"], rec["zeros"], rec["other"]),
+                         (500.0, 9500.0, 1, 480.0, 1, 30.0))                                      # 500 + 9,500 - 480 + 30 = 9,550
+        self.assertEqual(rec["life"], {"spy0dte-near-1000": 9700.0, "spy0dte-near-500": -480.0, "gap-500": 0.0})
+        self.assertEqual(rec["life_total"], 9220.0)
+        for words in ("各个账本加起来不是账户净值", "3 个账本合计 $2,000", "账户净值 $11,750", "公共资金 $9,550",
+                      "1 次做到 $10,000 的账本交回的 $9,500", "1 次归零的账本重开的 $480", "历轮累计（归零、成功重开之前的轮次也算）+$9,220"):
+            self.assertIn(words, rec["html"])
+        self.assertIsNone(fp.reconcile(book, {"account": {}}, 2500.0))        # no broker figures: nothing to reconcile
+        self.assertIsNone(fp.reconcile({"sleeves": {}}, snap, 2500.0))
+        self.assertIsNone(fp.reconcile(book, snap, None)["other"])              # no equity history: the pool is not split
+        # once Book.save has trimmed the sold tickets, the finished rounds' end cash stands in for them
+        trimmed = fp.ledger_row({"id": "x-1000"}, {"start": 1000, "cash": 600.0, "round": 2, "keep": 1, "open": [],
+                                                   "closed": [dict(loss, paid=400.0)],
+                                                   "rounds": [{"round": 1, "end": "hero", "cash": 10500.0}]}, False, {})
+        self.assertEqual((trimmed["realized"], trimmed["life"], trimmed["restarted"]), (-400.0, 9100.0, True))
+        with tempfile.TemporaryDirectory() as d:
+            root = Path(d)
+            for sub in ("config", "journal-s500", "research"):
+                (root / sub).mkdir()
+            (root / "config" / "s500.json").write_text(json.dumps({"sleeves": {"list": specs, "fraction": 0.5, "zero_line": 0.1,
+                                                                                "target": 10000}}))
+            j = root / "journal-s500"
+            (j / "sleeves.json").write_text(json.dumps(book))
+            (j / "snapshot.json").write_text(json.dumps(snap))
+            (j / "equity.csv").write_text("date,equity,cash,generation,benchmark,as_of\n2026-10-08,2500.00,2500.00,0,600.00\n"
+                                          "2026-11-09,11750.00,11150.00,0,750.00\n")
+            data = fp.collect(root)
+            near, gap = data["families"]["spy0dte-near"], data["families"]["gap"]
+            self.assertEqual((near["live_pl"], near["live_life"]), (200.0, 9220.0))   # this round +$200, every round +$9,220
+            self.assertIsNone(gap["live_life"])                                       # never restarted: one number is enough
+            self.assertEqual(data["reconcile"]["pool"], 9550.0)
+            fp.write(root / "site" / "f", root)
+            index = (root / "site" / "f" / "index.html").read_text()
+            page = (root / "site" / "f" / "spy0dte-near.html").read_text()
+        self.assertIn("账本和账户净值", index)
+        self.assertIn("公共资金 $9,550", index)
+        self.assertIn('<span>历轮累计</span><span class="up">+$9,220</span>', index)
+        self.assertEqual(index.count("<span>历轮累计</span>"), 1)                      # only on the restarted direction's card
+        self.assertIn("历轮累计", page)
+        self.assertIn('<span class="up">+$9,700.00</span>', page)
+        self.assertIn('<span class="down">-$480.00</span>', page)
 
 
 class EarningsPage(unittest.TestCase):

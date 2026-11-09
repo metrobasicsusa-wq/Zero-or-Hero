@@ -91,6 +91,9 @@ table { width: 100%; border-collapse: collapse; font-size: 13px; }
 th { text-align: left; color: var(--muted); font-weight: 500; font-size: 12px; padding: 6px 8px; border-bottom: 1px solid var(--grid); white-space: nowrap; }
 td { padding: 8px; border-bottom: 1px solid var(--grid); white-space: nowrap; }
 td:has(.why) { white-space: normal; min-width: 280px; color: var(--ink-2); }
+/* the ledger tables: a direction's name is a whole rule, so it wraps and the figures stay on screen (11-09: the
+   name column alone was wider than the card, and nobody saw the numbers without scrolling sideways) */
+#sleeves td:first-child, #plan-sleeves td:first-child { white-space: normal; min-width: 200px; }
 td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
 tr:last-child td { border-bottom: 0; }
 .chip { display: inline-block; padding: 1px 8px; border-radius: 999px; background: var(--chip); font-size: 12px; color: var(--ink-2); }
@@ -454,17 +457,27 @@ function renderSleeves() {
   if (!b || !p) return;
   $("sleeves-card").hidden = false;
   const specs = Object.fromEntries((p.list || []).map((s) => [s.id, s]));
+  // owner, 11-09 (「为什么别人看你多账本只有 46000」): "本轮" restarts with the ledger, so each row also shows every
+  // round together, the table gets a total, and the note under it reconciles the ledgers with the account
+  // (hero.feature_pages.reconcile: ledger cash + positions at the broker's price + the shared pool = equity).
+  const rec = DATA.reconcile, life = (rec && rec.life) || {};
+  const plus = (x) => x === undefined || x === null ? "—" : `<span class="${tone(x)}">${x > 0 ? "+" : ""}${usd(x)}</span>`;
+  const sum = { start: 0, cash: 0, held: 0, heroes: 0, zeros: 0, trades: 0 };
   const rows = Object.entries(b.sleeves).map(([id, s]) => {
     const held = s.open.reduce((a, t) => a + t.paid, 0);
     const wins = s.closed.filter((t) => t.ret > 0).length;
     const value = s.cash + held;
+    sum.start += s.start; sum.cash += s.cash; sum.held += held; sum.heroes += s.heroes; sum.zeros += s.zeros; sum.trades += s.closed.length;
     return [`<a href="f/${esc(direction(id))}.html"><b>${esc((specs[id] || {}).name || id)}</b></a>`, usd(s.start, 0), usd(s.cash, 2), held ? usd(held, 2) : "—",
-      `<span class="${tone(value / s.start - 1)}">${pct(value / s.start - 1, 0)}</span>`,
+      `<span class="${tone(value / s.start - 1)}">${pct(value / s.start - 1, 0)}</span>`, plus(life[id]),
       `第 ${s.round} 轮`, `${s.heroes} / ${s.zeros}`, `${s.closed.length}（赚 ${wins}）`];
   });
+  if (rows.length) rows.push(["<b>合计（不是账户净值，见下）</b>", usd(sum.start, 0), usd(sum.cash, 2), usd(sum.held, 2), "",
+    plus(rec ? rec.life_total : undefined), "", `${sum.heroes} / ${sum.zeros}`, String(sum.trades)]);
   $("sleeves").innerHTML = (p.enabled ? "" : '<p class="meta">尚未开跑：下面是起始状态</p>') +
-    table([["方向"], ["起始", 1], ["现金", 1], ["持仓成本", 1], ["本轮", 1], ["轮次"], ["成功 / 归零"], ["交易数"]], rows) +
-    `<p class="meta">点方向名看它自己的页面（规则、每笔交易、为什么没做）。每笔押本账本一半（TQQQ 全仓），只能买整张；低于起始的 10% 归零、到 $10,000 成功，都从公共资金重开。公共资金已补 ${usd(b.topups || 0, 2)}。</p>`;
+    table([["方向"], ["起始", 1], ["现金", 1], ["持仓成本", 1], ["本轮", 1], ["历轮累计", 1], ["轮次"], ["成功 / 归零"], ["交易数"]], rows) +
+    (rec && rec.html ? `<p>${rec.html}</p>` : "") +
+    `<p class="meta">点方向名看它自己的页面（规则、每笔交易、为什么没做）。每笔押本账本一半（TQQQ 全仓），只能买整张；低于起始的 10% 归零、到 $10,000 成功，都从公共资金重开：成功的把赢的钱交回公共资金，归零的由公共资金补回起始。本轮从重开那一刻重新算，持仓按成本；历轮累计把之前各轮也算进去：已卖出的盈亏，加持仓按现价的浮动。</p>`;
 }
 
 function renderPlanSleeves() {
