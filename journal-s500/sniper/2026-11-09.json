@@ -1,0 +1,47 @@
+{
+ "date": "2026-11-09",
+ "preselected": true,
+ "preselected_at": "2026-11-09T08:39-05:00",
+ "sniper": {
+  "symbol": "AMD",
+  "direction": "call",
+  "catalyst": "周日英伟达董事会宣布对黄仁勋独立调查（CNN / CNBC 11-08），NVDA 盘前 −5.6%；钱往「另一边」走：AMD 盘前 +3.9%（Oppenheimer 今早升到跑赢、目标 $600，TipRanks / Benzinga），亚洲芯片周一大涨（台积电 +6.5%、海力士 +4.7%，CNBC），标普期货 +0.7%。AMD 的跳空约等于它平时一天的波动（约 4%），消息没被吃完；上周四芯片崩盘后它是第一只被买回的",
+  "catalyst_type": "news",
+  "confidence": 0.3,
+  "wrong_if": "10:00 前跌回开盘价下方，或 NVDA 10:00 前收复开盘价（轮动反过来）"
+ },
+ "candidates": [
+  {
+   "rank": 1,
+   "symbol": "AMD",
+   "direction": "call",
+   "confidence": 0.3,
+   "why": "NVDA 调查的另一边 + Oppenheimer 升级，跳空约 1 倍日波动",
+   "wrong_if": "10:00 前跌回开盘价下方，或 NVDA 10:00 前收复开盘价"
+  },
+  {
+   "rank": 2,
+   "symbol": "NVDA",
+   "direction": "put",
+   "confidence": 0.25,
+   "why": "CEO 调查 + 众议院 11-18 作证要求，但盘前 −5.6% 已接近两倍日波动，消息大半被吃掉",
+   "wrong_if": "10:00 前站回开盘价上方"
+  },
+  {
+   "rank": 3,
+   "symbol": "TSM",
+   "direction": "call",
+   "confidence": 0.2,
+   "why": "台北 +6.5% 带 ADR 盘前 +2.4%，明天出 10 月营收；跳空已反映亚洲的涨幅",
+   "wrong_if": "10:00 前跌回开盘价下方"
+  }
+ ],
+ "claude_b_pick": "08:35 未知",
+ "notes": [
+  "08:35 预选（周一开盘前最终判断例程）；09:01 例程确认、否决或换人",
+  "不选的财报反应日：CEG、KKR、NRG、B、FERG、MNDY、RBA、ROIV、KSPI、SGI、AMG 等 41 只（research/earnings-forecast/2026-11-06.json reaction_day = 今天），HIMS、TTWO、OXY、RKLB、TTD 今晚发财报也不选",
+  "盘前（08:36，对周五收盘）：SPY +0.9%、QQQ +0.9%、SMH +0.2%（NVDA −5.6% 拖着，AMD +3.9%、TSM +2.4%、AVGO +2.3%）、IWM 约 +1.9%；标普期货 +0.7%、纳指期货 +0.7%；WTI $87.9（−3.3%，伊朗谈判有进展）；VIX 23.4；10 年期 4.84%；日经 +2.3%、台湾 +4.7%",
+  "风险：上周 11-04、11-06 两次高开都在 10:00 的高点回落，今天 +0.9% 的高开同样可能被卖；AMD 的催化剂一半是评级（弱），一半是 NVDA 的钱往哪走（强），信心只给 0.3"
+ ],
+ "generated_at": "2026-11-09T08:39-05:00"
+}
