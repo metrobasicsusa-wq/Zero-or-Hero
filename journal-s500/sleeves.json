@@ -7487,11 +7487,30 @@
   },
   "sniper-500": {
    "start": 500.0,
-   "cash": 250.0,
-   "round": 3,
+   "cash": 85.0,
+   "round": 4,
    "heroes": 0,
-   "zeros": 2,
-   "open": [],
+   "zeros": 3,
+   "open": [
+    {
+     "tid": "20261109-71f08b",
+     "kind": "sniper",
+     "sym": "AMD261109C00490000",
+     "asset": "option",
+     "und": "AMD",
+     "qty": 1,
+     "cost": 4.15,
+     "paid": 415.0,
+     "opened": "2026-11-09 09:30",
+     "why": "开盘狙击 AMD看涨 490（2026-11-09 到期，离现价 2.9%（平时一天波动 4.9% 的一半））：周日英伟达董事会宣布对黄仁勋独立调查（CNN / CNBC 11-08），NVDA 盘前 −5.6%；钱往「另一边」走：AMD 盘前 +3.9%（Oppenheimer 今早升到跑赢、目标 $600，TipRanks / Benzinga）；翻倍后回撤 40% 卖，否则到期日 15:30 卖；一半 $250.00 买不起一张，押上账本买 1 张",
+     "expiry": "2026-11-09",
+     "exit_day": "2026-11-09",
+     "exit_at": "15:30",
+     "trail": true,
+     "best_bid": 0.0,
+     "expiry_out": null
+    }
+   ],
    "closed": [
     {
      "tid": "20261015-eb4d57",
@@ -7720,7 +7739,8 @@
     "2026-11-03": "2026-11-03T09:40-05:00",
     "2026-11-04": "2026-11-04T09:30-05:00",
     "2026-11-05": "2026-11-05T09:30-05:00",
-    "2026-11-06": "2026-11-06T09:50-05:00"
+    "2026-11-06": "2026-11-06T09:50-05:00",
+    "2026-11-09": "2026-11-09T09:30-05:00"
    },
    "best": 500.0,
    "created": null,
@@ -7740,9 +7760,17 @@
      "peak": 500.0,
      "trades": 1,
      "day": "2026-11-05"
+    },
+    {
+     "round": 3,
+     "end": "zero",
+     "cash": 250.0,
+     "peak": 500.0,
+     "trades": 2,
+     "day": "2026-11-09"
     }
    ],
-   "round_from": 6
+   "round_from": 8
   },
   "sniper-1000": {
    "start": 1000.0,
@@ -7750,48 +7778,7 @@
    "round": 2,
    "heroes": 0,
    "zeros": 1,
-   "open": [
-    {
-     "tid": "20261103-08b669",
-     "kind": "sniper",
-     "sym": "WDC261106C00370000",
-     "asset": "option",
-     "und": "WDC",
-     "qty": 1,
-     "cost": 8.0,
-     "paid": 800.0,
-     "opened": "2026-11-03 09:40",
-     "why": "开盘狙击 WDC看涨 370（2026-11-06 到期，离现价 4.2%（平时一天波动 4.1% 的一半），delta 0.35）：西部数据盘前发布 HAMR 产品认证进展更新（Benzinga 标题），同时苹果财报说内存成本涨幅『前所未有』、会持续到 12 月季以后，存储 / 内存股盘前集体反弹（MU +3.7%、SNDK +4.6%、WDC +3.2%）；昨天存储股；翻倍后回撤 40% 卖，否则到期日 15:30 卖",
-     "expiry": "2026-11-06",
-     "exit_day": "2026-11-06",
-     "exit_at": "15:30",
-     "trail": true,
-     "best_bid": 8.09,
-     "expiry_out": null,
-     "sell_cid": "sl-sniper-1000-20261103-08b669-x3a76",
-     "sell_why": "2026-11-06 15:30 到时卖出"
-    },
-    {
-     "tid": "20261106-048cc3",
-     "kind": "sniper",
-     "sym": "HIMS261106C00027000",
-     "asset": "option",
-     "und": "HIMS",
-     "qty": 48,
-     "cost": 0.08,
-     "paid": 384.0,
-     "opened": "2026-11-06 09:50",
-     "why": "开盘狙击 HIMS看涨 27（2026-11-06 到期，离现价 5.2%（平时一天波动 4.0% 的一半））：06:49 ET 礼来和 Hims & Hers 宣布合作：Zepbound（$299 / 月）和口服 Foundayo / orforglipron（$149 / 月）直接上 Hims & Hers 平台，按礼来自付价卖，平台承诺不再卖复；翻倍后回撤 40% 卖，否则到期日 15:30 卖",
-     "expiry": "2026-11-06",
-     "exit_day": "2026-11-06",
-     "exit_at": "15:30",
-     "trail": true,
-     "best_bid": 0.05,
-     "expiry_out": null,
-     "sell_cid": "sl-sniper-1000-20261106-048cc3-x9796",
-     "sell_why": "2026-11-06 15:30 到时卖出"
-    }
-   ],
+   "open": [],
    "closed": [
     {
      "tid": "20261015-41b7fe",
@@ -8026,6 +8013,58 @@
      "how": "2026-11-05 15:50 到时卖出",
      "closed": "2026-11-06 09:50",
      "ret": -0.996
+    },
+    {
+     "tid": "20261103-08b669",
+     "kind": "sniper",
+     "sym": "WDC261106C00370000",
+     "asset": "option",
+     "und": "WDC",
+     "qty": 1,
+     "cost": 8.0,
+     "paid": 800.0,
+     "opened": "2026-11-03 09:40",
+     "why": "开盘狙击 WDC看涨 370（2026-11-06 到期，离现价 4.2%（平时一天波动 4.1% 的一半），delta 0.35）：西部数据盘前发布 HAMR 产品认证进展更新（Benzinga 标题），同时苹果财报说内存成本涨幅『前所未有』、会持续到 12 月季以后，存储 / 内存股盘前集体反弹（MU +3.7%、SNDK +4.6%、WDC +3.2%）；昨天存储股；翻倍后回撤 40% 卖，否则到期日 15:30 卖",
+     "expiry": "2026-11-06",
+     "exit_day": "2026-11-06",
+     "exit_at": "15:30",
+     "trail": true,
+     "best_bid": 8.09,
+     "expiry_out": null,
+     "sell_cid": "sl-sniper-1000-20261103-08b669-x3a76",
+     "sell_why": "2026-11-06 15:30 到时卖出",
+     "state": "closed",
+     "exit_price": 0.0,
+     "proceeds": 0.0,
+     "how": "券商已无持仓（到期作废）",
+     "closed": "2026-11-09 09:30",
+     "ret": -1.0
+    },
+    {
+     "tid": "20261106-048cc3",
+     "kind": "sniper",
+     "sym": "HIMS261106C00027000",
+     "asset": "option",
+     "und": "HIMS",
+     "qty": 48,
+     "cost": 0.08,
+     "paid": 384.0,
+     "opened": "2026-11-06 09:50",
+     "why": "开盘狙击 HIMS看涨 27（2026-11-06 到期，离现价 5.2%（平时一天波动 4.0% 的一半））：06:49 ET 礼来和 Hims & Hers 宣布合作：Zepbound（$299 / 月）和口服 Foundayo / orforglipron（$149 / 月）直接上 Hims & Hers 平台，按礼来自付价卖，平台承诺不再卖复；翻倍后回撤 40% 卖，否则到期日 15:30 卖",
+     "expiry": "2026-11-06",
+     "exit_day": "2026-11-06",
+     "exit_at": "15:30",
+     "trail": true,
+     "best_bid": 0.05,
+     "expiry_out": null,
+     "sell_cid": "sl-sniper-1000-20261106-048cc3-x9796",
+     "sell_why": "2026-11-06 15:30 到时卖出",
+     "state": "closed",
+     "exit_price": 0.0,
+     "proceeds": 0.0,
+     "how": "券商已无持仓（到期作废）",
+     "closed": "2026-11-09 09:30",
+     "ret": -1.0
     }
    ],
    "slots": {
@@ -8060,7 +8099,8 @@
      "day": "2026-10-29"
     }
    ],
-   "round_from": 5
+   "round_from": 5,
+   "stopped_day": "2026-11-09"
   },
   "overnight-500": {
    "start": 500.0,
@@ -8485,31 +8525,6 @@
    "best": 500.0,
    "created": null,
    "pead_watch": {
-    "2026-10-27": [
-     "BA",
-     "FCX",
-     "GLW",
-     "KO",
-     "SOFI"
-    ],
-    "2026-10-28": [
-     "HOOD",
-     "STX",
-     "V",
-     "APH",
-     "BSX",
-     "GEV",
-     "VRT"
-    ],
-    "2026-10-29": [
-     "GOOGL",
-     "KLAC",
-     "MSFT",
-     "NOW",
-     "CAT",
-     "LLY",
-     "MA"
-    ],
     "2026-10-30": [
      "AMZN",
      "COIN",
@@ -8561,7 +8576,8 @@
     ],
     "2026-11-13": [
      "AMAT",
-     "CSCO"
+     "CSCO",
+     "NU"
     ]
    }
   },
@@ -8865,7 +8881,7 @@
      "exit_day": "2026-11-13",
      "exit_at": "15:30",
      "trail": true,
-     "best_bid": 0.0,
+     "best_bid": 0.24,
      "expiry_out": null
     }
    ],
@@ -8997,7 +9013,7 @@
      "exit_day": "2026-11-13",
      "exit_at": "15:30",
      "trail": true,
-     "best_bid": 0.0,
+     "best_bid": 1.13,
      "expiry_out": null
     }
    ],
@@ -9191,7 +9207,7 @@
      "expiry_out": null,
      "take_x": 2,
      "take": 18.9,
-     "take_cid": "sl-dipweek-take-500-20261104-b287d9-t078b"
+     "take_cid": "sl-dipweek-take-500-20261104-b287d9-t62a1"
     }
    ],
    "closed": [
@@ -9264,7 +9280,7 @@
      "expiry_out": null,
      "take_x": 2,
      "take": 9.1,
-     "take_cid": "sl-dipweek-take-1000-20261103-59bda0-t3144"
+     "take_cid": "sl-dipweek-take-1000-20261103-59bda0-t9957"
     },
     {
      "tid": "20261105-e4f9e5",
@@ -9285,7 +9301,7 @@
      "expiry_out": null,
      "take_x": 2,
      "take": 9.2,
-     "take_cid": "sl-dipweek-take-1000-20261105-e4f9e5-t02c7"
+     "take_cid": "sl-dipweek-take-1000-20261105-e4f9e5-ta678"
     },
     {
      "tid": "20261106-a62d5f",
@@ -9302,11 +9318,11 @@
      "exit_day": "2026-11-13",
      "exit_at": "15:30",
      "trail": false,
-     "best_bid": 0.0,
+     "best_bid": 0.24,
      "expiry_out": null,
      "take_x": 2,
      "take": 0.6,
-     "take_cid": "sl-dipweek-take-1000-20261106-a62d5f-t5e6c"
+     "take_cid": "sl-dipweek-take-1000-20261106-a62d5f-t0b2d"
     }
    ],
    "closed": [
@@ -9624,5 +9640,5 @@
    "created": null
   }
  },
- "topups": -10137.18
+ "topups": -9887.18
 }
