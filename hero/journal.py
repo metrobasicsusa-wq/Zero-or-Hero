@@ -129,17 +129,19 @@ class Journal:
         path.write_text("".join(json.dumps(f, sort_keys=True) + "\n" for f in rows))
         return added
 
-    def fills(self, day: str) -> list[dict]:
-        """Fills whose transaction time falls on the given US/Eastern trading day."""
+    def fills(self, day: str, through: str | None = None) -> list[dict]:
+        """Fills whose transaction time falls on the given US/Eastern trading day; with `through`, on any day from
+        `day` to `through` (both included)."""
         path = self.root / "fills.jsonl"
         if not path.exists():
             return []
         out = []
-        for line in open(path):
-            f = json.loads(line)
-            t = datetime.fromisoformat(f["transaction_time"].replace("Z", "+00:00")).astimezone(ET)
-            if t.date().isoformat() == day:
-                out.append(f)
+        with open(path) as fh:
+            for line in fh:
+                f = json.loads(line)
+                t = datetime.fromisoformat(f["transaction_time"].replace("Z", "+00:00")).astimezone(ET)
+                if day <= t.date().isoformat() <= (through or day):
+                    out.append(f)
         return out
 
     def equity_curve(self) -> list[float]:

@@ -104,6 +104,21 @@ class Book:
         s["closed"].append(done)
         return done
 
+    def rebook_ticket(self, sid: str, tid: str, price: float, how: str) -> dict | None:
+        """Correct a closed ticket that was booked at the wrong price: the ledger's cash moves by the difference and
+        nothing else changes (11-10: two AVGO calls the broker had sold at $4.75 were booked as expired worthless).
+        Only inside the round still running -- a finished round has handed its cash back and is history."""
+        s = self.s(sid)
+        for i, done in enumerate(s["closed"]):
+            if done.get("tid") == tid and i >= s.get("round_from", 0):
+                proceeds = round(price * done["qty"] * multiplier(done), 2)
+                s["cash"] = round(s["cash"] + proceeds - done["proceeds"], 2)
+                s["best"] = max(s["best"], s["cash"])
+                done.update(exit_price=price, proceeds=proceeds, how=how,
+                            ret=round(proceeds / done["paid"] - 1, 3) if done["paid"] else 0.0)
+                return done
+        return None
+
     def end_round(self, s: dict, how: str, when: str | None) -> None:
         """Owner, 10-23 (docs/hero-plan.md): the ledgers are scored by rounds, so each one is kept: how it ended, its
         peak cash (the 2x question), how many closed tickets it took."""
@@ -376,8 +391,8 @@ class Runner:
                     to_exit.append((sid, t, t.get("sell_why", "重新卖出")))
                 elif t["sym"] not in held and o.get("status") in (None, "expired", "canceled", "rejected", "done_for_day"):
                     part = float(o.get("filled_qty") or 0) * float(o.get("filled_avg_price") or 0)  # a $0.01 sell may fill in part
-                    q, got = self.sold_today(t["sym"])
-                    if q >= float(t["qty"]) - 1e-9 and got > part:
+                    q, got = self.sold_unbooked(t["sym"], (t.get("opened") or self.today.isoformat())[:10])
+                    if q >= float(t["qty"]) - 1e-9 and got / q * float(t["qty"]) > part:
                         # 10-30: the MRVL put's 15:30 sell filled at $23.10, the next cycle could not read the order
                         # and booked the vanished position as expired worthless. The broker's fills settle it.
                         self.closed(sid, t, round(got / q, 4), t.get("sell_why", "卖出") + "（按券商成交记录）")
@@ -449,22 +464,38 @@ class Runner:
                     return
                 self.sleep(2)
 
-    def sold_today(self, sym: str) -> tuple[float, float]:
-        """(quantity, proceeds) of today's sells of `sym` the broker reports: the journal's recorded fills first, else
-        the broker's fill activities. Several ledgers selling the same contract add up; the caller uses the average."""
-        rows: list[dict] = []
+    def sold_unbooked(self, sym: str, since: str) -> tuple[float, float]:
+        """(quantity, proceeds) of the broker's sells of `sym` from the day `since` to today that no ledger has booked.
+
+        11-10: the broker sells an in-the-money contract itself at 15:30 on its expiry day (the account cannot exercise
+        it), a second before our own sell. A ledger that exits later (bounce: 15:50) then has nothing to sell, and the
+        next cycle that looks is the next morning: "today's" fills are empty by then, and two AVGO calls sold at $4.75
+        were booked as expired worthless. So every sell since the ticket opened counts -- the journal's recorded fills
+        first, else the broker's fill activities -- less the sells the ledgers' closed tickets already account for
+        (several ledgers hold the same contract; the caller uses the average of what is left)."""
+        today = self.today.isoformat()
+        since = min(since or today, today)
+        mine = lambda f: f.get("symbol") == sym and f.get("side") == "sell"
         try:
-            rows = [f for f in self.j.fills(self.today.isoformat()) if f.get("symbol") == sym and f.get("side") == "sell"]
+            rows = [f for f in self.j.fills(since, today) if mine(f)]
         except Exception:
             rows = []
         if not rows and hasattr(self.c, "fill_activities"):
-            try:
-                rows = [f for f in self.c.fill_activities(self.today.isoformat()) if f.get("symbol") == sym and f.get("side") == "sell"]
-            except Exception:
-                rows = []
+            for day in sorted({since, (occ_expiry(sym) if len(sym) > 10 else None) or today, today}):
+                if not since <= day <= today:
+                    continue
+                try:
+                    rows += [f for f in self.c.fill_activities(day) if mine(f)]
+                except Exception:
+                    pass
         q = sum(float(f.get("qty") or 0) for f in rows)
         got = sum(float(f.get("qty") or 0) * float(f.get("price") or 0) for f in rows)
-        return q, got
+        for s in self.book.d["sleeves"].values():
+            for done in s["closed"]:
+                if done.get("sym") == sym and float(done.get("exit_price") or 0) > 0 and str(done.get("closed") or "")[:10] >= since:
+                    q -= float(done["qty"])
+                    got -= float(done["qty"]) * float(done["exit_price"])
+        return (q, got) if q > 1e-9 and got > 0 else (0.0, 0.0)
 
     def closed(self, sid: str, t: dict, price: float, how: str) -> None:
         done = self.book.close_ticket(sid, t, price, how, f"{self.today.isoformat()} {self.hhmm}")

@@ -3387,6 +3387,88 @@ class Sleeves(unittest.TestCase):
         self.assertEqual(s["closed"][-1]["proceeds"], round(12 * 0.07 * 100, 2))
         self.assertIn("按券商成交记录", s["closed"][-1]["how"])
 
+    def broker_sold_first(self, b, sym, own=None):
+        """The broker sells the contract itself at 15:30 on expiry day, before our sell: market sells are refused,
+        except the quantity `own` (a ledger whose own sell did go through, at the bid)."""
+        real = b.submit_order
+
+        def refused(**o):
+            if o["side"] == "sell" and o["type"] == "market":
+                if own is not None and o["qty"] == own:
+                    return real(**o)
+                b.pos[sym] = 0
+                raise RuntimeError("403: account not eligible to trade uncovered option contracts")
+            return real(**o)
+        b.submit_order = refused
+
+    def next_morning(self, b):
+        from datetime import datetime
+        from hero import sleeve_rules, sleeves
+        book = sleeves.Book(self.root / "sleeves.json", self.specs)
+        sleeves.Runner(b, Journal(self.root), self.cfg, self.specs, book, sleeve_rules.RULES, datetime(2026, 10, 9, 9, 30),
+                       date(2026, 10, 9), sleep=lambda s: None).run()
+        return book
+
+    def test_a_contract_the_broker_sold_at_1530_is_booked_at_that_fill_the_next_morning(self):
+        # 11-10: Alpaca sells an in-the-money contract itself at 15:30 on expiry day, a second before our sell. The
+        # bounce ledgers' own 15:50 sell was refused, the next cycle was the next morning, "today's" fills were empty
+        # and two AVGO calls sold at $4.75 were booked as expired worthless (-100% instead of +230%).
+        b = SleeveBroker(lambda s: (0.08, 0.10))
+        self.cycle(b, 10, 0)                                                         # 12 and 45 contracts, two ledgers
+        sym = next(iter(b.pos))
+        for o in b.orders.values():
+            if o["side"] == "sell":
+                o["status"] = "expired"
+        b.quotes = lambda s: (0.05, 0.06)
+        self.broker_sold_first(b, sym)
+        (self.root / "fills.jsonl").write_text(json.dumps({"symbol": sym, "side": "sell", "qty": "57", "price": "0.07",
+                                                            "transaction_time": "2026-10-08T19:30:35Z", "type": "fill"}) + "\n")
+        book, log = self.cycle(b, 15, 30)                                            # both sells are refused
+        self.assertEqual(len([e for e in log if e["kind"] == "order_error"]), 2)
+        self.assertTrue(all(s["open"] for s in book.d["sleeves"].values()))
+        book = self.next_morning(b)
+        for sid, qty in (("spy0dte-500", 12), ("spy0dte-1000", 45)):
+            done = book.s(sid)["closed"][-1]
+            self.assertEqual((book.s(sid)["open"], done["proceeds"]), ([], round(qty * 0.07 * 100, 2)))
+            self.assertIn("按券商成交记录", done["how"])
+
+    def test_the_broker_fill_is_not_blended_with_a_sale_another_ledger_already_booked(self):
+        # Two ledgers, one contract: the first sold its own 12 at $0.20 and booked them; the broker had sold the other
+        # 45 at $0.07. The second ledger gets $0.07, not the average of all 57.
+        b = SleeveBroker(lambda s: (0.08, 0.10))
+        self.cycle(b, 10, 0)
+        sym = next(iter(b.pos))
+        for o in b.orders.values():
+            if o["side"] == "sell":
+                o["status"] = "expired"
+        b.quotes = lambda s: (0.20, 0.22)
+        self.broker_sold_first(b, sym, own="12")
+        (self.root / "fills.jsonl").write_text("".join(json.dumps(f) + "\n" for f in (
+            {"symbol": sym, "side": "sell", "qty": "45", "price": "0.07", "transaction_time": "2026-10-08T19:30:35Z", "type": "fill"},
+            {"symbol": sym, "side": "sell", "qty": "12", "price": "0.20", "transaction_time": "2026-10-08T19:30:36Z", "type": "fill"})))
+        book, log = self.cycle(b, 15, 30)
+        self.assertEqual((book.s("spy0dte-500")["open"], book.s("spy0dte-500")["closed"][-1]["exit_price"]), ([], 0.2))
+        self.assertTrue(book.s("spy0dte-1000")["open"])
+        book = self.next_morning(b)
+        done = book.s("spy0dte-1000")["closed"][-1]
+        self.assertEqual((book.s("spy0dte-1000")["open"], done["exit_price"], done["proceeds"]), ([], 0.07, 315.0))
+
+    def test_a_ticket_booked_at_the_wrong_price_is_rebooked_and_only_the_cash_moves(self):
+        from hero import sleeves
+        book = sleeves.Book(self.root / "sleeves.json", self.specs)
+        s = book.s("spy0dte-1000")
+        t = {"tid": "t1", "kind": "zdte", "sym": "AVGO261109C00317500", "asset": "option", "und": "AVGO", "qty": 2, "cost": 1.43,
+             "paid": 286.0, "opened": "2026-11-09 10:00"}
+        book.open_ticket("spy0dte-1000", t)
+        book.close_ticket("spy0dte-1000", t, 0.0, "券商已无持仓（到期作废）", "2026-11-10 09:32")
+        self.assertEqual(s["cash"], 714.0)
+        done = book.rebook_ticket("spy0dte-1000", "t1", 4.75, "到期日 15:30 券商平仓（按券商成交记录）")
+        self.assertEqual((s["cash"], s["best"], done["proceeds"], done["ret"], done["closed"]), (1664.0, 1664.0, 950.0, 2.322, "2026-11-10 09:32"))
+        self.assertEqual(len(s["closed"]), 1)
+        s["round_from"] = 1                                                          # the round has ended since: history
+        self.assertIsNone(book.rebook_ticket("spy0dte-1000", "t1", 1.0, "x"))
+        self.assertEqual(s["cash"], 1664.0)
+
     def test_with_no_bid_the_sell_is_a_one_cent_limit_then_booked_at_zero_once_expired(self):
         from datetime import datetime
         from hero import sleeve_rules, sleeves
