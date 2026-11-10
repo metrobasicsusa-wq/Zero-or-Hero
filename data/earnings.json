@@ -1,7 +1,7 @@
 {
  "source": "alphavantage EARNINGS_CALENDAR horizon=3month",
- "fetched_at": "2026-11-09T09:00:26-05:00",
- "fetched_on": "2026-11-09",
+ "fetched_at": "2026-11-10T09:00:27-05:00",
+ "fetched_on": "2026-11-10",
  "horizon_days": 90,
  "symbols": [
   "AAPL",
@@ -128,16 +128,6 @@
   "XOM"
  ],
  "reports": {
-  "RKLB": [
-   {
-    "date": "2026-11-09",
-    "time": "post-market",
-    "estimate": "-0.05",
-    "fiscal_end": "2026-09-30",
-    "checked": "nasdaq",
-    "confirmed": true
-   }
-  ],
   "CRWV": [
    {
     "date": "2026-11-10",
@@ -294,15 +284,17 @@
     "time": "post-market",
     "estimate": "0.0",
     "fiscal_end": "2026-10-31",
+    "checked": "nasdaq",
     "confirmed": true
    }
   ],
   "MRVL": [
    {
     "date": "2026-12-01",
-    "time": "unknown",
+    "time": "post-market",
     "estimate": "0.79",
     "fiscal_end": "2026-10-31",
+    "checked": "nasdaq",
     "confirmed": true
    }
   ],
@@ -348,7 +340,9 @@
     "date": "2026-12-10",
     "time": "unknown",
     "estimate": "3.45",
-    "fiscal_end": "2026-10-31"
+    "fiscal_end": "2026-10-31",
+    "confirmed": false,
+    "yahoo_date": "2026-12-09"
    }
   ],
   "CIEN": [
@@ -356,7 +350,8 @@
     "date": "2026-12-10",
     "time": "unknown",
     "estimate": "1.77",
-    "fiscal_end": "2026-10-31"
+    "fiscal_end": "2026-10-31",
+    "confirmed": false
    }
   ],
   "COST": [
@@ -364,7 +359,8 @@
     "date": "2026-12-10",
     "time": "unknown",
     "estimate": "4.87",
-    "fiscal_end": "2026-11-30"
+    "fiscal_end": "2026-11-30",
+    "confirmed": true
    }
   ],
   "MU": [
@@ -403,19 +399,18 @@
  "cross_check": {
   "nasdaq_days": 15,
   "moved": [],
-  "time_filled": [
-   [
-    "NU",
-    "unknown",
-    "post-market"
-   ]
-  ],
+  "time_filled": [],
   "disputed": [],
   "yahoo": {
-   "asked": 22,
-   "answered": 22,
-   "confirmed": 20,
+   "asked": 24,
+   "answered": 24,
+   "confirmed": 21,
    "conflicts": [
+    [
+     "AVGO",
+     "2026-12-10",
+     "2026-12-09"
+    ],
     [
      "ORCL",
      "2026-12-09",
