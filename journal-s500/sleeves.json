@@ -5226,7 +5226,7 @@
      "expiry_out": null,
      "take_x": 2,
      "take": 16.3,
-     "take_cid": "sl-wk-trend-500-2026W46-132c1a-t802d"
+     "take_cid": "sl-wk-trend-500-2026W46-132c1a-tfcff"
     }
    ],
    "closed": [
@@ -5356,11 +5356,11 @@
      "exit_day": "2026-11-12",
      "exit_at": "15:50",
      "trail": false,
-     "best_bid": 12.29,
+     "best_bid": 18.42,
      "expiry_out": null,
      "take_x": 3,
      "take": 43.65,
-     "take_cid": "sl-wk-trend-1000-2026W46-8b161f-ta899"
+     "take_cid": "sl-wk-trend-1000-2026W46-8b161f-taa7a"
     }
    ],
    "closed": [
@@ -5620,7 +5620,7 @@
      "expiry_out": null,
      "take_x": 2,
      "take": 23.3,
-     "take_cid": "sl-wk-momo-1000-2026W46-41d2a4-t1ac9"
+     "take_cid": "sl-wk-momo-1000-2026W46-41d2a4-t7d32"
     },
     {
      "tid": "2026W46-cd9663",
@@ -5641,7 +5641,7 @@
      "expiry_out": null,
      "take_x": 2,
      "take": 14.0,
-     "take_cid": "sl-wk-momo-1000-2026W46-cd9663-t8047"
+     "take_cid": "sl-wk-momo-1000-2026W46-cd9663-t5d9e"
     },
     {
      "tid": "2026W46-bda114",
@@ -5662,7 +5662,7 @@
      "expiry_out": null,
      "take_x": 2,
      "take": 9.1,
-     "take_cid": "sl-wk-momo-1000-2026W46-bda114-t047a"
+     "take_cid": "sl-wk-momo-1000-2026W46-bda114-t2e35"
     }
    ],
    "closed": [
@@ -5785,7 +5785,7 @@
      "expiry_out": null,
      "take_x": 2,
      "take": 13.7,
-     "take_cid": "sl-wk-news-500-2026W46-81c350-tec48"
+     "take_cid": "sl-wk-news-500-2026W46-81c350-tfaf9"
     },
     {
      "tid": "2026W46-8092ab",
@@ -5806,7 +5806,7 @@
      "expiry_out": null,
      "take_x": 2,
      "take": 7.0,
-     "take_cid": "sl-wk-news-500-2026W46-8092ab-t0550"
+     "take_cid": "sl-wk-news-500-2026W46-8092ab-t91bc"
     }
    ],
    "closed": [
@@ -5900,7 +5900,7 @@
      "expiry_out": null,
      "take_x": 2,
      "take": 13.7,
-     "take_cid": "sl-wk-news-1000-2026W46-7ce613-t0ed1"
+     "take_cid": "sl-wk-news-1000-2026W46-7ce613-td4ba"
     }
    ],
    "closed": [
@@ -6149,7 +6149,7 @@
      "expiry_out": null,
      "take_x": 20,
      "take": 189.0,
-     "take_cid": "sl-net-1000-2026W46-2e6fc5-tb7b6"
+     "take_cid": "sl-net-1000-2026W46-2e6fc5-t16df"
     }
    ],
    "closed": [],
@@ -7878,11 +7878,30 @@
   },
   "sniper-500": {
    "start": 500.0,
-   "cash": 2405.0,
+   "cash": 1280.0,
    "round": 4,
    "heroes": 0,
    "zeros": 3,
-   "open": [],
+   "open": [
+    {
+     "tid": "20261110-1d5718",
+     "kind": "sniper",
+     "sym": "SMCI261113P00026500",
+     "asset": "option",
+     "und": "SMCI",
+     "qty": 15,
+     "cost": 0.75,
+     "paid": 1125.0,
+     "opened": "2026-11-10 09:31",
+     "why": "开盘狙击 SMCI看跌 26.5（2026-11-13 到期，离现价 3.4%（平时一天波动 4.6% 的一半），delta 0.35）：今早彭博报道（Quartz、TipRanks、Stocktwits 转述）：北京的登记文件显示中国 AI 公司月之暗面 8 月签约租用 32 台装英伟达 B300 的超微服务器（约 $6,480 万），存放在甘肃庆阳；月之暗面否认、英伟达说；翻倍后回撤 40% 卖，否则到期日 15:30 卖",
+     "expiry": "2026-11-13",
+     "exit_day": "2026-11-13",
+     "exit_at": "15:30",
+     "trail": true,
+     "best_bid": 0.0,
+     "expiry_out": null
+    }
+   ],
    "closed": [
     {
      "tid": "20261015-eb4d57",
@@ -8138,7 +8157,8 @@
     "2026-11-04": "2026-11-04T09:30-05:00",
     "2026-11-05": "2026-11-05T09:30-05:00",
     "2026-11-06": "2026-11-06T09:50-05:00",
-    "2026-11-09": "2026-11-09T09:30-05:00"
+    "2026-11-09": "2026-11-09T09:30-05:00",
+    "2026-11-10": "2026-11-10T09:31-05:00"
    },
    "best": 2405.0,
    "created": null,
@@ -8498,7 +8518,7 @@
     }
    ],
    "round_from": 5,
-   "stopped_day": "2026-11-09"
+   "stopped_day": "2026-11-10"
   },
   "overnight-500": {
    "start": 500.0,
@@ -8522,7 +8542,7 @@
      "exit_day": "2026-11-12",
      "exit_at": "15:50",
      "trail": true,
-     "best_bid": 0.0,
+     "best_bid": 2.06,
      "expiry_out": null
     }
    ],
@@ -8646,7 +8666,7 @@
      "exit_day": "2026-11-12",
      "exit_at": "15:50",
      "trail": true,
-     "best_bid": 0.0,
+     "best_bid": 0.49,
      "expiry_out": null
     }
    ],
@@ -8983,16 +9003,6 @@
    "best": 500.0,
    "created": null,
    "pead_watch": {
-    "2026-10-30": [
-     "AMZN",
-     "COIN",
-     "INTC",
-     "MSTR",
-     "SNDK",
-     "ABBV",
-     "CVX",
-     "XOM"
-    ],
     "2026-11-03": [
      "AAPL",
      "PLTR",
@@ -9036,6 +9046,9 @@
      "AMAT",
      "CSCO",
      "NU"
+    ],
+    "2026-11-17": [
+     "HD"
     ]
    }
   },
@@ -9303,47 +9316,11 @@
   },
   "dipweek-500": {
    "start": 500.0,
-   "cash": 8.0,
+   "cash": 742.0,
    "round": 1,
    "heroes": 0,
    "zeros": 0,
    "open": [
-    {
-     "tid": "20261105-636fe8",
-     "kind": "dipweek",
-     "sym": "QCOM261113C00165000",
-     "asset": "option",
-     "und": "QCOM",
-     "qty": 1,
-     "cost": 4.6,
-     "paid": 460.0,
-     "opened": "2026-11-05 15:50",
-     "why": "抄底给一周：QCOM 低开 -13.4%，已回到开盘之上；买看涨 165（2026-11-13 到期，离现价 3.5%），买价 $4.33 / 卖价 $4.61（价差占中间价 6%）；翻倍后回撤 40% 卖，否则 11-12 15:50 卖",
-     "expiry": "2026-11-13",
-     "exit_day": "2026-11-12",
-     "exit_at": "15:50",
-     "trail": true,
-     "best_bid": 11.97,
-     "expiry_out": null
-    },
-    {
-     "tid": "20261106-3f57c6",
-     "kind": "dipweek",
-     "sym": "NKE261113C00040000",
-     "asset": "option",
-     "und": "NKE",
-     "qty": 6,
-     "cost": 0.3,
-     "paid": 180.0,
-     "opened": "2026-11-06 15:50",
-     "why": "抄底给一周：NKE 低开 -3.2%，已回到开盘之上；买看涨 40（2026-11-13 到期，离现价 3.6%），买价 $0.30 / 卖价 $0.33（价差占中间价 10%）；翻倍后回撤 40% 卖，否则 11-13 15:30 卖",
-     "expiry": "2026-11-13",
-     "exit_day": "2026-11-13",
-     "exit_at": "15:30",
-     "trail": true,
-     "best_bid": 0.78,
-     "expiry_out": null
-    },
     {
      "tid": "20261109-8a9029",
      "kind": "dipweek",
@@ -9359,7 +9336,7 @@
      "exit_day": "2026-11-16",
      "exit_at": "15:30",
      "trail": true,
-     "best_bid": 0.0,
+     "best_bid": 1.06,
      "expiry_out": null
     }
    ],
@@ -9415,6 +9392,58 @@
      "how": "翻倍后从最高 $12.47 回撤 40%",
      "closed": "2026-11-05 10:50",
      "ret": 6.889
+    },
+    {
+     "tid": "20261105-636fe8",
+     "kind": "dipweek",
+     "sym": "QCOM261113C00165000",
+     "asset": "option",
+     "und": "QCOM",
+     "qty": 1,
+     "cost": 4.6,
+     "paid": 460.0,
+     "opened": "2026-11-05 15:50",
+     "why": "抄底给一周：QCOM 低开 -13.4%，已回到开盘之上；买看涨 165（2026-11-13 到期，离现价 3.5%），买价 $4.33 / 卖价 $4.61（价差占中间价 6%）；翻倍后回撤 40% 卖，否则 11-12 15:50 卖",
+     "expiry": "2026-11-13",
+     "exit_day": "2026-11-12",
+     "exit_at": "15:50",
+     "trail": true,
+     "best_bid": 11.97,
+     "expiry_out": null,
+     "sell_cid": "sl-dipweek-500-20261105-636fe8-x2389",
+     "sell_why": "翻倍后从最高 $11.97 回撤 40%",
+     "state": "closed",
+     "exit_price": 5.9,
+     "proceeds": 590.0,
+     "how": "翻倍后从最高 $11.97 回撤 40%",
+     "closed": "2026-11-10 09:31",
+     "ret": 0.283
+    },
+    {
+     "tid": "20261106-3f57c6",
+     "kind": "dipweek",
+     "sym": "NKE261113C00040000",
+     "asset": "option",
+     "und": "NKE",
+     "qty": 6,
+     "cost": 0.3,
+     "paid": 180.0,
+     "opened": "2026-11-06 15:50",
+     "why": "抄底给一周：NKE 低开 -3.2%，已回到开盘之上；买看涨 40（2026-11-13 到期，离现价 3.6%），买价 $0.30 / 卖价 $0.33（价差占中间价 10%）；翻倍后回撤 40% 卖，否则 11-13 15:30 卖",
+     "expiry": "2026-11-13",
+     "exit_day": "2026-11-13",
+     "exit_at": "15:30",
+     "trail": true,
+     "best_bid": 0.78,
+     "expiry_out": null,
+     "sell_cid": "sl-dipweek-500-20261106-3f57c6-x3876",
+     "sell_why": "翻倍后从最高 $0.78 回撤 40%",
+     "state": "closed",
+     "exit_price": 0.24,
+     "proceeds": 144.0,
+     "how": "翻倍后从最高 $0.78 回撤 40%",
+     "closed": "2026-11-10 09:31",
+     "ret": -0.2
     }
    ],
    "slots": {
@@ -9492,7 +9521,7 @@
      "exit_day": "2026-11-16",
      "exit_at": "15:30",
      "trail": true,
-     "best_bid": 0.0,
+     "best_bid": 2.11,
      "expiry_out": null
     }
    ],
@@ -9589,7 +9618,7 @@
      "exit_day": "2026-11-16",
      "exit_at": "15:30",
      "trail": false,
-     "best_bid": 0.0,
+     "best_bid": 1.06,
      "expiry_out": null
     }
    ],
@@ -9685,7 +9714,7 @@
      "exit_day": "2026-11-16",
      "exit_at": "15:30",
      "trail": false,
-     "best_bid": 0.0,
+     "best_bid": 2.11,
      "expiry_out": null
     }
    ],
@@ -9785,7 +9814,7 @@
      "expiry_out": null,
      "take_x": 2,
      "take": 18.9,
-     "take_cid": "sl-dipweek-take-500-20261104-b287d9-t62a1"
+     "take_cid": "sl-dipweek-take-500-20261104-b287d9-t9a70"
     }
    ],
    "closed": [
@@ -9859,7 +9888,7 @@
      "expiry_out": null,
      "take_x": 2,
      "take": 9.1,
-     "take_cid": "sl-dipweek-take-1000-20261103-59bda0-t9957"
+     "take_cid": "sl-dipweek-take-1000-20261103-59bda0-tb0cf"
     },
     {
      "tid": "20261109-02d75a",
@@ -9876,11 +9905,11 @@
      "exit_day": "2026-11-16",
      "exit_at": "15:30",
      "trail": false,
-     "best_bid": 0.0,
+     "best_bid": 1.06,
      "expiry_out": null,
      "take_x": 2,
      "take": 5.65,
-     "take_cid": "sl-dipweek-take-1000-20261109-02d75a-tf25f"
+     "take_cid": "sl-dipweek-take-1000-20261109-02d75a-t0972"
     }
    ],
    "closed": [
@@ -10109,28 +10138,7 @@
    "round": 1,
    "heroes": 0,
    "zeros": 0,
-   "open": [
-    {
-     "tid": "20261109-95c1e2",
-     "kind": "bounce",
-     "sym": "AVGO261109C00317500",
-     "asset": "option",
-     "und": "AVGO",
-     "qty": 1,
-     "cost": 1.44,
-     "paid": 144.0,
-     "opened": "2026-11-09 10:00",
-     "why": "板块反弹日：SMH 前 1–3 天跌 -10.6%，10:00 离开盘 +2.9%；AVGO 离开盘 +3.2%，买当天到期看涨 317.5（离现价 +1.0%），买价 $1.39 / 卖价 $1.46（价差占中间价 5%）；15:50 卖",
-     "expiry": "2026-11-09",
-     "exit_day": "2026-11-09",
-     "exit_at": "15:50",
-     "trail": false,
-     "best_bid": 4.71,
-     "expiry_out": "15:50",
-     "sell_cid": "sl-bounce-500-20261109-95c1e2-xb2a4",
-     "sell_why": "2026-11-09 15:50 到时卖出"
-    }
-   ],
+   "open": [],
    "closed": [
     {
      "tid": "20261104-515e5e",
@@ -10157,6 +10165,32 @@
      "how": "券商已无持仓（到期作废）",
      "closed": "2026-11-05 09:30",
      "ret": -1.0
+    },
+    {
+     "tid": "20261109-95c1e2",
+     "kind": "bounce",
+     "sym": "AVGO261109C00317500",
+     "asset": "option",
+     "und": "AVGO",
+     "qty": 1,
+     "cost": 1.44,
+     "paid": 144.0,
+     "opened": "2026-11-09 10:00",
+     "why": "板块反弹日：SMH 前 1–3 天跌 -10.6%，10:00 离开盘 +2.9%；AVGO 离开盘 +3.2%，买当天到期看涨 317.5（离现价 +1.0%），买价 $1.39 / 卖价 $1.46（价差占中间价 5%）；15:50 卖",
+     "expiry": "2026-11-09",
+     "exit_day": "2026-11-09",
+     "exit_at": "15:50",
+     "trail": false,
+     "best_bid": 4.71,
+     "expiry_out": "15:50",
+     "sell_cid": "sl-bounce-500-20261109-95c1e2-xb2a4",
+     "sell_why": "2026-11-09 15:50 到时卖出",
+     "state": "closed",
+     "exit_price": 0.0,
+     "proceeds": 0.0,
+     "how": "券商已无持仓（到期作废）",
+     "closed": "2026-11-10 09:31",
+     "ret": -1.0
     }
    ],
    "slots": {
@@ -10180,28 +10214,7 @@
    "round": 1,
    "heroes": 0,
    "zeros": 0,
-   "open": [
-    {
-     "tid": "20261109-77d73b",
-     "kind": "bounce",
-     "sym": "AVGO261109C00317500",
-     "asset": "option",
-     "und": "AVGO",
-     "qty": 2,
-     "cost": 1.43,
-     "paid": 286.0,
-     "opened": "2026-11-09 10:00",
-     "why": "板块反弹日：SMH 前 1–3 天跌 -10.6%，10:00 离开盘 +2.9%；AVGO 离开盘 +3.2%，买当天到期看涨 317.5（离现价 +1.0%），买价 $1.39 / 卖价 $1.46（价差占中间价 5%）；15:50 卖",
-     "expiry": "2026-11-09",
-     "exit_day": "2026-11-09",
-     "exit_at": "15:50",
-     "trail": false,
-     "best_bid": 4.71,
-     "expiry_out": "15:50",
-     "sell_cid": "sl-bounce-1000-20261109-77d73b-xcf80",
-     "sell_why": "2026-11-09 15:50 到时卖出"
-    }
-   ],
+   "open": [],
    "closed": [
     {
      "tid": "20261104-fe0606",
@@ -10227,6 +10240,32 @@
      "proceeds": 0.0,
      "how": "券商已无持仓（到期作废）",
      "closed": "2026-11-05 09:30",
+     "ret": -1.0
+    },
+    {
+     "tid": "20261109-77d73b",
+     "kind": "bounce",
+     "sym": "AVGO261109C00317500",
+     "asset": "option",
+     "und": "AVGO",
+     "qty": 2,
+     "cost": 1.43,
+     "paid": 286.0,
+     "opened": "2026-11-09 10:00",
+     "why": "板块反弹日：SMH 前 1–3 天跌 -10.6%，10:00 离开盘 +2.9%；AVGO 离开盘 +3.2%，买当天到期看涨 317.5（离现价 +1.0%），买价 $1.39 / 卖价 $1.46（价差占中间价 5%）；15:50 卖",
+     "expiry": "2026-11-09",
+     "exit_day": "2026-11-09",
+     "exit_at": "15:50",
+     "trail": false,
+     "best_bid": 4.71,
+     "expiry_out": "15:50",
+     "sell_cid": "sl-bounce-1000-20261109-77d73b-xcf80",
+     "sell_why": "2026-11-09 15:50 到时卖出",
+     "state": "closed",
+     "exit_price": 0.0,
+     "proceeds": 0.0,
+     "how": "券商已无持仓（到期作废）",
+     "closed": "2026-11-10 09:31",
      "ret": -1.0
     }
    ],
