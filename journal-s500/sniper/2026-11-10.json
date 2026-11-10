@@ -1,0 +1,180 @@
+{
+ "date": "2026-11-10",
+ "sniper": {
+  "symbol": "SMCI",
+  "direction": "put",
+  "catalyst": "今早彭博报道（Quartz、TipRanks、Stocktwits 转述）：北京的登记文件显示中国 AI 公司月之暗面 8 月签约租用 32 台装英伟达 B300 的超微服务器（约 $6,480 万），存放在甘肃庆阳；月之暗面否认、英伟达说对方不是它的客户、超微说遵守出口法规。这是本周英伟达—中国调查（黄仁勋被董事会调查、众议院 11-18 闭门听证）之外第一条直接点名超微的新消息，超微联合创始人此前已因转运服务器到中国被起诉。盘前只 −1.8%（$28.09，约平时日波动 4.6% 的 0.4 倍），消息没进价格；08:30 CPI 偏热（总体 +0.4%、核心 +0.3%，都高于预期），AI 链盘前整体在跌",
+  "catalyst_type": "legal-regulatory",
+  "confidence": 0.3,
+  "wrong_if": "10:00 时 SMCI 在开盘价上方（消息没人卖），或超微 / 监管方澄清这批服务器不在受限范围；过夜的线：当天收盘收在开盘价上方"
+ },
+ "candidates": [
+  {
+   "rank": 1,
+   "symbol": "SMCI",
+   "direction": "put",
+   "confidence": 0.3,
+   "catalyst_type": "legal-regulatory",
+   "why": "彭博：月之暗面在中国租用超微的 B300 服务器；跳空只有平时波动的 0.4 倍，没破 20 日低点（25.81），消息没被吃掉；减分项：监管 / 诉讼类消息回测偏弱",
+   "wrong_if": "10:00 时 SMCI 在开盘价上方（消息没人卖），或超微 / 监管方澄清这批服务器不在受限范围；过夜的线：当天收盘收在开盘价上方"
+  },
+  {
+   "rank": 2,
+   "symbol": "GEV",
+   "direction": "put",
+   "confidence": 0.25,
+   "catalyst_type": "sector move",
+   "why": "盘前 −8.2%（$761，平时日波动 3.8% 的 2.2 倍），贴着 20 日低点 750；没找到今早自己的新消息——马斯克说软银拖欠燃机订单是 11-06 的，昨天它还因 CEG 上调指引 +7.1%；今天是 CPI 偏热 + 数据中心暂停令的板块跌，缺口大半已反映",
+   "wrong_if": "10:00 时 GEV 在开盘价上方（缺口被买回）"
+  },
+  {
+   "rank": 3,
+   "symbol": "NVDA",
+   "direction": "put",
+   "confidence": 0.2,
+   "catalyst_type": "legal-regulatory",
+   "why": "同一条彭博报道（B300 进了中国）加 CEO 调查；但昨天已 −4.3%，今天是连续第 2 天追（减分），盘前 −1.5%，RBC、高盛都在托",
+   "wrong_if": "10:00 时 NVDA 在开盘价上方"
+  },
+  {
+   "rank": 4,
+   "symbol": "VRT",
+   "direction": "put",
+   "confidence": 0.15,
+   "catalyst_type": "sector move",
+   "why": "盘前 −5.2%（平时波动的 1.0 倍），昨天 +9.6% 的反弹在吐；没有自己的消息，纯板块",
+   "wrong_if": "10:00 时 VRT 在开盘价上方"
+  }
+ ],
+ "skipped": [
+  {
+   "symbol": "TSM",
+   "direction": "call",
+   "gap": "-0.6%",
+   "reason": "claude-b 已选",
+   "why_not": "claude-b 选 TSM 看涨（10 月营收同比近 +60%）；不选同一只。CPI 后它从 +0.3% 转成 −0.6%"
+  },
+  {
+   "symbol": "LITE",
+   "direction": "put",
+   "gap": "-5.2%",
+   "reason": "其他",
+   "why_not": "报道说 Marvell 收购 Lumentum 的交易过关概率五五开；两只当初宣布时都大跌，交易黄了对谁是利好说不清，今天又都跟着板块跌，方向不清"
+  },
+  {
+   "symbol": "MRVL",
+   "direction": "put",
+   "gap": "-4.5%",
+   "reason": "其他",
+   "why_not": "同上；另有 B. Riley 下调目标价（评级类）"
+  },
+  {
+   "symbol": "COHR",
+   "direction": "put",
+   "gap": "-5.6%",
+   "reason": "消息太弱",
+   "why_not": "没有自己的消息，昨天 +16.8% 后回吐"
+  },
+  {
+   "symbol": "BE",
+   "direction": "put",
+   "gap": "-4.3%",
+   "reason": "消息太弱",
+   "why_not": "没有新消息，昨天 +11.9% 后回吐"
+  },
+  {
+   "symbol": "AVGO",
+   "direction": "put",
+   "gap": "-2.1%",
+   "reason": "其他",
+   "why_not": "自己的消息是偏多的（参与 Anthropic 私募、摩根大通说谷歌新系统利好博通），却跟着板块跌；方向和消息相反，不做"
+  },
+  {
+   "symbol": "AMD",
+   "direction": "put",
+   "gap": "-2.4%",
+   "reason": "分析师评级",
+   "why_not": "只有大和把目标价从 $575 降到 $525；昨天 +13.3% 后回吐"
+  },
+  {
+   "symbol": "MU / SNDK / INTC / DELL / ORCL",
+   "direction": "put",
+   "gap": "-2% 到 -3.6%",
+   "reason": "消息太弱",
+   "why_not": "CPI 偏热后的板块下跌，没有各自的消息"
+  },
+  {
+   "symbol": "IREN / CIFR",
+   "direction": "put",
+   "gap": "-4.5% / -5.8%",
+   "reason": "分析师评级",
+   "why_not": "IREN 只有摩根大通降目标价；矿机股跟比特币和 AI 链走"
+  },
+  {
+   "symbol": "SPCX",
+   "direction": "put",
+   "gap": "-2.9%",
+   "reason": "消息太弱",
+   "why_not": "计划在得州建 $240 亿燃气电厂和数据中心，是花钱的计划，涨跌方向不明"
+  },
+  {
+   "symbol": "HOOD",
+   "direction": "put",
+   "gap": "-2.9%",
+   "reason": "分析师评级",
+   "why_not": "KBW 上调目标价，股价反而跌，跟大盘"
+  },
+  {
+   "symbol": "MSTR",
+   "direction": "put",
+   "gap": "-3.0%",
+   "reason": "其他",
+   "why_not": "跟比特币走，没有公司消息"
+  },
+  {
+   "symbol": "SMX",
+   "direction": "call",
+   "gap": "+99%",
+   "reason": "跳空已吃掉",
+   "why_not": "小盘股一条「AI 材料筛选平台」公关稿翻倍，典型的开盘即高点"
+  },
+  {
+   "symbol": "TTD",
+   "direction": "put",
+   "gap": "-5.9%",
+   "reason": "财报反应日",
+   "why_not": "昨晚财报大超，盘后 +26% 后回吐到今天盘前 −6%；财报反应日不做"
+  },
+  {
+   "symbol": "SANM / RKLB / HIMS / TTWO / OXY / TDG / SE / ONON / VG / ASTS / QLYS / ONTO",
+   "direction": "—",
+   "gap": "SANM +11%、RKLB −9%、TTWO +3%",
+   "reason": "财报反应日",
+   "why_not": "昨晚盘后和今早盘前的财报，共 98 只，一律不做"
+  },
+  {
+   "symbol": "CRWV / NBIS",
+   "direction": "put",
+   "gap": "-2.9% / -3.4%",
+   "reason": "财报临近",
+   "why_not": "CoreWeave 今晚盘后、Nebius 明早盘前出财报"
+  },
+  {
+   "symbol": "SOXL / SOXS / TQQQ / SQQQ / UVIX / KORU / TSLL / NVD / MSTZ / SNXX",
+   "direction": "—",
+   "gap": "±3% 到 ±8%",
+   "reason": "其他",
+   "why_not": "杠杆 ETF，不是狙击对象"
+  }
+ ],
+ "claude_b_pick": "TSM call 0.25（台积电 10 月营收同比近 +60%，盘前 +0.2%；他们记为只做影子）",
+ "notes": [
+  "08:35 没写预选：当时没有前因清楚的非财报个股；09:01 的扫描里才看到彭博关于月之暗面租用超微服务器的报道（Yahoo 08:48 的 Market Chatter、Benzinga 标题）",
+  "08:30 CPI 偏热：总体环比 +0.4%（预期 +0.3%）、核心 +0.3%（预期 +0.2%）（Morningstar、Quartz）；09:02 盘前 SPY −0.56%、QQQ −1.12%、SMH −2.10%、IWM −0.92%、TLT −0.83%，防守股小涨（XLP +0.4%、WMT +0.6%）。昨天 +2.4% 的普涨在吐，领跌的是昨天涨最多的 AI 链",
+  "今天的选择都是看跌：有自己消息的只有 SMCI / NVDA 这一条（监管类，回测里这类偏弱，所以信心只给 0.3）；看涨这边 AVGO 有偏多消息但盘面不认，TSM 是 claude-b 的",
+  "没写 overnight / expiry：SMCI 没破 20 日低点、跳空不到 3 倍，不符合拿过夜的加分条件；它没有当天到期的合约，规则会买最近到期（11-13）",
+  "「什么算错」这次锚在「10:00 那一刻」而不是「10:00 前任何一刻」：昨天 AMD 的两句都被开盘头几分钟的抖动触发；模板改不改还等用户，今天收盘两种读法都记",
+  "不选的财报反应日 98 只（research/earnings-forecast/2026-11-09.json，reaction_day = 今天）：TTWO、HIMS、RKLB、OXY、TTD、TDG、SE、ONON、VG、ASTS、QLYS、ONTO、SANM、QBTS、MARA、ZETA 等；今晚 CRWV、ALC、PBR，明早 NBIS 也不选"
+ ],
+ "generated_at": "2026-11-10T09:05-05:00"
+}
