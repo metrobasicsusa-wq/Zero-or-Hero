@@ -1,0 +1,201 @@
+{
+ "date": "2026-11-11",
+ "sniper": {
+  "symbol": "CORZ",
+  "direction": "call",
+  "catalyst": "CoreWeave 昨晚的财报（8-K、CNBC）：三季度收入 $36.6 亿超指引上沿，全年收入指引上调到 $130–133 亿，资本开支下沿上调、原因是「交付比计划早」，并说到 2027 年不再发母公司层面的无担保债。Core Scientific 是它最大的机房房东：1,120 兆瓦客户电力里 590 兆瓦给 CoreWeave，其中 485 兆瓦在计费、100 兆瓦在调试（公司 11-05 三季报），它 11-05 财报后跌 10.8% 的原因正是融资和客户的钱跟不跟得上。盘前 +6.6%，约等于它平时一天的波动（6.1%），比同组的 APLD（+9%）、DELL（+8%）吃得少；没破 20 日高点（15.07，还差 7%）",
+  "catalyst_type": "peer plan hits a group",
+  "confidence": 0.25,
+  "wrong_if": "10:00 时 CRWV 在开盘价下方（龙头的跳空被卖），或 CRWV 守住而 CORZ 对开盘的涨跌幅落后它 2 个点以上（二线没人跟）；全天的线：当天收盘收在开盘价下方"
+ },
+ "candidates": [
+  {
+   "rank": 1,
+   "symbol": "CORZ",
+   "direction": "call",
+   "confidence": 0.25,
+   "catalyst_type": "peer plan hits a group",
+   "why": "CoreWeave 超预期、上调、交付提前、不再发无担保债 → 它最大的机房房东（590 兆瓦）；跳空 +6.6%、约为平时波动 1.1 倍，没破 20 日高点（15.07）；减分项：中盘股跳空 6% 以上常已反映",
+   "wrong_if": "10:00 时 CRWV 在开盘价下方（龙头的跳空被卖），或 CRWV 守住而 CORZ 对开盘的涨跌幅落后它 2 个点以上（二线没人跟）；全天的线：当天收盘收在开盘价下方"
+  },
+  {
+   "rank": 2,
+   "symbol": "ORCL",
+   "direction": "call",
+   "confidence": 0.2,
+   "catalyst_type": "peer plan hits a group",
+   "why": "CoreWeave CEO 说增长靠客户合同担保的融资和经营现金流、到 2027 年不发母公司无担保债 → 缓解压着甲骨文的「AI 债务」担心；跳空 +4.8%、约 1.2 倍，离 20 日高点 −17%，没突破",
+   "wrong_if": "10:00 时 ORCL 在开盘价下方，或 CRWV 10:00 时在开盘价下方"
+  },
+  {
+   "rank": 3,
+   "symbol": "DELL",
+   "direction": "call",
+   "confidence": 0.15,
+   "catalyst_type": "peer plan hits a group",
+   "why": "CoreWeave 的服务器供应商，交付提前、资本开支下沿上调；但跳空 +8.0%、约 1.4 倍，多半已经吃掉；离 20 日高点 −34%；11-24 才发财报",
+   "wrong_if": "10:00 时 DELL 在开盘价下方"
+  },
+  {
+   "rank": 4,
+   "symbol": "NVDA",
+   "direction": "call",
+   "confidence": 0.1,
+   "catalyst_type": "sector move",
+   "why": "GPU 需求的读穿，但它自己的消息是负的：Baird 下调到中性、目标价 $500 → $200，众院考虑发传票；跳空 +3.4%、约 1.3 倍；11-17 发财报",
+   "wrong_if": "10:00 时 NVDA 在开盘价下方，或又出一条调查 / 出口管制的消息"
+  }
+ ],
+ "skipped": [
+  {
+   "symbol": "AAPL",
+   "direction": "put",
+   "gap": "-0.6%",
+   "reason": "claude-b 已选",
+   "why_not": "claude-b 选 AAPL 看涨（华兴把评级从持有上调到买入）；不选同一只"
+  },
+  {
+   "symbol": "CRWV",
+   "direction": "call",
+   "gap": "+14.8%",
+   "reason": "财报反应日",
+   "why_not": "昨晚盘后发的财报，今天是反应日"
+  },
+  {
+   "symbol": "NBIS",
+   "direction": "call",
+   "gap": "+11.6%",
+   "reason": "财报临近",
+   "why_not": "明早盘前发财报，规则买的 11-13 合约会拿过财报"
+  },
+  {
+   "symbol": "APLD",
+   "direction": "call",
+   "gap": "+9.2%",
+   "reason": "跳空已吃掉",
+   "why_not": "也是 CoreWeave 的房东，但跳空约 1.3 倍，比 CORZ 吃得多"
+  },
+  {
+   "symbol": "SMCI",
+   "direction": "call",
+   "gap": "+5.8%",
+   "reason": "其他",
+   "why_not": "昨天选的看跌还在账本里（11-13 26.5 看跌 15 张），不反手"
+  },
+  {
+   "symbol": "MRVL",
+   "direction": "call",
+   "gap": "+9.0%",
+   "reason": "跳空已吃掉",
+   "why_not": "没有自己的消息，跟板块；跳空约 1.5 倍"
+  },
+  {
+   "symbol": "COHR",
+   "direction": "call",
+   "gap": "+10.2%",
+   "reason": "跳空已吃掉",
+   "why_not": "没有自己的消息，光模块跟涨"
+  },
+  {
+   "symbol": "LITE",
+   "direction": "call",
+   "gap": "+9.6%",
+   "reason": "分析师评级",
+   "why_not": "UBS 维持中性、下调目标价；涨是跟板块"
+  },
+  {
+   "symbol": "SNDK",
+   "direction": "call",
+   "gap": "+8.2%",
+   "reason": "跳空已吃掉",
+   "why_not": "存储跟涨（CoreWeave 和 Solidigm 签了 SSD 供货，不是它）"
+  },
+  {
+   "symbol": "IREN",
+   "direction": "call",
+   "gap": "+7.8%",
+   "reason": "跳空已吃掉",
+   "why_not": "客户是微软不是 CoreWeave；昨天 −7.8%，今天弹回"
+  },
+  {
+   "symbol": "BE",
+   "direction": "call",
+   "gap": "+7.7%",
+   "reason": "跳空已吃掉",
+   "why_not": "没有自己的消息"
+  },
+  {
+   "symbol": "ALAB",
+   "direction": "call",
+   "gap": "+7.3%",
+   "reason": "消息太弱",
+   "why_not": "只有参加会议的公告"
+  },
+  {
+   "symbol": "MU",
+   "direction": "call",
+   "gap": "+6.9%",
+   "reason": "跳空已吃掉",
+   "why_not": "Anthropic IPO 的基石买家之一，但那是昨天的消息；跳空约 1.5 倍"
+  },
+  {
+   "symbol": "WULF",
+   "direction": "call",
+   "gap": "+6.5%",
+   "reason": "分析师评级",
+   "why_not": "Jefferies 维持买入、下调目标价；不是 CoreWeave 的房东"
+  },
+  {
+   "symbol": "AMD",
+   "direction": "call",
+   "gap": "+5.8%",
+   "reason": "分析师评级",
+   "why_not": "Freedom 首评买入、和三星的测试合作，分量不够；周一刚选过它"
+  },
+  {
+   "symbol": "AVGO",
+   "direction": "call",
+   "gap": "+4.3%",
+   "reason": "其他",
+   "why_not": "连续第 2 天涨（昨天 +3.9%），离 20 日高点只差 1.7%，没有今天自己的消息"
+  },
+  {
+   "symbol": "TSM",
+   "direction": "call",
+   "gap": "+4.3%",
+   "reason": "其他",
+   "why_not": "昨天 claude-b 选过；Anthropic 基石投资是昨晚的消息"
+  },
+  {
+   "symbol": "MARA",
+   "direction": "call",
+   "gap": "+4.5%",
+   "reason": "分析师评级",
+   "why_not": "只有目标价调整"
+  },
+  {
+   "symbol": "INTC",
+   "direction": "call",
+   "gap": "+5.9%",
+   "reason": "消息太弱",
+   "why_not": "跟板块"
+  },
+  {
+   "symbol": "ALC",
+   "direction": "put",
+   "gap": "盘后 -5.5%",
+   "reason": "财报反应日",
+   "why_not": "昨晚盘后财报；同类还有 PBR、RGTI、FLY、MRCY、AMPX、GO、REZI、STUB、FOSL"
+  }
+ ],
+ "claude_b_pick": "AAPL call 0.25（华兴上调到买入，盘前 −0.6%；他们只做影子）",
+ "notes": [
+  "08:35 没写预选：前因清楚（CoreWeave 财报），但整条链盘前已跳空 5–11%，当时没找到消息直接相关、跳空又小的；09:01 扫描后选了跳空相对最小的直接受益方 CORZ",
+  "盘前 09:02：SPY +0.9%、QQQ +1.9%、SMH +4.6%、TLT −0.1%（今天债市休市）；CRWV +15%、NBIS +12–13%，NVDA 只 +3.4%（Baird 下调到中性、传票的消息压着）",
+  "今天没有重要数据（退伍军人节，债市休市、股市照开）。Anthropic IPO 定价区间 $70–78（估值最高 $1.4 万亿，11-18 定价、11-19 上市）是昨天的消息",
+  "没写 overnight / expiry：CORZ 没破 20 日高点、跳空约 1.1 倍，不符合拿过夜的加分条件；它没有当天到期的合约，规则会买最近到期（11-13），所以「什么算错」加了全天那一句",
+  "「什么算错」这次写成相对的：看龙头 CRWV 守不守开盘价，和 CORZ 跟不跟——前两天「10:00 前任何一刻」和「10:00 那一刻」都被开盘前后的波动触发",
+  "今天的财报反应名单（不选）：CRWV、ALC、PBR、RGTI、FLY、MRCY、AMPX、GO、REZI、STUB、FOSL、SONO、GIB、AYA 等 43 只"
+ ],
+ "generated_at": "2026-11-11T09:04-05:00"
+}
