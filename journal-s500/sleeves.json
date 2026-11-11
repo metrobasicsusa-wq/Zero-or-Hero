@@ -5342,7 +5342,7 @@
      "expiry_out": null,
      "take_x": 2,
      "take": 16.3,
-     "take_cid": "sl-wk-trend-500-2026W46-132c1a-tfcff"
+     "take_cid": "sl-wk-trend-500-2026W46-132c1a-tbf24"
     }
    ],
    "closed": [
@@ -5476,7 +5476,7 @@
      "expiry_out": null,
      "take_x": 3,
      "take": 43.65,
-     "take_cid": "sl-wk-trend-1000-2026W46-8b161f-taa7a"
+     "take_cid": "sl-wk-trend-1000-2026W46-8b161f-tb9a6"
     }
    ],
    "closed": [
@@ -5736,7 +5736,7 @@
      "expiry_out": null,
      "take_x": 2,
      "take": 23.3,
-     "take_cid": "sl-wk-momo-1000-2026W46-41d2a4-t7d32"
+     "take_cid": "sl-wk-momo-1000-2026W46-41d2a4-t6df1"
     },
     {
      "tid": "2026W46-cd9663",
@@ -5757,7 +5757,7 @@
      "expiry_out": null,
      "take_x": 2,
      "take": 14.0,
-     "take_cid": "sl-wk-momo-1000-2026W46-cd9663-t5d9e"
+     "take_cid": "sl-wk-momo-1000-2026W46-cd9663-t3da1"
     },
     {
      "tid": "2026W46-bda114",
@@ -5778,7 +5778,7 @@
      "expiry_out": null,
      "take_x": 2,
      "take": 9.1,
-     "take_cid": "sl-wk-momo-1000-2026W46-bda114-t2e35"
+     "take_cid": "sl-wk-momo-1000-2026W46-bda114-tff5f"
     }
    ],
    "closed": [
@@ -5901,7 +5901,7 @@
      "expiry_out": null,
      "take_x": 2,
      "take": 7.0,
-     "take_cid": "sl-wk-news-500-2026W46-8092ab-t91bc"
+     "take_cid": "sl-wk-news-500-2026W46-8092ab-t5c0c"
     }
    ],
    "closed": [
@@ -6276,7 +6276,7 @@
      "expiry_out": null,
      "take_x": 20,
      "take": 189.0,
-     "take_cid": "sl-net-1000-2026W46-2e6fc5-t16df"
+     "take_cid": "sl-net-1000-2026W46-2e6fc5-t9288"
     }
    ],
    "closed": [],
@@ -8005,7 +8005,7 @@
   },
   "sniper-500": {
    "start": 500.0,
-   "cash": 1280.0,
+   "cash": 692.0,
    "round": 4,
    "heroes": 0,
    "zeros": 3,
@@ -8026,6 +8026,24 @@
      "exit_at": "15:30",
      "trail": true,
      "best_bid": 0.68,
+     "expiry_out": null
+    },
+    {
+     "tid": "20261111-a4bf7c",
+     "kind": "sniper",
+     "sym": "CORZ261113C00014500",
+     "asset": "option",
+     "und": "CORZ",
+     "qty": 7,
+     "cost": 0.84,
+     "paid": 588.0,
+     "opened": "2026-11-11 09:30",
+     "why": "开盘狙击 CORZ看涨 14.5（2026-11-13 到期，离现价 2.3%（平时一天波动 6.1% 的一半），delta 0.44）：CoreWeave 昨晚的财报（8-K、CNBC）：三季度收入 $36.6 亿超指引上沿，全年收入指引上调到 $130–133 亿，资本开支下沿上调、原因是「交付比计划早」，并说到 2027 年不再发母公司层面的无担保债。Core Scie；翻倍后回撤 40% 卖，否则到期日 15:30 卖",
+     "expiry": "2026-11-13",
+     "exit_day": "2026-11-13",
+     "exit_at": "15:30",
+     "trail": true,
+     "best_bid": 0.0,
      "expiry_out": null
     }
    ],
@@ -8266,7 +8284,6 @@
     }
    ],
    "slots": {
-    "2026-10-14": "2026-10-14T09:30-04:00",
     "2026-10-15": "2026-10-15T09:30-04:00",
     "2026-10-16": "2026-10-16T09:30-04:00",
     "2026-10-19": "2026-10-19T09:30-04:00",
@@ -8285,7 +8302,8 @@
     "2026-11-05": "2026-11-05T09:30-05:00",
     "2026-11-06": "2026-11-06T09:50-05:00",
     "2026-11-09": "2026-11-09T09:30-05:00",
-    "2026-11-10": "2026-11-10T09:31-05:00"
+    "2026-11-10": "2026-11-10T09:31-05:00",
+    "2026-11-11": "2026-11-11T09:30-05:00"
    },
    "best": 2405.0,
    "created": null,
@@ -8645,7 +8663,7 @@
     }
    ],
    "round_from": 5,
-   "stopped_day": "2026-11-10"
+   "stopped_day": "2026-11-11"
   },
   "overnight-500": {
    "start": 500.0,
@@ -8669,7 +8687,7 @@
      "exit_day": "2026-11-12",
      "exit_at": "15:50",
      "trail": true,
-     "best_bid": 3.07,
+     "best_bid": 5.14,
      "expiry_out": null
     }
    ],
@@ -9179,6 +9197,10 @@
     ],
     "2026-11-17": [
      "HD"
+    ],
+    "2026-11-18": [
+     "NVDA",
+     "TJX"
     ]
    }
   },
@@ -9486,7 +9508,7 @@
      "exit_day": "2026-11-17",
      "exit_at": "15:50",
      "trail": true,
-     "best_bid": 0.0,
+     "best_bid": 12.78,
      "expiry_out": null
     }
    ],
@@ -9893,7 +9915,7 @@
      "exit_day": "2026-11-17",
      "exit_at": "15:50",
      "trail": false,
-     "best_bid": 0.0,
+     "best_bid": 16.75,
      "expiry_out": null
     }
    ],
@@ -9990,11 +10012,11 @@
      "exit_day": "2026-11-11",
      "exit_at": "15:50",
      "trail": false,
-     "best_bid": 6.48,
+     "best_bid": 6.78,
      "expiry_out": null,
      "take_x": 2,
      "take": 18.9,
-     "take_cid": "sl-dipweek-take-500-20261104-b287d9-t9a70"
+     "take_cid": "sl-dipweek-take-500-20261104-b287d9-t0171"
     }
    ],
    "closed": [
@@ -10069,7 +10091,7 @@
      "expiry_out": null,
      "take_x": 2,
      "take": 5.65,
-     "take_cid": "sl-dipweek-take-1000-20261109-02d75a-t0972"
+     "take_cid": "sl-dipweek-take-1000-20261109-02d75a-t8f3c"
     }
    ],
    "closed": [
