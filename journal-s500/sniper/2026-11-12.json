@@ -1,60 +1,208 @@
 {
  "date": "2026-11-12",
  "sniper": {
-  "symbol": "IREN",
+  "symbol": "NVDA",
   "direction": "put",
-  "catalyst": "Nebius 今早三季报：收入 $9.81 亿超一致约 $9.08 亿，但说 2026 年收入只到 $30–34 亿区间的下沿（FactSet 一致 $33.5 亿），盘前 −16%（Quartz 引 CNBC、TipRanks）。IREN 是同一类给微软供算力的小型云：11-05 彭博报道微软收紧对新云厂商的项目监管、点名 Nebius 和 IREN，IREN 德州站点可能推迟几周到几个月。同时英伟达董事会准备撤换黄仁勋（WSJ、路透证实），英伟达盘前 −9%，AI 链整体走低（SMH −3.4%）。IREN 盘前 −7.1%，约等于它平时一天的波动（7.4%），比 CRWV（−10.4%，1.5 倍）吃得少；11-05 发过财报，今天不是它的财报反应日；昨天 +5.6%，不是追第二天",
-  "catalyst_type": "peer plan hits a group",
-  "confidence": 0.25,
-  "wrong_if": "10:00 时 NBIS 回到开盘价上方（龙头的跌被买回来），或 NBIS 还在开盘价下方而 IREN 对开盘的跌幅比它少 2 个点以上（二线没人跟）；全天的线：当天收盘收回开盘价上方"
+  "overnight": true,
+  "catalyst": "英伟达董事会准备撤换 CEO 黄仁勋：WSJ 报道、路透证实董事会周三深夜开会，FT 也有报道，彭博说已请外部机构找接班人、考虑先任命临时 CEO；今早的标题是公司说 CFO Colette Kress 将出任（Benzinga，盘前扫描）。盘前 09:02 −10.4%，是它平时一天波动（2.7%）的 3.9 倍，盘前价 155.7 跌破 20 日低点 168.89——符合回测里「开盘突破 20 日高 / 低 + 跳空 3 倍以上、拿到第二天收盘」那一类（57 次 +53%/笔），所以写 overnight",
+  "catalyst_type": "company news",
+  "confidence": 0.3,
+  "wrong_if": "10:00 时 NVDA 在开盘价上方（跌被买回来），或公司 / 董事会正式表态黄仁勋留任；全天的线：当天收盘收在开盘价上方"
  },
  "candidates": [
   {
    "rank": 1,
+   "symbol": "NVDA",
+   "direction": "put",
+   "confidence": 0.3,
+   "catalyst_type": "company news",
+   "why": "董事会准备撤换 CEO（WSJ、路透、FT、彭博）；盘前 −10.4%，约 3.9 倍平时波动，跌破 20 日低点 168.89；拿过夜",
+   "wrong_if": "10:00 时 NVDA 在开盘价上方（跌被买回来），或公司 / 董事会正式表态黄仁勋留任；全天的线：当天收盘收在开盘价上方"
+  },
+  {
+   "rank": 2,
    "symbol": "IREN",
    "direction": "put",
    "confidence": 0.25,
    "catalyst_type": "peer plan hits a group",
-   "why": "Nebius 把全年收入压到区间下沿 → 同类小型云、同样靠微软的订单；盘前 −7.1%、约 1.0 倍平时波动",
+   "why": "08:37 的预选：Nebius 把全年收入压到区间下沿 → 同类、同样靠微软订单的小型云；盘前 −8.1%，约 1.1 倍平时波动，没破 20 日低点 18.03",
    "wrong_if": "10:00 时 NBIS 回到开盘价上方（龙头的跌被买回来），或 NBIS 还在开盘价下方而 IREN 对开盘的跌幅比它少 2 个点以上（二线没人跟）；全天的线：当天收盘收回开盘价上方"
   },
   {
-   "rank": 2,
-   "symbol": "NVDA",
+   "rank": 3,
+   "symbol": "MSTR",
    "direction": "put",
-   "confidence": 0.2,
+   "confidence": 0.15,
    "catalyst_type": "company news",
-   "why": "董事会准备撤换 CEO 黄仁勋（WSJ 报道、路透证实、彭博说已在找接班人，可能先任命临时 CEO）；盘前 −9.0%，是平时波动（2.7%）的 3.3 倍，多半已经吃掉；跌破 20 日低点 168.89；董事会盘中宣布结果的话两个方向都可能大动",
-   "wrong_if": "10:00 前站回开盘价上方，或公司否认 / 董事会表态留任"
+   "why": "MSCI 确认把它移出指数（被动资金要卖）；盘前 −5.8%，约 1.3 倍平时波动；没查 20 日低点",
+   "wrong_if": "10:00 时 MSTR 在开盘价上方，或比特币当天反向大涨带着它收回"
   },
   {
-   "rank": 3,
+   "rank": 4,
    "symbol": "CRWV",
    "direction": "put",
    "confidence": 0.15,
    "catalyst_type": "peer plan hits a group",
-   "why": "Nebius 读穿到小型云龙头；但昨天 +24.7%、今天盘前 −10.4%（1.5 倍平时波动），是回吐不是新消息",
+   "why": "Nebius 读穿到小型云龙头；但昨天 +24.7%、今天盘前 −13.8%（约 2 倍平时波动），更像回吐",
    "wrong_if": "10:00 时 CRWV 在开盘价上方"
-  },
-  {
-   "rank": 4,
-   "symbol": "AMD",
-   "direction": "call",
-   "confidence": 0.1,
-   "catalyst_type": "sector move",
-   "why": "英伟达管理层动荡、AMD 盘前反而 +1.4%（客户分散采购的想法）；但 AI 链 10 天相关 0.83，英伟达带着整组跌的话 AMD 也难守",
-   "wrong_if": "10:00 时 AMD 在开盘价下方"
   }
  ],
- "preselected": true,
- "preselected_at": "2026-11-12T08:37-05:00",
- "claude_b_pick": "08:35 未知",
- "notes": [
-  "08:35 预选：前因清楚（Nebius 指引下沿、英伟达 CEO 撤换报道），选跳空相对平时波动最小的直接受益 / 受损方；09:01 例程确认、否决或换人",
-  "盘前 08:36（对昨收）：SPY −0.8%、QQQ −1.3%、SMH −3.4%；NVDA −9.0%、NBIS −16.2%、CRWV −10.4%、IREN −7.1%、CIFR −6.9%、CORZ −6.1%、APLD −5.1%、DELL −6.0%、SMCI −6.7%、MU −4.8%；AMD +1.4%、AVGO +0.8%、LLY +1.1%（中国批准减重药）",
-  "不选：CORZ（账本还拿着昨天的看涨，不反手）、SMCI（账本还拿着 11-10 的看跌）、FOSL（财报后第二天，追）",
-  "今天的财报反应名单（不选）：NBIS、BN、HBM、ASND、TWST、CTVA、VYLR、FNV、TTEK、ENS、CAE、OR、ECO、FPS、ONDS、LUNR 等 57 只",
-  "IREN 没有当天到期的合约，规则会买最近到期（11-13），所以「什么算错」加了全天那一句（只记录、不是卖出规则）"
+ "skipped": [
+  {
+   "symbol": "AMD",
+   "direction": "call",
+   "gap": "+1.8%",
+   "reason": "claude-b 已选",
+   "why_not": "claude-b 选了 AMD 看涨（William Blair 上调 + 资金从英伟达挪出）"
+  },
+  {
+   "symbol": "AVGO",
+   "direction": "call",
+   "gap": "+1.3%",
+   "reason": "其他",
+   "why_not": "和 AMD 同一条「资金挪出英伟达」，AI 链 10 天相关 0.83，英伟达带着整组跌的话难守"
+  },
+  {
+   "symbol": "NBIS",
+   "direction": "put",
+   "gap": "−20.2%",
+   "reason": "财报反应日",
+   "why_not": "今早财报：收入超、全年只到区间下沿"
+  },
+  {
+   "symbol": "CORZ",
+   "direction": "put",
+   "gap": "−6.0%",
+   "reason": "其他",
+   "why_not": "账本还拿着昨天的看涨，不反手"
+  },
+  {
+   "symbol": "SMCI",
+   "direction": "put",
+   "gap": "−7.9%",
+   "reason": "其他",
+   "why_not": "账本还拿着 11-10 的看跌"
+  },
+  {
+   "symbol": "CIFR",
+   "direction": "put",
+   "gap": "−6.2%",
+   "reason": "其他",
+   "why_not": "和 IREN 同一条 Nebius 读穿、跳空约 0.8 倍，选 IREN 代表这一组"
+  },
+  {
+   "symbol": "APLD",
+   "direction": "put",
+   "gap": "−6.8%",
+   "reason": "其他",
+   "why_not": "同上"
+  },
+  {
+   "symbol": "MU",
+   "direction": "put",
+   "gap": "−6.2%",
+   "reason": "消息太弱",
+   "why_not": "跟着英伟达和板块跌，自己的消息只有评级维持"
+  },
+  {
+   "symbol": "DELL",
+   "direction": "put",
+   "gap": "−5.6%",
+   "reason": "消息太弱",
+   "why_not": "板块跟跌，没有自己的消息"
+  },
+  {
+   "symbol": "SNDK",
+   "direction": "put",
+   "gap": "−9.0%",
+   "reason": "消息太弱",
+   "why_not": "存储跟跌，没有自己的消息"
+  },
+  {
+   "symbol": "ARM",
+   "direction": "put",
+   "gap": "−6.3%",
+   "reason": "消息太弱",
+   "why_not": "板块跟跌"
+  },
+  {
+   "symbol": "MRVL",
+   "direction": "put",
+   "gap": "−4.0%",
+   "reason": "消息太弱",
+   "why_not": "板块跟跌"
+  },
+  {
+   "symbol": "TSM",
+   "direction": "put",
+   "gap": "−3.7%",
+   "reason": "消息太弱",
+   "why_not": "板块跟跌；董事会批准 $10 亿投资前沿 AI 实验室不是利空"
+  },
+  {
+   "symbol": "ORCL",
+   "direction": "put",
+   "gap": "−4.0%",
+   "reason": "分析师评级",
+   "why_not": "只有 DBS 维持买入、调目标价"
+  },
+  {
+   "symbol": "AMAT",
+   "direction": "put",
+   "gap": "−3.2%",
+   "reason": "财报临近",
+   "why_not": "今晚盘后财报"
+  },
+  {
+   "symbol": "INTC",
+   "direction": "put",
+   "gap": "−3.8%",
+   "reason": "消息太弱",
+   "why_not": "跟着板块跌"
+  },
+  {
+   "symbol": "BE",
+   "direction": "put",
+   "gap": "−6.1%",
+   "reason": "消息太弱",
+   "why_not": "没有自己的消息"
+  },
+  {
+   "symbol": "VRT",
+   "direction": "put",
+   "gap": "−3.4%",
+   "reason": "消息太弱",
+   "why_not": "发布新产品（2027 年中出货），跟着板块跌"
+  },
+  {
+   "symbol": "HOOD",
+   "direction": "put",
+   "gap": "−4.4%",
+   "reason": "消息太弱",
+   "why_not": "只有评级维持和代币化交易平台的消息"
+  },
+  {
+   "symbol": "LLY",
+   "direction": "call",
+   "gap": "+1.4%",
+   "reason": "消息太弱",
+   "why_not": "中国批准减重药，跳空约 0.6 倍平时波动，大盘股、增量市场小"
+  }
  ],
- "generated_at": "2026-11-12T08:37-05:00"
+ "claude_b_pick": "AMD call 0.3（William Blair 上调到跑赢大盘 + 资金从英伟达挪出；他们 08:34 写）",
+ "preselected": false,
+ "preselect": {
+  "symbol": "IREN",
+  "direction": "put",
+  "at": "2026-11-12T08:37-05:00",
+  "replaced_at": "2026-11-12T09:04-05:00"
+ },
+ "notes": [
+  "09:01 换人：08:37 预选了 IREN 看跌，当时把英伟达排第 2，理由是跳空已是平时波动的 3 倍多、多半吃掉了——这条「跳空太大已吃掉」是给中盘股用的；回测里「开盘突破 20 日高 / 低 + 跳空 3 倍以上」反而是加分项，拿到第二天收盘 57 次平均 +53%/笔。英伟达是自己的消息、比 IREN 的读穿更直接，所以换成英伟达、写 overnight；IREN 留在第 2",
+  "和 claude-b 是同一条新闻的两边：它买 AMD 看涨（资金挪出英伟达），我们买英伟达看跌",
+  "盘前 09:02（对昨收）：SPY −0.7%、QQQ −1.3%、SMH −4.0%；NVDA −10.4%、NBIS −20.2%、CRWV −13.8%、IREN −8.1%、SMCI −7.9%、DELL −5.6%、MU −6.2%；AMD +1.8%、AVGO +1.3%",
+  "风险：董事会盘中宣布结果或否认的话两个方向都可能大动；多账本的抄底账本还拿着英伟达 11-16 看涨（不同账本，不影响这里）",
+  "今天的财报反应名单（不选）：NBIS、BN、HBM、ASND、TWST、CTVA、VYLR、FNV、TTEK、ENS、CAE、OR、ECO、FPS、ONDS、LUNR 等 57 只"
+ ],
+ "generated_at": "2026-11-12T09:04-05:00"
 }
