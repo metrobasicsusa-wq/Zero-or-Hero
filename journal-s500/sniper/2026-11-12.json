@@ -1,0 +1,60 @@
+{
+ "date": "2026-11-12",
+ "sniper": {
+  "symbol": "IREN",
+  "direction": "put",
+  "catalyst": "Nebius 今早三季报：收入 $9.81 亿超一致约 $9.08 亿，但说 2026 年收入只到 $30–34 亿区间的下沿（FactSet 一致 $33.5 亿），盘前 −16%（Quartz 引 CNBC、TipRanks）。IREN 是同一类给微软供算力的小型云：11-05 彭博报道微软收紧对新云厂商的项目监管、点名 Nebius 和 IREN，IREN 德州站点可能推迟几周到几个月。同时英伟达董事会准备撤换黄仁勋（WSJ、路透证实），英伟达盘前 −9%，AI 链整体走低（SMH −3.4%）。IREN 盘前 −7.1%，约等于它平时一天的波动（7.4%），比 CRWV（−10.4%，1.5 倍）吃得少；11-05 发过财报，今天不是它的财报反应日；昨天 +5.6%，不是追第二天",
+  "catalyst_type": "peer plan hits a group",
+  "confidence": 0.25,
+  "wrong_if": "10:00 时 NBIS 回到开盘价上方（龙头的跌被买回来），或 NBIS 还在开盘价下方而 IREN 对开盘的跌幅比它少 2 个点以上（二线没人跟）；全天的线：当天收盘收回开盘价上方"
+ },
+ "candidates": [
+  {
+   "rank": 1,
+   "symbol": "IREN",
+   "direction": "put",
+   "confidence": 0.25,
+   "catalyst_type": "peer plan hits a group",
+   "why": "Nebius 把全年收入压到区间下沿 → 同类小型云、同样靠微软的订单；盘前 −7.1%、约 1.0 倍平时波动",
+   "wrong_if": "10:00 时 NBIS 回到开盘价上方（龙头的跌被买回来），或 NBIS 还在开盘价下方而 IREN 对开盘的跌幅比它少 2 个点以上（二线没人跟）；全天的线：当天收盘收回开盘价上方"
+  },
+  {
+   "rank": 2,
+   "symbol": "NVDA",
+   "direction": "put",
+   "confidence": 0.2,
+   "catalyst_type": "company news",
+   "why": "董事会准备撤换 CEO 黄仁勋（WSJ 报道、路透证实、彭博说已在找接班人，可能先任命临时 CEO）；盘前 −9.0%，是平时波动（2.7%）的 3.3 倍，多半已经吃掉；跌破 20 日低点 168.89；董事会盘中宣布结果的话两个方向都可能大动",
+   "wrong_if": "10:00 前站回开盘价上方，或公司否认 / 董事会表态留任"
+  },
+  {
+   "rank": 3,
+   "symbol": "CRWV",
+   "direction": "put",
+   "confidence": 0.15,
+   "catalyst_type": "peer plan hits a group",
+   "why": "Nebius 读穿到小型云龙头；但昨天 +24.7%、今天盘前 −10.4%（1.5 倍平时波动），是回吐不是新消息",
+   "wrong_if": "10:00 时 CRWV 在开盘价上方"
+  },
+  {
+   "rank": 4,
+   "symbol": "AMD",
+   "direction": "call",
+   "confidence": 0.1,
+   "catalyst_type": "sector move",
+   "why": "英伟达管理层动荡、AMD 盘前反而 +1.4%（客户分散采购的想法）；但 AI 链 10 天相关 0.83，英伟达带着整组跌的话 AMD 也难守",
+   "wrong_if": "10:00 时 AMD 在开盘价下方"
+  }
+ ],
+ "preselected": true,
+ "preselected_at": "2026-11-12T08:37-05:00",
+ "claude_b_pick": "08:35 未知",
+ "notes": [
+  "08:35 预选：前因清楚（Nebius 指引下沿、英伟达 CEO 撤换报道），选跳空相对平时波动最小的直接受益 / 受损方；09:01 例程确认、否决或换人",
+  "盘前 08:36（对昨收）：SPY −0.8%、QQQ −1.3%、SMH −3.4%；NVDA −9.0%、NBIS −16.2%、CRWV −10.4%、IREN −7.1%、CIFR −6.9%、CORZ −6.1%、APLD −5.1%、DELL −6.0%、SMCI −6.7%、MU −4.8%；AMD +1.4%、AVGO +0.8%、LLY +1.1%（中国批准减重药）",
+  "不选：CORZ（账本还拿着昨天的看涨，不反手）、SMCI（账本还拿着 11-10 的看跌）、FOSL（财报后第二天，追）",
+  "今天的财报反应名单（不选）：NBIS、BN、HBM、ASND、TWST、CTVA、VYLR、FNV、TTEK、ENS、CAE、OR、ECO、FPS、ONDS、LUNR 等 57 只",
+  "IREN 没有当天到期的合约，规则会买最近到期（11-13），所以「什么算错」加了全天那一句（只记录、不是卖出规则）"
+ ],
+ "generated_at": "2026-11-12T08:37-05:00"
+}
