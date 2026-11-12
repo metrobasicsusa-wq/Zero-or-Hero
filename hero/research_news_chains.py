@@ -9,14 +9,18 @@ stories take weeks, does a long-dated call or put bought part-way pay, and where
 
 Headlines: Alpaca's news (Benzinga), 2024-02 on, for the first 100 stocks of the pool; a headline counts for a
 stock when it names it (at most 3 tickers). A "pressure" headline matches one of THEMES and is not law-firm
-advertising. Megacaps have such a headline most days, so a chain is judged against the stock's own usual rate:
+advertising, an auto-written comparison piece, a report of politicians' trades or a weekly roundup (NOISE); a
+downgrade does not count for a bank, which is the rater. Megacaps have such a headline most days, so a chain is
+judged against the stock's own usual rate:
 - confirmed: the first day the last 5 sessions hold at least MIN_HITS pressure headlines, at least MULT times the
   stock's usual 5-session count (the 120 sessions before), on at least two days and of at least two themes.
   That is the earliest day you could have called it a chain; its start is the first headline in that window.
 - it stays open while the 5-session count holds at least half of that; a new chain needs the old one closed.
-- settled: the first headline from the confirmed day to 5 sessions after the chain's last one that settles it
-  ("resigns", "steps down", "names ... CEO"; or, for chains about probes / politics, "settles", "cleared",
-  "closes probe", "dismissed"), not hedged ("could", "weighs", "calls for", a question mark ...).
+- settled: the first headline (at most 2 tickers) from the confirmed day to 5 sessions after the chain's last one
+  that settles it: an executive named and gone or replaced ("CEO resigns", "names ... CEO"), or, for chains about
+  probes / politics, a case closed ("settles ... lawsuit", "judge dismisses", "closes probe"); not hedged ("could",
+  "weighs", "calls for", a question mark ...). A chain about management or a scandal is settled by the executive
+  going when there is such a headline (v1 took Nvidia's "cleared" export headline of 11-09, not the resignation).
 (A) The stock, split- and dividend-adjusted daily bars: the chain's direction is the move from the close before
 the start to the confirmed close; then 5 / 21 / 42 sessions on from the confirmed close, and from the settled
 day's close (and from its open when the settling headline came before the open). Each also less SPY.
@@ -25,6 +29,12 @@ out, bought at the confirmed day's close ("along" = put when the chain's directi
 "against" = the other one), and again at the settled day's close. 5% paid on the way in and out. Exits: the 21st /
 42nd session, the settled day, 1.5x / 2x / 3x limits, a 40% giveback after 2x; and where each option peaked.
 A split between entry and expiry drops the trade (the contract's strike no longer matches raw prices).
+(C) The control: the same stock 126 / 63 sessions before and 63 after each down chain's confirmed day (not within
+10 sessions of any of its chains), same options, same exits: 2024-26 was a rising market for these survivors, so a
+call that makes money proves nothing until it beats the control.
+(D) Peers: the 3 stocks whose daily moves were closest over the 120 sessions before the chain (correlation 0.5 or
+more): do they rise while it falls (money moving to rivals) or fall with it, and what do they do afterwards?
+Tables are split: down chains, down chains already 4% lower when confirmed, up chains, the control.
 Research only: nothing here changes a trading rule. Run: python -m hero.research_news_chains
 """
 
@@ -57,6 +67,10 @@ DTE = (75, 130)
 OPT_HOLD = 63
 SLIP = 0.05
 BUDGET_MIN = float(os.environ.get("RESEARCH_BUDGET_MIN", "110"))
+DEEP = 0.04          # "already fell": the chain's direction is down by at least this much when it is confirmed
+OFFSETS = (-126, -63, 63)   # the control: the same stock this many sessions away from the confirmed day
+PEERS, PEER_LOOK, PEER_CORR = 3, 120, 0.5
+ANALYST_FIRMS = {"JPM", "GS", "MS", "BAC", "WFC", "C"}   # "JPMorgan downgrades X" is about X, not about JPM
 
 EXEC = r"(?:ceo|cfo|chief executive|chief financial|chairman|founder|president)"
 THEMES = {
@@ -69,7 +83,8 @@ THEMES = {
             r"export (?:ban|controls?|curbs?|restrictions?|rules?)|entity list|blacklist\w*|sanction\w*)\b",
     "管理层": r"\b" + EXEC + r"\b.{0,50}\b(?:resign\w*|step(?:s|ped|ping)? down|oust\w*|fired|exit(?:s|ed|ing)?|depart\w*|"
               r"to leave|leaving|removed?|removal|retire[sd]?|retirement|leave of absence)\b|"
-              r"\b(?:resignation|ouster|removal|departure|firing)\b.{0,30}\b" + EXEC + r"\b|"
+              r"\b(?:resign\w*|step(?:s|ped|ping)? down|oust\w*|fired|retire[sd]?|resignation|ouster|removal|departure|firing)\b"
+              r".{0,30}\b" + EXEC + r"\b|"
               r"\bboard\b.{0,40}\b(?:meets?|meeting|reviews?|emergency)\b|\bspecial committee\b",
     "降级": r"\bdowngrade[sd]?\b",
 }
@@ -80,13 +95,20 @@ ADS = re.compile(r"\b(?:llp|attorneys?|law firm|law offices?|lead plaintiff|clas
                  r"block & leviton|hagens berman|kirby mcinerney|bronstein|robbins|portnoy|holzer|gross law|"
                  r"halper sadeh|kahn swick|johnson fistel|edelson|lowey|wohl & fruchter|monteverde|rigrodsky|"
                  r"brodsky|ademi|kaskela|wolf haldenstein|scott\+scott|berger montague|labaton|saxena white|djs law", re.I)
-SETTLE = {
-    "人走了": re.compile(r"\b(?:resign(?:s|ed)|step(?:s|ped)? down|ousted|(?:is|was|been) fired|fires (?:its |the )?(?:ceo|chief)|"
-                         r"retire[sd]|names? .{0,40}\b(?:ceo|chief executive)|appoints? .{0,40}\b(?:ceo|chief executive)|"
-                         r"interim (?:ceo|chief executive))\b", re.I),
-    "案子了结": re.compile(r"\b(?:settle[sd]?|settlement|cleared|(?:closes?|ends?|drops?) (?:its |the )?(?:probe|investigation|"
-                           r"inquiry|charges|case)|dismiss(?:es|ed)|wins? (?:dismissal|appeal))\b", re.I),
-}
+NOISE = re.compile(r"investigating .{0,80}standing|congressional trading report|stock shopping|"
+                   r"\b(?:sen\.|rep\.|senator|congressman|congresswoman|lawmakers?)\b.{0,80}\b(?:sold|bought|buys|sells|purchased|discloses?)\b|"
+                   r"\band more:|this week in|closing bell|market clubhouse|bulls and bears", re.I)
+EXEC_RE = re.compile(r"\b(?:co-)?(?:ceos?|cfo|chief executive|chief financial|chairman|founder|president)\b", re.I)
+GONE = re.compile(r"\b(?:resign(?:s|ed)|step(?:s|ped)? down|ousted|(?:is|was|been) fired|fires|retire[sd]|"
+                  r"names? .{0,60}\b(?:co-)?(?:ceos?|chief executive)|appoints? .{0,60}\b(?:co-)?(?:ceos?|chief executive)|"
+                  r"interim (?:ceo|chief executive))\b", re.I)
+CASE = r"(?:lawsuit|suit|case|charges|probe|investigation|inquiry|claims|allegations|dispute|complaint|litigation)"
+CLOSED = re.compile(r"\bsettle[sd]?\b.{0,80}\b" + CASE + r"\b|\b" + CASE + r"\b.{0,40}\bsettled\b|"
+                    r"\breach(?:es|ed)? .{0,40}\bsettlement\b|\bsettlement (?:with|over)\b|"
+                    r"\b(?:judge|court|jury)\b.{0,60}\b(?:dismiss(?:es|ed)|toss(?:es|ed)|throws? out)\b|"
+                    r"\bdismiss(?:es|ed)\b.{0,40}\b(?:lawsuit|suit|case|charges|complaint)\b|\bcleared of\b|"
+                    r"\b(?:closes?|closed|ends?|ended|drops?|dropped) (?:its |the |their )?(?:probe|investigation|inquiry|charges|case)\b|"
+                    r"\bwins? (?:dismissal|appeal)\b", re.I)
 LEGAL_THEMES = {"调查", "政治", "做空报告"}
 HEDGE = re.compile(r"\b(?:could|may|might|consider\w*|weigh\w*|mulls?|calls? for|urg\w+|demand\w*|would|should|if|whether|"
                    r"plans? to|poised to|expected to|reportedly|preparing to|seeks?|seeking|rumou?r\w*|talks|near\w*|close to|"
@@ -97,17 +119,20 @@ OPT_EXITS = {"d21": "第 21 天卖", "d42": "第 42 天卖", "settle42": "落地
 
 
 def themes_of(headline: str) -> list[str]:
-    if not headline or ADS.search(headline):
+    if not headline or ADS.search(headline) or NOISE.search(headline):
         return []
     h = headline.lower()
     return [k for k, pat in THEME_RE.items() if pat.search(h)]
 
 
 def settle_kind(headline: str) -> str | None:
-    """'人走了' / '案子了结' when the headline says it happened, None when it only might."""
-    if not headline or ADS.search(headline) or HEDGE.search(headline):
+    """'人走了' (an executive is named and has gone or been replaced) / '案子了结' (a case, probe or charge
+    settled, dismissed or closed) when the headline says it happened; None when it only might, or is a roundup."""
+    if not headline or ADS.search(headline) or NOISE.search(headline) or HEDGE.search(headline):
         return None
-    return next((k for k, pat in SETTLE.items() if pat.search(headline)), None)
+    if EXEC_RE.search(headline) and GONE.search(headline):
+        return "人走了"
+    return "案子了结" if CLOSED.search(headline) else None
 
 
 def reaction(created_at: str, days: list[str]) -> tuple[int, bool] | None:
@@ -129,7 +154,9 @@ def scan(items: list[dict], sym: str, days: list[str]) -> tuple[list[tuple], lis
         h = n.get("headline") or ""
         if sym not in tickers or len(tickers) > 3 or not n.get("created_at"):
             continue
-        th, kind = themes_of(h), settle_kind(h)
+        th, kind = themes_of(h), settle_kind(h) if len(tickers) <= 2 else None
+        if sym in ANALYST_FIRMS:
+            th = [k for k in th if k != "降级"]
         if not th and not kind:
             continue
         r = reaction(n["created_at"], days)
@@ -166,8 +193,13 @@ def find_chains(hits: list[tuple], ends: list[tuple], days: list[str], sym: str 
         while e + 1 < n and roll(e + 1) >= floor:
             e += 1
         body = [h for h in hits if win[0][0] <= h[0] <= e]
-        legal = bool(LEGAL_THEMES & {k for h in body for k in h[1]})
-        end = next((s for s in ends if t <= s[0] <= min(body[-1][0] + GAP, n - 1) and (s[1] == "人走了" or legal)), None)
+        about = {k for h in body for k in h[1]}
+        window = [s for s in ends if t <= s[0] <= min(body[-1][0] + GAP, n - 1)]
+        gone = [s for s in window if s[1] == "人走了"]
+        if gone and about & {"管理层", "丑闻"}:
+            end = gone[0]                # a chain about the boss is settled by the boss going, not by an unrelated case
+        else:
+            end = next((s for s in window if s[1] == "人走了" or about & LEGAL_THEMES), None)
         out.append({"symbol": sym, "start": days[win[0][0]], "confirmed": days[t], "last": days[body[-1][0]],
                     "open": e == n - 1 and end is None, "hits": len(body), "at_confirm": len(win), "usual": round(usual, 2),
                     "themes": sorted({k for h in body for k in h[1]}),
@@ -208,25 +240,117 @@ def measure(c: dict, bars: dict[str, tuple[float, float]], spy: dict[str, tuple[
     return c
 
 
-def stock_trades(chains: list[dict]) -> dict[str, list[tuple[str, float]]]:
-    """(day, return per $1) per idea: along the chain's direction after it is confirmed, against it once settled."""
+ORDER = ("正股·下跌链确认后", "正股·下跌链且", "正股·对照", "正股·上涨链", "同行·", "同行减", "正股·落地",
+         "期权·下跌链买看跌", "期权·下跌链买看涨", "期权·下跌链且", "期权·对照", "期权·上涨链", "期权·落地")
+
+
+def ordered(rows: dict) -> dict:
+    """Rows grouped in the reading order of ORDER (rows of one group keep the order they were first seen in)."""
+    rank = lambda k: next((i for i, pre in enumerate(ORDER) if k.startswith(pre)), len(ORDER))
+    return {k: rows[k] for k in sorted(rows, key=rank)}
+
+
+def stock_trades(chains: list[dict], placebos: list[dict] = ()) -> dict[str, list[tuple[str, float]]]:
+    """(day, return per $1) per idea. Buying the stock at the confirmed close: for a chain whose direction is down
+    that is going against it, for one that is up it is going with it. The control is the same stock on other days.
+    Once settled: against the chain's direction from the settled day."""
     out: dict[str, list[tuple[str, float]]] = {}
     add = lambda name, day, r: out.setdefault(name, []).append((day, r))
     for c in chains:
-        s = c.get("dir")
-        if not s:
+        s_ = c.get("dir")
+        if not s_:
             continue
+        tag = "下跌链" if s_ < 0 else "上涨链"
         for k in HOLDS:
-            if c.get(f"f{k}") is not None:
-                add(f"正股·确认后顺着方向拿 {k} 天", c["confirmed"], s * c[f"f{k}"])
-                add(f"正股·确认后顺着方向拿 {k} 天、扣掉 SPY", c["confirmed"], s * (c[f"f{k}"] - c[f"f{k}_spy"]))
+            if c.get(f"f{k}") is None:
+                continue
+            x = c[f"f{k}"] - c[f"f{k}_spy"]
+            if s_ < 0:
+                add(f"正股·下跌链确认后买、拿 {k} 天", c["confirmed"], c[f"f{k}"])
+            add(f"正股·{tag}确认后买、拿 {k} 天、扣 SPY", c["confirmed"], x)
+            if s_ < 0 and c["pre_move"] <= -DEEP:
+                add(f"正股·下跌链且已跌 {DEEP:.0%} 以上确认后买、拿 {k} 天、扣 SPY", c["confirmed"], x)
+            if s_ < 0 and c.get(f"peer{k}") is not None and k != HOLDS[0]:
+                add(f"同行·下跌链确认后买同行、拿 {k} 天、扣 SPY", c["confirmed"], c[f"peer{k}"])
+                if c.get(f"self{k}") is not None:
+                    add(f"同行减它自己·下跌链确认后 {k} 天", c["confirmed"], c[f"peer{k}"] - c[f"self{k}"])
         if c.get("settle_oc") is not None and c.get("settle_before_open"):
-            add("正股·落地消息在开盘前：开盘反着做、收盘出", c["settled"], -s * c["settle_oc"])
+            add("正股·落地消息在开盘前：开盘反着做、收盘出", c["settled"], -s_ * c["settle_oc"])
         for k in HOLDS:
             if c.get(f"s{k}") is not None:
-                add(f"正股·落地日收盘反着做拿 {k} 天", c["settled"], -s * c[f"s{k}"])
-                add(f"正股·落地日收盘反着做拿 {k} 天、扣掉 SPY", c["settled"], -s * (c[f"s{k}"] - c[f"s{k}_spy"]))
+                add(f"正股·落地日收盘反着做拿 {k} 天、扣 SPY", c["settled"], -s_ * (c[f"s{k}"] - c[f"s{k}_spy"]))
+                if c.get("settle_kind") == "人走了":
+                    add(f"正股·落地（人走了）收盘反着做拿 {k} 天、扣 SPY", c["settled"], -s_ * (c[f"s{k}"] - c[f"s{k}_spy"]))
+    for p_ in placebos:
+        if p_.get("dir") == -1:
+            for k in HOLDS:
+                if p_.get(f"x{k}") is not None:
+                    add(f"正股·对照（下跌链那只股票换个日子）买、拿 {k} 天、扣 SPY", p_["day"], p_[f"x{k}"])
+    return ordered(out)
+
+
+def placebo_days(chains: list[dict], sdays: dict[str, list[str]]) -> list[dict]:
+    """The control: the same stock OFFSETS sessions away from each chain's confirmed day, leaving out days within
+    10 sessions of any of that stock's chains."""
+    by: dict[str, list[dict]] = {}
+    for c in chains:
+        by.setdefault(c["symbol"], []).append(c)
+    out = []
+    for c in chains:
+        days = sdays[c["symbol"]]
+        i = bisect_left(days, c["confirmed"])
+        for off in OFFSETS:
+            j = i + off
+            if j < 1 or j >= len(days):
+                continue
+            if any(bisect_left(days, o["start"]) - 10 <= j <= bisect_left(days, o["last"]) + 10 for o in by[c["symbol"]]):
+                continue
+            out.append({"symbol": c["symbol"], "day": days[j], "of": c["confirmed"], "dir": c.get("dir"), "pre_move": c.get("pre_move")})
     return out
+
+
+def corr(x: list[float], y: list[float]) -> float:
+    mx, my = sum(x) / len(x), sum(y) / len(y)
+    sxy = sum((a - mx) * (b - my) for a, b in zip(x, y))
+    sxx, syy = sum((a - mx) ** 2 for a in x), sum((b - my) ** 2 for b in y)
+    return sxy / (sxx * syy) ** 0.5 if sxx > 0 and syy > 0 else 0.0
+
+
+def peer_layer(c: dict, adj: dict[str, dict], spy: dict, days: list[str], pool: list[str]) -> dict:
+    """The PEERS stocks whose daily moves were closest to this one over the PEER_LOOK sessions before the chain
+    started (correlation at least PEER_CORR), and how they and the stock itself did against SPY: during the chain
+    (the close before the start to the confirmed close) and 5 / 21 / 42 sessions after it. Does money move to the
+    rivals (they rise while it falls) or do they fall with it?"""
+    i0, ic = bisect_left(days, c["start"]), bisect_left(days, c["confirmed"])
+    if i0 < PEER_LOOK + 1:
+        return c
+    win = days[i0 - PEER_LOOK - 1:i0]
+
+    def rets(s_):
+        m = adj.get(s_) or {}
+        return None if any(d not in m for d in win) else [m[win[k]][1] / m[win[k - 1]][1] - 1 for k in range(1, len(win))]
+    me = rets(c["symbol"])
+    if not me:
+        return c
+    cand = sorted(((corr(me, r), s_) for s_ in pool if s_ != c["symbol"] for r in [rets(s_)] if r), reverse=True)[:PEERS]
+    peers = [s_ for v, s_ in cand if v >= PEER_CORR]
+    if not peers:
+        return c
+
+    def ex(s_, a, b):
+        m = adj[s_]
+        return (m[b][1] / m[a][1] - 1 - (spy[b][1] / spy[a][1] - 1)) if a in m and b in m and a in spy and b in spy else None
+
+    def avg(a, b):
+        xs = [v for v in (ex(p_, a, b) for p_ in peers) if v is not None]
+        return round(statistics.mean(xs), 4) if xs else None
+    r4 = lambda v: None if v is None else round(v, 4)
+    pre = days[i0 - 1]
+    c["peers"], c["peer_pre"], c["self_pre"] = peers, avg(pre, c["confirmed"]), r4(ex(c["symbol"], pre, c["confirmed"]))
+    for k in HOLDS:
+        if ic + k < len(days):
+            c[f"peer{k}"], c[f"self{k}"] = avg(c["confirmed"], days[ic + k]), r4(ex(c["symbol"], c["confirmed"], days[ic + k]))
+    return c
 
 
 # ---- (B) long options ------------------------------------------------------------------------------------------
@@ -322,10 +446,14 @@ def long_leg(client, und: str, day: str, kind: str, days: list[str], raw: dict[s
     """The at-the-money `kind` bought at `day`'s close on the nearest monthly expiry 75-130 days out that traded
     that day. None when there is no such contract, or a split falls between the entry and the expiry."""
     miss = lambda k: misses.__setitem__(k, misses.get(k, 0) + 1)
+    days = [d for d in days if d <= (date.today() - timedelta(days=1)).isoformat()] or days   # paths end yesterday
     i = bisect_left(days, day)
     spot, sessions = raw.get(day), days[i + 1:i + 1 + OPT_HOLD]
+    yesterday = (date.today() - timedelta(days=1)).isoformat()
     if not spot:
         return miss("no_spot")
+    if day > yesterday:
+        return miss("too_recent")       # today's option bars cannot be asked for yet
     for exp in monthlies(day):
         last = min(exp, days[-1])
         f0, f1 = factor.get(day), factor.get(days[bisect_right(days, last) - 1])
@@ -342,9 +470,10 @@ def long_leg(client, und: str, day: str, kind: str, days: list[str], raw: dict[s
         if k[1] not in bars:
             got: dict = {}
             try:
-                got = client.option_bars([k[1]], day, f"{min(k[2], sessions[-1] if sessions else day)}T23:00:00Z", timeframe="1Day")
+                got = client.option_bars([k[1]], day, f"{min(k[2], sessions[-1] if sessions else day, yesterday)}T23:00:00Z", timeframe="1Day")
             except Exception as e:
                 miss(f"bars:{type(e).__name__}")
+                misses.setdefault("example", f"{k[1]} {day}: {str(e)[:160]}")
             pace.wait()
             bars[k[1]] = {b["t"][:10]: float(b["c"]) for b in got.get(k[1], [])}
         marks = bars[k[1]]
@@ -359,30 +488,39 @@ def long_leg(client, und: str, day: str, kind: str, days: list[str], raw: dict[s
     return miss("no_entry_bar")
 
 
-def option_trades(chains: list[dict]) -> dict[str, list[tuple[str, float]]]:
+def option_trades(chains: list[dict], placebos: list[dict] = ()) -> dict[str, list[tuple[str, float]]]:
+    """(day, return per $1) for the long options, split by the chain's direction, with the control."""
     out: dict[str, list[tuple[str, float]]] = {}
-    names = {"along": "期权·确认日买、顺着方向", "against": "期权·确认日买、反方向",
-             "settle_fade": "期权·落地日买、反着之前的方向", "settle_along": "期权·落地日买、顺着之前的方向"}
+    ALL, FEW = ("d21", "d42", "take15", "take2", "take3", "trail"), ("d42", "take2")
+
+    def add(name, day, leg, exits):
+        for ex in exits:
+            if leg and leg["res"].get(ex) is not None:
+                out.setdefault(f"{name} · {OPT_EXITS[ex]}", []).append((day, leg["res"][ex]))
     for c in chains:
-        for leg, name in names.items():
-            L = (c.get("legs") or {}).get(leg)
-            if not L:
-                continue
-            day = c["settled"] if leg.startswith("settle") else c["confirmed"]
-            for ex, label in OPT_EXITS.items():
-                if ex == "settle42" and leg != "along":
-                    continue
-                if leg.startswith("settle") and ex not in ("d21", "d42", "take2"):
-                    continue
-                if L["res"].get(ex) is not None:
-                    out.setdefault(f"{name} · {label}", []).append((day, L["res"][ex]))
-    return out
+        L, d = c.get("legs") or {}, c.get("dir")
+        if d == -1:
+            add("期权·下跌链买看跌（顺着）", c["confirmed"], L.get("along"), ALL + ("settle42",))
+            add("期权·下跌链买看涨（反着）", c["confirmed"], L.get("against"), ALL)
+            if c["pre_move"] <= -DEEP:
+                add(f"期权·下跌链且已跌 {DEEP:.0%} 以上买看涨", c["confirmed"], L.get("against"), ALL)
+        elif d == 1:
+            add("期权·上涨链买看涨（顺着）", c["confirmed"], L.get("along"), FEW)
+            add("期权·上涨链买看跌（反着）", c["confirmed"], L.get("against"), FEW)
+        if c.get("settled"):
+            add("期权·落地日买、反着之前的方向", c["settled"], L.get("settle_fade"), ("d21", "d42", "take2"))
+            add("期权·落地日买、顺着之前的方向", c["settled"], L.get("settle_along"), ("d42",))
+    for p_ in placebos:
+        if p_.get("dir") == -1:
+            L = p_.get("legs") or {}
+            add("期权·对照（下跌链那只股票换个日子）买看涨", p_["day"], L.get("call"), ALL)
+            add("期权·对照（下跌链那只股票换个日子）买看跌", p_["day"], L.get("put"), FEW)
+    return ordered(out)
 
 
-def peaks(chains: list[dict], leg: str) -> dict | None:
-    """Where the options of one kind peaked within 42 sessions: for choosing a take-profit level."""
-    ps = [(L["res"]["peak"], L["res"]["peak_day"]) for c in chains for L in [(c.get("legs") or {}).get(leg)]
-          if L and L["res"].get("peak") is not None]
+def peaks(legs: list[dict | None]) -> dict | None:
+    """Where a set of options peaked within 42 sessions: for choosing a take-profit level."""
+    ps = [(L["res"]["peak"], L["res"]["peak_day"]) for L in legs if L and L["res"].get("peak") is not None]
     if not ps:
         return None
     m = sorted(p for p, _ in ps)
@@ -420,37 +558,60 @@ def run(client, root: Path, budget_min: float = BUDGET_MIN) -> dict:
         sdays[sym] = sorted(bars)
         hits, ends = scan(items, sym, sdays[sym])
         pressure += len(hits)
-        chains += [measure(c, bars, spy, sdays[sym]) for c in find_chains(hits, ends, sdays[sym], sym)]
+        for c in find_chains(hits, ends, sdays[sym], sym):
+            chains.append(peer_layer(measure(c, bars, spy, sdays[sym]), adj, spy, sdays[sym], pool))
     news_min = round((time.monotonic() - t0) / 60, 1)
+    placebos = placebo_days([c for c in chains if c.get("dir") == -1], sdays)
+    for p_ in placebos:
+        days, bars = sdays[p_["symbol"]], adj[p_["symbol"]]
+        j = bisect_left(days, p_["day"])
+        for k in HOLDS:
+            if j + k < len(days) and all(d in m for d in (p_["day"], days[j + k]) for m in (bars, spy)):
+                p_[f"x{k}"] = round(bars[days[j + k]][1] / bars[p_["day"]][1] - spy[days[j + k]][1] / spy[p_["day"]][1], 4)
     pace, misses, cache, priced, partial = Pace(client), {}, {}, 0, False
+    factors: dict[str, dict[str, float]] = {}
+
+    def factor(sym):
+        if sym not in factors:
+            factors[sym] = {d: raw[sym][d] / adj[sym][d][1] for d in sdays[sym] if d in raw.get(sym, {}) and adj[sym][d][1]}
+        return factors[sym]
+
+    def leg(sym, day, kind, settle_day=None):
+        try:
+            return long_leg(client, sym, day, kind, sdays[sym], raw[sym], factor(sym), settle_day, pace, misses, cache)
+        except Exception as e:
+            misses[f"leg:{type(e).__name__}"] = misses.get(f"leg:{type(e).__name__}", 0) + 1
+            return None
     for c in sorted(chains, key=lambda c: c["confirmed"], reverse=True):     # newest first: a short budget keeps the recent ones
         if not c.get("dir"):
             continue
         if (time.monotonic() - t0) / 60 > budget_min:
             partial = True
             break
-        sym, days = c["symbol"], sdays[c["symbol"]]
-        factor = {d: raw[sym][d] / adj[sym][d][1] for d in days if d in raw.get(sym, {}) and adj[sym][d][1]}
         along, against = ("call", "put") if c["dir"] > 0 else ("put", "call")
-        legs = {}
-        try:
-            legs["along"] = long_leg(client, sym, c["confirmed"], along, days, raw[sym], factor, c.get("settled"), pace, misses, cache)
-            legs["against"] = long_leg(client, sym, c["confirmed"], against, days, raw[sym], factor, None, pace, misses, cache)
-            if c.get("settled"):
-                legs["settle_fade"] = long_leg(client, sym, c["settled"], against, days, raw[sym], factor, None, pace, misses, cache)
-                legs["settle_along"] = long_leg(client, sym, c["settled"], along, days, raw[sym], factor, None, pace, misses, cache)
-        except Exception as e:
-            misses[f"leg:{type(e).__name__}"] = misses.get(f"leg:{type(e).__name__}", 0) + 1
+        legs = {"along": leg(c["symbol"], c["confirmed"], along, c.get("settled")), "against": leg(c["symbol"], c["confirmed"], against)}
+        if c.get("settled"):
+            legs["settle_fade"] = leg(c["symbol"], c["settled"], against)
+            legs["settle_along"] = leg(c["symbol"], c["settled"], along)
         c["legs"] = {k: v for k, v in legs.items() if v}
         priced += 1
-    table = {k: robust.summary(v, end=today, extra_cost=STOCK_COST) for k, v in stock_trades(chains).items()}
-    table.update({k: robust.summary(v, end=today) for k, v in option_trades(chains).items()})
+    for p_ in placebos:
+        if (time.monotonic() - t0) / 60 > budget_min:
+            partial = True
+            break
+        p_["legs"] = {k: v for k, v in (("call", leg(p_["symbol"], p_["day"], "call")), ("put", leg(p_["symbol"], p_["day"], "put"))) if v}
+    table = {k: robust.summary(v, end=today, extra_cost=STOCK_COST) for k, v in stock_trades(chains, placebos).items()}
+    table.update({k: robust.summary(v, end=today) for k, v in option_trades(chains, placebos).items()})
+    down = [c for c in chains if c.get("dir") == -1]
+    L = lambda cs, name: [(c.get("legs") or {}).get(name) for c in cs]
+    pk = {"下跌链买看跌（顺着）": peaks(L(down, "along")), "下跌链买看涨（反着）": peaks(L(down, "against")),
+          f"下跌链且已跌 {DEEP:.0%} 以上买看涨": peaks(L([c for c in down if c["pre_move"] <= -DEEP], "against")),
+          "对照买看涨": peaks(L(placebos, "call")), "落地日买、反着之前的方向": peaks(L(chains, "settle_fade"))}
     return {"generated": today, "start": START, "pool": len(pool), "headlines": scanned, "pressure": pressure,
             "chains": len(chains), "settled": sum(1 for c in chains if c.get("settled")), "priced": priced,
-            "partial": partial, "misses": misses, "news_minutes": news_min,
-            "minutes": round((time.monotonic() - t0) / 60, 1), "table": table,
-            "peaks": {leg: peaks(chains, leg) for leg in ("along", "against", "settle_fade", "settle_along")},
-            "chain_list": chains}
+            "controls": len(placebos), "partial": partial, "misses": misses, "news_minutes": news_min,
+            "minutes": round((time.monotonic() - t0) / 60, 1), "table": ordered(table), "peaks": pk,
+            "chain_list": chains, "control_list": placebos}
 
 
 def pct(x) -> str:
@@ -459,41 +620,47 @@ def pct(x) -> str:
 
 def markdown(rep: dict) -> str:
     cs = [c for c in rep["chain_list"] if c.get("dir")]
+    down = [c for c in cs if c["dir"] < 0]
     cut = lambda s, n=80: (s or "")[:n].replace("|", "/")
+    mean = lambda xs: statistics.mean(xs) if xs else None
     lines = [f"# 消息链：坏消息一条接一条的时候和落地以后 {rep['generated']}", "",
              f"{rep['start']} 起 {rep['pool']} 只股票的 Alpaca（Benzinga）标题 {rep['headlines']:,} 条，其中压力标题 {rep['pressure']:,} 条；"
-             f"找到 {rep['chains']} 条链，{rep['settled']} 条有「落地」的标题。链的定义：5 个交易日里至少 {MIN_HITS} 条压力标题、"
-             f"是这只股票平时的 {MULT:.0f} 倍以上、分布在两天以上、两类以上。方向 = 链开始前一天收盘到确认那天收盘的涨跌。"
-             "只研究，不改任何交易规则。", ""]
+             f"找到 {rep['chains']} 条链（股价向下 {len(down)} 条、向上 {len(cs) - len(down)} 条），{rep['settled']} 条有「落地」的标题。"
+             f"链的定义：5 个交易日里至少 {MIN_HITS} 条压力标题、是这只股票平时的 {MULT:.0f} 倍以上、分布在两天以上、两类以上。"
+             "方向 = 链开始前一天收盘到确认那天收盘的涨跌。对照 = 同一只股票、确认日前 126 / 63 天和后 63 天。只研究，不改任何交易规则。", ""]
     for k in HOLDS:
         xs = [c for c in cs if c.get(f"f{k}") is not None]
         keep = sum(1 for c in xs if (c[f"f{k}"] > 0) == (c["dir"] > 0))
         lines.append(f"- 确认后 {k} 天接着往同一方向走：{keep} / {len(xs)}" + (f"（{keep / len(xs):.0%}）" if xs else ""))
-    down = [c for c in cs if c["dir"] < 0]
-    lines.append(f"- 方向向下的链 {len(down)} 条、向上的 {len(cs) - len(down)} 条")
+    pre = [c["pre_move"] for c in down]
+    if pre:
+        lines.append(f"- 下跌链到确认那天已经跌了：中位数 {pct(statistics.median(pre))}、平均 {pct(mean(pre))}")
     sett = [c for c in cs if c.get("settle_oc") is not None]
     turn = sum(1 for c in sett if (c["settle_oc"] > 0) != (c["dir"] > 0))
-    lines += [f"- 落地那天开盘到收盘和之前方向相反：{turn} / {len(sett)}" + (f"（{turn / len(sett):.0%}）" if sett else ""), "",
-              robust.table(rep["table"], title="稳健性检查（每 $1）"),
-              f"正股各行的「多付成本」按每边 {STOCK_COST:.1%} 算，期权各行按每边 5%（表头写的是期权的口径）。期权已经按买贵 5%、卖便宜 5% 算过一遍。", "",
+    lines.append(f"- 落地那天开盘到收盘和之前方向相反：{turn} / {len(sett)}" + (f"（{turn / len(sett):.0%}）" if sett else ""))
+    pe = [c for c in down if c.get("peer_pre") is not None and c.get("self_pre") is not None]
+    if pe:
+        lines.append(f"- 同行（之前 {PEER_LOOK} 天走势最像的 {PEERS} 只）在下跌链发酵期间：它自己比 SPY {pct(mean([c['self_pre'] for c in pe]))}，"
+                     f"同行 {pct(mean([c['peer_pre'] for c in pe]))}；{len(pe)} 条里同行比 SPY 多涨 1% 以上的 {sum(c['peer_pre'] >= 0.01 for c in pe)} 条、"
+                     f"多跌 1% 以上的 {sum(c['peer_pre'] <= -0.01 for c in pe)} 条")
+    lines += ["", robust.table(rep["table"], title="稳健性检查（每 $1）"),
+              f"正股和同行各行的「多付成本」按每边 {STOCK_COST:.1%} 算，期权各行按每边 5%（表头写的是期权的口径）。期权已经按买贵 5%、卖便宜 5% 算过一遍。", "",
               "## 期权最高到过几倍（买入后 42 个交易日内的最高收盘价 ÷ 成本，用来定止盈）", "",
               "| 买法 | 笔数 | 中位数最高 | 最好的 1/4 至少到 | 最好的 1/10 至少到 | 到过 1.5 倍 | 到过 2 倍 | 到过 3 倍 | 最高点在第几天（中位数） |",
               "|---|---|---|---|---|---|---|---|---|"]
-    label = {"along": "确认日买、顺着方向", "against": "确认日买、反方向", "settle_fade": "落地日买、反着之前的方向",
-             "settle_along": "落地日买、顺着之前的方向"}
-    for leg, p in rep["peaks"].items():
+    for name, p in rep["peaks"].items():
         if p:
-            lines.append(f"| {label[leg]} | {p['n']} | {p['median_peak']:.2f} 倍 | {p['q75']:.2f} 倍 | {p['q90']:.2f} 倍 | "
+            lines.append(f"| {name} | {p['n']} | {p['median_peak']:.2f} 倍 | {p['q75']:.2f} 倍 | {p['q90']:.2f} 倍 | "
                          f"{p['reach15']:.0%} | {p['reach2']:.0%} | {p['reach3']:.0%} | 第 {p['median_peak_day']:.0f} 天 |")
     stale = [L[k] for c in cs for L in (c.get("legs") or {}).values() for k in ("stale21", "stale42") if L.get(k) is not None]
-    lines += ["", f"期权定价了 {rep['priced']} 条链" + ("（时间不够，只算了最近的一部分）" if rep["partial"] else "") +
+    lines += ["", f"期权定价了 {rep['priced']} 条链、对照 {rep['controls']} 个日子" + ("（时间不够，只算了一部分）" if rep["partial"] else "") +
               f"；没找到的原因：{rep['misses'] or '无'}。"
               + (f"卖出那天期权没有成交、用了 3 天以前旧价格的占 {sum(a > 3 for a in stale) / len(stale):.0%}。" if stale else ""), "",
               "## 现在还在发酵的链（还没有落地的标题）", ""]
     now = sorted([c for c in rep["chain_list"] if c.get("open")], key=lambda c: c["last"], reverse=True)
     for c in now[:20]:
         lines.append(f"- **{c['symbol']}** {c['start']} 起 {c['hits']} 条（{'、'.join(c['themes'])}；平时 5 天 {c['usual']} 条），"
-                     f"确认 {c['confirmed']}，到确认时 {pct(c.get('pre_move'))}。最新：{cut(c['latest'], 100)}")
+                     f"确认 {c['confirmed']}，到确认时 {pct(c.get('pre_move'))}；同行 {'、'.join(c.get('peers') or []) or '—'}。最新：{cut(c['latest'], 100)}")
     lines += [] if now else ["- 没有"]
     recent = sorted([c for c in cs if c.get("settled")], key=lambda c: c["settled"], reverse=True)
     lines += ["", "## 落地过的链（最近 30 条）", "",
@@ -503,15 +670,15 @@ def markdown(rep: dict) -> str:
         lines.append(f"| {c['symbol']} | {c['start']} | {c['confirmed']} | {c['settled']} | {c['hits']} | {'、'.join(c['themes'])} | "
                      f"{pct(c.get('pre_move'))} | {pct(c.get('to_settle'))} | {pct(c.get('settle_gap'))} | {pct(c.get('settle_oc'))} | "
                      f"{pct(c.get('s21'))} | {c['settle_kind']}：{cut(c['settle_headline'], 60)} |")
-    big = sorted(cs, key=lambda c: -c["hits"])[:20]
-    lines += ["", "## 最长的 20 条链（对一下是不是我们记得的那些事）", "",
-              "| 股票 | 开始 | 确认 | 最后一条 | 条数 | 类别 | 到确认 | 之后 21 天 | 之后 42 天 | 开头的标题 |", "|---|---|---|---|---|---|---|---|---|---|"]
+    big = sorted(down, key=lambda c: c["pre_move"])[:25]
+    lines += ["", "## 跌得最深的 25 条下跌链（对一下是不是我们记得的那些事）", "",
+              "| 股票 | 开始 | 确认 | 条数 | 类别 | 到确认 | 之后 21 天 | 之后 42 天 | 同行（发酵期间比 SPY） | 开头的标题 |", "|---|---|---|---|---|---|---|---|---|---|"]
     for c in big:
-        lines.append(f"| {c['symbol']} | {c['start']} | {c['confirmed']} | {c['last']} | {c['hits']} | {'、'.join(c['themes'])} | "
-                     f"{pct(c.get('pre_move'))} | {pct(c.get('f21'))} | {pct(c.get('f42'))} | {cut(c['headlines'][0], 70)} |")
-    lines += ["", "提醒：标题按关键词挑，会混进无关的「调查」「听证」；名单是今天的 100 只（活下来的公司）；"
-              "「落地」只看标题字面，盘中才出的落地消息当天开盘做不到，所以落地后的买卖一律从当天收盘算；"
-              "期权用每天的收盘成交价，不成交的日子沿用上一次的价格。第一版，结论只记录。", ""]
+        lines.append(f"| {c['symbol']} | {c['start']} | {c['confirmed']} | {c['hits']} | {'、'.join(c['themes'])} | {pct(c.get('pre_move'))} | "
+                     f"{pct(c.get('f21'))} | {pct(c.get('f42'))} | {'、'.join(c.get('peers') or []) or '—'} {pct(c.get('peer_pre'))} | {cut(c['headlines'][0], 70)} |")
+    lines += ["", "提醒：标题按关键词挑，仍会混进无关的「调查」「听证」；名单是今天的 100 只（活下来的公司），2024–26 又是牛市，"
+              "所以要和「对照」那几行比，不能只看正负；「落地」只看标题字面，盘中才出的落地消息当天开盘做不到，落地后的买卖一律从当天收盘算；"
+              "同行是按走势相关性挑的，不一定是真正的竞争对手；期权用每天的收盘成交价，不成交的日子沿用上一次的价格。结论只记录。", ""]
     return "\n".join(lines)
 
 

@@ -2052,31 +2052,42 @@ class ResearchNewsChains(unittest.TestCase):
         from hero import research_news_chains as nc
         self.assertEqual(nc.themes_of("Senators Call For Acme CEO To Step Down"), ["政治", "管理层"])
         self.assertEqual(nc.themes_of("Rosen Law Firm Reminds Acme Investors Of Fraud Deadline"), [])   # advertising
+        self.assertEqual(nc.themes_of("Investigating Acme's Standing In Software Industry Compared To Competitors"), [])   # auto-written
+        self.assertEqual(nc.themes_of("Congressional Trading Report: Sen. X Sold Over $19K In Acme Probe Stock"), [])
         self.assertEqual(nc.settle_kind("Acme CEO Resigns; Names Interim CEO"), "人走了")
         self.assertIsNone(nc.settle_kind("Senators Call For Acme CEO To Step Down"))                  # asked for, not done
+        self.assertIsNone(nc.settle_kind("Acme Director Wally Resigns"))                              # not the boss
         self.assertEqual(nc.settle_kind("Acme Settles DOJ Probe"), "案子了结")
+        self.assertIsNone(nc.settle_kind("Analyst Dismisses Bear Narrative On Acme"))                 # no case in it
+        self.assertIsNone(nc.settle_kind("Commerce Department Cleared Acme Chip Sales"))
         days = [f"2026-{m:02d}-{d:02d}" for m in (9, 10) for d in range(1, 21)]                        # 40 sessions
         self.assertEqual(nc.reaction("2026-10-05T20:30:00Z", days), (25, True))                         # 16:30 ET -> next session
         self.assertEqual(nc.reaction("2026-10-06T13:32:00Z", days), (25, False))                        # 09:32 ET: after the open
         at = lambda i, hh, text: {"symbols": ["ACME"], "created_at": f"{days[i]}T{hh}:00:00Z", "headline": text}
         items = [at(30, 14, "Acme CEO Faces Misconduct Allegations"), at(30, 15, "Analyst Downgrades Acme"),
                  at(31, 14, "Senators Call For Acme CEO To Step Down"), at(32, 14, "DOJ Opens Probe Into Acme"),
-                 at(34, 12, "Acme CEO Resigns; Names Interim CEO"), at(10, 14, "Acme Launches New Product"),
+                 at(33, 14, "Acme Settles DOJ Probe"), at(34, 12, "Acme CEO Resigns; Names Interim CEO"),
+                 at(10, 14, "Acme Launches New Product"),
                  {"symbols": ["ACME", "A", "B", "C"], "created_at": f"{days[12]}T14:00:00Z", "headline": "DOJ Probe Roundup"}]
         hits, ends = nc.scan(items, "ACME", days)
-        self.assertEqual((len(hits), [e[:3] for e in ends]), (5, [(34, "人走了", True)]))
+        self.assertEqual((len(hits), [e[:3] for e in ends]), (6, [(33, "案子了结", False), (34, "人走了", True)]))
+        self.assertEqual(nc.scan([{"symbols": ["JPM"], "created_at": f"{days[30]}T14:00:00Z",
+                                   "headline": "JPMorgan Chase Downgrades Expedia Group to Neutral"}], "JPM", days), ([], []))   # the rater
         (c,) = nc.find_chains(hits, ends, days, "ACME")
-        self.assertEqual((c["start"], c["confirmed"], c["settled"], c["hits"], c["open"]),
-                         (days[30], days[32], days[34], 5, False))                                      # called on the 4th headline
+        self.assertEqual((c["start"], c["confirmed"], c["settled"], c["settle_kind"], c["hits"], c["open"]),
+                         (days[30], days[32], days[34], "人走了", 6, False))      # called on the 4th headline; the boss going settles it
         self.assertEqual(nc.find_chains(hits[:3], [], days), [])                                        # three headlines: not yet
         bars = {d: (100.0, 100.0) for d in days}
         for i, px in ((30, 95.0), (31, 92.0), (32, 90.0), (33, 88.0), (34, 85.0), (35, 87.0), (36, 88.0), (37, 89.0), (38, 90.0), (39, 91.0)):
             bars[days[i]] = (px + 1, px)
         m = nc.measure(dict(c), bars, {d: (50.0, 50.0) for d in days}, days)
         self.assertEqual((m["dir"], m["pre_move"], m["f5"], m["settle_oc"], m["s5"]), (-1, -0.1, -0.0111, round(85 / 86 - 1, 4), round(91 / 85 - 1, 4)))
-        ts = nc.stock_trades([m])
-        self.assertAlmostEqual(ts["正股·确认后顺着方向拿 5 天"][0][1], 0.0111)                        # short: the fall is the gain
-        self.assertAlmostEqual(ts["正股·落地日收盘反着做拿 5 天"][0][1], round(91 / 85 - 1, 4))
+        ts = nc.stock_trades([m], [{"symbol": "ACME", "day": days[5], "dir": -1, "x5": 0.02}])
+        self.assertAlmostEqual(ts["正股·下跌链确认后买、拿 5 天"][0][1], -0.0111)                      # it kept falling
+        self.assertAlmostEqual(ts["正股·下跌链且已跌 4% 以上确认后买、拿 5 天、扣 SPY"][0][1], -0.0111)
+        self.assertAlmostEqual(ts["正股·落地（人走了）收盘反着做拿 5 天、扣 SPY"][0][1], round(91 / 85 - 1, 4))
+        self.assertEqual(ts["正股·对照（下跌链那只股票换个日子）买、拿 5 天、扣 SPY"], [(days[5], 0.02)])
+        self.assertTrue(list(ts)[0].startswith("正股·下跌链确认后") and list(ts)[-1].startswith("正股·落地"))   # reading order
         path = [1.2] * 10 + [2.1] + [1.0] * 31
         r = nc.option_exits(1.0, path, True, settle_k=11)
         self.assertEqual((r["d21"], r["d42"], r["take15"], r["take2"], r["take3"], r["trail"], r["settle42"], r["peak"], r["peak_day"]),
@@ -2084,6 +2095,29 @@ class ResearchNewsChains(unittest.TestCase):
         self.assertEqual(nc.option_exits(1.0, path[:30], False), {"d21": -0.05})                       # 42 sessions not over: only the 21st
         p, ages, done = nc.option_path(5.0, {days[1]: 6.0}, days[1:4], days[3], 100.0, "put", {days[3]: 90.0})
         self.assertEqual((p, ages, done), ([6.0, 6.0, 10.0], [0, 1, 0], True))                          # carried, then worth 10 at expiry
+        ot = nc.option_trades([{**m, "legs": {"along": {"res": r}, "against": {"res": {"d42": 0.3}}}}],
+                              [{"symbol": "ACME", "day": days[5], "dir": -1, "legs": {"call": {"res": {"take2": 0.9}}}}])
+        self.assertEqual(ot["期权·下跌链买看跌（顺着） · 翻倍卖，否则第 42 天"], [(days[32], 0.9)])
+        self.assertEqual(ot["期权·下跌链且已跌 4% 以上买看涨 · 第 42 天卖"], [(days[32], 0.3)])
+        self.assertEqual(ot["期权·对照（下跌链那只股票换个日子）买看涨 · 翻倍卖，否则第 42 天"], [(days[5], 0.9)])
+
+    def test_control_days_and_peers(self):
+        from hero import research_news_chains as nc
+        days = [f"d{i:03d}" for i in range(300)]
+        one = {"symbol": "ACME", "start": days[148], "confirmed": days[150], "last": days[152], "dir": -1, "pre_move": -0.05}
+        two = {"symbol": "ACME", "start": days[210], "confirmed": days[212], "last": days[214], "dir": -1, "pre_move": -0.02}
+        got = nc.placebo_days([one, two], {"ACME": days})
+        self.assertEqual([(p["of"], p["day"]) for p in got],                    # 150 + 63 = 213 is inside the other chain: left out
+                         [(days[150], days[24]), (days[150], days[87]), (days[212], days[86]), (days[212], days[275])])
+        wave = [0.01 if i % 3 == 0 else (-0.02 if i % 3 == 1 else 0.012) for i in range(300)]
+        px = lambda rs: (lambda out: [out.append(out[-1] * (1 + r)) or out[-1] for r in rs] and out)([100.0])
+        a, b, c = px(wave)[1:], px(wave)[1:], px([-r for r in wave])[1:]
+        b = [v * (1.10 if i >= 149 else 1.0) for i, v in enumerate(b)]           # the twin jumps 10% while the chain runs
+        adj = {s: {d: (v, v) for d, v in zip(days, vals)} for s, vals in (("ACME", a), ("TWIN", b), ("ANTI", c))}
+        spy = {d: (50.0, 50.0) for d in days}
+        out = nc.peer_layer(dict(one), adj, spy, days, ["ACME", "TWIN", "ANTI"])
+        self.assertEqual(out["peers"], ["TWIN"])                                # the opposite mover is not a peer
+        self.assertAlmostEqual(out["peer_pre"] - out["self_pre"], 0.10 * (a[150] / a[147]), places=3)
 
 
 class ResearchFly(unittest.TestCase):
