@@ -2047,6 +2047,45 @@ class ResearchEvents(unittest.TestCase):
                          {"final": 750, "best": 1500, "zeros": 0, "heroes": 0})
 
 
+class ResearchNewsChains(unittest.TestCase):
+    def test_headlines_chain_stages_and_option_exits(self):
+        from hero import research_news_chains as nc
+        self.assertEqual(nc.themes_of("Senators Call For Acme CEO To Step Down"), ["政治", "管理层"])
+        self.assertEqual(nc.themes_of("Rosen Law Firm Reminds Acme Investors Of Fraud Deadline"), [])   # advertising
+        self.assertEqual(nc.settle_kind("Acme CEO Resigns; Names Interim CEO"), "人走了")
+        self.assertIsNone(nc.settle_kind("Senators Call For Acme CEO To Step Down"))                  # asked for, not done
+        self.assertEqual(nc.settle_kind("Acme Settles DOJ Probe"), "案子了结")
+        days = [f"2026-{m:02d}-{d:02d}" for m in (9, 10) for d in range(1, 21)]                        # 40 sessions
+        self.assertEqual(nc.reaction("2026-10-05T20:30:00Z", days), (25, True))                         # 16:30 ET -> next session
+        self.assertEqual(nc.reaction("2026-10-06T13:32:00Z", days), (25, False))                        # 09:32 ET: after the open
+        at = lambda i, hh, text: {"symbols": ["ACME"], "created_at": f"{days[i]}T{hh}:00:00Z", "headline": text}
+        items = [at(30, 14, "Acme CEO Faces Misconduct Allegations"), at(30, 15, "Analyst Downgrades Acme"),
+                 at(31, 14, "Senators Call For Acme CEO To Step Down"), at(32, 14, "DOJ Opens Probe Into Acme"),
+                 at(34, 12, "Acme CEO Resigns; Names Interim CEO"), at(10, 14, "Acme Launches New Product"),
+                 {"symbols": ["ACME", "A", "B", "C"], "created_at": f"{days[12]}T14:00:00Z", "headline": "DOJ Probe Roundup"}]
+        hits, ends = nc.scan(items, "ACME", days)
+        self.assertEqual((len(hits), [e[:3] for e in ends]), (5, [(34, "人走了", True)]))
+        (c,) = nc.find_chains(hits, ends, days, "ACME")
+        self.assertEqual((c["start"], c["confirmed"], c["settled"], c["hits"], c["open"]),
+                         (days[30], days[32], days[34], 5, False))                                      # called on the 4th headline
+        self.assertEqual(nc.find_chains(hits[:3], [], days), [])                                        # three headlines: not yet
+        bars = {d: (100.0, 100.0) for d in days}
+        for i, px in ((30, 95.0), (31, 92.0), (32, 90.0), (33, 88.0), (34, 85.0), (35, 87.0), (36, 88.0), (37, 89.0), (38, 90.0), (39, 91.0)):
+            bars[days[i]] = (px + 1, px)
+        m = nc.measure(dict(c), bars, {d: (50.0, 50.0) for d in days}, days)
+        self.assertEqual((m["dir"], m["pre_move"], m["f5"], m["settle_oc"], m["s5"]), (-1, -0.1, -0.0111, round(85 / 86 - 1, 4), round(91 / 85 - 1, 4)))
+        ts = nc.stock_trades([m])
+        self.assertAlmostEqual(ts["正股·确认后顺着方向拿 5 天"][0][1], 0.0111)                        # short: the fall is the gain
+        self.assertAlmostEqual(ts["正股·落地日收盘反着做拿 5 天"][0][1], round(91 / 85 - 1, 4))
+        path = [1.2] * 10 + [2.1] + [1.0] * 31
+        r = nc.option_exits(1.0, path, True, settle_k=11)
+        self.assertEqual((r["d21"], r["d42"], r["take15"], r["take2"], r["take3"], r["trail"], r["settle42"], r["peak"], r["peak_day"]),
+                         (-0.05, -0.05, 0.425, 0.9, -0.05, -0.05, 0.995, 2.1, 11))
+        self.assertEqual(nc.option_exits(1.0, path[:30], False), {"d21": -0.05})                       # 42 sessions not over: only the 21st
+        p, ages, done = nc.option_path(5.0, {days[1]: 6.0}, days[1:4], days[3], 100.0, "put", {days[3]: 90.0})
+        self.assertEqual((p, ages, done), ([6.0, 6.0, 10.0], [0, 1, 0], True))                          # carried, then worth 10 at expiry
+
+
 class ResearchFly(unittest.TestCase):
     def test_butterfly_costs_and_exits(self):
         from hero import research_fly as f
