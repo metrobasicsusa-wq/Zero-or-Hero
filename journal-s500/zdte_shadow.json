@@ -1429,7 +1429,7 @@
     "status": "no_expiry"
    },
    "SPY": {
-    "status": "open",
+    "status": "closed",
     "contract": "SPY261112C00762000",
     "kind": "C",
     "strike": 762.0,
@@ -1439,7 +1439,11 @@
     "ask": 0.36,
     "spread": 0.0282,
     "opened_at": "10:00",
-    "best_bid": 0.99
+    "best_bid": 1.57,
+    "exit": "take",
+    "exit_bid": 1.57,
+    "exit_at": "11:10",
+    "ret": 2
    }
   }
  }
