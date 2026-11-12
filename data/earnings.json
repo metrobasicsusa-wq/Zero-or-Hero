@@ -1,7 +1,7 @@
 {
  "source": "alphavantage EARNINGS_CALENDAR horizon=3month",
- "fetched_at": "2026-11-11T09:00:27-05:00",
- "fetched_on": "2026-11-11",
+ "fetched_at": "2026-11-12T09:00:27-05:00",
+ "fetched_on": "2026-11-12",
  "horizon_days": 90,
  "symbols": [
   "AAPL",
@@ -172,7 +172,7 @@
    {
     "date": "2026-11-17",
     "time": "pre-market",
-    "estimate": "3.86",
+    "estimate": "3.87",
     "fiscal_end": "2026-10-31",
     "checked": "nasdaq",
     "confirmed": true
@@ -291,7 +291,7 @@
   "CRM": [
    {
     "date": "2026-12-02",
-    "time": "unknown",
+    "time": "post-market",
     "estimate": "2.41",
     "fiscal_end": "2026-10-31",
     "checked": "nasdaq",
@@ -310,11 +310,12 @@
   ],
   "CRDO": [
    {
-    "date": "2026-12-07",
-    "time": "unknown",
+    "date": "2026-12-01",
+    "time": "post-market",
     "estimate": "1.03",
     "fiscal_end": "2026-10-31",
-    "confirmed": false
+    "checked": "nasdaq",
+    "confirmed": true
    }
   ],
   "AVGO": [
@@ -404,11 +405,17 @@
   ]
  },
  "cross_check": {
-  "nasdaq_days": 15,
-  "moved": [],
+  "nasdaq_days": 16,
+  "moved": [
+   [
+    "CRDO",
+    "2026-12-07",
+    "2026-12-01"
+   ]
+  ],
   "time_filled": [
    [
-    "DELL",
+    "CRM",
     "unknown",
     "post-market"
    ]
@@ -417,7 +424,7 @@
   "yahoo": {
    "asked": 23,
    "answered": 23,
-   "confirmed": 21,
+   "confirmed": 22,
    "conflicts": [
     [
      "ORCL",
