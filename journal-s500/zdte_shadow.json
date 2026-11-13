@@ -1474,7 +1474,7 @@
     "best_bid": 1.88
    },
    "AMZN": {
-    "status": "open",
+    "status": "closed",
     "contract": "AMZN261113P00265000",
     "kind": "P",
     "strike": 265.0,
@@ -1484,7 +1484,11 @@
     "ask": 0.4,
     "spread": 0.1622,
     "opened_at": "10:00",
-    "best_bid": 1.19
+    "best_bid": 1.43,
+    "exit": "take",
+    "exit_bid": 1.43,
+    "exit_at": "11:50",
+    "ret": 2
    },
    "SPY": {
     "status": "closed",
