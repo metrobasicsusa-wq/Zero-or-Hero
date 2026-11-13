@@ -1458,7 +1458,7 @@
     "ask": 1.91,
     "spread": 0.0158,
     "opened_at": "10:00",
-    "best_bid": 3.01
+    "best_bid": 3.29
    },
    "NVDA": {
     "status": "open",
@@ -1471,7 +1471,7 @@
     "ask": 1.09,
     "spread": 0.0185,
     "opened_at": "10:00",
-    "best_bid": 1.08
+    "best_bid": 1.62
    },
    "AMZN": {
     "status": "open",
@@ -1484,10 +1484,10 @@
     "ask": 0.4,
     "spread": 0.1622,
     "opened_at": "10:00",
-    "best_bid": 0.69
+    "best_bid": 0.99
    },
    "SPY": {
-    "status": "open",
+    "status": "closed",
     "contract": "SPY261113P00749000",
     "kind": "P",
     "strike": 749.0,
@@ -1497,7 +1497,11 @@
     "ask": 0.75,
     "spread": 0.069,
     "opened_at": "10:00",
-    "best_bid": 1.4
+    "best_bid": 2.8,
+    "exit": "take",
+    "exit_bid": 2.8,
+    "exit_at": "10:20",
+    "ret": 2
    }
   }
  }
