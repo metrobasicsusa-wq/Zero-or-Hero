@@ -5512,9 +5512,17 @@ class EarningsForecastAroundTheReport(unittest.TestCase):
                 {"t": utc(7, 31), "c": 108.0}]             # an hour after
         daily = [{"t": "2026-10-19T04:00:00Z", "o": 99, "c": 100.0}, {"t": "2026-10-20T04:00:00Z", "o": 103.0, "c": 97.0}]
         res = ef.score_row(row, daily, mins, rel)
-        self.assertEqual((res["before"], res["gap"], res["gap_pre"], res["after_1h"]), (104.0, 0.03, -0.0096, 0.0385))
-        self.assertFalse(res["up"])          # opened above Friday's close but below the price right before the report
-        self.assertIn("财报前最后成交 10-20 05:59", res["before_src"])
+        # 11-13: an 8-K stamped on the reaction morning is filed after the press release is out (SHOP 11-03: filed
+        # 08:08, the price 30 minutes earlier was already 15% down), so it cannot give "the last price before":
+        # the previous close stays the price to beat. The filing time is still kept.
+        self.assertEqual((res["before"], res["before_src"], res["gap"], res["gap_pre"], res["after_1h"]),
+                         (100.0, "前收", 0.03, 0.03, 0.08))
+        self.assertTrue(res["up"])
+        self.assertEqual(res["release"], "2026-10-20T06:31-04:00")
+        # filed the evening before (a "before the open" row that came out early): the last trade before it still counts
+        eve = ef.score_row(row, daily, [{"t": utc(17, 40, 19), "c": 100.5}] + mins, dt(2026, 10, 19, 18, 30, tzinfo=et))
+        self.assertEqual((eve["before"], eve["gap_pre"]), (100.5, 0.0249))
+        self.assertIn("财报前最后成交 10-19 17:40", eve["before_src"])
         # an after-close report lands after 16:00: the price to beat is the regular close
         post = {**row, "time": "post-market", "report_date": "2026-10-19"}
         res = ef.score_row(post, daily, mins, dt(2026, 10, 19, 16, 5, tzinfo=et))
@@ -5554,7 +5562,29 @@ class EarningsForecastAroundTheReport(unittest.TestCase):
                          sec=lambda syms, since: {"GE": [dt(2026, 10, 20, 6, 31, tzinfo=et)]})
             r = json.loads((root / "2026-10-19.json").read_text())["reports"][0]["result"]
         self.assertEqual(asked, [(["GE"], "2026-10-19T15:59:00-04:00", "2026-10-20T09:31:00-04:00", "sip")])
-        self.assertEqual((r["before"], r["release"], r["up"]), (104.0, "2026-10-20T06:31-04:00", False))
+        self.assertEqual((r["before"], r["release"], r["up"]), (100.0, "2026-10-20T06:31-04:00", True))   # morning filing: previous close
+
+    def test_stored_results_scored_against_a_morning_price_go_back_to_the_previous_close(self):
+        from hero import research_earnings_forecast as ef
+        base = {"move": -0.0874, "big": True, "up_close": False, "release": "2026-11-03T08:08-05:00", "after_1h": 0.01}
+        shop = {"symbol": "SHOP", "time": "pre-market", "reaction_day": "2026-11-03", "result": {
+            **base, "gap": -0.1267, "gap_pre": 0.031, "before": 132.33, "before_src": "财报前最后成交 11-03 07:38", "up": True,
+            "spy_gap": 0.0008, "excess": 0.0302, "up_excess": True}}
+        eve = {"symbol": "EVE", "time": "pre-market", "reaction_day": "2026-11-03", "result": {
+            **base, "gap": 0.02, "gap_pre": -0.01, "before": 51.5, "before_src": "财报前最后成交 11-02 19:58", "up": False}}
+        post = {"symbol": "PST", "time": "post-market", "reaction_day": "2026-11-03", "result": {
+            **base, "gap": 0.05, "gap_pre": 0.05, "before": 10.0, "before_src": "前收", "up": True}}
+        with tempfile.TemporaryDirectory() as d:
+            root = Path(d)
+            (root / "2026-11-02.json").write_text(json.dumps({"date": "2026-11-02", "reports": [shop, eve, post]}))
+            self.assertEqual(ef.fix_morning_base(root), ["2026-11-02.json"])
+            got = {r["symbol"]: r["result"] for r in json.loads((root / "2026-11-02.json").read_text())["reports"]}
+            self.assertEqual(ef.fix_morning_base(root), [])                      # nothing left to repair
+        s = got["SHOP"]
+        self.assertEqual((s["gap_pre"], s["up"], s["excess"], s["up_excess"]), (-0.1267, False, -0.1275, False))
+        self.assertTrue(s["before_src"].startswith("前收"))
+        self.assertEqual(got["EVE"], eve["result"])                              # sampled the evening before: kept
+        self.assertEqual(got["PST"], post["result"])
 
 
 class EarningsMarketNet(unittest.TestCase):

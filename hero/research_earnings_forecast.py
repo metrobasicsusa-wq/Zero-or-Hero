@@ -209,7 +209,11 @@ def around(row: dict, mins: list[dict], prev_close: float, rel: datetime | None)
         # no 8-K time (SEC needs a contact address): an after-close report is out by 16:05 on its date, so the
         # first reaction can still be read an hour later (owner, 10-22: META +5% after hours, -6% at the open)
         rel = datetime.combine(date.fromisoformat(row["report_date"]), time(16, 5), ET)
-    if row.get("time") == "pre-market" and rel:
+    # 11-13: the 8-K is filed after the press release is on the wire (SHOP 11-03: filed 08:08, the "last price
+    # before" at 07:38 was already 15% down, so a -12.7% open was scored +3.1% and "up"). A filing stamped on the
+    # reaction morning cannot say when the news came out, so the previous close stays the price to beat.
+    morning = bool(rel) and rel.astimezone(ET).date().isoformat() >= row["reaction_day"]
+    if row.get("time") == "pre-market" and rel and not morning:
         lo = datetime.combine(business_before(date.fromisoformat(row["reaction_day"])), time(16, 0), ET)
         xs = [b for b in mins if lo <= _t(b) < rel - PRE_LAG]
         if xs:
@@ -344,6 +348,32 @@ def fill_market(client, root: Path = OUT, today: date | None = None) -> list[str
     return changed
 
 
+def fix_morning_base(root: Path = OUT) -> list[str]:
+    """11-13: stored before-open results whose "last price before the report" was taken on the reaction morning
+    (an 8-K filed after the news was out) go back to the previous close: gap_pre = gap, up = gap > 0. The SPY columns
+    are taken from a same-day row already on that base, else dropped for fill_market to redo. Returns files changed."""
+    changed = []
+    for f in sorted(root.glob("20??-??-??.json")):
+        rep = json.loads(f.read_text())
+        hit = False
+        for r in rep.get("reports", []):
+            res = r.get("result")
+            if not res or r.get("time") != "pre-market" or not str(res.get("before_src", "")).startswith("财报前最后成交 "):
+                continue
+            if str(res["before_src"]).split()[1] != r["reaction_day"][5:]:
+                continue   # sampled the evening before: before any morning release
+            res.update({"gap_pre": res["gap"], "up": res["gap"] > 0, "before_src": "前收（8-K 晚于新闻稿，11-13 改）",
+                        "before": None, "after_1h": None})
+            if "spy_gap" in res:
+                net = res["gap"] - res["spy_gap"]   # SPY's gap is its open against its previous close already
+                res.update({"excess": round(net, 4), "up_excess": net > 0})
+            hit = True
+        if hit:
+            f.write_text(json.dumps(rep, ensure_ascii=False) + "\n")
+            changed.append(f.name)
+    return changed
+
+
 CUTOFF = "16:00"   # ET on the forecast date: before tonight's after-close reports and tomorrow's early-morning ones
 EVERY_FROM = "2026-10-20"   # owner, 10-19: from this forecast day every report gets an up / down call
 EVERY_TO = "2026-11-13"     # owner, 11-13「财报就找我们在意的吧，认真去研究」: after this forecast day only the names we
@@ -385,7 +415,7 @@ def scorecard(root: Path = OUT) -> str:
     md = [f"# 财报预测记分卡 {date.today().isoformat()}", "",
           "每个交易日 15:10 ET 前后，对当晚盘后、次日盘前发财报的美股（$5 以上、有期权）记下期权隐含的涨跌幅（平值跨式 / 股价），"
           "基线给每只「超过隐含幅度」的概率（历史 40%；自身过去平均反应比隐含高 25% 以上的 51%）；方向的判断只在判断文件里。"
-          "判断在预测日 16:00 ET 前写好（财报之前，包括凌晨发的盘前财报）。反应日收盘后记分：方向按反应日开盘对财报前最后一笔（24 小时交易，盘前财报用 8-K 提交前的盘前价，盘后财报就是收盘）（10-19 起，和『第二天开盘卖』的做法一致），收盘另列一栏参考；"
+          "判断在预测日 16:00 ET 前写好（财报之前，包括凌晨发的盘前财报）。反应日收盘后记分：方向按反应日开盘对财报前最后一笔（盘后财报就是当天收盘；盘前财报用前一个收盘——11-13 改：8-K 常在新闻稿发出之后才提交，它之前的盘前价已经反应过了，只有前一晚就提交的才用提交前的最后成交）（10-19 起，和『第二天开盘卖』的做法一致），收盘另列一栏参考；"
           "幅度（有没有超过隐含）按收盘对前收，和基线的统计口径一致。只记录，不交易。", ""]
     if not rows:
         return "\n".join(md + ["还没有可记分的财报。", ""])
@@ -634,6 +664,7 @@ def main() -> None:
     today = datetime.now(ZoneInfo("America/New_York")).date()
     OUT.mkdir(parents=True, exist_ok=True)
     changed = score_due(client, today)
+    changed += [f for f in fix_morning_base() if f not in changed]
     changed += [f for f in fill_market(client) if f not in changed]
     rows, check = earn.cross_check(earn.fetch(os.environ["ALPHAVANTAGE_API_KEY"]), today, days=4)   # Nasdaq fixes dates / times
     rows, check["yahoo_added"] = earn.fill_missing(rows, today, big_names(client))   # what both calendars miss (SpaceX, 10-20)
