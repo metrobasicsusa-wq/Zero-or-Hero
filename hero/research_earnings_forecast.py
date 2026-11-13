@@ -346,6 +346,8 @@ def fill_market(client, root: Path = OUT, today: date | None = None) -> list[str
 
 CUTOFF = "16:00"   # ET on the forecast date: before tonight's after-close reports and tomorrow's early-morning ones
 EVERY_FROM = "2026-10-20"   # owner, 10-19: from this forecast day every report gets an up / down call
+EVERY_TO = "2026-11-13"     # owner, 11-13「财报就找我们在意的吧，认真去研究」: after this forecast day only the names we
+#                             care about (pool, both accounts' holdings, extra_watch.json) get a call; the rest are only recorded
 
 
 def on_time(written: str | None, day: str) -> bool:
@@ -400,10 +402,12 @@ def scorecard(root: Path = OUT) -> str:
     for r in late:
         r["judgment"] = None   # judged after the cutoff: not scored
     jr = [r for r in rows if r["judgment"]]
-    every = [r for r in rows if r["day"] >= EVERY_FROM]
+    every = [r for r in rows if EVERY_FROM <= r["day"] <= EVERY_TO]
+    ours = [r for r in jr if r["day"] > EVERY_TO and r["judgment"].get("direction") in ("up", "down")]
     md += ["", "## 判断", "",
            f"判断必须在预测日 {CUTOFF} ET 前写好（盘后财报之前；明天盘前、凌晨发的财报也在这之前），晚了不算分。"
-           f"{EVERY_FROM} 起每个财报都要给涨或跌（用户 10-19），没给或晚交的在「全部财报」那行算错。"
+           f"{EVERY_FROM} 到 {EVERY_TO} 每个财报都要给涨或跌（用户 10-19），没给或晚交的在「全部财报」那行算错；"
+           f"{EVERY_TO} 之后只给我们在意的写判断（用户 11-13：股票池、两个账户持有的、关注名单），其余只记录期权定价和结果，不算错。"
            + (f"这次有 {len(late)} 条晚交，没算。" if late else ""), ""]
     if not jr and not every:
         md.append("还没有带判断、而且已经记分的财报。")
@@ -416,6 +420,13 @@ def scorecard(root: Path = OUT) -> str:
             right = sum((r["judgment"]["direction"] == "up") == r["result"]["up"] for r in called)
             md.append(f"| 方向按开盘，全部财报（没给或晚交算错） | {len(every)} | {right / len(every):.0%} |")
             md.append(f"| 给了涨跌的比例 | {len(every)} | {len(called) / len(every):.0%} |")
+        if ours:
+            md.append(f"| {EVERY_TO} 之后只判断我们在意的：方向（按开盘） | {len(ours)} | "
+                      f"{sum((r['judgment']['direction'] == 'up') == r['result']['up'] for r in ours) / len(ours):.0%} |")
+            oex = [r for r in ours if "up_excess" in r["result"]]
+            if oex:
+                md.append(f"| 　同一批扣掉大盘 | {len(oex)} | "
+                          f"{sum((r['judgment']['direction'] == 'up') == r['result']['up_excess'] for r in oex) / len(oex):.0%} |")
         if dirs:
             md.append(f"| 方向（按开盘） | {len(dirs)} | "
                       f"{sum((r['judgment']['direction'] == 'up') == r['result']['up'] for r in dirs) / len(dirs):.0%} |")
@@ -565,7 +576,11 @@ def markdown(rep: dict) -> str:
           f"{WINDOW} 天内没有期权 {rep['skipped']['no_options']}、查期权出错 {rep['skipped'].get('error', 0)}）。"
           "隐含幅度 = 反应日当天或之后第一个到期的平值跨式 / 股价；到期离反应日超过一周的（多是只有月度期权的）标『月』，"
           "那个跨式还包含财报以外的日子，隐含偏大，记分时分开算。成交额来自 IEX（只占全市场一小部分），只用来排序。"
-          "基线概率见记分卡说明；方向判断在同日的 judgment 文件里。只记录，不交易。", "",
+          "基线概率见记分卡说明；方向判断在同日的 judgment 文件里。只记录，不交易。", ""]
+    if "watched" in rep:   # owner, 11-13: only these get a judgment, and a serious one
+        md += ["我们在意的（股票池、两个账户持有的、关注名单；只给这些写判断）："
+               + ("、".join(rep["watched"]) if rep["watched"] else "今天没有") + "。", ""]
+    md += [
           "| 股票 | 时间 | 反应日 | 公司确认 | 股价 | 前一天 IEX 成交额 | 隐含幅度 | 过去平均反应 | 超过隐含的基线概率 |", "|---|---|---|---|---|---|---|---|---|"]
     for r in rep["reports"]:
         prior = f"{r['prior_avg_abs']:.1%}（{r['prior_n']} 次）" if r.get("prior_avg_abs") else "—"
@@ -625,6 +640,9 @@ def main() -> None:
     rep = forecast(client, rows, today, wait=Pace(client).wait,  # the main account's key: slow while the market is open
                    confirmed=earn.yahoo_dates)
     rep["cross_check"] = {k: check.get(k) for k in ("days", "moved", "time_filled", "disputed", "added", "error", "yahoo_added") if k in check}
+    from hero.earnings_profiles import watched
+    mine = watched(ROOT)
+    rep["watched"] = [r["symbol"] for r in rep["reports"] if r["symbol"] in mine]
     (OUT / f"{today.isoformat()}.json").write_text(json.dumps(rep, ensure_ascii=False) + "\n")
     (OUT / f"{today.isoformat()}.md").write_text(markdown(rep))
     (OUT / "scorecard.md").write_text(scorecard())

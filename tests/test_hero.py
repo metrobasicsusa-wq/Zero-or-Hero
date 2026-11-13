@@ -5375,6 +5375,31 @@ class EarningsForecastEveryCall(unittest.TestCase):
         self.assertIn("| 给了涨跌的比例 | 4 | 50% |", md)
         self.assertIn("| 方向（按开盘） | 2 | 50% |", md)
 
+    def test_after_11_13_only_the_names_we_care_about_are_judged_and_the_rest_do_not_count_as_wrong(self):
+        # owner, 11-13: 「财报就找我们在意的吧，认真去研究」
+        from hero import research_earnings_forecast as ef
+        res = lambda up: {"gap": 0.01 if up else -0.01, "move": 0.0, "big": False, "up": up, "up_close": up, "up_excess": up}
+        row = lambda s, up: {"symbol": s, "time": "pre-market", "implied_move": 0.05, "weekly": True, "p_big": 0.4, "result": res(up)}
+        with tempfile.TemporaryDirectory() as d:
+            root = Path(d)
+            (root / "2026-11-13.json").write_text(json.dumps({"date": "2026-11-13", "reports": [row("AAA", True), row("BBB", True)]}))
+            (root / "2026-11-13.judgment.json").write_text(json.dumps({"date": "2026-11-13", "written": "2026-11-13T15:10-05:00",
+                "calls": [{"symbol": "AAA", "direction": "up", "big": False, "confidence": 0.5}]}))   # BBB missing: still wrong
+            (root / "2026-11-16.json").write_text(json.dumps({"date": "2026-11-16", "reports": [
+                row("NVDA", True), row("JD", False), row("XXX", True), row("YYY", False)]}))
+            (root / "2026-11-16.judgment.json").write_text(json.dumps({"date": "2026-11-16", "written": "2026-11-16T15:10-05:00",
+                "calls": [{"symbol": "NVDA", "direction": "up", "big": False, "confidence": 0.5},
+                          {"symbol": "JD", "direction": "up", "big": False, "confidence": 0.5}]}))     # XXX, YYY: not ours, no call
+            md = ef.scorecard(root)
+        self.assertIn("| 方向按开盘，全部财报（没给或晚交算错） | 2 | 50% |", md)   # only the 11-13 file: AAA right, BBB missing
+        self.assertIn("| 2026-11-13 之后只判断我们在意的：方向（按开盘） | 2 | 50% |", md)   # NVDA right, JD wrong
+        self.assertIn("| 　同一批扣掉大盘 | 2 | 50% |", md)
+        self.assertIn("其余只记录期权定价和结果，不算错", md)
+        rep = {"date": "2026-11-16", "calendar_rows_due": 2, "skipped": {"no_price": 0, "under_5": 0, "no_options": 0}, "reports": []}
+        self.assertNotIn("我们在意的", ef.markdown(rep))                          # files from before the change read as before
+        self.assertIn("只给这些写判断）：NVDA、JD。", ef.markdown({**rep, "watched": ["NVDA", "JD"]}))
+        self.assertIn("只给这些写判断）：今天没有。", ef.markdown({**rep, "watched": []}))
+
 
 class ResearchEarningsControl(unittest.TestCase):
     def test_picks_controls_and_blocked_nights(self):
