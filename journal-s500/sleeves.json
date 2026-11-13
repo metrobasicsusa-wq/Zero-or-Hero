@@ -609,33 +609,11 @@
   },
   "spy0dte-1000": {
    "start": 1000.0,
-   "cash": 2853.0,
+   "cash": 2949.0,
    "round": 2,
    "heroes": 0,
    "zeros": 1,
-   "open": [
-    {
-     "tid": "20261113-66c22e",
-     "kind": "zdte",
-     "sym": "SPY261113P00751000",
-     "asset": "option",
-     "und": "SPY",
-     "qty": 12,
-     "cost": 1.1,
-     "paid": 1320.0,
-     "opened": "2026-11-13 10:00",
-     "why": "SPY 开盘 $759.99、现在 $753.87，顺势买当天到期看跌 751（离现价 0.4%），5 倍止盈，15:30 平仓",
-     "expiry": "2026-11-13",
-     "exit_day": "2026-11-13",
-     "exit_at": "15:30",
-     "trail": false,
-     "best_bid": 3.83,
-     "expiry_out": null,
-     "take_x": 5,
-     "take": 5.5,
-     "take_cid": "sl-spy0dte-1000-20261113-66c22e-tab9e"
-    }
-   ],
+   "open": [],
    "closed": [
     {
      "tid": "40253e2547",
@@ -1171,6 +1149,34 @@
      "how": "翻倍后从最高 $3.83 回撤 40%",
      "closed": "2026-11-13 10:50",
      "ret": 0.936
+    },
+    {
+     "tid": "20261113-66c22e",
+     "kind": "zdte",
+     "sym": "SPY261113P00751000",
+     "asset": "option",
+     "und": "SPY",
+     "qty": 12,
+     "cost": 1.1,
+     "paid": 1320.0,
+     "opened": "2026-11-13 10:00",
+     "why": "SPY 开盘 $759.99、现在 $753.87，顺势买当天到期看跌 751（离现价 0.4%），5 倍止盈，15:30 平仓",
+     "expiry": "2026-11-13",
+     "exit_day": "2026-11-13",
+     "exit_at": "15:30",
+     "trail": false,
+     "best_bid": 3.83,
+     "expiry_out": null,
+     "take_x": 5,
+     "take": 5.5,
+     "sell_cid": "sl-spy0dte-1000-20261113-66c22e-xeee4",
+     "sell_why": "2026-11-13 15:30 到时卖出",
+     "state": "closed",
+     "exit_price": 0.08,
+     "proceeds": 96.0,
+     "how": "2026-11-13 15:30 到时卖出",
+     "closed": "2026-11-13 15:30",
+     "ret": -0.927
     }
    ],
    "slots": {
@@ -1195,7 +1201,7 @@
     "2026-11-12": "2026-11-12T10:00-05:00",
     "2026-11-13": "2026-11-13T10:00-05:00"
    },
-   "best": 2853.0,
+   "best": 2949.0,
    "created": null,
    "rounds": [
     {
@@ -8440,29 +8446,11 @@
   },
   "sniper-500": {
    "start": 500.0,
-   "cash": 182.0,
+   "cash": 272.0,
    "round": 4,
    "heroes": 0,
    "zeros": 3,
    "open": [
-    {
-     "tid": "20261110-1d5718",
-     "kind": "sniper",
-     "sym": "SMCI261113P00026500",
-     "asset": "option",
-     "und": "SMCI",
-     "qty": 15,
-     "cost": 0.75,
-     "paid": 1125.0,
-     "opened": "2026-11-10 09:31",
-     "why": "开盘狙击 SMCI看跌 26.5（2026-11-13 到期，离现价 3.4%（平时一天波动 4.6% 的一半），delta 0.35）：今早彭博报道（Quartz、TipRanks、Stocktwits 转述）：北京的登记文件显示中国 AI 公司月之暗面 8 月签约租用 32 台装英伟达 B300 的超微服务器（约 $6,480 万），存放在甘肃庆阳；月之暗面否认、英伟达说；翻倍后回撤 40% 卖，否则到期日 15:30 卖",
-     "expiry": "2026-11-13",
-     "exit_day": "2026-11-13",
-     "exit_at": "15:30",
-     "trail": true,
-     "best_bid": 0.84,
-     "expiry_out": null
-    },
     {
      "tid": "20261111-a4bf7c",
      "kind": "sniper",
@@ -8479,7 +8467,9 @@
      "exit_at": "15:30",
      "trail": true,
      "best_bid": 0.42,
-     "expiry_out": null
+     "expiry_out": null,
+     "sell_cid": "sl-sniper-500-20261111-a4bf7c-xf652",
+     "sell_why": "2026-11-13 15:30 到时卖出"
     },
     {
      "tid": "20261112-b298ac",
@@ -8497,7 +8487,9 @@
      "exit_at": "15:30",
      "trail": true,
      "best_bid": 0.71,
-     "expiry_out": null
+     "expiry_out": null,
+     "sell_cid": "sl-sniper-500-20261112-b298ac-x41d4",
+     "sell_why": "2026-11-13 15:30 到时卖出"
     },
     {
      "tid": "20261113-e4adca",
@@ -8515,7 +8507,9 @@
      "exit_at": "15:30",
      "trail": true,
      "best_bid": 0.04,
-     "expiry_out": null
+     "expiry_out": null,
+     "sell_cid": "sl-sniper-500-20261113-e4adca-x6568",
+     "sell_why": "2026-11-13 15:30 到时卖出"
     }
    ],
    "closed": [
@@ -8752,6 +8746,32 @@
      "how": "2026-11-09 15:30 到时卖出（按券商成交记录）",
      "closed": "2026-11-09 15:40",
      "ret": 4.59
+    },
+    {
+     "tid": "20261110-1d5718",
+     "kind": "sniper",
+     "sym": "SMCI261113P00026500",
+     "asset": "option",
+     "und": "SMCI",
+     "qty": 15,
+     "cost": 0.75,
+     "paid": 1125.0,
+     "opened": "2026-11-10 09:31",
+     "why": "开盘狙击 SMCI看跌 26.5（2026-11-13 到期，离现价 3.4%（平时一天波动 4.6% 的一半），delta 0.35）：今早彭博报道（Quartz、TipRanks、Stocktwits 转述）：北京的登记文件显示中国 AI 公司月之暗面 8 月签约租用 32 台装英伟达 B300 的超微服务器（约 $6,480 万），存放在甘肃庆阳；月之暗面否认、英伟达说；翻倍后回撤 40% 卖，否则到期日 15:30 卖",
+     "expiry": "2026-11-13",
+     "exit_day": "2026-11-13",
+     "exit_at": "15:30",
+     "trail": true,
+     "best_bid": 0.84,
+     "expiry_out": null,
+     "sell_cid": "sl-sniper-500-20261110-1d5718-x4003",
+     "sell_why": "2026-11-13 15:30 到时卖出",
+     "state": "closed",
+     "exit_price": 0.06,
+     "proceeds": 90.0,
+     "how": "2026-11-13 15:30 到时卖出",
+     "closed": "2026-11-13 15:30",
+     "ret": -0.92
     }
    ],
    "slots": {
@@ -8804,7 +8824,8 @@
      "day": "2026-11-09"
     }
    ],
-   "round_from": 8
+   "round_from": 8,
+   "stopped_day": "2026-11-13"
   },
   "sniper-1000": {
    "start": 1000.0,
@@ -10178,29 +10199,11 @@
   },
   "dipweek-1000": {
    "start": 1000.0,
-   "cash": 150.0,
+   "cash": 317.0,
    "round": 1,
    "heroes": 0,
    "zeros": 0,
    "open": [
-    {
-     "tid": "20261106-2fba19",
-     "kind": "dipweek",
-     "sym": "WMT261113C00126000",
-     "asset": "option",
-     "und": "WMT",
-     "qty": 1,
-     "cost": 1.82,
-     "paid": 182.0,
-     "opened": "2026-11-06 15:50",
-     "why": "抄底给一周：WMT 低开 -3.0%，已回到开盘之上；买看涨 126（2026-11-13 到期，离现价 0.5%），买价 $1.67 / 卖价 $1.81（价差占中间价 8%）；翻倍后回撤 40% 卖，否则 11-13 15:30 卖；一半 $170.00 买不起一张，押上账本买 1 张",
-     "expiry": "2026-11-13",
-     "exit_day": "2026-11-13",
-     "exit_at": "15:30",
-     "trail": true,
-     "best_bid": 2.09,
-     "expiry_out": null
-    },
     {
      "tid": "20261109-ffef6d",
      "kind": "dipweek",
@@ -10298,6 +10301,32 @@
      "how": "2026-11-10 15:50 到时卖出",
      "closed": "2026-11-10 15:50",
      "ret": -0.905
+    },
+    {
+     "tid": "20261106-2fba19",
+     "kind": "dipweek",
+     "sym": "WMT261113C00126000",
+     "asset": "option",
+     "und": "WMT",
+     "qty": 1,
+     "cost": 1.82,
+     "paid": 182.0,
+     "opened": "2026-11-06 15:50",
+     "why": "抄底给一周：WMT 低开 -3.0%，已回到开盘之上；买看涨 126（2026-11-13 到期，离现价 0.5%），买价 $1.67 / 卖价 $1.81（价差占中间价 8%）；翻倍后回撤 40% 卖，否则 11-13 15:30 卖；一半 $170.00 买不起一张，押上账本买 1 张",
+     "expiry": "2026-11-13",
+     "exit_day": "2026-11-13",
+     "exit_at": "15:30",
+     "trail": true,
+     "best_bid": 2.09,
+     "expiry_out": null,
+     "sell_cid": "sl-dipweek-1000-20261106-2fba19-xafa1",
+     "sell_why": "2026-11-13 15:30 到时卖出",
+     "state": "closed",
+     "exit_price": 1.67,
+     "proceeds": 167.0,
+     "how": "2026-11-13 15:30 到时卖出",
+     "closed": "2026-11-13 15:30",
+     "ret": -0.082
     }
    ],
    "slots": {

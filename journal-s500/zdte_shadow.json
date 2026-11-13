@@ -1448,7 +1448,7 @@
   },
   "2026-11-13": {
    "TSLA": {
-    "status": "open",
+    "status": "closed",
     "contract": "TSLA261113P00387500",
     "kind": "P",
     "strike": 387.5,
@@ -1458,10 +1458,16 @@
     "ask": 1.91,
     "spread": 0.0158,
     "opened_at": "10:00",
-    "best_bid": 3.29
+    "best_bid": 3.29,
+    "exit": "time",
+    "exit_bid": 0.18,
+    "exit_ask": 0.2,
+    "exit_at": "15:30",
+    "exit_spread": 0.1053,
+    "ret": -0.906
    },
    "NVDA": {
-    "status": "open",
+    "status": "closed",
     "contract": "NVDA261113P00160000",
     "kind": "P",
     "strike": 160.0,
@@ -1471,7 +1477,13 @@
     "ask": 1.09,
     "spread": 0.0185,
     "opened_at": "10:00",
-    "best_bid": 1.88
+    "best_bid": 1.88,
+    "exit": "time",
+    "exit_bid": 0.07,
+    "exit_ask": 0.08,
+    "exit_at": "15:30",
+    "exit_spread": 0.1333,
+    "ret": -0.936
    },
    "AMZN": {
     "status": "closed",
