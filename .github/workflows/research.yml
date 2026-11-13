@@ -5,6 +5,7 @@ name: research
 on:
   schedule:
     - cron: "0 15 * * 6"   # Saturday 11:00 ET: the hero scoreboard (research_hero_game reads research/ and the ledgers, no API)
+    - cron: "30 9 * * 6"   # Saturday early morning ET: news chains (owner 11-13: 「加上，每周六自动跑」); the Sunday 19:22 routine reads the result
   workflow_dispatch:
     inputs:
       study:
@@ -17,7 +18,7 @@ on:
 # nor a quick one (today) wait behind a long one.
 # It only commits under research/ and rebases before pushing.
 concurrency:
-  group: hero-research-${{ inputs.study || 'hero_game' }}
+  group: hero-research-${{ inputs.study || (github.event.schedule == '30 9 * * 6' && 'news_chains') || 'hero_game' }}
   cancel-in-progress: false
 
 permissions:
@@ -42,13 +43,13 @@ jobs:
           SEC_CONTACT_EMAIL: ${{ secrets.SEC_CONTACT_EMAIL }}
           ALPHAVANTAGE_API_KEY: ${{ inputs.study == 'earnings_forecast' && secrets.ALPHAVANTAGE_API_KEY || '' }}
           DC_WEBHOOK: ${{ startsWith(inputs.study, 'notify_') && secrets.DC_WEBHOOK || '' }}
-        run: python -m hero.research_${{ inputs.study || 'hero_game' }}
+        run: python -m hero.research_${{ inputs.study || (github.event.schedule == '30 9 * * 6' && 'news_chains') || 'hero_game' }}
       - name: Commit results
         run: |
           git config user.name "zero-or-hero-bot"
           git config user.email "zero-or-hero-bot@users.noreply.github.com"
           git add research
           git diff --cached --quiet && exit 0
-          git commit -m "research: ${{ inputs.study || 'hero_game' }} backtest $(date -u +%F)"
+          git commit -m "research: ${{ inputs.study || (github.event.schedule == '30 9 * * 6' && 'news_chains') || 'hero_game' }} backtest $(date -u +%F)"
           for i in 1 2 3; do git pull --rebase && git push && exit 0; sleep 10; done
           exit 1
