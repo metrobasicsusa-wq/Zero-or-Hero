@@ -35,6 +35,14 @@ call that makes money proves nothing until it beats the control.
 (D) Peers: the 3 stocks whose daily moves were closest over the 120 sessions before the chain (correlation 0.5 or
 more): do they rise while it falls (money moving to rivals) or fall with it, and what do they do afterwards?
 Tables are split: down chains, down chains already 4% lower when confirmed, up chains, the control.
+(E) A successor in the press (2026-11-13, record only): for a chain about management (the 管理层 theme, or settled by
+an executive going), the first headline (at most 2 tickers) from the chain's start day to 5 sessions after its last
+one that names a successor or a candidate for a top job: "names ... CEO", "appoints", "taps", "hires ... as CFO",
+"interim CEO", "successor", or a report that someone was approached ("approaches ... for CEO role", "in talks ...
+to become CEO", "frontrunner / shortlist for ... CEO"). "reportedly" and "talks" are how such a report is worded and
+do not rule it out; the other hedges do ("could name", "expected to appoint", a question mark). Recorded: the
+stock less SPY on that headline's session (the close before it to its close) and over the 3 sessions after it.
+It changes nothing about how a chain is confirmed, settled, measured or traded above.
 Research only: nothing here changes a trading rule. Run: python -m hero.research_news_chains
 """
 
@@ -62,6 +70,7 @@ BASE = 120           # sessions of history for the usual count
 WARMUP = 20          # sessions of history before a chain can be called at all
 GAP = 5              # sessions after the last headline in which a settling headline still belongs to the chain
 HOLDS = (5, 21, 42)
+SUCC_NEXT = 3        # sessions measured after the day a successor is in the press (record only)
 STOCK_COST = 0.001   # robust's extra cost per side for a stock trade (its default 5% is for options)
 DTE = (75, 130)
 OPT_HOLD = 63
@@ -113,6 +122,17 @@ LEGAL_THEMES = {"调查", "政治", "做空报告"}
 HEDGE = re.compile(r"\b(?:could|may|might|consider\w*|weigh\w*|mulls?|calls? for|urg\w+|demand\w*|would|should|if|whether|"
                    r"plans? to|poised to|expected to|reportedly|preparing to|seeks?|seeking|rumou?r\w*|talks|near\w*|close to|"
                    r"pressure\w*|refus\w*|won'?t|will not|denies|denied|no plans|speculat\w+|likely)\b|\?", re.I)
+# A successor in the press (record only): a naming word and then the job in the same clause (not "Acme hires 500,
+# CEO says", not "named in a lawsuit"), or a report that a candidate was approached for it.
+TOP = r"(?<!vice )" + EXEC_RE.pattern
+PICKS = (r"(?:names?|named|appoint(?:s|ed)?|taps?|tapped|hires?|hired|picks?|picked|selects?|selected|chooses?|chose|"
+         r"promot(?:es|ed)|elevat(?:es|ed)|succeed(?:s|ed|ing)?)")
+ROLE = r"\b(?:for|about|to (?:be|become|lead|run|head|take))\b (?:[\w'’&.-]+ ){0,3}" + TOP
+NAMED = re.compile(r"\b" + PICKS + r"\b(?! (?:in|to|among)\b)[^,;:]{0,60}" + TOP + "|" +
+                   TOP + r"[^,;:]{0,30}\b(?:named|appointed|chosen|selected)\b(?! (?:in|to|among)\b)|"
+                   r"\binterim " + TOP + r"|\bsuccessors?\b", re.I)
+SOUGHT = re.compile(r"\b(?:approach(?:es|ed)|in (?:[\w-]+ )?talks|front[- ]?runners?|short[- ]?list\w*)\b.{0,80}" + ROLE, re.I)
+SAID = re.compile(r"\b(?:reportedly|talks)\b", re.I)    # how a report about a candidate is worded: not a hedge for this kind
 OPT_EXITS = {"d21": "第 21 天卖", "d42": "第 42 天卖", "settle42": "落地那天卖，没落地第 42 天",
              "take15": "到 1.5 倍卖，否则第 42 天", "take2": "翻倍卖，否则第 42 天", "take3": "3 倍卖，否则第 42 天",
              "trail": "翻倍后回撤 40% 卖，否则第 42 天"}
@@ -133,6 +153,18 @@ def settle_kind(headline: str) -> str | None:
     if EXEC_RE.search(headline) and GONE.search(headline):
         return "人走了"
     return "案子了结" if CLOSED.search(headline) else None
+
+
+def successor_kind(headline: str) -> bool:
+    """'接班人见报': the headline names a successor or a candidate for a top job ("names ... CEO", "taps ... as next
+    CEO", "interim CEO", "successor"), or reports that someone was approached or is in talks for it. Not a plain
+    departure ("CEO resigns"), not speculation ("could name", "calls for new CEO"). Record only: `settle_kind` is
+    separate and unchanged, so "CEO steps down, names successor" is still '人走了' there and True here."""
+    if not headline or ADS.search(headline) or NOISE.search(headline) or not EXEC_RE.search(headline):
+        return False
+    if HEDGE.search(SAID.sub(" ", headline)):
+        return False
+    return bool(NAMED.search(headline) or SOUGHT.search(headline))
 
 
 def reaction(created_at: str, days: list[str]) -> tuple[int, bool] | None:
@@ -167,6 +199,21 @@ def scan(items: list[dict], sym: str, days: list[str]) -> tuple[list[tuple], lis
         if kind:
             ends.append((r[0], kind, r[1], h))
     return sorted(hits, key=lambda x: x[0]), sorted(ends, key=lambda x: x[0])
+
+
+def successors(items: list[dict], sym: str, days: list[str]) -> list[tuple]:
+    """A stock's successor headlines [(session index, created_at, headline)], oldest first; at most 2 tickers,
+    as for the settling ones. Kept apart from `scan` so its hits and ends stay exactly as they were."""
+    out = []
+    for n in items:
+        tickers = n.get("symbols") or []
+        h = n.get("headline") or ""
+        if sym not in tickers or len(tickers) > 2 or not n.get("created_at") or not successor_kind(h):
+            continue
+        r = reaction(n["created_at"], days)
+        if r is not None:
+            out.append((r[0], n["created_at"], h))
+    return sorted(out, key=lambda x: x[:2])
 
 
 def find_chains(hits: list[tuple], ends: list[tuple], days: list[str], sym: str = "") -> list[dict]:
@@ -238,6 +285,37 @@ def measure(c: dict, bars: dict[str, tuple[float, float]], spy: dict[str, tuple[
                 c[f"s{k}"] = round(cc(sd, days[j + k], bars), 4)
                 c[f"s{k}_spy"] = round(cc(sd, days[j + k], spy), 4)
     return c
+
+
+def successor_layer(c: dict, named: list[tuple], bars: dict[str, tuple[float, float]], spy: dict[str, tuple[float, float]],
+                    days: list[str]) -> dict:
+    """Record only. For a chain about management (the 管理层 theme, or settled by '人走了'): the first of the stock's
+    successor headlines (`named`, from `successors`) from the chain's start day to GAP sessions after its last
+    headline; the stock less SPY on that headline's session (the close before it to its close) and over the
+    SUCC_NEXT sessions after it (close to close), None without the sessions or bars."""
+    if "管理层" not in c["themes"] and c.get("settle_kind") != "人走了":
+        return c
+    lo, hi = bisect_left(days, c["start"]), bisect_left(days, c["last"]) + GAP
+    s = next((s for s in named if lo <= s[0] <= hi), None)
+    if s is None:
+        return c
+
+    def ex(a: int, b: int) -> float | None:
+        if a < 0 or b >= len(days) or any(days[k] not in m for k in (a, b) for m in (bars, spy)):
+            return None
+        return round(bars[days[b]][1] / bars[days[a]][1] - spy[days[b]][1] / spy[days[a]][1], 4)
+    c["successor_day"], c["successor_headline"] = days[s[0]], s[2]
+    c["successor_day0"], c[f"successor_next{SUCC_NEXT}"] = ex(s[0] - 1, s[0]), ex(s[0], s[0] + SUCC_NEXT)
+    return c
+
+
+def successor_rows(chains: list[dict]) -> list[dict]:
+    """One row per chain with a successor headline, newest first: the report's 接班人见报 list."""
+    k = f"next{SUCC_NEXT}"
+    rows = [{"symbol": c["symbol"], "start": c["start"], "confirmed": c["confirmed"], "dir": c.get("dir"),
+             "successor_day": c["successor_day"], "headline": c["successor_headline"],
+             "day0": c.get("successor_day0"), k: c.get(f"successor_{k}")} for c in chains if c.get("successor_day")]
+    return sorted(rows, key=lambda r: r["successor_day"], reverse=True)
 
 
 ORDER = ("正股·下跌链确认后", "正股·下跌链且", "正股·对照", "正股·上涨链", "同行·", "同行减", "正股·落地",
@@ -557,9 +635,11 @@ def run(client, root: Path, budget_min: float = BUDGET_MIN) -> dict:
         scanned += len(items)
         sdays[sym] = sorted(bars)
         hits, ends = scan(items, sym, sdays[sym])
+        named = successors(items, sym, sdays[sym])
         pressure += len(hits)
         for c in find_chains(hits, ends, sdays[sym], sym):
-            chains.append(peer_layer(measure(c, bars, spy, sdays[sym]), adj, spy, sdays[sym], pool))
+            c = peer_layer(measure(c, bars, spy, sdays[sym]), adj, spy, sdays[sym], pool)
+            chains.append(successor_layer(c, named, bars, spy, sdays[sym]))
     news_min = round((time.monotonic() - t0) / 60, 1)
     placebos = placebo_days([c for c in chains if c.get("dir") == -1], sdays)
     for p_ in placebos:
@@ -611,7 +691,7 @@ def run(client, root: Path, budget_min: float = BUDGET_MIN) -> dict:
             "chains": len(chains), "settled": sum(1 for c in chains if c.get("settled")), "priced": priced,
             "controls": len(placebos), "partial": partial, "misses": misses, "news_minutes": news_min,
             "minutes": round((time.monotonic() - t0) / 60, 1), "table": ordered(table), "peaks": pk,
-            "chain_list": chains, "control_list": placebos}
+            "chain_list": chains, "control_list": placebos, "successor_list": successor_rows(chains)}
 
 
 def pct(x) -> str:
@@ -670,6 +750,25 @@ def markdown(rep: dict) -> str:
         lines.append(f"| {c['symbol']} | {c['start']} | {c['confirmed']} | {c['settled']} | {c['hits']} | {'、'.join(c['themes'])} | "
                      f"{pct(c.get('pre_move'))} | {pct(c.get('to_settle'))} | {pct(c.get('settle_gap'))} | {pct(c.get('settle_oc'))} | "
                      f"{pct(c.get('s21'))} | {c['settle_kind']}：{cut(c['settle_headline'], 60)} |")
+    succ, nk = rep.get("successor_list") or [], f"next{SUCC_NEXT}"       # a report saved before 2026-11-13 has no such list
+    lines += ["", "## 接班人见报（只记录）", "",
+              f"讲管理层的链（或者以「人走了」落地的链），从链开始那天到最后一条压力标题后 {GAP} 个交易日里，第一条点名接班人或候选人的标题"
+              "（任命、选定，或者报道说找了某人、正在谈）。当天 = 前一天收盘到见报那个交易日收盘（收盘后才出的算下一个交易日）；"
+              f"之后 {SUCC_NEXT} 天 = 那天收盘到 {SUCC_NEXT} 个交易日后收盘；都减去 SPY。", ""]
+    if succ:
+        lines += [f"| 股票 | 链开始 | 确认 | 链的方向 | 见报日 | 当天比 SPY | 之后 {SUCC_NEXT} 天比 SPY | 标题 |", "|---|---|---|---|---|---|---|---|"]
+        for r in succ[:30]:
+            way = "下跌" if (r.get("dir") or 0) < 0 else "上涨" if r.get("dir") else "—"
+            lines.append(f"| {r['symbol']} | {r['start']} | {r['confirmed']} | {way} | {r['successor_day']} | {pct(r.get('day0'))} | "
+                         f"{pct(r.get(nk))} | {cut(r['headline'], 90)} |")
+        d0, dn = ([r[k] for r in succ if r.get(k) is not None] for k in ("day0", nk))
+        med = lambda xs: statistics.median(xs) if xs else None
+        lines += ["", f"共 {len(succ)} 条" + ("（表里是最近 30 条）" if len(succ) > 30 else "") +
+                  f"：当天比 SPY 平均 {pct(mean(d0))}、中位数 {pct(med(d0))}（{len(d0)} 条有数）；"
+                  f"之后 {SUCC_NEXT} 天比 SPY 平均 {pct(mean(dn))}、中位数 {pct(med(dn))}（{len(dn)} 条有数）。"
+                  "条数很少，几条个案不是统计，不能据此下结论；只记录，不改任何规则。"]
+    else:
+        lines.append("没有")
     big = sorted(down, key=lambda c: c["pre_move"])[:25]
     lines += ["", "## 跌得最深的 25 条下跌链（对一下是不是我们记得的那些事）", "",
               "| 股票 | 开始 | 确认 | 条数 | 类别 | 到确认 | 之后 21 天 | 之后 42 天 | 同行（发酵期间比 SPY） | 开头的标题 |", "|---|---|---|---|---|---|---|---|---|---|"]

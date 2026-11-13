@@ -2119,6 +2119,68 @@ class ResearchNewsChains(unittest.TestCase):
         self.assertEqual(out["peers"], ["TWIN"])                                # the opposite mover is not a peer
         self.assertAlmostEqual(out["peer_pre"] - out["self_pre"], 0.10 * (a[150] / a[147]), places=3)
 
+    def test_successor_in_the_press_is_recorded(self):
+        import json
+        from hero import research_news_chains as nc
+        for h in ("Nvidia Names Jane Doe CEO", "Board appoints John Roe as chief executive", "Acme taps insider as next CEO",
+                  "X hires Y as CFO", "Company picks successor to founder", "Nvidia approaches Arm's Rene Haas for CEO role - FT",
+                  "Z in talks with former Intel exec to become CEO", "interim CEO named", "Acme CEO steps down, names successor",
+                  "Nvidia Reportedly Approaches Arm's Rene Haas For CEO Role", "Rene Haas Emerges As Frontrunner For Nvidia CEO Job",
+                  "Nvidia Shortlists Three Outsiders For CEO"):
+            self.assertTrue(nc.successor_kind(h), h)
+        for h in ("CEO resigns", "Investors call for new CEO", "Company could name new CEO next year", "Analysts say Acme could replace CEO",
+                  "Acme May Be In Talks With Jane Doe To Become CEO", "Is Jane Doe The Frontrunner For Acme CEO?",   # only might
+                  "Rosen Law Firm Reminds Investors Acme Names New CEO Before Deadline",                              # advertising
+                  "This Week In Chips: Acme Names New CEO",                                                           # a roundup
+                  "Acme CEO Named In Shareholder Lawsuit", "Acme Names Jane Doe Chief Operating Officer",              # not a top job filled
+                  "Acme Names Jane Doe Senior Vice President Of Cloud", "Acme Hires 500 Engineers, CEO Says",
+                  "Nvidia Approaches $5 Trillion As CEO Huang Touts AI Demand", "Nvidia In Talks With OpenAI Over $10B Chip Deal, CEO Says"):
+            self.assertFalse(nc.successor_kind(h), h)
+        self.assertEqual(nc.settle_kind("Acme CEO steps down, names successor"), "人走了")              # settle_kind is as it was
+        self.assertIsNone(nc.settle_kind("Nvidia approaches Arm's Rene Haas for CEO role - FT"))
+        days = [f"2026-{m:02d}-{d:02d}" for m in (9, 10) for d in range(1, 21)]                        # 40 sessions
+        at = lambda i, hh, text, more=(): {"symbols": ["ACME", *more], "created_at": f"{days[i]}T{hh}:00:00Z", "headline": text}
+        items = [at(30, 14, "Acme CEO Faces Misconduct Allegations"), at(30, 15, "Analyst Downgrades Acme"),
+                 at(31, 14, "Senators Call For Acme CEO To Step Down"), at(32, 14, "DOJ Opens Probe Into Acme"),
+                 at(34, 12, "Acme CEO Resigns"),
+                 at(20, 14, "Acme Names Jane Roe CFO"),                                                 # before the chain
+                 at(33, 14, "Acme Names John Roe CEO", ("A", "B")),                                     # three tickers: a roundup
+                 at(37, 14, "Acme Names Jane Doe CEO"),                                                 # not the first one
+                 at(35, 21, "Acme Approaches Rival's Jane Doe For CEO Role - FT")]                      # 17:00 ET -> next session
+        hits, ends = nc.scan(items, "ACME", days)
+        self.assertEqual((len(hits), [e[:2] for e in ends]), (5, [(34, "人走了"), (37, "人走了")]))     # the scan itself is as it was
+        named = nc.successors(items, "ACME", days)
+        self.assertEqual([(s[0], s[2]) for s in named], [(20, "Acme Names Jane Roe CFO"), (36, "Acme Approaches Rival's Jane Doe For CEO Role - FT"),
+                                                         (37, "Acme Names Jane Doe CEO")])
+        (c,) = nc.find_chains(hits, ends, days, "ACME")
+        self.assertEqual((c["start"], c["last"], c["settled"], "管理层" in c["themes"]), (days[30], days[34], days[34], True))
+        bars = {d: (100.0, 100.0) for d in days}
+        spy = {d: (50.0, 50.0) for d in days}
+        bars[days[35]], bars[days[36]], bars[days[39]] = (81.0, 80.0), (82.0, 84.0), (88.0, 88.2)
+        spy[days[36]], spy[days[39]] = (50.0, 50.5), (51.0, 51.51)
+        before = dict(nc.measure(dict(c), bars, spy, days))
+        m = nc.successor_layer(dict(before), named, bars, spy, days)
+        self.assertEqual((m["successor_day"], m["successor_headline"]), (days[36], "Acme Approaches Rival's Jane Doe For CEO Role - FT"))
+        self.assertEqual((m["successor_day0"], m["successor_next3"]), (0.04, 0.03))                    # 84/80 - 50.5/50, 88.2/84 - 51.51/50.5
+        self.assertEqual({k: v for k, v in m.items() if not k.startswith("successor_")}, before)        # nothing else on the chain moves
+        late = nc.successor_layer(dict(before), [(38, f"{days[38]}T14:00:00Z", "Acme Names Jane Doe CEO")], bars, spy, days)
+        self.assertEqual((late["successor_day"], late["successor_day0"], late["successor_next3"]), (days[38], 0.0, None))   # 3 sessions on: not there yet
+        other = {**before, "themes": ["丑闻", "调查"], "settle_kind": "案子了结"}
+        self.assertNotIn("successor_day", nc.successor_layer(dict(other), named, bars, spy, days))      # not a chain about management
+        self.assertNotIn("successor_day", nc.successor_layer(dict(before), named[:1], bars, spy, days))  # nothing inside the window
+        rows = nc.successor_rows([m, other])
+        self.assertEqual(rows, [{"symbol": "ACME", "start": days[30], "confirmed": days[32], "dir": -1, "successor_day": days[36],
+                                 "headline": "Acme Approaches Rival's Jane Doe For CEO Role - FT", "day0": 0.04, "next3": 0.03}])
+        rep = {"generated": "2026-11-13", "start": nc.START, "pool": 1, "headlines": 9, "pressure": 5, "chains": 1, "settled": 1,
+               "priced": 0, "controls": 0, "partial": False, "misses": {}, "table": {}, "peaks": {}, "chain_list": [m]}
+        section = lambda r: nc.markdown(r).split("## 接班人见报（只记录）")[1].split("\n## ")[0]
+        self.assertTrue(section(rep).rstrip().endswith("没有"))                                        # a report saved by the old code
+        self.assertTrue(section({**rep, "successor_list": []}).rstrip().endswith("没有"))
+        full = section(json.loads(json.dumps({**rep, "successor_list": rows})))
+        self.assertIn(f"| ACME | {days[30]} | {days[32]} | 下跌 | {days[36]} | +4.0% | +3.0% | Acme Approaches Rival's Jane Doe For CEO Role - FT |", full)
+        self.assertIn("共 1 条：当天比 SPY 平均 +4.0%、中位数 +4.0%（1 条有数）；之后 3 天比 SPY 平均 +3.0%、中位数 +3.0%（1 条有数）。", full)
+        self.assertIn("不是统计", full)
+
 
 class ResearchFly(unittest.TestCase):
     def test_butterfly_costs_and_exits(self):
