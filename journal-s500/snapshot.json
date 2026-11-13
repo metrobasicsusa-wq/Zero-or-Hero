@@ -1,11 +1,11 @@
 {
   "account": {
-    "buying_power": "228848.76",
-    "cash": "57212.19",
-    "equity": "59573.19",
+    "buying_power": "228876.08",
+    "cash": "57219.02",
+    "equity": "59539.02",
     "last_equity": "56742.37307728236",
-    "long_market_value": "2361",
-    "portfolio_value": "59573.19"
+    "long_market_value": "2320",
+    "portfolio_value": "59539.02"
   },
   "benchmark": {
     "close": 485.08,
@@ -43,22 +43,6 @@
       "stop_price": null,
       "submitted_at": "2026-11-13T20:30:48.715905Z",
       "symbol": "NVDA261113P00147000",
-      "time_in_force": "day",
-      "type": "limit"
-    },
-    {
-      "asset_class": "us_option",
-      "filled_at": null,
-      "filled_avg_price": null,
-      "filled_qty": "0",
-      "limit_price": "0.01",
-      "protective_stop": false,
-      "qty": "7",
-      "side": "sell",
-      "status": "new",
-      "stop_price": null,
-      "submitted_at": "2026-11-13T20:30:38.483031Z",
-      "symbol": "CORZ261113C00014500",
       "time_in_force": "day",
       "type": "limit"
     },
@@ -130,35 +114,19 @@
   "positions": [
     {
       "asset_class": "us_option",
-      "avg_entry_price": "0.84",
-      "cost_basis": "588",
-      "current_price": "0",
-      "fair_price": 0.0,
-      "lastday_price": "0.27",
-      "mark_source": "broker",
-      "market_value": "0",
-      "qty": "7",
-      "side": "long",
-      "symbol": "CORZ261113C00014500",
-      "unrealized_intraday_pl": "-189",
-      "unrealized_pl": "-588",
-      "unrealized_plpc": "-1"
-    },
-    {
-      "asset_class": "us_option",
       "avg_entry_price": "3.25",
       "cost_basis": "650",
-      "current_price": "1.56",
-      "fair_price": 1.56,
+      "current_price": "1.55",
+      "fair_price": 1.55,
       "lastday_price": "3.45",
       "mark_source": "broker",
-      "market_value": "312",
+      "market_value": "310",
       "qty": "2",
       "side": "long",
       "symbol": "CRWV261120C00057000",
-      "unrealized_intraday_pl": "-378",
-      "unrealized_pl": "-338",
-      "unrealized_plpc": "-0.52"
+      "unrealized_intraday_pl": "-380",
+      "unrealized_pl": "-340",
+      "unrealized_plpc": "-0.52308"
     },
     {
       "asset_class": "us_option",
@@ -180,17 +148,17 @@
       "asset_class": "us_option",
       "avg_entry_price": "6.7",
       "cost_basis": "2010",
-      "current_price": "1.97",
-      "fair_price": 1.97,
+      "current_price": "1.96",
+      "fair_price": 1.96,
       "lastday_price": "6.75",
       "mark_source": "broker",
-      "market_value": "591",
+      "market_value": "588",
       "qty": "3",
       "side": "long",
       "symbol": "NBIS261120C00132000",
-      "unrealized_intraday_pl": "-1434",
-      "unrealized_pl": "-1419",
-      "unrealized_plpc": "-0.70597"
+      "unrealized_intraday_pl": "-1437",
+      "unrealized_pl": "-1422",
+      "unrealized_plpc": "-0.70746"
     },
     {
       "asset_class": "us_option",
@@ -212,24 +180,24 @@
       "asset_class": "us_option",
       "avg_entry_price": "4.85",
       "cost_basis": "1455",
-      "current_price": "0.11",
-      "fair_price": 0.11,
+      "current_price": "0.09",
+      "fair_price": 0.115,
       "lastday_price": "0.67",
-      "mark_source": "broker",
-      "market_value": "33",
+      "mark_source": "mid",
+      "market_value": "27",
       "qty": "3",
       "side": "long",
       "symbol": "NVDA261116C00180000",
-      "unrealized_intraday_pl": "-168",
-      "unrealized_pl": "-1422",
-      "unrealized_plpc": "-0.97732"
+      "unrealized_intraday_pl": "-174",
+      "unrealized_pl": "-1428",
+      "unrealized_plpc": "-0.98144"
     },
     {
       "asset_class": "us_option",
       "avg_entry_price": "2.82",
       "cost_basis": "1128",
       "current_price": "0.06",
-      "fair_price": 0.045,
+      "fair_price": 0.085,
       "lastday_price": "0.33",
       "mark_source": "mid",
       "market_value": "24",
@@ -276,18 +244,18 @@
       "asset_class": "us_option",
       "avg_entry_price": "9.85",
       "cost_basis": "985",
-      "current_price": "12.1",
-      "fair_price": 12.1,
+      "current_price": "11.8",
+      "fair_price": 11.8,
       "lastday_price": "18.06",
       "mark_source": "broker",
-      "market_value": "1210",
+      "market_value": "1180",
       "qty": "1",
       "side": "long",
       "symbol": "VRT261120C00195000",
-      "unrealized_intraday_pl": "-596",
-      "unrealized_pl": "225",
-      "unrealized_plpc": "0.22843"
+      "unrealized_intraday_pl": "-626",
+      "unrealized_pl": "195",
+      "unrealized_plpc": "0.19797"
     }
   ],
-  "ts": "2026-11-13T20:31:11+00:00"
+  "ts": "2026-11-13T20:40:44+00:00"
 }
