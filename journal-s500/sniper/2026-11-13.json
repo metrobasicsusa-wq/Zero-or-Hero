@@ -1,0 +1,154 @@
+{
+ "date": "2026-11-13",
+ "sniper": {
+  "symbol": "VRT",
+  "direction": "call",
+  "catalyst": "三星电子据报在谈收购数据中心散热公司 Modine（Benzinga、Investing.com、CNBC 盘前；没有最终决定，谈判可能破裂），Modine 盘前 +34%。这是给整个数据中心散热板块重新定价的消息，Vertiv 是这个板块的龙头，盘前只 +1.8%（它平时一天波动 4.2%，跳空约 0.4 倍），消息还没被吃掉；同板块 nVent 盘前 +3.0%。不是财报反应日（它 10 月已报）。没有破 20 日高点（254.73），所以只做当天",
+  "catalyst_type": "peer plan hits a group",
+  "confidence": 0.3,
+  "wrong_if": "10:00 时 VRT 在开盘价下方，或 Modine 把盘前涨幅回吐一半以上（市场不信这笔交易），或三星 / Modine 否认在谈",
+  "settles_today": "不会：只是「在谈」的报道，今天多半没有结论；要防的是被否认（11-13 起多记的一行，只记录）"
+ },
+ "candidates": [
+  {
+   "rank": 1,
+   "symbol": "VRT",
+   "direction": "call",
+   "confidence": 0.3,
+   "catalyst_type": "peer plan hits a group",
+   "why": "三星据报在谈收购 Modine（+34%），散热板块龙头盘前只 +1.8%，约 0.4 倍平时波动；没破 20 日高点，只做当天",
+   "wrong_if": "10:00 时在开盘价下方，或 Modine 回吐一半以上，或传闻被否认"
+  },
+  {
+   "rank": 2,
+   "symbol": "NVT",
+   "direction": "call",
+   "confidence": 0.25,
+   "catalyst_type": "peer plan hits a group",
+   "why": "同一条消息，nVent 做液冷和机柜，离 Modine 的业务更近；盘前 +3.0%，约 0.7 倍平时波动；没破 20 日高点；期权只有月度（11-20），成交稀",
+   "wrong_if": "10:00 时在开盘价下方，或 Modine 回吐一半以上"
+  },
+  {
+   "rank": 3,
+   "symbol": "MSFT",
+   "direction": "call",
+   "confidence": 0.2,
+   "catalyst_type": "company news",
+   "why": "Microsoft 365 全球故障进入第二天（周四 13:26 ET 开始，微软说不是网络攻击、已部分恢复），盘前 −1.0%，约 0.7 倍平时波动。故障多半当天修好，是「马上落地」的消息——昨天英伟达的教训是落地后往回走，所以方向写看涨、不写看跌；证据只有一条，信心低",
+   "wrong_if": "10:00 时在开盘价下方，或微软说今天恢复不了"
+  },
+  {
+   "rank": 4,
+   "symbol": "COIN",
+   "direction": "put",
+   "confidence": 0.2,
+   "catalyst_type": "sector move",
+   "why": "比特币跌破 $70,000，COIN 盘前 −2.2%，跌破 20 日低点 129.41，约 0.7 倍平时波动；没有它自己的新消息",
+   "wrong_if": "10:00 时 COIN 回到开盘价上方，或比特币回到 $70,000 上方"
+  }
+ ],
+ "skipped": [
+  {
+   "symbol": "MOD",
+   "direction": "call",
+   "gap": "+34%",
+   "reason": "跳空已吃掉",
+   "why_not": "被收购方，涨幅是平时波动的近 10 倍，剩下的是交易成不成的赌注"
+  },
+  {
+   "symbol": "TSLA",
+   "direction": "call",
+   "gap": "+1.4%",
+   "reason": "claude-b 已选",
+   "why_not": "claude-b 选了 TSLA 看涨（彭博：特斯拉和 SpaceX 的合并谈判在推进）"
+  },
+  {
+   "symbol": "PANW",
+   "direction": "call",
+   "gap": "+3.1%",
+   "reason": "分析师评级",
+   "why_not": "只有 KeyBanc 上调到增持（目标价 $380），而且 11-18 就是财报"
+  },
+  {
+   "symbol": "CRWD",
+   "direction": "call",
+   "gap": "+2.9%",
+   "reason": "消息太弱",
+   "why_not": "没有自己的消息，跟着 Palo Alto 的上调涨"
+  },
+  {
+   "symbol": "NET",
+   "direction": "call",
+   "gap": "+2.2%",
+   "reason": "消息太弱",
+   "why_not": "没有自己的消息"
+  },
+  {
+   "symbol": "NVDA",
+   "direction": "call",
+   "gap": "+2.2%",
+   "reason": "财报临近",
+   "why_not": "辞职落地后的第二天反弹，没有新消息；11-17 盘后财报"
+  },
+  {
+   "symbol": "AMD",
+   "direction": "put",
+   "gap": "-1.7%",
+   "reason": "消息太弱",
+   "why_not": "昨天涨 5.9% 后回吐，没有新消息"
+  },
+  {
+   "symbol": "AVGO",
+   "direction": "put",
+   "gap": "-1.7%",
+   "reason": "消息太弱",
+   "why_not": "昨天涨 5.5% 后回吐，没有新消息"
+  },
+  {
+   "symbol": "MSTR",
+   "direction": "put",
+   "gap": "-1.4%",
+   "reason": "其他",
+   "why_not": "MSCI 11-11 已确认把它剔出指数（11-30 生效），是第三天了，分析师说大体已反映"
+  },
+  {
+   "symbol": "CSCO",
+   "direction": "put",
+   "gap": "-3.0%",
+   "reason": "财报反应日",
+   "why_not": "昨晚盘后财报"
+  },
+  {
+   "symbol": "AMAT",
+   "direction": "put",
+   "gap": "约 -3%",
+   "reason": "财报反应日",
+   "why_not": "昨晚盘后财报"
+  },
+  {
+   "symbol": "CBRS",
+   "direction": "call",
+   "gap": "+11%",
+   "reason": "财报反应日",
+   "why_not": "昨晚盘后财报，上调全年、和微软甲骨文的新合同"
+  },
+  {
+   "symbol": "NU",
+   "direction": "call",
+   "gap": "+5.6%",
+   "reason": "财报反应日",
+   "why_not": "昨晚盘后财报"
+  },
+  {
+   "symbol": "QXO",
+   "direction": "call",
+   "gap": "+3.1%",
+   "reason": "其他",
+   "why_not": "财报后的第二天，昨天 −7.3% 后反弹，没有新消息"
+  }
+ ],
+ "claude_b_pick": "TSLA call 0.25（彭博：特斯拉和 SpaceX 的合并谈判在推进；他们 08:36 写）",
+ "preselected": false,
+ "notes": "08:35 的预选没写：当时前因不够清楚。09:01 扫描后选 VRT：Modine 的并购传闻是今天的新消息，受益的二线股还没动。10 月 PPI 环比 +0.3%（预期 +0.4%），SPY 盘前 +0.4%。今天的财报反应日名单（不选）：AMAT、CSCO、CBRS、NU、ARWR、NKTR、DLO、STNE、STN、SMFG、MFG 等 29 只。微软的故障本来是看跌的候选，按昨天的教训（马上落地的消息不追）改记成看涨，只排第 3。",
+ "generated_at": "2026-11-13T09:04-05:00"
+}
