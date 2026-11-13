@@ -130,7 +130,8 @@ PICKS = (r"(?:names?|named|appoint(?:s|ed)?|taps?|tapped|hires?|hired|picks?|pic
 ROLE = r"\b(?:for|about|to (?:be|become|lead|run|head|take))\b (?:[\w'’&.-]+ ){0,3}" + TOP
 NAMED = re.compile(r"\b" + PICKS + r"\b(?! (?:in|to|among)\b)[^,;:]{0,60}" + TOP + "|" +
                    TOP + r"[^,;:]{0,30}\b(?:named|appointed|chosen|selected)\b(?! (?:in|to|among)\b)|"
-                   r"\binterim " + TOP + r"|\bsuccessors?\b", re.I)
+                   r"\binterim " + TOP + r"|\b" + PICKS + r"\b[^,;:]{0,60}\bsuccessors?\b|"
+                   r"\bsuccessors?\b[^,;:]{0,30}\b(?:named|appointed|chosen|selected)\b", re.I)   # not "investors await a successor"
 SOUGHT = re.compile(r"\b(?:approach(?:es|ed)|in (?:[\w-]+ )?talks|front[- ]?runners?|short[- ]?list\w*)\b.{0,80}" + ROLE, re.I)
 SAID = re.compile(r"\b(?:reportedly|talks)\b", re.I)    # how a report about a candidate is worded: not a hedge for this kind
 OPT_EXITS = {"d21": "第 21 天卖", "d42": "第 42 天卖", "settle42": "落地那天卖，没落地第 42 天",

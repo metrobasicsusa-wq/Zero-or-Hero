@@ -2129,6 +2129,7 @@ class ResearchNewsChains(unittest.TestCase):
                   "Nvidia Shortlists Three Outsiders For CEO"):
             self.assertTrue(nc.successor_kind(h), h)
         for h in ("CEO resigns", "Investors call for new CEO", "Company could name new CEO next year", "Analysts say Acme could replace CEO",
+                  "Acme Shares Fall As Investors Await CEO Successor",
                   "Acme May Be In Talks With Jane Doe To Become CEO", "Is Jane Doe The Frontrunner For Acme CEO?",   # only might
                   "Rosen Law Firm Reminds Investors Acme Names New CEO Before Deadline",                              # advertising
                   "This Week In Chips: Acme Names New CEO",                                                           # a roundup
