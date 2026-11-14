@@ -609,6 +609,19 @@ def peaks(legs: list[dict | None]) -> dict | None:
             "reach3": sum(p >= 3 for p in m) / len(m), "median_peak_day": statistics.median(d for _, d in ps)}
 
 
+def fetch_news(client, sym: str, today: str, tries: int = 3, wait=time.sleep) -> list[dict] | None:
+    """All of a stock's headlines since START, or None when the news service keeps failing. A stock that could not
+    be read must be named in the report: two runs a day apart differed by 29 chains because megacaps with many
+    pages of news failed part-way and were skipped silently."""
+    for k in range(tries):
+        try:
+            return list(client.news_range([sym], f"{START}T00:00:00Z", f"{today}T23:59:59Z"))
+        except Exception:
+            if k + 1 < tries:
+                wait(5 * (k + 1))
+    return None
+
+
 def run(client, root: Path, budget_min: float = BUDGET_MIN) -> dict:
     from hero import universe
     from hero.research_event_turn import Pace
@@ -624,14 +637,14 @@ def run(client, root: Path, budget_min: float = BUDGET_MIN) -> dict:
         for s, bs in client.daily_bars(syms, START, adjustment="raw").items():
             raw[s] = {b["t"][:10]: float(b["c"]) for b in bs}
     spy = adj.get("SPY", {})
-    chains, scanned, pressure, sdays = [], 0, 0, {}
+    chains, scanned, pressure, sdays, failed = [], 0, 0, {}, []
     for sym in pool:
         bars = adj.get(sym)
         if not bars:
             continue
-        try:
-            items = list(client.news_range([sym], f"{START}T00:00:00Z", f"{today}T23:59:59Z"))
-        except Exception:
+        items = fetch_news(client, sym, today)
+        if items is None:
+            failed.append(sym)   # 11-13: these used to be dropped without a word (78 chains one day, 107 the next)
             continue
         scanned += len(items)
         sdays[sym] = sorted(bars)
@@ -692,7 +705,8 @@ def run(client, root: Path, budget_min: float = BUDGET_MIN) -> dict:
             "chains": len(chains), "settled": sum(1 for c in chains if c.get("settled")), "priced": priced,
             "controls": len(placebos), "partial": partial, "misses": misses, "news_minutes": news_min,
             "minutes": round((time.monotonic() - t0) / 60, 1), "table": ordered(table), "peaks": pk,
-            "chain_list": chains, "control_list": placebos, "successor_list": successor_rows(chains)}
+            "chain_list": chains, "control_list": placebos, "successor_list": successor_rows(chains),
+            "news_failed": failed}
 
 
 def pct(x) -> str:
@@ -709,6 +723,9 @@ def markdown(rep: dict) -> str:
              f"找到 {rep['chains']} 条链（股价向下 {len(down)} 条、向上 {len(cs) - len(down)} 条），{rep['settled']} 条有「落地」的标题。"
              f"链的定义：5 个交易日里至少 {MIN_HITS} 条压力标题、是这只股票平时的 {MULT:.0f} 倍以上、分布在两天以上、两类以上。"
              "方向 = 链开始前一天收盘到确认那天收盘的涨跌。对照 = 同一只股票、确认日前 126 / 63 天和后 63 天。只研究，不改任何交易规则。", ""]
+    if rep.get("news_failed"):
+        lines += [f"⚠️ 有 {len(rep['news_failed'])} 只股票的新闻这次没取到（{'、'.join(rep['news_failed'])}），它们的链不在结果里；"
+                  "和别的日期的结果比之前先看这一行。", ""]
     for k in HOLDS:
         xs = [c for c in cs if c.get(f"f{k}") is not None]
         keep = sum(1 for c in xs if (c[f"f{k}"] > 0) == (c["dir"] > 0))

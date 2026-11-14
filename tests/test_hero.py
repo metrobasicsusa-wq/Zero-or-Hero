@@ -2119,6 +2119,31 @@ class ResearchNewsChains(unittest.TestCase):
         self.assertEqual(out["peers"], ["TWIN"])                                # the opposite mover is not a peer
         self.assertAlmostEqual(out["peer_pre"] - out["self_pre"], 0.10 * (a[150] / a[147]), places=3)
 
+    def test_a_stock_whose_news_cannot_be_read_is_named_not_dropped(self):
+        # 11-13: two runs a day apart found 78 and 107 chains; megacaps whose news failed part-way were skipped silently
+        from hero import research_news_chains as nc
+
+        class Flaky:
+            def __init__(self, fails):
+                self.fails, self.calls = fails, 0
+
+            def news_range(self, syms, start, end):
+                self.calls += 1
+                if self.calls <= self.fails:
+                    raise RuntimeError("429")
+                yield {"headline": "x", "symbols": syms, "created_at": "2026-11-12T14:00:00Z"}
+
+        waits = []
+        ok = Flaky(2)
+        self.assertEqual(len(nc.fetch_news(ok, "AAA", "2026-11-13", wait=waits.append)), 1)   # third try works
+        self.assertEqual((ok.calls, waits), (3, [5, 10]))
+        self.assertIsNone(nc.fetch_news(Flaky(9), "AAA", "2026-11-13", wait=lambda s: None))    # gives up, says so
+        saved = Path(__file__).resolve().parent.parent / "research" / "2026-11-13-news-chains.json"
+        if saved.exists():                                                        # a real report, as the workflow wrote it
+            rep = json.loads(saved.read_text())
+            self.assertNotIn("没取到", nc.markdown(rep))                          # nothing failed: no warning line
+            self.assertIn("有 2 只股票的新闻这次没取到（MSFT、AAPL）", nc.markdown({**rep, "news_failed": ["MSFT", "AAPL"]}))
+
     def test_successor_in_the_press_is_recorded(self):
         import json
         from hero import research_news_chains as nc
