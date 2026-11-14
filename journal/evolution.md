@@ -57,3 +57,12 @@
 - options decision: ADOPT
 - briefing accuracy (record only, 26 days): predictions 39/51 (76%), predictions unverifiable 1, bias vs SPY 16/26 (62%)
 
+## 2026-11-14 — generation 2
+- live return since start: -0.08% over 32 days
+- current score 1.20 (train 1.22, val 1.20, val DD -7.1%)
+- best score 1.21 (train 1.21, val 1.21, val DD -8.5%) {'top_n': '8 -> 5'}
+- decision: keep
+- options: current score 1.66 (val 1.68, 35 val trades, options P&L +13,983); best 1.66 (val 1.68, 35 val trades, P&L +13,983) 
+- options decision: keep
+- briefing accuracy (record only, 30 days): predictions 47/59 (80%), predictions unverifiable 1, bias vs SPY 20/30 (67%)
+
