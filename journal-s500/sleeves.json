@@ -6669,7 +6669,7 @@
      "expiry_out": null,
      "take_x": 20,
      "take": 189.0,
-     "take_cid": "sl-net-1000-2026W46-2e6fc5-t8821"
+     "take_cid": "sl-net-1000-2026W46-2e6fc5-tda9a"
     }
    ],
    "closed": [],
@@ -8450,48 +8450,7 @@
    "round": 4,
    "heroes": 0,
    "zeros": 3,
-   "open": [
-    {
-     "tid": "20261112-b298ac",
-     "kind": "sniper",
-     "sym": "NVDA261113P00147000",
-     "asset": "option",
-     "und": "NVDA",
-     "qty": 1,
-     "cost": 4.5,
-     "paid": 450.0,
-     "opened": "2026-11-12 09:30",
-     "why": "开盘狙击 NVDA看跌 147（2026-11-13 到期，离现价 1.7%（平时一天波动 2.7% 的一半），delta 0.41）：英伟达董事会准备撤换 CEO 黄仁勋：WSJ 报道、路透证实董事会周三深夜开会，FT 也有报道，彭博说已请外部机构找接班人、考虑先任命临时 CEO；今早的标题是公司说 CFO Colette Kress 将出任（Benzinga，盘前扫描）；翻倍后回撤 40% 卖，否则到期日 15:30 卖；一半 $346.00 买不起一张，押上账本买 1 张",
-     "expiry": "2026-11-13",
-     "exit_day": "2026-11-13",
-     "exit_at": "15:30",
-     "trail": true,
-     "best_bid": 0.71,
-     "expiry_out": null,
-     "sell_cid": "sl-sniper-500-20261112-b298ac-x41d4",
-     "sell_why": "2026-11-13 15:30 到时卖出"
-    },
-    {
-     "tid": "20261113-e4adca",
-     "kind": "sniper",
-     "sym": "VRT261113C00220000",
-     "asset": "option",
-     "und": "VRT",
-     "qty": 1,
-     "cost": 0.6,
-     "paid": 60.0,
-     "opened": "2026-11-13 09:30",
-     "why": "开盘狙击 VRT看涨 220（2026-11-13 到期，离现价 3.7%（平时一天波动 5.4% 的一半））：三星电子据报在谈收购数据中心散热公司 Modine（Benzinga、Investing.com、CNBC 盘前；没有最终决定，谈判可能破裂），Modine 盘前 +34%。这是给整个数据中心散热板块重新定价的消息，Vertiv 是这个板块；翻倍后回撤 40% 卖，否则到期日 15:30 卖",
-     "expiry": "2026-11-13",
-     "exit_day": "2026-11-13",
-     "exit_at": "15:30",
-     "trail": true,
-     "best_bid": 0.04,
-     "expiry_out": null,
-     "sell_cid": "sl-sniper-500-20261113-e4adca-x6568",
-     "sell_why": "2026-11-13 15:30 到时卖出"
-    }
-   ],
+   "open": [],
    "closed": [
     {
      "tid": "20261015-eb4d57",
@@ -8778,6 +8737,58 @@
      "how": "2026-11-13 15:30 到时卖出",
      "closed": "2026-11-13 15:40",
      "ret": -0.988
+    },
+    {
+     "tid": "20261112-b298ac",
+     "kind": "sniper",
+     "sym": "NVDA261113P00147000",
+     "asset": "option",
+     "und": "NVDA",
+     "qty": 1,
+     "cost": 4.5,
+     "paid": 450.0,
+     "opened": "2026-11-12 09:30",
+     "why": "开盘狙击 NVDA看跌 147（2026-11-13 到期，离现价 1.7%（平时一天波动 2.7% 的一半），delta 0.41）：英伟达董事会准备撤换 CEO 黄仁勋：WSJ 报道、路透证实董事会周三深夜开会，FT 也有报道，彭博说已请外部机构找接班人、考虑先任命临时 CEO；今早的标题是公司说 CFO Colette Kress 将出任（Benzinga，盘前扫描）；翻倍后回撤 40% 卖，否则到期日 15:30 卖；一半 $346.00 买不起一张，押上账本买 1 张",
+     "expiry": "2026-11-13",
+     "exit_day": "2026-11-13",
+     "exit_at": "15:30",
+     "trail": true,
+     "best_bid": 0.71,
+     "expiry_out": null,
+     "sell_cid": "sl-sniper-500-20261112-b298ac-x41d4",
+     "sell_why": "2026-11-13 15:30 到时卖出",
+     "state": "closed",
+     "exit_price": 0.0,
+     "proceeds": 0.0,
+     "how": "券商已无持仓（到期作废）",
+     "closed": "2026-11-16 09:30",
+     "ret": -1.0
+    },
+    {
+     "tid": "20261113-e4adca",
+     "kind": "sniper",
+     "sym": "VRT261113C00220000",
+     "asset": "option",
+     "und": "VRT",
+     "qty": 1,
+     "cost": 0.6,
+     "paid": 60.0,
+     "opened": "2026-11-13 09:30",
+     "why": "开盘狙击 VRT看涨 220（2026-11-13 到期，离现价 3.7%（平时一天波动 5.4% 的一半））：三星电子据报在谈收购数据中心散热公司 Modine（Benzinga、Investing.com、CNBC 盘前；没有最终决定，谈判可能破裂），Modine 盘前 +34%。这是给整个数据中心散热板块重新定价的消息，Vertiv 是这个板块；翻倍后回撤 40% 卖，否则到期日 15:30 卖",
+     "expiry": "2026-11-13",
+     "exit_day": "2026-11-13",
+     "exit_at": "15:30",
+     "trail": true,
+     "best_bid": 0.04,
+     "expiry_out": null,
+     "sell_cid": "sl-sniper-500-20261113-e4adca-x6568",
+     "sell_why": "2026-11-13 15:30 到时卖出",
+     "state": "closed",
+     "exit_price": 0.0,
+     "proceeds": 0.0,
+     "how": "券商已无持仓（到期作废）",
+     "closed": "2026-11-16 09:30",
+     "ret": -1.0
     }
    ],
    "slots": {
@@ -8831,7 +8842,7 @@
     }
    ],
    "round_from": 8,
-   "stopped_day": "2026-11-13"
+   "stopped_day": "2026-11-16"
   },
   "sniper-1000": {
    "start": 1000.0,
@@ -9161,7 +9172,7 @@
     }
    ],
    "round_from": 5,
-   "stopped_day": "2026-11-13"
+   "stopped_day": "2026-11-16"
   },
   "overnight-500": {
    "start": 500.0,
@@ -9679,29 +9690,6 @@
    "best": 500.0,
    "created": null,
    "pead_watch": {
-    "2026-11-03": [
-     "AAPL",
-     "PLTR",
-     "PFE",
-     "SHOP",
-     "ETN"
-    ],
-    "2026-11-04": [
-     "ALAB",
-     "AMD",
-     "ANET",
-     "BKNG",
-     "SMCI",
-     "DDOG",
-     "UBER",
-     "MCD"
-    ],
-    "2026-11-05": [
-     "APP",
-     "ARM",
-     "COHR",
-     "QCOM"
-    ],
     "2026-11-06": [
      "IONQ",
      "IREN",
@@ -10246,7 +10234,7 @@
      "exit_day": "2026-11-20",
      "exit_at": "15:30",
      "trail": true,
-     "best_bid": 0.0,
+     "best_bid": 0.5,
      "expiry_out": null
     }
    ],
@@ -10435,7 +10423,7 @@
      "exit_day": "2026-11-20",
      "exit_at": "15:30",
      "trail": false,
-     "best_bid": 0.0,
+     "best_bid": 0.36,
      "expiry_out": null
     }
    ],
@@ -10675,7 +10663,7 @@
      "expiry_out": null,
      "take_x": 2,
      "take": 6.5,
-     "take_cid": "sl-dipweek-take-500-20261112-ecdc60-tdf3e"
+     "take_cid": "sl-dipweek-take-500-20261112-ecdc60-t533d"
     },
     {
      "tid": "20261113-3fa8a6",
@@ -10692,11 +10680,11 @@
      "exit_day": "2026-11-20",
      "exit_at": "15:30",
      "trail": false,
-     "best_bid": 0.0,
+     "best_bid": 0.5,
      "expiry_out": null,
      "take_x": 2,
      "take": 2.14,
-     "take_cid": "sl-dipweek-take-500-20261113-3fa8a6-t22dd"
+     "take_cid": "sl-dipweek-take-500-20261113-3fa8a6-t7afc"
     }
    ],
    "closed": [
@@ -10802,7 +10790,7 @@
      "expiry_out": null,
      "take_x": 2,
      "take": 5.65,
-     "take_cid": "sl-dipweek-take-1000-20261109-02d75a-t716d"
+     "take_cid": "sl-dipweek-take-1000-20261109-02d75a-te84b"
     },
     {
      "tid": "20261112-e6645a",
@@ -10823,7 +10811,7 @@
      "expiry_out": null,
      "take_x": 2,
      "take": 13.4,
-     "take_cid": "sl-dipweek-take-1000-20261112-e6645a-t8b9e"
+     "take_cid": "sl-dipweek-take-1000-20261112-e6645a-t702a"
     },
     {
      "tid": "20261113-505399",
@@ -10840,11 +10828,11 @@
      "exit_day": "2026-11-20",
      "exit_at": "15:30",
      "trail": false,
-     "best_bid": 0.0,
+     "best_bid": 0.36,
      "expiry_out": null,
      "take_x": 2,
      "take": 1.74,
-     "take_cid": "sl-dipweek-take-1000-20261113-505399-t3e82"
+     "take_cid": "sl-dipweek-take-1000-20261113-505399-ta880"
     }
    ],
    "closed": [
