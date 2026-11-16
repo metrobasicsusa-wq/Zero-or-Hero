@@ -1,0 +1,235 @@
+{
+ "date": "2026-11-16",
+ "sniper": {
+  "symbol": "LHX",
+  "direction": "put",
+  "catalyst": "周五（11-13）全国停飞近 5 小时、取消 12,462 个航班，周末交通部长点名 L3Harris 的施工队当时在 FAA 的设施里作业，有报道把故障和它新上的路由器联系起来；FAA 局长只说是设备故障，公司说在配合调查，没有官方认定（Fox Business、Investing.com、GuruFocus、The Hill，11-14 到 11-16）。今天是第一个交易日的反应：盘前约 −3.8%（$262），是它平时单日波动 1.7% 的 2.2 倍，没有跌破 20 日低点（242.95）。调查、国会和航空公司索赔的后续消息这几天还会出；不利的一面是部长也说「合同取消不了」。不是财报反应日（10 月已报）。",
+  "catalyst_type": "legal-regulatory",
+  "confidence": 0.3,
+  "order": "first",
+  "wrong_if": "10:00 时 LHX 比开盘价高 1% 以上（低开被买回），或 FAA / 交通部说故障原因不在 L3Harris 的设备和施工。它最近的到期日是周五（11-20），按规则会拿过夜，所以再记一条全天的线：当天收盘收回开盘价（收在开盘价上方）。",
+  "settles_today": "不会：调查刚开始，今天多半没有结论（只记录）"
+ },
+ "candidates": [
+  {
+   "rank": 1,
+   "symbol": "LHX",
+   "direction": "put",
+   "confidence": 0.3,
+   "catalyst_type": "legal-regulatory",
+   "order": "first",
+   "why": "全国停飞后被交通部点名，第一个交易日；盘前 −3.8%，约 2.2 倍平时波动，没破 20 日低点；最近到期日 11-20",
+   "wrong_if": "10:00 时比开盘价高 1% 以上，或官方说原因不在它；全天：收盘收回开盘价"
+  },
+  {
+   "rank": 2,
+   "symbol": "JNJ",
+   "direction": "call",
+   "confidence": 0.2,
+   "catalyst_type": "company news",
+   "order": "first",
+   "why": "宣布 $22 亿收购 Ollin Biosciences（CNBC 盘前），盘前 +1.4%（$289.75）突破 20 日高点 288.11，约 1.0 倍平时波动；今天资金从 AI 股往医疗走（XLV 盘前 +1.0%）。消息本身分量小：它是收购方、交易额小",
+   "wrong_if": "10:00 时 JNJ 在开盘价下方而 XLV 还在开盘价上方（板块在涨、它没跟）"
+  },
+  {
+   "rank": 3,
+   "symbol": "TTWO",
+   "direction": "call",
+   "confidence": 0.2,
+   "catalyst_type": "company news",
+   "order": "first",
+   "why": "《GTA 6》周四发售前，盘前 +2.6%（$233.79），约 1.3 倍平时波动，离 20 日高点 237.41 不远、没破；没有新的消息，是发售前的预期",
+   "wrong_if": "10:00 时在开盘价下方"
+  },
+  {
+   "rank": 4,
+   "symbol": "MSTR",
+   "direction": "put",
+   "confidence": 0.15,
+   "catalyst_type": "sector move",
+   "order": "second",
+   "why": "比特币周末跌到约 $64,000、MSCI 可能把它移出指数的报道（Benzinga），盘前 −8.5%；跳空已经很大，中盘高波动股超过 6% 常已反映",
+   "wrong_if": "10:00 时 MSTR 回到开盘价上方，或比特币回到 $66,000 上方"
+  }
+ ],
+ "skipped": [
+  {
+   "symbol": "PLTR",
+   "direction": "call",
+   "gap": "-1.0%",
+   "reason": "claude-b 已选",
+   "why_not": "claude-b 选了 PLTR 看涨（Phillip Securities 上调评级）"
+  },
+  {
+   "symbol": "NVDA",
+   "direction": "put",
+   "gap": "-3.6%",
+   "reason": "财报临近",
+   "why_not": "周二盘后财报；隔夜三条消息方向相反（金融时报说黄仁勋谋求回任、财政部长要外部 CEO 并给 10 天解释对华芯片、华尔街日报说要列为国家冠军）"
+  },
+  {
+   "symbol": "AMD",
+   "direction": "put",
+   "gap": "-5.9%",
+   "reason": "消息太弱",
+   "why_not": "没有自己的消息，跟着英伟达和整片芯片股跌；跳空约 1 倍平时波动"
+  },
+  {
+   "symbol": "SNDK",
+   "direction": "put",
+   "gap": "-6.4%",
+   "reason": "其他",
+   "why_not": "铠侠的 NAND 价格警告是周五的消息，周五已经跌过一天，今天是连续第 2 天追"
+  },
+  {
+   "symbol": "MU",
+   "direction": "put",
+   "gap": "-5.4%",
+   "reason": "消息太弱",
+   "why_not": "DRAM 价格操纵诉讼没被驳回（诉讼类减分）加板块下跌；跳空约 1.1 倍平时波动"
+  },
+  {
+   "symbol": "INTC",
+   "direction": "put",
+   "gap": "-5.1%",
+   "reason": "消息太弱",
+   "why_not": "股东集体诉讼（诉讼类减分），跳空约 0.9 倍平时波动"
+  },
+  {
+   "symbol": "NBIS",
+   "direction": "put",
+   "gap": "-7.7%",
+   "reason": "跳空已吃掉",
+   "why_not": "没有自己的消息，AI 融资担心下的板块下跌；多账本已经持有它的看涨"
+  },
+  {
+   "symbol": "CRWV",
+   "direction": "put",
+   "gap": "-7.3%",
+   "reason": "跳空已吃掉",
+   "why_not": "同上，没有自己的消息"
+  },
+  {
+   "symbol": "IREN",
+   "direction": "put",
+   "gap": "-7.1%",
+   "reason": "跳空已吃掉",
+   "why_not": "同上，另有比特币下跌"
+  },
+  {
+   "symbol": "COHR",
+   "direction": "put",
+   "gap": "-7.6%",
+   "reason": "消息太弱",
+   "why_not": "扫描里没有新闻，跟着板块"
+  },
+  {
+   "symbol": "MRVL",
+   "direction": "put",
+   "gap": "-6.2%",
+   "reason": "分析师评级",
+   "why_not": "只有 Arete 调目标价（上调），股价跟着板块跌"
+  },
+  {
+   "symbol": "VRT",
+   "direction": "put",
+   "gap": "-4.8%",
+   "reason": "消息太弱",
+   "why_not": "没有新闻；周五是我们的狙击股"
+  },
+  {
+   "symbol": "ARM",
+   "direction": "put",
+   "gap": "-5.1%",
+   "reason": "消息太弱",
+   "why_not": "英伟达消息的连带，没有自己的消息"
+  },
+  {
+   "symbol": "TSM",
+   "direction": "put",
+   "gap": "-4.8%",
+   "reason": "消息太弱",
+   "why_not": "同上"
+  },
+  {
+   "symbol": "AVGO",
+   "direction": "put",
+   "gap": "-4.2%",
+   "reason": "消息太弱",
+   "why_not": "同上"
+  },
+  {
+   "symbol": "LRCX",
+   "direction": "put",
+   "gap": "-5.2%",
+   "reason": "消息太弱",
+   "why_not": "只有机构持仓变动的标题"
+  },
+  {
+   "symbol": "WDC",
+   "direction": "put",
+   "gap": "-5.8%",
+   "reason": "消息太弱",
+   "why_not": "扫描里没有新闻"
+  },
+  {
+   "symbol": "ORCL",
+   "direction": "put",
+   "gap": "-3.2%",
+   "reason": "消息太弱",
+   "why_not": "没有实质消息"
+  },
+  {
+   "symbol": "MARA",
+   "direction": "put",
+   "gap": "-7.0%",
+   "reason": "跳空已吃掉",
+   "why_not": "比特币下跌的连带，另有发债融资"
+  },
+  {
+   "symbol": "YETI",
+   "direction": "put",
+   "gap": "-1.3%",
+   "reason": "分析师评级",
+   "why_not": "高盛下调到中性"
+  },
+  {
+   "symbol": "NOK",
+   "direction": "put",
+   "gap": "-2.3%",
+   "reason": "消息太弱",
+   "why_not": "北欧 AI 算力联盟的消息是利好，股价却跌，方向不清"
+  },
+  {
+   "symbol": "BIDU",
+   "direction": "call",
+   "gap": "n/a",
+   "reason": "财报反应日",
+   "why_not": "今早盘前发财报"
+  },
+  {
+   "symbol": "XPEV",
+   "direction": "call",
+   "gap": "n/a",
+   "reason": "财报反应日",
+   "why_not": "今早盘前发财报"
+  },
+  {
+   "symbol": "TSN",
+   "direction": "put",
+   "gap": "n/a",
+   "reason": "财报反应日",
+   "why_not": "今早盘前发财报"
+  }
+ ],
+ "claude_b_pick": "PLTR call",
+ "notes": [
+  "08:35 的例程没有写预选（一整片 AI 股一起跌，没有指向哪一只的清楚前因），这份是 09:01 例程照常选的。",
+  "今天的财报反应名单（不进候选）：ARMK、TSN、BEKE、XPEV、HTHT、BIDU、BXDC、POET、PERI、USDE。",
+  "环境：标普期货 −0.7%、纳指 100 −1.5%、SMH 盘前 −3.9%；纽约联储制造业指数 7.8（预期 17.6）。",
+  "上周的教训是别在开盘顺着缺口下单：今天芯片股的下跌没有一只有自己的新消息，所以第 1 名选了芯片之外、有自己消息的 LHX。",
+  "11-16 起多记一个字段 order：first = 买的是消息里的主角，second = 受益者或同行（只记录，攒到 15 笔比一次）。",
+  "两个真钱狙击账本都已到 10-21 的停止线、只记录；这份选择由演算账本执行。"
+ ],
+ "generated_at": "2026-11-16T09:04:05-05:00"
+}
