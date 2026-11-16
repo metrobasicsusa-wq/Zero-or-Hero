@@ -428,10 +428,17 @@ class Evolution(unittest.TestCase):
                             "2026-10-02,direction,bullish,hit,cnbc\n"
                             "2026-10-05,prediction,VIX < 20,na,\n")
             line = evolve.briefing_accuracy(path)
+            # 11-15: the same call scored on what came after the open (the gap is not the briefing's doing)
+            with open(path, "a") as f:
+                f.write("2026-10-02,direction_oc,bullish,miss,yahoo\n2026-10-05,direction_oc,bearish,hit,yahoo\n")
+            line2 = evolve.briefing_accuracy(path)
         self.assertIn("2 days", line)
         self.assertIn("predictions 1/2 (50%)", line)
         self.assertIn("predictions unverifiable 1", line)
         self.assertIn("bias vs SPY 1/1 (100%)", line)
+        self.assertIn("bias vs SPY 1/1 (100%)", line2)
+        self.assertIn("bias after the open 1/2 (50%)", line2)
+        self.assertNotIn("after the open", line)                      # no such rows yet: the line reads as before
 
 
 class Dashboard(unittest.TestCase):
