@@ -3028,6 +3028,7 @@ class Notify(unittest.TestCase):
         self.assertTrue(all(notify.nbytes(m) <= notify.MESSAGE_BYTES for m in wide))
         self.assertEqual(sum(len(m["embeds"]) for m in wide), 3)
         self.assertEqual(notify.direction("spy0dte-old-plan-1000"), "spy0dte")
+        self.assertEqual(notify.direction("spy0dte-near-off-plan-500"), "spy0dte-near")   # 11-16: the days the live one sits out
 
 
 class SniperScore(unittest.TestCase):
@@ -4265,6 +4266,48 @@ class SleeveRules(unittest.TestCase):
         del spec["min_move"]                                                                   # without it, +0.25% trades
         b.snaps["SPY"]["latestTrade"]["p"] = 100.25
         self.assertEqual(len(sr.ZeroDTE().entries(self.run_at(date(2026, 10, 20), 10, 0, b), spec, {"slots": {}})[1]), 1)
+
+    def test_zdte_below_avg_trades_only_after_a_close_under_the_twenty_day_average_and_the_twin_takes_the_other_days(self):
+        from datetime import timedelta
+        from types import SimpleNamespace
+        from hero import sleeve_rules as sr
+        live = {"id": "spy0dte-near-500", "und": "SPY", "offset": 0.003, "take": 3, "below_avg": 20}
+        twin = {"id": "spy0dte-near-off-plan-500", "und": "SPY", "offset": 0.003, "take": 3, "above_avg": 20, "plan_only": True}
+        b = self.broker()
+        b.snaps["SPY"] = {"dailyBar": {"o": 100.0, "l": 99.0}, "latestTrade": {"p": 99.4}, "prevDailyBar": {"c": 99.0}}
+
+        def bars(last):   # 19 closes at 100, then yesterday's; today's own bar must not count
+            days = [date(2026, 11, 16) - timedelta(days=k) for k in range(1, 21)][::-1]
+            return ([{"t": f"{x.isoformat()}T05:00:00Z", "c": 100.0} for x in days[:-1]]
+                    + [{"t": f"{days[-1].isoformat()}T05:00:00Z", "c": last}, {"t": "2026-11-16T05:00:00Z", "c": 50.0}])
+
+        def go(spec):
+            r = self.run_at(date(2026, 11, 16), 10, 0, b)
+            seen = []
+            r.j = SimpleNamespace(event=lambda kind, **k: seen.append((kind, k)))
+            return sr.ZeroDTE().entries(r, spec, {"slots": {}}), seen
+
+        b.bars["SPY"] = bars(99.0)                                    # yesterday 99.00 under the average 99.95: the light is on
+        (slot, picks), seen = go(live)
+        self.assertEqual((slot, len(picks), seen), ("2026-11-16", 1, []))
+        self.assertIn("SPY 昨收 $99.00，低于 20 日均线 $99.95", picks[0]["why"])
+        got, seen = go(twin)                                          # the twin sits such a day out
+        self.assertEqual(got, ("2026-11-16", []))
+        self.assertEqual((seen[0][0], seen[0][1]["dry_run"]), ("sleeve_skip", True))
+        self.assertIn("只在昨收不低于均线的日子做，今天不做", seen[0][1]["why"])
+        b.bars["SPY"] = bars(101.0)                                   # yesterday 101.00 above the average 100.05: the light is off
+        got, seen = go(live)
+        self.assertEqual(got, ("2026-11-16", []))
+        self.assertEqual((seen[0][0], seen[0][1]["dry_run"]), ("sleeve_skip", False))
+        self.assertIn("SPY 昨收 $101.00，不低于 20 日均线 $100.05，这个账本只在昨收低于均线的日子做，今天不做", seen[0][1]["why"])
+        (slot, picks), seen = go(twin)                                # and the twin records what the live ledger would have done
+        self.assertEqual((len(picks), seen), (1, []))
+        b.bars["SPY"] = [{"t": f"2026-11-{k:02d}T05:00:00Z", "c": 100.0} for k in range(1, 16)] * 2   # exactly at the average
+        self.assertEqual(go(live)[0], ("2026-11-16", []))             # at the average is not below it
+        self.assertEqual(len(go(twin)[0][1]), 1)
+        b.bars["SPY"] = bars(99.0)[-11:]                              # ten completed closes: no average, no trade, try again
+        self.assertIsNone(go(live)[0])
+        self.assertIsNone(go(twin)[0])
 
     def test_zdte_takes_the_nearest_expiry_when_there_is_none_today_and_still_sells_at_half_past_three(self):
         from hero import sleeve_rules as sr

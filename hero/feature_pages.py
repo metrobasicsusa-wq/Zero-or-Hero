@@ -51,8 +51,8 @@ TITLE = {"spy0dte": "SPY 末日单", "spy0dte-near": "SPY 末日单（离现价 
 EVENT_KINDS = {"lotto_alert": "提醒", "sleeve_skip": "跳过", "sleeve_plan": "演算", "sleeve_round": "换轮",
                "sleeve_plan_fill": "演算买进", "sleeve_plan_result": "演算结果"}
 MAX_EVENTS = 40
-SHOW_SPEC = ("und", "offset", "min_move", "take", "half_take", "entry", "side", "after_drop", "n", "mode", "fraction",
-             "switch_at", "zero_line", "sym", "ma", "gap", "hold", "unds", "instrument", "stop_entries", "stop_if_losing")
+SHOW_SPEC = ("und", "offset", "min_move", "below_avg", "above_avg", "take", "half_take", "entry", "side", "after_drop",
+             "n", "mode", "fraction", "switch_at", "zero_line", "sym", "ma", "gap", "hold", "unds", "instrument", "stop_entries", "stop_if_losing")
 
 
 def family(sleeve_id: str) -> str:

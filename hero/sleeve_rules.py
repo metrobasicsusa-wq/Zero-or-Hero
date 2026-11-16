@@ -218,7 +218,11 @@ class ZeroDTE:
     Optional: `side` "call" / "put" fixes the side; `after_drop` (e.g. -0.01) trades only the day after a close
     at least that far below the one before it (research/2026-10-08-zdte-streak.md); `min_move` (e.g. 0.005) trades
     only when the price is at least that far from the open at entry time, else the day is sat out
-    (research/2026-10-20-zdte-cost.md: the only group of days that paid under every cost assumption)."""
+    (research/2026-10-20-zdte-cost.md: the only group of days that paid under every cost assumption);
+    `below_avg` (e.g. 20) trades only when yesterday's close is below the average of the last 20 completed closes,
+    and `above_avg` is its exact mirror (at or above it), for the plan twin that records the days the live ledger
+    sits out (owner, 11-16; research/2026-11-16-zdte-detect.md: all in every day cost about $25,000 a hero over ten
+    years, $11,000 on the days below the average and $43,000 on the others)."""
 
     def entries(self, run, spec, s):
         day = run.today.isoformat()
@@ -234,6 +238,22 @@ class ZeroDTE:
             if prev > spec["after_drop"]:
                 return (day, [])  # yesterday was not a big enough drop: sit out
             why_day = f"昨天 {und} 收跌 {prev:.1%}，"
+        for key, want_below in (("below_avg", True), ("above_avg", False)):
+            n = int(spec.get(key) or 0)
+            if not n:
+                continue
+            xs = closes(run, [und], days=n * 2 + 15).get(und) or []
+            if len(xs) < n:
+                return None  # no average, no trade: tried again next cycle
+            avg = sum(xs[-n:]) / n
+            below = xs[-1] < avg
+            where = f"{und} 昨收 ${xs[-1]:,.2f}，{'低于' if below else '不低于'} {n} 日均线 ${avg:,.2f}"
+            if below != want_below:
+                run.j.event("sleeve_skip", dry_run=bool(spec.get("plan_only")), sleeve=spec.get("id", ""), symbol=und,
+                            why=f"{spec.get('id', '')}：{where}，这个账本只在昨收{'低于' if want_below else '不低于'}均线的日子做，"
+                                "今天不做")
+                return (day, [])
+            why_day += f"{where}，"
         snap = snaps(run, [und]).get(und) or {}
         spot, o, _, _ = spot_open(snap)
         if not spot or not o:

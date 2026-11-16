@@ -95,8 +95,9 @@ SITE = "https://metrobasicsusa-wq.github.io/Zero-or-Hero"
 
 def direction(sid: str) -> str:
     """A ledger id without its size, plan or rank suffix: spy0dte-1000 / spy0dte-old-plan-500 / sniper-r2-plan-500
-    -> spy0dte / sniper (its page)."""
-    return re.sub(r"-r\d+$", "", re.sub(r"-(?:old-|opt-)?plan$", "", re.sub(r"-(500|1000|2000)$", "", sid or "")))
+    -> spy0dte / sniper (its page). An "off" twin (the days its live ledger sits out) goes with that ledger:
+    spy0dte-near-off-plan-500 -> spy0dte-near."""
+    return re.sub(r"-r\d+$", "", re.sub(r"-(?:old-|opt-|off-)?plan$", "", re.sub(r"-(500|1000|2000)$", "", sid or "")))
 
 
 def linked(text: str, sid: str) -> str:

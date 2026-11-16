@@ -142,11 +142,11 @@
       {"id": "nvda0dte-1000", "kind": "zdte", "half_take": true, "start": 1000, "name": "NVDA 末日单【变体：5 倍止盈（$500 版 3 倍）】",
        "und": "NVDA", "offset": 0.006, "take": 5, "variant": "10-22 用户（样本太慢）：$1,000 账本从 10-23 起是 $500 版的变体——5 倍止盈（$500 版 3 倍）；之前两个账本买同一只，不算两个样本", "stop_entries": true, "note": "10-23 用户「改」（docs/hero-plan.md）：不是 hero 候选（押一半 0/35 轮、押满 0–0.7%），停止进场、只由演算替身记录"
       },
-      {"id": "spy0dte-near-500", "kind": "zdte", "half_take": true, "start": 500, "name": "SPY 末日单，离现价 0.3%",
-       "und": "SPY", "offset": 0.003, "take": 3, "fraction": 1.0, "note": "10-23 用户「改」（docs/hero-plan.md）：押满——回测里押一半的末日单出不了 hero（SPY 0.3% 现行出场 0/58 轮），押满每轮 1–3%、一轮 2 笔（research/2026-10-23-hero-game.md）"
+      {"id": "spy0dte-near-500", "kind": "zdte", "half_take": true, "start": 500, "name": "SPY 末日单，离现价 0.3%，昨收在 20 日均线下方才做",
+       "und": "SPY", "offset": 0.003, "take": 3, "fraction": 1.0, "below_avg": 20, "note": "10-23 用户「改」（docs/hero-plan.md）：押满——回测里押一半的末日单出不了 hero（SPY 0.3% 现行出场 0/58 轮），押满每轮 1–3%、一轮 2 笔（research/2026-10-23-hero-game.md）；11-16 用户「同意，按你的建议改」：只在 SPY 昨收低于 20 日均线的日子做，其余日子不下真单、由演算替身 spy0dte-near-off-plan-500 记录（research/2026-11-16-zdte-detect.md：10 年押满重放，每天做每个 hero 约 $25,300，只做均线下方约 $11,000，只做其余日子约 $43,400，前后两段一致）；替身攒满 20 个这样的日子、按天平均每 $1 为正，就改回每天做"
       },
-      {"id": "spy0dte-near-1000", "kind": "zdte", "half_take": true, "start": 1000, "name": "SPY 末日单，离现价 0.3%【变体：09:35 进场（$500 版 10:00）】",
-       "entry": "09:35", "und": "SPY", "offset": 0.003, "take": 3, "variant": "10-22 用户（样本太慢）：$1,000 账本从 10-23 起是 $500 版的变体——09:35 进场（$500 版 10:00）；之前两个账本买同一只，不算两个样本", "fraction": 1.0, "note": "10-23 用户「改」（docs/hero-plan.md）：押满——回测里押一半的末日单出不了 hero（SPY 0.3% 现行出场 0/58 轮），押满每轮 1–3%、一轮 2 笔（research/2026-10-23-hero-game.md）"
+      {"id": "spy0dte-near-1000", "kind": "zdte", "half_take": true, "start": 1000, "name": "SPY 末日单，离现价 0.3%，昨收在 20 日均线下方才做【变体：09:35 进场（$500 版 10:00）】",
+       "entry": "09:35", "und": "SPY", "offset": 0.003, "take": 3, "below_avg": 20, "variant": "10-22 用户（样本太慢）：$1,000 账本从 10-23 起是 $500 版的变体——09:35 进场（$500 版 10:00）；之前两个账本买同一只，不算两个样本", "fraction": 1.0, "note": "10-23 用户「改」（docs/hero-plan.md）：押满——回测里押一半的末日单出不了 hero（SPY 0.3% 现行出场 0/58 轮），押满每轮 1–3%、一轮 2 笔（research/2026-10-23-hero-game.md）；11-16 用户「同意，按你的建议改」：只在 SPY 昨收低于 20 日均线的日子做，其余日子不下真单、由演算替身 spy0dte-near-off-plan-1000 记录（research/2026-11-16-zdte-detect.md：10 年押满重放，每天做每个 hero 约 $25,300，只做均线下方约 $11,000，只做其余日子约 $43,400，前后两段一致）；替身攒满 20 个这样的日子、按天平均每 $1 为正，就改回每天做"
       },
       {"id": "tsla0dte-5x-500", "kind": "zdte", "half_take": true, "start": 500, "name": "TSLA 末日单，5 倍止盈",
        "und": "TSLA", "offset": 0.006, "take": 5, "stop_entries": true, "note": "10-23 用户「改」（docs/hero-plan.md）：不是 hero 候选（5 倍版不比 3 倍版多出 hero），停止进场、只由演算替身记录"
@@ -367,6 +367,12 @@
       {"id": "sniper-plan-1000", "kind": "sniper", "start": 1000, "name": "开盘狙击：同一只（只演算，10-21 起；实盘停了它照常记）【变体：行权价离现价一整天的平时波动（$500 版半天）】",
        "fraction": 0.5, "swing_frac": 1.0, "plan_only": true,
        "variant": "10-22 用户（样本太慢）：$1,000 账本从 10-23 起是 $500 版的变体——行权价离现价一整天的平时波动（$500 版半天）；之前两个账本买同一只，不算两个样本"
+      },
+      {"id": "spy0dte-near-off-plan-500", "kind": "zdte", "half_take": true, "start": 500, "name": "SPY 末日单，离现价 0.3%——昨收不低于 20 日均线的日子（真账本不做的日子，只演算）",
+       "und": "SPY", "offset": 0.003, "take": 3, "fraction": 1.0, "above_avg": 20, "plan_only": true, "note": "11-16 用户「同意，按你的建议改」：spy0dte-near-500 从 11-17 起只在昨收低于 20 日均线的日子下真单，这个替身只在其余日子按同样的规则演算、不下单；攒满 20 个这样的日子、两个替身按天平均每 $1 为正，就把真账本改回每天做（research/2026-11-16-zdte-detect.md）"
+      },
+      {"id": "spy0dte-near-off-plan-1000", "kind": "zdte", "half_take": true, "start": 1000, "name": "SPY 末日单，离现价 0.3%——昨收不低于 20 日均线的日子（真账本不做的日子，只演算）【09:35 进场】",
+       "entry": "09:35", "und": "SPY", "offset": 0.003, "take": 3, "fraction": 1.0, "above_avg": 20, "plan_only": true, "note": "11-16 用户「同意，按你的建议改」：spy0dte-near-1000 从 11-17 起只在昨收低于 20 日均线的日子下真单，这个替身只在其余日子按同样的规则演算、不下单；攒满 20 个这样的日子、两个替身按天平均每 $1 为正，就把真账本改回每天做（research/2026-11-16-zdte-detect.md）"
       },
       {"id": "spy0dte-old-plan-500", "kind": "zdte", "half_take": true, "start": 500, "name": "SPY 末日单 0.6%、天天做（10-20 前的规则，只演算）",
        "und": "SPY", "offset": 0.006, "take": 3, "plan_only": true
