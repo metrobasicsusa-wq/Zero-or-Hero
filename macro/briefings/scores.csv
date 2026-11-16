@@ -118,3 +118,7 @@ date,kind,prediction,result,source
 2026-11-13,direction_oc,偏多,miss,Yahoo 日线：开 760.07 收 754.37（开到收 -0.75%；11-15 补算）
 2026-11-09,prediction,AMD 10:00 在开盘价上方且 NVDA 在开盘价下方,miss,exchange/claude/2026-11-09.close.json（NVDA 10:00 对开盘 +2.8%；11-15 反方审阅发现漏记）
 2026-11-10,prediction,SMCI 10:00 在开盘价下方,miss,exchange/claude/2026-11-10.close.json（28.62 对开盘 27.97；11-15 反方审阅发现漏记）
+2026-11-16,prediction,SPY 今天收盘低于上周五收盘（约 754.27）,hit,journal/snapshot.json 16:55 ET (SPY 754.27 -> 740.04)
+2026-11-16,prediction,纳指综合指数今天收盘涨跌幅低于标普 500,hit,https://www.cnn.com/2026/11/16/business/stocks-nvidia-ai-anthropic (Nasdaq -2.49% vs S&P -1.92%)
+2026-11-16,direction,偏空,hit,journal/snapshot.json 16:55 ET (SPY -1.89%)
+2026-11-16,direction_oc,偏空,hit,Yahoo 日线：开 749.66 收 739.95（开到收 -1.30%；和缺口同向）
