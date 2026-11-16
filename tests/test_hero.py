@@ -440,6 +440,19 @@ class Evolution(unittest.TestCase):
         self.assertIn("bias after the open 1/2 (50%)", line2)
         self.assertNotIn("after the open", line)                      # no such rows yet: the line reads as before
 
+    def test_the_call_that_replaced_the_bias_is_counted(self):
+        # 11-16: "will SPY end the day on the other side of its open from the gap"
+        with tempfile.TemporaryDirectory() as d:
+            path = Path(d) / "scores.csv"
+            path.write_text("date,kind,prediction,result,source\n"
+                            "2026-11-16,against_gap,gap down: yes,hit,yahoo\n"
+                            "2026-11-17,against_gap,gap up: no,miss,yahoo\n"
+                            "2026-11-17,against_gap,flat open,na,yahoo\n")
+            line = evolve.briefing_accuracy(path)
+        self.assertIn("against the gap 1/2 (50%)", line)
+        self.assertIn("against the gap unverifiable 1", line)
+        self.assertNotIn("bias vs SPY", line)
+
 
 class Dashboard(unittest.TestCase):
     def test_render_skips_dry_runs_and_escapes(self):
@@ -5957,6 +5970,38 @@ class EarningsPage(unittest.TestCase):
         self.assertIn("开盘 -1.0% · 收盘 -2.0% · 方向错", page)       # judged at the open against the price before
         self.assertNotIn("—（月）", page)
         self.assertIn("<td>全部</td>", page)
+        self.assertIn("还没有写好的研究页", page)                     # no watch-list files here: the block says so
+
+    def test_the_watch_list_block_names_who_gets_a_judgment_and_links_each_page(self):
+        from hero import earnings_page as ep
+        with tempfile.TemporaryDirectory() as d:
+            root = Path(d)
+            for sub in ("data", "journal", "journal-s500", "research/earnings-forecast/deep"):
+                (root / sub).mkdir(parents=True)
+            (root / "data" / "universe.json").write_text(json.dumps({"stocks": ["HD", "TJX", "NVDA"]}))
+            (root / "journal" / "snapshot.json").write_text(json.dumps({"positions": [{"symbol": "NVDA261120C00180000"}]}))
+            fc = root / "research" / "earnings-forecast"
+            (fc / "extra_watch.json").write_text(json.dumps({"symbols": ["DIS", "BRK.B"]}))
+            (fc / "companies.json").write_text(json.dumps({"DIS": {"bar": "门槛：2027 财年 <增速> ≥ 12%"}, "HD": {}}))
+            for name in ("README.md", "DIS-2026-11-17.md", "HD-2026-11-17.md", "NVDA-2026-11-17.md", "CSCO-2026-11-12.md",
+                         "OLD-2026-10-01.md"):
+                (fc / "deep" / name).write_text("# x\n")
+            data = ep.collect(root, date(2026, 11, 16))
+            w = data["watch"]
+            self.assertEqual((w["pool_n"], w["extra"]), (3, ["DIS", "BRK.B"]))
+            self.assertEqual([(r["symbol"], r["date"]) for r in w["pages"]],
+                             [("CSCO", "2026-11-12"), ("DIS", "2026-11-17"), ("HD", "2026-11-17"), ("NVDA", "2026-11-17")])
+            page = ep.render(data)
+        self.assertIn("关注名单（只给这些写判断）", page)
+        self.assertIn("股票池 3 只", page)
+        self.assertIn("BRK.B", page)
+        self.assertIn("门槛：2027 财年 &lt;增速&gt; ≥ 12%", page)        # the bar, escaped
+        self.assertIn("<b>NVDA</b>★", page)                           # held through an option
+        self.assertIn("research/earnings-forecast/deep/DIS-2026-11-17.md", page)
+        self.assertIn("还没写", page)                                 # HD has a page but no bar yet
+        self.assertLess(page.index("接下来要发的"), page.index("最近发过的"))
+        self.assertLess(page.index("最近发过的"), page.index("CSCO"))
+        self.assertNotIn("OLD", page)                                 # more than ten days back
 
 
 class ResearchSniperFactors(unittest.TestCase):

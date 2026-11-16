@@ -121,8 +121,9 @@ def briefing_accuracy(scores_path: Path) -> str:
     """Report-only line on how the pre-market briefings' predictions scored.
 
     Rows come from macro/briefings/scores.csv (date,kind,prediction,result,source), written
-    by the briefing/review routines. kind is "prediction", "direction" (close against the previous close) or
-    "direction_oc" (close against the open); result is hit, miss or na. This never feeds parameter selection.
+    by the briefing/review routines. kind is "prediction", "direction" (close against the previous close),
+    "direction_oc" (close against the open) or "against_gap"; result is hit, miss or na. This never feeds
+    parameter selection.
     """
     if not scores_path.exists():
         return ""
@@ -134,7 +135,12 @@ def briefing_accuracy(scores_path: Path) -> str:
     # 11-15: "direction" is scored on the close against the previous close, which hands the call the gap that had
     # already happened (30 days: 67%, and never once against the gap); "direction_oc" is the same call scored on the
     # open-to-close move, the only part still to come when the briefing is written (11 of 24, 46%)
-    for kind, label in (("prediction", "predictions"), ("direction", "bias vs SPY"), ("direction_oc", "bias after the open")):
+    # 11-16 (owner: "三件都同意，改吧"): the briefing no longer says bullish / bearish. It states the gap and
+    # answers one question, "will SPY end the day on the other side of its open from the gap" (against_gap). The
+    # two older kinds stop growing. (The midday "up or down from 12:00" call is scored in
+    # exchange/claude/pm-dir-scores.md by the close routine, not here.)
+    for kind, label in (("prediction", "predictions"), ("direction", "bias vs SPY"), ("direction_oc", "bias after the open"),
+                        ("against_gap", "against the gap")):
         rs = [r["result"].strip() for r in rows if r["kind"].strip() == kind]
         hit, miss = rs.count("hit"), rs.count("miss")
         if hit + miss:

@@ -7,6 +7,9 @@ Owner, 10-19: the platform should show the earnings calendar. Three parts, all f
   2. our pool's reports for the next three weeks (data/earnings.json, Alpha Vantage, refreshed each morning),
      names either account holds marked;
   3. the forecast scorecard (research/earnings-forecast/scorecard.md).
+Owner, 11-16: a fourth block on top, the watch list. Since 11-16 only the names we care about get a judgment (our
+pool, what either account holds, research/earnings-forecast/extra_watch.json); the block says who they are and links
+each one's research page (research/earnings-forecast/deep/<SYMBOL>-<report date>.md) with its bar in one sentence.
 Run: python -m hero.earnings_page --out site/earnings.html (pages.yml does it after every push).
 """
 
@@ -39,6 +42,57 @@ def held(root: Path) -> dict[str, list[str]]:
             und = sym[:-15] if len(sym) > 15 and sym[-9] in "CP" else sym
             if und and name not in out.setdefault(und, []):
                 out[und].append(name)
+    return out
+
+
+def watch_list(root: Path, today: date, back: int = 10) -> dict:
+    """Who gets a judgment: the pool's size, the extra names, and the research pages from `back` days ago on."""
+    fc = root / "research" / "earnings-forecast"
+    try:
+        pool_n = len(json.loads((root / "data" / "universe.json").read_text()).get("stocks") or [])
+    except Exception:
+        pool_n = 0
+    try:
+        extra = [str(s) for s in json.loads((fc / "extra_watch.json").read_text()).get("symbols") or []]
+    except Exception:
+        extra = []
+    try:
+        bars = json.loads((fc / "companies.json").read_text())
+    except Exception:
+        bars = {}
+    pages = []
+    since = (today - timedelta(days=back)).isoformat()
+    for f in sorted((fc / "deep").glob("*-20??-??-??.md")) if (fc / "deep").is_dir() else []:
+        sym, day = f.stem[:-11], f.stem[-10:]
+        if day >= since:
+            pages.append({"symbol": sym, "date": day, "bar": str((bars.get(sym) or {}).get("bar") or ""),
+                          "path": f"research/earnings-forecast/deep/{f.name}"})
+    pages.sort(key=lambda r: (r["date"], r["symbol"]))
+    return {"pool_n": pool_n, "extra": extra, "pages": pages}
+
+
+def watch_block(w: dict, hold: dict[str, list[str]], today: str) -> str:
+    def rows(rs: list[dict]) -> str:
+        return "".join(
+            f'<tr{" class=today" if r["date"] == today else ""}><td>{esc(day_label(r["date"]))}</td>'
+            f'<td><b>{esc(r["symbol"])}</b>{"★" if r["symbol"] in hold else ""}</td>'
+            f'<td>{esc(r["bar"]) or "<span class=muted>还没写</span>"}</td>'
+            f'<td><a href="{REPO_BLOB}/{esc(r["path"])}">研究页</a></td></tr>' for r in rs)
+    ahead = [r for r in w["pages"] if r["date"] >= today]
+    past = [r for r in w["pages"] if r["date"] < today]
+    held_chips = " ".join(f'<span class="chip">{esc(s)} <span class=muted>{esc("、".join(a))}</span></span>'
+                          for s, a in sorted(hold.items())) or "没有"
+    extra = " ".join(f'<span class="chip">{esc(s)}{"★" if s in hold else ""}</span>' for s in w["extra"]) or "没有"
+    head = "<tr><th>财报日</th><th>股票</th><th>门槛（什么算过、什么算错）</th><th></th></tr>"
+    out = (f'<div class="meta">11-16 起只给这些公司写财报判断，每家一页研究：股票池 {w["pool_n"]} 只'
+           f'（<a href="{REPO_BLOB}/data/universe.json">data/universe.json</a>）、两个账户持有的、下面的关注名单。'
+           '其余财报只记录期权定价和结果，不写判断。只记录，不交易。</div>'
+           f'<p><b>两个账户持有的</b>：{held_chips}</p>'
+           f'<p><b>关注名单</b>（<a href="{REPO_BLOB}/research/earnings-forecast/extra_watch.json">extra_watch.json</a>，'
+           f'不在股票池里但我们在意的）：{extra}</p>'
+           f'<h4>接下来要发的</h4><div class="table-wrap"><table>{head}{rows(ahead) or "<tr><td colspan=4>还没有写好的研究页</td></tr>"}</table></div>')
+    if past:
+        out += f'<h4>最近发过的</h4><div class="table-wrap"><table>{head}{rows(past)}</table></div>'
     return out
 
 
@@ -138,6 +192,7 @@ def collect(root: Path = ROOT, today: date | None = None) -> dict:
     score = sc.read_text() if sc.exists() else ""
     return {"generated": datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M"), "today": today.isoformat(),
             "hold": held(root), "pool": rows, "fetched": fetched, "forecast": rep, "calls": calls,
+            "watch": watch_list(root, today),
             "scorecard": "\n".join(score.splitlines()[1:])}
 
 
@@ -154,12 +209,15 @@ def render(data: dict) -> str:
 .md h4 {{ font-size: 14px; margin: 12px 0 4px; }}
 tr.today td {{ background: var(--chip); }}
 .muted {{ color: var(--ink-2); }}
+.chip {{ display: inline-block; padding: 1px 8px; margin: 2px 2px; border-radius: 10px; background: var(--chip); font-size: 13px; }}
+h4 {{ font-size: 14px; margin: 14px 0 6px; }}
 td, th {{ vertical-align: top; }}
 </style></head>
 <body><main>
 <header><h1>Zero-or-Hero <span>· 财报</span></h1>
 <nav class="meta"><a href="index.html">Claude 主实验 $100k</a> · <a href="s500.html">Claude-500 多账本 $50k</a> · <a href="f/index.html">各方向</a> · <a href="exchange.html">三方交流</a> · <b>财报</b></nav>
 <div class="meta">更新于 {esc(data['generated'])}（UTC）· ★ = 两个账户里正拿着（正股或期权）· ✓ = 公司已公布日期（Yahoo）· ⚠ = 日历来源不一致，待核对 · 模拟盘，参考记录，不是投资建议</div></header>
+<section class="card"><h2>关注名单（只给这些写判断）</h2>{watch_block(data.get('watch') or {'pool_n': 0, 'extra': [], 'pages': []}, hold, data['today'])}</section>
 <section class="card"><h2>今晚盘后 · 明早盘前（全美股）</h2>{forecast_table(data['forecast'], data['calls'], hold)}</section>
 <section class="card"><h2>我们股票池接下来三周</h2>
 <div class="meta">data/earnings.json（Alpha Vantage，用 Nasdaq 修正日期和盘前盘后，Yahoo 标出公司已确认的；{esc(data['fetched'] or '—')} 更新）。没有 ✓ 的日期可能是按往年推算的。</div>

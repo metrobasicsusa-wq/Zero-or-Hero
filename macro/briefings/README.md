@@ -5,5 +5,6 @@
 - 内容：美债收益率、美联储、油价、美元、地缘冲突/战争、当天重要数据与财报。
 - **只记录，不影响交易。** 积累几周后对照当天实际走势评估判断是否有价值，再决定是否接入。
 - 价格型宏观指标（TLT/USO/VIXY/UUP）由交易程序每天计算，见 `hero/macro.py`，是否影响仓位由每周进化（`macro_scale`）决定。
-- 预测核对：盘后复盘写当天简报的「收盘核对」，下一份盘前简报写「昨日预测核对」。每条结论同时追加一行到 `scores.csv`（`date,kind,prediction,result,source`；kind 为 `prediction` 或 `direction`，result 为 `hit` / `miss` / `na`）。
+- 预测核对：盘后复盘写当天简报的「收盘核对」，下一份盘前简报写「昨日预测核对」。每条结论同时追加一行到 `scores.csv`（`date,kind,prediction,result,source`；kind 为 `prediction`、`against_gap`，以及到 11-16 为止的 `direction`、`direction_oc`；result 为 `hit` / `miss` / `na`）。
+- 11-17 起（用户 11-16 同意）「判断」一节不再写偏多 / 偏空：24 天里它全部和开盘缺口同号，按开盘到收盘算只对 11 次。现在写两行——缺口方向（SPY 盘前价对昨收，机械）和「今天会不会反着走」（会 / 不会 + 一句理由）。「会」= SPY 收盘在开盘价的另一边（低开的日子收在开盘价上方，高开的日子收在下方）；平开（±0.1% 以内）不判，记 `na`。收盘按 SPY 开盘价到收盘价机械地记 `against_gap`。20 次里对不到 13 次就提出停（缺口延续的底数是 56%）。
 - 每周六进化会把 `scores.csv` 的准确率写进 `journal/evolution.md`，**只做记录，不参与选参数**。
