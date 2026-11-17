@@ -1,0 +1,143 @@
+{
+ "date": "2026-11-17",
+ "sniper": {
+  "symbol": "MRVL",
+  "direction": "call",
+  "catalyst": "路透今早独家：美国政府不顾亚马逊、谷歌、Meta 的游说，继续推进限制进口中国新型号光模块（数据中心里的光收发器）的措施；美国的光器件公司盘前上涨（路透 11-17 独家；Yahoo Finance、Investing.com、TipRanks 转述）。Marvell 正在用全股票收购 Lumentum（11-02 宣布），是这条消息的二线受益者：盘前约 +3.7%（$150.78），大约是它平时一天的波动，没有突破 20 日高点。主角 Coherent 盘前已经 +7.8%。不是财报反应日。",
+  "catalyst_type": "legal-regulatory",
+  "confidence": 0.3,
+  "order": "second",
+  "wrong_if": "10:00 时 MRVL 回到开盘价下方（高开被卖），或政府 / 白宫否认或推迟这项措施。它最近的到期日是周五（11-20），按规则会拿过夜，所以再记一条全天的线：当天收盘收回开盘价（收在开盘价下方）。",
+  "settles_today": "不会：措施还在推进，没有正式公布（只记录）"
+ },
+ "candidates": [
+  {
+   "rank": 1,
+   "symbol": "MRVL",
+   "direction": "call",
+   "confidence": 0.3,
+   "catalyst_type": "legal-regulatory",
+   "order": "second",
+   "why": "限制中国光模块进口的二线受益者（在收购 Lumentum）；盘前 +3.7%，约 1 倍平时波动，没破 20 日高点；最近到期日 11-20",
+   "wrong_if": "10:00 回到开盘价下方，或措施被否认 / 推迟；全天：收盘收在开盘价下方"
+  },
+  {
+   "rank": 2,
+   "symbol": "COHR",
+   "direction": "call",
+   "confidence": 0.25,
+   "catalyst_type": "legal-regulatory",
+   "order": "first",
+   "why": "同一条消息的主角（美国本土光模块）；盘前 +7.8%，中盘股跳空超过 6% 常已反映，约 1.5 倍平时波动，没破 20 日高点",
+   "wrong_if": "10:00 回到开盘价下方"
+  },
+  {
+   "rank": 3,
+   "symbol": "UNH",
+   "direction": "put",
+   "confidence": 0.2,
+   "catalyst_type": "legal-regulatory",
+   "order": "first",
+   "why": "参议员沃伦呼吁拆分包括联合健康在内的医疗集团（Benzinga 标题）；盘前 −2.7%，约 1.3 倍平时波动；只是一位参议员的呼吁，不是立法，这类消息减分",
+   "wrong_if": "10:00 比开盘价高 1% 以上"
+  },
+  {
+   "rank": 4,
+   "symbol": "INTC",
+   "direction": "put",
+   "confidence": 0.15,
+   "catalyst_type": "company news",
+   "order": "first",
+   "why": "英伟达的持仓报告显示三季度把英特尔减持了 25%（到 9 月底 1.611 亿股）；盘前约 −3%。减分：昨天已因股东诉讼跌约 7%，是连续第 2 天追；持仓数是 9 月底的旧数",
+   "wrong_if": "10:00 回到开盘价上方"
+  }
+ ],
+ "skipped": [
+  {
+   "symbol": "CSCO",
+   "direction": "call",
+   "gap": "+1.7%",
+   "reason": "claude-b 已选",
+   "why_not": "claude-b 选了 CSCO 看涨（汇丰、DZ 银行上调评级）"
+  },
+  {
+   "symbol": "NVDA",
+   "direction": "call",
+   "gap": "小幅",
+   "reason": "财报临近",
+   "why_not": "今晚盘后发财报，期权会拿过财报"
+  },
+  {
+   "symbol": "AMD",
+   "direction": "call",
+   "gap": "+2.6%",
+   "reason": "其他",
+   "why_not": "跟着芯片反弹，自己的新闻是昨天的出口限制（利空），方向和跳空相反"
+  },
+  {
+   "symbol": "NKE",
+   "direction": "call",
+   "gap": "+3.3%",
+   "reason": "消息太弱",
+   "why_not": "只是公布了资本市场日的日期"
+  },
+  {
+   "symbol": "BE",
+   "direction": "call",
+   "gap": "+2.7%",
+   "reason": "消息太弱",
+   "why_not": "没有自己的新闻，跟着数据中心板块"
+  },
+  {
+   "symbol": "SITE",
+   "direction": "call",
+   "gap": "+7.3%",
+   "reason": "跳空已吃掉",
+   "why_not": "被纳入标普小盘 600，跳空 7% 已反映"
+  },
+  {
+   "symbol": "DB",
+   "direction": "put",
+   "gap": "小幅",
+   "reason": "其他",
+   "why_not": "内部文件泄露的报道，细节没核实，美股期权稀"
+  },
+  {
+   "symbol": "HD",
+   "direction": "put",
+   "gap": "约 -2%",
+   "reason": "财报反应日",
+   "why_not": "今早盘前发财报"
+  },
+  {
+   "symbol": "DIS",
+   "direction": "call",
+   "gap": "约 +2%",
+   "reason": "财报反应日",
+   "why_not": "今早盘前发财报"
+  },
+  {
+   "symbol": "JD",
+   "direction": "put",
+   "gap": "-3.4%",
+   "reason": "财报反应日",
+   "why_not": "今早盘前发财报"
+  },
+  {
+   "symbol": "TME",
+   "direction": "put",
+   "gap": "约 -3%",
+   "reason": "财报反应日",
+   "why_not": "今早盘前发财报"
+  }
+ ],
+ "claude_b_pick": "CSCO call",
+ "notes": [
+  "08:35 的例程没有写预选（当时最像样的前因是英特尔，连续第 2 天追、消息是旧持仓）；这份是 09:01 例程照常选的，光模块这条路透独家是 08:35 之后才查到的。",
+  "MRVL 的期权最近到期日是周五，按规则会拿过今晚的英伟达财报：这一单实际上也押了英伟达财报的方向，是它最大的风险，信心因此只给 0.3。",
+  "多账本已经有 Vertiv、Nebius、CoreWeave、IREN、芯片 ETF 的看涨和英特尔的看跌，这一单和它们同方向。",
+  "今天的财报反应名单（一律不选）：ACM、AS、DIS、ENR、ESLT、FIRY、FUBO、GFF、GFUZ、HD、INFQ、JD、KLAR、LUXE、MFP、OCSL、OMER、OPRA、PAGS、POWL、SHAZ、SMWB、SR、TME、TRAK、VIK、XP、YALA。",
+  "08:30 零售销售已公布，数字没查到；股指期货分化（纳指 100 约 +0.5%，道指约 −0.3%）。"
+ ],
+ "generated_at": "2026-11-17T09:04:08-05:00"
+}
