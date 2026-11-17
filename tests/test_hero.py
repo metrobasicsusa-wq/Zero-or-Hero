@@ -6281,6 +6281,44 @@ class ResearchZdteCost(unittest.TestCase):
         self.assertIn("## QQQ", md)
         self.assertIn("0 条线过了 0 条", md)                             # one day: nothing to compare
 
+    def test_times_takes_the_first_later_look_only_on_days_ten_oclock_sat_out(self):
+        from unittest import mock
+        from hero import research_zdte_times as zt
+        minute = self.minute
+
+        class Client:   # 10-16: flat at 10:00, down 0.8% by 10:30 and further by 11:00; 10-19: already down 0.7% at 10:00
+            def stock_bars(self, syms, start, end, feed=None):
+                paths = {"2026-10-16": (("09:30", 600.0), ("09:45", 600.3), ("10:00", 600.6), ("10:30", 595.2), ("11:00", 594.0),
+                                        ("12:00", 593.0), ("15:30", 592.0)),
+                         "2026-10-19": (("09:30", 600.0), ("09:45", 598.0), ("10:00", 595.8), ("10:30", 595.0), ("11:00", 594.0),
+                                        ("12:00", 594.5), ("15:30", 596.0))}
+                return {"SPY": [minute(d, t, px) for d, p in paths.items() if start[:10] <= d < end[:10] for t, px in p]}
+
+            def option_contracts(self, und, status, expiration_date_gte, **kw):
+                return [{"symbol": f"SPY{k}{t[0].upper()}", "expiration_date": expiration_date_gte, "strike_price": str(k), "type": t}
+                        for k in range(585, 610) for t in ("call", "put")]
+
+            def option_bars(self, syms, start, end, timeframe=None):
+                path = [("09:45", 1.0), ("10:00", 1.0), ("10:30", 1.0), ("11:00", 1.5), ("12:00", 2.0), ("15:30", 2.5)]
+                return {s: [minute(start[:10], t, px) for t, px in path] for s in syms}
+
+        with mock.patch.object(zt, "START", "2026-10-01"), mock.patch("time.sleep"):
+            rep = zt.run(Client())
+        by = {(r["day"], r["t"]): r for r in rep["rows"]}
+        self.assertEqual(len(rep["rows"]), 10)                         # two days, five looks each
+        self.assertEqual((by[("2026-10-16", "10:00")]["kind"], by[("2026-10-16", "10:00")]["sym"]), ("C", "SPY603C"))   # 600.6 x 1.003
+        self.assertEqual((by[("2026-10-16", "10:30")]["kind"], by[("2026-10-16", "10:30")]["sym"]), ("P", "SPY593P"))   # 595.2 x 0.997
+        got = zt.later_first(rep["rows"], "0/0")
+        self.assertEqual([d for d, _ in got], ["2026-10-16"])          # 10-19 showed the move at 10:00 already: not a later day
+        self.assertAlmostEqual(got[0][1], 2.5 / 1.0 - 1)               # bought at 10:30 for 1.00, never 3x, doubled without a 40% fall
+        self.assertFalse(zt.later_verdict(got)["pass"])                # one day is not forty
+        self.assertIsNone(zt.later_verdict([]))
+        table, md = zt.report(rep)
+        self.assertIn("10:00 没亮的日子，之后第一次亮", md)
+        good = [(f"2026-{m:02d}-{d:02d}", 0.2) for m in (1, 2, 3) for d in range(1, 21)]      # sixty steady days pass
+        self.assertTrue(zt.later_verdict(good)["pass"])
+        self.assertFalse(zt.later_verdict([(d, 9.0 if i < 3 else -0.1) for i, (d, _) in enumerate(good)])["pass"])   # three days carry it
+
 
 class EarningsReasons(unittest.TestCase):
     def test_tally_joins_results_and_finds_usable_signs(self):
