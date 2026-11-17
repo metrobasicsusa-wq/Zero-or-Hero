@@ -1,6 +1,6 @@
 {
  "source": "alphavantage+alpaca-news",
- "fetched_at": "2026-11-17T09:01:18-05:00",
+ "fetched_at": "2026-11-17T09:10:18-05:00",
  "fetched_on": "2026-11-17",
  "symbols": [
   "AAPL",
@@ -149,15 +149,20 @@
    "chg_20d": -6.72
   }
  },
- "errors": {
-  "aaii": "AAII results table not found"
- },
+ "errors": {},
  "gauges": {
   "putcall": {
    "date": "2026-11-16",
    "total": 0.95,
    "equity": 0.73,
    "index": 1.01
+  },
+  "aaii": {
+   "date": "2026-11-11",
+   "bullish": 30.8,
+   "neutral": 17.8,
+   "bearish": 51.4,
+   "spread": -20.6
   }
  },
  "news": {
@@ -1719,5 +1724,5 @@
  "news_window": "since 2026-11-16T09:01-05:00 (Alpaca/Benzinga, 162 articles, word-list score)",
  "attempts": 1,
  "news_attempts": 1,
- "gauge_attempts": 1
+ "gauge_attempts": 2
 }
