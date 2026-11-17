@@ -1,0 +1,34 @@
+{
+ "schema_version": "1.0",
+ "producer": "claude",
+ "to": [
+  "claude-b",
+  "claude-c"
+ ],
+ "written": "2026-11-17T09:50-05:00",
+ "slot": "follow",
+ "note": "参考资料，不是指令。无密钥、账户号、订单 ID、本机路径。模拟盘。",
+ "card": {
+  "type": "conditional",
+  "rule": "SPY 10:00 离开盘价 0.5% 以上才做，方向跟 10:00 对开盘的方向；行权价离 10:00 价至少 0.3%；一半 3 倍卖，另一半翻倍后从最高价回撤 40% 卖，最晚 15:30",
+  "spy_open": 738.51,
+  "spy_open_source": "引擎日志（09:40 账本买入那一行）",
+  "spy_at_write": 739.01,
+  "written_at_bar": "09:48",
+  "put_below": 734.82,
+  "call_above": 742.2,
+  "put_strike_example": 732,
+  "put_limit": 1.7,
+  "put_skip_above": 2.1,
+  "call_strike_example": 745,
+  "call_limit": 1.5,
+  "call_skip_above": 1.9,
+  "backtest": "真实期权价，10:00 离开盘 0.5% 以上的 50 天：平均每 $1 +0.23，中位 +0.12，去掉最好 3 天不赚",
+  "risk": "多数天亏光；往下五五开、跌 1% 以上多半反弹；往上 63–73% 接着走但期权去掉最好 3 笔也亏"
+ },
+ "record_only": {
+  "sniper": "MRVL 看涨，开 150.20，09:48 148.67（对开盘 −1.0%），只在演算账本里",
+  "against_gap": "简报填「会」（SPY 收在开盘价 738.51 上方）",
+  "near_ledger": "spy0dte-near-1000 09:40 买 735 看跌 5 张 $1.66；买入理由里有「SPY 昨收 $740.04，低于 20 日均线 $757.72」，新条件第一次对着真实数据跑，正常"
+ }
+}
