@@ -6208,6 +6208,79 @@ class ResearchZdteCost(unittest.TestCase):
         self.assertIn("SPY 末日单 0.3%", md)
         self.assertIn("| 2026-10-16 | +0.25% | SPY770C | +169% |", md)
 
+    def test_lines_light_is_yesterdays_close_under_the_average_of_the_last_twenty(self):
+        from hero import research_zdte_lines as zl
+        closes = {f"2026-10-{d:02d}": 100.0 for d in range(1, 21)}
+        closes["2026-10-20"] = 99.0                                   # the 20th close dips: average 99.95
+        closes["2026-10-21"], closes["2026-10-22"] = 101.0, 100.0     # then back above
+        lit = zl.lights(closes)
+        self.assertEqual(sorted(lit), ["2026-10-21", "2026-10-22"])   # the first twenty days have no average yet
+        self.assertTrue(lit["2026-10-21"])                            # 99.00 under 99.95
+        self.assertFalse(lit["2026-10-22"])                           # 101.00 above 100.00; the day's own close never counts
+        self.assertEqual(zl.rounds([2.5, 2.5, -0.95, 9.0]), (2, 1))   # 1000 -> 12,250 hero; 3500 -> 175... then 10x
+        self.assertEqual(zl.cost_per_hero([2.5, 2.5, -0.95, 9.0]), 1500.0)
+        self.assertIsNone(zl.cost_per_hero([-0.5, 0.1]))
+
+    def test_lines_verdict_needs_the_gap_in_both_halves_and_without_the_three_best_days(self):
+        from hero import research_zdte_lines as zl
+        days = [f"2026-{m:02d}-{d:02d}" for m in (1, 2, 3, 4, 5, 6) for d in range(1, 29)]   # 168 days
+        on = [(d, 0.30) for d in days[::2]]                           # 84 signal days, steadily better
+        off = [(d, -0.10) for d in days[1::2]]
+        v = zl.verdict(on, off)
+        self.assertTrue(v["pass"])
+        self.assertAlmostEqual(v["diff"], 0.40)
+        self.assertEqual((v["on_n"], v["off_n"]), (84, 84))
+        late = [(d, (0.90 if d < "2026-04" else -0.30)) for d, _ in on]   # all of it in the first half: +0.40 on average still
+        v = zl.verdict(late, off)
+        self.assertAlmostEqual(v["diff"], 0.40)
+        self.assertLess(v["halves"][1], 0)
+        self.assertFalse(v["pass"])
+        three = [(d, 12.0 if i < 3 else -0.12) for i, (d, _) in enumerate(on)]    # three days carry it
+        v = zl.verdict(three, off)
+        self.assertGreater(v["diff"], 0.15)
+        self.assertLess(v["minus3"], 0)
+        self.assertFalse(v["pass"])
+        self.assertFalse(zl.verdict(on[:40], off)["pass"])            # under 60 signal days
+        self.assertIsNone(zl.verdict([], off))
+
+    def test_lines_run_and_report_on_another_index(self):
+        from unittest import mock
+        from hero import research_zdte_lines as zl
+        minute = self.minute
+        days = [f"2026-09-{d:02d}" for d in range(1, 31)] + ["2026-10-16"]
+
+        class Client:
+            def stock_bars(self, syms, start, end, feed=None):
+                out = []
+                for i, day in enumerate(days):
+                    if start[:10] <= day < end[:10]:
+                        last = 600.0 if day < "2026-09-30" else 590.0          # the last September close drops under the average
+                        out += [minute(day, "09:30", 600.0), minute(day, "10:00", 596.0), minute(day, "15:30", 595.0),
+                                minute(day, "15:59", last)]
+                return {syms[0]: out}
+
+            def option_contracts(self, und, status, expiration_date_gte, **kw):
+                return [{"symbol": f"{und}{k}{t[0].upper()}", "expiration_date": expiration_date_gte, "strike_price": str(k), "type": t}
+                        for k in range(585, 610) for t in ("call", "put")]
+
+            def option_bars(self, syms, start, end, timeframe=None):
+                return {s: [minute(start[:10], t, px) for t, px in (("10:00", 0.5), ("10:20", 1.6), ("11:00", 0.9), ("15:30", 0.2))]
+                        for s in syms}
+
+        with mock.patch.object(zl, "START", "2026-10-01"), mock.patch.object(zl, "LEAD", "2026-09-01"), mock.patch("time.sleep"):
+            rep = zl.run(Client(), unds=("QQQ",))
+        self.assertEqual(len(rep["rows"]), 1)
+        r = rep["rows"][0]
+        self.assertEqual((r["und"], r["day"], r["kind"], r["sym"], r["dte"]), ("QQQ", "2026-10-16", "P", "QQQ594P", 0))   # 596 x 0.997
+        self.assertTrue(r["lit"])                                      # 590 under the twenty-day average
+        self.assertAlmostEqual(r["move"], 596 / 600 - 1, places=5)     # -0.67%: past the half percent
+        self.assertEqual(set(r["res"]), {"0.05/0.05", "0/0"})
+        on, off = zl.split(rep["rows"], "QQQ", "moved", "0/0")
+        self.assertEqual((len(on), len(off)), (1, 0))
+        table, md = zl.report(rep)
+        self.assertIn("## QQQ", md)
+        self.assertIn("0 条线过了 0 条", md)                             # one day: nothing to compare
+
 
 class EarningsReasons(unittest.TestCase):
     def test_tally_joins_results_and_finds_usable_signs(self):
