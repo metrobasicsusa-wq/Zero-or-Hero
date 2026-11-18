@@ -30,38 +30,140 @@
    "confidence": 0.25,
    "catalyst_type": "company news",
    "order": "first",
-   "why": "GTA VI 发售前一天媒体评分 99（Metacritic，125 家）、第三方估计预购超过 $15 亿（Sensor Tower，非公司数字）；前两天跌了约 10.5%。减分：盘前已经 +5.8%，是它平时单日波动（约 2.5%）的 2.3 倍，消息大半已经在价格里；发售日前后常见「消息兑现就卖」",
+   "why": "GTA VI 发售前一天媒体评分 99（Metacritic，125 家）、第三方估计预购超过 $15 亿（Sensor Tower，非公司数字）；前两天跌了约 10.5%。减分：盘前 +4.8%（09:00；08:39 时 +5.8%），约是它平时单日波动（2.5%）的 2 倍，消息大半已经在价格里；发售日前后常见「消息兑现就卖」",
    "wrong_if": "10:00 回到开盘价下方"
   },
   {
    "rank": 3,
-   "symbol": "CRWV",
+   "symbol": "COHR",
    "direction": "call",
    "confidence": 0.2,
+   "catalyst_type": "company news",
+   "order": "first",
+   "why": "盘前扫描的标题：Coherent 的 CEO 和董事长买入自家股票（Benzinga），加上光模块跟着英伟达高开；盘前 +3.8%，约 0.6 倍平时波动，没破 20 日高点。减分：昨天已因限制中国光模块的消息被追过一次，是连续第 2 天；高管买入的金额我没有核对",
+   "wrong_if": "10:00 回到开盘价下方"
+  },
+  {
+   "rank": 4,
+   "symbol": "CRWV",
+   "direction": "call",
+   "confidence": 0.15,
    "catalyst_type": "peer plan hits a group",
    "order": "second",
    "why": "英伟达指引超预期、供货承诺增加，读穿到它投资的算力租赁公司；盘前 +3.8%，约 0.55 倍平时波动。减分：链条比存储那条长一环，这类公司还要看融资",
    "wrong_if": "10:00 英伟达在开盘价下方，或英伟达守住而它在开盘价下方"
-  },
-  {
-   "rank": 4,
-   "symbol": "COHR",
-   "direction": "call",
-   "confidence": 0.15,
-   "catalyst_type": "sector move",
-   "order": "second",
-   "why": "光模块跟着英伟达高开，盘前 +4.2%；昨天已经因限制中国光模块的消息被追过一次，是连续第 2 天",
-   "wrong_if": "10:00 回到开盘价下方"
   }
  ],
- "claude_b_pick": "08:35 未知",
+ "claude_b_pick": "AMAT call",
  "notes": [
   "前因：英伟达 11-17 盘后财报——收入 $1,158 亿、1 月季指引约 $1,300 亿（含多出的一周）、毛利率指引 71%–72%（报道归因于存储涨价和新品爬坡）。盘前 08:39：NVDA +3.1%、SMH +2.3%、QQQ +0.8%、SPY +0.3%。",
   "排除的财报反应日名单（reaction_day = 11-18）：BLSH BRBR CAAP DLB GBDC GLAD GLBE GLNG HAFN IIIV JJSF KRNT LOW LZB NVDA PRE SQM TGT TJX ZIM ZTO。英伟达自己不选，只选非财报的读穿对象。",
   "MRVL 不选：昨天（11-17）的狙击就是它，10:00 的线判错，演算账本还拿着它周五到期的看涨，再选是重复下注。",
-  "如果 claude-b 今天选的是 MU，09:01 换成第 2 名或第 3 名（不撞车）。",
   "今天 14:00 美联储会议纪要；盘前报道提到 Anthropic 的 IPO 定价也在今天前后，AI 相关的股票可能再有一次整体波动。",
-  "风险：整条 AI 链近 10 天两两相关 0.81，美光今天大半还是跟着链条走；存储那一层读穿来自媒体转述，不是电话会原文。"
+  "风险：整条 AI 链近 10 天两两相关 0.81，美光今天大半还是跟着链条走；存储那一层读穿来自媒体转述，不是电话会原文。",
+  "09:01 例程（09:02 送到）确认预选：claude-b 选的是 AMAT 看涨，不撞车；扫描和搜索里没有比「英伟达毛利率指引 → 存储涨价」更强的非财报消息。美光 09:02 盘前 +2.0%，和 08:39 一样。",
+  "扫描标题里英伟达有「面临 SEC 调查、10-Q 延期」「成立出口管制委员会」「黄仁勋保留董事提名权」三条（Benzinga 标题，来自公司文件）；盘前仍 +3.0%。如果这条变成今天的主线，龙头守不住开盘价，「什么算错」的第一句就会触发。"
  ],
- "generated_at": "2026-11-18T08:40-05:00"
+ "generated_at": "2026-11-18T09:03-05:00",
+ "confirmed_at": "2026-11-18T09:03-05:00",
+ "skipped": [
+  {
+   "symbol": "AMAT",
+   "direction": "call",
+   "gap": "+2.3%",
+   "reason": "claude-b 已选",
+   "why_not": "claude-b 选了 AMAT 看涨（伯恩斯坦把它列为设备股首选）"
+  },
+  {
+   "symbol": "NVDA",
+   "direction": "call",
+   "gap": "+3.0%",
+   "reason": "财报反应日",
+   "why_not": "昨晚盘后发的财报；扫描标题还有「SEC 调查、10-Q 延期」，是今天整条链的风险"
+  },
+  {
+   "symbol": "TJX",
+   "direction": "call",
+   "gap": "+6.0%",
+   "reason": "财报反应日",
+   "why_not": "今早盘前发的财报"
+  },
+  {
+   "symbol": "MRVL",
+   "direction": "call",
+   "gap": "+2.4%",
+   "reason": "其他",
+   "why_not": "昨天的狙击就是它，演算账本还拿着周五到期的看涨；扫描标题是 CEO 卖股"
+  },
+  {
+   "symbol": "NBIS",
+   "direction": "call",
+   "gap": "+4.7%",
+   "reason": "消息太弱",
+   "why_not": "跟着英伟达高开，没有自己的消息；和 CRWV 同一类，留一只"
+  },
+  {
+   "symbol": "LITE",
+   "direction": "call",
+   "gap": "+3.3%",
+   "reason": "消息太弱",
+   "why_not": "被 Marvell 全股票收购，跟着 MRVL 走，没有自己的消息"
+  },
+  {
+   "symbol": "TSM",
+   "direction": "call",
+   "gap": "+2.7%",
+   "reason": "跳空已吃掉",
+   "why_not": "英伟达的代工方，读穿最直接，但跳空约是平时波动的 0.8 倍，比存储那几只反映得多"
+  },
+  {
+   "symbol": "ARM",
+   "direction": "call",
+   "gap": "+2.6%",
+   "reason": "分析师评级",
+   "why_not": "只有摩根士丹利维持评级的标题"
+  },
+  {
+   "symbol": "BE",
+   "direction": "call",
+   "gap": "+2.6%",
+   "reason": "消息太弱",
+   "why_not": "跟着链条高开；标题是律所发起调查（诉讼类，减分）"
+  },
+  {
+   "symbol": "SNDK",
+   "direction": "call",
+   "gap": "+2.3%",
+   "reason": "其他",
+   "why_not": "和美光同一条读穿（存储涨价），选了更大、期权更活跃的美光"
+  },
+  {
+   "symbol": "AVGO",
+   "direction": "call",
+   "gap": "+2.3%",
+   "reason": "消息太弱",
+   "why_not": "跟着链条高开，没有自己的消息"
+  },
+  {
+   "symbol": "GLW",
+   "direction": "call",
+   "gap": "+2.3%",
+   "reason": "消息太弱",
+   "why_not": "跟着光纤 / 光模块高开，没有自己的消息"
+  },
+  {
+   "symbol": "AAOI",
+   "direction": "put",
+   "gap": "约 −9%",
+   "reason": "其他",
+   "why_not": "报道说它申请增发普通股，但我没能确认是今天的消息，也不在扫描名单里；跳空超过 6%"
+  },
+  {
+   "symbol": "SMMT",
+   "direction": "put",
+   "gap": "约 −14%",
+   "reason": "跳空已吃掉",
+   "why_not": "FDA 发了完整回复函（没批）；跳空太大，日期也没能确认是今天"
+  }
+ ]
 }
