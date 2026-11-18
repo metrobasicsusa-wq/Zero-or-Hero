@@ -1,0 +1,67 @@
+{
+ "date": "2026-11-18",
+ "preselected": true,
+ "preselected_at": "2026-11-18T08:40-05:00",
+ "sniper": {
+  "symbol": "MU",
+  "direction": "call",
+  "catalyst": "英伟达昨晚的财报留下的读穿：1 月季收入指引约 $1,300 亿（市场平均预期约 $1,252 亿），同时把毛利率指引从 74.9% 降到 71%–72%，多家报道把下降归因于它要自己消化上涨的存储芯片价格和新品爬坡成本（Tom's Hardware、iTWire、investingLive 11-17/18 的报道；我没有读到电话会原文，是转述）。英伟达多付的存储成本就是美光这类存储厂的收入，和 11-02「苹果说内存涨价 → 存储股」是同一类。美光盘前约 +2.0%（$726.9，08:39），只有它近 20 天平均单日波动（约 5.1%）的四成，前两天跌了 8.5%，离 20 日高点还差 26%。不是财报反应日。",
+  "catalyst_type": "peer plan hits a group",
+  "order": "second",
+  "confidence": 0.3,
+  "wrong_if": "10:00 时英伟达跌到自己开盘价下方（龙头的高开被卖），或者英伟达守住而美光在自己开盘价下方（没跟龙头）。如果买到的是周五（11-20）到期的、会拿过夜，再记一条全天的线：美光当天收盘收在开盘价下方。",
+  "settles_today": "不会：存储涨价能不能落到美光的收入上，要等它自己的财报（只记录）"
+ },
+ "candidates": [
+  {
+   "rank": 1,
+   "symbol": "MU",
+   "direction": "call",
+   "confidence": 0.3,
+   "catalyst_type": "peer plan hits a group",
+   "order": "second",
+   "why": "英伟达指引里毛利率下降被归因于存储涨价，直接读穿到存储厂；盘前 +2.0%，约 0.4 倍平时波动，没破 20 日高点",
+   "wrong_if": "10:00 英伟达在开盘价下方，或英伟达守住而美光在开盘价下方；全天：收盘收在开盘价下方"
+  },
+  {
+   "rank": 2,
+   "symbol": "TTWO",
+   "direction": "call",
+   "confidence": 0.25,
+   "catalyst_type": "company news",
+   "order": "first",
+   "why": "GTA VI 发售前一天媒体评分 99（Metacritic，125 家）、第三方估计预购超过 $15 亿（Sensor Tower，非公司数字）；前两天跌了约 10.5%。减分：盘前已经 +5.8%，是它平时单日波动（约 2.5%）的 2.3 倍，消息大半已经在价格里；发售日前后常见「消息兑现就卖」",
+   "wrong_if": "10:00 回到开盘价下方"
+  },
+  {
+   "rank": 3,
+   "symbol": "CRWV",
+   "direction": "call",
+   "confidence": 0.2,
+   "catalyst_type": "peer plan hits a group",
+   "order": "second",
+   "why": "英伟达指引超预期、供货承诺增加，读穿到它投资的算力租赁公司；盘前 +3.8%，约 0.55 倍平时波动。减分：链条比存储那条长一环，这类公司还要看融资",
+   "wrong_if": "10:00 英伟达在开盘价下方，或英伟达守住而它在开盘价下方"
+  },
+  {
+   "rank": 4,
+   "symbol": "COHR",
+   "direction": "call",
+   "confidence": 0.15,
+   "catalyst_type": "sector move",
+   "order": "second",
+   "why": "光模块跟着英伟达高开，盘前 +4.2%；昨天已经因限制中国光模块的消息被追过一次，是连续第 2 天",
+   "wrong_if": "10:00 回到开盘价下方"
+  }
+ ],
+ "claude_b_pick": "08:35 未知",
+ "notes": [
+  "前因：英伟达 11-17 盘后财报——收入 $1,158 亿、1 月季指引约 $1,300 亿（含多出的一周）、毛利率指引 71%–72%（报道归因于存储涨价和新品爬坡）。盘前 08:39：NVDA +3.1%、SMH +2.3%、QQQ +0.8%、SPY +0.3%。",
+  "排除的财报反应日名单（reaction_day = 11-18）：BLSH BRBR CAAP DLB GBDC GLAD GLBE GLNG HAFN IIIV JJSF KRNT LOW LZB NVDA PRE SQM TGT TJX ZIM ZTO。英伟达自己不选，只选非财报的读穿对象。",
+  "MRVL 不选：昨天（11-17）的狙击就是它，10:00 的线判错，演算账本还拿着它周五到期的看涨，再选是重复下注。",
+  "如果 claude-b 今天选的是 MU，09:01 换成第 2 名或第 3 名（不撞车）。",
+  "今天 14:00 美联储会议纪要；盘前报道提到 Anthropic 的 IPO 定价也在今天前后，AI 相关的股票可能再有一次整体波动。",
+  "风险：整条 AI 链近 10 天两两相关 0.81，美光今天大半还是跟着链条走；存储那一层读穿来自媒体转述，不是电话会原文。"
+ ],
+ "generated_at": "2026-11-18T08:40-05:00"
+}
