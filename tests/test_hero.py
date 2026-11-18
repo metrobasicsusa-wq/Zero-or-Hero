@@ -6406,6 +6406,121 @@ class ResearchZdteCost(unittest.TestCase):
         from hero import research_flow_open_mag7 as m7
         self.assertEqual(len(m7.MAG7), 7)
 
+    def weekdays(self, start, n):
+        from datetime import date, timedelta
+        out, d = [], date.fromisoformat(start)
+        while len(out) < n:
+            if d.weekday() < 5:
+                out.append(d.isoformat())
+            d += timedelta(days=1)
+        return out
+
+    def test_flow_daily_marks_a_surge_against_the_stocks_own_last_twenty_days(self):
+        from unittest import mock
+        from hero import research_flow_daily as fd
+        days = self.weekdays("2026-08-03", 27)
+        adj = [100.0] * 27
+        vol = {d: {"call": 100.0, "put": 100.0} for d in days}
+        vol[days[22]]["put"] = 400.0                                   # four times the usual, the stock up 1%: the quiet kind too
+        adj[22] = 101.0
+        vol[days[23]]["put"] = 400.0                                   # the average is now 115: 400 is still a surge; the stock fell 5%
+        adj[23] = 95.95
+        vol[days[24]]["call"] = 300.0                                  # calls at three times, a 20-day closing high
+        adj[24] = 102.0
+        vol[days[25]]["call"] = 400.0                                  # calls again (the average is 110), under the high
+        adj[25] = 101.0
+        vol[days[26]]["put"] = 250.0                                   # under three times the average
+        with mock.patch.object(fd, "START", days[0]):
+            got = fd.events(days, adj, vol)
+        self.assertEqual(sorted(got), list(range(20, 27)))             # the first twenty days only fill the window
+        self.assertEqual(got[22], {"put_surge", "put_surge_flat"})
+        self.assertEqual(got[23], {"put_surge"})
+        self.assertEqual(got[24], {"call_surge_break"})
+        self.assertEqual(got[25], {"call_surge_quiet"})
+        self.assertEqual(got[26], set())
+        with mock.patch.object(fd, "START", days[3]):                  # three days of the window fall before the data starts
+            self.assertEqual(min(fd.events(days, adj, vol)), 23)
+
+    def test_flow_daily_line_compares_signal_days_with_the_other_days_in_the_expected_direction(self):
+        from hero import research_flow_daily as fd
+        days = self.weekdays("2026-01-05", 200)
+        row = lambda d, sig, f5: {"sym": "AAA", "day": d, "sig": sig, "fwd": {"1": f5 / 5, "5": f5}}
+        rows = [row(d, ["put_surge"] if i % 2 == 0 else [], -0.01 if i % 2 == 0 else 0.0) for i, d in enumerate(days)]
+        got = fd.line(rows, "put_surge", 5)                            # the stock lags SPY by 1% after a put surge: as expected
+        self.assertEqual((got["n"], got["off_n"], got["stocks"]), (100, 100, 1))
+        self.assertAlmostEqual(got["on"], 0.01)                        # signed the way the believers expect
+        self.assertAlmostEqual(got["diff"], 0.01)
+        self.assertEqual((got["hit_on"], got["hit_off"]), (1.0, 0.0))
+        self.assertTrue(got["pass"])
+        self.assertTrue(fd.line(rows, "put_surge", 1)["pass"])         # 0.2% in one day, just at the line
+        self.assertFalse(fd.line(rows[:150], "put_surge", 5)["pass"])  # 75 signal days are not 100
+        late = [row(r["day"], r["sig"], (0.03 if i < 100 else -0.05) if r["sig"] else 0.0) for i, r in enumerate(rows)]
+        self.assertFalse(fd.line(late, "put_surge", 5)["pass"])        # the first half goes the other way
+        self.assertFalse(fd.line([row(r["day"], r["sig"], -0.004 if r["sig"] else 0.0) for r in rows], "put_surge", 5)["pass"])   # 0.4% < 0.5%
+        self.assertIsNone(fd.line(rows, "call_surge_quiet", 5))        # no such days
+        calls = [row(d, ["call_surge_quiet"] if i % 2 == 0 else [], -0.01 if i % 2 == 0 else 0.0) for i, d in enumerate(days)]
+        self.assertFalse(fd.line(calls, "call_surge_quiet", 5)["pass"])     # calls surged and the stock lagged: the wrong way
+
+    def test_flow_daily_counts_near_dated_contracts_and_drops_a_stock_with_a_hole(self):
+        from unittest import mock
+        from hero import research_flow_daily as fd
+        days = self.weekdays("2026-08-03", 60)                         # August to late October
+        asked = []
+
+        class Client:
+            def clock(self): return {"is_open": False}
+
+            def daily_bars(self, symbols, start, adjustment="all", feed="iex"):
+                return {s: [{"t": f"{d}T04:00:00Z", "c": 50.0 if s == "SPY" else 100.0} for d in days] for s in symbols}
+
+            def option_contracts(self, und, status, **kw):
+                asked.append((und, status, kw["expiration_date_gte"], kw["strike_price_gte"], kw["strike_price_lte"]))
+                if status == "active":
+                    return []
+                m0 = kw["expiration_date_gte"]
+                return [{"symbol": f"{und}{m0[5:7]}{k}{t[0].upper()}{tag}", "expiration_date": exp, "strike_price": str(k), "type": t}
+                        for k in (95, 105, 115) for t in ("call", "put")        # 115 is listed but 15% away: never counted
+                        for tag, exp in (("N", m0[:8] + "20"), ("F", "2027-01-15"))]     # one near expiry, one far
+
+            def option_bars(self, syms, start, end, timeframe="1Day"):
+                if syms[0].startswith("BAD") and start.startswith("2026-10"):
+                    raise RuntimeError("429")
+                mine = [d for d in days if start <= d < end]
+                surge = lambda s, d: 40 if (s.endswith("PN") and d == days[45]) else 10
+                return {s: [{"t": f"{d}T04:00:00Z", "c": 1.0, "v": surge(s, d)} for d in mine] for s in syms}
+
+        ticks = iter([0, 1, 2, 10 ** 6])                                # the third stock starts after the budget is gone
+        with mock.patch.object(fd, "START", "2026-08-01"), mock.patch.object(fd, "LEAD", "2026-08-01"), mock.patch("time.sleep"):
+            rep = fd.run(Client(), ["AAA", "BAD", "ZZZ"], clock=lambda: next(ticks))
+        self.assertEqual((rep["stocks"], rep["dropped"], rep["not_reached"]), (["AAA"], ["BAD"], ["ZZZ"]))
+        self.assertEqual(asked[0], ("AAA", "inactive", "2026-08-01", "80.00", "120.00"))     # listed 20% either side, counted within 10%
+        by = {r["day"]: r for r in rep["rows"]}
+        # two strikes of near-dated puts: 10 each on a usual day, 40 each on the surge day; the far expiry never counts,
+        # and the near one stops counting after it expires on the 20th (so those days have no volume and no signal)
+        self.assertEqual(by[days[45]]["sig"], ["put_surge", "put_surge_flat"])
+        self.assertEqual(sum(bool(r["sig"]) for r in rep["rows"]), 1)
+        self.assertEqual(by[days[45]]["fwd"], {"1": 0.0, "5": 0.0})
+        self.assertNotIn(days[-1], by)                                  # no day after it to measure
+        table, md = fd.report(rep)
+        self.assertIn("实际跑了 1 只", md)
+        self.assertIn("时间不够没跑到的 1 只", md)
+        self.assertIn("数据取不全、整只去掉的 1 只：BAD", md)
+        self.assertIn("条线过了 0 条", md)
+        packed = fd.pack(rep["rows"])
+        self.assertEqual([r for r in packed if r[2]], [["AAA", days[45], 3, 0, 0]])          # bits: put_surge and put_surge_flat
+        self.assertEqual(fd.unpack(packed), rep["rows"])
+        with tempfile.TemporaryDirectory() as d:
+            a, b = Path(d) / "x-flow-daily-a.json", Path(d) / "x-flow-daily-b.json"
+            a.write_text(json.dumps({**rep, "rows": packed}))
+            b.write_text(json.dumps({**rep, "stocks": ["CCC"], "dropped": [], "not_reached": [],
+                                     "rows": [["CCC", days[30], 4, -1200, None]]}))
+            both = fd.combine([a, b])
+        self.assertEqual((both["stocks"], both["dropped"], both["not_reached"]), (["AAA", "CCC"], ["BAD"], ["ZZZ"]))
+        self.assertEqual(both["rows"][-1], {"sym": "CCC", "day": days[30], "sig": ["call_surge_quiet"], "fwd": {"1": -0.012}})
+        with mock.patch.object(fd, "pool", lambda: list("ABCDEFG")):
+            self.assertEqual([fd.part_of(p) for p in "abc"], [["A", "D", "G"], ["B", "E"], ["C", "F"]])
+        from hero import research_flow_daily_b, research_flow_daily_c  # noqa: F401  (the workflow runs them by name)
+
 
 class EarningsReasons(unittest.TestCase):
     def test_tally_joins_results_and_finds_usable_signs(self):
