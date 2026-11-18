@@ -6319,6 +6319,93 @@ class ResearchZdteCost(unittest.TestCase):
         self.assertTrue(zt.later_verdict(good)["pass"])
         self.assertFalse(zt.later_verdict([(d, 9.0 if i < 3 else -0.1) for i, (d, _) in enumerate(good)])["pass"])   # three days carry it
 
+    def test_flow_open_reads_the_put_share_against_the_underlyings_own_last_twenty_days(self):
+        from hero import research_flow_open as fo
+        days = [f"2026-09-{d:02d}" for d in range(1, 23)]
+        rows = [{"day": d, "calls": 700, "puts": 300, "call_usd": 100.0, "put_usd": 100.0} for d in days]
+        rows[20].update(puts=700, calls=300)                           # 70% puts against a usual 30%: more puts than usual
+        rows[21].update(puts=100, calls=900, put_usd=300.0)            # by contracts more calls, by dollars more puts
+        self.assertEqual(fo.flows(rows, "n"), {"2026-09-21": -1, "2026-09-22": 1})
+        self.assertEqual(fo.flows(rows, "usd"), {"2026-09-22": -1})    # 09-21's dollars sit on the median: no reading
+        self.assertEqual(fo.flows(rows[:20], "n"), {})                 # twenty days of its own first
+        self.assertEqual(fo.utc("2026-10-16", "09:30"), "2026-10-16T13:30:00Z")
+        self.assertEqual(fo.utc("2026-11-18", "09:30"), "2026-11-18T14:30:00Z")     # winter time
+
+    def test_flow_open_direction_line_needs_the_hit_rate_both_halves_and_more_than_three_days(self):
+        from hero import research_flow_open as fo
+        days = [f"2026-{m:02d}-{d:02d}" for m in (1, 2, 3, 4, 5) for d in range(1, 21)]
+        steady = [(d, 0.004 if i % 5 < 3 else -0.003) for i, d in enumerate(days)]          # right three days in five
+        got = fo.direction(steady)
+        self.assertTrue(got["pass"])
+        self.assertAlmostEqual(got["hit"], 0.6)
+        self.assertFalse(fo.direction([(d, 0.004 if i % 2 else -0.003) for i, d in enumerate(days)])["pass"])     # 50%: a coin
+        early = [(d, (0.004 if i % 5 < 4 else -0.003) if i < 50 else (0.001 if i % 5 < 3 else -0.004)) for i, d in enumerate(days)]
+        self.assertFalse(fo.direction(early)["pass"])                  # the second half loses
+        self.assertFalse(fo.direction([(d, 0.5 if i < 3 else (0.0001 if i % 5 < 3 else -0.001)) for i, d in enumerate(days)])["pass"])
+        self.assertFalse(fo.direction(steady[:50])["pass"])            # under sixty days
+        self.assertIsNone(fo.direction([]))
+
+    def test_flow_open_counts_only_the_first_half_hour_and_trades_the_ten_oclock_rule(self):
+        from unittest import mock
+        from hero import research_flow_open as fo
+        minute = self.minute
+        asked = []
+
+        class Client:   # 10-16 (a Friday): down 0.7% at 10:00, 594 by 15:30
+            def clock(self): return {"is_open": False}
+
+            def stock_bars(self, syms, start, end, feed=None):
+                path = (("09:30", 600.0), ("10:00", 595.8), ("15:30", 594.0))
+                return {syms[0]: [minute("2026-10-16", t, px) for t, px in path if start[:10] <= "2026-10-16" < end[:10]]}
+
+            def option_contracts(self, und, status, **kw):
+                asked.append((status, kw["expiration_date_gte"], kw["expiration_date_lte"]))
+                if status == "active":
+                    return []
+                return [{"symbol": f"SPY{exp[-2:]}{k}{t[0].upper()}", "expiration_date": exp, "strike_price": str(k), "type": t}
+                        for exp in ("2026-10-14", "2026-10-16", "2026-10-19") for k in range(570, 631) for t in ("call", "put")]
+
+            def option_bars(self, syms, start, end, timeframe=None):
+                if len(syms) > 1:                                       # the half hour: three minutes a contract, one after 10:00
+                    assert (start, end) == ("2026-10-16T13:30:00Z", "2026-10-16T14:00:00Z")
+                    return {s: [dict(minute("2026-10-16", t, 2.0), v=(30 if s.endswith("P") else 10), vw=(1.0 if s.endswith("P") else 4.0))
+                                for t in ("09:31", "09:59", "10:05")] for s in syms}
+                return {s: [minute("2026-10-16", t, px) for t, px in (("10:00", 0.5), ("10:20", 1.6), ("11:00", 0.9), ("15:30", 0.2))]
+                        for s in syms}
+
+        with mock.patch.object(fo, "START", "2026-10-01"), mock.patch("time.sleep"):
+            rep = fo.run(Client(), ("SPY",))
+        self.assertEqual(asked, [("inactive", "2026-10-12", "2026-10-23"), ("active", "2026-10-12", "2026-10-23")])    # once a week
+        self.assertEqual(len(rep["rows"]), 1)
+        r = rep["rows"][0]
+        self.assertEqual((r["und"], r["day"], r["dte"], r["kind"], r["sym"]), ("SPY", "2026-10-16", 0, "P", "SPY16594P"))   # 595.8 x 0.997
+        # strikes 594..606 (1% of 600) of the 10-16 expiry: 13 calls and 13 puts, two counted minutes each
+        self.assertEqual((r["calls"], r["puts"]), (13 * 2 * 10, 13 * 2 * 30))
+        self.assertEqual((r["call_usd"], r["put_usd"]), (13 * 2 * 10 * 4.0 * 100, 13 * 2 * 30 * 1.0 * 100))
+        self.assertAlmostEqual(r["ret"], 594 / 595.8 - 1, places=5)
+        self.assertEqual(set(r["res"]), {"0.05/0.05", "0/0"})
+        table, md = fo.report(rep)
+        self.assertIn("## SPY", md)
+        self.assertIn("0 条线过了 0 条", md)                             # one day has no twenty days behind it
+        # twenty-five more days: the last five trade more puts than usual and fall, the option trade wins on those days
+        rows = [dict(r, day=f"2026-09-{d:02d}", calls=700, puts=300, move=-0.007, ret=0.002, res={"0/0": -0.5, "0.05/0.05": -0.6})
+                for d in range(1, 21)]
+        rows += [dict(r, day=f"2026-10-{d:02d}", calls=300, puts=700, move=-0.007, ret=-0.004, res={"0/0": 1.0, "0.05/0.05": 0.8})
+                 for d in range(1, 4)]
+        rows += [dict(r, day=f"2026-10-{d:02d}", calls=900, puts=100, move=-0.007, ret=-0.004, res={"0/0": -0.5, "0.05/0.05": -0.6})
+                 for d in range(5, 7)]
+        got = fo.lines(rows, "SPY")["n"]
+        self.assertEqual(got["dir"]["n"], 5)
+        self.assertAlmostEqual(got["dir"]["hit"], 3 / 5)               # short on the three put days (right), long on the two call days
+        self.assertAlmostEqual(got["price"]["hit"], 1.0)               # going with the price (short) was right all five days
+        self.assertAlmostEqual(got["agree"], 3 / 5)
+        v = got["trade"]["0/0"]
+        self.assertEqual((v["on_n"], v["off_n"]), (3, 2))
+        self.assertAlmostEqual(v["diff"], 1.0 - -0.5)
+        self.assertFalse(v["pass"])                                    # three days are not sixty
+        from hero import research_flow_open_mag7 as m7
+        self.assertEqual(len(m7.MAG7), 7)
+
 
 class EarningsReasons(unittest.TestCase):
     def test_tally_joins_results_and_finds_usable_signs(self):
