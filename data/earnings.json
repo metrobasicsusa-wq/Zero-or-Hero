@@ -1,7 +1,7 @@
 {
  "source": "alphavantage EARNINGS_CALENDAR horizon=3month",
- "fetched_at": "2026-11-17T09:00:34-05:00",
- "fetched_on": "2026-11-17",
+ "fetched_at": "2026-11-18T09:00:27-05:00",
+ "fetched_on": "2026-11-18",
  "horizon_days": 90,
  "symbols": [
   "AAPL",
@@ -128,26 +128,6 @@
   "XOM"
  ],
  "reports": {
-  "HD": [
-   {
-    "date": "2026-11-17",
-    "time": "pre-market",
-    "estimate": "3.86",
-    "fiscal_end": "2026-10-31",
-    "checked": "nasdaq",
-    "confirmed": true
-   }
-  ],
-  "NVDA": [
-   {
-    "date": "2026-11-17",
-    "time": "post-market",
-    "estimate": "2.49",
-    "fiscal_end": "2026-10-31",
-    "checked": "nasdaq",
-    "confirmed": true
-   }
-  ],
   "PANW": [
    {
     "date": "2026-11-18",
@@ -282,8 +262,9 @@
    {
     "date": "2026-12-09",
     "time": "post-market",
-    "estimate": "3.45",
+    "estimate": "3.47",
     "fiscal_end": "2026-10-31",
+    "checked": "nasdaq",
     "confirmed": true
    }
   ],
@@ -293,6 +274,7 @@
     "time": "unknown",
     "estimate": "1.56",
     "fiscal_end": "2026-11-30",
+    "checked": "nasdaq",
     "confirmed": false,
     "yahoo_date": "2026-12-14"
    }
@@ -301,7 +283,7 @@
    {
     "date": "2026-12-10",
     "time": "pre-market",
-    "estimate": "1.77",
+    "estimate": "1.79",
     "fiscal_end": "2026-10-31",
     "confirmed": true
    }
@@ -327,7 +309,7 @@
   "ACN": [
    {
     "date": "2026-12-17",
-    "time": "unknown",
+    "time": "pre-market",
     "estimate": "3.9",
     "fiscal_end": "2026-11-30",
     "confirmed": true
@@ -368,14 +350,14 @@
   ]
  },
  "cross_check": {
-  "nasdaq_days": 16,
+  "nasdaq_days": 15,
   "moved": [],
   "time_filled": [],
   "disputed": [],
   "yahoo": {
-   "asked": 22,
-   "answered": 22,
-   "confirmed": 20,
+   "asked": 20,
+   "answered": 20,
+   "confirmed": 18,
    "conflicts": [
     [
      "ORCL",

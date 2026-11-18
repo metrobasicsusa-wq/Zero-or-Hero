@@ -1,7 +1,7 @@
 {
  "source": "alphavantage+alpaca-news",
- "fetched_at": "2026-11-17T09:10:18-05:00",
- "fetched_on": "2026-11-17",
+ "fetched_at": "2026-11-18T09:01:15-05:00",
+ "fetched_on": "2026-11-18",
  "symbols": [
   "AAPL",
   "ABBV",
@@ -129,17 +129,17 @@
  "series": {
   "us2y": {
    "unit": "%",
-   "date": "2026-11-13",
-   "latest": 4.88,
-   "chg_1d": 0.02,
-   "chg_20d": 0.11
+   "date": "2026-11-16",
+   "latest": 4.83,
+   "chg_1d": -0.05,
+   "chg_20d": 0.09
   },
   "us10y": {
    "unit": "%",
-   "date": "2026-11-13",
-   "latest": 5.15,
-   "chg_1d": 0.05,
-   "chg_20d": 0.05
+   "date": "2026-11-16",
+   "latest": 5.12,
+   "chg_1d": -0.03,
+   "chg_20d": 0.03
   },
   "wti": {
    "unit": "$",
@@ -152,10 +152,10 @@
  "errors": {},
  "gauges": {
   "putcall": {
-   "date": "2026-11-16",
-   "total": 0.95,
-   "equity": 0.73,
-   "index": 1.01
+   "date": "2026-11-17",
+   "total": 0.98,
+   "equity": 0.71,
+   "index": 0.98
   },
   "aaii": {
    "date": "2026-11-11",
@@ -166,430 +166,66 @@
   }
  },
  "news": {
-  "AMZN": {
-   "articles": 4,
-   "sentiment": 0.25,
-   "label": "略偏多",
-   "top": [
-    {
-     "score": 1.0,
-     "title": "Teamsters Organize Rally for Terminated Amazon Delivery Drivers in New York City",
-     "source": "fiscal.ai",
-     "url": "https://www.prnewswire.com/news-releases/teamsters-rally-to-support-amazon-e-bike-delivery-drivers-illegally-fired-by-company-302941100.html",
-     "published": "2026-11-17T00:01:27Z"
-    },
-    {
-     "score": 0.0,
-     "title": "Blackstone Digital Infrastructure Trust to Acquire 75% Interest in AWS Data Center Joint Ventures",
-     "source": "fiscal.ai",
-     "url": "https://www.businesswire.com/newsroom/subject/merger-acquisition",
-     "published": "2026-11-16T14:31:20Z"
-    },
-    {
-     "score": 0.0,
-     "title": "Amnesty International Reports Continued Labor Issues at Amazon Saudi Arabia Facilities",
-     "source": "fiscal.ai",
-     "url": "https://www.manilatimes.net/2026/11/17/business/foreign-business/amnesty-amazons-migrant-workers-still-being-exploited/2471194",
-     "published": "2026-11-16T19:01:33Z"
-    }
-   ]
-  },
-  "GS": {
-   "articles": 4,
-   "sentiment": 0.0,
-   "label": "中性",
-   "top": [
-    {
-     "score": 0.0,
-     "title": "Pesta & Pesta Wealth Management Adds Goldman Sachs Custody Solutions",
-     "source": "fiscal.ai",
-     "url": "https://www.prnewswire.com/news-releases/pesta--pesta-wealth-management-elevates-high-net-worth-offerings-with-addition-of-goldman-sachs-custody-solutions-302938955.html",
-     "published": "2026-11-16T14:31:29Z"
-    },
-    {
-     "score": 0.0,
-     "title": "Goldman Sachs Participates in Bajaj Finance Share Offering",
-     "source": "fiscal.ai",
-     "url": "https://www.marketscreener.com/news/blackrock-goldman-sachs-nomura-buy-into-bajaj-finance-share-offering-ce785edfd089f42c",
-     "published": "2026-11-17T11:32:02Z"
-    },
-    {
-     "score": 0.0,
-     "title": "Goldman Sachs Adjusts Price Target for Tyson Foods",
-     "source": "fiscal.ai",
-     "url": "https://www.marketscreener.com/news/goldman-sachs-adjusts-price-target-on-tyson-foods-to-70-from-62-ce785edcd98df12d",
-     "published": "2026-11-17T11:32:02Z"
-    }
-   ]
-  },
-  "DASH": {
-   "articles": 4,
-   "sentiment": 0.0,
-   "label": "中性",
-   "top": [
-    {
-     "score": 0.0,
-     "title": "DoorDash Launches Holiday Charitable Initiative to Address Food Insecurity",
-     "source": "fiscal.ai",
-     "url": "https://www.businesswire.com/newsroom/industry/retail/online-retail",
-     "published": "2026-11-16T14:31:30Z"
-    },
-    {
-     "score": 0.0,
-     "title": "Plaza Pizza Partners with DoorDash for Delivery",
-     "source": "fiscal.ai",
-     "url": "https://www.globenewswire.com/news-release/2026/11/16/3404219/0/en/plaza-pizza-marks-55-years-in-newark-and-now-delivers-from-its-newark-and-heath-locations-through-doordash.html",
-     "published": "2026-11-17T03:01:41Z"
-    },
-    {
-     "score": 0.0,
-     "title": "California Court of Appeal Rules in Employment Arbitration Case",
-     "source": "fiscal.ai",
-     "url": "https://natlawreview.com/article/employee-waived-efaa-protection-strategically-withholding-his-sexual-harassment",
-     "published": "2026-11-17T03:01:41Z"
-    }
-   ]
-  },
-  "ALAB": {
-   "articles": 1,
-   "sentiment": 0.0,
-   "label": "中性",
-   "top": [
-    {
-     "score": 0.0,
-     "title": "Astera Labs and Hyve Solutions Expand Collaboration for AI Inference Infrastructure",
-     "source": "fiscal.ai",
-     "url": "https://www.globenewswire.com/news-release/2026/11/16/3403604/0/en/hyve-solutions-and-astera-labs-collaborate-to-bring-ai-inference-capacity-to-customers-faster.html",
-     "published": "2026-11-16T14:31:38Z"
-    }
-   ]
-  },
-  "AVGO": {
-   "articles": 2,
-   "sentiment": 0.0,
-   "label": "中性",
-   "top": [
-    {
-     "score": 0.0,
-     "title": "TD Cowen Adjusts Broadcom Price Target to $425 From $475",
-     "source": "fiscal.ai",
-     "url": "https://www.marketscreener.com/news/td-cowen-adjusts-broadcom-price-target-to-425-from-475-ce785edfd880ff21",
-     "published": "2026-11-16T14:31:40Z"
-    },
-    {
-     "score": 0.0,
-     "title": "Court Grants Intervention in Broadcom and VMware Legal Case",
-     "source": "fiscal.ai",
-     "url": "https://www.globenewswire.com/news-release/2026/11/16/3404028/25851/en/acc-granted-leave-to-intervene-before-eu-general-court-in-broadcom-legal-privilege-case.html",
-     "published": "2026-11-16T19:01:26Z"
-    }
-   ]
-  },
-  "BAC": {
-   "articles": 6,
-   "sentiment": 0.167,
-   "label": "略偏多",
-   "top": [
-    {
-     "score": 1.0,
-     "title": "Bank of America Adjusts Price Target on Coinbase Global",
-     "source": "fiscal.ai",
-     "url": "https://www.marketscreener.com/news/bofa-adjusts-price-target-on-coinbase-global-to-177-from-203-keeps-buy-rating-ce785edfd88ff225",
-     "published": "2026-11-16T14:31:46Z"
-    },
-    {
-     "score": 0.0,
-     "title": "Bank of America Names Salvation Army of Augusta as 2026 Neighborhood Builders Recipient",
-     "source": "fiscal.ai",
-     "url": "https://augustaceo.com/news/2026/11/bank-america-names-salvation-army-augusta-its-augusta-aiken-2026-neighborhood-builders/",
-     "published": "2026-11-16T14:31:46Z"
-    },
-    {
-     "score": 0.0,
-     "title": "Bank of America Experiences Online Account Access Issues",
-     "source": "fiscal.ai",
-     "url": "https://newsfilter.io/articles/customers-at-some-of-the-u-s-s-largest-banks-are-reporting-difficulty-accessing-4d5f007270e35126bfa22d0015e4c0fb",
-     "published": "2026-11-16T21:31:22Z"
-    }
-   ]
-  },
   "DELL": {
-   "articles": 3,
-   "sentiment": 0.333,
-   "label": "略偏多",
-   "top": [
-    {
-     "score": 1.0,
-     "title": "Bernstein Initiates Coverage on Dell Technologies with Outperform Rating",
-     "source": "fiscal.ai",
-     "url": "https://www.moomoo.com/news/post/1004762134/ai-stocks-hit-by-indiscriminate-sell-off-bernstein-highlights-six",
-     "published": "2026-11-16T16:01:40Z"
-    },
-    {
-     "score": 0.0,
-     "title": "Morgan Stanley Adjusts Price Target on Dell Technologies to $403 From $511",
-     "source": "fiscal.ai",
-     "url": "https://www.marketscreener.com/news/morgan-stanley-adjusts-price-target-on-dell-technologies-to-403-from-511-ce785edfdb89f420",
-     "published": "2026-11-16T14:31:51Z"
-    },
-    {
-     "score": 0.0,
-     "title": "Dell Technologies Joins American Sovereign SI Stack Consortium",
-     "source": "fiscal.ai",
-     "url": "https://www.prnewswire.com/news-releases/armada-named-a-priority-team-leader-in-the-american-si-exports-program-302941144.html",
-     "published": "2026-11-17T00:01:45Z"
-    }
-   ]
-  },
-  "CAT": {
-   "articles": 3,
-   "sentiment": 0.0,
-   "label": "中性",
-   "top": [
-    {
-     "score": 0.0,
-     "title": "Caterpillar Standardizes Advanced Safety Technologies on Construction Equipment",
-     "source": "fiscal.ai",
-     "url": "https://www.moomoo.com/hans/news/post/1004757502/caterpillar-makes-advanced-safety-technologies-standard-on-construction-equipment",
-     "published": "2026-11-16T14:31:53Z"
-    },
-    {
-     "score": 0.0,
-     "title": "Walmart Appoints Caterpillar CEO Joe Creed to Board",
-     "source": "fiscal.ai",
-     "url": "https://www.marketscreener.com/news/walmart-appoints-caterpillar-ceo-joe-creed-to-board-ce785edfd880f32d",
-     "published": "2026-11-16T14:31:53Z"
-    },
-    {
-     "score": 0.0,
-     "title": "Former Caterpillar CFO Andrew Bonfield Appointed to BP Board",
-     "source": "fiscal.ai",
-     "url": "https://www.marketscreener.com/news/bp-names-new-directors-as-restructuring-continues-ce785edfd18df020",
-     "published": "2026-11-17T11:31:32Z"
-    }
-   ]
-  },
-  "COIN": {
-   "articles": 1,
-   "sentiment": 1.0,
-   "label": "偏多",
-   "top": [
-    {
-     "score": 1.0,
-     "title": "BofA Adjusts Price Target on Coinbase Global",
-     "source": "fiscal.ai",
-     "url": "https://www.marketscreener.com/news/bofa-adjusts-price-target-on-coinbase-global-to-177-from-203-keeps-buy-rating-ce785edfd88ff225",
-     "published": "2026-11-16T14:31:55Z"
-    }
-   ]
-  },
-  "CIEN": {
-   "articles": 2,
-   "sentiment": 0.0,
-   "label": "中性",
-   "top": [
-    {
-     "score": 0.0,
-     "title": "TD Cowen Adjusts Price Target on Ciena to $375 From $400",
-     "source": "fiscal.ai",
-     "url": "https://www.marketscreener.com/news/td-cowen-adjusts-price-target-on-ciena-to-375-from-400-ce785edfd889f026",
-     "published": "2026-11-16T14:32:19Z"
-    },
-    {
-     "score": 0.0,
-     "title": "Ciena Appoints Greg Friesen as Executive Vice President and Chief Product Officer",
-     "source": "fiscal.ai",
-     "url": "https://www.businesswire.com/newsroom/industry/technology/telecommunications",
-     "published": "2026-11-16T14:32:19Z"
-    }
-   ]
-  },
-  "HOOD": {
-   "articles": 2,
-   "sentiment": 0.0,
-   "label": "中性",
-   "top": [
-    {
-     "score": 1.0,
-     "title": "BofA Securities Adjusts Robinhood Markets PT to $151 From $156, Maintains Buy Rating",
-     "source": "fiscal.ai",
-     "url": "https://www.marketscreener.com/news/bofa-securities-adjusts-robinhood-markets-pt-to-151-from-156-maintains-buy-rating-ce785edfd88ff62d",
-     "published": "2026-11-16T14:32:21Z"
-    },
-    {
-     "score": -1.0,
-     "title": "Former Robinhood Engineer Pleads Guilty to Wire Fraud",
-     "source": "fiscal.ai",
-     "url": "https://www.marketscreener.com/news/ex-robinhood-engineer-pleads-guilty-to-wire-fraud-over-crypto-futures-trades-ce785edfdf8bf221",
-     "published": "2026-11-17T03:02:29Z"
-    }
-   ]
-  },
-  "CVX": {
-   "articles": 3,
-   "sentiment": 0.0,
-   "label": "中性",
-   "top": [
-    {
-     "score": 0.0,
-     "title": "Chevron Charters Supertanker to Transport Strategic Petroleum Reserve Crude to California",
-     "source": "fiscal.ai",
-     "url": "https://energynow.com/2026/05/oil-from-us-emergency-reserve-heads-to-california-for-the-first-time-kpler-says/",
-     "published": "2026-11-16T16:01:27Z"
-    },
-    {
-     "score": 0.0,
-     "title": "Chevron Nears $5 Billion Purchase of Majority Stake in Blackstone-Backed Beacon Offshore",
-     "source": "fiscal.ai",
-     "url": "https://www.marketscreener.com/news/chevron-nears-5-billion-purchase-of-majority-stake-in-blackstone-backed-beacon-offshore-ce785edfdd80ff2c",
-     "published": "2026-11-16T21:31:55Z"
-    },
-    {
-     "score": 0.0,
-     "title": "Chevron Declares Dividend with Ex-Dividend Date Set for November 18, 2026",
-     "source": "fiscal.ai",
-     "url": "https://www.moomoo.com/hans/news/post/1004808924/chevron-to-go-ex-dividend-on-november-18th-2026-with",
-     "published": "2026-11-17T12:31:23Z"
-    }
-   ]
-  },
-  "ARM": {
-   "articles": 1,
-   "sentiment": 0.0,
-   "label": "中性",
-   "top": [
-    {
-     "score": 0.0,
-     "title": "Mubadala Investment Co. Pjsc Reduces Stake in Arm Holdings PLC",
-     "source": "fiscal.ai",
-     "url": "https://www.moomoo.com/news/flash/1004769207/mubadala-investment-co-pjsc-cuts-share-stake-in-arm-holdings",
-     "published": "2026-11-16T16:31:33Z"
-    }
-   ]
-  },
-  "AMD": {
-   "articles": 3,
-   "sentiment": -0.333,
-   "label": "略偏空",
-   "top": [
-    {
-     "score": -1.0,
-     "title": "AMD Shares Decline Following New Export Restrictions on AI Chips",
-     "source": "fiscal.ai",
-     "url": "https://www.moomoo.com/community/feed/the-capital-breakdown-tuesday-november-17-2026-117631511494661",
-     "published": "2026-11-17T12:31:29Z"
-    },
-    {
-     "score": 0.0,
-     "title": "Graid Technology Announces VROC Support for AMD EPYC Platforms",
-     "source": "fiscal.ai",
-     "url": "https://www.finanznachrichten.de/nachrichten-2026-11/70143180-graid-technology-inc-graid-technology-extends-vroc-to-amd-epyc-platforms-expanding-choice-in-enterprise-raid-200.htm",
-     "published": "2026-11-16T19:01:24Z"
-    },
-    {
-     "score": 0.0,
-     "title": "AMD-Powered Lux Supercomputer Opens to Scientific Users",
-     "source": "fiscal.ai",
-     "url": "https://www.globenewswire.com/en/news/technology-telecom",
-     "published": "2026-11-16T20:02:25Z"
-    }
-   ]
-  },
-  "GE": {
-   "articles": 1,
-   "sentiment": 0.0,
-   "label": "中性",
-   "top": [
-    {
-     "score": 0.0,
-     "title": "Philippine Airlines Finalizes Order for 15 Boeing 787-10 Aircraft and GEnx-1B Engines",
-     "source": "fiscal.ai",
-     "url": "https://www.manilatimes.net/2026/11/17/news/national/pal-finalizes-deal-for-15-dreamliners-ge-engines/2471026",
-     "published": "2026-11-16T19:01:35Z"
-    }
-   ]
-  },
-  "AAPL": {
-   "articles": 4,
-   "sentiment": 0.0,
-   "label": "中性",
-   "top": [
-    {
-     "score": 0.0,
-     "title": "Apple and OpenEvidence Launch Virtual Health AI Research Study",
-     "source": "fiscal.ai",
-     "url": "https://www.pymnts.com/news/artificial-intelligence/2026/apple-and-openevidence-seek-200000-consumers-for-health-ai-study/",
-     "published": "2026-11-16T19:01:36Z"
-    },
-    {
-     "score": 0.0,
-     "title": "Apple Appoints 26-Year Veteran Corey Fugman to Lead Payments and Wallet Unit",
-     "source": "fiscal.ai",
-     "url": "https://appleosophy.com/wire/qv14pwk/",
-     "published": "2026-11-16T21:31:25Z"
-    },
-    {
-     "score": 0.0,
-     "title": "Apple Releases iOS 27.3 Developer Beta Featuring 'Face Unlock' for iPhone Duo",
-     "source": "fiscal.ai",
-     "url": "https://newsfilter.io/articles/apple-adds-face-unlock-to-the-iphone-duo-but-its-not-face-id-4bcfeb7f1ab45ccd98350e3cc94c1985",
-     "published": "2026-11-16T21:31:25Z"
-    }
-   ]
-  },
-  "CRWD": {
-   "articles": 1,
-   "sentiment": 1.0,
-   "label": "偏多",
-   "top": [
-    {
-     "score": 1.0,
-     "title": "CrowdStrike Named Visionary Leader in Frost Radar™: AI Security Operations Centers, 2026",
-     "source": "fiscal.ai",
-     "url": "https://www.businesswire.com/newsroom/industry/technology/security",
-     "published": "2026-11-16T19:01:39Z"
-    }
-   ]
-  },
-  "CSCO": {
    "articles": 5,
    "sentiment": 0.0,
    "label": "中性",
    "top": [
     {
-     "score": -1.0,
-     "title": "Cisco Director Charles Robbins Files Notice of Proposed Stock Sale",
+     "score": 1.0,
+     "title": "Dell Technologies Expands AI Factory Portfolio with New Infrastructure and Data Solutions",
      "source": "fiscal.ai",
-     "url": "https://www.moomoo.com/news/flash/1004795574/form-144-cisco-cscous-director-proposes-to-sell-9-33",
-     "published": "2026-11-17T01:01:36Z"
+     "url": "https://www.varindia.com/news/dell-technologies-advances-its-ai-factory-to-scale-agentic-enterprise-ai",
+     "published": "2026-11-17T16:01:39Z"
     },
     {
-     "score": 1.0,
-     "title": "HSBC Upgrades Cisco Systems to Buy",
+     "score": -1.0,
+     "title": "GF Securities Lowers Price Target on Dell Technologies",
      "source": "fiscal.ai",
-     "url": "https://www.marketscreener.com/news/hsbc-upgrades-cisco-systems-to-buy-from-hold-price-target-is-133-ce785edfd08ef023",
-     "published": "2026-11-17T11:31:42Z"
+     "url": "https://www.barchart.com/story/news/8882367/gf-securities-just-slashed-its-price-target-on-dell-stock-here-s-why",
+     "published": "2026-11-17T20:01:59Z"
     },
     {
      "score": 0.0,
-     "title": "Cisco Investments Participates in $110 Million Funding Round for AI Lab Noeri",
+     "title": "Dell Technologies Announces Advancements to Dell AI Factory with NVIDIA",
      "source": "fiscal.ai",
-     "url": "https://www.businesswire.com/newsroom",
-     "published": "2026-11-16T19:01:40Z"
+     "url": "https://www.varindia.com/news/dell-technologies-advances-its-ai-factory-to-scale-agentic-enterprise-ai",
+     "published": "2026-11-17T14:31:22Z"
     }
    ]
   },
-  "GLW": {
+  "BKNG": {
+   "articles": 2,
+   "sentiment": 0.5,
+   "label": "偏多",
+   "top": [
+    {
+     "score": 1.0,
+     "title": "Booking Holdings Expands Vayo Personal Travel Agent Capabilities",
+     "source": "fiscal.ai",
+     "url": "https://www.prnewswire.com/news-releases/booking-holdings-vayo-now-books-the-entire-trip-302942055.html",
+     "published": "2026-11-17T14:31:29Z"
+    },
+    {
+     "score": 0.0,
+     "title": "KAYAK Launches 28 New AI-Powered Travel Features",
+     "source": "fiscal.ai",
+     "url": "https://www.globenewswire.com/news-release/2026/11/17/3404460/0/en/kayak-introduces-28-ai-powered-updates-that-bring-conversation-comparison-and-live-prices-together.html",
+     "published": "2026-11-17T14:31:29Z"
+    }
+   ]
+  },
+  "CVX": {
    "articles": 1,
    "sentiment": 0.0,
    "label": "中性",
    "top": [
     {
      "score": 0.0,
-     "title": "Corning Secures Major Optical Glass Order and Prepayments from Nvidia",
+     "title": "Chevron Technical Center Enters Three-Year Commercial Agreement with UptimeAI",
      "source": "fiscal.ai",
-     "url": "https://www.barchart.com/story/news/8857047/corning-nlight-advanced-energy-allient-and-littelfuse-shares-plummet-what-you-need-to-know",
-     "published": "2026-11-16T19:01:41Z"
+     "url": "https://www.newswire.com/news/chevron-signs-3-year-agreement-with-uptimeai-scaling-expertise-to-22887761",
+     "published": "2026-11-17T14:31:36Z"
     }
    ]
   },
@@ -600,199 +236,143 @@
    "top": [
     {
      "score": 0.0,
-     "title": "CoreWeave Reports MLPerf® Training v6.1 Benchmark Results",
+     "title": "CoreWeave CEO Michael Intrator Cancels 10b5-1 Trading Plan",
      "source": "fiscal.ai",
-     "url": "https://www.barchart.com/press-releases/8858357/coreweave-becomes-first-cloud-provider-to-deliver-multi-rack-nvidia-vera-rubin-results-in-mlperf-training-v6-1",
-     "published": "2026-11-16T19:02:00Z"
+     "url": "https://www.barchart.com/story/news/8875839/coreweave-ceo-michael-intrator-just-canceled-his-10b5-1-trading-plan-what-that-means-for-crwv-stock",
+     "published": "2026-11-17T14:32:00Z"
     }
    ]
   },
-  "CRDO": {
-   "articles": 1,
-   "sentiment": 1.0,
+  "AMZN": {
+   "articles": 4,
+   "sentiment": 0.75,
    "label": "偏多",
    "top": [
     {
      "score": 1.0,
-     "title": "TD Cowen Adjusts Price Target for Credo Technology Group Holding Ltd",
+     "title": "Amazon Expands Grocery Delivery to Include Prepared Meals",
      "source": "fiscal.ai",
-     "url": "https://www.moomoo.com/news/post/1004753131/td-cowen-maintains-credo-technology-crdous-with-buy-rating-cuts",
-     "published": "2026-11-16T19:02:12Z"
-    }
-   ]
-  },
-  "BE": {
-   "articles": 1,
-   "sentiment": -1.0,
-   "label": "偏空",
-   "top": [
+     "url": "https://stockhouse.com/news/newswire/2026/11/17/amazon-adds-prepared-meals-to-same-day-grocery-delivery",
+     "published": "2026-11-17T14:32:13Z"
+    },
     {
-     "score": -1.0,
-     "title": "Kahn Swick & Foti, LLC Initiates Investigation into Bloom Energy Corporation",
+     "score": 1.0,
+     "title": "Teamsters Rally Following Amazon's Termination of Delivery Partner",
      "source": "fiscal.ai",
-     "url": "https://www.fidelity.com/news/article/default/202611161226BIZWIRE_USPR_____20261116_BW116523",
-     "published": "2026-11-16T19:02:18Z"
+     "url": "https://www.prnewswire.com/news-releases/teamsters-rally-for-200-e-bike-drivers-terminated-by-amazon-in-new-york-302942866.html",
+     "published": "2026-11-18T01:01:19Z"
+    },
+    {
+     "score": 1.0,
+     "title": "Transamerica Expands AI Partnership with Amazon Web Services",
+     "source": "fiscal.ai",
+     "url": "https://www.prnewswire.com/news-releases/transamerica-expands-strategic-relationship-with-aws-to-scale-responsible-ai-capabilities-302942296.html",
+     "published": "2026-11-18T03:01:22Z"
     }
    ]
   },
-  "ETN": {
-   "articles": 1,
+  "GEV": {
+   "articles": 4,
    "sentiment": 0.0,
    "label": "中性",
    "top": [
     {
      "score": 0.0,
-     "title": "Wild Energy and EZ Meter Integrate Smart Metering with Eaton Pedestals",
+     "title": "Homer City Generation Completes Delivery of First Two GE Vernova 7HA.02 Turbines",
      "source": "fiscal.ai",
-     "url": "https://www.einpresswire.com/article/957102656/wild-energy-and-ez-meter-bring-the-marina-industry-s-most-advanced-smart-metering-to-eaton-pedestals",
-     "published": "2026-11-16T21:31:32Z"
-    }
-   ]
-  },
-  "DHR": {
-   "articles": 1,
-   "sentiment": 0.0,
-   "label": "中性",
-   "top": [
+     "url": "https://www.businesswire.com/newsroom/industry/energy/oil-gas",
+     "published": "2026-11-17T14:32:14Z"
+    },
     {
      "score": 0.0,
-     "title": "Tiger Global Management Increases Stake in Danaher Corporation",
+     "title": "Aegis Critical Energy Defence Corp. Announces Strategic Partnership with GE Vernova and SK On",
      "source": "fiscal.ai",
-     "url": "https://www.moomoo.com/news/flash/1004779720/tiger-global-management-llc-raises-share-stake-in-danaher-to",
-     "published": "2026-11-16T21:31:38Z"
-    }
-   ]
-  },
-  "IONQ": {
-   "articles": 1,
-   "sentiment": 0.0,
-   "label": "中性",
-   "top": [
+     "url": "https://www.newsfilecorp.com/release/324409/Aegis-Congratulates-SEETEL-on-GE-Vernova-and-SK-On-Partnership-and-Receives-First-Payment-on-14-Unit-GGV-Energy-Order",
+     "published": "2026-11-17T14:32:14Z"
+    },
     {
      "score": 0.0,
-     "title": "Quantum X Labs Validates Qatacomb Cybersecurity Technology Using IonQ Infrastructure",
+     "title": "GE Vernova Enters Strategic Partnership for AI Data Center Infrastructure",
      "source": "fiscal.ai",
-     "url": "https://www.globenewswire.com/news-release/2026/11/16/3403555/0/en/quantum-x-labs-achieves-99-93-data-recovery-in-qatacomb-quantum-cybersecurity-validation-using-ionq-s-quantum-computing-infrastructure.html",
-     "published": "2026-11-16T23:01:56Z"
+     "url": "https://irw-press.com/de/aegis-gratuliert-seetel-zur-partnerschaft-mit-ge-vernova-und-sk-on-und-erhaelt-erste-zahlung-zum-auftrag-ueber-14-batteriespeicher-von-ggv-energy/",
+     "published": "2026-11-17T16:01:38Z"
     }
    ]
   },
-  "COST": {
+  "GS": {
+   "articles": 4,
+   "sentiment": 0.417,
+   "label": "偏多",
+   "top": [
+    {
+     "score": 1.0,
+     "title": "Goldman Sachs Alternatives Leads $280 Million Series C Funding for Payhawk",
+     "source": "fiscal.ai",
+     "url": "https://www.globenewswire.com/news-release/2026/11/18/3405403/0/en/payhawk-raises-280m-at-a-2b-valuation-as-it-evolves-into-the-global-finance-os-for-the-ai-era.html",
+     "published": "2026-11-18T11:31:32Z"
+    },
+    {
+     "score": 1.0,
+     "title": "Goldman Sachs Raises 2027 Global AI Project Financing Forecast to $545 Billion",
+     "source": "fiscal.ai",
+     "url": "https://www.moomoo.com/news/post/1005027916/goldman-sachs-raises-2027-ai-project-financing-forecast-by-over",
+     "published": "2026-11-18T13:01:35Z"
+    },
+    {
+     "score": -0.333,
+     "title": "Goldman Sachs Raises WPP Price Target, Maintains Sell Rating",
+     "source": "fiscal.ai",
+     "url": "https://www.marketscreener.com/news/goldman-sachs-raises-wpp-pt-affirms-sell-rating-ce785edcdb88f321",
+     "published": "2026-11-17T14:32:40Z"
+    }
+   ]
+  },
+  "JNJ": {
    "articles": 2,
-   "sentiment": 0.5,
-   "label": "偏多",
+   "sentiment": 0.0,
+   "label": "中性",
    "top": [
     {
-     "score": 1.0,
-     "title": "Evercore ISI Group Raises Costco Wholesale Price Target to $1,200",
+     "score": 0.0,
+     "title": "Johnson & Johnson Recognized as Industry Partner Honoree by Lupus Research Alliance",
      "source": "fiscal.ai",
-     "url": "https://www.moomoo.com/hans/news/post/1004752446/costco-price-target-raised-to-1200-00-share-from-1100?futusource=news_newspage_recommend",
-     "published": "2026-11-17T01:01:58Z"
+     "url": "https://www.prnewswire.com/news-releases/2026-lupus-research-alliance-gala-raises-millions-to-advance-lupus-research-breakthroughs-302942118.html",
+     "published": "2026-11-17T16:01:22Z"
     },
     {
      "score": 0.0,
-     "title": "Mizuho Adjusts Price Target on Costco Wholesale to $1,150 From $1,100",
+     "title": "BofA Securities Adjusts Price Target for Johnson & Johnson",
      "source": "fiscal.ai",
-     "url": "https://www.marketscreener.com/news/mizuho-adjusts-price-target-on-costco-wholesale-to-1-150-from-1-100-ce785edcd98df024",
-     "published": "2026-11-17T11:32:14Z"
+     "url": "https://www.moomoo.com/news/post/1004896464/bofa-securities-adjusts-price-target-on-johnson-johnson-to-292",
+     "published": "2026-11-18T03:01:40Z"
     }
    ]
   },
-  "BKNG": {
-   "articles": 1,
-   "sentiment": 0.0,
-   "label": "中性",
-   "top": [
-    {
-     "score": 0.0,
-     "title": "Priceline Announces Cyber Week 2026 Sale",
-     "source": "fiscal.ai",
-     "url": "https://www.prnewswire.com/news-releases/pricelines-biggest-sale-of-the-year-returns-for-cyber-week-2026-with-up-to-40-off-hotels-500-coupons-and-flash-sales-302939580.html",
-     "published": "2026-11-17T03:01:44Z"
-    }
-   ]
-  },
-  "ACN": {
-   "articles": 1,
-   "sentiment": 1.0,
-   "label": "偏多",
-   "top": [
-    {
-     "score": 1.0,
-     "title": "Atos-Accenture Consortium Selected for French National Health Insurance Fund Project",
-     "source": "fiscal.ai",
-     "url": "https://www.globenewswire.com/news-release/2026/11/17/3404318/0/en/atos-successfully-completes-the-transition-of-the-shared-medical-record-and-its-integration-with-mon-espace-sant%C3%A9.html",
-     "published": "2026-11-17T09:31:21Z"
-    }
-   ]
-  },
-  "INTU": {
-   "articles": 1,
-   "sentiment": 0.0,
-   "label": "中性",
-   "top": [
-    {
-     "score": 0.0,
-     "title": "Wells Fargo Adjusts Price Target on Intuit to $330 From $300",
-     "source": "fiscal.ai",
-     "url": "https://www.marketscreener.com/news/wells-fargo-adjusts-price-target-on-intuit-to-330-from-300-ce785edfd080f02d",
-     "published": "2026-11-17T11:31:46Z"
-    }
-   ]
-  },
-  "HPE": {
-   "articles": 1,
-   "sentiment": 0.0,
-   "label": "中性",
-   "top": [
-    {
-     "score": 0.0,
-     "title": "Hewlett Packard Enterprise Launches HPE Private Cloud AI Solutions at Singapore DRIL",
-     "source": "fiscal.ai",
-     "url": "https://datacentremagazine.com/news/inside-digital-realtys-innovation-lab-launch-in-singapore",
-     "published": "2026-11-17T11:31:48Z"
-    }
-   ]
-  },
-  "HD": {
+  "CSCO": {
    "articles": 3,
-   "sentiment": 0.0,
-   "label": "中性",
+   "sentiment": 0.667,
+   "label": "偏多",
    "top": [
     {
-     "score": 0.0,
-     "title": "The Home Depot Reports Third Quarter 2026 Financial Results",
+     "score": 1.0,
+     "title": "Denali Advanced Integration Wins Awards in Cisco's 2026 Partner Innovation Challenge",
      "source": "fiscal.ai",
-     "url": "https://www.newswire.ca/fr/news-releases/home-depot-annonce-ses-resultats-du-troisieme-trimestre-et-met-a-jour-ses-perspectives-au-sujet-de-l-exercice-2026-853325861.html",
-     "published": "2026-11-17T11:31:56Z"
+     "url": "https://www.prnewswire.com/news-releases/denalis-ai-guided-packing-station-wins-two-prizes-in-ciscos-2026-partner-innovation-challenge-302942125.html",
+     "published": "2026-11-17T16:01:31Z"
+    },
+    {
+     "score": 1.0,
+     "title": "DZ BANK AG Upgrades Cisco to Buy",
+     "source": "fiscal.ai",
+     "url": "https://www.moomoo.com/news/post/1004878764/dz-bank-ag-upgrades-cisco-cscous-to-buy-rating-announces",
+     "published": "2026-11-17T21:31:21Z"
     },
     {
      "score": 0.0,
-     "title": "The Home Depot Announces Executive Leadership Changes",
+     "title": "Cisco Systems Reports Multiple Insider Stock Sales",
      "source": "fiscal.ai",
-     "url": "https://www.prnewswire.com/news-releases/the-home-depot-names-richard-mcphail-as-ceo-effective-november-23-2026-302941068.html",
-     "published": "2026-11-17T11:31:56Z"
-    },
-    {
-     "score": 0.0,
-     "title": "The Home Depot Reports Third Quarter Fiscal 2026 Results and Updates Guidance",
-     "source": "fiscal.ai",
-     "url": "https://www.newswire.ca/news-releases/the-home-depot-announces-third-quarter-fiscal-2026-results-updates-fiscal-2026-guidance-846132573.html",
-     "published": "2026-11-17T12:31:22Z"
-    }
-   ]
-  },
-  "INTC": {
-   "articles": 1,
-   "sentiment": 0.0,
-   "label": "中性",
-   "top": [
-    {
-     "score": 0.0,
-     "title": "Nvidia Reduces Stake in Intel Corporation",
-     "source": "fiscal.ai",
-     "url": "https://www.marketscreener.com/news/nvidia-raises-spacex-stake-cuts-intel-holding-ce785edfd081f720",
-     "published": "2026-11-17T11:31:58Z"
+     "url": "https://www.marketscreener.com/news/cisco-systems-insider-sold-shares-worth-6-101-148-according-to-a-recent-sec-filing-ce785edcdf8df622",
+     "published": "2026-11-18T01:01:55Z"
     }
    ]
   },
@@ -803,640 +383,780 @@
    "top": [
     {
      "score": 1.0,
-     "title": "Barclays Maintains Bullish Rating on Arista Networks",
+     "title": "Arista Networks Expands Etherlink Portfolio With New R4 Platforms",
      "source": "fiscal.ai",
-     "url": "https://www.moomoo.com/ja/news/post/1004871008/barclays-maintains-arista-networks-anetus-with-buy-rating-maintains-target",
-     "published": "2026-11-17T12:31:34Z"
+     "url": "https://www.marketscreener.com/news/arista-networks-expands-etherlink-portfolio-with-new-r4-platforms-ce785edcda8af427",
+     "published": "2026-11-17T16:02:10Z"
     }
    ]
   },
-  "GEV": {
+  "GE": {
    "articles": 1,
    "sentiment": 0.0,
    "label": "中性",
    "top": [
     {
      "score": 0.0,
-     "title": "GE Vernova Announces SF6-Free Technology for Space-Constrained High-Voltage Substations",
+     "title": "Unison Named One of Newsweek's America's Greatest Workplaces in Manufacturing 2026",
      "source": "fiscal.ai",
-     "url": "https://www.moomoo.com/ja/news/flash/1004860615/ge-vernova-launches-sf6-free-compact-switchgear-for-space-constrained",
-     "published": "2026-11-17T13:01:42Z"
+     "url": "https://www.einnews.com/pr_news/956596233/unison-recognized-by-newsweek-as-one-of-america-s-greatest-workplaces-in-manufacturing-2026",
+     "published": "2026-11-17T16:03:10Z"
     }
    ]
   },
-  "SHEL": {
-   "articles": 4,
-   "sentiment": 0.5,
-   "label": "偏多",
-   "top": [
-    {
-     "score": 1.0,
-     "title": "Update on Shell Energy Holdings Australia Tax Dispute",
-     "source": "fiscal.ai",
-     "url": "https://royaldutchshellplc.com/2026/11/16/shells-99-million-australian-tax-victory-is-under-appeal-a-federal-court-case-update/",
-     "published": "2026-11-16T16:31:23Z"
-    },
-    {
-     "score": 1.0,
-     "title": "Shell plc Reports Routine Share Buyback Transactions",
-     "source": "fiscal.ai",
-     "url": "https://www.globenewswire.com/news-release/2026/11/16/3403296/0/en/transaction-in-own-shares.html",
-     "published": "2026-11-16T17:31:17Z"
-    },
-    {
-     "score": 0.0,
-     "title": "Shell plc Director Dick Boer Nominated for Philips Supervisory Board",
-     "source": "fiscal.ai",
-     "url": "https://www.globenewswire.com/news-release/2026/11/16/3403502/0/en/director-declaration.html",
-     "published": "2026-11-16T14:01:21Z"
-    }
-   ]
-  },
-  "META": {
+  "ACN": {
    "articles": 2,
-   "sentiment": -0.5,
-   "label": "偏空",
+   "sentiment": 0.0,
+   "label": "中性",
    "top": [
     {
-     "score": -1.0,
-     "title": "Meta Secures Multi-Year Agreements for Low-Carbon Data Center Materials",
+     "score": 0.0,
+     "title": "Accenture and Google DeepMind Expand Enterprise AI Alliance",
      "source": "fiscal.ai",
-     "url": "https://sustainabilitymag.com/news/why-meta-is-expanding-us-clean-industrial-supply-chains",
-     "published": "2026-11-16T14:31:14Z"
+     "url": "https://aimagazine.com/news/gemini-4-hydrogen-google-deepminds-model-for-agentic-work",
+     "published": "2026-11-17T16:31:22Z"
     },
     {
      "score": 0.0,
-     "title": "Meta, Amazon, and Google Lobbying Fails to Stop China Data Center Curbs",
+     "title": "Accenture Joins Microsoft-Led AI Transparency Initiative",
      "source": "fiscal.ai",
-     "url": "https://www.marketscreener.com/news/amazon-google-meta-lobbying-fails-to-stop-trump-from-pursuing-china-data-center-curbs-ce785edcd88df327",
-     "published": "2026-11-17T13:01:56Z"
+     "url": "https://www.prnewswire.com/il/news-releases/microsoft-and-organizations-across-industries-launch-ai-transparency-initiative-to-strengthen-enterprise-trust-in-ai-models-and-agents-302942660.html",
+     "published": "2026-11-17T22:01:24Z"
     }
    ]
   },
-  "PANW": {
-   "articles": 2,
-   "sentiment": -0.5,
-   "label": "偏空",
-   "top": [
-    {
-     "score": -1.0,
-     "title": "Palo Alto Networks' Unit 42 Investigates Fireworks AI Security Breach",
-     "source": "fiscal.ai",
-     "url": "https://www.varindia.com/news/fireworks-ai-breach-exposes-supply-chain-risks",
-     "published": "2026-11-16T14:31:24Z"
-    },
-    {
-     "score": 0.0,
-     "title": "Palo Alto Networks Releases State of Cloud Security Report 2026",
-     "source": "fiscal.ai",
-     "url": "https://cybermagazine.com/news/palo-alto-networks-99-companies-find-ungoverned-ai",
-     "published": "2026-11-16T19:01:34Z"
-    }
-   ]
-  },
-  "NVDA": {
-   "articles": 6,
-   "sentiment": -0.167,
-   "label": "略偏空",
-   "top": [
-    {
-     "score": -1.0,
-     "title": "NVIDIA Issues Warning to Chip Buyers Regarding US Export Compliance",
-     "source": "fiscal.ai",
-     "url": "https://www.marketscreener.com/news/nvidia-cautions-chip-buyers-over-potential-us-legal-action-tied-to-remote-access-for-chinese-firms-ce785edfd08af42c",
-     "published": "2026-11-17T12:32:23Z"
-    },
-    {
-     "score": 0.0,
-     "title": "Corvex Signs $103 Million Agreement for NVIDIA Blackwell Capacity",
-     "source": "fiscal.ai",
-     "url": "https://www.prnewswire.com/news-releases/corvex-signs-103-million-take-or-pay-agreement-for-nvidia-blackwell-capacity-21-million-of-annual-contract-revenue-per-megawatt-302940368.html",
-     "published": "2026-11-16T14:31:25Z"
-    },
-    {
-     "score": 0.0,
-     "title": "NVIDIA Launches Vera CPU Platform for High-Performance Computing",
-     "source": "fiscal.ai",
-     "url": "https://www.globenewswire.com/news-release/2026/11/16/3403879/0/en/nvidia-expands-vera-cpu-platform-to-accelerate-scientific-discovery.html",
-     "published": "2026-11-16T19:01:25Z"
-    }
-   ]
-  },
-  "MRK": {
-   "articles": 3,
-   "sentiment": 0.667,
-   "label": "偏多",
-   "top": [
-    {
-     "score": 1.0,
-     "title": "Merck Expands Clinical Operations in Athens",
-     "source": "fiscal.ai",
-     "url": "https://www.euro2day.gr/amp/news/enterprises/article/2380314/h-merck-epekteinei-ton-tomea-klinikon-leitoyrgion.html",
-     "published": "2026-11-16T14:31:27Z"
-    },
-    {
-     "score": 1.0,
-     "title": "Bernstein Research Adjusts Price Target for Merck KGaA",
-     "source": "fiscal.ai",
-     "url": "https://www.finanzen.ch/analyse/merck-market-perform-1121522",
-     "published": "2026-11-17T10:01:39Z"
-    },
-    {
-     "score": 0.0,
-     "title": "Merck KGaA to Acquire Rapid Micro Biosystems",
-     "source": "fiscal.ai",
-     "url": "https://markets.businessinsider.com/author/globenewswire",
-     "published": "2026-11-16T16:31:32Z"
-    }
-   ]
-  },
-  "MS": {
-   "articles": 3,
-   "sentiment": 0.333,
-   "label": "略偏多",
-   "top": [
-    {
-     "score": 1.0,
-     "title": "Morgan Stanley Issues Bullish Outlook on Global Equities and AI Capex",
-     "source": "fiscal.ai",
-     "url": "https://www.morningstar.com/news/marketwatch/2026111619/why-morgan-stanley-says-its-time-to-go-max-overweight-on-stocks",
-     "published": "2026-11-16T16:01:45Z"
-    },
-    {
-     "score": 0.0,
-     "title": "Morgan Stanley Files Third-Quarter 13F Holdings Report",
-     "source": "fiscal.ai",
-     "url": "https://www.moomoo.com/news/post/1004720156/morgan-stanley-s-q3-holdings-nvidia-nvdaus-and-apple-aaplus",
-     "published": "2026-11-16T14:31:27Z"
-    },
-    {
-     "score": 0.0,
-     "title": "Morgan Stanley Investment Management Launches Active ETF Platform in Europe",
-     "source": "fiscal.ai",
-     "url": "https://www.businesswire.com/newsroom/industry/professional-services/banking",
-     "published": "2026-11-17T11:31:24Z"
-    }
-   ]
-  },
-  "ORCL": {
+  "ASML": {
    "articles": 1,
    "sentiment": 1.0,
    "label": "偏多",
    "top": [
     {
      "score": 1.0,
-     "title": "Shore Medical Center and Shore Physicians Group Select Oracle Health's AI-Powered EHR",
+     "title": "Bernstein Research Maintains Outperform Rating on ASML",
      "source": "fiscal.ai",
-     "url": "https://www.prnewswire.com/news-releases/new-jersey-based-shore-medical-center-and-shore-physicians-group-select-oracle-healths-new-ai-powered-ehr-to-create-a-more-connected-experience-for-patients-and-care-teams-302940524.html",
-     "published": "2026-11-16T14:31:28Z"
+     "url": "https://www.finanzen.ch/analyse/asml-nv-outperform-1121543",
+     "published": "2026-11-17T18:01:21Z"
     }
    ]
   },
-  "NOW": {
-   "articles": 3,
-   "sentiment": 0.333,
+  "DDOG": {
+   "articles": 1,
+   "sentiment": 0.0,
+   "label": "中性",
+   "top": [
+    {
+     "score": 0.0,
+     "title": "Datadog Named a Leader in 2026 Gartner Magic Quadrant for Observability Pipelines",
+     "source": "fiscal.ai",
+     "url": "https://www.globenewswire.com/news-release/2026/11/17/3405110/0/en/datadog-named-a-leader-in-the-2026-gartner-magic-quadrant-for-observability-pipelines.html",
+     "published": "2026-11-17T19:01:24Z"
+    }
+   ]
+  },
+  "AAPL": {
+   "articles": 5,
+   "sentiment": 0.2,
    "label": "略偏多",
    "top": [
     {
      "score": 1.0,
-     "title": "Velatura Launches Workflow Integration Node™ in ServiceNow Store",
+     "title": "South Korean Regulator Orders Apple to Designate Legal Representatives",
      "source": "fiscal.ai",
-     "url": "https://www.einpresswire.com/article/957060419/the-velatura-workflow-integration-node-connects-care-across-organizations-now-available-in-the-servicenow-store",
-     "published": "2026-11-16T20:02:26Z"
+     "url": "https://www.marketscreener.com/news/korea-regulator-cites-customer-complaints-orders-apple-google-alibaba-openai-to-designate-legal-ce785edcd08efe23",
+     "published": "2026-11-18T11:32:12Z"
     },
     {
      "score": 0.0,
-     "title": "Everbridge Named to ServiceNow Partner Advisory Council and Achieves Elite Partner Status",
+     "title": "Apple Reportedly Nearing Long-Term DRAM Supply Agreement With Samsung",
      "source": "fiscal.ai",
-     "url": "https://www.businesswire.com/newsroom/industry/technology/telecommunications",
-     "published": "2026-11-16T14:31:37Z"
+     "url": "https://appleosophy.com/wire/k4cb19g/",
+     "published": "2026-11-17T19:01:26Z"
     },
     {
      "score": 0.0,
-     "title": "ServiceNow and Genpact Expand Partnership for Agentic AI Workflows",
+     "title": "Apple Reports Widespread Internal and Consumer Service Outages",
      "source": "fiscal.ai",
-     "url": "https://procurementmag.com/news/genpact-onyx-helps-run-ai-agents-for-enterprise-operations",
-     "published": "2026-11-17T13:01:49Z"
+     "url": "https://appleosophy.com/wire/lu3evxk/",
+     "published": "2026-11-17T20:01:26Z"
     }
    ]
   },
-  "T": {
+  "BAC": {
    "articles": 1,
    "sentiment": 0.0,
    "label": "中性",
    "top": [
     {
      "score": 0.0,
-     "title": "TELUS Confirms Receipt of Unsolicited Acquisition Proposal from Québecor",
+     "title": "Bank of America Releases 2026 Business Owner Report",
      "source": "fiscal.ai",
-     "url": "https://www.newswire.ca/fr/news-releases/telus-confirme-avoir-recu-une-proposition-non-sollicitee-de-quebecor-et-poursuit-un-examen-des-solutions-de-rechange-strategiques-882238880.html",
-     "published": "2026-11-16T14:31:46Z"
+     "url": "https://www.prnewswire.com/news-releases/bank-of-america-study-business-owners-bet-on-growth-and-ai-despite-rising-costs-302941549.html",
+     "published": "2026-11-17T19:01:39Z"
     }
    ]
   },
-  "QCOM": {
-   "articles": 3,
-   "sentiment": 0.0,
-   "label": "中性",
-   "top": [
-    {
-     "score": 0.0,
-     "title": "Qualcomm Survey Highlights Performance and AI as Key Drivers for Indian Laptop Buyers",
-     "source": "fiscal.ai",
-     "url": "https://www.prnewswire.com/in/news-releases/survey-indias-laptop-buyers-prioritize-performance-as-ai-capabilities-and-snapdragon-gain-traction-302940478.html",
-     "published": "2026-11-16T14:31:51Z"
-    },
-    {
-     "score": 0.0,
-     "title": "Getac Launches MX60 and MX60W End User Devices Powered by Qualcomm",
-     "source": "fiscal.ai",
-     "url": "https://www.prnewswire.com/il/news-releases/getacs-new-mx60-and-mx60w-bring-mission-critical-computing-to-operators-at-the-tactical-edge-302933001.html",
-     "published": "2026-11-17T12:31:34Z"
-    },
-    {
-     "score": 0.0,
-     "title": "Qualcomm China Chairman Participates in 17th Caixin Summit",
-     "source": "fiscal.ai",
-     "url": "https://www.morningstar.com/news/pr-newswire/20261117cn98206/17th-caixin-summit-opens-in-beijing-under-the-theme-challenges-abound-growth-answers",
-     "published": "2026-11-17T13:01:45Z"
-    }
-   ]
-  },
-  "MSFT": {
-   "articles": 5,
-   "sentiment": 0.0,
-   "label": "中性",
+  "CRM": {
+   "articles": 4,
+   "sentiment": -0.5,
+   "label": "偏空",
    "top": [
     {
      "score": -1.0,
-     "title": "Class Action Lawsuit Filed Against Microsoft Following Global 365 Outage",
+     "title": "Salesforce Shares Decline Amid Broader Tech Selloff",
      "source": "fiscal.ai",
-     "url": "https://www.newswire.ca/news-releases/microsoft-outage-triggers-canada-wide-class-action-lawsuit-852582849.html",
-     "published": "2026-11-16T22:31:21Z"
+     "url": "https://www.morningstar.com/news/marketwatch/2026111776/why-salesforces-stock-is-leading-sp-500-decliners-amid-tech-jitters",
+     "published": "2026-11-17T19:01:42Z"
     },
+    {
+     "score": -1.0,
+     "title": "Investor Rights Firm Investigates Salesforce's Acquisition of Braze, Inc.",
+     "source": "fiscal.ai",
+     "url": "https://www.morningstar.com/news/pr-newswire/20261118ny00863/are-sgry-brze-ccc-obtaining-fair-deals-for-their-shareholders",
+     "published": "2026-11-18T11:31:34Z"
+    },
+    {
+     "score": 0.0,
+     "title": "Salesforce and Microsoft Announce Copilotforce Partnership",
+     "source": "fiscal.ai",
+     "url": "https://www.marketscreener.com/news/salesforce-microsoft-launch-copilotforce-partnership-ce785edcdd80f227",
+     "published": "2026-11-17T20:02:22Z"
+    }
+   ]
+  },
+  "COIN": {
+   "articles": 1,
+   "sentiment": 0.0,
+   "label": "中性",
+   "top": [
+    {
+     "score": 0.0,
+     "title": "Wirex Launches Tokenized Stocks Issued by Coinbase on Base Network",
+     "source": "fiscal.ai",
+     "url": "https://www.prnewswire.com/news-releases/wirex-now-powers-tokenized-stocks-302942480.html",
+     "published": "2026-11-17T19:01:43Z"
+    }
+   ]
+  },
+  "CIEN": {
+   "articles": 1,
+   "sentiment": 1.0,
+   "label": "偏多",
+   "top": [
     {
      "score": 1.0,
-     "title": "Microsoft Expands Use of Haivision Live Video Ecosystem",
+     "title": "Ciena and Internet2 Set Industry Record for Longest Terrestrial 800 Gb/s Coherent Pluggable Link",
      "source": "fiscal.ai",
-     "url": "https://www.moomoo.com/news/post/1004882664/microsoft-selects-haivision-video-contribution-ecosystem-and-makito-one-video",
-     "published": "2026-11-17T11:31:30Z"
-    },
-    {
-     "score": 0.0,
-     "title": "Microsoft Addresses Recent 365 Service Disruption",
-     "source": "fiscal.ai",
-     "url": "https://businesschief.com/news/microsoft-outage-loss-could-total-us-700m-analysts-say",
-     "published": "2026-11-16T16:01:21Z"
+     "url": "https://www.barchart.com/press-releases/8876089/ciena-and-internet2-reach-industry-record-for-longest-terrestrial-800-gb-s-coherent-pluggable-link",
+     "published": "2026-11-17T19:01:49Z"
     }
    ]
   },
-  "TSLA": {
-   "articles": 2,
-   "sentiment": 0.0,
-   "label": "中性",
-   "top": [
-    {
-     "score": 0.0,
-     "title": "Tesla Announces €3 Billion Expansion of German Gigafactory",
-     "source": "fiscal.ai",
-     "url": "https://www.fidelity.com/news/article/company-news/202611160938RTRSNEWSCOMBINED_KCN3WR1QL-OUSBS_1",
-     "published": "2026-11-16T16:01:24Z"
-    },
-    {
-     "score": 0.0,
-     "title": "Elon Musk Hints at Robotaxi Expansion for Model Y Owners",
-     "source": "fiscal.ai",
-     "url": "https://www.moomoo.com/stock/TSLA261106C350000-US?chain_id=Name1K9-3FXPhg.1lfo5sg&global_content=%7B%22promote_id%22%3A%22%22%2C%22sub_promote_id%22%3A64%2C%22subpromote_id%22%3A%22%22%2C%22f%22%3A%22www.moomoo.com%2Fcommunity%2Fprofile%2F151699427%22%7D",
-     "published": "2026-11-17T12:33:00Z"
-    }
-   ]
-  },
-  "PLTR": {
-   "articles": 1,
-   "sentiment": 0.0,
-   "label": "中性",
-   "top": [
-    {
-     "score": 0.0,
-     "title": "Palantir Technologies Faces Potential Competition for NHS Data Contract",
-     "source": "fiscal.ai",
-     "url": "https://www.moomoo.com/news/post/1004759091/market-chatter-palantir-technologies-faces-uk-competition-for-nhs-data",
-     "published": "2026-11-16T16:01:31Z"
-    }
-   ]
-  },
-  "TJX": {
-   "articles": 2,
-   "sentiment": -0.5,
-   "label": "偏空",
-   "top": [
-    {
-     "score": -1.0,
-     "title": "ProPublica Investigation Links Tariff Refunds to Executive Bonuses at TJX",
-     "source": "fiscal.ai",
-     "url": "https://www.commondreams.org/news/tariff-refunds-corporate-bonuses",
-     "published": "2026-11-16T16:02:28Z"
-    },
-    {
-     "score": 0.0,
-     "title": "Morgan Stanley Adjusts Price Target on TJX Companies",
-     "source": "fiscal.ai",
-     "url": "https://www.marketscreener.com/news/morgan-stanley-adjusts-price-target-on-tjx-to-166-from-178-ce785edfdb89f52d",
-     "published": "2026-11-16T16:02:28Z"
-    }
-   ]
-  },
-  "NU": {
-   "articles": 1,
-   "sentiment": 0.0,
-   "label": "中性",
-   "top": [
-    {
-     "score": 0.0,
-     "title": "Nubank Receives Official Recognition as a Bank in Brazil",
-     "source": "fiscal.ai",
-     "url": "https://economia.ig.com.br/2026-11-16/nubank-agora-e-banco-de-verdade--entenda-o-que-muda.html",
-     "published": "2026-11-16T17:01:20Z"
-    }
-   ]
-  },
-  "NBIS": {
-   "articles": 3,
-   "sentiment": 0.0,
-   "label": "中性",
-   "top": [
-    {
-     "score": 0.0,
-     "title": "Nebius Participates in WEKA Inference Economics Scorecard Benchmark",
-     "source": "fiscal.ai",
-     "url": "https://www.prnewswire.com/il/news-releases/new-research-challenges-gpu-utilization-as-measure-of-inference-infrastructure-302939611.html",
-     "published": "2026-11-16T17:01:33Z"
-    },
-    {
-     "score": 0.0,
-     "title": "Nebius Submits Results for MLPerf Training v6.1 Benchmark",
-     "source": "fiscal.ai",
-     "url": "https://www.globenewswire.com/news-release/2026/11/16/3403869/0/en/mlcommons-releases-mlperf-training-v6-1-results-spotlighting-recent-advances-in-ai-training.html",
-     "published": "2026-11-16T17:01:33Z"
-    },
-    {
-     "score": 0.0,
-     "title": "Nebius Group N.V. Insider Sold Shares Worth $519,564",
-     "source": "fiscal.ai",
-     "url": "https://www.marketscreener.com/news/nebius-group-n-v-insider-sold-shares-worth-519-564-according-to-a-recent-sec-filing-ce785edcd889ff26",
-     "published": "2026-11-17T13:02:20Z"
-    }
-   ]
-  },
-  "PG": {
-   "articles": 1,
-   "sentiment": 0.0,
-   "label": "中性",
-   "top": [
-    {
-     "score": 0.0,
-     "title": "National Advertising Review Board Recommends Harry's Discontinue Certain Disparaging Claims Against Gillette",
-     "source": "fiscal.ai",
-     "url": "https://www.globenewswire.com/news-release/2026/11/16/3403866/0/en/national-advertising-review-board-will-refer-harry-s-unsupported-advertising-to-regulatory-authorities.html",
-     "published": "2026-11-16T19:01:35Z"
-    }
-   ]
-  },
-  "NKE": {
-   "articles": 2,
-   "sentiment": 0.0,
-   "label": "中性",
-   "top": [
-    {
-     "score": 0.0,
-     "title": "Nike Unveils New Footwear and Sportswear Innovations",
-     "source": "fiscal.ai",
-     "url": "https://www.pap.pl/mediaroom/nike-inc-unveils-next-generation-innovation-across-performance-sports-and-sportswear",
-     "published": "2026-11-16T19:01:37Z"
-    },
-    {
-     "score": 0.0,
-     "title": "NIKE, Inc. Schedules Capital Markets Day",
-     "source": "fiscal.ai",
-     "url": "https://www.finanzen.ch/nachrichten/aktien/tagesvorschau-dienstag-17-november-1036771743",
-     "published": "2026-11-17T11:31:46Z"
-    }
-   ]
-  },
-  "RKLB": {
-   "articles": 1,
-   "sentiment": 0.0,
-   "label": "中性",
-   "top": [
-    {
-     "score": 0.0,
-     "title": "Goldman Sachs Adjusts Rocket Lab Price Target to $68",
-     "source": "fiscal.ai",
-     "url": "https://www.moomoo.com/news/post/1004753335/goldman-sachs-maintains-rocket-lab-rklbus-with-hold-rating-raises",
-     "published": "2026-11-16T19:01:41Z"
-    }
-   ]
-  },
-  "JPM": {
-   "articles": 4,
-   "sentiment": 0.0,
-   "label": "中性",
-   "top": [
-    {
-     "score": 0.0,
-     "title": "JPMorgan Chase and Other Major Banks Experience Online Banking Outages",
-     "source": "fiscal.ai",
-     "url": "https://www.barchart.com/story/news/8859950/customers-at-some-of-the-nation-s-largest-banks-are-reporting-difficulty-accessing-accounts-online",
-     "published": "2026-11-16T19:01:43Z"
-    },
-    {
-     "score": 0.0,
-     "title": "JPMorgan Chase Discloses 5.22% Stake in Sibanye-Stillwater",
-     "source": "fiscal.ai",
-     "url": "https://irw-press.com/de/mitteilung-ueber-den-erwerb-einer-wirtschaftlichen-beteiligung-an-wertpapieren-durch-jpmorgan-chase-co/",
-     "published": "2026-11-16T20:02:56Z"
-    },
-    {
-     "score": 0.0,
-     "title": "JPMorgan Chase Reports Widespread Banking Disruption Due to Software Bug",
-     "source": "fiscal.ai",
-     "url": "https://www.newswire.lk/2026/11/17/why-us-banks-faced-widespread-outages-on-monday/",
-     "published": "2026-11-17T11:31:32Z"
-    }
-   ]
-  },
-  "MRVL": {
-   "articles": 1,
-   "sentiment": 0.0,
-   "label": "中性",
-   "top": [
-    {
-     "score": 0.0,
-     "title": "Marvell Technology and Penguin Solutions Collaborate on AI Memory Demands",
-     "source": "fiscal.ai",
-     "url": "https://www.fidelity.com/news/article/company-news/202611160955MIDNIGHTUSEQUITY_A3754758",
-     "published": "2026-11-16T19:01:44Z"
-    }
-   ]
-  },
-  "SMCI": {
-   "articles": 1,
-   "sentiment": 0.0,
-   "label": "中性",
-   "top": [
-    {
-     "score": 0.0,
-     "title": "Supermicro Participates in MLPerf Training v6.1 Benchmarks",
-     "source": "fiscal.ai",
-     "url": "https://www.globenewswire.com/news-release/2026/11/16/3403869/0/en/mlcommons-releases-mlperf-training-v6-1-results-spotlighting-recent-advances-in-ai-training.html",
-     "published": "2026-11-16T19:02:06Z"
-    }
-   ]
-  },
-  "LITE": {
-   "articles": 2,
-   "sentiment": -0.5,
-   "label": "偏空",
-   "top": [
-    {
-     "score": -1.0,
-     "title": "Lumentum Shares Decline Amidst Export Policy Risks and Industry Volatility",
-     "source": "fiscal.ai",
-     "url": "https://www.barchart.com/story/news/8858823/jabil-coherent-fabrinet-ttm-technologies-and-lumentum-shares-plummet-what-you-need-to-know",
-     "published": "2026-11-16T22:31:55Z"
-    },
-    {
-     "score": 0.0,
-     "title": "B. Riley Adjusts Lumentum Price Target to $659",
-     "source": "fiscal.ai",
-     "url": "https://www.marketscreener.com/news/b-riley-adjusts-pt-on-lumentum-to-659-from-770-keeps-neutral-rating-ce785edcd88cf627",
-     "published": "2026-11-17T13:02:07Z"
-    }
-   ]
-  },
-  "KO": {
-   "articles": 2,
-   "sentiment": 0.0,
-   "label": "中性",
-   "top": [
-    {
-     "score": 0.0,
-     "title": "Coca-Cola Officer Executes Stock Sale",
-     "source": "fiscal.ai",
-     "url": "https://www.moomoo.com/news/notice/1004799398/notice-of-proposed-sale-of-securities-pursuant-to-rule-144",
-     "published": "2026-11-17T00:01:31Z"
-    },
-    {
-     "score": 0.0,
-     "title": "TD Cowen Adjusts Price Target on Coca-Cola to $112 From $104",
-     "source": "fiscal.ai",
-     "url": "https://www.moomoo.com/news/post/1004879881/td-cowen-adjusts-price-target-on-coca-cola-to-112",
-     "published": "2026-11-17T11:31:23Z"
-    }
-   ]
-  },
-  "MRNA": {
-   "articles": 3,
-   "sentiment": -0.333,
-   "label": "略偏空",
-   "top": [
-    {
-     "score": -1.0,
-     "title": "Moderna Officer Proposes Sale of Approximately $8.6 Million in Common Stock",
-     "source": "fiscal.ai",
-     "url": "https://www.moomoo.com/news/flash/1004775573/form-144-moderna-mrnaus-officer-proposes-to-sell-8-6",
-     "published": "2026-11-17T01:01:38Z"
-    },
-    {
-     "score": 0.0,
-     "title": "Morgan Stanley Adjusts Price Target on Moderna to $200 From $95",
-     "source": "fiscal.ai",
-     "url": "https://www.marketscreener.com/news/morgan-stanley-adjusts-price-target-on-moderna-to-200-from-95-ce785edfd080f620",
-     "published": "2026-11-17T11:31:52Z"
-    },
-    {
-     "score": 0.0,
-     "title": "JPMorgan Adjusts Price Target on Moderna to $102 From $77",
-     "source": "fiscal.ai",
-     "url": "https://www.marketscreener.com/news/jpmorgan-adjusts-price-target-on-moderna-to-102-from-77-ce785edcd98df027",
-     "published": "2026-11-17T11:31:52Z"
-    }
-   ]
-  },
-  "SNDK": {
-   "articles": 1,
-   "sentiment": -1.0,
-   "label": "偏空",
-   "top": [
-    {
-     "score": -1.0,
-     "title": "SanDisk Shares Decline Following Commerce Department Regulatory Update",
-     "source": "fiscal.ai",
-     "url": "https://www.barchart.com/story/news/8857083/micron-sk-hynix-and-sandisk-shares-plummet-what-you-need-to-know",
-     "published": "2026-11-17T03:01:31Z"
-    }
-   ]
-  },
-  "MA": {
+  "CRDO": {
    "articles": 2,
    "sentiment": 0.5,
    "label": "偏多",
    "top": [
     {
      "score": 1.0,
-     "title": "Visa and Mastercard Seek Final Approval for Swipe Fee Settlement",
+     "title": "Credo Technology Shares Rise on Potential U.S. Ban on Chinese Optical Transceivers",
      "source": "fiscal.ai",
-     "url": "https://www.pymnts.com/credit-cards/2026/visa-and-mastercard-hearing-puts-premium-card-pilots-on-the-line/",
-     "published": "2026-11-17T03:01:33Z"
+     "url": "https://www.moomoo.com/community/feed/credo-technology-crdo-us-increased-5-02-in-premarket-trading-117632328073222",
+     "published": "2026-11-17T19:01:54Z"
     },
     {
      "score": 0.0,
-     "title": "Mastercard Introduces 'Mastercard Accept' for Simplified Payment Acceptance",
+     "title": "Credo Technology Group Holding Reaches Patent Agreement With Marvell",
      "source": "fiscal.ai",
-     "url": "https://www.prnewswire.com/apac/news-releases/mastercard-enables-debit-cardholders-to-get-paid-as-easily-as-they-pay-302941200.html",
-     "published": "2026-11-17T03:01:33Z"
+     "url": "https://www.moomoo.com/hans/news/post/1004941851/credo-technology-shares-rise-after-patent-settlement-news",
+     "published": "2026-11-17T23:01:48Z"
     }
    ]
   },
-  "NEE": {
+  "HPE": {
    "articles": 1,
    "sentiment": 0.0,
    "label": "中性",
    "top": [
     {
      "score": 0.0,
-     "title": "Sierra Club Opposes Proposed NextEra Energy and Dominion Energy Merger Ahead of SCC Hearings",
+     "title": "FAA Halts Juniper Networks Router Installations Following Flight Outage",
      "source": "fiscal.ai",
-     "url": "https://cleantechnica.com/2026/11/16/as-hearings-begin-sierra-club-virginia-calls-for-the-scc-to-stop-the-dominion-nextera-merger/",
-     "published": "2026-11-17T03:01:50Z"
+     "url": "https://www.marketscreener.com/news/faa-halts-juniper-router-installations-after-flight-outage-ce785edcdd8cfe25",
+     "published": "2026-11-17T19:02:11Z"
+    }
+   ]
+  },
+  "AVGO": {
+   "articles": 1,
+   "sentiment": 0.0,
+   "label": "中性",
+   "top": [
+    {
+     "score": 0.0,
+     "title": "Broadcom to Invest $1 Billion in Anthropic IPO",
+     "source": "fiscal.ai",
+     "url": "https://www.morningstar.com/news/marketwatch/2026111767/if-you-own-a-nasdaq-100-fund-youll-own-anthropic-shares-after-15-trading-days-whether-you-want-to-or-not",
+     "published": "2026-11-17T20:01:19Z"
+    }
+   ]
+  },
+  "ABBV": {
+   "articles": 1,
+   "sentiment": 1.0,
+   "label": "偏多",
+   "top": [
+    {
+     "score": 1.0,
+     "title": "EVERSANA INTOUCH Wins 2026 Pharma Grand Award for AbbVie Campaign",
+     "source": "fiscal.ai",
+     "url": "https://www.einpresswire.com/article/957271987/nyfhealth-winners-announced-eversana-intouch-and-leo-singapore-earn-grand-awards-klick-health-is-agency-of-the-year",
+     "published": "2026-11-17T20:01:24Z"
+    }
+   ]
+  },
+  "ADI": {
+   "articles": 1,
+   "sentiment": 0.0,
+   "label": "中性",
+   "top": [
+    {
+     "score": 0.0,
+     "title": "Tutanota LLC Extends Tender Offer for Analog Devices, Inc. Shares",
+     "source": "fiscal.ai",
+     "url": "https://www.prlog.org/13183891-tutanota-llc-extends-tender-offer-for-up-to-100000-shares-of-common-stock-of-analog-devices-inc.html",
+     "published": "2026-11-17T20:01:33Z"
+    }
+   ]
+  },
+  "AMD": {
+   "articles": 2,
+   "sentiment": 0.5,
+   "label": "偏多",
+   "top": [
+    {
+     "score": 1.0,
+     "title": "AMD Gains Market Momentum Amid Nvidia Leadership Transition",
+     "source": "fiscal.ai",
+     "url": "https://www.barchart.com/story/news/8881290/nvidias-leadership-crisis-could-be-a-major-opportunity-for-amd-stock",
+     "published": "2026-11-17T20:01:57Z"
+    },
+    {
+     "score": 0.0,
+     "title": "AMD Insider Executes $5.06 Million Share Sale",
+     "source": "fiscal.ai",
+     "url": "https://www.marketscreener.com/news/advanced-micro-devices-insider-sold-shares-worth-5-060-653-according-to-a-recent-sec-filing-ce785edcdf89f625",
+     "published": "2026-11-17T22:31:59Z"
+    }
+   ]
+  },
+  "APP": {
+   "articles": 1,
+   "sentiment": 0.0,
+   "label": "中性",
+   "top": [
+    {
+     "score": 0.0,
+     "title": "AppLovin in Talks to Acquire Criteo",
+     "source": "fiscal.ai",
+     "url": "https://www.marketscreener.com/news/applovin-in-talks-to-acquire-criteo-ce785edcdc8ef12c",
+     "published": "2026-11-17T21:31:48Z"
+    }
+   ]
+  },
+  "ARM": {
+   "articles": 1,
+   "sentiment": 0.0,
+   "label": "中性",
+   "top": [
+    {
+     "score": 0.0,
+     "title": "Morgan Stanley Maintains Hold Rating and $212 Price Target for Arm Holdings",
+     "source": "fiscal.ai",
+     "url": "https://www.moomoo.com/news/post/1004900071/morgan-stanley-maintains-arm-holdings-armus-with-hold-rating-maintains",
+     "published": "2026-11-17T22:01:26Z"
+    }
+   ]
+  },
+  "BE": {
+   "articles": 1,
+   "sentiment": -1.0,
+   "label": "偏空",
+   "top": [
+    {
+     "score": -1.0,
+     "title": "Bronstein, Gewirtz & Grossman, LLC Initiates Investigation into Bloom Energy",
+     "source": "fiscal.ai",
+     "url": "https://money.tmx.com/quote/BE:US/news/7760408446012610/Bronstein_Gewirtz_Grossman_LLC_Initiates_an_Investigation_into_Allegations_Against_Bloom_Energy_BE_And_Encourages_Shareholders_to_Reach_Out",
+     "published": "2026-11-17T22:31:23Z"
+    }
+   ]
+  },
+  "HOOD": {
+   "articles": 2,
+   "sentiment": -1.0,
+   "label": "偏空",
+   "top": [
+    {
+     "score": -1.0,
+     "title": "Insider Sale by Baiju Prafulkumar Bhatt Living Trust",
+     "source": "fiscal.ai",
+     "url": "https://www.moomoo.com/hans/news/flash/1004943826/form-144-robinhood-hoodus-director-proposes-to-sell-5-million",
+     "published": "2026-11-17T22:31:39Z"
+    },
+    {
+     "score": -1.0,
+     "title": "Evercore ISI Lowers Price Target on Robinhood Markets, Inc.",
+     "source": "fiscal.ai",
+     "url": "https://www.moomoo.com/options/HOOD261120P78000-US",
+     "published": "2026-11-18T13:01:39Z"
+    }
+   ]
+  },
+  "COHR": {
+   "articles": 1,
+   "sentiment": 0.0,
+   "label": "中性",
+   "top": [
+    {
+     "score": 0.0,
+     "title": "Coherent Corp. CEO and Chairman Purchase Shares",
+     "source": "fiscal.ai",
+     "url": "https://www.marketscreener.com/news/coherent-stock-pick-of-the-week-at-smart-insider-following-ceo-chairman-share-purchases-ce785edcdb80f525",
+     "published": "2026-11-17T23:02:09Z"
+    }
+   ]
+  },
+  "INTC": {
+   "articles": 2,
+   "sentiment": 0.0,
+   "label": "中性",
+   "top": [
+    {
+     "score": 0.0,
+     "title": "Intel AMX Technology Integrated into TRUSTA AI Scaler Toolkit",
+     "source": "fiscal.ai",
+     "url": "https://www.morningstar.com/news/pr-newswire/20261118hk01048/trusta-debuts-at-supercomputing-2026-with-upgraded-ai-scaler-toolkit",
+     "published": "2026-11-18T11:31:29Z"
+    },
+    {
+     "score": 0.0,
+     "title": "Intel Initiates New Round of Global Workforce Reductions",
+     "source": "fiscal.ai",
+     "url": "https://www.moomoo.com/stock/INTC-US?chain_id=Name1K9-3FXPhg.1lfr19g&global_content=%7B%22promote_id%22%3A%22%22%2C%22sub_promote_id%22%3A64%2C%22subpromote_id%22%3A%22%22%2C%22f%22%3A%22www.moomoo.com%2Fcommunity%2Fprofile%2F%E5%97%A1%E5%98%9B%E5%91%A2%E5%91%97%E5%92%AA%E5%90%BD-104750470%22%7D",
+     "published": "2026-11-18T12:32:10Z"
+    }
+   ]
+  },
+  "INTU": {
+   "articles": 1,
+   "sentiment": 1.0,
+   "label": "偏多",
+   "top": [
+    {
+     "score": 1.0,
+     "title": "GetBusy Expands SmartVault Integration with Intuit Applications",
+     "source": "fiscal.ai",
+     "url": "https://www.marketscreener.com/news/getbusy-expands-smartvault-integration-with-intuit-applications-ce785edcd08ef32c",
+     "published": "2026-11-18T11:32:01Z"
+    }
+   ]
+  },
+  "HD": {
+   "articles": 1,
+   "sentiment": 0.0,
+   "label": "中性",
+   "top": [
+    {
+     "score": 0.0,
+     "title": "Analysts Adjust Price Targets for The Home Depot Following Quarterly Results",
+     "source": "fiscal.ai",
+     "url": "https://www.marketscreener.com/news/bernstein-adjusts-price-target-on-home-depot-to-360-from-357-ce785eddd98fff24",
+     "published": "2026-11-18T11:32:05Z"
+    }
+   ]
+  },
+  "AMAT": {
+   "articles": 1,
+   "sentiment": 1.0,
+   "label": "偏多",
+   "top": [
+    {
+     "score": 1.0,
+     "title": "Bernstein Names Applied Materials a Top Pick in Semiconductor Equipment Sector",
+     "source": "fiscal.ai",
+     "url": "https://www.moomoo.com/news/post/1005017267/the-chip-supercycle-continues-bernstein-raises-semiconductor-equipment-spending-forecasts",
+     "published": "2026-11-18T12:31:32Z"
+    }
+   ]
+  },
+  "IONQ": {
+   "articles": 1,
+   "sentiment": 0.0,
+   "label": "中性",
+   "top": [
+    {
+     "score": 0.0,
+     "title": "IonQ and IDEMIA Secure Transactions Validate Quantum Key Distribution Interoperability",
+     "source": "fiscal.ai",
+     "url": "https://www.varindia.com/news/idemia-and-ionq-validate-quantum-key-distribution-for-critical-communications",
+     "published": "2026-11-18T12:31:56Z"
+    }
+   ]
+  },
+  "ETN": {
+   "articles": 1,
+   "sentiment": 0.0,
+   "label": "中性",
+   "top": [
+    {
+     "score": 0.0,
+     "title": "IG Metall Announces Potential Full-Day Strikes at Eaton",
+     "source": "fiscal.ai",
+     "url": "https://www.finanzen.at/nachrichten/aktien/ig-metall-startet-ganztages-streiks-noch-in-dieser-woche-1036778528",
+     "published": "2026-11-18T13:01:38Z"
+    }
+   ]
+  },
+  "CAT": {
+   "articles": 1,
+   "sentiment": 0.0,
+   "label": "中性",
+   "top": [
+    {
+     "score": 0.0,
+     "title": "Morgan Stanley Maintains Hold Rating on Caterpillar",
+     "source": "fiscal.ai",
+     "url": "https://www.moomoo.com/hans/news/post/1005034657/morgan-stanley-maintains-caterpillar-catus-with-hold-rating-maintains-target",
+     "published": "2026-11-18T13:01:42Z"
+    }
+   ]
+  },
+  "STX": {
+   "articles": 1,
+   "sentiment": 0.0,
+   "label": "中性",
+   "top": [
+    {
+     "score": 0.0,
+     "title": "Kratos Defense & Security Solutions Enters Long-Term Agreement with Seagate Space",
+     "source": "fiscal.ai",
+     "url": "https://www.moomoo.com/hans/news/post/1004164702/kratos-teams-up-with-seagate-space-for-offshore-launch-project",
+     "published": "2026-11-17T14:01:41Z"
     }
    ]
   },
   "LLY": {
-   "articles": 1,
-   "sentiment": 0.0,
-   "label": "中性",
+   "articles": 2,
+   "sentiment": 0.5,
+   "label": "偏多",
    "top": [
     {
-     "score": 0.0,
-     "title": "Eli Lilly and Stipple Bio Sign Oncology Research and Licensing Agreement",
+     "score": 1.0,
+     "title": "Eli Lilly Expands Access to Obesity Care via Teladoc Health Partnership",
      "source": "fiscal.ai",
-     "url": "https://www.moomoo.com/hans/news/post/1004868284/eli-lilly-stipple-bio-sign-oncology-research-deal",
-     "published": "2026-11-17T11:31:20Z"
+     "url": "https://www.globenewswire.com/news-release/2026/11/17/3404602/0/en/teladoc-health-expands-comprehensive-weight-care-program-with-employer-contribution-option-for-glp-1-medications.html",
+     "published": "2026-11-17T19:01:26Z"
+    },
+    {
+     "score": 0.0,
+     "title": "Lilly Announces New Office Location in Florence, Italy",
+     "source": "fiscal.ai",
+     "url": "https://www.milanofinanza.it/news/lilly-porta-in-manifattura-tabacchi-un-nuovo-modo-di-lavorare-insieme-202611171456583790",
+     "published": "2026-11-17T14:31:18Z"
     }
    ]
   },
-  "SNOW": {
+  "MSFT": {
+   "articles": 3,
+   "sentiment": 0.0,
+   "label": "中性",
+   "top": [
+    {
+     "score": 0.0,
+     "title": "Microsoft Commences Ignite 2026 Conference",
+     "source": "fiscal.ai",
+     "url": "https://www.globenewswire.com/news-release/2026/11/17/3404380/0/en/microsoft-selects-haivision-video-contribution-ecosystem-and-makito-one-video-transport-platform-to-power-global-live-event-productions.html",
+     "published": "2026-11-17T14:31:24Z"
+    },
+    {
+     "score": 0.0,
+     "title": "Microsoft Launches AI Transparency Initiative",
+     "source": "fiscal.ai",
+     "url": "https://stockhouse.com/news/newswire/2026/11/17/microsoft-launches-ai-transparency-initiative-with-40-organisations",
+     "published": "2026-11-17T19:02:16Z"
+    },
+    {
+     "score": 0.0,
+     "title": "StackGen Launches Shipyard on Microsoft Marketplace",
+     "source": "fiscal.ai",
+     "url": "https://cioinfluence.com/machine-learning/shipyard-by-stackgen-now-available-in-microsoft-marketplace/",
+     "published": "2026-11-18T11:31:15Z"
+    }
+   ]
+  },
+  "JPM": {
+   "articles": 3,
+   "sentiment": -0.333,
+   "label": "略偏空",
+   "top": [
+    {
+     "score": -1.0,
+     "title": "JPMorgan Chase and PYMNTS Release Report on Cash Management and Fraud Risk",
+     "source": "fiscal.ai",
+     "url": "https://www.pymnts.com/back-office/cfo/2026/62percent-of-cfos-say-their-teams-can-absorb-fraud-losses-without-disruption/",
+     "published": "2026-11-18T11:31:31Z"
+    },
+    {
+     "score": 0.0,
+     "title": "JPMorgan Chase Announces CFO Transition",
+     "source": "fiscal.ai",
+     "url": "https://www.morningstar.com/news/dow-jones/202611174825/jpmorgan-chase-names-bregje-de-best-to-succeed-jeremy-barnum-as-chief-financial-officer-2nd-update",
+     "published": "2026-11-17T14:31:24Z"
+    },
+    {
+     "score": 0.0,
+     "title": "JPMorgan-Led Banks Reduce Borrowing Costs for CCC Intelligent Solutions Debt Deal",
+     "source": "fiscal.ai",
+     "url": "https://www.marketscreener.com/news/jpmorgan-led-banks-cut-borrowing-costs-on-2-85-billion-debt-deal-for-ccc-intelligent-solutions-acqu-ce785edcda80f22c",
+     "published": "2026-11-17T19:02:25Z"
+    }
+   ]
+  },
+  "MCD": {
    "articles": 1,
    "sentiment": 0.0,
    "label": "中性",
    "top": [
     {
      "score": 0.0,
-     "title": "Noeri Secures $110 Million in Funding with Snowflake as Strategic Investor",
+     "title": "McDonald's Launches 'Home Alone' Themed Meal",
      "source": "fiscal.ai",
-     "url": "https://www.businesswire.com/newsroom/subject/funding",
-     "published": "2026-11-17T11:31:31Z"
+     "url": "https://www.prnewswire.com/news-releases/mcdonalds-invites-fans-to-leave-adulthood-behind-with-the-home-alone-meal-302941174.html",
+     "published": "2026-11-17T14:31:43Z"
+    }
+   ]
+  },
+  "NKE": {
+   "articles": 2,
+   "sentiment": 0.5,
+   "label": "偏多",
+   "top": [
+    {
+     "score": 1.0,
+     "title": "Nike Reaffirms Fiscal 2027 Guidance and Outlines 'Full Stride Ahead' Strategy",
+     "source": "fiscal.ai",
+     "url": "https://www.moomoo.com/hans/news/post/1004904790/nike-inc-announces-full-stride-ahead-strategy-and-2031-financial",
+     "published": "2026-11-17T14:31:52Z"
+    },
+    {
+     "score": 0.0,
+     "title": "Nike Targets 50% Local Product Creation in China by Fiscal 2030",
+     "source": "fiscal.ai",
+     "url": "https://www.marketscreener.com/news/nike-targets-50-local-product-creation-in-china-by-fiscal-2030-ce785eddd988f020",
+     "published": "2026-11-18T11:32:10Z"
+    }
+   ]
+  },
+  "T": {
+   "articles": 2,
+   "sentiment": 0.0,
+   "label": "中性",
+   "top": [
+    {
+     "score": 0.0,
+     "title": "TELUS Digital Releases Poll Findings on AI Customer Service Usage",
+     "source": "fiscal.ai",
+     "url": "https://www.prnewswire.com/news-releases/nearly-half-of-regular-us-ai-users-say-they-have-bent-the-truth-to-get-past-ai-customer-service-new-telus-digital-poll-finds-302940938.html",
+     "published": "2026-11-17T14:31:53Z"
+    },
+    {
+     "score": 0.0,
+     "title": "AT&T Business Releases Third Annual Holiday Shopping Survey",
+     "source": "fiscal.ai",
+     "url": "https://www.prnewswire.com/news-releases/att-business-survey-holiday-shoppers-want-small-business-charm-with-big-retailer-convenience-302942433.html",
+     "published": "2026-11-17T19:01:37Z"
+    }
+   ]
+  },
+  "SHEL": {
+   "articles": 1,
+   "sentiment": 1.0,
+   "label": "偏多",
+   "top": [
+    {
+     "score": 1.0,
+     "title": "Shell Reports Share Repurchase Transactions for Cancellation",
+     "source": "fiscal.ai",
+     "url": "https://www.globenewswire.com/news-release/2026/11/17/3404370/0/en/transaction-in-own-shares.html",
+     "published": "2026-11-17T15:01:19Z"
+    }
+   ]
+  },
+  "META": {
+   "articles": 4,
+   "sentiment": -0.25,
+   "label": "略偏空",
+   "top": [
+    {
+     "score": -1.0,
+     "title": "JPMorgan Blocks Meta's 'Muse' AI Agent from Customer Accounts",
+     "source": "fiscal.ai",
+     "url": "https://www.barchart.com/story/news/8879129/you-dont-want-rogue-agents-jamie-dimon-shuts-metas-muse-ai-agent-out-of-jpmorgan-what-it-means-for-meta-stock",
+     "published": "2026-11-17T19:02:06Z"
+    },
+    {
+     "score": 0.0,
+     "title": "Meta Testing Internal Prediction Market App 'Takes'",
+     "source": "fiscal.ai",
+     "url": "https://cdcgaming.com/brief/meta-tests-prediction-market-app-with-employees/",
+     "published": "2026-11-17T16:01:17Z"
+    },
+    {
+     "score": 0.0,
+     "title": "Meta Testing Standalone Messaging App 'Direct'",
+     "source": "fiscal.ai",
+     "url": "https://newscord.org/article/meta-tests-direct-standalone-instagram-messaging-app-without-account-in-thailand--Story_20261117_MetalaunchesDirectas387ae1a0",
+     "published": "2026-11-17T20:01:29Z"
+    }
+   ]
+  },
+  "NVDA": {
+   "articles": 5,
+   "sentiment": -0.4,
+   "label": "偏空",
+   "top": [
+    {
+     "score": -1.0,
+     "title": "NVIDIA Establishes Export Control Committee and Delays 10-Q Filing",
+     "source": "fiscal.ai",
+     "url": "https://www.morningstar.com/news/marketwatch/2026111879/why-nvidia-broke-with-its-usual-practice-in-holding-back-its-quarterly-sec-report",
+     "published": "2026-11-18T11:31:26Z"
+    },
+    {
+     "score": -1.0,
+     "title": "NVIDIA Faces SEC Investigation and Delays Quarterly 10-Q Filing",
+     "source": "fiscal.ai",
+     "url": "https://www.morningstar.com/news/marketwatch/2026111879/why-nvidia-broke-with-its-usual-practice-in-holding-back-its-quarterly-sec-report",
+     "published": "2026-11-18T13:01:26Z"
+    },
+    {
+     "score": 0.0,
+     "title": "Rockwell Automation Launches GPU-Enabled Industrial Computing with NVIDIA",
+     "source": "fiscal.ai",
+     "url": "https://www.newswire.ca/news-releases/rockwell-automation-expands-edge-computing-options-for-industrial-ai-with-nvidia-gpus-847579242.html",
+     "published": "2026-11-17T16:01:25Z"
+    }
+   ]
+  },
+  "MRK": {
+   "articles": 4,
+   "sentiment": 0.0,
+   "label": "中性",
+   "top": [
+    {
+     "score": 0.0,
+     "title": "Merck Announces First-Quarter 2027 Dividend",
+     "source": "fiscal.ai",
+     "url": "https://www.businesswire.com/newsroom/industry/health/pharmaceutical",
+     "published": "2026-11-17T16:01:36Z"
+    },
+    {
+     "score": 0.0,
+     "title": "Merck Discontinues BELLWAVE Clinical Development Program for Nemtabrutinib",
+     "source": "fiscal.ai",
+     "url": "https://www.businesswire.com/newsroom/industry/health/pharmaceutical",
+     "published": "2026-11-17T22:31:19Z"
+    },
+    {
+     "score": 0.0,
+     "title": "Thomas H. Glocer to Retire from Merck Board; Douglas M. Baker, Jr. Appointed Independent Lead Director",
+     "source": "fiscal.ai",
+     "url": "https://www.fidelity.com/news/article/default/202611180645BIZWIRE_USPR_____20261118_BW535937",
+     "published": "2026-11-18T12:31:53Z"
+    }
+   ]
+  },
+  "LITE": {
+   "articles": 1,
+   "sentiment": 1.0,
+   "label": "偏多",
+   "top": [
+    {
+     "score": 1.0,
+     "title": "Lumentum Shares Rise Amid Reports of Potential Chinese Import Restrictions",
+     "source": "fiscal.ai",
+     "url": "https://www.morningstar.com/news/marketwatch/2026111761/coherent-and-lumentum-stocks-climb-as-potential-us-import-ban-threatens-chinese-rivals",
+     "published": "2026-11-17T16:01:43Z"
+    }
+   ]
+  },
+  "MS": {
+   "articles": 2,
+   "sentiment": 0.0,
+   "label": "中性",
+   "top": [
+    {
+     "score": 0.0,
+     "title": "Morgan Stanley Initiates Coverage on Comfort Systems USA",
+     "source": "fiscal.ai",
+     "url": "https://www.marketscreener.com/news/morgan-stanley-initiates-coverage-on-comfort-systems-usa-with-overweight-rating-1-410-pt-ce785edcdb8bff24",
+     "published": "2026-11-17T16:02:22Z"
+    },
+    {
+     "score": 0.0,
+     "title": "Morgan Stanley Adjusts Price Target on Hartford Insurance",
+     "source": "fiscal.ai",
+     "url": "https://www.marketscreener.com/news/morgan-stanley-adjusts-price-target-on-hartford-insurance-to-145-from-135-ce785edcd98dfe23",
+     "published": "2026-11-17T22:31:58Z"
+    }
+   ]
+  },
+  "TSLA": {
+   "articles": 4,
+   "sentiment": 0.0,
+   "label": "中性",
+   "top": [
+    {
+     "score": -1.0,
+     "title": "Tesla Receives Analyst Downgrade to Sell",
+     "source": "fiscal.ai",
+     "url": "https://www.moomoo.com/community/feed/tesla-receives-a-downgrade-to-sell-by-gil-rotsein-the-117636526047238?chain_id=Name1K9-3FXPhg.1lfqmo0&global_content=%7B%22promote_id%22%3A13764%2C%22sub_promote_id%22%3A109%2C%22f%22%3A%22www.moomoo.com%2Fsectors%2FDeepSeek-Beneficiaries-BK23585%22%7D",
+     "published": "2026-11-18T11:31:23Z"
+    },
+    {
+     "score": 1.0,
+     "title": "Barclays Maintains Tesla Buy Rating",
+     "source": "fiscal.ai",
+     "url": "https://www.moomoo.com/stock/TSLA-US?chain_id=Name1K9-3FXPhg.1lfqtp0&global_content=%7B%22promote_id%22%3A%22%22%2C%22sub_promote_id%22%3A64%2C%22subpromote_id%22%3A%22%22%2C%22f%22%3A%22www.moomoo.com%2Fcommunity%2Fprofile%2Fjosh-spence-ao-73464826%22%7D",
+     "published": "2026-11-18T12:31:58Z"
+    },
+    {
+     "score": 0.0,
+     "title": "Viking Global Investors Increases Stake in Tesla",
+     "source": "fiscal.ai",
+     "url": "https://www.moomoo.com/stock/TSLA261106C350000-US?chain_id=Name1K9-3FXPhg.1lfo5sg&global_content=%7B%22promote_id%22%3A%22%22%2C%22sub_promote_id%22%3A64%2C%22subpromote_id%22%3A%22%22%2C%22f%22%3A%22www.moomoo.com%2Fcommunity%2Fprofile%2F151699427%22%7D",
+     "published": "2026-11-17T19:02:45Z"
+    }
+   ]
+  },
+  "NEE": {
+   "articles": 2,
+   "sentiment": 0.0,
+   "label": "中性",
+   "top": [
+    {
+     "score": 0.0,
+     "title": "State Corporation Commission Holds Hearing on Proposed NextEra Energy Takeover of Dominion Energy",
+     "source": "fiscal.ai",
+     "url": "https://www.prnewswire.com/news-releases/ratepayers-community-leaders-and-legislators-rally-to-stop-nextera-302942726.html",
+     "published": "2026-11-17T20:01:24Z"
+    },
+    {
+     "score": 0.0,
+     "title": "Opposition Mounts Against Proposed Dominion-NextEra Merger",
+     "source": "fiscal.ai",
+     "url": "https://www.prnewswire.com/news-releases/ratepayers-community-leaders-and-legislators-rally-to-stop-nextera-302942726.html",
+     "published": "2026-11-17T21:31:27Z"
     }
    ]
   },
@@ -1447,45 +1167,59 @@
    "top": [
     {
      "score": 0.0,
-     "title": "Situational Awareness Fund Liquidates Micron Technology Stake",
+     "title": "Oxide Computer Company Integrates Micron Data Center Memory and Storage",
      "source": "fiscal.ai",
-     "url": "https://www.barchart.com/story/news/8870481/leopold-aschenbrenners-situational-awareness-reports-92-drop-in-holdings-exits-micron-stake",
-     "published": "2026-11-17T11:31:45Z"
+     "url": "https://www.finanznachrichten.de/nachrichten-aktien/micron-technology-inc.htm",
+     "published": "2026-11-17T21:31:18Z"
     }
    ]
   },
-  "MDT": {
+  "LRCX": {
    "articles": 2,
    "sentiment": 0.5,
    "label": "偏多",
    "top": [
     {
      "score": 1.0,
-     "title": "Piper Sandler Upgrades Medtronic to Overweight",
+     "title": "Bernstein Maintains Outperform Rating on Lam Research",
      "source": "fiscal.ai",
-     "url": "https://www.marketscreener.com/news/piper-sandler-upgrades-medtronic-to-overweight-from-neutral-price-target-is-120-ce785edfd08ef021",
-     "published": "2026-11-17T11:32:08Z"
+     "url": "https://www.moomoo.com/news/post/1005017267/the-chip-supercycle-continues-bernstein-raises-semiconductor-equipment-spending-forecasts",
+     "published": "2026-11-18T11:31:44Z"
     },
     {
      "score": 0.0,
-     "title": "Medtronic Receives FDA Clearance for Hugo™ Robotic-Assisted Surgery System in General Surgery",
+     "title": "Lam Research Corporation Announces Participation at Upcoming Conference",
      "source": "fiscal.ai",
-     "url": "https://www.prnewswire.com/news-releases/medtronic-announces-fda-clearance-of-general-surgery-procedures-for-the-hugo-robotic-assisted-surgery-ras-system-302941366.html",
-     "published": "2026-11-17T11:32:08Z"
+     "url": "https://www.prnewswire.com/news-releases/lam-research-corporation-announces-participation-at-upcoming-conference-302942787.html",
+     "published": "2026-11-17T21:31:35Z"
     }
    ]
   },
-  "TSM": {
+  "PANW": {
    "articles": 1,
    "sentiment": 0.0,
    "label": "中性",
    "top": [
     {
      "score": 0.0,
-     "title": "TSMC Proposes $500 Million Investment Fund for AI Semiconductor Startups",
+     "title": "Palo Alto Networks Announces Enhanced Cortex XSIAM Platform and Upcoming Fiscal Q1 2027 Earnings",
      "source": "fiscal.ai",
-     "url": "https://www.varindia.com/news/tsmc-s-ai-ambition-building-the-next-nvidia",
-     "published": "2026-11-17T12:01:17Z"
+     "url": "https://investingnews.com/palo-alto-networks-to-announce-fiscal-first-quarter-2027-financial-results-on-wednesday-november-18-2026/",
+     "published": "2026-11-17T21:31:36Z"
+    }
+   ]
+  },
+  "SOFI": {
+   "articles": 1,
+   "sentiment": 0.0,
+   "label": "中性",
+   "top": [
+    {
+     "score": 0.0,
+     "title": "SoFi Joins Issuer Token Coalition",
+     "source": "fiscal.ai",
+     "url": "https://www.globenewswire.com/news-release/2026/11/17/3405177/0/en/issuer-token-coalition-surges-to-12-firms-as-drw-flow-traders-sofi-and-superstate-join.html",
+     "published": "2026-11-17T23:01:55Z"
     }
    ]
   },
@@ -1496,233 +1230,317 @@
    "top": [
     {
      "score": 0.0,
-     "title": "Alliance for Creativity and Entertainment Shuts Down Illegal Streaming Service Dizigom",
+     "title": "Netflix Partners with Wonder for Branded Restaurant Concept",
      "source": "fiscal.ai",
-     "url": "https://www.globenewswire.com/news-release/2026/11/17/3404307/0/en/ace-secures-shutdown-of-major-turkish-piracy-service-dizigom.html",
-     "published": "2026-11-17T12:31:31Z"
+     "url": "https://www.prnewswire.com/news-releases/wonder-unveils-wonder-create-empowering-anyone-with-an-idea-to-launch-their-own-restaurant-302942888.html",
+     "published": "2026-11-18T00:01:38Z"
     }
    ]
   },
-  "XOM": {
+  "NET": {
+   "articles": 1,
+   "sentiment": 0.0,
+   "label": "中性",
+   "top": [
+    {
+     "score": 0.0,
+     "title": "Cloudflare Chief Legal Officer Sells Shares",
+     "source": "fiscal.ai",
+     "url": "https://www.moomoo.com/hans/news/post/1005009725/cloudflare-insider-sold-shares-worth-1744159-according-to-a-recent",
+     "published": "2026-11-18T11:31:31Z"
+    }
+   ]
+  },
+  "PLTR": {
+   "articles": 1,
+   "sentiment": 0.0,
+   "label": "中性",
+   "top": [
+    {
+     "score": 0.0,
+     "title": "Palantir Technologies Director Executes Stock Sale",
+     "source": "fiscal.ai",
+     "url": "https://www.marketscreener.com/news/palantir-technologies-insider-sold-shares-worth-2-693-099-according-to-a-recent-sec-filing-ce785edcd08ff026",
+     "published": "2026-11-18T11:31:57Z"
+    }
+   ]
+  },
+  "PG": {
+   "articles": 1,
+   "sentiment": 0.0,
+   "label": "中性",
+   "top": [
+    {
+     "score": 0.0,
+     "title": "Wells Fargo Adjusts Price Target on Procter & Gamble",
+     "source": "fiscal.ai",
+     "url": "https://www.marketscreener.com/news/wells-fargo-adjusts-price-target-on-procter-gamble-to-188-from-180-ce785eddd98fff23",
+     "published": "2026-11-18T11:32:03Z"
+    }
+   ]
+  },
+  "QCOM": {
+   "articles": 1,
+   "sentiment": 0.0,
+   "label": "中性",
+   "top": [
+    {
+     "score": 0.0,
+     "title": "Baird Adjusts Price Target on Qualcomm",
+     "source": "fiscal.ai",
+     "url": "https://www.marketscreener.com/news/baird-adjusts-price-target-on-qualcomm-to-300-from-320-ce785eddd88bf621",
+     "published": "2026-11-18T11:32:27Z"
+    }
+   ]
+  },
+  "MRVL": {
+   "articles": 1,
+   "sentiment": 0.0,
+   "label": "中性",
+   "top": [
+    {
+     "score": 0.0,
+     "title": "Marvell Technology CEO Matthew J. Murphy Sells Shares",
+     "source": "fiscal.ai",
+     "url": "https://www.marketscreener.com/news/marvell-technology-insider-sold-shares-worth-1-099-050-according-to-a-recent-sec-filing-ce785edcd08ef723",
+     "published": "2026-11-18T11:32:38Z"
+    }
+   ]
+  },
+  "ORCL": {
    "articles": 2,
    "sentiment": 0.0,
    "label": "中性",
    "top": [
     {
      "score": 0.0,
-     "title": "ExxonMobil Announces Cash Tender Offers for Outstanding Notes",
+     "title": "CISA Issues Advisory for Critical Oracle Java Vulnerability",
      "source": "fiscal.ai",
-     "url": "https://www.businesswire.com/newsroom/industry/energy",
-     "published": "2026-11-16T14:31:10Z"
+     "url": "https://cybermagazine.com/news/java4shell-critical-java-flaw-demands-urgent-patching",
+     "published": "2026-11-18T12:31:32Z"
     },
     {
      "score": 0.0,
-     "title": "ExxonMobil Commences Production at Uaru Development in Guyana",
+     "title": "Oracle Launches New AI Capabilities for Primavera Cloud",
      "source": "fiscal.ai",
-     "url": "https://www.businesswire.com/newsroom/industry/energy/oil-gas",
-     "published": "2026-11-16T16:01:32Z"
+     "url": "https://www.prnewswire.com/news-releases/new-oracle-primavera-cloud-ai-capabilities-help-construction-teams-improve-project-planning-and-risk-management-302943017.html",
+     "published": "2026-11-18T13:01:31Z"
+    }
+   ]
+  },
+  "KLAC": {
+   "articles": 1,
+   "sentiment": 1.0,
+   "label": "偏多",
+   "top": [
+    {
+     "score": 1.0,
+     "title": "Bernstein Maintains 'Outperform' Rating on KLA Corporation",
+     "source": "fiscal.ai",
+     "url": "https://www.moomoo.com/news/post/1005017267/the-chip-supercycle-continues-bernstein-raises-semiconductor-equipment-spending-forecasts",
+     "published": "2026-11-18T12:31:35Z"
+    }
+   ]
+  },
+  "PFE": {
+   "articles": 1,
+   "sentiment": 0.0,
+   "label": "中性",
+   "top": [
+    {
+     "score": 0.0,
+     "title": "Pfizer Enters into Exclusive Licensing Agreement with Starna Therapeutics for Autoimmune Diseases",
+     "source": "fiscal.ai",
+     "url": "https://www.businesswire.com/newsroom/industry/health/pharmaceutical",
+     "published": "2026-11-18T12:31:42Z"
+    }
+   ]
+  },
+  "TJX": {
+   "articles": 1,
+   "sentiment": 0.0,
+   "label": "中性",
+   "top": [
+    {
+     "score": 0.0,
+     "title": "The TJX Companies, Inc. Reports Third Quarter Fiscal 2027 Financial Results",
+     "source": "fiscal.ai",
+     "url": "https://www.businesswire.com/newsroom/industry/retail/cosmetics",
+     "published": "2026-11-18T13:01:49Z"
     }
    ]
   },
   "VRT": {
    "articles": 1,
-   "sentiment": 0.0,
-   "label": "中性",
+   "sentiment": 1.0,
+   "label": "偏多",
    "top": [
     {
-     "score": 0.0,
-     "title": "Vertiv Launches ATLAS Lab for AI Infrastructure Testing in Collaboration with NVIDIA",
+     "score": 1.0,
+     "title": "Vertiv Expands 800 VDC Power Portfolio for AI Infrastructure",
      "source": "fiscal.ai",
-     "url": "https://www.prnewswire.com/news-releases/vertiv-atlas-proves-ai-infrastructure-ahead-of-silicon-302940434.html",
-     "published": "2026-11-16T14:31:14Z"
+     "url": "https://www.moomoo.com/hans/news/post/1004902579/vertiv-advances-800-vdc-power-architectures-to-support-growing-ai",
+     "published": "2026-11-17T14:31:34Z"
     }
    ]
   },
   "WMT": {
-   "articles": 4,
-   "sentiment": 0.25,
-   "label": "略偏多",
+   "articles": 1,
+   "sentiment": 1.0,
+   "label": "偏多",
    "top": [
     {
      "score": 1.0,
-     "title": "Once Upon a Coconut Expands Nationwide at Walmart",
+     "title": "Walmart Reports Q3 Performance and Raises Fiscal 2027 Outlook",
      "source": "fiscal.ai",
-     "url": "https://www.prnewswire.com/news-releases/once-upon-a-coconut-reaches-4-500-walmart-stores-in-largest-retail-expansion-to-date-302939969.html",
-     "published": "2026-11-16T21:31:29Z"
-    },
-    {
-     "score": 0.0,
-     "title": "Walmart Appoints Caterpillar CEO Joe Creed to Board of Directors",
-     "source": "fiscal.ai",
-     "url": "https://www.finanzen.at/nachrichten/aktien/walmart-appoints-caterpillar-ceo-joe-creed-to-board-of-directors-1036768778",
-     "published": "2026-11-16T14:31:25Z"
-    },
-    {
-     "score": 0.0,
-     "title": "Tahari Parfums Launches Holiday Fragrance Gift Sets at Walmart",
-     "source": "fiscal.ai",
-     "url": "https://www.einpresswire.com/article/957067560/tahari-parfums-launches-men-s-and-women-s-holiday-fragrance-gift-sets-at-walmart",
-     "published": "2026-11-16T21:31:29Z"
+     "url": "https://www.newswire.ca/news-releases/retail-s-1-013-trillion-holiday-forecast-meets-its-first-earnings-test-857040835.html",
+     "published": "2026-11-17T16:01:27Z"
     }
    ]
   },
   "V": {
-   "articles": 3,
-   "sentiment": 0.333,
-   "label": "略偏多",
+   "articles": 6,
+   "sentiment": 0.067,
+   "label": "中性",
    "top": [
     {
      "score": 1.0,
-     "title": "Visa and Mastercard Urge Approval of $38 Billion Swipe Fee Settlement",
+     "title": "Visa Expands 'Agentic Ready' Program to Acceptance Ecosystem",
      "source": "fiscal.ai",
-     "url": "https://www.marketscreener.com/news/visa-mastercard-calls-on-us-judge-to-clear-38-billion-swipe-fees-settlement-with-merchants-ce785edcd98af021",
-     "published": "2026-11-17T12:31:45Z"
+     "url": "https://investingnews.com/visa-expands-agentic-ready-to-help-scale-trusted-ai-commerce-globally/",
+     "published": "2026-11-18T11:31:36Z"
+    },
+    {
+     "score": -0.6,
+     "title": "Visa Releases Fall 2026 Biannual Threats Report on AI-Enabled Fraud",
+     "source": "fiscal.ai",
+     "url": "https://www.barchart.com/press-releases/8878703/visa-report-ai-enabled-fraud-and-third-party-attacks-are-scaling-worldwide",
+     "published": "2026-11-17T20:01:20Z"
     },
     {
      "score": 0.0,
-     "title": "Visa and Samsung Launch Scan to Pay QR Functionality in Asia Pacific",
+     "title": "Visa Canada Releases Agentic Commerce Readiness Report",
      "source": "fiscal.ai",
-     "url": "https://cxp.asia/2026/11/16/visa-and-samsung-launch-scan-to-pay-qr-functionality-on-samsung-wallet-across-asia-pacific/",
-     "published": "2026-11-16T14:32:09Z"
-    },
-    {
-     "score": 0.0,
-     "title": "Coda and Visa Partner to Enhance Gaming Commerce in Southeast Asia",
-     "source": "fiscal.ai",
-     "url": "https://www.prnewswire.com/apac/news-releases/coda-and-visa-partner-to-deliver-seamless-and-trusted-gaming-commerce-across-southeast-asia-302942078.html",
-     "published": "2026-11-17T13:01:23Z"
-    }
-   ]
-  },
-  "TXN": {
-   "articles": 2,
-   "sentiment": 0.0,
-   "label": "中性",
-   "top": [
-    {
-     "score": 0.0,
-     "title": "Texas Instruments CEO Haviv Ilan to Speak at UBS Investor Conference",
-     "source": "fiscal.ai",
-     "url": "https://www.prnewswire.com/news-releases/ti-ceo-haviv-ilan-to-speak-at-ubs-investor-conference-302940811.html",
-     "published": "2026-11-16T19:01:35Z"
-    },
-    {
-     "score": 0.0,
-     "title": "Mubadala Investment Co. Increases Stake in Texas Instruments",
-     "source": "fiscal.ai",
-     "url": "https://www.moomoo.com/news/flash/1004769312/mubadala-investment-co-pjsc-raises-share-stake-in-texas-instruments",
-     "published": "2026-11-16T19:01:35Z"
-    }
-   ]
-  },
-  "VZ": {
-   "articles": 2,
-   "sentiment": 0.0,
-   "label": "中性",
-   "top": [
-    {
-     "score": 0.0,
-     "title": "Verizon CEO Discusses AI Automation and Job Repatriation Strategy",
-     "source": "fiscal.ai",
-     "url": "https://www.finanznachrichten.de/nachrichten-branche/telekom.htm",
-     "published": "2026-11-16T19:01:42Z"
-    },
-    {
-     "score": 0.0,
-     "title": "Verizon Overhauls Marketing Strategy to Increase Celebrity Focus",
-     "source": "fiscal.ai",
-     "url": "https://www.marketscreener.com/news/communications-services-slide-on-retreat-from-risk-communications-services-roundup-ce785edfdc80f22d",
-     "published": "2026-11-17T00:01:45Z"
-    }
-   ]
-  },
-  "WFC": {
-   "articles": 4,
-   "sentiment": 0.25,
-   "label": "略偏多",
-   "top": [
-    {
-     "score": 1.0,
-     "title": "Wells Fargo Strategists Forecast Deceleration in EPS Growth",
-     "source": "fiscal.ai",
-     "url": "https://www.morningstar.com/news/marketwatch/2026111725/pick-the-two-sectors-where-earnings-growth-will-accelerate-as-long-as-the-10-year-stays-below-this-key-level-say-strategists",
-     "published": "2026-11-17T11:31:37Z"
-    },
-    {
-     "score": 0.0,
-     "title": "Wells Fargo and Other Major Banks Experience Online Access Issues",
-     "source": "fiscal.ai",
-     "url": "https://www.barchart.com/story/news/8859950/customers-at-some-of-the-nation-s-largest-banks-are-reporting-difficulty-accessing-accounts-online",
-     "published": "2026-11-16T19:02:11Z"
-    },
-    {
-     "score": 0.0,
-     "title": "Wells Fargo Initiates Coverage of Super Group",
-     "source": "fiscal.ai",
-     "url": "https://www.marketscreener.com/news/wells-fargo-initiates-super-group-at-equalweight-with-13-price-target-ce785edfd88bf521",
-     "published": "2026-11-16T20:02:53Z"
-    }
-   ]
-  },
-  "UNH": {
-   "articles": 3,
-   "sentiment": -0.333,
-   "label": "略偏空",
-   "top": [
-    {
-     "score": -1.0,
-     "title": "Senator Elizabeth Warren Calls for Breakup of Healthcare Conglomerates Including UnitedHealth",
-     "source": "fiscal.ai",
-     "url": "https://www.moomoo.com/stock/BK2999?chain_id=Name1K9-3FXPhg.1lfo9d0&global_content=%7B%22promote_id%22%3A13764%2C%22sub_promote_id%22%3A107%2C%22f%22%3A%22www.moomoo.com%2Fetfs%2FJPXN-US%22%7D",
-     "published": "2026-11-17T12:32:38Z"
-    },
-    {
-     "score": 0.0,
-     "title": "Mubadala Investment Co. PJSC Increases Stake in UnitedHealth Group",
-     "source": "fiscal.ai",
-     "url": "https://www.moomoo.com/news/flash/1004769360/mubadala-investment-co-pjsc-raises-share-stake-in-unitedhealth-group",
-     "published": "2026-11-16T20:02:24Z"
-    },
-    {
-     "score": 0.0,
-     "title": "UnitedHealthcare of Ohio Remains in State Marketplace for 2027",
-     "source": "fiscal.ai",
-     "url": "https://insurancenewsnet.com/oarticle/health-insurers-leave-ohio-marketplace",
-     "published": "2026-11-17T01:01:36Z"
-    }
-   ]
-  },
-  "WDC": {
-   "articles": 1,
-   "sentiment": 0.0,
-   "label": "中性",
-   "top": [
-    {
-     "score": 0.0,
-     "title": "Western Digital Corporation Announces Participation in Upcoming Investor Conferences",
-     "source": "fiscal.ai",
-     "url": "https://newsfilter.io/latest/news",
-     "published": "2026-11-17T01:01:39Z"
+     "url": "https://www.globenewswire.com/news-release/2026/11/17/3404531/0/en/visa-ranked-most-trusted-among-24-brands-in-canada-to-handle-agentic-transactions-new-research-finds.html",
+     "published": "2026-11-17T16:01:36Z"
     }
    ]
   },
   "UBER": {
+   "articles": 4,
+   "sentiment": 0.0,
+   "label": "中性",
+   "top": [
+    {
+     "score": 0.0,
+     "title": "Uber and Kohl's Announce Nationwide On-Demand Delivery Partnership",
+     "source": "fiscal.ai",
+     "url": "https://www.finanzen.ch/nachrichten/aktien/uber-partners-with-kohls-to-launch-nationwide-on-demand-delivery-1036774000",
+     "published": "2026-11-17T16:01:44Z"
+    },
+    {
+     "score": 0.0,
+     "title": "Uber Eats Launches Drone Delivery Partnership with Zipline in Texas",
+     "source": "fiscal.ai",
+     "url": "https://newsfilter.io/articles/uber-and-ziplines-drone-delivery-service-takes-off-in-texas-with-dozens-of-7fcab8c303045dea9b28368c76922b2e",
+     "published": "2026-11-17T22:31:37Z"
+    },
+    {
+     "score": 0.0,
+     "title": "Deliverect Earns Premier Status in Uber Partner Network",
+     "source": "fiscal.ai",
+     "url": "https://www.prnewswire.com/apac/news-releases/deliverect-earns-premier-status-in-the-uber-partner-network-302943002.html",
+     "published": "2026-11-18T03:01:49Z"
+    }
+   ]
+  },
+  "XOM": {
+   "articles": 2,
+   "sentiment": 0.5,
+   "label": "偏多",
+   "top": [
+    {
+     "score": 1.0,
+     "title": "Mozambique Approves Amended Development Plan for Rovuma LNG Project",
+     "source": "fiscal.ai",
+     "url": "https://www.rigzone.com/news/wire/mozambique_approves_amended_plan_for_rovuma_lng-18-nov-2026-185108-article/",
+     "published": "2026-11-18T11:31:25Z"
+    },
+    {
+     "score": 0.0,
+     "title": "ExxonMobil Authorizes Saipem to Proceed with Longtail Project in Guyana",
+     "source": "fiscal.ai",
+     "url": "https://www.milanofinanza.it/news/saipem-via-libera-al-progetto-longtail-in-guyana-contratto-da-1-5-miliardi-di-dollari-202611171241087723",
+     "published": "2026-11-17T16:01:47Z"
+    }
+   ]
+  },
+  "UNH": {
+   "articles": 2,
+   "sentiment": 0.0,
+   "label": "中性",
+   "top": [
+    {
+     "score": -1.0,
+     "title": "UnitedHealth Group Shares Decline Following Proposed Medicare Advantage Audit Framework",
+     "source": "fiscal.ai",
+     "url": "https://www.barchart.com/story/news/8878165/stocks-pressured-by-weakness-in-software-and-health-insurance-stocks",
+     "published": "2026-11-17T19:01:27Z"
+    },
+    {
+     "score": 1.0,
+     "title": "UnitedHealthcare Expands Program to Compensate Pharmacists for Medical Services",
+     "source": "fiscal.ai",
+     "url": "https://www.fidelity.com/news/article/company-news/202611180600RTRSNEWSCOMBINED_L6N46Y1DP_1",
+     "published": "2026-11-18T11:32:08Z"
+    }
+   ]
+  },
+  "VZ": {
    "articles": 1,
    "sentiment": 0.0,
    "label": "中性",
    "top": [
     {
      "score": 0.0,
-     "title": "Uber Chief Legal Officer Tony West Sells Shares",
+     "title": "Verizon Mobile Service Experiences Outage",
      "source": "fiscal.ai",
-     "url": "https://www.moomoo.com/hans/news/post/1004867895/uber-technologies-insider-sold-shares-worth-2482448-according-to-a",
-     "published": "2026-11-17T11:31:30Z"
+     "url": "https://newsfilter.io/ticker/T",
+     "published": "2026-11-18T01:01:32Z"
+    }
+   ]
+  },
+  "WFC": {
+   "articles": 3,
+   "sentiment": 0.0,
+   "label": "中性",
+   "top": [
+    {
+     "score": 0.0,
+     "title": "Wells Fargo Adjusts Price Target on Procter & Gamble to $188 From $180",
+     "source": "fiscal.ai",
+     "url": "https://www.marketscreener.com/news/wells-fargo-adjusts-price-target-on-procter-gamble-to-188-from-180-ce785eddd98fff23",
+     "published": "2026-11-18T11:32:23Z"
+    },
+    {
+     "score": 0.0,
+     "title": "Wells Fargo Adjusts Price Target on Steel Dynamics to $285 From $271",
+     "source": "fiscal.ai",
+     "url": "https://www.marketscreener.com/news/wells-fargo-adjusts-price-target-on-steel-dynamics-to-285-from-271-ce785eddd88bf625",
+     "published": "2026-11-18T11:32:23Z"
+    },
+    {
+     "score": 0.0,
+     "title": "Wells Fargo & Company Securities Admitted to UK Official List",
+     "source": "fiscal.ai",
+     "url": "https://www.finanznachrichten.de/nachrichten-2026-11/70162878-financial-conduct-authority-notice-of-admission-to-the-official-list-015.htm",
+     "published": "2026-11-18T12:31:41Z"
     }
    ]
   }
  },
- "news_window": "since 2026-11-16T09:01-05:00 (Alpaca/Benzinga, 162 articles, word-list score)",
+ "news_window": "since 2026-11-17T09:01-05:00 (Alpaca/Benzinga, 139 articles, word-list score)",
  "attempts": 1,
  "news_attempts": 1,
- "gauge_attempts": 2
+ "gauge_attempts": 1
 }
