@@ -8751,3 +8751,61 @@ class DaybookReplay(unittest.TestCase):
         self.assertIn("| 开盘时：今天收盘对昨收会超过 1% | 20 / 20（100%） | 0 / 30（0%） |", md)
         self.assertIn("只有档案 10:00 点名", md)
         self.assertEqual(rp.other_indexes(rows, lambda r: True, rp.ROOT / "research" / "no-such-file.json"), {})
+
+
+class DaybookLong(unittest.TestCase):
+    """hero/research_daybook_long.py: the daybook's days with month-out and quarter-out options."""
+
+    def test_long_contract_is_the_monthly_expiry_and_the_nearest_five_dollar_strike(self):
+        from datetime import date
+        from hero import research_daybook_long as dl
+        self.assertEqual(dl.third_friday(2026, 12), date(2026, 12, 18))
+        open_days = {"2025-03-10", "2025-04-17", "2025-04-21", "2025-06-30"}       # Good Friday 04-18 is not a session
+        self.assertEqual(dl.expiry("2025-03-10", 25, open_days), "2025-04-17")
+        self.assertEqual(dl.expiry("2025-03-10", 80, open_days), "2025-06-20")
+        self.assertEqual(dl.expiry("2026-11-19", 25, {"2026-11-19"}), "2026-12-18")  # a date the cards do not reach yet is taken as it is
+        lg = dl.legs("2026-11-19", 736.54, {"2026-11-19"})
+        self.assertEqual((lg["1m"]["strike"], lg["1m"]["C"], lg["3m"]["P"]), (735, "SPY261218C00735000", "SPY270219P00735000"))
+
+    def test_long_run_prices_each_leg_and_the_line_asks_for_profit_after_costs(self):
+        from datetime import datetime, timezone
+        from hero import research_daybook_long as dl
+        days = ["2026-11-10", "2026-11-11", "2026-11-12", "2026-11-13", "2026-11-16", "2026-11-17", "2026-11-18"]
+        cards = [{"day": d, "p1000": 736.54, "m10": -0.002 if i == 0 else 0.004} for i, d in enumerate(days)]
+
+        class Fake:
+            asked = []
+
+            def option_bars(self, symbols, start, end, timeframe="1Day"):
+                Fake.asked.append((start, end, timeframe))
+                if timeframe == "1Min":
+                    return {s: [{"t": start[:17] + "01Z", "c": 99.0}, {"t": start, "c": 10.0 if "C0" in s else 12.0}] for s in symbols if "1218" in s}
+                return {s: [{"t": f"{d}T05:00:00Z", "c": (10.0 if "C0" in s else 12.0) + k * (1 if "P0" in s else -1)} for k, d in enumerate(days)]
+                        for s in symbols if "1218" in s}
+        wait = type("P", (), {"wait": lambda self: None})()
+        rep = dl.run(Fake(), cards, pace=wait, now=datetime(2026, 11, 19, 21, 0, tzinfo=timezone.utc))
+        self.assertEqual((len(rep["rows"]), rep["skipped"], rep["stopped_at"]), (7, [], None))
+        self.assertEqual(Fake.asked[0], ("2026-11-10T15:00:00Z", "2026-11-10T15:30:00Z", "1Min"))
+        self.assertEqual(Fake.asked[1], ("2026-11-10T00:00:00Z", "2026-11-17T23:59:59Z", "1Day"))
+        first = rep["rows"][0]
+        self.assertEqual((first["kind"], first["legs"]["1m"]["in"], first["legs"]["3m"]["in"]), ("P", {"C": 10.0, "P": 12.0}, {"C": None, "P": None}))
+        self.assertEqual(first["legs"]["1m"]["out"]["5d"], {"C": 5.0, "P": 17.0})
+        leg = first["legs"]["1m"]
+        self.assertAlmostEqual(dl.result(leg, "P", "with", "5d", 0.05), 17 * 0.95 / (12 * 1.05) - 1)
+        self.assertAlmostEqual(dl.result(leg, "P", "both", "5d", 0.0), 22 / 22 - 1)       # the call lost what the put made
+        self.assertIsNone(dl.result(first["legs"]["3m"], "P", "with", "5d", 0.05))       # nothing traded: left out
+        self.assertIsNone(dl.result(rep["rows"][-1]["legs"]["1m"], "C", "with", "5d", 0.05))   # five sessions on is not here yet
+        on = [(f"2026-01-{k + 1:02d}", 0.05) for k in range(60)]
+        off = [(f"2026-01-{k + 1:02d}", -0.02) for k in range(60)]
+        self.assertTrue(dl.judge(on, off)["pass"])
+        self.assertFalse(dl.judge(on[:59], off)["pass"])                               # fifty-nine days
+        self.assertFalse(dl.judge([(d, -0.01) for d, _ in on], off)["pass"])           # better than the other days, but a loss
+        lucky = [(d, 3.0 if k < 3 else -0.01) for k, (d, _) in enumerate(on)]
+        self.assertFalse(dl.judge(lucky, off)["pass"])                                 # three days carry it
+        reads = {d: {"m10": 0.006, "open": {"big": (0.5, 0.24)}, "1000": {"move10": (0.6, 0.35)}} for d in days[:4]} | \
+                {d: {"m10": 0.001, "open": {"big": (0.1, 0.24)}, "1000": {"move10": (0.2, 0.35)}} for d in days[4:]}
+        table, md = dl.report(rep, reads)
+        self.assertIn("## 一个月到期，顺着方向买一张", md)
+        self.assertEqual(table["1m|with|close|cond"]["n"], 4)
+        self.assertNotIn("3m|with|close|cond", {k for k, v in table.items() if v})     # no quarter-out prices in this fake
+        self.assertIn("条线过了 0 条", md)
