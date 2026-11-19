@@ -8809,3 +8809,45 @@ class DaybookLong(unittest.TestCase):
         self.assertEqual(table["1m|with|close|cond"]["n"], 4)
         self.assertNotIn("3m|with|close|cond", {k for k, v in table.items() if v})     # no quarter-out prices in this fake
         self.assertIn("条线过了 0 条", md)
+
+    def test_long_line_on_other_underlyings_needs_every_check_at_both_costs(self):
+        from datetime import datetime, timezone
+        from hero import research_daybook_long as dl
+        days = [f"2026-{m:02d}-{d:02d}" for m in (1, 2, 3, 4) for d in range(1, 29)]
+        pos = {d: i for i, d in enumerate(days)}
+        self.assertEqual(dl.stretches([(days[0], 0.1), (days[3], 0.3), (days[20], -0.1)], pos), [0.2, -0.1])   # under five sessions apart: one stretch
+        spread = [days[k] for k in range(0, 100, 2)]                               # fifty days, each its own run of stretches
+        good = {c: [(d, 0.05 - c) for d in spread] for c in dl.LINE_COSTS}
+        self.assertTrue(dl.line(good, pos)["pass"])
+        thin = {0.01: [(d, 0.015) for d in spread], 0.02: [(d, -0.005) for d in spread]}
+        self.assertFalse(dl.line(thin, pos)["pass"])                               # gone at the higher cost
+        self.assertFalse(dl.line({c: xs[:39] for c, xs in good.items()}, pos)["pass"])   # thirty-nine days
+        lumpy = {c: [(d, 0.6 if k < 3 else -0.01) for k, d in enumerate(spread)] for c in dl.LINE_COSTS}
+        self.assertFalse(dl.line(lumpy, pos)["pass"])                              # three days carry it
+        one = {c: [(days[k], 0.09 if k < 30 else -0.03) for k in range(64)] for c in dl.LINE_COSTS}
+        v = dl.line(one, pos)
+        self.assertEqual((v["costs"]["0.01"]["stretches"], v["pass"]), (1, False))   # one long stretch, and its second half lost
+        self.assertIsNone(dl.line({0.01: [], 0.02: []}, pos))
+        cards = [{"day": d, "p1000": 700.0, "m10": 0.001} for d in days]
+        reads = {d: {"m10": 0.001, "1000": {"move10": (0.6 if k in (30, 31) else 0.2, 0.35)}} for k, d in enumerate(days)}
+
+        class Fake:
+            def stock_bars(self, symbols, start, end, timeframe="1Min", feed="iex"):
+                return {s: [{"t": start, "c": 652.0 if s == "QQQ" else 148.0}] for s in symbols}
+
+            def option_bars(self, symbols, start, end, timeframe="1Day"):
+                if timeframe == "1Min":
+                    return {s: [{"t": start, "c": 10.0}] for s in symbols}
+                return {s: [{"t": f"{d}T05:00:00Z", "c": 14.0 if s.startswith("QQQ") and "C0" in s else 9.0} for d in days] for s in symbols}
+        wait = type("P", (), {"wait": lambda self: None})()
+        rep = dl.run_others(Fake(), cards, reads, unds=("QQQ", "NVDA"), pace=wait, now=datetime(2026, 6, 1, tzinfo=timezone.utc))
+        self.assertEqual((rep["flag_days"], rep["control_days"]), ([days[30], days[31]], 11))   # every tenth session, less the flagged one
+        q = next(r for r in rep["rows"] if r["und"] == "QQQ" and r["day"] == days[30])
+        self.assertEqual((q["group"], q["strike"], q["in"], q["out"]), ("flag", 650, {"C": 10.0, "P": 10.0}, {"C": 14.0, "P": 9.0}))
+        self.assertAlmostEqual(dl.both(q, 0.01), 23 * 0.99 / (20 * 1.01) - 1)
+        n = next(r for r in rep["rows"] if r["und"] == "NVDA" and r["day"] == days[30])
+        self.assertEqual(n["strike"], 150)
+        table, md = dl.report_others(rep, pos)
+        self.assertFalse(table["verdict"]["indexes"])                              # two days are not forty
+        self.assertIn("| QQQ | 2 |", md)
+        self.assertIn("**指数：不过。个股：不过（7 只里过了 0 只）。**", md)
