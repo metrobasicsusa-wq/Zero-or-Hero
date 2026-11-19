@@ -311,6 +311,21 @@ class Runner:
                 out[s] = (float(q.get("bp") or px), float(q.get("ap") or px))
         return out
 
+    def quote_notes(self, symbols: list[str]) -> dict[str, dict]:
+        """When each option's quote and last trade were made, for the journal only (11-19: at 09:40-10:00 the broker's
+        SPY quotes were still the day before's close, and nothing in our records showed it). It decides nothing; no
+        answer is no note."""
+        try:
+            snaps = self.c.option_snapshots(symbols) or {}
+        except Exception:
+            return {}
+        out = {}
+        for s, v in snaps.items():
+            q, t = v.get("latestQuote") or {}, v.get("latestTrade") or {}
+            note = {"quote_at": q.get("t"), "quote_bid": q.get("bp"), "quote_ask": q.get("ap"), "last": t.get("p"), "last_at": t.get("t")}
+            out[s] = {k: x for k, x in note.items() if x is not None}
+        return out
+
     # ---- the cycle ----
     def run(self) -> None:
         self.recover()
@@ -737,10 +752,12 @@ class Runner:
     def buy_options(self, orders: list[dict]) -> None:
         for attempt in (1, 2):
             live = []
+            notes = self.quote_notes([o["pk"]["sym"] for o in orders]) if orders else {}
             for o in orders:
                 o["cid"] = cid(o["spec"]["id"], o["tid"], f"b{attempt}")
                 self.j.event("sleeve_buy", dry_run=False, sleeve=o["spec"]["id"], symbol=o["pk"]["sym"], attempt=attempt,
                              ask=o["pk"].get("ask") if attempt == 1 else o.get("ask"), limit=o["limit"],  # for hero.research_fills
+                             **notes.get(o["pk"]["sym"], {}),
                              why=f"{o['spec']['id']}：{o['pk']['why']}；{o['qty']} 张 × ${o['limit']:.2f}（第 {attempt} 次挂单）")
                 if self.submit(symbol=o["pk"]["sym"], qty=str(o["qty"]), side="buy", type="limit",
                                limit_price=f"{o['limit']:.2f}", time_in_force="day", client_order_id=o["cid"]):

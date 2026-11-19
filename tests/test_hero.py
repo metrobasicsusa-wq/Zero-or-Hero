@@ -3459,6 +3459,33 @@ class Sleeves(unittest.TestCase):
         book, log = self.cycle(b, 12, 0)
         self.assertEqual(len([o for o in b.orders.values() if o["side"] == "buy"]), 2)  # one try a day
 
+    def test_a_buy_notes_when_its_quote_and_last_trade_were_made_and_never_waits_on_the_note(self):
+        # 11-19: at 09:40-10:00 the broker's SPY quotes were still the day before's close; the record now shows how old they are
+        b = SleeveBroker(lambda s: (0.08, 0.10))
+        plain = b.option_snapshots
+        b.option_snapshots = lambda syms: {s: {**v, "latestQuote": {**v["latestQuote"], "t": "2026-10-07T20:00:00Z"},
+                                               "latestTrade": {"p": 0.31, "t": "2026-10-08T13:59:58Z"}}
+                                           for s, v in plain(syms).items()}
+        book, log = self.cycle(b, 10, 0, self.specs[:1])
+        buy = next(e for e in log if e["kind"] == "sleeve_buy")
+        self.assertEqual((buy["ask"], buy["quote_ask"], buy["quote_at"], buy["last"], buy["last_at"]),
+                         (0.10, 0.10, "2026-10-07T20:00:00Z", 0.31, "2026-10-08T13:59:58Z"))
+        self.assertEqual(len([o for o in b.orders.values() if o["side"] == "buy"]), 1)
+        b2, calls = SleeveBroker(lambda s: (0.08, 0.10)), []
+        plain2 = b2.option_snapshots
+        def flaky(syms):                                                    # the note's own request fails: the order still goes
+            calls.append(syms)
+            if len(calls) == 2:
+                raise RuntimeError("no answer")
+            return plain2(syms)
+        b2.option_snapshots = flaky
+        (self.root / "sleeves.json").unlink()
+        (self.root / "trades.jsonl").unlink()
+        book, log = self.cycle(b2, 10, 0, self.specs[:1])
+        buy = next(e for e in log if e["kind"] == "sleeve_buy")
+        self.assertNotIn("quote_ask", buy)                                  # no note this time
+        self.assertEqual((len(calls) >= 2, len([o for o in b2.orders.values() if o["side"] == "buy"])), (True, 1))
+
     def test_a_lost_ledger_is_rebuilt_from_the_broker_and_the_slot_is_not_bought_again(self):
         b = SleeveBroker(lambda s: (0.08, 0.10))
         self.cycle(b, 10, 0, self.specs[:1])
@@ -4036,7 +4063,7 @@ class EarningsShares(unittest.TestCase):
 
     def broker(self):
         b = SleeveBroker(lambda s: (0.95, 1.05))
-        b.snaps = {s: {"dailyBar": {"o": 100.0}, "latestTrade": {"p": p}, "prevDailyBar": {"c": 100.0}}
+        b.snaps = {s: {"dailyBar": {"o": 100.0}, "latestTrade": {"p": p}, "prevDailyBar": {"c": p}}
                    for s, p in (("NVDA", 180.0), ("NVDL", 30.0), ("AAA", 100.0), ("BBB", 50.0))}
         b.option_contracts = lambda und, **kw: [
             {"symbol": f"{und}X{t[0].upper()}{k}", "strike_price": str(k), "expiration_date": kw["expiration_date_lte"], "type": t}
@@ -4898,7 +4925,7 @@ class SleeveRules(unittest.TestCase):
         slot, picks = sr.Relay().entries(r, {"id": "relay-500"}, s)
         self.assertEqual((picks[0]["sym"], picks[0]["asset"], picks[0]["ask"]), ("SOXL", "stock", 41.0))
         r.specs = [{"id": "relay-500"}]
-        b.snaps["SMH"]["latestTrade"]["p"] = 150.0                          # below its 200-day average
+        b.snaps["SMH"]["latestTrade"]["p"] = 300.0                          # below its 200-day average (about 327)
         self.assertIn("SMH 跌破 200 日均线", sr.Relay().should_exit(r, "relay-500", {"asset": "stock", "sym": "SOXL"}) or "")
         self.assertIsNone(sr.Relay().should_exit(r, "relay-500", {"asset": "stock", "sym": "AAA"}))   # the lotto's shares: 09:35
 
@@ -8927,3 +8954,93 @@ class ResearchVertical(unittest.TestCase):
         self.assertEqual(table[key]["n"], len(rows))
         always = next(k for k in table if "trend" in k and "一直做看涨" in k and "付钱" in k)
         self.assertAlmostEqual(table[key]["mean"], table[always]["mean"])            # above its average every day: the same choice
+
+
+class DataGuard(unittest.TestCase):
+    """A split day (11-20: SNDK 8-for-1) must not read as an 87% crash: the name is skipped and the reason is noted once."""
+
+    def setUp(self):
+        self.tmp = tempfile.TemporaryDirectory()
+        self.addCleanup(self.tmp.cleanup)
+        self.j = Journal(Path(self.tmp.name))
+
+    def run_at(self, broker, day=date(2026, 11, 20), hhmm="09:50", pool=("SPLT", "REAL", "CALM")):
+        from types import SimpleNamespace
+        return SimpleNamespace(c=broker, today=day, hhmm=hhmm, j=self.j, specs=[], cache={"pool": list(pool)})
+
+    def broker(self):
+        b = SleeveBroker(lambda s: (0.40, 0.50))
+        snap = lambda o, p, prev: {"dailyBar": {"o": o, "l": min(o, p)}, "latestTrade": {"p": p}, "prevDailyBar": {"c": prev}}
+        b.snaps = {"SPLT": snap(97.0, 100.0, 800.0),      # 8-for-1 today: the broker's last close is still the old shares
+                   "REAL": snap(68.0, 70.0, 100.0),       # a real 30% fall
+                   "CALM": snap(100.0, 100.0, 100.0)}
+        b.option_contracts = lambda und, **kw: [
+            {"symbol": f"{und}{kw['expiration_date_lte']}C{k}", "strike_price": str(k), "expiration_date": kw["expiration_date_lte"],
+             "type": "call"} for k in range(60, 131)]
+        b.asked = []
+        bars = b.daily_bars
+        def daily_bars(syms, start, adjustment="all"):
+            b.asked.append(adjustment)
+            return bars(syms, start, adjustment)
+        b.daily_bars = daily_bars
+        return b
+
+    def notes(self):
+        path = Path(self.tmp.name) / "trades.jsonl"
+        rows = [json.loads(x) for x in path.read_text().splitlines()] if path.exists() else []
+        return [r for r in rows if r["kind"] == "data_guard"]
+
+    def test_what_reads_as_a_split(self):
+        from hero import sleeve_rules as sr
+        self.assertTrue(sr.odd(800.0, 100.0) and sr.odd(100.0, 50.5) and sr.odd(100.0, 200.0) and sr.odd(100.0, 54.9))
+        self.assertFalse(sr.odd(100.0, 56.0) or sr.odd(100.0, 150.0) or sr.odd(100.0, 179.0))   # big, but moves
+        self.assertFalse(sr.odd(0.0, 100.0) or sr.odd(100.0, 0.0))                              # no price: not this guard
+
+    def test_a_split_day_snapshot_is_left_out_and_noted_once_a_day(self):
+        from hero import sleeve_rules as sr
+        b = self.broker()
+        got = sr.snaps(self.run_at(b), ["SPLT", "REAL", "CALM"])
+        self.assertEqual(sorted(got), ["CALM", "REAL"])
+        note = self.notes()
+        self.assertEqual((len(note), note[0]["symbol"]), (1, "SPLT"))
+        self.assertIn("现价 $100.00 对昨收 $800.00 是 -88%", note[0]["why"])
+        self.assertIn("今天所有规则跳过它", note[0]["why"])
+        r = self.run_at(b, hhmm="10:05")                                    # the next cycle: a new process, the same day
+        self.assertNotIn("SPLT", sr.snaps(r, ["SPLT"]))
+        self.assertNotIn("SPLT", sr.snaps(r, ["SPLT", "CALM"]))             # and again from this cycle's own cache
+        self.assertEqual(len(self.notes()), 1)
+        self.assertEqual(self.j.alerts()["data_guard"], {"SPLT": "2026-11-20"})
+        sr.snaps(self.run_at(b, day=date(2026, 11, 23)), ["SPLT"])         # still odd the next session: said again
+        self.assertEqual(len(self.notes()), 2)
+
+    def test_the_gap_rule_does_not_buy_the_split(self):
+        from hero import sleeve_rules as sr
+        slot, picks = sr.Gap().entries(self.run_at(self.broker()), {"n": 2}, {"slots": {}, "cash": 500.0})
+        self.assertEqual([p["und"] for p in picks], ["REAL"])               # 97 / 800 would have been the biggest "gap"
+
+    def test_daily_history_is_split_adjusted_and_an_unadjusted_split_is_left_out(self):
+        from hero import sleeve_rules as sr
+        b = self.broker()
+        days = [date(2026, 9, 1) + timedelta(days=i) for i in range(80)]
+        days = [d for d in days if d.weekday() < 5 and d < date(2026, 11, 20)]
+        bar = lambda d, c: {"t": d.isoformat() + "T04:00:00Z", "o": c, "h": c, "l": c, "c": c}
+        b.bars = {"SPLT": [bar(d, 800.0) for d in days[:-1]] + [bar(days[-1], 100.0)],                   # not adjusted yet
+                  "REAL": [bar(d, 100.0) for d in days[:20]] + [bar(d, 300.0) for d in days[20:]],       # tripled in September
+                  "CALM": [bar(d, 100.0) for d in days]}
+        r = self.run_at(b)
+        cl = sr.closes(r, ["SPLT", "REAL", "CALM"], 120)
+        self.assertEqual(sorted(cl), ["CALM", "REAL"])                      # an old jump is a move; a fresh one is not trusted
+        self.assertEqual(sorted(sr.history(r, ["SPLT", "CALM"], 120)), ["CALM"])
+        self.assertEqual(set(b.asked), {"split"})
+        note = self.notes()
+        self.assertEqual((len(note), note[0]["symbol"]), (1, "SPLT"))
+        self.assertIn("$800.00 → $100.00（-88%）", note[0]["why"])
+
+    def test_the_rules_that_read_bars_themselves_ask_for_adjusted_ones(self):
+        from hero import sleeve_rules as sr
+        b = self.broker()
+        r = self.run_at(b, hhmm="09:40")
+        sr.BreakGap().entries(r, {"id": "breakgap-500"}, {"slots": {}, "cash": 500.0})
+        r = self.run_at(b, hhmm="10:05")
+        sr.Pead().entries(r, {"id": "pead-500"}, {"slots": {}, "cash": 500.0, "pead_watch": {"2026-11-19": ["CALM"]}})
+        self.assertEqual((len(b.asked) >= 2, set(b.asked)), (True, {"split"}))

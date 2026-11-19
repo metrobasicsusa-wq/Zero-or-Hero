@@ -34,7 +34,63 @@ def cached(run, key, fn):
     return cache[key]
 
 
+SPLIT_DOWN, SPLIT_UP, RECENT = 0.55, 1.8, 5
+
+
+def odd(a: float, b: float) -> bool:
+    """`b` against `a` reads as a split or bad data, not a move: 45% lower (a 2-for-1 split and up) or 80% higher (a
+    1-for-2 and up). Ten years of the pool and the funds the rules use hold two real one-day closes that far (11-19
+    scan: SOXS -56% on 2025-04-09, MRNA +177% on 2026-08-19); a 3-for-2 split is not caught."""
+    return bool(a and b) and not SPLIT_DOWN < b / a < SPLIT_UP
+
+
+def set_aside(run, sym: str, why: str) -> None:
+    """One journal line a day saying the rules leave `sym` alone and why (alerts.json remembers the day's names:
+    the engine starts that file afresh each morning and keeps what it does not know within the day)."""
+    cache = run.__dict__.setdefault("cache", {})
+    if ("odd", sym) in cache:
+        return
+    cache[("odd", sym)] = why
+    j = getattr(run, "j", None)
+    if j is None:
+        return
+    try:
+        day = run.today.isoformat()
+        if hasattr(j, "alerts"):
+            book = j.alerts()
+            if (book.get("data_guard") or {}).get(sym) == day:
+                return
+            book.setdefault("data_guard", {})[sym] = day
+            j.save_alerts(book)
+        j.event("data_guard", symbol=sym, why=f"数据保护：{sym} {why}")
+    except Exception:
+        pass   # a note that cannot be written must not stop the cycle; the name is skipped either way
+
+
+def odd_price(snap: dict) -> str | None:
+    """Why a snapshot cannot be used: the price now against yesterday's close reads as a split (on a split day the
+    broker's `prevDailyBar` is still the old share count), so every gap and move worked out from it would be false."""
+    spot, _, _, prev = spot_open(snap)
+    if odd(prev, spot):
+        return f"现价 ${spot:,.2f} 对昨收 ${prev:,.2f} 是 {spot / prev - 1:+.0%}，像是拆股或坏数据；今天所有规则跳过它"
+    return None
+
+
+def steady(run, sym: str, xs: list[float]) -> bool:
+    """False, with the name set aside, when two of the last RECENT + 1 daily closes in a row read as a split: one the
+    adjusted history does not carry yet. Older jumps are left alone: by then the history is adjusted and they are real."""
+    tail = xs[-(RECENT + 1):]
+    for a, b in zip(tail, tail[1:]):
+        if odd(a, b):
+            set_aside(run, sym, f"日线里相邻两天收盘 ${a:,.2f} → ${b:,.2f}（{b / a - 1:+.0%}），像是还没调整的拆股或坏数据；"
+                                "用到日线的规则这几天跳过它")
+            return False
+    return True
+
+
 def snaps(run, syms: list[str]) -> dict:
+    """Stock snapshots, fetched once per cycle; a name whose price makes no sense against its last close is left out
+    (odd_price), so every rule skips it the way it skips a name with no quote."""
     out, need = {}, []
     for s in syms:
         v = run.__dict__.setdefault("cache", {}).get(("snap", s))
@@ -47,6 +103,11 @@ def snaps(run, syms: list[str]) -> dict:
         for s, v in got.items():
             run.cache[("snap", s)] = v
             out[s] = v
+    for s in list(out):
+        why = odd_price(out[s])
+        if why:
+            set_aside(run, s, why)
+            del out[s]
     return out
 
 
@@ -83,15 +144,18 @@ def pick(cs: list[dict], kind: str, spot: float, off: float, expiry: str | None 
 
 
 def closes(run, syms: list[str], days: int = 400) -> dict[str, list[float]]:
-    """Completed daily closes (raw), oldest first."""
+    """Completed daily closes, split-adjusted (11-19: they were raw, so a split inside the look-back read as a crash),
+    oldest first. A name whose closes still jump (steady) is left out."""
     key = ("closes", tuple(sorted(syms)), days)
 
     def fetch():
         start = (run.today - timedelta(days=days)).isoformat()
         out = {}
         for i in range(0, len(syms), 100):
-            for s, bs in run.c.daily_bars(syms[i:i + 100], start, adjustment="raw").items():
-                out[s] = [float(b["c"]) for b in bs if b["t"][:10] < run.today.isoformat()]
+            for s, bs in run.c.daily_bars(syms[i:i + 100], start, adjustment="split").items():
+                xs = [float(b["c"]) for b in bs if b["t"][:10] < run.today.isoformat()]
+                if steady(run, s, xs):
+                    out[s] = xs
         return out
     return cached(run, key, fetch) or {}
 
@@ -105,7 +169,9 @@ def history(run, syms: list[str], days: int = 120) -> dict[str, list[tuple[float
         out = {}
         for i in range(0, len(syms), 100):
             for s, bs in run.c.daily_bars(syms[i:i + 100], start, adjustment="split").items():
-                out[s] = [(float(b["c"]), float(b.get("h") or b["c"])) for b in bs if b["t"][:10] < run.today.isoformat()]
+                xs = [(float(b["c"]), float(b.get("h") or b["c"])) for b in bs if b["t"][:10] < run.today.isoformat()]
+                if steady(run, s, [c for c, _ in xs]):
+                    out[s] = xs
         return out
     return cached(run, key, fetch) or {}
 
@@ -425,12 +491,12 @@ class Pead:
 
         def fetch():
             start = (run.today - timedelta(days=10)).isoformat()
-            return run.c.daily_bars(names, start, adjustment="raw")
+            return run.c.daily_bars(names, start, adjustment="split")
         bars = cached(run, ("pead_bars", tuple(names)), fetch) or {}
         found = []
         for x in names:
             bs = [b for b in bars.get(x, []) if b["t"][:10] < day]
-            if len(bs) < 2 or bs[-1]["t"][:10] != react:
+            if len(bs) < 2 or bs[-1]["t"][:10] != react or not steady(run, x, [float(b["c"]) for b in bs]):
                 continue
             o, c, prev = float(bs[-1]["o"]), float(bs[-1]["c"]), float(bs[-2]["c"])
             if prev and o / prev - 1 >= spec.get("gap", 0.05) and c >= o:
@@ -625,8 +691,10 @@ class BreakGap:
             start = (run.today - timedelta(days=45)).isoformat()
             out = {}
             for i in range(0, len(p), 100):
-                for x, bs in run.c.daily_bars(p[i:i + 100], start, adjustment="raw").items():
-                    out[x] = [b for b in bs if b["t"][:10] < day]
+                for x, bs in run.c.daily_bars(p[i:i + 100], start, adjustment="split").items():
+                    bs = [b for b in bs if b["t"][:10] < day]
+                    if steady(run, x, [float(b["c"]) for b in bs]):
+                        out[x] = bs
             return out
         bars = cached(run, ("breakgap_bars", day), fetch) or {}
         found = []
