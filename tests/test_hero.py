@@ -6505,6 +6505,10 @@ class ResearchZdteCost(unittest.TestCase):
         self.assertIn("实际跑了 1 只", md)
         self.assertIn("时间不够没跑到的 1 只", md)
         self.assertIn("数据取不全、整只去掉的 1 只：BAD", md)
+        self.assertIn("请求失败的原因（最后几条）：`option_bars(['BAD10105CF', 'BAD10105): RuntimeError: 429`", md)
+        with mock.patch.object(fd, "START", "2026-08-01"), mock.patch.object(fd, "LEAD", "2026-08-01"), mock.patch("time.sleep"):
+            none = fd.run(Client(), ["BAD", "BADB", "BADC", "AAA", "ZZZ"])        # three in a row with nothing done: stop and say why
+        self.assertEqual((none["stocks"], none["dropped"], none["not_reached"]), ([], ["BAD", "BADB", "BADC"], ["AAA", "ZZZ"]))
         self.assertIn("条线过了 0 条", md)
         packed = fd.pack(rep["rows"])
         self.assertEqual([r for r in packed if r[2]], [["AAA", days[45], 3, 0, 0]])          # bits: put_surge and put_surge_flat

@@ -55,15 +55,23 @@ def pool() -> list[str]:
     return list(json.loads((ROOT / "data" / "universe.json").read_text())["stocks"])
 
 
+ERRORS: list[str] = []     # why a request failed for good, newest last (the report shows them: 11-18, a whole part
+                           # came back with every stock dropped and nothing to say why)
+
+
 def fetch(pace, call, *args, **kw):
     """One request, three tries. None when it keeps failing: the caller drops the stock rather than count a hole as a
     quiet day."""
+    err = ""
     for attempt in range(3):
         pace.wait()
         try:
             return call(*args, **kw)
-        except Exception:
+        except Exception as e:
+            err = f"{getattr(call, '__name__', 'call')}({str(args[0])[:24] if args else ''}): {type(e).__name__}: {str(e)[:300]}"
             time.sleep(3 * (attempt + 1))
+    ERRORS.append(err)
+    print("gave up:", err, flush=True)
     return None
 
 
@@ -152,6 +160,9 @@ def run(client, symbols: list[str], clock=time.monotonic) -> dict:
         vol = volumes(client, pace, sym, raw[sym], end)
         if vol is None:
             dropped.append(sym)
+            if len(dropped) >= 3 and not done:      # nothing works: say why now instead of an hour from now
+                left += symbols[symbols.index(sym) + 1:]
+                break
             continue
         days = [d for d in sorted(adj[sym]) if d in spy and d <= end]
         px, bench = [adj[sym][d] for d in days], [spy[d] for d in days]
@@ -161,7 +172,7 @@ def run(client, symbols: list[str], clock=time.monotonic) -> dict:
                 rows.append({"sym": sym, "day": days[i], "sig": sorted(got), "fwd": fwd})
         done.append(sym)
     return {"generated": date.today().isoformat(), "start": START, "end": end, "stocks": done, "dropped": dropped,
-            "not_reached": left, "rows": rows}
+            "not_reached": left, "errors": ERRORS[-20:], "rows": rows}
 
 
 def line(rows: list[dict], signal: str, h: int) -> dict | None:
@@ -204,6 +215,8 @@ def report(rep: dict) -> tuple[dict, str]:
         gaps.append(f"时间不够没跑到的 {len(rep['not_reached'])} 只（按成交额排在后面的）：{'、'.join(rep['not_reached'])}")
     if rep.get("dropped"):
         gaps.append(f"数据取不全、整只去掉的 {len(rep['dropped'])} 只：{'、'.join(rep['dropped'])}")
+    for e in (rep.get("errors") or [])[-3:]:
+        gaps.append(f"请求失败的原因（最后几条）：`{e}`")
     head = [f"# 个股期权量暴增之后，股价怎么走（{rep['generated']}）", "",
             f"{rep['start']} 至 {rep['end']}，股票池是 data/universe.json 的 100 只（这个月成交额最大的公司，偏向最近的赢家，所以只比同一批股票的"
             f"信号日和其他日子），实际跑了 {len(rep['stocks'])} 只。每只每天：行权价在前一天收盘价上下 {BAND:.0%} 以内、{FAR} 天内到期的全部合约的成交量，"
@@ -236,6 +249,7 @@ def combine(files: list[Path]) -> dict:
     for p in parts:
         for k in ("stocks", "dropped", "not_reached"):
             out[k] += p[k]
+        out.setdefault("errors", []).extend(p.get("errors") or [])
         out["rows"] += unpack(p["rows"])
     return out
 
