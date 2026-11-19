@@ -8605,3 +8605,60 @@ class ResearchShock(unittest.TestCase):
         self.assertEqual((both["start"], both["end"], len(both["rows"]), both["days"]), ("2024-02-01", "2024-04-30", 90, 120))
         self.assertEqual((both["stopped_at"], both["skipped"], both["basis"]["checked"]), ("2024-04-20", ["2024-04-01"], 180))
         self.assertEqual(sh.PARTS["a"][0], sh.START)
+
+
+class ResearchFillAudit(unittest.TestCase):
+    """hero/research_fill_audit.py: the SPY same-day fills against what the contract really traded."""
+
+    def test_fill_audit_flags_a_fill_at_yesterdays_quote_and_counts_the_money(self):
+        import json, tempfile
+        from datetime import datetime, timezone
+        from pathlib import Path
+        from hero import research_fill_audit as fa
+        put, call = "SPY261119P00733000", "SPY261119C00740000"
+        fills = [{"symbol": put, "side": "buy", "qty": "1", "price": "5.61", "transaction_time": "2026-11-19T14:40:34Z", "order_key": "k1", "execution_key": "e1"},
+                 {"symbol": put, "side": "sell", "qty": "1", "price": "12.40", "transaction_time": "2026-11-19T17:20:10Z", "order_key": "k2", "execution_key": "e2"},
+                 {"symbol": call, "side": "buy", "qty": "2", "price": "0.50", "transaction_time": "2026-11-19T15:00:40Z", "order_key": "k3", "execution_key": "e3"},
+                 {"symbol": call, "side": "buy", "qty": "1", "price": "0.52", "transaction_time": "2026-11-19T15:00:41Z", "order_key": "k3", "execution_key": "e4"},
+                 {"symbol": "SPY261120P00730000", "side": "buy", "qty": "1", "price": "3.00", "transaction_time": "2026-11-19T15:00:41Z", "order_key": "k4", "execution_key": "e5"},
+                 {"symbol": "SPY261009P00771000", "side": "buy", "qty": "1", "price": "0.20", "transaction_time": "2026-10-09T14:00:41Z", "order_key": "k5", "execution_key": "e6"}]
+        trades = [{"kind": "sleeve_fill", "sleeve": "spy0dte-near-1000", "symbol": put, "ts": "2026-11-19T14:40:39+00:00", "price": 5.61, "qty": 1},
+                  {"kind": "sleeve_plan_fill", "sleeve": "spy0dte-old-plan-500", "symbol": "SPY261119P00731000", "ts": "2026-11-19T15:00:25+00:00", "price": 4.58, "qty": 1},
+                  {"kind": "sleeve_plan_fill", "sleeve": "sniper-plan-500", "symbol": "INTC261120C00059000", "ts": "2026-11-19T14:30:25+00:00", "price": 0.9, "qty": 1}]
+        bar = lambda t, l, h, c, v=10, vw=None: {"t": t, "o": c, "h": h, "l": l, "c": c, "v": v, **({"vw": vw} if vw else {})}
+        market = {put: [bar("2026-11-18T20:59:00Z", 5.5, 5.7, 5.60), bar("2026-11-19T14:39:00Z", 1.63, 1.92, 1.89, 10, 1.80), bar("2026-11-19T14:40:00Z", 1.82, 2.31, 1.82, 30, 2.00),
+                        bar("2026-11-19T17:20:00Z", 12.0, 12.6, 12.5, 5, 12.3)],
+                  call: [bar("2026-11-19T15:02:00Z", 0.48, 0.55, 0.50)],                     # nothing in the minute itself: three minutes each side
+                  "SPY261119P00731000": [bar("2026-11-18T20:58:00Z", 4.4, 4.5, 4.49), bar("2026-11-19T15:00:00Z", 1.18, 1.35, 1.30)]}
+
+        class Fake:
+            asked = []
+
+            def option_bars(self, symbols, start, end, timeframe="1Day"):
+                Fake.asked.append((symbols, start, end, timeframe))
+                return {s: market[s] for s in symbols if s in market}
+        wait = type("P", (), {"wait": lambda self: None})()
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "journal-s500").mkdir()
+            (root / "journal-s500" / "fills.jsonl").write_text("\n".join(json.dumps(f) for f in fills) + "\n")
+            (root / "journal-s500" / "trades.jsonl").write_text("\n".join(json.dumps(t) for t in trades) + "\n")
+            rep = fa.run(Fake(), root, now=datetime(2026, 11, 19, 17, 50, tzinfo=timezone.utc), pace=wait)
+        self.assertEqual(Fake.asked, [([call, "SPY261119P00731000", put], "2026-11-14T13:00:00Z", "2026-11-19T17:30:00Z", "1Min")])   # not the newest minutes
+        self.assertNotIn("order_key", json.dumps(rep))                               # a public repository
+        buy, two, sell = rep["real"]                                                 # in time order; next-day expiry and the day before SINCE are not in
+        self.assertEqual((buy["verdict"], buy["stale"], buy["prior"], buy["sleeves"]), ("high", True, 5.60, ["spy0dte-near-1000"]))
+        self.assertAlmostEqual(buy["market"]["vw"], (1.80 * 10 + 2.00 * 30) / 40)
+        self.assertAlmostEqual(buy["flatter"], (1.95 - 5.61) * 100, places=2)        # the books are short by this much
+        self.assertEqual((sell["verdict"], sell["stale"]), ("ok", False))
+        self.assertAlmostEqual(sell["flatter"], (12.40 - 12.3) * 100, places=2)
+        self.assertEqual((two["qty"], two["verdict"], two["market"]["span"]), (3.0, "ok", fa.WIDE))
+        self.assertAlmostEqual(two["price"], (2 * 0.50 + 0.52) / 3, places=4)
+        (plan,) = rep["plan"]
+        self.assertEqual((plan["symbol"][-9:], plan["verdict"], plan["stale"]), ("P00731000", "high", True))
+        md = fa.report(rep)
+        self.assertIn("| 买入 | 2 | 1 | 1 | 0 | 0 | 1 | −$368 |", md)
+        self.assertIn("| 11-19 09:40 | near-1000 | 261119P00733000 | 买入 | 1 | $5.61 | $1.63–2.31，$1.95 | $5.60 | −$366 | 是 |", md)
+        self.assertIn("这些订单账面合计 +$527", md)                                    # 1,240 - 561 - 152
+        self.assertEqual(fa.verdict(0.01, {"lo": 0.03, "hi": 0.03}), "ok")          # two cents of slack on a cheap contract
+        self.assertEqual(fa.judge({"hhmm": "10:00", "side": "buy", "price": 1.0, "qty": 1}, {}, None)["verdict"], "none")
