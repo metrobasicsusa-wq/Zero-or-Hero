@@ -4257,33 +4257,11 @@
   },
   "spy0dte-near-1000": {
    "start": 1000.0,
-   "cash": 79.0,
+   "cash": 1769.0,
    "round": 7,
    "heroes": 3,
    "zeros": 3,
-   "open": [
-    {
-     "tid": "20261119-1fc5cf",
-     "kind": "zdte",
-     "sym": "SPY261119P00733000",
-     "asset": "option",
-     "und": "SPY",
-     "qty": 1,
-     "cost": 5.61,
-     "paid": 561.0,
-     "opened": "2026-11-19 09:40",
-     "why": "SPY 开盘 $737.54、现在 $736.06，顺势买当天到期看跌 733（离现价 0.4%），3 倍止盈，15:30 平仓",
-     "expiry": "2026-11-19",
-     "exit_day": "2026-11-19",
-     "exit_at": "15:30",
-     "trail": false,
-     "best_bid": 15.66,
-     "expiry_out": null,
-     "take_x": 3,
-     "take": 16.85,
-     "take_cid": "sl-spy0dte-near-1000-20261119-1fc5cf-t7386"
-    }
-   ],
+   "open": [],
    "closed": [
     {
      "tid": "a4cab2ccb2",
@@ -5650,6 +5628,33 @@
      "how": "2026-11-18 15:30 到时卖出",
      "closed": "2026-11-18 15:30",
      "ret": -0.751
+    },
+    {
+     "tid": "20261119-1fc5cf",
+     "kind": "zdte",
+     "sym": "SPY261119P00733000",
+     "asset": "option",
+     "und": "SPY",
+     "qty": 1,
+     "cost": 5.61,
+     "paid": 561.0,
+     "opened": "2026-11-19 09:40",
+     "why": "SPY 开盘 $737.54、现在 $736.06，顺势买当天到期看跌 733（离现价 0.4%），3 倍止盈，15:30 平仓",
+     "expiry": "2026-11-19",
+     "exit_day": "2026-11-19",
+     "exit_at": "15:30",
+     "trail": false,
+     "best_bid": 15.66,
+     "expiry_out": null,
+     "take_x": 3,
+     "take": 16.85,
+     "take_cid": "sl-spy0dte-near-1000-20261119-1fc5cf-t7386",
+     "state": "closed",
+     "exit_price": 16.9,
+     "proceeds": 1690.0,
+     "how": "3 倍止盈（券商挂单成交）",
+     "closed": "2026-11-19 15:10",
+     "ret": 2.012
     }
    ],
    "slots": {
