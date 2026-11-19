@@ -28,6 +28,7 @@ writes the one table. Record only. Run: python -m hero.research_flow_daily [a|co
 from __future__ import annotations
 
 import json
+import re
 import statistics
 import sys
 import time
@@ -93,7 +94,9 @@ def volumes(client, pace, sym: str, raw: dict[str, float], end: str) -> dict[str
                         strike_price_gte=f"{spot * (1 - WIDE):.2f}", strike_price_lte=f"{spot * (1 + WIDE):.2f}")
             if got is None:
                 return None
-            cs.update({c["symbol"]: c for c in got})
+            # standard contracts of this stock only: the list also carries adjusted ones (NVDA1...) and odd symbols
+            # (1AAPL...) that the bars endpoint refuses, which fails the whole request (11-18: every stock dropped)
+            cs.update({c["symbol"]: c for c in got if re.fullmatch(rf"{re.escape(sym)}\d{{6}}[CP]\d{{8}}", c["symbol"])})
         syms = sorted(cs)
         stop = (date.fromisoformat(m1) + timedelta(days=1)).isoformat()   # the end date is exclusive of that day's bar
         for i in range(0, len(syms), 100):
@@ -145,7 +148,9 @@ def part_of(part: str) -> list[str]:
 
 
 def run(client, symbols: list[str], clock=time.monotonic) -> dict:
-    end = (date.today() - timedelta(days=1)).isoformat()
+    # two days back: the runner's clock is UTC, and option bars of a session that closed a few hours ago are refused
+    # on this plan ("OPRA agreement is not signed"), which fails the whole month's request
+    end = (date.today() - timedelta(days=2)).isoformat()
     pace, began = Pace(client), clock()
     raw, adj = closes(client, symbols, "raw"), closes(client, symbols + ["SPY"], "all")
     spy = adj.get("SPY", {})

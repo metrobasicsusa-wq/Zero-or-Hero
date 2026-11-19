@@ -6478,15 +6478,19 @@ class ResearchZdteCost(unittest.TestCase):
                 if status == "active":
                     return []
                 m0 = kw["expiration_date_gte"]
-                return [{"symbol": f"{und}{m0[5:7]}{k}{t[0].upper()}{tag}", "expiration_date": exp, "strike_price": str(k), "type": t}
-                        for k in (95, 105, 115) for t in ("call", "put")        # 115 is listed but 15% away: never counted
-                        for tag, exp in (("N", m0[:8] + "20"), ("F", "2027-01-15"))]     # one near expiry, one far
+                odd = [{"symbol": f"1{und}260820P00100000", "expiration_date": m0[:8] + "20", "strike_price": "100", "type": "put"},
+                       {"symbol": f"{und}1260820P00100000", "expiration_date": m0[:8] + "20", "strike_price": "100", "type": "put"}]
+                return odd + [{"symbol": f"{und}{exp[2:4]}{exp[5:7]}{exp[8:]}{t[0].upper()}{k * 1000:08d}", "expiration_date": exp,
+                               "strike_price": str(k), "type": t}
+                              for k in (95, 105, 115) for t in ("call", "put")  # 115 is listed but 15% away: never counted
+                              for exp in (m0[:8] + "20", "2027-01-15")]         # one near expiry, one far
 
             def option_bars(self, syms, start, end, timeframe="1Day"):
+                assert not [s for s in syms if s[0] == "1" or s[3] == "1"], syms      # the odd symbols are never asked for
                 if syms[0].startswith("BAD") and start.startswith("2026-10"):
                     raise RuntimeError("429")
                 mine = [d for d in days if start <= d < end]
-                surge = lambda s, d: 40 if (s.endswith("PN") and d == days[45]) else 10
+                surge = lambda s, d: 40 if (s[9] == "P" and s[3:9] == "261020" and d == days[45]) else 10
                 return {s: [{"t": f"{d}T04:00:00Z", "c": 1.0, "v": surge(s, d)} for d in mine] for s in syms}
 
         ticks = iter([0, 1, 2, 10 ** 6])                                # the third stock starts after the budget is gone
@@ -6505,7 +6509,7 @@ class ResearchZdteCost(unittest.TestCase):
         self.assertIn("实际跑了 1 只", md)
         self.assertIn("时间不够没跑到的 1 只", md)
         self.assertIn("数据取不全、整只去掉的 1 只：BAD", md)
-        self.assertIn("请求失败的原因（最后几条）：`option_bars(['BAD10105CF', 'BAD10105): RuntimeError: 429`", md)
+        self.assertIn("请求失败的原因（最后几条）：`option_bars(['BAD261020C00095000', '): RuntimeError: 429`", md)
         with mock.patch.object(fd, "START", "2026-08-01"), mock.patch.object(fd, "LEAD", "2026-08-01"), mock.patch("time.sleep"):
             none = fd.run(Client(), ["BAD", "BADB", "BADC", "AAA", "ZZZ"])        # three in a row with nothing done: stop and say why
         self.assertEqual((none["stocks"], none["dropped"], none["not_reached"]), ([], ["BAD", "BADB", "BADC"], ["AAA", "ZZZ"]))
