@@ -204,6 +204,21 @@ def line(rows: list[dict], signal: str, h: int) -> dict | None:
             "hit_off": sum(x > 0 for _, x in off) / len(off), "pass": ok, "flags": robust.flags(robust.summary(on))}
 
 
+def puts_vs_calls(rows: list[dict], h: int) -> dict | None:
+    """Added 11-18 after the first third of the pool was in: there the stocks lagged their usual pace after a put surge
+    AND after a call surge, so "lags after puts" may only say "lags after any busy day". Days when only puts surged
+    against days when only calls surged: the stock's move minus SPY's, and calls minus puts (above zero = the side that
+    surged says something about direction)."""
+    k = str(h)
+    put = [r["fwd"][k] for r in rows if k in r["fwd"] and "put_surge" in r["sig"] and not {"call_surge_quiet", "call_surge_break"} & set(r["sig"])]
+    call = [r["fwd"][k] for r in rows if k in r["fwd"] and "put_surge" not in r["sig"] and {"call_surge_quiet", "call_surge_break"} & set(r["sig"])]
+    quiet = [r["fwd"][k] for r in rows if k in r["fwd"] and not r["sig"]]
+    if not put or not call or not quiet:
+        return None
+    m = statistics.mean
+    return {"put_n": len(put), "put": m(put), "call_n": len(call), "call": m(call), "quiet": m(quiet), "gap": m(call) - m(put)}
+
+
 def report(rep: dict) -> tuple[dict, str]:
     pct = lambda v: "—" if v is None else f"{v:+.2%}"
     table, out, total, passed = {}, [], 0, 0
@@ -219,6 +234,19 @@ def report(rep: dict) -> tuple[dict, str]:
             out.append(f"| {name}（{want}） | {h} 天 | {v['n']}（{v['stocks']}） | {pct(v['on'])} | {pct(v['off'])} | "
                        f"{pct(v['diff'])}（{pct(v['halves'][0])} / {pct(v['halves'][1])}） | {v['hit_on']:.0%} / {v['hit_off']:.0%} | "
                        f"{'过' if v['pass'] else '不过'} | {'；'.join(v['flags']) or '—'} |")
+    first = set(part_of("a"))
+    groups = {"全部": rep["rows"], "第一段的股票（加这条对照之前已经看过）": [r for r in rep["rows"] if r["sym"] in first],
+              "其余的股票（加了之后才跑的）": [r for r in rep["rows"] if r["sym"] not in first]}
+    extra = ["", "## 暴增的是看跌还是看涨，有没有差别", "",
+             "第一段出来后加的对照（不算在上面的线里）：那一段里，看跌量暴增之后股票比平时弱，看涨量暴增之后也比平时弱。"
+             "所以把「只有看跌暴增」和「只有看涨暴增」的日子直接比：数是股票的涨跌减 SPY 的涨跌；最后一列大于零才说明暴增的那一边带着方向。", "",
+             "| 哪些股票 | 之后 | 只有看跌暴增：次数 / 平均 | 只有看涨暴增：次数 / 平均 | 两边都没暴增的日子 | 看涨减看跌 |", "|---|---|---|---|---|---|"]
+    for name, rows in groups.items():
+        for h in HORIZONS:
+            v = table[f"puts_vs_calls|{name}|{h}"] = puts_vs_calls(rows, h)
+            if v:
+                extra.append(f"| {name} | {h} 天 | {v['put_n']} / {pct(v['put'])} | {v['call_n']} / {pct(v['call'])} | {pct(v['quiet'])} | {pct(v['gap'])} |")
+    out += extra if len(extra) > 7 else []
     gaps = []
     if rep.get("not_reached"):
         gaps.append(f"时间不够没跑到的 {len(rep['not_reached'])} 只（按成交额排在后面的）：{'、'.join(rep['not_reached'])}")

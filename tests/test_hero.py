@@ -6458,6 +6458,14 @@ class ResearchZdteCost(unittest.TestCase):
         self.assertFalse(fd.line(late, "put_surge", 5)["pass"])        # the first half goes the other way
         self.assertFalse(fd.line([row(r["day"], r["sig"], -0.004 if r["sig"] else 0.0) for r in rows], "put_surge", 5)["pass"])   # 0.4% < 0.5%
         self.assertIsNone(fd.line(rows, "call_surge_quiet", 5))        # no such days
+        mixed = ([row(d, ["put_surge"], -0.01) for d in days[:10]] + [row(d, ["call_surge_quiet"], -0.008) for d in days[10:20]]
+                 + [row(d, ["put_surge", "call_surge_break"], 0.5) for d in days[20:22]] + [row(d, [], 0.005) for d in days[22:40]])
+        got = fd.puts_vs_calls(mixed, 5)                               # both kinds of busy day lag the quiet days; the side adds 0.2%
+        self.assertEqual((got["put_n"], got["call_n"]), (10, 10))      # days when both surged are left out
+        self.assertAlmostEqual(got["put"], -0.01)
+        self.assertAlmostEqual(got["quiet"], 0.005)
+        self.assertAlmostEqual(got["gap"], 0.002)
+        self.assertIsNone(fd.puts_vs_calls(rows, 5))                   # no call days to compare with
         calls = [row(d, ["call_surge_quiet"] if i % 2 == 0 else [], -0.01 if i % 2 == 0 else 0.0) for i, d in enumerate(days)]
         self.assertFalse(fd.line(calls, "call_surge_quiet", 5)["pass"])     # calls surged and the stock lagged: the wrong way
 
