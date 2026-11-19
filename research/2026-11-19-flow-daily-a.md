@@ -1,0 +1,19 @@
+# 个股期权量暴增之后，股价怎么走（2026-11-19）
+
+2024-02-01 至 2026-11-17，股票池是 data/universe.json 的 100 只（这个月成交额最大的公司，偏向最近的赢家，所以只比同一批股票的信号日和其他日子），实际跑了 0 只。每只每天：行权价在前一天收盘价上下 10% 以内、21 天内到期的全部合约的成交量，看涨和看跌分开；当天的量到前 20 天平均的 3 倍算「暴增」。之后 1 天、5 天看这只股票的涨跌减去 SPY 同期的涨跌。
+
+表里的数都已经按「相信这个信号的人期待的方向」取正负：看跌量暴增期待跑输 SPY，所以它那几行是「SPY 的涨跌减股票的涨跌」，正数 = 如他们所愿。及格线在看结果之前写死：信号日比其他日子多 0.2%（1 天）/ 0.5%（5 天）以上、前后两半同号、信号日至少 100 次。财报日没有剔除（这里没有历史财报日期）；「当天股价涨跌不到 2%」那一行受财报影响最小。只研究，不改交易。
+
+**0 条线过了 0 条。**
+
+| 信号（相信它的人期待的方向） | 之后 | 信号日：次数（股票数） | 信号日的平均 | 其他日子的平均 | 差（前半 / 后半） | 方向对的比例：信号日 / 其他 | 过线 | 提醒 |
+|---|---|---|---|---|---|---|---|---|
+
+- 时间不够没跑到的 31 只（按成交额排在后面的）：GOOGL、TSM、STX、WDC、AMAT、DELL、CRM、BE、CAT、MA、COHR、CRWV、CRWD、COST、BKNG、VRT、HOOD、TXN、SPOT、CVX、HD、MRK、PG、GLW、VLO、DHR、IREN、ABBV、ALAB、ETN、MCD
+- 数据取不全、整只去掉的 3 只：NVDA、AAPL、AMZN
+- 请求失败的原因（最后几条）：`option_bars(['NVDA261102C00165000', ): AlpacaError: GET https://data.alpaca.markets/v1beta1/options/bars -> 403: {"message":"OPRA agreement is not signed"}
+`
+- 请求失败的原因（最后几条）：`option_bars(['AAPL261104C00280000', ): AlpacaError: GET https://data.alpaca.markets/v1beta1/options/bars -> 403: {"message":"OPRA agreement is not signed"}
+`
+- 请求失败的原因（最后几条）：`option_bars(['AMZN261102C00195000', ): AlpacaError: GET https://data.alpaca.markets/v1beta1/options/bars -> 403: {"message":"OPRA agreement is not signed"}
+`
