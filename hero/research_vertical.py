@@ -42,6 +42,7 @@ from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 
 from hero import daybook as db
+from hero import robust
 from hero.research_daybook_long import STOCKS, expiry, occ
 from hero.research_daybook_replay import FLAG_OPEN, walk
 from hero.research_event_turn import Pace
@@ -315,6 +316,9 @@ def report(rep: dict, now: dict[str, dict] | None = None) -> tuple[dict, str]:
                 s = stats(pick(rows, key, "expiry", hi, lambda r, y=y: r["day"][:4] == y))
                 cells.append(f"{pct(s['mean'])}，赚 {s['win']:.0%}（{s['n']}）" if s else "—")
             out.append(f"| {name} | " + " | ".join(cells) + " |")
+    checks = {f"{g.split('（')[0]}·{STRUCTS[key][0]}·{label}": robust.summary(pick(rows, key, ex, hi))
+              for g, rows in groups.items() if rows for key in REFS for ex, label in EXITS.items()}
+    out += ["", robust.table(checks, f"稳健性检查（代表做法，成本 {hi:.0%}）").rstrip()]
     out += ["", "## 每个标的（两种代表做法，拿到到期）", "", "| 标的 | 笔数 | " + " | ".join(STRUCTS[k][0] for k in REFS) + " | 同期正股 |", "|---|---|---|---|---|"]
     for und in rep["unds"]:
         rows = [r for r in rep["rows"] if r["und"] == und]
