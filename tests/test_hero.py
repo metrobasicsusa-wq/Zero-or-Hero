@@ -8662,3 +8662,61 @@ class ResearchFillAudit(unittest.TestCase):
         self.assertIn("这些订单账面合计 +$527", md)                                    # 1,240 - 561 - 152
         self.assertEqual(fa.verdict(0.01, {"lo": 0.03, "hi": 0.03}), "ok")          # two cents of slack on a cheap contract
         self.assertEqual(fa.judge({"hhmm": "10:00", "side": "buy", "price": 1.0, "qty": 1}, {}, None)["verdict"], "none")
+
+
+class Daybook(unittest.TestCase):
+    """hero/daybook.py: every past session as a card, and a day read against the earlier days that looked the same."""
+
+    def test_daybook_card_holds_what_the_morning_knew(self):
+        from hero import daybook as db
+        up = [(f"d{i:02d}", 100 + i, 101 + i, 99 + i, 100.0 + i) for i in range(21)]          # twenty closes up in a row
+        today = ("d21", 121.2, 123.0, 119.0, 118.0)
+        (c,) = db.cards(up + [today], {"d21": {"m10": -0.006, "p1000": 120.47, "p1530": 118.5}})
+        self.assertEqual((c["pc"], c["streak"], c["above20"]), (120.0, 20, True))
+        self.assertAlmostEqual(c["gap"], 0.01)
+        lab = db.labels(c)
+        self.assertEqual((lab["gap"], lab["streak"], lab["trend"], lab["m10"]), ("高开 1% 以上", "连涨 3 天以上", "20 日均线上方", "10:00 跌 0.5% 以上"))
+        self.assertEqual(lab["vol"], "波动 10% 以下")
+        ask = lambda q: db.OUTCOMES[q][1](c)
+        self.assertEqual((ask("up"), ask("big"), ask("against"), ask("cont"), ask("far"), ask("move10")), (False, True, True, True, True, True))
+        down = up[:18] + [("d18", 0, 0, 0, 117.0), ("d19", 0, 0, 0, 116.0), ("d20", 0, 0, 0, 115.0)]
+        (c,) = db.cards(down + [("d21", 115.0, 115.5, 114.5, 115.2)], {})
+        self.assertEqual((c["streak"], c["above20"], db.labels(c)["gap"]), (-3, True, "平开"))
+        self.assertNotIn("m10", db.labels(c))
+        self.assertIsNone(db.OUTCOMES["against"][1](c))                    # a flat open has no gap to go against
+        self.assertIsNone(db.OUTCOMES["cont"][1]({**c, "m10": -0.001, "p1000": 115.0}))   # the "10:00 持平" label: no direction asked
+        self.assertEqual(db.bucket(-0.001, db.M10S), "10:00 持平")
+
+    def test_daybook_reads_only_earlier_days_and_scores_against_the_base_rate(self):
+        from hero import daybook as db
+        from unittest import mock
+
+        def card(i, wild):
+            pc = 100.0
+            c = pc * (1.02 if i % 2 else 0.98) if wild else pc * (1.001 if i % 2 else 0.999)
+            return {"day": f"2020-{1 + i // 28:02d}-{1 + i % 28:02d}", "o": pc, "h": max(pc, c), "l": min(pc, c), "c": round(c, 2), "pc": pc,
+                    "gap": 0.0, "streak": 1, "above20": True, "rv20": 0.25 if wild else 0.08,
+                    "m10": 0.002 if i % 2 else -0.002, "p1000": pc * (1.002 if i % 2 else 0.998), "p1530": c}
+        cs = [card(i, wild=i % 5 < 2) for i in range(200)]                 # two days in five are wild, and volatility says which
+        book = db.Book(cs)
+        wild = db.labels(cs[0])
+        idx, kept = book.alike(wild, "open", 200)
+        self.assertEqual((len(idx), kept), (80, ("gap", "vol", "streak", "trend")))
+        self.assertTrue(all(i < 50 for i in book.alike(wild, "open", 50)[0]))          # only the days before it
+        idx, kept = book.alike(wild, "open", 50)
+        self.assertEqual((len(idx), kept), (50, ("gap",)))                 # twenty wild days so far: conditions dropped until thirty match
+        r = book.read(wild, "open", 200)
+        self.assertEqual((r["q"]["big"]["k"], r["q"]["big"]["n"], r["q"]["big"]["base"]), (80, 80, 0.4))
+        self.assertAlmostEqual(r["q"]["big"]["p"], (80 + db.PRIOR * 0.4) / (80 + db.PRIOR), places=4)
+        self.assertEqual(r["q"]["against"]["n"], 0)                        # flat opens: not asked
+        with mock.patch.object(db, "WARM", 100):
+            sc = db.score(book)
+            md = db.report(book, sc)
+        self.assertTrue(sc["open|big"]["pass"])
+        self.assertGreater(sc["open|big"]["skill"], 0.5)
+        self.assertFalse(sc["open|up"]["pass"])                            # up and down alternate whatever the labels say
+        self.assertEqual(sc["open|big"]["n"], 100)
+        self.assertNotIn("open|against", sc)
+        self.assertIn("| 开盘 | 收盘对昨收超过 1% | 100 | 40% |", md)
+        self.assertIn("过去同样的日子", md)
+        self.assertNotIn("反着缺口走） | 0 / 0", md)                         # questions that do not apply are left out of the read
