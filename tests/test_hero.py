@@ -8868,6 +8868,9 @@ class ResearchVertical(unittest.TestCase):
         self.assertAlmostEqual(v.spread("P", 95, 100, s, 104, 0.05, False)["expiry"], 1.9 / 3.1, places=4)
         self.assertIsNone(v.spread("C", 100, 105, [("d0", 5.2)], 104, 0.0, True))                                    # dearer than its width: a stale print
         self.assertIsNone(v.spread("C", 100, 100, s, 104, 0.0, True))
+        wild = [("d0", 2.0), ("d1", -1.5), ("d2", 7.0)]                         # legs printed at different moments
+        self.assertEqual(v.spread("C", 100, 105, wild, 104, 0.0, True)["tp_sl"], -1.0)      # never worse than losing what was paid
+        self.assertEqual(v.spread("P", 95, 100, [("d0", 2.0), ("d1", 7.0)], 104, 0.0, False)["tp_sl"], -1.0)   # nor more than the width less the credit
         self.assertEqual((v.strike(736.54, 1.05), v.strike(128.0, 0.95)), (775.0, 120.0))
         up = [100.0 + k * 0.1 for k in range(260)]
         t = v.day_types(up, 259, True)

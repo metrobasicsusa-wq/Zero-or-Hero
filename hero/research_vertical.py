@@ -90,6 +90,9 @@ def spread(kind: str, k_lo: float, k_hi: float, series: list[tuple[str, float]],
     width, v0 = k_hi - k_lo, series[0][1]
     if width <= 0 or not 0 < v0 < width:
         return None
+    # A spread is worth between nothing and its width. The two legs' last trades are not from the same moment, so a
+    # day's difference can fall outside that; the first run (11-19) had 37 results worse than losing everything.
+    series = [(t, min(max(v, 0.0), width)) for t, v in series]
     worth = max(0.0, min(settle - k_lo, width)) if kind == "C" else max(0.0, min(k_hi - settle, width))   # at expiry
     up, down = v0 + 0.5 * (width - v0), 0.5 * v0                               # the value half way to its most / to nothing
     if debit:
