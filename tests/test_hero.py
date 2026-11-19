@@ -8720,3 +8720,34 @@ class Daybook(unittest.TestCase):
         self.assertIn("| 开盘 | 收盘对昨收超过 1% | 100 | 40% |", md)
         self.assertIn("过去同样的日子", md)
         self.assertNotIn("反着缺口走） | 0 / 0", md)                         # questions that do not apply are left out of the read
+
+
+class DaybookReplay(unittest.TestCase):
+    def test_replay_reads_each_day_from_the_days_before_and_splits_the_follow_trade_by_flag(self):
+        from hero import daybook as db
+        from hero import research_daybook_replay as rp
+
+        def card(i, wild):
+            pc = 100.0
+            c = pc * (1.02 if i % 2 else 0.98) if wild else pc * (1.001 if i % 2 else 0.999)
+            return {"day": f"2020-{1 + i // 28:02d}-{1 + i % 28:02d}", "o": pc, "h": max(pc, c), "l": min(pc, c), "c": round(c, 2), "pc": pc,
+                    "gap": 0.0, "streak": 1, "above20": True, "rv20": 0.25 if wild else 0.08,
+                    "m10": 0.002 if i % 2 else -0.002, "p1000": pc * (1.002 if i % 2 else 0.998), "p1530": c}
+        cs = [card(i, wild=i % 5 < 2) for i in range(200)]
+        book = db.Book(cs)
+        rows = rp.walk(book, cs[150]["day"])
+        self.assertEqual((len(rows), rows[0]["day"]), (50, cs[150]["day"]))
+        first = rows[0]                                                    # day 150 is a wild one: sixty wild days before it, all big
+        self.assertAlmostEqual(first["open"]["big"][0], (60 + db.PRIOR * 0.4) / (60 + db.PRIOR), places=3)
+        self.assertEqual((first["open"]["big"][1], first["open_days"], first["y"]["big"]), (0.4, 60, True))
+        t = rp.tally(rows, "open", "big", rp.FLAG_OPEN)
+        self.assertEqual((t["on"], t["off"]), ((20, 20), (0, 30)))         # every flagged day was big and no other day was
+        self.assertLess(t["brier"], t["brier_base"])
+        fl = {r["day"]: {"kind": "C", "ret": 1.0 if r["y"]["big"] else -0.9} for r in rows[:40]}
+        self.assertEqual(len(rp.trade(rows, fl, lambda r: True)), 40)
+        flagged = rp.trade(rows, fl, lambda r: r["open"]["big"][0] >= rp.FLAG_OPEN)
+        self.assertEqual((len(flagged), {r for _, r in flagged}), (16, {1.0}))
+        md, verdicts = rp.report({"generated": "2026-11-19", "since": cs[150]["day"], "rows": rows, "follow": fl})
+        self.assertIn("| 开盘时：今天收盘对昨收会超过 1% | 20 / 20（100%） | 0 / 30（0%） |", md)
+        self.assertIn("只有档案 10:00 点名", md)
+        self.assertEqual(rp.other_indexes(rows, lambda r: True, rp.ROOT / "research" / "no-such-file.json"), {})
