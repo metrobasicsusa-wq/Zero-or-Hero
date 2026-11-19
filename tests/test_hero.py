@@ -6489,7 +6489,10 @@ class ResearchZdteCost(unittest.TestCase):
                 assert not [s for s in syms if s[0] == "1" or s[3] == "1"], syms      # the odd symbols are never asked for
                 if syms[0].startswith("BAD") and start.startswith("2026-10"):
                     raise RuntimeError("429")
-                mine = [d for d in days if start <= d < end]
+                if syms[0].startswith("LATE") and start.startswith("2026-10"):      # the newest month of the 10-24 run below
+                    raise RuntimeError("403")
+                assert start.endswith("T00:00:00Z") and end.endswith("T23:59:59Z"), (start, end)   # never a bare date
+                mine = [d for d in days if start[:10] <= d <= end[:10]]
                 surge = lambda s, d: 40 if (s[9] == "P" and s[3:9] == "261020" and d == days[45]) else 10
                 return {s: [{"t": f"{d}T04:00:00Z", "c": 1.0, "v": surge(s, d)} for d in mine] for s in syms}
 
@@ -6514,6 +6517,16 @@ class ResearchZdteCost(unittest.TestCase):
             none = fd.run(Client(), ["BAD", "BADB", "BADC", "AAA", "ZZZ"])        # three in a row with nothing done: stop and say why
         self.assertEqual((none["stocks"], none["dropped"], none["not_reached"]), ([], ["BAD", "BADB", "BADC"], ["AAA", "ZZZ"]))
         self.assertIn("条线过了 0 条", md)
+        from datetime import date as real_date
+
+        class Oct(real_date):                                           # a run on 10-24: October is its newest month
+            @classmethod
+            def today(cls): return real_date(2026, 10, 24)
+        with mock.patch.object(fd, "START", "2026-08-01"), mock.patch.object(fd, "LEAD", "2026-08-01"), mock.patch("time.sleep"), \
+                mock.patch.object(fd, "date", Oct):
+            late = fd.run(Client(), ["LATE"])
+        self.assertEqual((late["stocks"], late["dropped"]), (["LATE"], []))     # kept: only its newest month is missing
+        self.assertEqual(max(r["day"] for r in late["rows"]), "2026-09-30")     # and it ends a month earlier
         packed = fd.pack(rep["rows"])
         self.assertEqual([r for r in packed if r[2]], [["AAA", days[45], 3, 0, 0]])          # bits: put_surge and put_surge_flat
         self.assertEqual(fd.unpack(packed), rep["rows"])

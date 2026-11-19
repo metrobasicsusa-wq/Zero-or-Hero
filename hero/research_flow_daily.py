@@ -76,10 +76,12 @@ def fetch(pace, call, *args, **kw):
     return None
 
 
-def volumes(client, pace, sym: str, raw: dict[str, float], end: str) -> dict[str, dict[str, float]] | None:
-    """day -> {"call": volume, "put": volume} of contracts within BAND of the previous close that expire within FAR
-    days of that day."""
-    days, out = sorted(raw), {}
+def volumes(client, pace, sym: str, raw: dict[str, float], end: str) -> tuple[dict[str, dict[str, float]], str] | None:
+    """(day -> {"call": volume, "put": volume} of contracts within BAND of the previous close that expire within FAR
+    days of that day, the last day covered). None when a month in the middle cannot be had; when only the newest month
+    fails the stock is kept and simply ends a month earlier."""
+    days, out, upto = sorted(raw), {}, ""
+    newest = months(START, end)[-1][0]
     ref = {d: raw[days[i - 1]] for i, d in enumerate(days) if i}
     for m0, m1 in months(START, end):
         mine = [d for d in days if m0 <= d <= m1]
@@ -93,16 +95,17 @@ def volumes(client, pace, sym: str, raw: dict[str, float], end: str) -> dict[str
                         expiration_date_lte=(date.fromisoformat(m1) + timedelta(days=FAR)).isoformat(),
                         strike_price_gte=f"{spot * (1 - WIDE):.2f}", strike_price_lte=f"{spot * (1 + WIDE):.2f}")
             if got is None:
-                return None
+                return (out, upto) if m0 == newest and upto else None
             # standard contracts of this stock only: the list also carries adjusted ones (NVDA1...) and odd symbols
             # (1AAPL...) that the bars endpoint refuses, which fails the whole request (11-18: every stock dropped)
             cs.update({c["symbol"]: c for c in got if re.fullmatch(rf"{re.escape(sym)}\d{{6}}[CP]\d{{8}}", c["symbol"])})
         syms = sorted(cs)
-        stop = (date.fromisoformat(m1) + timedelta(days=1)).isoformat()   # the end date is exclusive of that day's bar
+        # Full timestamps: a bare end date is read as the end of that day in New York, which for the newest month is
+        # "too recent" on this plan (403, "OPRA agreement is not signed") and fails the whole request.
         for i in range(0, len(syms), 100):
-            bars = fetch(pace, client.option_bars, syms[i:i + 100], m0, stop)
+            bars = fetch(pace, client.option_bars, syms[i:i + 100], f"{m0}T00:00:00Z", f"{m1}T23:59:59Z")
             if bars is None:
-                return None
+                return ({d: v for d, v in out.items() if d <= upto}, upto) if m0 == newest and upto else None
             for s, bs in bars.items():
                 exp, kind, strike = cs[s]["expiration_date"], cs[s]["type"], float(cs[s]["strike_price"])
                 for b in bs:
@@ -110,7 +113,8 @@ def volumes(client, pace, sym: str, raw: dict[str, float], end: str) -> dict[str
                     if (m0 <= d <= m1 and d in ref and abs(strike / ref[d] - 1) <= BAND
                             and d <= exp <= (date.fromisoformat(d) + timedelta(days=FAR)).isoformat()):
                         out.setdefault(d, {"call": 0.0, "put": 0.0})[kind] += float(b.get("v") or 0)
-    return out
+        upto = m1
+    return out, upto
 
 
 def closes(client, symbols: list[str], adjustment: str) -> dict[str, dict[str, float]]:
@@ -148,8 +152,7 @@ def part_of(part: str) -> list[str]:
 
 
 def run(client, symbols: list[str], clock=time.monotonic) -> dict:
-    # two days back: the runner's clock is UTC, and option bars of a session that closed a few hours ago are refused
-    # on this plan ("OPRA agreement is not signed"), which fails the whole month's request
+    # two days back: the runner's clock is UTC, so "yesterday" there can be the session that closed a few hours ago
     end = (date.today() - timedelta(days=2)).isoformat()
     pace, began = Pace(client), clock()
     raw, adj = closes(client, symbols, "raw"), closes(client, symbols + ["SPY"], "all")
@@ -162,19 +165,20 @@ def run(client, symbols: list[str], clock=time.monotonic) -> dict:
         if sym not in raw or sym not in adj:
             dropped.append(sym)
             continue
-        vol = volumes(client, pace, sym, raw[sym], end)
-        if vol is None:
+        got = volumes(client, pace, sym, raw[sym], end)
+        if got is None:
             dropped.append(sym)
             if len(dropped) >= 3 and not done:      # nothing works: say why now instead of an hour from now
                 left += symbols[symbols.index(sym) + 1:]
                 break
             continue
+        vol, upto = got
         days = [d for d in sorted(adj[sym]) if d in spy and d <= end]
         px, bench = [adj[sym][d] for d in days], [spy[d] for d in days]
-        for i, got in events(days, px, vol).items():
+        for i, sig in events(days, px, vol).items():
             fwd = {str(h): round((px[i + h] / px[i] - 1) - (bench[i + h] / bench[i] - 1), 5) for h in HORIZONS if i + h < len(days)}
-            if fwd:
-                rows.append({"sym": sym, "day": days[i], "sig": sorted(got), "fwd": fwd})
+            if fwd and days[i] <= upto:               # no volume was read after `upto`: those days are not judged
+                rows.append({"sym": sym, "day": days[i], "sig": sorted(sig), "fwd": fwd})
         done.append(sym)
     return {"generated": date.today().isoformat(), "start": START, "end": end, "stocks": done, "dropped": dropped,
             "not_reached": left, "errors": ERRORS[-20:], "rows": rows}
