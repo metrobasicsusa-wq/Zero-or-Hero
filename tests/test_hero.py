@@ -8915,6 +8915,8 @@ class ResearchVertical(unittest.TestCase):
         self.assertGreater(first["call_atm_5"]["0.05"]["expiry"], 0)                 # a steady rise: the bull call pays
         self.assertEqual(first["bear_put_atm_5"]["0.05"]["expiry"], -1.0)            # and the bear put expires worthless
         self.assertGreater(first["put_otm5_5"]["0.02"]["expiry"], first["put_otm5_5"]["0.05"]["expiry"])
+        self.assertEqual(set(rows[0]["legs"]), {"C0.95", "C1.00", "C1.05", "C1.10", "P0.85", "P0.90", "P0.95", "P1.00"})   # every leg's entry price is kept
+        self.assertEqual(rows[0]["strikes"]["1.00"], v.strike(rows[0]["spot"], 1.0))
         table, md = v.report(rep)
         self.assertIn("## 指数（SPY、QQQ）：全貌", md)
         self.assertIn("顺着选（均线上方看涨、下方看跌）", md)

@@ -199,8 +199,12 @@ def run(client, unds=INDEXES + STOCKS, clock=time.monotonic, pace=None, now: dat
                 if all(got.values()):
                     res[key] = got
             if res:
+                # the single legs' entry closes too (owner, 11-19: "垂直也只是个工具"): with the strikes and the settlement
+                # they price the other tools held to expiry -- a call or a put alone, a sold put, shares with a sold call
+                legs = {f"{kind}{m:.2f}": px.get(sym, {}).get(d) for (kind, m), sym in syms.items()}
                 rep["rows"].append({"und": und, "day": d, "exp": exp, "spot": round(rc[i], 2), "settle": round(rc[pos[exp]], 2),
-                                    "shares": round(ac[pos[exp]] / ac[i] - 1, 4), "types": {**labels, "daybook": d in big_days}, "res": res})
+                                    "shares": round(ac[pos[exp]] / ac[i] - 1, 4), "types": {**labels, "daybook": d in big_days}, "res": res,
+                                    "strikes": {f"{m:.2f}": ks[m] for m in SHARES}, "legs": legs})
         else:
             continue
         rep["not_reached"] += [u for u in unds[list(unds).index(und) + 1:]]
