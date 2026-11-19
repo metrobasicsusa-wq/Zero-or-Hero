@@ -20,47 +20,191 @@
    "confidence": 0.3,
    "catalyst_type": "company news",
    "order": "first",
-   "why": "18A 制程签下第一个外部客户（CEO 昨天收盘后说的，客户没点名）；盘前 +4.0%，约 0.7 倍平时波动，没破 20 日高点",
+   "why": "18A 制程签下第一个外部客户（CEO 昨天收盘后说的，客户没点名；盘前扫描的标题也有）；09:01 盘前 +4.2%，约 0.8 倍平时波动，没破 20 日高点",
    "wrong_if": "10:00 在开盘价下方，或公司 / 客户澄清不是量产订单；全天：收盘收在开盘价下方"
   },
   {
    "rank": 2,
-   "symbol": "GOOGL",
+   "symbol": "COHR",
    "direction": "call",
    "confidence": 0.25,
+   "catalyst_type": "company news",
+   "order": "first",
+   "why": "盘前扫描的标题：Coherent 批准 $20 亿股票回购（Benzinga），周二刚有 CEO 和董事长买入；盘前 +7.6%，约 1.2 倍平时波动，没破 20 日高点。减分：中盘股跳空超过 6% 常已反映；这是它连续第 3 天被消息推着走",
+   "wrong_if": "10:00 回到开盘价下方"
+  },
+  {
+   "rank": 3,
+   "symbol": "GOOGL",
+   "direction": "call",
+   "confidence": 0.2,
    "catalyst_type": "peer plan hits a group",
    "order": "second",
    "why": "Anthropic 昨晚定价 $83，高于 $70–78 的区间，估值约 $1.5 万亿，今天上市；谷歌是它的大股东之一，直接读穿。减分：盘前已经 +4.0%，约是它平时单日波动（2.1%）的 1.9 倍，一部分已经在价格里；上市当天常见「消息兑现就卖」。没破 20 日高点",
    "wrong_if": "10:00 回到开盘价下方，或 Anthropic 开盘价低于发行价 $83"
   },
   {
-   "rank": 3,
-   "symbol": "FTNT",
-   "direction": "call",
-   "confidence": 0.2,
-   "catalyst_type": "peer plan hits a group",
-   "order": "second",
-   "why": "Palo Alto 昨晚把全年经常性收入指引整段上调、盘前 +9%，读穿到安全同行；Fortinet 盘前 +3.8%，约 1 倍平时波动。减分：Palo Alto 的增长有一部分是抢同行的份额；Fortinet 自己 10-28 的指引被卖过",
-   "wrong_if": "10:00 Palo Alto 在自己开盘价下方，或 Palo Alto 守住而它在开盘价下方"
-  },
-  {
    "rank": 4,
-   "symbol": "CRWD",
+   "symbol": "FTNT",
    "direction": "call",
    "confidence": 0.15,
    "catalyst_type": "peer plan hits a group",
    "order": "second",
-   "why": "同一条读穿（Palo Alto）；盘前已经 +5.9%，约 2.1 倍平时波动，大半已反映；两天累计 +6%，是连续第 2 天",
-   "wrong_if": "10:00 回到开盘价下方"
+   "why": "Palo Alto 昨晚把全年经常性收入指引整段上调、盘前 +9%，读穿到安全同行；Fortinet 09:00 盘前 +3.2%，约 0.9 倍平时波动。减分：Palo Alto 的增长有一部分是抢同行的份额；Fortinet 自己 10-28 的指引被卖过",
+   "wrong_if": "10:00 Palo Alto 在自己开盘价下方，或 Palo Alto 守住而它在开盘价下方"
   }
  ],
- "claude_b_pick": "08:35 未知",
+ "claude_b_pick": "没有选（它今天的 sniper 是 null：11-18 起它只在券商评级或目标价变动时点名）",
  "notes": [
   "前因：英特尔 11-18 收盘后的 18A 外部客户消息。大盘背景：Anthropic 定价高于区间，期货全线高开（08:36：SPY +1.0%、QQQ +1.7%、SMH +2.4%、软件 ETF +2.8%），标普此前连跌五天。",
   "排除的财报反应日名单（reaction_day = 11-19）：BABA BBWI CPA DAO FUTU HP JOYY KLIC LQDT MAGN MANU MMS NJR NTES P PANW PCYO PDD ROAD RRGB SBLK SNEX TEN UGI UTI VVV WMG WMT WSM WWD。Palo Alto 和沃尔玛不选，只选非财报的。",
   "MRVL 不选：演算账本还拿着它周五到期的看涨。AMZN（Anthropic 的另一个大股东）盘前 +1.9%、刚过 20 日高点，但昨天已经涨了 3.8%，是连续第 2 天，09:01 再看。Bloom Energy 盘前 +5.9% 只是分析师上调评级。",
   "演算账本的钱还押在周五到期的 MRVL / LHX 上（剩 $7 和 $269），今天多半还是买不进，只有判断记分。",
-  "风险：前两天（MRVL、美光）都是「芯片高开被卖」，今天芯片又是高开；这条是英特尔自己的消息，但开盘后大概率还是跟着链条走。多账本的周内新闻账本里有一张英特尔 55 看跌，和这条方向相反，是另一个账本、另一条规则。"
+  "风险：前两天（MRVL、美光）都是「芯片高开被卖」，今天芯片又是高开；这条是英特尔自己的消息，但开盘后大概率还是跟着链条走。多账本的周内新闻账本里有一张英特尔 55 看跌，和这条方向相反，是另一个账本、另一条规则。",
+  "09:01 例程（09:01 送到）确认预选：claude-b 今天没有选；扫描里比英特尔更强的非财报消息没有。新增一只候选 Coherent（$20 亿回购）排第 2，CrowdStrike 移到没选的名单。英特尔 09:01 盘前 +4.2%。"
  ],
- "generated_at": "2026-11-19T08:37-05:00"
+ "generated_at": "2026-11-19T09:02-05:00",
+ "confirmed_at": "2026-11-19T09:02-05:00",
+ "skipped": [
+  {
+   "symbol": "PANW",
+   "direction": "call",
+   "gap": "+7.8%",
+   "reason": "财报反应日",
+   "why_not": "昨晚盘后发的财报"
+  },
+  {
+   "symbol": "WMT",
+   "direction": "put",
+   "gap": "−1.1%",
+   "reason": "财报反应日",
+   "why_not": "今早盘前发的财报"
+  },
+  {
+   "symbol": "CRWD",
+   "direction": "call",
+   "gap": "+5.3%",
+   "reason": "跳空已吃掉",
+   "why_not": "Palo Alto 的读穿；跳空约是平时波动的 1.9 倍，两天累计 +6%"
+  },
+  {
+   "symbol": "AMZN",
+   "direction": "call",
+   "gap": "+1.5%",
+   "reason": "其他",
+   "why_not": "Anthropic 的另一个大股东，刚过 20 日高点；但昨天已经涨了 3.8%，是连续第 2 天，跳空只有平时的 0.7 倍"
+  },
+  {
+   "symbol": "MU",
+   "direction": "call",
+   "gap": "+4.0%",
+   "reason": "分析师评级",
+   "why_not": "标题是 RBC 转述美光说存储供应紧到 2028 年；昨天的狙击就是它，判错"
+  },
+  {
+   "symbol": "MRVL",
+   "direction": "call",
+   "gap": "+3.7%",
+   "reason": "其他",
+   "why_not": "演算账本还拿着它周五到期的看涨"
+  },
+  {
+   "symbol": "BE",
+   "direction": "call",
+   "gap": "+6.5%",
+   "reason": "分析师评级",
+   "why_not": "BMO 上调评级（CNBC），另一条只是上榜新闻；跳空超过 6%"
+  },
+  {
+   "symbol": "DELL",
+   "direction": "call",
+   "gap": "+4.5%",
+   "reason": "财报临近",
+   "why_not": "11-24 盘后发财报；今天没有自己的消息"
+  },
+  {
+   "symbol": "NBIS",
+   "direction": "call",
+   "gap": "+5.8%",
+   "reason": "消息太弱",
+   "why_not": "跟着 AI 链高开，没有自己的消息"
+  },
+  {
+   "symbol": "SNDK",
+   "direction": "call",
+   "gap": "+4.6%",
+   "reason": "消息太弱",
+   "why_not": "跟着存储高开，没有自己的消息"
+  },
+  {
+   "symbol": "ALAB",
+   "direction": "call",
+   "gap": "+4.5%",
+   "reason": "消息太弱",
+   "why_not": "跟着 AI 链高开，没有自己的消息"
+  },
+  {
+   "symbol": "CRDO",
+   "direction": "call",
+   "gap": "+4.4%",
+   "reason": "消息太弱",
+   "why_not": "跟着 AI 链高开，没有自己的消息"
+  },
+  {
+   "symbol": "CRWV",
+   "direction": "call",
+   "gap": "+4.3%",
+   "reason": "消息太弱",
+   "why_not": "跟着 AI 链高开，没有自己的消息"
+  },
+  {
+   "symbol": "GEV",
+   "direction": "call",
+   "gap": "+3.0%",
+   "reason": "消息太弱",
+   "why_not": "德国一张风电订单，对它的体量很小"
+  },
+  {
+   "symbol": "SNOW",
+   "direction": "call",
+   "gap": "+3.0%",
+   "reason": "分析师评级",
+   "why_not": "只有分析师对下一份财报的看法"
+  },
+  {
+   "symbol": "AVGO",
+   "direction": "call",
+   "gap": "+2.7%",
+   "reason": "分析师评级",
+   "why_not": "高盛维持买入、调整目标价"
+  },
+  {
+   "symbol": "ORCL",
+   "direction": "call",
+   "gap": "+2.9%",
+   "reason": "消息太弱",
+   "why_not": "没有自己的消息"
+  },
+  {
+   "symbol": "TXN",
+   "direction": "call",
+   "gap": "+2.8%",
+   "reason": "消息太弱",
+   "why_not": "没有自己的消息"
+  },
+  {
+   "symbol": "PLTR",
+   "direction": "call",
+   "gap": "+2.4%",
+   "reason": "其他",
+   "why_not": "标题是俄罗斯间谍案涉及它的员工（负面），股价却跟着大盘涨，方向和消息相反，不碰"
+  },
+  {
+   "symbol": "TSLA",
+   "direction": "call",
+   "gap": "+2.2%",
+   "reason": "消息太弱",
+   "why_not": "上海工厂继续增产，不是新消息"
+  }
+ ]
 }
