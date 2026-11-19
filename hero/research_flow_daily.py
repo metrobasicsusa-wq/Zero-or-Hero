@@ -262,7 +262,7 @@ def combine(files: list[Path]) -> dict:
 def main(part: str | None = None) -> None:
     part = part or (sys.argv[1] if len(sys.argv) > 1 else "a")
     if part == "combine":
-        files = sorted((ROOT / "research").glob("*-flow-daily-[abc].json"))[-3:]
+        files = [fs[-1] for part in "abc" if (fs := sorted((ROOT / "research").glob(f"*-flow-daily-{part}.json")))]   # the newest of each
         rep = combine(files)
         table, md = report(rep)
         save("flow-daily", {**{k: v for k, v in rep.items() if k != "rows"}, "parts": [f.name for f in files], "table": table}, md)
