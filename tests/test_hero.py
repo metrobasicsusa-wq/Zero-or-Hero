@@ -8851,3 +8851,74 @@ class DaybookLong(unittest.TestCase):
         self.assertFalse(table["verdict"]["indexes"])                              # two days are not forty
         self.assertIn("| QQQ | 2 |", md)
         self.assertIn("**指数：不过。个股：不过（7 只里过了 0 只）。**", md)
+
+
+class ResearchVertical(unittest.TestCase):
+    """hero/research_vertical.py: three-month vertical spreads, per $1 at risk."""
+
+    def test_vertical_spread_pays_per_dollar_at_risk_under_each_exit(self):
+        from hero import research_vertical as v
+        s = [("d0", 2.0), ("d1", 2.5), ("d2", 3.6), ("d3", 0.9)]
+        self.assertEqual(v.spread("C", 100, 105, s, 104, 0.0, True), {"expiry": 1.0, "tp": 0.8, "tp_sl": 0.8})       # bull call: 4 back on 2 paid
+        self.assertEqual(v.spread("P", 95, 100, s, 104, 0.0, True)["expiry"], -1.0)                                  # bear put: worthless above 100
+        credit = v.spread("P", 95, 100, s, 104, 0.0, False)                                                          # bull put: 2 received, 3 at risk
+        self.assertEqual((credit["expiry"], credit["tp"], credit["tp_sl"]), (0.6667, 0.3667, -0.5333))               # the stop comes before the gain
+        self.assertEqual(v.spread("C", 100, 105, s, 104, 0.0, False)["expiry"], -0.6667)                             # bear call: owes 4
+        self.assertAlmostEqual(v.spread("C", 100, 105, s, 104, 0.05, True)["expiry"], 4 / 2.1 - 1, places=4)         # costs on the way in, none at expiry
+        self.assertAlmostEqual(v.spread("P", 95, 100, s, 104, 0.05, False)["expiry"], 1.9 / 3.1, places=4)
+        self.assertIsNone(v.spread("C", 100, 105, [("d0", 5.2)], 104, 0.0, True))                                    # dearer than its width: a stale print
+        self.assertIsNone(v.spread("C", 100, 100, s, 104, 0.0, True))
+        self.assertEqual((v.strike(736.54, 1.05), v.strike(128.0, 0.95)), (775.0, 120.0))
+        up = [100.0 + k * 0.1 for k in range(260)]
+        t = v.day_types(up, 259, True)
+        self.assertEqual((t["above50"], t["below50"], t["streak3"], t["big_drop"], t["dd10"]), (True, False, False, False, False))
+        down = up[:256] + [118.0, 115.0, 112.0, 100.0]
+        t = v.day_types(down, 259, False)
+        self.assertEqual((t["below50"], t["streak3"], t["big_drop"], t["dd10"]), (True, True, True, True))
+        self.assertIsNone(v.day_types(up, 100, True))
+        self.assertTrue(v.split_inside([1200.0, 120.0], [120.0, 120.0], 0, 1))
+        self.assertFalse(v.split_inside([100.0, 104.0], [99.0, 104.0], 0, 1))
+
+    def test_vertical_run_prices_every_structure_and_the_report_splits_by_trend(self):
+        from datetime import date, datetime, timedelta, timezone
+        from hero import research_vertical as v
+        days, d = [], date(2023, 1, 3)
+        while d <= date(2024, 7, 31):
+            if d.weekday() < 5:
+                days.append(d.isoformat())
+            d += timedelta(days=1)
+        close = {x: 500.0 + k * 0.2 for k, x in enumerate(days)}
+
+        class Fake:
+            asked = 0
+
+            def daily_bars(self, symbols, start, adjustment="all", feed="iex"):
+                return {s: [{"t": f"{x}T05:00:00Z", "c": close[x]} for x in days] for s in symbols}
+
+            def option_bars(self, symbols, start, end, timeframe="1Day"):
+                Fake.asked += 1
+                out = {}
+                for sym in symbols:
+                    k, call = int(sym[-8:]) / 1000, sym[-9] == "C"
+                    m = lambda x: close[x] - k if call else k - close[x]                    # a smooth hinge: worth more the further in the money
+                    out[sym] = [{"t": f"{x}T05:00:00Z", "c": 0.5 * (m(x) + (m(x) ** 2 + 900) ** 0.5)} for x in days if start[:10] <= x <= end[:10]]
+                return out
+        wait = type("P", (), {"wait": lambda self: None})()
+        with unittest.mock.patch.object(v, "START", "2024-02-01"):
+            rep = v.run(Fake(), unds=("SPY",), pace=wait, now=datetime(2024, 8, 1, tzinfo=timezone.utc), big_days={"2024-02-01"})
+        rows = rep["rows"]
+        self.assertEqual((rows[0]["day"], rows[0]["exp"], rows[0]["types"]["daybook"], rows[1]["types"]["daybook"]), ("2024-02-01", "2024-05-17", True, False))
+        self.assertTrue(all(r["exp"] <= "2024-07-31" for r in rows))                 # only trades that have expired
+        self.assertEqual(Fake.asked, len(rows))
+        first = rows[0]["res"]
+        self.assertEqual(set(first), set(v.STRUCTS))
+        self.assertGreater(first["call_atm_5"]["0.05"]["expiry"], 0)                 # a steady rise: the bull call pays
+        self.assertEqual(first["bear_put_atm_5"]["0.05"]["expiry"], -1.0)            # and the bear put expires worthless
+        self.assertGreater(first["put_otm5_5"]["0.02"]["expiry"], first["put_otm5_5"]["0.05"]["expiry"])
+        table, md = v.report(rep)
+        self.assertIn("## 指数（SPY、QQQ）：全貌", md)
+        self.assertIn("顺着选（均线上方看涨、下方看跌）", md)
+        key = next(k for k in table if "trend" in k and "顺着选" in k and "付钱" in k)
+        self.assertEqual(table[key]["n"], len(rows))
+        always = next(k for k in table if "trend" in k and "一直做看涨" in k and "付钱" in k)
+        self.assertAlmostEqual(table[key]["mean"], table[always]["mean"])            # above its average every day: the same choice
