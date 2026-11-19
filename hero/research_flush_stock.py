@@ -41,8 +41,11 @@ def full_day(xs: list[dict]) -> dict[str, dict]:
             for k, v in sm.items() if "09:30" <= k <= "15:59"}
 
 
-def after(sm: dict[str, dict], t: str, spy: dict[str, float] | None, next_close: float | None) -> dict | None:
-    """The shares bought at the close of minute t (or the first minute after it within 5)."""
+def after(sm: dict[str, dict], t: str, spy: dict[str, float] | None, next_ratio: float | None) -> dict | None:
+    """The shares bought at the close of minute t (or the first minute after it within 5). `next_ratio` is the next
+    day's close over this day's close, both from the daily bars: the minute bars here are raw prices and the daily
+    bars split-adjusted, so the overnight leg is taken as a ratio on one basis (11-19: comparing the two directly
+    gave -90% for every event before a later 10-for-1 split, and an average of -4% against a median of -0.8%)."""
     got = z.at_or_after(sm, t)
     if not got:
         return None
@@ -73,8 +76,8 @@ def after(sm: dict[str, dict], t: str, spy: dict[str, float] | None, next_close:
         b = z.at_or_before(spy, later[-1])
         if a and b:
             out["excess"] = round(out["close"] - (b / a - 1), 4)
-    if next_close:
-        out["next_day"] = round(next_close / entry - 1 - COST, 4)
+    if next_ratio:
+        out["next_day"] = round(close / entry * next_ratio - 1 - COST, 4)
     return out
 
 
@@ -131,7 +134,7 @@ def run(client) -> dict:
         f = first_drop(sm)
         if f is None or not opens.get(s, {}).get(d):
             return
-        nxt = closes[s][t + 1] if t + 1 < len(dates) else None
+        nxt = closes[s][t + 1] / closes[s][t] if t + 1 < len(dates) and closes[s][t] and closes[s][t + 1] else None
         if kind == "focus":
             r = after(sm, BY, spy.get(d), nxt)
             if r:

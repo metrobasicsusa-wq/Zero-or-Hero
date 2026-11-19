@@ -2343,7 +2343,7 @@ class ResearchFlushStock(unittest.TestCase):
         sm = {"09:30": bar(100, 100, 97, 97.5), "10:00": bar(98, 98.2, 97.8, 98), "10:30": bar(98, 100.2, 98, 100),
               "15:59": bar(100, 100, 99, 99)}
         spy = {"10:00": 500.0, "15:59": 505.0}
-        r = f.after(sm, "10:00", spy, 102.0)
+        r = f.after(sm, "10:00", spy, 102.0 / 99)                          # the daily bars' next close over this close
         self.assertEqual(r["entry_at"], "10:00")
         self.assertAlmostEqual(r["close"], 99 / 98 - 1 - f.COST, places=4)
         self.assertAlmostEqual(r["excess"], round(99 / 98 - 1 - f.COST, 4) - 0.01, places=4)
@@ -8468,3 +8468,140 @@ class ResearchZdteSynth(unittest.TestCase):
         md = zs.markdown(rep)
         self.assertIn("## 校准", md)
         self.assertIn("2026-10-14 | 看跌 | -0.60%", md)
+
+
+class ResearchShock(unittest.TestCase):
+    """hero/research_shock.py: a stock 5% away in half an hour on heavy volume, and what it did next."""
+
+    def days(self, start, n):
+        from datetime import date, timedelta
+        out, d = [], date.fromisoformat(start)
+        while len(out) < n:
+            if d.weekday() < 5:
+                out.append(d.isoformat())
+            d += timedelta(days=1)
+        return out
+
+    def client(self, days, paths, daily, short=()):
+        """paths: {(symbol, day): minute -> (price, volume)}; every other session is flat at 100 on 100 shares a minute."""
+        from hero import research_shock as sh
+        from hero.research_flow_open import utc
+
+        class Fake:
+            calls = 0
+
+            def daily_bars(self, symbols, start, adjustment="all", feed="iex"):
+                return {s: [{"t": f"{d}T05:00:00Z", "c": daily.get((s, d), 100.0)} for d in days] for s in symbols}
+
+            def stock_bars(self, symbols, start, end, timeframe="1Min", feed="iex"):
+                Fake.calls += 1
+                d = next(x for x in days if utc(x, "09:30") == start)
+                out = {}
+                for s in symbols:
+                    f = paths.get((s, d), lambda i: (100.0, 100))
+                    bars, prev = [], f(0)[0]
+                    for i in range(210 if d in short else sh.SESSION):
+                        px, v = f(i)
+                        bars.append({"t": utc(d, sh.hhmm(i)), "o": prev, "c": px, "v": v})
+                        prev = px
+                    out[s] = bars
+                return out
+        return Fake()
+
+    def drop(self, i):
+        """From 11:00 down 0.35 a minute for twenty minutes on twenty times the volume, then flat at 93, 95 from 15:00."""
+        from hero import research_shock as sh
+        a = sh.idx("11:00")
+        if i <= a:
+            return 100.0, 100
+        if i <= a + 20:
+            return round(100 - 0.35 * (i - a), 2), 2000
+        return (95.0, 100) if i >= sh.idx("15:00") else (93.0, 100)
+
+    def test_shock_finds_the_first_minute_and_measures_in_its_direction(self):
+        from hero import research_shock as sh
+        days = self.days("2024-01-02", 34)
+        first, ev = days[23], days[26]
+        daily = {("AAA", ev): 50.0, ("AAA", days[27]): 51.0, ("AAA", days[31]): 45.0}   # split-adjusted: half the raw price
+        c = self.client(days, {("AAA", ev): self.drop}, daily)
+        wait = type("P", (), {"wait": lambda self: None})()
+        rep = sh.run(c, ["AAA", "BBB"], first, "9999-12-31", pace=wait)
+        self.assertEqual([(r["sym"], r["day"], r["at"], r["thr"]) for r in rep["rows"]], [("AAA", ev, "11:15", 0.05)])   # 7% never makes the 8% tier
+        r = rep["rows"][0]
+        self.assertAlmostEqual(r["move"], 94.75 / 100 - 1, places=4)
+        self.assertEqual(r["entry_at"], "11:16")
+        self.assertAlmostEqual(r["volx"], (15 * 2000 + 15 * 100) / 3000, places=1)
+        entry = 94.75                                                     # the open of 11:16 is the close of 11:15
+        self.assertAlmostEqual(r["g"]["5m"], -(93.0 / entry - 1), places=4)       # still falling: right to go with it
+        self.assertAlmostEqual(r["g"]["close"], -(95.0 / entry - 1), places=4)    # back above the entry by the close
+        self.assertAlmostEqual(r["g"]["1d"], -(95.0 / entry * 51 / 50 - 1), places=4)   # the overnight leg on the daily bars' own basis
+        self.assertAlmostEqual(r["g"]["5d"], -(95.0 / entry * 45 / 50 - 1), places=4)
+        self.assertEqual(rep["basis"], {"checked": 1, "off": 1, "symbols": ["AAA"]})
+        self.assertEqual((rep["days"], rep["skipped"], rep["stopped_at"]), (len(days) - 23, [], None))
+
+    def test_shock_needs_volume_a_quiet_spy_twenty_sessions_and_a_full_day(self):
+        from hero import research_shock as sh
+        days = self.days("2024-01-02", 30)
+        first, ev = days[23], days[26]
+        wait = type("P", (), {"wait": lambda self: None})()
+        quiet = lambda i: (self.drop(i)[0], 100)                          # the same fall on ordinary volume
+        spy = lambda i: (100 - 0.1 * min(max(i - sh.idx("11:00"), 0), 50), 100)   # the market fell with it, for fifty minutes
+        cases = {"volume": {("AAA", ev): quiet}, "spy": {("AAA", ev): self.drop, ("SPY", ev): spy}}
+        for name, paths in cases.items():
+            rep = sh.run(self.client(days, paths, {}), ["AAA"], first, "9999-12-31", pace=wait)
+            self.assertEqual(rep["rows"], [], name)
+        rep = sh.run(self.client(days, {("AAA", ev): self.drop}, {}), ["AAA"], days[5], "9999-12-31", pace=wait)
+        self.assertEqual(len(rep["rows"]), 1)                             # twenty sessions before it by then
+        rep = sh.run(self.client(days[20:], {("AAA", ev): self.drop}, {}), ["AAA"], days[23], "9999-12-31", pace=wait)
+        self.assertEqual(rep["rows"], [])                                 # only six sessions of usual volume
+        rep = sh.run(self.client(days, {("AAA", ev): self.drop}, {}, short={ev}), ["AAA"], first, "9999-12-31", pace=wait)
+        self.assertEqual((rep["rows"], rep["short_days"]), ([], [ev]))    # a half day is left out
+
+        class Down:
+            def daily_bars(self, symbols, start, adjustment="all", feed="iex"):
+                return {s: [{"t": f"{d}T05:00:00Z", "c": 100.0} for d in days] for s in symbols}
+
+            def stock_bars(self, *a, **k):
+                raise RuntimeError("403 not allowed")
+        import hero.research_flow_daily as fd
+        from unittest import mock
+        with mock.patch.object(fd.time, "sleep", lambda s: None):
+            rep = sh.run(Down(), ["AAA"], first, "9999-12-31", pace=wait)
+        self.assertEqual(len(rep["skipped"]), 3)                          # three days fail and none worked: stop
+        self.assertIn("403 not allowed", rep["errors"][-1])
+        ticks = iter(range(0, 10 ** 9, sh.BUDGET // 2 + 1))
+        rep = sh.run(self.client(days, {}, {}), ["AAA"], first, "9999-12-31", clock=lambda: next(ticks), pace=wait)
+        self.assertEqual(rep["stopped_at"], days[1])                      # out of time before the second day's request
+
+    def test_shock_line_report_and_combine(self):
+        from hero import research_shock as sh
+        import json, tempfile
+        from pathlib import Path
+        mk = lambda k, g, move=-0.06: {"sym": f"S{k % 7}", "day": f"2024-{1 + k // 28:02d}-{1 + k % 28:02d}", "at": "11:15", "thr": 0.05,
+                                        "move": move, "volx": 8.0, "entry_at": "11:16", "g": {"5m": g, "close": -g}}
+        rows = [mk(k, 0.01 if k % 3 else -0.005) for k in range(90)]      # two in three keep going for five minutes
+        go, back = sh.line(rows, "5m", 1), sh.line(rows, "5m", -1)
+        self.assertEqual((go["n"], go["stocks"], go["pass"], back["pass"]), (90, 7, True, False))
+        self.assertAlmostEqual(go["hit"], 2 / 3, places=2)
+        self.assertAlmostEqual(go["mean"], (60 * 0.01 - 30 * 0.005) / 90 - sh.COST, places=5)
+        self.assertTrue(sh.line(rows, "close", -1)["pass"])               # and the same events faded to the close
+        self.assertFalse(sh.line(rows[:50], "5m", 1)["pass"])             # under sixty events
+        late = [mk(k, -0.01 if k < 45 else 0.03) for k in range(90)]      # all of it from the second half
+        self.assertFalse(sh.line(late, "5m", 1)["pass"])
+        self.assertIsNone(sh.line(rows, "1d", 1))
+        rep = {"generated": "2026-11-19", "start": "2024-02-01", "end": "2024-04-30", "feed": "sip", "stocks": 7, "days": 60,
+               "short_days": [], "skipped": [], "stopped_at": None, "errors": [], "basis": {"checked": 90, "off": 0, "symbols": []},
+               "rows": rows + [mk(k, 0.02, move=0.09) | {"thr": 0.08} for k in range(5)]}
+        table, md = sh.report(rep)
+        self.assertTrue(table["0.05|涨跌合起来|5m"]["with"]["pass"])
+        self.assertIn("主线（5% 一档、涨跌合起来）4 条过了 2 条；全部 16 条过了 4 条", md)
+        self.assertIn("| 急跌 | 5 分钟后 | 90 |", md)
+        self.assertIn("只有 5 笔，样本少", md)
+        with tempfile.TemporaryDirectory() as tmp:
+            a, b = Path(tmp) / "a.json", Path(tmp) / "b.json"
+            a.write_text(json.dumps({**rep, "rows": rows[:40], "end": "2024-03-15"}))
+            b.write_text(json.dumps({**rep, "rows": rows[40:], "start": "2024-03-16", "stopped_at": "2024-04-20", "skipped": ["2024-04-01"]}))
+            both = sh.combine([b, a])
+        self.assertEqual((both["start"], both["end"], len(both["rows"]), both["days"]), ("2024-02-01", "2024-04-30", 90, 120))
+        self.assertEqual((both["stopped_at"], both["skipped"], both["basis"]["checked"]), ("2024-04-20", ["2024-04-01"], 180))
+        self.assertEqual(sh.PARTS["a"][0], sh.START)
