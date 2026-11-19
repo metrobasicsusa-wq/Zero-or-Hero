@@ -22,6 +22,11 @@ Fixed before any of it was run:
                in a row; above / below its 50-day average; 10% or more under its one-year high; and the days the SPY
                daybook reads "a big day" at 40% or more at the open.
   comparison   the shares over the same three months.
+  environment  (owner, while the first run was still fetching: "重点就是你可以判断现在的环境怎么做") each entry day is in
+               one of four: at or above its 50-day average and within 10% of its one-year high ("上升"); above the
+               average but 10% or more under the high ("反弹中"); below the average and within 10% ("回调"); below and
+               10% or more under ("下跌"). Every structure is shown by environment, and the report names the
+               environment each underlying is in now (Yahoo closes). Fixed before the first results were read.
 What this cannot say: entries run 2024-02 to mid-2026, mostly a rising market, and a three-month trade opened every
 day overlaps the sixty before it -- about ten separate quarters, not six hundred trades. Shares of entry MONTHS that
 ended above zero are shown beside every average for that reason. Splits: a trade with a split inside it is left out.
@@ -69,6 +74,8 @@ EXITS = {"expiry": "拿到到期", "tp": "赚到一半就走", "tp_sl": "赚一�
 DAYS = {"big_drop": "大跌日", "streak3": "连跌 3 天", "below50": "50 日均线下方", "above50": "50 日均线上方",
         "dd10": "离一年高点回撤 10% 以上", "daybook": "SPY 档案说「会大」"}
 REFS = ("call_atm_5", "put_otm5_5", "bear_put_atm_5")
+ENVS = {"up": "上升（均线上方、离高点 10% 以内）", "rebound": "反弹中（均线上方、离高点 10% 以上）",
+        "pullback": "回调（均线下方、离高点 10% 以内）", "down": "下跌（均线下方、离高点 10% 以上）"}
 SHARES = sorted({m for x in STRUCTS.values() for m in x[2:4]})
 
 
@@ -114,6 +121,26 @@ def day_types(closes: list[float], i: int, index: bool) -> dict[str, bool] | Non
             "streak3": all(closes[i - k] < closes[i - k - 1] for k in range(3)),
             "below50": closes[i] < avg50, "above50": closes[i] >= avg50,
             "dd10": closes[i] <= 0.90 * max(closes[i - 251:i + 1])}
+
+
+def env(types: dict) -> str:
+    return ("rebound" if types["dd10"] else "up") if types["above50"] else ("down" if types["dd10"] else "pullback")
+
+
+def now_types(unds) -> dict[str, dict]:
+    """Each underlying's labels as of its latest close (Yahoo daily bars, split-adjusted)."""
+    out = {}
+    start = datetime.now(timezone.utc) - timedelta(days=420)
+    for und in unds:
+        try:
+            closes = [c for *_, c in db.yahoo(und, "1d", start, datetime.now(timezone.utc) + timedelta(days=1))]
+        except Exception:
+            continue
+        t = day_types(closes, len(closes) - 1, und in INDEXES) if len(closes) > 252 else None
+        if t:
+            out[und] = {**t, "close": round(closes[-1], 2), "vs50": round(closes[-1] / statistics.mean(closes[-50:]) - 1, 4),
+                        "vs_high": round(closes[-1] / max(closes[-252:]) - 1, 4)}
+    return out
 
 
 def split_inside(raw: list[float], adj: list[float], a: int, b: int) -> bool:
@@ -215,8 +242,9 @@ def halves(on: list[tuple[str, float]], off: list[tuple[str, float]]) -> list[fl
     return out
 
 
-def report(rep: dict) -> tuple[dict, str]:
+def report(rep: dict, now: dict[str, dict] | None = None) -> tuple[dict, str]:
     lo, hi = COSTS
+    now = now or {}
     groups = {"指数（SPY、QQQ）": [r for r in rep["rows"] if r["und"] in INDEXES], "个股（七巨头）": [r for r in rep["rows"] if r["und"] in STOCKS]}
     table, out = {}, []
     for g, rows in groups.items():
@@ -246,6 +274,20 @@ def report(rep: dict) -> tuple[dict, str]:
                     continue
                 h = halves(on, off)
                 out.append(f"| {STRUCTS[key][0]} | {tname} | {a['n']} | {pct(a['mean'])} | {pct(b['mean'])} | {pct(a['mean'] - b['mean'])}（{pct(h[0])} / {pct(h[1])}） | {a['win']:.0%} | {a['months_up']} / {a['months']} |")
+        out += ["", f"### {g}：按进场时的环境分", "",
+                f"拿到到期，成本 {hi:.0%}。每格：每 $1 风险的平均，赚的比例，（笔数；为正的月份 / 月份）。环境只有几段行情撑着的，月份那个数会很小。", "",
+                "| 做法 | " + " | ".join(ENVS.values()) + " |", "|---|---|---|---|---|"]
+        for key, (name, *_ ) in STRUCTS.items():
+            cells = []
+            for e in ENVS:
+                st = table[f"{g}|env|{e}|{key}"] = stats(pick(rows, key, "expiry", hi, lambda r, e=e: env(r["types"]) == e))
+                cells.append(f"{pct(st['mean'])}，赚 {st['win']:.0%}（{st['n']}；{st['months_up']} / {st['months']}）" if st else "—")
+            out.append(f"| {name} | " + " | ".join(cells) + " |")
+        sh_cells = []
+        for e in ENVS:
+            xs = [r["shares"] for r in rows if env(r["types"]) == e]
+            sh_cells.append(f"平均 {statistics.mean(xs):+.1%}，涨的占 {sum(x > 0 for x in xs) / len(xs):.0%}（{len(xs)}）" if xs else "—")
+        out.append("| 同样三个月拿正股 | " + " | ".join(sh_cells) + " |")
         out += ["", f"### {g}：顺着方向选", "",
                 f"进场那天收盘在 50 日均线上方就做看涨的那一种，在下方就做看跌的；和一直做看涨、一直做看跌、反着选比。拿到到期，成本 {hi:.0%}。", "",
                 "| 哪一对 | 怎么选 | 笔数 | 平均 | 中位数 | 赚的比例 | 亏光的比例 | 月份 |", "|---|---|---|---|---|---|---|---|"]
@@ -283,18 +325,38 @@ def report(rep: dict) -> tuple[dict, str]:
     if rep.get("stopped_at"):
         notes.append(f"时间不够，只跑到 {rep['stopped_at']}；没跑到的标的：{'、'.join(rep['not_reached']) or '无'}。")
     notes += [f"请求失败的原因（最后几条）：`{e}`" for e in (rep.get("errors") or [])[-3:]]
+    where = []
+    if now:
+        where = ["", "## 现在各个标的在哪种环境", "", "| 标的 | 最新收盘 | 对 50 日均线 | 对一年高点 | 环境 | 今天是不是大跌日 / 连跌 3 天 |", "|---|---|---|---|---|---|"]
+        where += [f"| {u} | {t['close']} | {t['vs50']:+.1%} | {t['vs_high']:+.1%} | {ENVS[env(t)].split('（')[0]} | {'是' if t['big_drop'] else '否'} / {'是' if t['streak3'] else '否'} |"
+                  for u, t in now.items()]
+        where += ["", "对照下面每一组「按进场时的环境分」那张表里同名的一列，就是过去在这种环境里开仓、三个月后的结果。"]
+    out = where + out
     head = [f"# 三个月的垂直价差：哪种日子开、怎么走、行权价怎么选、指数还是个股（{rep['generated']}）", "",
             "用户 11-19：平时做的是垂直价差，拿三个月，买入看涨价差和卖出看跌价差两种都做，看跌的也做，有时候顺着方向。这里用真实期权价把这几件事各查一遍：2024-02 起每个交易日收盘开一笔，"
             "买第一个 80 天以后到期的月度期权，只算已经到期的。只研究，不改交易，不是投资建议。"]
     return table, "\n".join(head + out + ["", "## 说明", ""] + [f"- {n}" for n in notes]) + "\n"
 
 
+def render() -> None:
+    """The report again from the newest saved run, with where each underlying stands now."""
+    import json
+    path = sorted((ROOT / "research").glob("*-vertical.json"))[-1]
+    rep = json.loads(path.read_text())
+    table, md = report(rep, now_types(rep["unds"]))
+    path.with_suffix(".md").write_text(md)
+    path.write_text(json.dumps({**rep, "table": table}, ensure_ascii=False) + "\n")
+    print(md)
+
+
 def main() -> None:
+    if len(sys.argv) > 1 and sys.argv[1] == "render":
+        return render()
     from hero.alpaca import Alpaca
     reads = walk(db.Book(db.load()), START)
     big = {r["day"] for r in reads if "open" in r and r["open"]["big"][0] >= FLAG_OPEN}
     rep = run(Alpaca(), big_days=big)
-    table, md = report(rep)
+    table, md = report(rep, now_types(rep["unds"]))
     save("vertical", {**rep, "table": table}, md)
 
 
