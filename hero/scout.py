@@ -217,8 +217,8 @@ def after(s: dict | None) -> str:
 
 
 def page(day: str, funds: dict[str, dict], watch: dict[str, dict], drop: list[str], kept: list[dict], left: list[dict], centre: str) -> str:
-    out = [f"# 侦察：{day} 收盘", "",
-           "我们自己的 agent 每天收盘后按写死的线跑一遍（`hero/scout.py`）。只记录，不下单，不是投资建议。", "",
+    out = [f"# 侦察：{day}", "",
+           "我们自己的 agent 每个交易日 15:40（美东）按写死的线跑一遍（`hero/scout.py`）；「今天」是那一刻的涨跌，不是收盘价。只记录，不下单，不是投资建议。", "",
            "## 一、现在各在哪", "",
            f"震中（离一年高点最远的板块）：**{FUNDS[centre]}**，{pct(funds[centre]['dd'])}。", "",
            "| | 今天 | 环境 | 离高点 | 大盘也在下跌吗 | 1999 年以来同样的时候：3 个月后 | 1 年后 | 几段行情 |", "|---|---|---|---|---|---|---|---|"]

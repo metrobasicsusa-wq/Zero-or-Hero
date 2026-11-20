@@ -30,6 +30,7 @@ BASELINE = "SPY"
 KINDS = {"spread3m": "三个月看涨价差", "spread1y": "一年看涨价差", "csp3m": "卖看跌、留足现金（三个月）"}
 # kind: days out, how far the search for an expiry goes, the second strike as a share of the price for a stock / for a fund
 PLAN = {"spread3m": (80, 50, 1.10, 1.05), "spread1y": (330, 120, 1.20, 1.10), "csp3m": (80, 50, 0.90, 0.95)}
+WIDE = 0.20      # trading now costs this much more than the middle of the quotes: the page says so (the entry is still recorded)
 
 
 def monthly(d: date) -> bool:
@@ -72,19 +73,36 @@ def priced(ls: list[dict], snaps: dict, today: str) -> list[dict] | str:
     out = []
     for x in ls:
         q = (snaps.get(x["occ"]) or {}).get("latestQuote") or {}
-        px = float(q.get("ap" if x["side"] == "buy" else "bp") or 0)
+        bid, ask = float(q.get("bp") or 0), float(q.get("ap") or 0)
+        px = ask if x["side"] == "buy" else bid
         if not px:
             return f"{x['occ'][-9:]} 没有{'卖' if x['side'] == 'buy' else '买'}价"
         if str(q.get("t", ""))[:10] != today:
             return f"报价不是今天的（{str(q.get('t', ''))[:10] or '没有时刻'}）"
-        out.append({**x, "price": px})
+        out.append({**x, "price": px, "bid": bid, "ask": ask})
     return out
+
+
+def middle(ls: list[dict]) -> float | None:
+    """What the structure costs (a spread) or pays (a put sold) at the middle of each leg's quote; None when a leg shows one side only."""
+    if any(not x.get("bid") or not x.get("ask") for x in ls):
+        return None
+    ms = [(x["bid"] + x["ask"]) / 2 for x in ls]
+    return round(ms[0] - ms[1] if len(ms) == 2 else ms[0], 4)
+
+
+def wide(e: dict) -> bool:
+    """Trading now is at least WIDE worse than the middle: a spread costs that much more, a put sold pays that much less."""
+    now, mid = e.get("debit", e.get("credit")), e.get("mid")
+    if not mid or mid <= 0:
+        return False
+    return now >= mid * (1 + WIDE) if "debit" in e else now <= mid * (1 - WIDE)
 
 
 def entry(day: str, sym: str, kind: str, spot: float, ls: list[dict]) -> dict | str:
     """The numbers of one structure per share: what is paid or received, the most that can be lost and made, breakeven."""
     base = {"id": f"{day}|{sym}|{kind}", "day": day, "symbol": sym, "kind": kind, "baseline": sym == BASELINE, "spot": spot,
-            "expiry": ls[0]["expiry"], "legs": ls, "status": "open"}
+            "expiry": ls[0]["expiry"], "legs": ls, "status": "open", "mid": middle(ls)}
     if kind == "csp3m":
         k, got = ls[0]["strike"], ls[0]["price"]
         return {**base, "credit": got, "risk": round(k - got, 4), "gain": got, "breakeven": round(k - got, 4), "cash": round((k - got) * 100, 2)}
@@ -136,6 +154,10 @@ def section(day: str, added: list[dict], skipped: list[tuple[str, str, str]], le
             out.append(f"| {e['symbol']} | {KINDS[e['kind']]} | {e['expiry']} | {ks} | {money(e['cash'])} | {money(e['risk'] * 100)} | {money(e['gain'] * 100)} | "
                        f"${e['breakeven']:,.2f}（{be:+.1%}） |")
         out += ["", "卖看跌那一种「要放的钱」是留着接股票的现金，「最多亏」是股票跌到零的情况。"]
+        loose = [e for e in added if wide(e)]
+        if loose:
+            out += ["", f"报价很宽的（现在就成交比两边报价的中间差两成以上，真要做会挂限价单；账本照现在就成交的价记，中间价也存着）："
+                    + "；".join(f"{e['symbol']} 的{KINDS[e['kind']]}（现在 {money(e.get('debit', e.get('credit')) * 100)}，中间价 {money(e['mid'] * 100)}）" for e in loose) + "。"]
     else:
         out.append("今天没有新记的。")
     if skipped:

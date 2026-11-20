@@ -9275,6 +9275,29 @@ class ScoutLedger(unittest.TestCase):
         crossed = [{**got[0], "price": 5.0}, {**got[1], "price": 5.5}]
         self.assertIn("对不上", sl.entry("2026-11-20", "AAA", "spread3m", 100.0, crossed))
 
+    def test_a_wide_quote_is_recorded_and_named(self):
+        from hero import scout_ledger as sl
+        ls = sl.legs("spread3m", 100.0, False, self.chain("AAA"))
+        tight = sl.priced(ls, self.client().option_snapshots([x["occ"] for x in ls]), "2026-11-20")
+        self.assertEqual([(x["bid"], x["ask"]) for x in tight], [(5.8, 6.2), (5.8, 6.2)])
+        loose = [{**tight[0], "price": 7.0, "bid": 5.0, "ask": 7.0}, {**tight[1], "price": 3.0, "bid": 3.0, "ask": 4.0}]
+        e = sl.entry("2026-11-20", "AAA", "spread3m", 100.0, loose)
+        self.assertEqual((e["debit"], e["mid"]), (4.0, 2.5))                         # 6.0 - 3.5 at the middle
+        self.assertTrue(sl.wide(e))
+        near = sl.entry("2026-11-20", "AAA", "spread3m", 100.0, [{**loose[0], "price": 6.1, "bid": 5.9, "ask": 6.1}, {**loose[1], "price": 3.4, "bid": 3.4, "ask": 3.6}])
+        self.assertEqual((near["debit"], near["mid"]), (2.7, 2.5))
+        self.assertFalse(sl.wide(near))                                              # 8% over the middle
+        put = {"occ": "X", "side": "sell", "type": "P", "strike": 90.0, "expiry": "2027-02-19", "price": 2.0, "bid": 2.0, "ask": 3.2}
+        csp = sl.entry("2026-11-20", "AAA", "csp3m", 100.0, [put])
+        self.assertEqual(csp["mid"], 2.6)
+        self.assertTrue(sl.wide(csp))                                                # sold for 23% under the middle
+        self.assertIsNone(sl.entry("2026-11-20", "AAA", "csp3m", 100.0, [{**put, "ask": 0}])["mid"])
+        self.assertFalse(sl.wide({"debit": 1.0, "mid": None}))
+        text = sl.section("2026-11-20", [{**e, "symbol": "AAA"}, {**near, "symbol": "BBB"}], [], [])
+        self.assertIn("报价很宽的", text)
+        self.assertIn("AAA 的三个月看涨价差（现在 $400，中间价 $250）", text)
+        self.assertNotIn("BBB 的", text)
+
     def test_settling_at_expiry_and_after_a_split(self):
         from hero import scout_ledger as sl
         spread = {"kind": "spread3m", "debit": 4.0, "risk": 4.0, "legs": [{"strike": 100.0}, {"strike": 110.0}], "status": "open"}
