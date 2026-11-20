@@ -9355,3 +9355,113 @@ class ScoutLedger(unittest.TestCase):
                 got = sl.run(self.client(quote_day="2026-11-19"), "2026-11-20")
                 self.assertEqual((got["added"], got["skipped"]), (0, 6))
                 self.assertIn("报价不是今天的（2026-11-19）", (out / "2026-11-20.md").read_text())
+
+
+class Goal(unittest.TestCase):
+    """The goal book: which methods it may use, how the stake and the loss line work, what it records and when."""
+
+    def t(self, method, day, paid, got):
+        return {"method": method, "day": day, "paid": float(paid), "got": float(got), "plan": False}
+
+    def steady(self, name="steady", weeks=("2026-10-05", "2026-10-12", "2026-10-19"), got=150):
+        return [self.t(name, (date.fromisoformat(w) + timedelta(days=i)).isoformat(), 100, got) for w in weeks for i in range(4)]
+
+    def test_a_method_is_a_rule_whatever_the_size_or_the_plan_mark(self):
+        from hero import goal
+        self.assertEqual([goal.method(x) for x in ("spy0dte-near-1000", "sniper-r2-plan-500", "fadelotto-plan", "green-plan-2000", "earn-500")],
+                         ["spy0dte-near", "sniper-r2", "fadelotto", "green", "earn"])
+        self.assertEqual(goal.title("spy0dte-near"), "SPY 末日单（离现价 0.3%）")
+        self.assertEqual(goal.title("spy0dte-old"), "SPY 末日单（旧规则）")
+        self.assertEqual(goal.title("sniper-r2"), "开盘狙击（第 2 名）")
+        self.assertEqual(goal.title("unknown"), "unknown")
+        self.assertEqual(goal.monday("2026-11-20"), "2026-11-16")
+
+    def test_only_a_record_that_stands_without_its_best_week_is_eligible(self):
+        from hero import goal
+        lucky = [self.t("lucky", d, 100, g) for d, g in (("2026-10-05", 80), ("2026-10-06", 80), ("2026-10-12", 80), ("2026-10-13", 80),
+                                                         ("2026-10-19", 900), ("2026-10-20", 80), ("2026-10-21", 80), ("2026-10-22", 80),
+                                                         ("2026-10-23", 80), ("2026-10-07", 80))]
+        short = self.steady("short", weeks=("2026-10-12", "2026-10-19"), got=300)       # two weeks only
+        few = [self.t("few", d, 100, 300) for d in ("2026-10-05", "2026-10-12", "2026-10-19")]   # three trades only
+        trades = self.steady() + lucky + short + few
+        st = goal.standing(trades, "2026-10-26")
+        self.assertAlmostEqual(st["steady"]["per"], 0.5)
+        self.assertAlmostEqual(st["steady"]["rest"], 0.5)
+        self.assertGreater(st["lucky"]["pnl"], 0)                                      # a profit in all,
+        self.assertLess(st["lucky"]["rest_pnl"], 0)                                    # carried by one week
+        self.assertEqual([goal.eligible(st[m]) for m in ("steady", "lucky", "short", "few")], [True, False, False, False])
+        self.assertEqual(goal.pick(trades, "2026-10-26"), ["steady"])
+        self.assertEqual(goal.pick(trades, "2026-10-19"), [])                          # a week earlier nobody has three weeks
+        self.assertEqual(goal.pick(self.steady("a", got=150) + self.steady("b", got=200) + self.steady("c", got=120) + self.steady("d", got=110), "2026-10-26"),
+                         ["b", "a", "c"])                                               # the best three, best first
+
+    def test_the_stake_is_shared_by_the_picked_methods_that_trade_and_the_loss_line_holds(self):
+        from hero import goal
+        hist = self.steady("a") + self.steady("b")
+        wk = [self.t("a", "2026-10-26", 200, 400), self.t("b", "2026-10-26", 100, 50), self.t("z", "2026-10-26", 100, 0),
+              self.t("a", "2026-10-27", 200, 100), self.t("z", "2026-10-28", 100, 300)]
+        rows = goal.walk(hist + wk, ["2026-10-26", "2026-10-27", "2026-10-28"])
+        self.assertEqual(rows[0]["picks"], ["b", "a"])
+        self.assertAlmostEqual(rows[0]["result"], 250 * 1.0 + 250 * -0.5)              # $500 over the two that traded
+        self.assertAlmostEqual(rows[0]["every"], 500 * (1.0 - 0.5 - 1.0) / 3)          # not choosing: all three, z included
+        self.assertAlmostEqual(rows[1]["result"], 500 * -0.5)                          # only a traded: it takes the whole stake
+        self.assertEqual((rows[2]["used"], rows[2]["stake"], rows[2]["result"]), ([], 0.0, 0.0))    # neither traded: nothing staked
+        self.assertAlmostEqual(rows[2]["month"], -125.0)
+        # the loss line: eleven wipe-outs in a month cannot lose more than $5,000, and then the book is flat
+        days = [f"2026-11-{d:02d}" for d in (2, 3, 4, 5, 6, 9, 10, 11, 12, 13, 16, 17)]
+        losing = goal.walk(hist + [self.t("a", d, 100, 0) for d in days] + [self.t("a", "2026-12-01", 100, 200)], days + ["2026-12-01"],
+                           decided={goal.monday(d): ["a"] for d in days + ["2026-12-01"]})
+        self.assertEqual([r["stake"] for r in losing[:11]], [500.0] * 10 + [0.0])
+        self.assertAlmostEqual(losing[11]["month"], -5000.0)
+        self.assertTrue(losing[10]["stopped"] and losing[11]["stopped"])
+        self.assertEqual((losing[12]["stake"], losing[12]["result"]), (500.0, 500.0))  # a new month starts again
+        self.assertEqual(goal.weeks_of(losing)[0]["result"], -2500.0)
+
+    def test_a_run_writes_the_page_and_records_next_weeks_choice_only_at_the_weekend(self):
+        from unittest import mock
+        from hero import goal
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "journal").mkdir()
+            (root / "journal-s500").mkdir()
+            closed = [{"closed": f"{d} 15:30", "paid": 100.0, "proceeds": 150.0} for d in
+                      ("2026-10-05", "2026-10-06", "2026-10-07", "2026-10-08", "2026-10-12", "2026-10-13", "2026-10-14", "2026-10-15",
+                       "2026-10-19", "2026-10-20", "2026-10-21", "2026-10-22", "2026-10-26", "2026-10-27")]
+            (root / "journal-s500" / "sleeves.json").write_text(json.dumps({"sleeves": {
+                "spy0dte-near-500": {"closed": closed, "open": [{"paid": 230.0}]},
+                "gap-500": {"closed": [{"closed": "2026-10-27 15:30", "paid": 100.0, "proceeds": 0.0}], "open": []}}, "topups": 0}))
+            (root / "journal-s500" / "sleeves_plan.json").write_text(json.dumps({"sleeves": {
+                "spy0dte-near-plan-1000": {"closed": [{"closed": "2026-10-28 15:30", "paid": 200.0, "proceeds": 500.0, "sim": True}], "open": []}}}))
+            head = "date,equity,cash,generation,benchmark,as_of\n"
+            (root / "journal" / "equity.csv").write_text(head + "2026-10-23,100000,0,0,700.00,x\n2026-10-28,101000,0,0,707.00,x\n")
+            (root / "journal-s500" / "equity.csv").write_text(head + "2026-10-23,50000,0,0,,x\n2026-10-28,50800,0,0,,x\n")
+            out = root / "research" / "goal"
+            with mock.patch.object(goal, "OUT", out):
+                dry = goal.run("2026-10-28", write=False, root=root)
+                self.assertFalse(out.exists())
+                self.assertEqual(dry["next"], {"week": "2026-11-02", "picks": ["spy0dte-near"], "recorded": False})
+                got = goal.run("2026-10-28", root=root)                                 # a Wednesday: nothing is recorded for next week
+                self.assertEqual(json.loads((out / "ledger.json").read_text()), {"decisions": []})
+                self.assertAlmostEqual(got["total"], 250 + 250 + 750)                   # 26th, 27th at +50%, the plan trade on the 28th at +150%
+                md = (out / "2026-10-28.md").read_text()
+                self.assertIn("| 10-26 | SPY 末日单（离现价 0.3%） | $1,500 | +$1,250 | −$250 | +$1,250 |", md)
+                self.assertIn("| +$1,000 | +$1,000 | +$800 |", md)                       # SPY and the main account on $100k, the multi account as it was
+                self.assertIn("暂定", md)
+                self.assertIn("还开着、没算进上表的仓（按花的钱）：SPY 末日单（离现价 0.3%） $230。", md)
+                self.assertIn("| SPY 末日单（离现价 0.3%） | 15 | 4 |", md)
+                self.assertIn("稳健性检查", md)
+                goal.run("2026-10-31", root=root)                                       # Saturday: next week's choice goes on record
+                led = json.loads((out / "ledger.json").read_text())
+                self.assertEqual(led["decisions"], [{"week": "2026-11-02", "decided": "2026-10-31", "picks": ["spy0dte-near"]}])
+                self.assertIn("已记进账本", (out / "2026-10-31.md").read_text())
+                goal.run("2026-11-01", root=root)                                       # Sunday: not recorded twice
+                self.assertEqual(len(json.loads((out / "ledger.json").read_text())["decisions"]), 1)
+                # what was recorded stands, whatever the journals say later
+                led["decisions"][0]["picks"] = ["gap"]
+                (out / "ledger.json").write_text(json.dumps(led))
+                book = json.loads((root / "journal-s500" / "sleeves.json").read_text())
+                book["sleeves"]["gap-500"]["closed"].append({"closed": "2026-11-02 15:30", "paid": 100.0, "proceeds": 300.0})
+                book["sleeves"]["spy0dte-near-500"]["closed"].append({"closed": "2026-11-02 15:30", "paid": 100.0, "proceeds": 0.0})
+                (root / "journal-s500" / "sleeves.json").write_text(json.dumps(book))
+                later = goal.run("2026-11-03", root=root)
+                self.assertEqual((later["weeks"][-1]["week"], later["weeks"][-1]["picks"], later["weeks"][-1]["result"]), ("2026-11-02", ["gap"], 1000.0))
