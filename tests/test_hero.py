@@ -9044,3 +9044,79 @@ class DataGuard(unittest.TestCase):
         r = self.run_at(b, hhmm="10:05")
         sr.Pead().entries(r, {"id": "pead-500"}, {"slots": {}, "cash": 500.0, "pead_watch": {"2026-11-19": ["CALM"]}})
         self.assertEqual((len(b.asked) >= 2, set(b.asked)), (True, {"split"}))
+
+
+class ResearchTools(unittest.TestCase):
+    """The arithmetic under the tools-by-environment page: option values, each tool's result at expiry, the volatility fit."""
+
+    def test_black_scholes_keeps_parity_and_implied_gives_the_volatility_back(self):
+        from hero import research_tools as rt
+        s, k, t, r, q, v = 100.0, 105.0, 0.25, 0.04, 0.01, 0.3
+        c, p = rt.bs(s, k, t, r, q, v, "C"), rt.bs(s, k, t, r, q, v, "P")
+        self.assertAlmostEqual(c - p, s * math.exp(-q * t) - k * math.exp(-r * t), places=9)      # put-call parity
+        self.assertAlmostEqual(rt.implied(c, s, k, t, r, q, "C"), v, places=6)
+        self.assertAlmostEqual(rt.implied(p, s, k, t, r, q, "P"), v, places=6)
+        self.assertIsNone(rt.implied(0.0, s, k, t, r, q, "C"))
+        self.assertIsNone(rt.implied(200.0, s, k, t, r, q, "C"))                                  # dearer than any volatility gives
+        self.assertEqual((rt.bs(110.0, 100.0, 0.0, r, q, v, "C"), rt.bs(110.0, 100.0, 0.0, r, q, v, "P")), (10.0, 0.0))
+
+    def test_each_tool_at_expiry(self):
+        from hero import research_tools as rt
+        k = {"0.85": 85.0, "0.90": 90.0, "0.95": 95.0, "1.00": 100.0, "1.05": 105.0, "1.10": 110.0}
+        leg = {"C0.95": 8.0, "C1.00": 5.0, "C1.05": 3.0, "C1.10": 1.5, "P1.00": 4.0, "P0.95": 2.0, "P0.90": 1.0, "P0.85": 0.5}
+        up = rt.tools(100.0, 108.0, k, leg, cost=0.0)                      # the stock ends 8% higher
+        self.assertEqual(up["call_atm"], (3.0, 5.0))                       # 8 of value for 5
+        self.assertEqual(up["call_otm"], (0.0, 3.0))                       # 3 of value for 3
+        self.assertEqual(up["bull_call"], (3.0, 2.0))                      # the 5-wide spread is worth 5, cost 2
+        self.assertEqual(up["bull_put"], (1.0, 4.0))                       # keeps the 1 it was paid; 4 could have been lost
+        self.assertEqual(up["csp_atm"], (4.0, 96.0))
+        self.assertEqual(up["csp_otm"], (2.0, 93.0))
+        self.assertEqual(up["covered"], (8.0, 97.0))                       # capped at 105: 5 on the shares + 3 received
+        self.assertEqual(up["straddle"], (-1.0, 9.0))                      # moved 8, paid 9
+        self.assertEqual(up["put_atm"], (-4.0, 4.0))
+        self.assertEqual(up["bear_put"], (-2.0, 2.0))
+        self.assertEqual(up["bear_call"], (-1.5, 3.5))                     # sold for 1.5, ends 3 in the money
+        self.assertAlmostEqual(up["shares"][0], 8.0 - 0.104, places=6)     # 0.05% each way
+        down = rt.tools(100.0, 88.0, k, leg, cost=0.0)                     # the stock ends 12% lower
+        self.assertEqual((down["call_atm"], down["bull_call"]), ((-5.0, 5.0), (-2.0, 2.0)))
+        self.assertEqual(down["bull_put"], (-4.0, 4.0))                    # through both strikes: the whole risk
+        self.assertEqual(down["csp_otm"], (-5.0, 93.0))                    # 95 - 88 = 7 lost, 2 received
+        self.assertEqual(down["covered"], (-9.0, 97.0))
+        self.assertEqual((down["put_atm"], down["bear_put"], down["bear_call"]), ((8.0, 4.0), (3.0, 2.0), (1.5, 3.5)))
+        self.assertEqual(down["straddle"], (3.0, 9.0))
+        dear = rt.tools(100.0, 108.0, k, leg, cost=0.05)                   # buying pays 5% more, selling gets 5% less
+        self.assertAlmostEqual(dear["call_atm"][1], 5.25)
+        self.assertAlmostEqual(dear["bull_put"][0], 0.95)
+        self.assertAlmostEqual(dear["bull_put"][1], 4.05)
+        self.assertNotIn("bull_call", rt.tools(100.0, 108.0, k, {**leg, "C1.05": 5.5}, cost=0.0))   # legs that make no sense
+        self.assertNotIn("call_atm", rt.tools(100.0, 108.0, k, {**leg, "C1.00": None}, cost=0.0))
+
+    def test_a_row_carries_both_ways_of_counting(self):
+        from hero import research_tools as rt
+        k = {"0.85": 85.0, "0.90": 90.0, "0.95": 95.0, "1.00": 100.0, "1.05": 105.0, "1.10": 110.0}
+        leg = {"C0.95": 8.0, "C1.00": 5.0, "C1.05": 3.0, "C1.10": 1.5, "P1.00": 4.0, "P0.95": 2.0, "P0.90": 1.0, "P0.85": 0.5}
+        types = {"above50": False, "below50": True, "dd10": True, "big_drop": False, "streak3": False}
+        r = rt.row("AAA", "2022-05-02", "2022-08-19", 100.0, 88.0, types, k, leg)
+        self.assertEqual((r["env"], r["below_short_put"], r["above_short_call"]), ("down", True, False))
+        self.assertAlmostEqual(r["risk"]["bull_call"], -1.0)               # paid 2.1 with costs, worth nothing
+        self.assertAlmostEqual(r["stock"]["bull_call"], -0.021)            # $210 on $10,000 of stock
+        self.assertAlmostEqual(r["stock"]["shares"], -0.12094, places=5)   # $1,209 on the same shares (12 down, 0.05% each way)
+
+    def test_the_volatility_fit_and_the_days_since_a_crossing(self):
+        from hero import research_tools as rt
+        a, b = [0.2, 0.3, 0.5, 0.25], [0.15, 0.2, 0.3, 0.4]
+        p, q = rt.fit2(a, b, [0.4 * x + 1.1 * z for x, z in zip(a, b)])
+        self.assertAlmostEqual(p, 0.4, places=9)
+        self.assertAlmostEqual(q, 1.1, places=9)
+        obs = {"AAA": [{"day": f"2025-01-{d:02d}", "atm": 0.4 * rv + 1.1 * v3, "rv": rv, "v3": v3,
+                        "skew": {"P0.90": 1.2, "P0.95": 1.1, "C1.05": 0.95, "C1.10": 0.9}}
+                       for d, (rv, v3) in enumerate([(0.2 + 0.01 * (i % 7), 0.15 + 0.005 * (i % 5)) for i in range(28)], 1)]}
+        f = rt.fit(obs)["AAA"]
+        self.assertAlmostEqual(f["p"], 0.4, places=6)
+        self.assertAlmostEqual(f["miss"], 0.0, places=6)
+        self.assertEqual((f["skew"]["0.90"], f["skew"]["1.10"], f["skew"]["0.85"], f["skew"]["1.00"]), (1.2, 0.9, 1.0, 1.0))
+        k, leg = rt.model_legs(100.0, 0.25, 0.04, 0.0, 0.3, f["skew"])
+        self.assertAlmostEqual(leg["P0.90"], rt.bs(100.0, 90.0, 0.25, 0.04, 0.0, 0.36, "P"))    # 0.3 x 1.2
+        self.assertEqual(k["1.05"], 105.0)
+        closes = [100.0] * 60 + [90.0] * 5 + [120.0] * 3                   # under its average for 5 sessions, then over it
+        self.assertEqual((rt.crossed(closes, 64), rt.crossed(closes, 65), rt.crossed(closes, 67)), (5, 1, 3))
