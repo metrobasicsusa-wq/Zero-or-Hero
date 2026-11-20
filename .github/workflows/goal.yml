@@ -1,0 +1,44 @@
+name: goal
+
+# The goal book (hero/goal.py): once a week it reads the multi-ledger journals, records next week's choice of
+# methods and writes its page. It places no orders and needs no keys.
+on:
+  schedule:
+    - cron: "10 14 * * 6"      # Saturday 09:10 New York in winter, 10:10 in summer: after Friday's last journal commit
+  workflow_dispatch:
+    inputs:
+      day:
+        description: "The day to run it for (YYYY-MM-DD); empty = today in New York"
+        required: false
+        default: ""
+
+permissions:
+  contents: write
+
+concurrency:
+  group: goal
+  cancel-in-progress: false
+
+jobs:
+  goal:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install -r requirements.txt
+      - name: Goal
+        env:
+          DAY: ${{ inputs.day }}
+        run: python -m hero.goal $DAY
+      - name: Commit
+        run: |
+          git config user.name "zero-or-hero-bot"
+          git config user.email "zero-or-hero-bot@users.noreply.github.com"
+          git add research/goal
+          git diff --cached --quiet && exit 0
+          git commit -m "goal: $(TZ=America/New_York date +%F)"
+          for i in 1 2 3; do git pull --rebase && git push && exit 0; sleep 10; done
+          exit 1
