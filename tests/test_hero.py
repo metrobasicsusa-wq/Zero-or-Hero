@@ -9415,6 +9415,51 @@ class ScoutLedger(unittest.TestCase):
                 self.assertAlmostEqual(board["spread3m"]["spy"], (1 - 0.4) / 0.4, places=3)
                 self.assertIn("今天没有新记的", (out / "2027-02-22.md").read_text())
 
+    def test_open_entries_are_marked_each_day_at_what_closing_them_would_bring(self):
+        from unittest import mock
+        from hero import scout_ledger as sl
+        q = lambda bid, ask, day="2026-11-23": {"latestQuote": {"bp": bid, "ap": ask, "t": day + "T20:40:00Z"}}   # noqa: E731
+        spread = {"kind": "spread3m", "debit": 4.0, "risk": 4.0, "status": "open", "baseline": False, "day": "2026-11-20",
+                  "legs": [{"occ": "L", "side": "buy", "strike": 100.0}, {"occ": "S", "side": "sell", "strike": 110.0}]}
+        m = sl.mark(spread, {"L": q(7.8, 8.2), "S": q(2.9, 3.1)}, "2026-11-23")
+        self.assertEqual(m, {"day": "2026-11-23", "value": 4.7, "mid": 5.0})         # sell the long at 7.8, buy the short back at 3.1
+        self.assertAlmostEqual(sl.marked({**spread, "mark": m}), 0.175)
+        self.assertAlmostEqual(sl.marked({**spread, "mark": m}, "mid"), 0.25)
+        self.assertEqual(sl.mark(spread, {"L": q(0.0, 0.1), "S": q(0.3, 0.5)}, "2026-11-23")["value"], 0.0)   # never worth less than nothing
+        self.assertIsNone(sl.mark(spread, {"L": q(7.8, 8.2), "S": q(2.9, 3.1, "2026-11-20")}, "2026-11-23"))  # one leg quoted on another day
+        self.assertIsNone(sl.mark(spread, {"L": q(7.8, 8.2)}, "2026-11-23"))
+        put = {"kind": "csp3m", "credit": 3.0, "risk": 87.0, "status": "open", "baseline": False, "day": "2026-11-20",
+               "legs": [{"occ": "P", "side": "sell", "strike": 90.0}]}
+        pm = sl.mark(put, {"P": q(1.8, 2.0)}, "2026-11-23")
+        self.assertEqual((pm["value"], pm["mid"]), (-2.0, -1.9))                     # what buying the put back costs
+        self.assertAlmostEqual(sl.marked({**put, "mark": pm}), 1.0 / 87.0)
+        self.assertIsNone(sl.marked(put))
+        book = [{**spread, "mark": m}, {**spread, "baseline": True, "mark": {"day": "2026-11-23", "value": 3.0, "mid": 3.4}},
+                {**spread, "baseline": True, "day": "2026-11-19", "mark": m}, {**put}]
+        got = sl.marks(book)
+        self.assertEqual((got["spread3m"]["n"], got["spread3m"]["as_of"], got["csp3m"]["n"]), (1, "2026-11-23", 0))
+        self.assertAlmostEqual(got["spread3m"]["spy"], -0.25)                        # SPY from the same entry day only
+        with tempfile.TemporaryDirectory() as tmp:
+            out = Path(tmp)
+            (out / "2026-11-20.json").write_text(json.dumps({"day": "2026-11-20", "drop": ["x"], "kept": [{"symbol": "AAA", "group": None}]}))
+            (out / "2026-11-20.md").write_text("# 侦察\n")
+            with mock.patch.object(sl, "OUT", out):
+                sl.run(self.client(), "2026-11-20")
+                first = json.loads((out / "ledger.json").read_text())
+                self.assertTrue(all(e["mark"]["day"] == "2026-11-20" for e in first))    # marked the day they were entered
+                self.assertIn("没到期的仓现在值多少", (out / "2026-11-20.md").read_text())
+                (out / "2026-11-23.json").write_text(json.dumps({"day": "2026-11-23", "drop": [], "kept": []}))
+                (out / "2026-11-23.md").write_text("# 侦察\n")
+                sl.run(self.client(quote_day="2026-11-20"), "2026-11-23")               # no quote made that day: the old mark stays
+                self.assertTrue(all(e["mark"]["day"] == "2026-11-20" for e in json.loads((out / "ledger.json").read_text())))
+                sl.run(self.client(quote_day="2026-11-23"), "2026-11-23")
+                later = json.loads((out / "ledger.json").read_text())
+                self.assertTrue(all(e["mark"]["day"] == "2026-11-23" for e in later))
+                md = (out / "2026-11-23.md").read_text()
+                self.assertIn("今天没有新记的", md)
+                self.assertIn("| 三个月看涨价差 | 1 | -100% | -100% | -100% | -100% |", md)   # the test quotes do not move: the spread's cost is the bid-ask gap
+                self.assertIn("笔数不等于仓位", md)
+
     def test_a_stale_quote_is_left_out_with_its_reason(self):
         from unittest import mock
         from hero import scout_ledger as sl

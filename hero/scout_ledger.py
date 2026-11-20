@@ -124,6 +124,47 @@ def settle(e: dict, close: float, factor: float = 1.0) -> dict:
     return {**e, "status": "closed", "close": close, "result": round(result, 4)}
 
 
+def mark(e: dict, snaps: dict, today: str) -> dict | None:
+    """What an open entry is worth per share today: closed now (the bought leg sold at the bid, the sold leg bought back
+    at the ask) and at the middle of the quotes. None when a leg has no quote made today: the last mark is then kept."""
+    now, mid = 0.0, 0.0
+    for x in e["legs"]:
+        q = (snaps.get(x["occ"]) or {}).get("latestQuote") or {}
+        bid, ask = float(q.get("bp") or 0), float(q.get("ap") or 0)
+        if not ask or str(q.get("t", ""))[:10] != today:
+            return None
+        sign = 1 if x["side"] == "buy" else -1
+        now += sign * (bid if x["side"] == "buy" else ask)
+        mid += sign * (bid + ask) / 2
+    floor = 0.0 if e["kind"] != "csp3m" else None           # a spread paid for is never worth less than nothing
+    return {"day": today, "value": round(max(now, floor) if floor is not None else now, 4),
+            "mid": round(max(mid, floor) if floor is not None else mid, 4)}
+
+
+def marked(e: dict, at: str = "value") -> float | None:
+    """An open entry's result per $1 at risk if it were closed at its last mark (`at`: "value" to trade now, "mid")."""
+    m = e.get("mark")
+    if not m:
+        return None
+    if e["kind"] == "csp3m":
+        return (e["credit"] + m[at]) / e["risk"]             # the put sold is a negative value: what buying it back costs
+    return (m[at] - e["debit"]) / e["debit"]
+
+
+def marks(ledger: list[dict]) -> dict:
+    """Open entries with a mark, by structure: the picks' average result now beside SPY's from the same entry days."""
+    out = {}
+    for kind in KINDS:
+        live = [e for e in ledger if e["kind"] == kind and e["status"] == "open" and e.get("mark")]
+        picks = [e for e in live if not e["baseline"]]
+        days = {e["day"] for e in picks}
+        base = [e for e in live if e["baseline"] and e["day"] in days]
+        mean = lambda es, at: statistics.mean(marked(e, at) for e in es) if es else None   # noqa: E731
+        out[kind] = {"n": len(picks), "as_of": max((e["mark"]["day"] for e in picks), default=None),
+                     "picks": mean(picks, "value"), "picks_mid": mean(picks, "mid"), "spy": mean(base, "value"), "spy_mid": mean(base, "mid")}
+    return out
+
+
 def scoreboard(ledger: list[dict]) -> dict:
     """Closed entries by structure: the picks' average per $1 at risk beside SPY's on the same entry days."""
     out = {}
@@ -168,6 +209,15 @@ def section(day: str, added: list[dict], skipped: list[tuple[str, str, str]], le
     for kind, b in board.items():
         out.append(f"| {KINDS[kind]} | {b['open']} | {b['closed']} | {'—' if b['picks'] is None else format(b['picks'], '+.0%')} | "
                    f"{'—' if b['won'] is None else format(b['won'], '.0%')} | {'—' if b['spy'] is None else format(b['spy'], '+.0%')} |")
+    live = marks(ledger)
+    if any(v["n"] for v in live.values()):
+        show = lambda x: "—" if x is None else format(x, "+.0%")   # noqa: E731
+        out += ["", "没到期的仓现在值多少（每天按报价估一次；每 $1 最多能亏的钱，现在是赚是亏）：", "",
+                "| 做法 | 估了现值的 | 清单：现在平掉 | 清单：按中间价 | 同一天的标普：现在平掉 | 标普：按中间价 |", "|---|---|---|---|---|---|"]
+        out += [f"| {KINDS[kind]} | {v['n']} | {show(v['picks'])} | {show(v['picks_mid'])} | {show(v['spy'])} | {show(v['spy_mid'])} |"
+                for kind, v in live.items() if v["n"]]
+        out += ["", "「现在平掉」= 买的那条腿按买价卖、卖的那条腿按卖价买回，刚记进去的仓会先亏掉一个买卖价差；「按中间价」不算这个差。"
+                "大跌日连着来的时候，同一只股票每天会各记一笔：这是每个进场日一个样本，笔数不等于仓位。"]
     return "\n".join(out) + "\n"
 
 
@@ -230,6 +280,14 @@ def run(client, day: str | None = None, write: bool = True) -> dict:
             last = max((d for d in a if d <= e["expiry"]), default=None)
             if last and e["day"] in r and e["day"] in a and a[e["day"]]:
                 ledger[i] = settle(e, a[last], r[e["day"]] / a[e["day"]])
+    live = [e for e in ledger if e["status"] == "open"]
+    if live:
+        try:
+            snaps = client.option_snapshots(sorted({x["occ"] for e in live for x in e["legs"]}))
+        except Exception:
+            snaps = {}
+        for e in live:
+            e["mark"] = mark(e, snaps, day) or e.get("mark")
     text = section(day, [e for e in ledger if e["day"] == day], skipped, ledger)      # a second run the same day keeps the table
     if write:
         lpath.write_text(json.dumps(ledger, ensure_ascii=False, indent=1) + "\n")
