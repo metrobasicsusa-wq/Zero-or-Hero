@@ -1,7 +1,7 @@
 {
  "source": "alphavantage EARNINGS_CALENDAR horizon=3month",
- "fetched_at": "2026-11-19T09:00:20-05:00",
- "fetched_on": "2026-11-19",
+ "fetched_at": "2026-11-20T09:00:29-05:00",
+ "fetched_on": "2026-11-20",
  "horizon_days": 90,
  "symbols": [
   "AAPL",
@@ -128,26 +128,6 @@
   "XOM"
  ],
  "reports": {
-  "INTU": [
-   {
-    "date": "2026-11-19",
-    "time": "post-market",
-    "estimate": "2.47",
-    "fiscal_end": "2026-10-31",
-    "checked": "nasdaq",
-    "confirmed": true
-   }
-  ],
-  "WMT": [
-   {
-    "date": "2026-11-19",
-    "time": "pre-market",
-    "estimate": "0.64",
-    "fiscal_end": "2026-10-31",
-    "checked": "nasdaq",
-    "confirmed": true
-   }
-  ],
   "HPE": [
    {
     "date": "2026-11-23",
@@ -172,7 +152,7 @@
    {
     "date": "2026-11-24",
     "time": "post-market",
-    "estimate": "6.41",
+    "estimate": "6.48",
     "fiscal_end": "2026-10-31",
     "checked": "nasdaq",
     "confirmed": true
@@ -254,7 +234,7 @@
     "time": "unknown",
     "estimate": "1.56",
     "fiscal_end": "2026-11-30",
-    "checked": "nasdaq",
+    "disputed": true,
     "confirmed": false,
     "yahoo_date": "2026-12-14"
    }
@@ -285,7 +265,8 @@
     "time": "unknown",
     "estimate": "37.95",
     "fiscal_end": "2026-11-30",
-    "confirmed": false
+    "confirmed": false,
+    "yahoo_date": "2026-12-17"
    }
   ],
   "ACN": [
@@ -314,6 +295,22 @@
     "fiscal_end": "2026-12-31"
    }
   ],
+  "BAC": [
+   {
+    "date": "2027-01-13",
+    "time": "unknown",
+    "estimate": "1.13",
+    "fiscal_end": "2026-12-31"
+   }
+  ],
+  "WFC": [
+   {
+    "date": "2027-01-13",
+    "time": "unknown",
+    "estimate": "1.88",
+    "fiscal_end": "2026-12-31"
+   }
+  ],
   "PFE": [
    {
     "date": "2027-02-02",
@@ -332,15 +329,22 @@
   ]
  },
  "cross_check": {
-  "nasdaq_days": 15,
+  "nasdaq_days": 16,
   "moved": [],
   "time_filled": [],
-  "disputed": [],
+  "disputed": [
+   "ORCL"
+  ],
   "yahoo": {
-   "asked": 18,
-   "answered": 18,
-   "confirmed": 16,
+   "asked": 16,
+   "answered": 16,
+   "confirmed": 15,
    "conflicts": [
+    [
+     "MU",
+     "2026-12-16",
+     "2026-12-17"
+    ],
     [
      "ORCL",
      "2026-12-09",
