@@ -5285,3 +5285,27 @@
 {"dry_run": true, "kind": "sleeve_plan", "sleeve": "earn-1000", "ts": "2026-11-20T20:40:23+00:00", "why": "earn-1000（演算）：2026-11-20 没有要买的"}
 {"dry_run": true, "kind": "sleeve_plan", "sleeve": "earn-opt-plan-500", "ts": "2026-11-20T20:40:23+00:00", "why": "earn-opt-plan-500（演算）：2026-11-20 没有要买的"}
 {"dry_run": true, "kind": "sleeve_plan", "sleeve": "earn-opt-plan-1000", "ts": "2026-11-20T20:40:23+00:00", "why": "earn-opt-plan-1000（演算）：2026-11-20 没有要买的"}
+{"ask": 2.89, "attempt": 1, "dry_run": false, "kind": "sleeve_buy", "last": 2.84, "last_at": "2026-11-20T20:35:25.26879609Z", "limit": 2.9, "quote_ask": 2.89, "quote_at": "2026-11-20T20:50:18.817975753Z", "quote_bid": 2.74, "sleeve": "dipweek-take-500", "symbol": "CRWV261127C00040000", "ts": "2026-11-20T20:50:37+00:00", "why": "dipweek-take-500：抄底给一周：CRWV 低开 -3.8%，收盘前仍低于开盘；买看涨 40（2026-11-27 到期，离现价 1.0%），买价 $2.74 / 卖价 $2.89（价差占中间价 5%）；2 倍止盈，否则 11-27 15:30 卖；一半 $224.50 买不起一张，押上账本买 1 张；1 张 × $2.90（第 1 次挂单）"}
+{"dry_run": false, "kind": "sleeve_fill", "price": 2.87, "qty": 1, "sleeve": "dipweek-take-500", "symbol": "CRWV261127C00040000", "ts": "2026-11-20T20:50:42+00:00", "why": "dipweek-take-500：CRWV261127C00040000 成交 1 张 × $2.87，花 $287.00；1 张 2 倍止盈 $5.75 挂在券商"}
+{"dry_run": true, "kind": "sleeve_plan_result", "ret": -1.0, "sleeve": "oneshot-500", "symbol": "QQQ261120C00649000", "ts": "2026-11-20T20:50:43+00:00", "why": "oneshot-500（演算）：QQQ261120C00649000 到期日最后一轮（15:50 以后没有交易轮）卖出，花 $399.00、收回 $0.00（-100%），演算账本 $101.00"}
+{"dry_run": true, "kind": "sleeve_plan_result", "ret": -1.0, "sleeve": "oneshot-1000", "symbol": "QQQ261120C00649000", "ts": "2026-11-20T20:50:43+00:00", "why": "oneshot-1000（演算）：QQQ261120C00649000 到期日最后一轮（15:50 以后没有交易轮）卖出，花 $931.00、收回 $0.00（-100%），演算账本 $69.00"}
+{"dry_run": true, "kind": "sleeve_plan_result", "ret": -0.417, "sleeve": "fadelotto-plan", "symbol": "SNXX261127C00002500", "ts": "2026-11-20T20:50:43+00:00", "why": "fadelotto-plan（演算）：SNXX261127C00002500 2026-11-20 15:50 到时卖出，花 $12.00、收回 $7.00（-42%），演算账本 $8,498.00"}
+{"dry_run": true, "kind": "sleeve_plan_result", "ret": 0.028, "sleeve": "peerc-500", "symbol": "SH", "ts": "2026-11-20T20:50:43+00:00", "why": "peerc-500（演算）：SH 2026-11-20 15:50 到时卖出，花 $156.68、收回 $161.04（+3%），演算账本 $265.50"}
+{"dry_run": true, "kind": "sleeve_plan_result", "ret": 0.153, "sleeve": "peerc-500", "symbol": "SOXS", "ts": "2026-11-20T20:50:43+00:00", "why": "peerc-500（演算）：SOXS 2026-11-20 15:50 到时卖出，花 $52.22、收回 $60.19（+15%），演算账本 $325.69"}
+{"dry_run": true, "kind": "sleeve_plan_result", "ret": -0.008, "sleeve": "peerc-500", "symbol": "XLP", "ts": "2026-11-20T20:50:43+00:00", "why": "peerc-500（演算）：XLP 2026-11-20 15:50 到时卖出，花 $156.68、收回 $155.43（-1%），演算账本 $481.12"}
+{"dry_run": true, "kind": "sleeve_plan_result", "ret": 0.028, "sleeve": "peerc-1000", "symbol": "SH", "ts": "2026-11-20T20:50:43+00:00", "why": "peerc-1000（演算）：SH 2026-11-20 15:50 到时卖出，花 $313.35、收回 $322.07（+3%），演算账本 $530.98"}
+{"dry_run": true, "kind": "sleeve_plan_result", "ret": 0.153, "sleeve": "peerc-1000", "symbol": "SOXS", "ts": "2026-11-20T20:50:43+00:00", "why": "peerc-1000（演算）：SOXS 2026-11-20 15:50 到时卖出，花 $104.45、收回 $120.40（+15%），演算账本 $651.38"}
+{"dry_run": true, "kind": "sleeve_plan_result", "ret": -0.008, "sleeve": "peerc-1000", "symbol": "XLP", "ts": "2026-11-20T20:50:43+00:00", "why": "peerc-1000（演算）：XLP 2026-11-20 15:50 到时卖出，花 $313.35、收回 $310.85（-1%），演算账本 $962.23"}
+{"dry_run": true, "kind": "sleeve_round", "sleeve": "oneshot-1000", "ts": "2026-11-20T20:50:43+00:00", "why": "oneshot-1000 第 16 轮低于 $100，归零（$69.00），从 $1,000 重开第 17 轮（演算）"}
+{"dry_run": true, "kind": "sleeve_plan", "sleeve": "overnight-plan-500", "ts": "2026-11-20T20:50:43+00:00", "why": "overnight-plan-500（演算）：2026-11-20 没有要买的"}
+{"dry_run": true, "kind": "sleeve_plan", "sleeve": "overnight-plan-1000", "ts": "2026-11-20T20:50:43+00:00", "why": "overnight-plan-1000（演算）：2026-11-20 没有要买的"}
+{"dry_run": true, "kind": "sleeve_plan", "sleeve": "pullback-plan-500", "ts": "2026-11-20T20:50:43+00:00", "why": "pullback-plan-500（演算）：2026-11-20 没有要买的"}
+{"dry_run": true, "kind": "sleeve_plan", "sleeve": "pullback-plan-1000", "ts": "2026-11-20T20:50:43+00:00", "why": "pullback-plan-1000（演算）：2026-11-20 没有要买的"}
+{"dry_run": true, "kind": "sleeve_plan", "sleeve": "bottom-plan-500", "ts": "2026-11-20T20:50:43+00:00", "why": "bottom-plan-500（演算）：2026-11-20 没有要买的"}
+{"dry_run": true, "kind": "sleeve_plan", "sleeve": "bottom-plan-1000", "ts": "2026-11-20T20:50:43+00:00", "why": "bottom-plan-1000（演算）：2026-11-20 没有要买的"}
+{"dry_run": true, "kind": "sleeve_plan", "sleeve": "era-long-2000", "ts": "2026-11-20T20:50:44+00:00", "why": "era-long-2000（演算）：2026-11-20 没有要买的"}
+{"dry_run": true, "kind": "sleeve_plan", "sleeve": "era-short-2000", "ts": "2026-11-20T20:50:44+00:00", "why": "era-short-2000（演算）：2026-11-20 没有要买的"}
+{"dry_run": true, "kind": "sleeve_plan", "sleeve": "bottom-plan-2000", "ts": "2026-11-20T20:50:44+00:00", "why": "bottom-plan-2000（演算）：2026-11-20 没有要买的"}
+{"dry_run": true, "kind": "sleeve_plan", "sleeve": "green-plan-2000", "ts": "2026-11-20T20:50:44+00:00", "why": "green-plan-2000（演算）：2026-11-20 没有要买的"}
+{"dry_run": true, "kind": "sleeve_plan", "sleeve": "hikerally-500", "ts": "2026-11-20T20:50:44+00:00", "why": "hikerally-500（演算）：2026-11-20 没有要买的"}
+{"dry_run": true, "kind": "sleeve_plan", "sleeve": "hikerally-1000", "ts": "2026-11-20T20:50:44+00:00", "why": "hikerally-1000（演算）：2026-11-20 没有要买的"}
