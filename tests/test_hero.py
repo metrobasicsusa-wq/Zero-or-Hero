@@ -9417,6 +9417,41 @@ class Goal(unittest.TestCase):
         self.assertEqual((losing[12]["stake"], losing[12]["result"]), (500.0, 500.0))  # a new month starts again
         self.assertEqual(goal.weeks_of(losing)[0]["result"], -2500.0)
 
+    def test_the_second_version_wants_the_longer_history_to_agree(self):
+        from unittest import mock
+        from hero import goal
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            for d in ("journal", "journal-s500", "research"):
+                (root / d).mkdir()
+            days = [f"2025-03-{d:02d}" for d in range(3, 29)]
+            rows = [{"day": d, "t": t, "move": 0.001, "res": {"0.05/0.05": -0.3, "0/0": -0.2}} for d in days for t in ("09:45", "10:00", "11:00")]
+            rows += [{"day": d, "t": "10:00", "move": -0.006, "res": {"0.05/0.05": 0.4, "0/0": 0.5}} for d in days[:5]]
+            (root / "research" / "2026-11-17-zdte-times.json").write_text(json.dumps({"start": "2025-03-03", "end": "2025-03-28", "rows": rows}))
+            prior = goal.priors(root)
+            self.assertEqual(sorted(prior), ["spy0dte", "spy0dte-near"])                # no QQQ file: no QQQ history
+            self.assertEqual((prior["spy0dte"]["n"], round(prior["spy0dte"]["mean"], 2)), (5, 0.4))    # only the days 0.5% away at 10:00
+            self.assertEqual(prior["spy0dte-near"]["n"], 26 * 2 + 5)                    # 09:45 and 10:00, every day; not 11:00
+            self.assertLess(prior["spy0dte-near"]["mean"], 0)
+            trades = self.steady("spy0dte-near", got=200) + self.steady("spy0dte", got=150) + self.steady("gap", got=120)
+            self.assertEqual(goal.pick(trades, "2026-10-26"), ["spy0dte-near", "spy0dte", "gap"])
+            self.assertEqual(goal.pick(trades, "2026-10-26", prior), ["spy0dte", "gap"])   # a losing long history is out; no history is let through
+            wk = [self.t("spy0dte-near", "2026-10-26", 100, 300), self.t("gap", "2026-10-26", 100, 50)]
+            v1 = goal.walk(trades + wk, ["2026-10-26"])
+            v2 = goal.walk(trades + wk, ["2026-10-26"], None, prior)
+            self.assertEqual((v1[0]["result"], v2[0]["result"]), (250 * 2.0 + 250 * -0.5, 500 * -0.5))
+            closed = lambda got: [{"closed": f"{t['day']} 15:30", "paid": 100.0, "proceeds": got} for t in self.steady()]   # noqa: E731
+            (root / "journal-s500" / "sleeves.json").write_text(json.dumps({"sleeves": {"spy0dte-near-500": {"closed": closed(200.0), "open": []}}}))
+            with mock.patch.object(goal, "OUT", root / "research" / "goal"):
+                got = goal.run("2026-10-31", root=root)
+            self.assertEqual((got["next"]["picks"], got["next"]["picks2"]), (["spy0dte-near"], []))
+            self.assertEqual(json.loads((root / "research" / "goal" / "ledger.json").read_text())["decisions"][0]["picks2"], [])
+            self.assertIn("第一版：**SPY 末日单（离现价 0.3%）**；第二版：**空仓（没有够格的）**", got["page"])
+            self.assertIn("| 够 | −24%（57 笔，2025-03 起；去掉最好 3 笔 −27%） |", got["page"])
+            self.assertEqual(got["priors"]["spy0dte-near"]["n"], 57)
+            # a recorded choice of nothing stays nothing
+            self.assertEqual(goal.walk(trades + wk, ["2026-10-26"], {"2026-10-26": []})[0]["picks"], [])
+
     def test_a_run_writes_the_page_and_records_next_weeks_choice_only_at_the_weekend(self):
         from unittest import mock
         from hero import goal
@@ -9439,7 +9474,7 @@ class Goal(unittest.TestCase):
             with mock.patch.object(goal, "OUT", out):
                 dry = goal.run("2026-10-28", write=False, root=root)
                 self.assertFalse(out.exists())
-                self.assertEqual(dry["next"], {"week": "2026-11-02", "picks": ["spy0dte-near"], "recorded": False})
+                self.assertEqual(dry["next"], {"week": "2026-11-02", "picks": ["spy0dte-near"], "picks2": ["spy0dte-near"], "recorded": False})
                 got = goal.run("2026-10-28", root=root)                                 # a Wednesday: nothing is recorded for next week
                 self.assertEqual(json.loads((out / "ledger.json").read_text()), {"decisions": []})
                 self.assertAlmostEqual(got["total"], 250 + 250 + 750)                   # 26th, 27th at +50%, the plan trade on the 28th at +150%
@@ -9452,7 +9487,7 @@ class Goal(unittest.TestCase):
                 self.assertIn("稳健性检查", md)
                 goal.run("2026-10-31", root=root)                                       # Saturday: next week's choice goes on record
                 led = json.loads((out / "ledger.json").read_text())
-                self.assertEqual(led["decisions"], [{"week": "2026-11-02", "decided": "2026-10-31", "picks": ["spy0dte-near"]}])
+                self.assertEqual(led["decisions"], [{"week": "2026-11-02", "decided": "2026-10-31", "picks": ["spy0dte-near"], "picks2": ["spy0dte-near"]}])
                 self.assertIn("已记进账本", (out / "2026-10-31.md").read_text())
                 goal.run("2026-11-01", root=root)                                       # Sunday: not recorded twice
                 self.assertEqual(len(json.loads((out / "ledger.json").read_text())["decisions"]), 1)

@@ -79,12 +79,111 @@
    "month": 3877.11
   }
  ],
+ "second": {
+  "total": 122.15,
+  "weeks": [
+   {
+    "week": "2026-10-12",
+    "last": "2026-10-16",
+    "picks": [],
+    "days": 5,
+    "staked": 0.0,
+    "result": 0.0,
+    "every": 1480.19,
+    "stopped": false,
+    "month": 0.0
+   },
+   {
+    "week": "2026-10-19",
+    "last": "2026-10-23",
+    "picks": [],
+    "days": 5,
+    "staked": 0.0,
+    "result": 0.0,
+    "every": 17.39,
+    "stopped": false,
+    "month": 0.0
+   },
+   {
+    "week": "2026-10-26",
+    "last": "2026-10-30",
+    "picks": [],
+    "days": 5,
+    "staked": 0.0,
+    "result": 0.0,
+    "every": -419.43,
+    "stopped": false,
+    "month": 0.0
+   },
+   {
+    "week": "2026-11-02",
+    "last": "2026-11-06",
+    "picks": [],
+    "days": 5,
+    "staked": 0.0,
+    "result": 0.0,
+    "every": 290.84,
+    "stopped": false,
+    "month": 0.0
+   },
+   {
+    "week": "2026-11-09",
+    "last": "2026-11-13",
+    "picks": [],
+    "days": 5,
+    "staked": 0.0,
+    "result": 0.0,
+    "every": -314.4,
+    "stopped": false,
+    "month": 0.0
+   },
+   {
+    "week": "2026-11-16",
+    "last": "2026-11-20",
+    "picks": [
+     "wk-news",
+     "dipweek"
+    ],
+    "days": 5,
+    "staked": 1500.0,
+    "result": 122.15,
+    "every": 168.41,
+    "stopped": false,
+    "month": 122.15
+   }
+  ]
+ },
+ "priors": {
+  "spy0dte-near": {
+   "n": 1395,
+   "mean": -0.0521,
+   "trim": -0.0796,
+   "source": "research/2026-11-17-zdte-times.json"
+  },
+  "spy0dte": {
+   "n": 57,
+   "mean": 0.2703,
+   "trim": 0.0207,
+   "source": "research/2026-11-17-zdte-times.json"
+  },
+  "qqq0dte": {
+   "n": 697,
+   "mean": -0.0977,
+   "trim": -0.1295,
+   "source": "research/2026-11-17-zdte-lines.json"
+  }
+ },
  "next": {
   "week": "2026-11-23",
   "picks": [
    "spy0dte-near",
    "wk-news",
    "spy0dte"
+  ],
+  "picks2": [
+   "wk-news",
+   "spy0dte",
+   "dia0dte"
   ],
   "recorded": false
  }
