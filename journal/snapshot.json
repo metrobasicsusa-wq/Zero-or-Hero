@@ -1,16 +1,16 @@
 {
   "account": {
-    "buying_power": "319740.61",
+    "buying_power": "320125.46",
     "cash": "44448.04",
-    "equity": "95143.92",
+    "equity": "95281.36",
     "last_equity": "95508.54",
-    "long_market_value": "50695.88",
-    "portfolio_value": "95143.92"
+    "long_market_value": "50833.32",
+    "portfolio_value": "95281.36"
   },
   "benchmark": {
-    "close": 715.84,
-    "date": "2026-11-19",
-    "prev_close": 730.33,
+    "close": 713.29,
+    "date": "2026-11-20",
+    "prev_close": 715.84,
     "symbol": "SPY"
   },
   "open_orders": [
@@ -20,15 +20,31 @@
       "filled_avg_price": null,
       "filled_qty": "0",
       "limit_price": null,
-      "protective_stop": true,
+      "protective_stop": false,
       "qty": "109",
       "side": "sell",
-      "status": "pending_cancel",
-      "stop_price": "108.62",
-      "submitted_at": "2026-11-18T14:50:17.816631Z",
+      "status": "new",
+      "stop_price": null,
+      "submitted_at": "2026-11-20T14:40:26.596551395Z",
       "symbol": "XLY",
-      "time_in_force": "gtc",
-      "type": "stop"
+      "time_in_force": "day",
+      "type": "market"
+    },
+    {
+      "asset_class": "us_equity",
+      "filled_at": null,
+      "filled_avg_price": null,
+      "filled_qty": "0",
+      "limit_price": null,
+      "protective_stop": false,
+      "qty": "49",
+      "side": "sell",
+      "status": "new",
+      "stop_price": null,
+      "submitted_at": "2026-11-20T14:40:26.517109722Z",
+      "symbol": "AMZN",
+      "time_in_force": "day",
+      "type": "market"
     },
     {
       "asset_class": "us_equity",
@@ -43,22 +59,6 @@
       "stop_price": "168.79",
       "submitted_at": "2026-11-18T14:50:17.789685Z",
       "symbol": "XLV",
-      "time_in_force": "gtc",
-      "type": "stop"
-    },
-    {
-      "asset_class": "us_equity",
-      "filled_at": null,
-      "filled_avg_price": null,
-      "filled_qty": "0",
-      "limit_price": null,
-      "protective_stop": true,
-      "qty": "49",
-      "side": "sell",
-      "status": "pending_cancel",
-      "stop_price": "234.9",
-      "submitted_at": "2026-11-18T14:50:17.716602Z",
-      "symbol": "AMZN",
       "time_in_force": "gtc",
       "type": "stop"
     },
@@ -84,66 +84,66 @@
       "asset_class": "us_equity",
       "avg_entry_price": "345.392432",
       "cost_basis": "12779.519984",
-      "current_price": "353.445",
+      "current_price": "350.6",
       "fair_price": null,
       "lastday_price": "349.21",
       "mark_source": null,
-      "market_value": "13077.465",
+      "market_value": "12972.2",
       "qty": "37",
       "side": "long",
       "symbol": "AAPL",
-      "unrealized_intraday_pl": "156.695",
-      "unrealized_pl": "297.945016",
-      "unrealized_plpc": "0.02331"
+      "unrealized_intraday_pl": "51.43",
+      "unrealized_pl": "192.680016",
+      "unrealized_plpc": "0.01508"
     },
     {
       "asset_class": "us_equity",
       "avg_entry_price": "261.57",
       "cost_basis": "12816.93",
-      "current_price": "252.3",
+      "current_price": "254.24",
       "fair_price": null,
       "lastday_price": "257.37",
       "mark_source": null,
-      "market_value": "12362.7",
+      "market_value": "12457.76",
       "qty": "49",
       "side": "long",
       "symbol": "AMZN",
-      "unrealized_intraday_pl": "-248.43",
-      "unrealized_pl": "-454.23",
-      "unrealized_plpc": "-0.03544"
+      "unrealized_intraday_pl": "-153.37",
+      "unrealized_pl": "-359.17",
+      "unrealized_plpc": "-0.02802"
     },
     {
       "asset_class": "us_equity",
       "avg_entry_price": "184.488028",
       "cost_basis": "13098.649988",
-      "current_price": "178.95",
+      "current_price": "179.65",
       "fair_price": null,
       "lastday_price": "177.46",
       "mark_source": null,
-      "market_value": "12705.45",
+      "market_value": "12755.15",
       "qty": "71",
       "side": "long",
       "symbol": "XLV",
-      "unrealized_intraday_pl": "105.79",
-      "unrealized_pl": "-393.199988",
-      "unrealized_plpc": "-0.03002"
+      "unrealized_intraday_pl": "155.49",
+      "unrealized_pl": "-343.499988",
+      "unrealized_plpc": "-0.02622"
     },
     {
       "asset_class": "us_equity",
       "avg_entry_price": "118.065596",
       "cost_basis": "12869.149964",
-      "current_price": "115.16",
+      "current_price": "116.04",
       "fair_price": null,
       "lastday_price": "115.88",
       "mark_source": null,
-      "market_value": "12552.44",
+      "market_value": "12648.36",
       "qty": "109",
       "side": "long",
       "symbol": "XLY",
-      "unrealized_intraday_pl": "-78.48",
-      "unrealized_pl": "-316.709964",
-      "unrealized_plpc": "-0.02461"
+      "unrealized_intraday_pl": "17.44",
+      "unrealized_pl": "-220.789964",
+      "unrealized_plpc": "-0.01716"
     }
   ],
-  "ts": "2026-11-20T14:30:37+00:00"
+  "ts": "2026-11-20T14:40:27+00:00"
 }
