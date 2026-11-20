@@ -9229,6 +9229,49 @@ class Scout(unittest.TestCase):
         self.assertIn("| 那一天的震中板块自己（不是标普） | 399 | 1 | +20.0%，涨 100%", text)
         self.assertIn("清单的五条线还没有回头测过", text)
 
+    def test_is_this_a_bear_market_is_read_from_how_deep_past_declines_went(self):
+        from hero import scout
+
+        def path(lows, last=None):
+            """A series that makes a new high, falls to each low in turn and recovers; `last` leaves a decline open."""
+            out, level = [100.0], 100.0
+            for low in lows:
+                out += [level * (1 + low / 2), level * (1 + low), level * (1 + low / 2), level * 1.01]
+                level *= 1.01
+            if last is not None:
+                out += [level * (1 + last)]
+            return [((date(2000, 1, 3) + timedelta(days=i)).isoformat(), x) for i, x in enumerate(out)]
+
+        lows = [-0.06, -0.11, -0.25, -0.03, -0.12, -0.30, -0.08, -0.22, -0.14, -0.07]
+        done, cur, peak, _ = scout.declines(path(lows))
+        self.assertEqual([round(e["low"], 2) for e in done], [-0.06, -0.11, -0.25, -0.12, -0.30, -0.08, -0.22, -0.14, -0.07])   # the 3% dip is not a decline
+        self.assertIsNone(cur)
+        near = scout.bear_reading(path(lows, last=-0.02))
+        self.assertEqual((near["verdict"], round(near["now"], 2)), ("near_high", -0.02))
+        mid = scout.bear_reading(path(lows, last=-0.10))
+        self.assertEqual((mid["verdict"], mid["n"], mid["bears"]), ("unsure", 6, 3))    # six past declines got to 10%: three became bear markets
+        self.assertAlmostEqual(mid["median_low"], -0.18)
+        deep = scout.bear_reading(path(lows, last=-0.15))
+        self.assertEqual((deep["verdict"], deep["n"], deep["bears"]), ("likely", 3, 3))
+        shallow = scout.bear_reading(path(lows, last=-0.05))
+        self.assertEqual((shallow["verdict"], shallow["n"], shallow["bears"], shallow["declines"], shallow["bears_all"]), ("unsure", 9, 3, 9, 3))
+        self.assertEqual(scout.bear_reading(path([-0.06, -0.07, -0.08, -0.09], last=-0.06))["verdict"], "unlikely")
+        self.assertEqual(scout.bear_reading(path(lows, last=-0.21))["verdict"], "bear")
+        self.assertEqual(scout.bear_reading(path([-0.06], last=-0.10))["verdict"], "unknown")   # nothing that deep before
+        # the look-back: with eight earlier declines on file, the ninth and tenth are read at each depth they reached
+        many = [{"low": x} for x in (-0.06, -0.25, -0.07, -0.30, -0.08, -0.22, -0.06, -0.09, -0.26, -0.06)]
+        chk = scout.bear_check(many)
+        self.assertEqual(chk["n"], 2)                                                   # only the 5% depth has eight earlier cases
+        self.assertAlmostEqual(chk["error"], ((3 / 8 - 1) ** 2 + (4 / 9 - 0) ** 2) / 2)
+        self.assertAlmostEqual(chk["flat"], chk["error"])                               # at the shallowest depth the reading is the base rate
+        self.assertIsNone(scout.bear_check(many[:5]))
+        funds = {"SPY": {"env": "down", "dd": -0.1, "move": -0.02, "market_down": True,
+                         "like": {"days": 40, "stretches": 3, "m3": None, "y1": None, "usual_m3": None}}}
+        text = scout.page("2026-11-20", funds, {}, [], [], [], "SPY", None, {"^GSPC": {**mid, "high_day": "2026-10-06", "days": 45}})
+        self.assertIn("## 是不是熊市（按写死的线读）", text)
+        self.assertIn("| 标普 500 | -10.0% | -10.0% | 2026-10-06（45 天前） | **说不准** | 6 次里 3 次跌到了 20%（50%） | -18% |", text)
+        self.assertLess(text.index("## 是不是熊市"), text.index("## 二、今天是不是大跌日"))
+
     def test_the_page_on_a_quiet_day_and_on_a_drop_day(self):
         from hero import scout
         like = {"days": 40, "stretches": 3, "m3": {"n": 40, "mean": 0.03, "up": 0.7, "bad": -0.1}, "y1": None, "usual_m3": None}

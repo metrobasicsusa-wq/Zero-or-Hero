@@ -45,6 +45,10 @@ DROP_SECTOR = -0.03                            # or any sector fund this far dow
 DEEP, WORSE, TRADED, SOON, PER_GROUP = -0.25, -0.10, 300e6, 5, 2
 MOVES_DAYS, MOVES_MIN = 120, 0.30
 BEARS = (("2000-09", "2002-10"), ("2007-11", "2009-02"), ("2022-01", "2022-12"))
+BEAR, READ_FROM, SURE = -0.20, -0.05, (1 / 3, 2 / 3)     # a bear market; where the reading starts; "unlikely" below, "likely" above
+BROAD = {"^GSPC": ("标普 500", "1950-01-01"), "^NDX": ("纳指 100", "1985-10-01")}
+DEPTHS = (-0.05, -0.075, -0.10, -0.125, -0.15, -0.175)  # the depths the look-back check reads each past decline at
+VERDICT = {"near_high": "离高点不到 5%，不读", "bear": "是", "unlikely": "多半不是", "unsure": "说不准", "likely": "多半是", "unknown": "没有先例"}
 ENVS = {"up": "上升", "rebound": "反弹中", "pullback": "回调", "down": "下跌"}
 
 
@@ -135,6 +139,63 @@ def like_now(rows: list[dict], now: dict, market_down: bool) -> dict:
         out["deep_bear"] = summary([r["y1"] for r in deep if in_bear(r["day"])])
         out["deep_other"] = summary([r["y1"] for r in deep if not in_bear(r["day"])])
     return out
+
+
+# ---------- is this a bear market ----------
+def declines(series: list[tuple[str, float]]) -> tuple[list[dict], dict | None, float, str]:
+    """Every finished decline of READ_FROM or more, from a closing high to the next new high, with its low; the decline
+    still open, if any; and the high in force with its day."""
+    done, cur = [], None
+    peak, peak_day = series[0][1], series[0][0]
+    for d, c in series[1:]:
+        if c >= peak:
+            if cur:
+                done.append(cur)
+            peak, peak_day, cur = c, d, None
+            continue
+        dd = c / peak - 1
+        if cur is None:
+            if dd <= READ_FROM:
+                cur = {"high_day": peak_day, "low": dd, "low_day": d}
+        elif dd < cur["low"]:
+            cur["low"], cur["low_day"] = dd, d
+    return done, cur, peak, peak_day
+
+
+def bear_check(done: list[dict], least: int = 8) -> dict | None:
+    """The reading walked through history: each past decline, at each depth it reached, read from the declines before
+    it only, against a flat base rate (the share of all earlier declines that became bear markets). Mean squared error, lower is better."""
+    mine, flat = [], []
+    for i, e in enumerate(done):
+        earlier = done[:i]
+        for depth in DEPTHS:
+            like = [x for x in earlier if x["low"] <= depth]
+            if e["low"] > depth or len(like) < least:
+                continue
+            hit = float(e["low"] <= BEAR)
+            mine.append((sum(x["low"] <= BEAR for x in like) / len(like) - hit) ** 2)
+            flat.append((sum(x["low"] <= BEAR for x in earlier) / len(earlier) - hit) ** 2)
+    return {"n": len(mine), "error": statistics.mean(mine), "flat": statistics.mean(flat)} if mine else None
+
+
+def bear_reading(series: list[tuple[str, float]]) -> dict:
+    """Is this a bear market, read by fixed lines: yes once the decline has closed 20% under its high; before that, the
+    share of past declines that got at least as deep as this one has and went on to 20%."""
+    done, cur, peak, peak_day = declines(series)
+    now = series[-1][1] / peak - 1
+    out = {"now": now, "depth": cur["low"] if cur else now, "high_day": peak_day,
+           "days": (date.fromisoformat(series[-1][0]) - date.fromisoformat(peak_day)).days,
+           "since": series[0][0], "declines": len(done), "bears_all": sum(e["low"] <= BEAR for e in done), "check": bear_check(done)}
+    if not cur:
+        return {**out, "verdict": "near_high"}
+    if cur["low"] <= BEAR:
+        return {**out, "verdict": "bear"}
+    like = [e for e in done if e["low"] <= cur["low"]]
+    if not like:
+        return {**out, "verdict": "unknown"}
+    p = sum(e["low"] <= BEAR for e in like) / len(like)
+    return {**out, "verdict": "unlikely" if p < SURE[0] else "likely" if p > SURE[1] else "unsure", "n": len(like),
+            "bears": sum(e["low"] <= BEAR for e in like), "p": p, "median_low": statistics.median(e["low"] for e in like)}
 
 
 def drop_history(rows: dict[str, list[dict]], moves: dict[str, dict[str, float]], today: str, env_now: str) -> dict:
@@ -245,7 +306,7 @@ def after(s: dict | None) -> str:
 
 
 def page(day: str, funds: dict[str, dict], watch: dict[str, dict], drop: list[str], kept: list[dict], left: list[dict], centre: str,
-         history: dict | None = None) -> str:
+         history: dict | None = None, bear: dict[str, dict] | None = None) -> str:
     out = [f"# 侦察：{day}", "",
            "我们自己的 agent 每个交易日 15:40（美东）按写死的线跑一遍（`hero/scout.py`）；「今天」是那一刻的涨跌，不是收盘价。只记录，不下单，不是投资建议。", "",
            "## 一、现在各在哪", "",
@@ -262,6 +323,19 @@ def page(day: str, funds: dict[str, dict], watch: dict[str, dict], drop: list[st
         out += [f"| {FUNDS[f]} | {after(v['like']['deep_bear'])} | {after(v['like']['deep_other'])} |" for f, v in deep]
     out += ["", "常看的几只：", "", "| | 今天 | 环境 | 离高点 | 最近跟着谁走 |", "|---|---|---|---|---|"]
     out += [f"| {s} | {pct(v['move'], 1)} | {ENVS[v['env']]} | {pct(v['dd'])} | {FUNDS.get(v['group'], '自己走')}（{v['with']:.2f}） |" for s, v in watch.items()]
+    if bear:
+        out += ["", "## 是不是熊市（按写死的线读）", "",
+                "| | 离高点 | 这一轮最深 | 高点在 | 读数 | 历史上跌到过这么深的 | 它们最后的低点（中位数） |", "|---|---|---|---|---|---|---|"]
+        for sym, b in bear.items():
+            hist = f"{b['n']} 次里 {b['bears']} 次跌到了 20%（{b['p']:.0%}）" if "p" in b else "—"
+            out.append(f"| {BROAD[sym][0]} | {pct(b['now'], 1)} | {pct(b['depth'], 1)} | {b['high_day']}（{b['days']} 天前） | **{VERDICT[b['verdict']]}** | "
+                       f"{hist} | {pct(b['median_low']) if b.get('median_low') is not None else '—'} |")
+        out += ["", "线：从收盘高点跌 20% 算熊市，到了就写「是」。没到的时候，读数是历史上（标普 1950 年起、纳指 100 从 1985 年起）跌到过同样深度的那些次里，"
+                "最后跌到 20% 的占多少：不到三分之一写「多半不是」，过三分之二写「多半是」，中间写「说不准」。"]
+        checks = [f"{BROAD[sym][0]} {b['check']['n']} 个读数，误差 {b['check']['error']:.3f}，一律按底数是 {b['check']['flat']:.3f}" for sym, b in bear.items() if b.get("check")]
+        if checks:
+            out += ["", "回头走一遍（每次只用它之前的记录，误差越小越好）：" + "；".join(checks) + "。"
+                    "这把尺说的只是「跌得越深越可能」，不会比这更早知道；它的用处是不让话说过头。"]
     out += ["", "## 二、今天是不是大跌日", "",
             ("**是**：" + "；".join(drop) + "。" if drop else "**不是**。线：标普收跌 1.5% 以上，或纳指 100 收跌 2% 以上，或任何一个行业基金收跌 3% 以上。今天没有清单。")]
     if history and history.get("since"):
@@ -321,6 +395,14 @@ def run(today: str | None = None, sleep=time.sleep) -> dict:
         funds[f] = {**now, "move": bars[-1][2] / bars[-2][2] - 1, "market_down": spy_now["env"] == "down",
                     "like": like_now(rows[f], now, spy_now["env"] == "down")}
     history = drop_history(rows, moves, today, spy_now["env"])
+    bear = {}
+    for sym, (_, since) in BROAD.items():
+        try:
+            bars = [(d, c) for d, c, _, _ in fetch(sym, since) if d <= today]
+            bear[sym] = bear_reading(bars)
+        except Exception:
+            continue
+        sleep(0.15)
     centre = min(SECTORS, key=lambda f: funds[f]["dd"] if f in funds else 0)
     drop = big_drop({f: v["move"] for f, v in funds.items()})
 
@@ -359,9 +441,9 @@ def run(today: str | None = None, sleep=time.sleep) -> dict:
                     "group_ten": gbars[-1][2] / gbars[-11][2] - 1 if gbars else 0.0}
     kept, left = screen({s: v for s, v in names.items()}, records, reports, today) if drop else ([], [])
     watch = {s: names[s] for s in WATCH if s in names}
-    md = page(today, funds, watch, drop, kept, left, centre, history)
+    md = page(today, funds, watch, drop, kept, left, centre, history, bear)
     OUT.mkdir(parents=True, exist_ok=True)
-    rep = {"day": today, "centre": centre, "drop": drop, "funds": funds, "watch": watch, "history": history,
+    rep = {"day": today, "centre": centre, "drop": drop, "funds": funds, "watch": watch, "history": history, "bear": bear,
            "kept": [{k: v for k, v in c.items() if k != "record"} | {"record_date": c["record"]["date"]} for c in kept],
            "left": [{"symbol": c["symbol"], "why": c["why"]} for c in left]}
     (OUT / f"{today}.json").write_text(json.dumps(rep, ensure_ascii=False) + "\n")
