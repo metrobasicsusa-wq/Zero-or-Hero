@@ -137,6 +137,34 @@ def like_now(rows: list[dict], now: dict, market_down: bool) -> dict:
     return out
 
 
+def drop_history(rows: dict[str, list[dict]], moves: dict[str, dict[str, float]], today: str, env_now: str) -> dict:
+    """The past days that were big drop days by the same lines, and what followed: SPY from every such day, split by
+    what tripped the line, by bear market or not, and by SPY's environment that day; and the fund that was the
+    epicentre that day (the sector fund farthest under its one-year high). `rows` are past() by fund, `moves` the
+    close-to-close returns by fund and day. Sector funds start in different years, so early years have fewer lines to trip."""
+    by = {f: {r["day"]: r for r in rs} for f, rs in rows.items()}
+    spy = [r for r in rows.get("SPY", []) if r["day"] < today]
+    days = []
+    for r in spy:
+        d = r["day"]
+        if not big_drop({f: m[d] for f, m in moves.items() if d in m}):
+            continue
+        deep = [(by[f][d]["dd"], f) for f in SECTORS if d in by.get(f, {})]
+        c = by[min(deep)[1]][d] if deep else {}
+        days.append({"day": d, "index": any(moves.get(s, {}).get(d, 0.0) <= line for s, line in DROP.items()), "env": r["env"],
+                     "m3": r["m3"], "y1": r["y1"], "c3": c.get("m3"), "c1": c.get("y1")})
+
+    def line(sel: list[dict], a: str = "m3", b: str = "y1") -> dict:
+        return {"days": len(sel), "stretches": stretches([x["day"] for x in sel]),
+                "m3": summary([x[a] for x in sel if x[a] is not None]), "y1": summary([x[b] for x in sel if x[b] is not None])}
+    return {"since": spy[0]["day"] if spy else None, "env": env_now,
+            "usual": {"days": len(spy), "stretches": None, "m3": summary([r["m3"] for r in spy if r["m3"] is not None]),
+                      "y1": summary([r["y1"] for r in spy if r["y1"] is not None])},
+            "all": line(days), "index": line([x for x in days if x["index"]]), "sector": line([x for x in days if not x["index"]]),
+            "bear": line([x for x in days if in_bear(x["day"])]), "other": line([x for x in days if not in_bear(x["day"])]),
+            "same": line([x for x in days if x["env"] == env_now]), "centre": line(days, "c3", "c1")}
+
+
 # ---------- the day ----------
 def big_drop(moves: dict[str, float]) -> list[str]:
     """Why today is a big drop day (empty when it is not): `moves` are close-to-close returns by fund."""
@@ -216,7 +244,8 @@ def after(s: dict | None) -> str:
     return "样本不够" if not s else f"{pct(s['mean'], 1)}，涨 {s['up']:.0%}，最差的 5% {pct(s['bad'])}"
 
 
-def page(day: str, funds: dict[str, dict], watch: dict[str, dict], drop: list[str], kept: list[dict], left: list[dict], centre: str) -> str:
+def page(day: str, funds: dict[str, dict], watch: dict[str, dict], drop: list[str], kept: list[dict], left: list[dict], centre: str,
+         history: dict | None = None) -> str:
     out = [f"# 侦察：{day}", "",
            "我们自己的 agent 每个交易日 15:40（美东）按写死的线跑一遍（`hero/scout.py`）；「今天」是那一刻的涨跌，不是收盘价。只记录，不下单，不是投资建议。", "",
            "## 一、现在各在哪", "",
@@ -235,6 +264,17 @@ def page(day: str, funds: dict[str, dict], watch: dict[str, dict], drop: list[st
     out += [f"| {s} | {pct(v['move'], 1)} | {ENVS[v['env']]} | {pct(v['dd'])} | {FUNDS.get(v['group'], '自己走')}（{v['with']:.2f}） |" for s, v in watch.items()]
     out += ["", "## 二、今天是不是大跌日", "",
             ("**是**：" + "；".join(drop) + "。" if drop else "**不是**。线：标普收跌 1.5% 以上，或纳指 100 收跌 2% 以上，或任何一个行业基金收跌 3% 以上。今天没有清单。")]
+    if history and history.get("since"):
+        h = history
+        out += ["", f"按同样的线回头数（{h['since'][:4]} 年以来；下面除最后一行外都是标普之后的涨跌）：", "",
+                "| | 天数 | 几段行情 | 3 个月后 | 1 年后 |", "|---|---|---|---|---|"]
+        for key, label in (("usual", "所有日子（平时）"), ("all", "所有大跌日"), ("index", "其中标普或纳指自己过线的"), ("sector", "其中只有行业基金过线的"),
+                           ("bear", "三次熊市里的大跌日"), ("other", "其余时候的大跌日"), ("same", f"标普和今天同一种环境（{ENVS[h['env']]}）的大跌日"),
+                           ("centre", "那一天的震中板块自己（不是标普）")):
+            x = h[key]
+            out.append(f"| {label} | {x['days']} | {x['stretches'] if x['stretches'] is not None else '—'} | {after(x['m3'])} | {after(x['y1'])} |")
+        out += ["", "大跌日常常连着来，天数多不等于样本多，看「几段行情」。行业基金越往后越多（通信和互联网 2018 年才有），早年的大跌日会少算。"
+                "这里比的是买标普或买震中那只基金，不是清单里的股票：清单的五条线还没有回头测过。"]
     if drop:
         out += ["", "## 三、清单", "",
                 "五条线：离高点 25% 以上；上次指引高于预期；十天里没有比同组多跌 10% 以上；一天成交 $3 亿以上；一周内不发财报。同一组只留最像这一组的两只。", ""]
@@ -269,15 +309,18 @@ def run(today: str | None = None, sleep=time.sleep) -> dict:
     today = today or data["SPY"][-1][0]
     spy_adj = [(d, a) for d, _, a, _ in data["SPY"] if d <= today]
     spy_now = state([a for _, a in spy_adj], len(spy_adj) - 1)
-    funds = {}
+    funds, rows, moves = {}, {}, {}
     for f in FUNDS:
         bars = [b for b in data[f] if b[0] <= today]
         adj = [(d, a) for d, _, a, _ in bars]
         now = state([a for _, a in adj], len(adj) - 1)
         if not now:
             continue
+        rows[f] = past(adj, spy_adj)
+        moves[f] = {adj[i][0]: adj[i][1] / adj[i - 1][1] - 1 for i in range(1, len(adj))}
         funds[f] = {**now, "move": bars[-1][2] / bars[-2][2] - 1, "market_down": spy_now["env"] == "down",
-                    "like": like_now(past(adj, spy_adj), now, spy_now["env"] == "down")}
+                    "like": like_now(rows[f], now, spy_now["env"] == "down")}
+    history = drop_history(rows, moves, today, spy_now["env"])
     centre = min(SECTORS, key=lambda f: funds[f]["dd"] if f in funds else 0)
     drop = big_drop({f: v["move"] for f, v in funds.items()})
 
@@ -316,9 +359,9 @@ def run(today: str | None = None, sleep=time.sleep) -> dict:
                     "group_ten": gbars[-1][2] / gbars[-11][2] - 1 if gbars else 0.0}
     kept, left = screen({s: v for s, v in names.items()}, records, reports, today) if drop else ([], [])
     watch = {s: names[s] for s in WATCH if s in names}
-    md = page(today, funds, watch, drop, kept, left, centre)
+    md = page(today, funds, watch, drop, kept, left, centre, history)
     OUT.mkdir(parents=True, exist_ok=True)
-    rep = {"day": today, "centre": centre, "drop": drop, "funds": funds, "watch": watch,
+    rep = {"day": today, "centre": centre, "drop": drop, "funds": funds, "watch": watch, "history": history,
            "kept": [{k: v for k, v in c.items() if k != "record"} | {"record_date": c["record"]["date"]} for c in kept],
            "left": [{"symbol": c["symbol"], "why": c["why"]} for c in left]}
     (OUT / f"{today}.json").write_text(json.dumps(rep, ensure_ascii=False) + "\n")

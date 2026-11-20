@@ -9201,6 +9201,34 @@ class Scout(unittest.TestCase):
         self.assertIsNone(scout.summary([0.1] * 19))
         self.assertEqual(scout.stretches(["2020-01-02", "2020-01-10", "2020-06-01"]), 2)
 
+    def test_past_drop_days_are_counted_by_the_same_lines(self):
+        from hero import scout
+        days = [(date(2001, 1, 1) + timedelta(days=i)).isoformat() for i in range(400)]
+        row = lambda d, env="up", dd=-0.02, m3=0.05, y1=0.1: {"day": d, "env": env, "dd": dd, "above50": True, "market_down": False, "m3": m3, "y1": y1}   # noqa: E731
+        spy = [row(d) for d in days]
+        spy[100].update(env="down", m3=-0.1, y1=-0.2)
+        rows = {"SPY": spy, "XLK": [row(d, dd=-0.3, m3=0.2, y1=0.4) for d in days], "XLF": [row(d, dd=-0.05, m3=-0.3, y1=-0.3) for d in days[50:]]}
+        quiet = {d: 0.001 for d in days}
+        moves = {"SPY": {**quiet, days[100]: -0.02, days[399]: -0.03}, "QQQ": dict(quiet), "XLK": {**quiet, days[200]: -0.031}, "XLF": dict(quiet)}
+        h = scout.drop_history(rows, moves, days[399], "down")
+        self.assertEqual((h["since"], h["usual"]["days"]), (days[0], 399))          # today itself is not history
+        self.assertEqual((h["all"]["days"], h["index"]["days"], h["sector"]["days"]), (2, 1, 1))   # SPY -2% once, a sector -3.1% once
+        self.assertEqual((h["all"]["stretches"], h["same"]["days"]), (2, 1))        # 100 days apart; one of them with SPY in a decline
+        self.assertIsNone(h["all"]["m3"])                                           # two days: too few to average
+        self.assertEqual((h["bear"]["days"], h["other"]["days"]), (2, 0))           # both fall inside the 2000-02 bear market
+        many = {"SPY": {d: -0.02 for d in days}, "XLK": dict(quiet)}
+        full = scout.drop_history(rows, many, days[399], "up")
+        self.assertEqual(full["all"]["days"], 399)
+        self.assertAlmostEqual(full["centre"]["m3"]["mean"], 0.2)                   # the fund farthest under its high that day: XLK, not XLF
+        self.assertAlmostEqual(full["all"]["m3"]["mean"], (398 * 0.05 - 0.1) / 399)
+        funds = {"SPY": {"env": "up", "dd": -0.02, "move": -0.02, "market_down": False,
+                         "like": {"days": 40, "stretches": 3, "m3": None, "y1": None, "usual_m3": None}}}
+        text = scout.page("2002-02-05", funds, {}, ["标普 500 -2.0%"], [], [], "SPY", full)
+        self.assertIn("按同样的线回头数（2001 年以来", text)
+        self.assertIn("| 所有大跌日 | 399 | 1 | ", text)
+        self.assertIn("| 那一天的震中板块自己（不是标普） | 399 | 1 | +20.0%，涨 100%", text)
+        self.assertIn("清单的五条线还没有回头测过", text)
+
     def test_the_page_on_a_quiet_day_and_on_a_drop_day(self):
         from hero import scout
         like = {"days": 40, "stretches": 3, "m3": {"n": 40, "mean": 0.03, "up": 0.7, "bad": -0.1}, "y1": None, "usual_m3": None}
