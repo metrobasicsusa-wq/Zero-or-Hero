@@ -1,0 +1,199 @@
+{
+ "date": "2026-11-20",
+ "sniper": {
+  "symbol": "META",
+  "direction": "put",
+  "catalyst": "读穿：彭博 11-19 收盘后报道苹果在做自己的自主 AI 代理（能写代码、操作浏览器、跨应用做多步任务），报道点名的对手是 Anthropic、OpenAI 和 Meta（Benzinga、FX Leaders 11-20 转述；苹果没有确认，还在早期）。Anthropic 盘前 −8% 到 −10%，Meta 盘前 −3.1%（$577.92，09:02），已经低于 20 日最低点 $583.80，跳空约是它平时单日波动（1.9%）的 1.6 倍。另有两条它自己的标题：CFO 卖出持股、重新评估 2030 净零目标。不是财报反应日。",
+  "catalyst_type": "peer plan hits a group",
+  "order": "second",
+  "confidence": 0.25,
+  "wrong_if": "10:00 时 Meta 在自己开盘价上方（低开被买回）。如果那时纳指 ETF（QQQ）也在自己开盘价上方，另记一笔「整条链低开被买」，和这条消息本身分开。或者苹果 / 彭博的报道被否认。",
+  "settles_today": "不会：苹果的代理还没发布，对 Meta 的影响今天定不了（只记录）"
+ },
+ "candidates": [
+  {
+   "rank": 1,
+   "symbol": "META",
+   "direction": "put",
+   "confidence": 0.25,
+   "catalyst_type": "peer plan hits a group",
+   "order": "second",
+   "why": "苹果做自主 AI 代理的报道点名 Meta 是对手之一，Anthropic 盘前大跌；Meta 盘前 −3.1%，已破 20 日最低点，跳空约 1.6 倍平时波动（不到 3 倍，不拿过夜）",
+   "wrong_if": "10:00 在自己开盘价上方；QQQ 同时在开盘价上方就另记「整条链低开被买」"
+  },
+  {
+   "rank": 2,
+   "symbol": "NVDA",
+   "direction": "put",
+   "confidence": 0.2,
+   "catalyst_type": "legal-regulatory",
+   "order": "first",
+   "why": "民主党议员开始调查英伟达对 Megaspeed 案调查的影响（Benzinga 标题）；盘前 −2.3%，破 20 日最低点，跳空约 0.8 倍平时波动。减分：监管类消息；已经连跌六天，是连续追",
+   "wrong_if": "10:00 在自己开盘价上方，或芯片 ETF（SMH）守住开盘价而它也守住"
+  },
+  {
+   "rank": 3,
+   "symbol": "AMD",
+   "direction": "put",
+   "confidence": 0.15,
+   "catalyst_type": "legal-regulatory",
+   "order": "first",
+   "why": "Hunterbrook 做空报告的第二天，盘前再 −4.4%，约 0.7 倍平时波动，没破 20 日最低点。减分：连续第 2 天追；昨天已经 −7.7%",
+   "wrong_if": "10:00 在自己开盘价上方，或公司出来逐条反驳报告"
+  },
+  {
+   "rank": 4,
+   "symbol": "TSLA",
+   "direction": "call",
+   "confidence": 0.15,
+   "catalyst_type": "analyst rating",
+   "order": "first",
+   "why": "汇丰上调评级、目标价翻倍多（理由是和 SpaceX 合并的可能），加上辅助驾驶在意大利获批；但盘前跟着大盘 −2.8%（约 1.1 倍平时波动），方向和消息相反。减分：主要是分析师评级；逆着今天的盘面",
+   "wrong_if": "10:00 在自己开盘价下方，或 QQQ 继续走低而它没有比 QQQ 强"
+  }
+ ],
+ "claude_b_pick": "没有选（它今天的 sniper 是 null）",
+ "notes": [
+  "08:35 的预选没写：今早没有一只非财报股票有自己的清楚消息。09:01 例程 09:02 送到，扫描 09:02 出来，照常选；按 10-22 的约定每天都下第 1 名，所以信心低也填。",
+  "大盘背景：AI / 芯片链继续跌——纳指 100 期货约 −1.5%，标普期货约 −0.65%；英伟达连跌第七天、盘前创一年新低；亚洲和欧洲的芯片股隔夜大跌，台积电盘前 −5.5%；Anthropic 上市第二天盘前 −8% 到 −10%。今天是月度期权到期日。",
+  "排除的财报反应日名单（reaction_day = 11-20）：BJ BKE BSP ESE ESTC FRO GAP GLOB GRRR IESC INTU KEYS MATW MOG.A NGVC POST ROST。Intuit（−9.2%）、Ross、Gap 不选。",
+  "风险：这是一个「跟着跌」的看跌单，连跌多天之后低开，开盘被买回的可能不小；规则只在 09:30–10:00 股价没有逆着方向走时才买。Meta 的消息是读穿，不是它自己的。",
+  "SNDK 盘前显示 −88.3% 是今天 8 拆 1 生效，不是下跌；昨晚加的拆股保护今天第一次用上，收盘时核对日志里有没有那一行。"
+ ],
+ "generated_at": "2026-11-20T09:04-05:00",
+ "skipped": [
+  {
+   "symbol": "INTU",
+   "direction": "put",
+   "gap": "−9.2%",
+   "reason": "财报反应日",
+   "why_not": "昨晚盘后发的财报，下调全年收入指引"
+  },
+  {
+   "symbol": "SNDK",
+   "direction": "put",
+   "gap": "−88.3%",
+   "reason": "其他",
+   "why_not": "今天 8 拆 1 生效，价格的变化是拆股，不是消息"
+  },
+  {
+   "symbol": "WULF",
+   "direction": "put",
+   "gap": "−5.8%",
+   "reason": "消息太弱",
+   "why_not": "兰辛镇议会 11-18 晚 3 比 2 通过数据中心禁令，是前天的消息、昨天已经跌过；公司的抗议书可能让禁令不生效；不在股票池"
+  },
+  {
+   "symbol": "CRWV",
+   "direction": "put",
+   "gap": "−6.0%",
+   "reason": "消息太弱",
+   "why_not": "标题是和 Runway 合作（偏正面），股价跟着链条跌"
+  },
+  {
+   "symbol": "COHR",
+   "direction": "put",
+   "gap": "−5.8%",
+   "reason": "消息太弱",
+   "why_not": "标题是昨天的（美国可能限制中国数据中心设备），今天跟着链条跌"
+  },
+  {
+   "symbol": "DELL",
+   "direction": "put",
+   "gap": "−5.7%",
+   "reason": "财报临近",
+   "why_not": "11-24 盘后发财报"
+  },
+  {
+   "symbol": "SPCX",
+   "direction": "put",
+   "gap": "−5.8%",
+   "reason": "消息太弱",
+   "why_not": "几条零散标题，没有一条够分量"
+  },
+  {
+   "symbol": "MRVL",
+   "direction": "put",
+   "gap": "−5.4%",
+   "reason": "分析师评级",
+   "why_not": "只有 Stifel 调整目标价"
+  },
+  {
+   "symbol": "PLTR",
+   "direction": "put",
+   "gap": "−4.5%",
+   "reason": "分析师评级",
+   "why_not": "只有 DZ Bank 调整目标价"
+  },
+  {
+   "symbol": "INTC",
+   "direction": "put",
+   "gap": "−4.4%",
+   "reason": "消息太弱",
+   "why_not": "没有新消息；昨天的狙击就是它（看涨，收盘那条线判错）"
+  },
+  {
+   "symbol": "MU",
+   "direction": "put",
+   "gap": "−3.3%",
+   "reason": "消息太弱",
+   "why_not": "标题是新 ETF 和财报电话会时间"
+  },
+  {
+   "symbol": "NOK",
+   "direction": "put",
+   "gap": "−3.6%",
+   "reason": "消息太弱",
+   "why_not": "行业报告，不是新消息"
+  },
+  {
+   "symbol": "UNH",
+   "direction": "call",
+   "gap": "+2.3%",
+   "reason": "分析师评级",
+   "why_not": "汇丰、TD Cowen 更新评级；此前三天 −5%、−10%、−6%"
+  },
+  {
+   "symbol": "SOFI",
+   "direction": "put",
+   "gap": "−2.7%",
+   "reason": "消息太弱",
+   "why_not": "一份问卷调查"
+  },
+  {
+   "symbol": "TSM",
+   "direction": "put",
+   "gap": "−5.5%",
+   "reason": "消息太弱",
+   "why_not": "跟着亚洲芯片股跌，没有自己的消息"
+  },
+  {
+   "symbol": "ARM",
+   "direction": "put",
+   "gap": "−5.4%",
+   "reason": "消息太弱",
+   "why_not": "没有自己的消息"
+  },
+  {
+   "symbol": "STX",
+   "direction": "put",
+   "gap": "−5.6%",
+   "reason": "消息太弱",
+   "why_not": "没有自己的消息"
+  },
+  {
+   "symbol": "NBIS",
+   "direction": "put",
+   "gap": "−4.8%",
+   "reason": "消息太弱",
+   "why_not": "没有自己的消息"
+  },
+  {
+   "symbol": "ANET",
+   "direction": "put",
+   "gap": "−4.1%",
+   "reason": "消息太弱",
+   "why_not": "没有自己的消息"
+  }
+ ]
+}
