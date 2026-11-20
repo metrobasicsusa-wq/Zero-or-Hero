@@ -9616,3 +9616,67 @@ class Goal(unittest.TestCase):
                 (root / "journal-s500" / "sleeves.json").write_text(json.dumps(book))
                 later = goal.run("2026-11-03", root=root)
                 self.assertEqual((later["weeks"][-1]["week"], later["weeks"][-1]["picks"], later["weeks"][-1]["result"]), ("2026-11-02", ["gap"], 1000.0))
+
+
+class ZdteFlip(unittest.TestCase):
+    """The mid-session change study: what counts as a flip, which days a feature marks, and the pass line."""
+
+    def row(self, day, t, move, res):
+        return {"day": day, "t": t, "move": move, "res": {"0.05/0.05": res, "0/0": res + 0.1}}
+
+    def day(self, day, moves, results=None):
+        results = results or {}
+        return {t: self.row(day, t, m, results.get(t, -0.5)) for t, m in moves.items()}
+
+    def test_a_flip_is_the_first_later_entry_on_the_other_side_of_the_open(self):
+        from hero import research_zdte_flip as zf
+        up = self.day("2026-11-20", {"09:45": -0.001, "10:00": 0.0051, "10:30": -0.004, "11:00": -0.008, "12:00": -0.013}, {"10:30": 4.0, "11:00": 2.0})
+        self.assertEqual((zf.flip(up)["t"], zf.flip(up)["res"]["0.05/0.05"]), ("10:30", 4.0))      # the first one, not the best one
+        held = self.day("2026-11-19", {"10:00": -0.004, "10:30": -0.006, "11:00": -0.002, "12:00": -0.01})
+        self.assertIsNone(zf.flip(held))
+        self.assertIsNone(zf.flip(self.day("2026-11-18", {"10:00": 0.0, "10:30": -0.004})))      # flat at 10:00: no side to flip from
+        late = self.day("2026-11-17", {"10:00": 0.002, "10:30": 0.001, "11:00": 0.0, "12:00": -0.001})
+        self.assertEqual(zf.flip(late)["t"], "12:00")
+        days = {"2026-11-20": up, "2026-11-19": held, "2026-11-17": late}
+        self.assertEqual(zf.traded(days, lit=False), ["2026-11-17", "2026-11-19", "2026-11-20"])
+        self.assertEqual(zf.traded(days, lit=True), ["2026-11-20"])                                # only 0.5% or more from the open
+        self.assertEqual(zf.flip_rates(days, zf.traded(days, False)), {"n": 3, "10:30": 1, "11:00": 1, "12:00": 2})
+        self.assertEqual(zf.change(days, zf.traded(days, False), "flip"), [("2026-11-17", -0.5), ("2026-11-20", 4.0)])
+        self.assertEqual(zf.change(days, zf.traded(days, False), "add"), [("2026-11-19", -0.5)])   # same side at 12:00 and farther out
+        self.assertEqual([d for d, _ in zf.change(days, zf.traded(days, False), "wait")], ["2026-11-19", "2026-11-20"])   # 11-17 is flat at 11:00
+        g = zf.disagree(days)
+        self.assertEqual((g["n"], g["early"], g["late"]), (1, -0.5, -0.5))
+
+    def test_the_features_seen_at_ten_and_the_pass_line(self):
+        from hero import research_zdte_flip as zf
+        ts = self.day("2026-11-20", {"10:00": 0.0051})
+        got = zf.features("2026-11-20", ts, {"gap": -0.0032, "prev_move": -0.02})
+        self.assertEqual(got, {"gap_against": True, "just_over": True, "after_drop": True, "opex": True})   # today: all four
+        calm = zf.features("2026-11-12", self.day("2026-11-12", {"10:00": 0.009}), {"gap": 0.004, "prev_move": 0.003})
+        self.assertEqual(calm, {"gap_against": False, "just_over": False, "after_drop": False, "opex": False})
+        self.assertFalse(zf.features("2026-11-12", self.day("2026-11-12", {"10:00": 0.009}), {"gap": -0.001, "prev_move": None})["gap_against"])   # too small a gap
+        days = [(date(2025, 1, 1) + timedelta(days=i)).isoformat() for i in range(40)]
+        good = [(d, 0.3) for d in days]
+        self.assertTrue(zf.verdict(good)["pass"])
+        self.assertEqual(zf.verdict(good[:29])["why"], "只有 29 笔，不到 30 笔")
+        lucky = [(d, -0.2) for d in days[:37]] + [(d, 9.0) for d in days[37:]]                      # a profit on average, from three days
+        v = zf.verdict(lucky)
+        self.assertFalse(v["pass"])
+        self.assertIn("前半段是亏的", v["why"])
+        self.assertIn("去掉最好 3 天是亏的", v["why"])
+
+    def test_a_feature_needs_the_gap_in_both_halves_and_without_the_best_days(self):
+        from hero import research_zdte_flip as zf
+        days, cards = {}, {}
+        for i in range(120):
+            d = (date(2025, 1, 6) + timedelta(days=i)).isoformat()
+            on = i % 2 == 0
+            days[d] = self.day(d, {"10:00": 0.006 if on else 0.009, "12:00": 0.01}, {"10:00": 0.4 if on else 0.0})
+            cards[d] = {"gap": 0.0, "prev_move": 0.0}
+        row = zf.feature_row(days, cards, sorted(days), "just_over")
+        self.assertEqual((row["on_n"], row["off_n"], row["verdict"]), (60, 60, "算数"))
+        self.assertAlmostEqual(row["diff"], 0.4)
+        for d in sorted(days)[60:]:                                                              # the second half: the gap is gone
+            days[d]["10:00"]["res"]["0.05/0.05"] = 0.0
+        self.assertEqual(zf.feature_row(days, cards, sorted(days), "just_over")["verdict"], "不算数")
+        self.assertEqual(zf.feature_row(days, cards, sorted(days)[:40], "just_over")["verdict"], "样本不够")
