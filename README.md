@@ -43,6 +43,7 @@ python -m unittest discover -s tests
 - `evolve.yml`：每周六进化一次参数
 - `patrol.yml`：交易日 3 次巡检（数据是否过期、当日亏损、期权止损线、挂单卡住），有问题就在「⚠️ 巡检告警」Issue 里留言
 - `review.yml`：每个交易日美东 16:55 生成盘后复盘（规则自动生成要点 + 当日数据），保存到 `journal/reviews/` 并开 Issue
+- `scout.yml`：我们自己的侦察 agent，每个交易日美东 15:40 跑（环境、是不是熊市、大跌日清单、演算账本），只记录不下单；`goal.yml`：目标账本，每周六 09:10。这两个 11-20 新加，暂时挂 GitHub 自带的定时（不可靠），等加进 cron-job.org
 - `test.yml`：每次推送都跑测试
 - `pages.yml`：每轮交易后重新生成监控面板，发布到 GitHub Pages（需要在 **Settings → Pages** 把 Source 设为 **GitHub Actions**）
 
@@ -56,6 +57,8 @@ python -m unittest discover -s tests
 | patrol | 工作日 10:47、12:47、14:47 |
 | review | 工作日 16:55 |
 | evolve | 周六 10:17 |
+| scout（待加） | 工作日 15:40 |
+| goal（待加） | 周六 9:10 |
 
 ## 监控面板
 
