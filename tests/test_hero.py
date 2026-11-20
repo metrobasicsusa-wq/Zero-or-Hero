@@ -9219,3 +9219,116 @@ class Scout(unittest.TestCase):
         self.assertIn("| AAA | -5.0% | -40% | 科技和芯片 | 是 | 11-12 指引高于预期、被板块带走 |", drop)
         self.assertIn("- 十天里比同组多跌 10% 以上，像是有它自己的事：SICK（1 只）", drop)
         self.assertIn("- 一周内发财报：SOON（1 只）", drop)
+
+
+class ScoutLedger(unittest.TestCase):
+    """The scout's structures at real quotes and its plan ledger: what is recorded, what is refused, how it is settled."""
+
+    def chain(self, und, expiries=("2027-02-12", "2027-02-19", "2027-03-19")):
+        return [{"symbol": f"{und}{e.replace('-', '')[2:]}{t[0].upper()}{k:05d}", "strike_price": str(k), "expiration_date": e, "type": t}
+                for e in expiries for t in ("call", "put") for k in range(60, 141, 5)]
+
+    def client(self, quote_day="2026-11-20", spots=None):
+        from types import SimpleNamespace
+        chain = self.chain
+        def contracts(und, **kw):
+            lo, hi = kw["expiration_date_gte"], kw["expiration_date_lte"]
+            far = ("2027-10-15", "2027-11-19") if lo > "2027-06" else ("2027-02-12", "2027-02-19", "2027-03-19")
+            return [c for c in chain(und, far) if lo <= c["expiration_date"] <= hi]
+        def snaps(syms):
+            out = {}
+            for s in syms:
+                k, call = int(s[-5:]), s[-6] == "C"
+                mid = max(100 - k, 0) + 6 if call else max(k - 100, 0) + 5
+                out[s] = {"latestQuote": {"bp": mid - 0.2, "ap": mid + 0.2, "t": quote_day + "T20:40:01Z"}}
+            return out
+        return SimpleNamespace(option_contracts=contracts, option_snapshots=snaps,
+                               stock_snapshots=lambda syms: {s: {"latestTrade": {"p": (spots or {}).get(s, 100.0)}} for s in syms},
+                               daily_bars=lambda syms, start, adjustment="all": {})
+
+    def test_the_legs_of_each_structure(self):
+        from hero import scout_ledger as sl
+        chain = self.chain("AAA")
+        self.assertEqual(sl.pick_expiry(chain), "2027-02-19")                      # the monthly, not the weekly before it
+        self.assertEqual(sl.pick_expiry([c for c in chain if c["expiration_date"] == "2027-02-12"]), "2027-02-12")
+        got = sl.legs("spread3m", 100.0, False, chain)
+        self.assertEqual([(x["side"], x["type"], x["strike"]) for x in got], [("buy", "C", 100.0), ("sell", "C", 110.0)])
+        self.assertEqual([x["strike"] for x in sl.legs("spread3m", 100.0, True, chain)], [100.0, 105.0])      # a fund: 5% higher
+        self.assertEqual([x["strike"] for x in sl.legs("spread1y", 100.0, False, chain)], [100.0, 120.0])
+        self.assertEqual([(x["side"], x["type"], x["strike"]) for x in sl.legs("csp3m", 100.0, False, chain)], [("sell", "P", 90.0)])
+        self.assertEqual(sl.legs("spread3m", 100.0, False, []), "这段时间没有挂牌的到期日")
+        self.assertEqual(sl.legs("spread3m", 300.0, False, chain), "没有两个不同的看涨行权价")   # both ends land on the top strike
+
+    def test_prices_take_the_worse_side_and_refuse_an_old_quote(self):
+        from hero import scout_ledger as sl
+        ls = sl.legs("spread3m", 100.0, False, self.chain("AAA"))
+        snaps = self.client().option_snapshots([x["occ"] for x in ls])
+        got = sl.priced(ls, snaps, "2026-11-20")
+        self.assertEqual([x["price"] for x in got], [6.2, 5.8])                    # buy at the ask, sell at the bid
+        e = sl.entry("2026-11-20", "AAA", "spread3m", 100.0, got)
+        self.assertEqual((e["debit"], e["risk"], e["gain"], e["breakeven"], e["cash"]), (0.4, 0.4, 9.6, 100.4, 40.0))
+        self.assertEqual(sl.priced(ls, snaps, "2026-11-21"), "报价不是今天的（2026-11-20）")
+        snaps[ls[1]["occ"]]["latestQuote"]["bp"] = 0
+        self.assertIn("没有买价", sl.priced(ls, snaps, "2026-11-20"))
+        csp = sl.entry("2026-11-20", "AAA", "csp3m", 100.0, [{"occ": "X", "side": "sell", "type": "P", "strike": 90.0, "expiry": "2027-02-19", "price": 3.0}])
+        self.assertEqual((csp["credit"], csp["risk"], csp["breakeven"], csp["cash"]), (3.0, 87.0, 87.0, 8700.0))
+        crossed = [{**got[0], "price": 5.0}, {**got[1], "price": 5.5}]
+        self.assertIn("对不上", sl.entry("2026-11-20", "AAA", "spread3m", 100.0, crossed))
+
+    def test_settling_at_expiry_and_after_a_split(self):
+        from hero import scout_ledger as sl
+        spread = {"kind": "spread3m", "debit": 4.0, "risk": 4.0, "legs": [{"strike": 100.0}, {"strike": 110.0}], "status": "open"}
+        self.assertEqual(sl.settle(spread, 112.0)["result"], 1.5)                  # worth 10 for 4
+        self.assertEqual(sl.settle(spread, 104.0)["result"], 0.0)
+        self.assertEqual(sl.settle(spread, 95.0)["result"], -1.0)
+        self.assertEqual(sl.settle(spread, 52.0, factor=2.0)["result"], 0.0)       # 2-for-1 after entry: strikes 50 / 55, paid 2
+        csp = {"kind": "csp3m", "credit": 3.0, "risk": 87.0, "legs": [{"strike": 90.0}], "status": "open"}
+        self.assertAlmostEqual(sl.settle(csp, 95.0)["result"], 3 / 87, places=4)
+        self.assertAlmostEqual(sl.settle(csp, 80.0)["result"], -7 / 87, places=4)
+
+    def test_a_run_records_each_structure_once_with_spy_beside_it_and_scores_the_closed_ones(self):
+        from unittest import mock
+        from hero import scout_ledger as sl
+        with tempfile.TemporaryDirectory() as tmp:
+            out = Path(tmp)
+            (out / "2026-11-20.json").write_text(json.dumps({"day": "2026-11-20", "drop": ["芯片 -5.0%"], "kept": [{"symbol": "AAA", "group": "SMH"}]}))
+            (out / "2026-11-20.md").write_text("# 侦察\n\n## 三、清单\n")
+            with mock.patch.object(sl, "OUT", out):
+                got = sl.run(self.client(), "2026-11-20")
+                self.assertEqual((got["added"], got["skipped"], got["open"]), (6, 0, 6))    # three structures for the pick, three for SPY
+                again = sl.run(self.client(), "2026-11-20")
+                self.assertEqual((again["added"], again["open"]), (0, 6))                    # the same day twice: nothing doubled
+                ledger = json.loads((out / "ledger.json").read_text())
+                self.assertEqual(sorted({e["symbol"] for e in ledger}), ["AAA", "SPY"])
+                self.assertEqual({e["group"] for e in ledger}, {"科技和芯片", "对照"})
+                md = (out / "2026-11-20.md").read_text()
+                self.assertEqual(md.count("## 四、"), 1)
+                self.assertIn("| AAA | 三个月看涨价差 | 2027-02-19 | 100 / 110 | $40.00 | $40.00 | $960 | $100.40（+0.4%） |", md)
+                self.assertIn("| 三个月看涨价差 | 1 | 0 | — | — | — |", md)
+                dry = sl.run(self.client(quote_day="2026-11-19"), "2026-11-20", write=False)     # nothing new, nothing written
+                self.assertEqual(dry["added"], 0)
+                # the three-month entries come due: AAA ended at 112, SPY at 101
+                c = self.client()
+                bars = {"AAA": [{"t": "2026-11-20T05:00:00Z", "c": 100.0}, {"t": "2027-02-19T05:00:00Z", "c": 112.0}],
+                        "SPY": [{"t": "2026-11-20T05:00:00Z", "c": 100.0}, {"t": "2027-02-19T05:00:00Z", "c": 101.0}]}
+                c.daily_bars = lambda syms, start, adjustment="all": {s: bars[s] for s in syms}
+                (out / "2027-02-22.json").write_text(json.dumps({"day": "2027-02-22", "drop": [], "kept": []}))
+                (out / "2027-02-22.md").write_text("# 侦察\n")
+                sl.run(c, "2027-02-22")
+                board = sl.scoreboard(json.loads((out / "ledger.json").read_text()))
+                self.assertEqual((board["spread3m"]["closed"], board["spread3m"]["open"], board["spread1y"]["open"]), (1, 0, 1))
+                self.assertAlmostEqual(board["spread3m"]["picks"], (10 - 0.4) / 0.4, places=3)
+                self.assertAlmostEqual(board["spread3m"]["spy"], (1 - 0.4) / 0.4, places=3)
+                self.assertIn("今天没有新记的", (out / "2027-02-22.md").read_text())
+
+    def test_a_stale_quote_is_left_out_with_its_reason(self):
+        from unittest import mock
+        from hero import scout_ledger as sl
+        with tempfile.TemporaryDirectory() as tmp:
+            out = Path(tmp)
+            (out / "2026-11-20.json").write_text(json.dumps({"day": "2026-11-20", "drop": ["x"], "kept": [{"symbol": "AAA", "group": None}]}))
+            (out / "2026-11-20.md").write_text("# 侦察\n")
+            with mock.patch.object(sl, "OUT", out):
+                got = sl.run(self.client(quote_day="2026-11-19"), "2026-11-20")
+                self.assertEqual((got["added"], got["skipped"]), (0, 6))
+                self.assertIn("报价不是今天的（2026-11-19）", (out / "2026-11-20.md").read_text())

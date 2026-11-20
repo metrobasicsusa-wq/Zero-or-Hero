@@ -1,0 +1,46 @@
+name: scout
+
+# Our own after-the-close agent (hero/scout.py, hero/scout_ledger.py): where things stand, whether today is a big drop
+# day, the list, real option quotes for three structures and a plan ledger. It sends no orders.
+on:
+  schedule:
+    - cron: "40 20 * * 1-5"   # 15:40 in New York in winter
+    - cron: "40 19 * * 1-5"   # 15:40 in New York in summer; the script skips whichever falls outside 15:30-16:45
+  workflow_dispatch:
+    inputs:
+      dry:
+        description: "只看不记（不写账本、不提交）"
+        type: boolean
+        default: false
+
+concurrency:
+  group: scout
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  scout:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install -r requirements.txt
+      - name: Scout
+        env:
+          ALPACA_API_KEY: ${{ secrets.ALPACA_API_KEY }}
+          ALPACA_SECRET_KEY: ${{ secrets.ALPACA_SECRET_KEY }}
+        run: python -m hero.scout_ledger ${{ github.event_name == 'schedule' && '--scheduled' || '' }} ${{ inputs.dry && '--dry' || '' }}
+      - name: Commit
+        if: ${{ !inputs.dry }}
+        run: |
+          git config user.name "zero-or-hero-bot"
+          git config user.email "zero-or-hero-bot@users.noreply.github.com"
+          git add research/scout
+          git diff --cached --quiet && exit 0
+          git commit -m "scout: $(TZ=America/New_York date +%F)"
+          for i in 1 2 3; do git pull --rebase && git push && exit 0; sleep 10; done

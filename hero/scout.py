@@ -54,7 +54,14 @@ def fetch(sym: str, since: str = "1999-01-01") -> list[tuple[str, float, float, 
     start = int(datetime.fromisoformat(since).replace(tzinfo=ET).timestamp())
     url = (f"https://query1.finance.yahoo.com/v8/finance/chart/{sym.replace('.', '-')}?interval=1d"
            f"&period1={start}&period2={int(time.time()) + 86400}")
-    r = json.load(urllib.request.urlopen(urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"}), timeout=40))["chart"]["result"][0]
+    for attempt in range(4):
+        try:
+            r = json.load(urllib.request.urlopen(urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"}), timeout=40))["chart"]["result"][0]
+            break
+        except Exception:
+            if attempt == 3:
+                raise
+            time.sleep(2 * (attempt + 1))
     q, adj = r["indicators"]["quote"][0], (r["indicators"].get("adjclose") or [{}])[0].get("adjclose")
     out = []
     for i, t in enumerate(r.get("timestamp") or []):
