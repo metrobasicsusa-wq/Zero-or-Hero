@@ -1736,7 +1736,7 @@
   },
   "2026-11-20": {
    "TSLA": {
-    "status": "open",
+    "status": "closed",
     "contract": "TSLA261120C00377500",
     "kind": "C",
     "strike": 377.5,
@@ -1746,7 +1746,13 @@
     "ask": 1.91,
     "spread": 0.0373,
     "opened_at": "10:00",
-    "best_bid": 1.84
+    "best_bid": 1.84,
+    "exit": "time",
+    "exit_bid": 0.0,
+    "exit_ask": 0.01,
+    "exit_at": "15:30",
+    "exit_spread": null,
+    "ret": -1.0
    },
    "NVDA": {
     "status": "closed",
@@ -1766,7 +1772,7 @@
     "ret": 2
    },
    "AMZN": {
-    "status": "open",
+    "status": "closed",
     "contract": "AMZN261120C00262500",
     "kind": "C",
     "strike": 262.5,
@@ -1776,10 +1782,16 @@
     "ask": 1.2,
     "spread": 0.0779,
     "opened_at": "10:00",
-    "best_bid": 1.11
+    "best_bid": 1.11,
+    "exit": "time",
+    "exit_bid": 0.03,
+    "exit_ask": 0.04,
+    "exit_at": "15:30",
+    "exit_spread": 0.2857,
+    "ret": -0.975
    },
    "SPY": {
-    "status": "open",
+    "status": "closed",
     "contract": "SPY261120C00723000",
     "kind": "C",
     "strike": 723.0,
@@ -1789,7 +1801,13 @@
     "ask": 1.69,
     "spread": 0.0179,
     "opened_at": "10:00",
-    "best_bid": 1.66
+    "best_bid": 1.66,
+    "exit": "time",
+    "exit_bid": 0.0,
+    "exit_ask": 0.03,
+    "exit_at": "15:30",
+    "exit_spread": null,
+    "ret": -1.0
    }
   }
  }
