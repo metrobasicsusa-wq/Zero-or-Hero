@@ -9120,3 +9120,102 @@ class ResearchTools(unittest.TestCase):
         self.assertEqual(k["1.05"], 105.0)
         closes = [100.0] * 60 + [90.0] * 5 + [120.0] * 3                   # under its average for 5 sessions, then over it
         self.assertEqual((rt.crossed(closes, 64), rt.crossed(closes, 65), rt.crossed(closes, 67)), (5, 1, 3))
+
+
+class Scout(unittest.TestCase):
+    """Our own scout: where things stand, whether today is a big drop day, and the list its fixed lines let through."""
+
+    def name(self, **kw):
+        base = {"dd": -0.40, "traded": 900e6, "ten": -0.12, "group": "SMH", "group_ten": -0.10, "move": -0.05, "with": 0.6, "env": "down"}
+        return {**base, **kw}
+
+    def test_where_a_series_stands(self):
+        from hero import scout
+        flat = [100.0] * 252
+        self.assertIsNone(scout.state(flat, 250))                                  # not a year of prices yet
+        self.assertEqual(scout.state(flat, 251)["env"], "up")
+        self.assertEqual(scout.state(flat + [95.0], 252)["env"], "pullback")       # under its average, 5% off the high
+        self.assertEqual(scout.state(flat + [85.0], 252)["env"], "down")           # under its average, 15% off
+        low = [100.0] * 200 + [70.0] * 51 + [80.0]
+        s = scout.state(low, 251)
+        self.assertEqual((s["env"], round(s["dd"], 2)), ("rebound", -0.2))         # back over its average, still 20% off
+
+    def test_the_big_drop_day_lines(self):
+        from hero import scout
+        self.assertEqual(scout.big_drop({"SPY": -0.014, "QQQ": -0.019, "SMH": -0.029}), [])
+        self.assertEqual(scout.big_drop({"SPY": -0.015, "QQQ": -0.01}), ["标普 500 -1.5%"])
+        self.assertEqual(scout.big_drop({"SPY": -0.004, "QQQ": -0.021, "SMH": -0.05, "XLV": 0.01}), ["纳指 100 -2.1%", "芯片 -5.0%"])
+
+    def test_a_stock_is_put_with_the_fund_it_moves_with(self):
+        from hero import scout
+        rnd = random.Random(7)
+        spy = [rnd.gauss(0, 0.01) for _ in range(120)]
+        chips = [m + rnd.gauss(0, 0.02) for m in spy]
+        banks = [m + rnd.gauss(0, 0.01) for m in spy]
+        stock = [c + rnd.gauss(0, 0.004) for c in chips]                            # the chip fund plus a little of its own
+        fund, c = scout.moves_with(stock, {"SMH": chips, "XLF": banks}, spy)
+        self.assertEqual(fund, "SMH")
+        self.assertGreater(c, 0.9)
+        alone = [m + rnd.gauss(0, 0.03) for m in spy]
+        self.assertEqual(scout.moves_with(alone, {"SMH": chips, "XLF": banks}, spy), (None, 0.0))
+
+    def test_the_list_and_why_each_name_was_left_out(self):
+        from hero import scout
+        good = {"date": "2026-11-12", "guide": "raise", "guide_vs_est": "above", "tags": ["指引高于预期"]}
+        names = {"AAA": self.name(**{"with": 0.9}), "BBB": self.name(**{"with": 0.8}), "CCC": self.name(group="XLK", **{"with": 0.7}),   # chips and technology: one bet
+                 "DDD": self.name(group="XLV"), "OWN1": self.name(group=None), "OWN2": self.name(group=None), "OWN3": self.name(group=None),
+                 "SHAL": self.name(dd=-0.20), "NOREC": self.name(), "CUT": self.name(), "MEH": self.name(), "THIN": self.name(traded=100e6),
+                 "SICK": self.name(ten=-0.25), "SOON": self.name(group="XLF")}
+        records = {s: good for s in names if s not in ("NOREC", "CUT", "MEH")}
+        records["CUT"] = {**good, "guide": "cut"}
+        records["MEH"] = {**good, "guide_vs_est": None}
+        kept, left = scout.screen(names, records, {"SOON": "2026-11-24", "AAA": "2027-02-10"}, "2026-11-20")
+        self.assertEqual([c["symbol"] for c in kept], ["AAA", "BBB", "DDD", "OWN1", "OWN2", "OWN3"])   # by group; three own-way names all stay
+        why = {c["symbol"]: c["why"] for c in left}
+        self.assertNotIn("SHAL", why)                                               # not deep: never a candidate
+        self.assertEqual(why["NOREC"], "没有上次财报的记录")
+        self.assertEqual(why["CUT"], "上次指引下调或低于预期")
+        self.assertEqual(why["MEH"], "上次指引没有高于预期")
+        self.assertTrue(why["THIN"].startswith("成交太小"))
+        self.assertIn("多跌 15%", why["SICK"])
+        self.assertEqual(why["SOON"], "11-24 发财报")
+        self.assertEqual(why["CCC"], "同一组（科技和芯片）已经有两只更像这一组的")
+
+    def test_what_followed_days_like_today(self):
+        from hero import scout
+        # a fund that falls 30% and comes back, twice: once while the market holds, once with the market falling too
+        up, fall, back = [100.0] * 260, [100 - i for i in range(1, 31)], [70 + i * 0.5 for i in range(1, 121)]
+        fund = up + fall + back + [130.0] * 300 + [130 - i * 1.3 for i in range(1, 31)] + [91 + i * 0.4 for i in range(1, 400)]
+        market = [100.0] * len(fund)
+        market[len(up) + len(fall) + len(back) + 300:] = [100 - min(i, 30) * 0.5 for i in range(len(fund) - (len(up) + len(fall) + len(back) + 300))]
+        days = [(date(2001, 1, 1) + timedelta(days=i)).isoformat() for i in range(len(fund))]
+        rows = scout.past(list(zip(days, fund)), list(zip(days, market)))
+        alone = [r for r in rows if r["env"] == "down" and not r["market_down"]]
+        together = [r for r in rows if r["env"] == "down" and r["market_down"]]
+        self.assertTrue(alone and together)
+        got = scout.like_now(rows, {"env": "down", "dd": -0.28}, market_down=False)
+        self.assertEqual((got["days"], got["stretches"]), (len(alone), 2))        # the first fall, and the start of the second before the market was down too
+        self.assertGreater(got["m3"]["mean"], 0)                                   # it came back
+        self.assertIn("deep_other", got)                                           # 28% off its high: the deep cut is shown
+        self.assertNotIn("deep_bear", scout.like_now(rows, {"env": "down", "dd": -0.12}, market_down=True))
+        self.assertIsNone(scout.summary([0.1] * 19))
+        self.assertEqual(scout.stretches(["2020-01-02", "2020-01-10", "2020-06-01"]), 2)
+
+    def test_the_page_on_a_quiet_day_and_on_a_drop_day(self):
+        from hero import scout
+        like = {"days": 40, "stretches": 3, "m3": {"n": 40, "mean": 0.03, "up": 0.7, "bad": -0.1}, "y1": None, "usual_m3": None}
+        funds = {"SPY": {"env": "up", "dd": -0.02, "move": -0.004, "market_down": False, "like": like},
+                 "SMH": {"env": "down", "dd": -0.3, "move": -0.05, "market_down": False,
+                         "like": {**like, "deep_bear": {"n": 30, "mean": 0.05, "up": 0.5, "bad": -0.4}, "deep_other": None}}}
+        watch = {"NVDA": {"env": "down", "dd": -0.4, "move": -0.03, "group": "SMH", "with": 0.55}}
+        quiet = scout.page("2026-11-20", funds, watch, [], [], [], "SMH")
+        self.assertIn("**不是**", quiet)
+        self.assertNotIn("## 三、清单", quiet)
+        self.assertIn("震中（离一年高点最远的板块）：**芯片**，-30%", quiet)
+        kept = [{"symbol": "AAA", **self.name(), "record": {"date": "2026-11-12", "tags": ["指引高于预期", "被板块带走", "别的"]}}]
+        left = [{"symbol": "SICK", "why": "十天里比同组多跌 10% 以上，像是有它自己的事（多跌 15%）"}, {"symbol": "SOON", "why": "11-24 发财报"}]
+        drop = scout.page("2026-11-20", funds, watch, ["芯片 -5.0%"], kept, left, "SMH")
+        self.assertIn("**是**：芯片 -5.0%。", drop)
+        self.assertIn("| AAA | -5.0% | -40% | 科技和芯片 | 是 | 11-12 指引高于预期、被板块带走 |", drop)
+        self.assertIn("- 十天里比同组多跌 10% 以上，像是有它自己的事：SICK（1 只）", drop)
+        self.assertIn("- 一周内发财报：SOON（1 只）", drop)
