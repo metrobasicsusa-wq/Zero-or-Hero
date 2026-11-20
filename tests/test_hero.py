@@ -3463,13 +3463,13 @@ class Sleeves(unittest.TestCase):
         # 11-19: at 09:40-10:00 the broker's SPY quotes were still the day before's close; the record now shows how old they are
         b = SleeveBroker(lambda s: (0.08, 0.10))
         plain = b.option_snapshots
-        b.option_snapshots = lambda syms: {s: {**v, "latestQuote": {**v["latestQuote"], "t": "2026-10-07T20:00:00Z"},
-                                               "latestTrade": {"p": 0.31, "t": "2026-10-08T13:59:58Z"}}
+        b.option_snapshots = lambda syms: {s: {**v, "latestQuote": {**v["latestQuote"], "t": "2026-10-08T14:00:01.546520818Z"},
+                                               "latestTrade": {"p": 0.31, "t": "2026-10-08T13:44:58Z"}}
                                            for s, v in plain(syms).items()}
         book, log = self.cycle(b, 10, 0, self.specs[:1])
         buy = next(e for e in log if e["kind"] == "sleeve_buy")
         self.assertEqual((buy["ask"], buy["quote_ask"], buy["quote_at"], buy["last"], buy["last_at"]),
-                         (0.10, 0.10, "2026-10-07T20:00:00Z", 0.31, "2026-10-08T13:59:58Z"))
+                         (0.10, 0.10, "2026-10-08T14:00:01.546520818Z", 0.31, "2026-10-08T13:44:58Z"))
         self.assertEqual(len([o for o in b.orders.values() if o["side"] == "buy"]), 1)
         b2, calls = SleeveBroker(lambda s: (0.08, 0.10)), []
         plain2 = b2.option_snapshots
@@ -3485,6 +3485,51 @@ class Sleeves(unittest.TestCase):
         buy = next(e for e in log if e["kind"] == "sleeve_buy")
         self.assertNotIn("quote_ask", buy)                                  # no note this time
         self.assertEqual((len(calls) >= 2, len([o for o in b2.orders.values() if o["side"] == "buy"])), (True, 1))
+
+    def test_no_option_is_bought_on_a_quote_from_before_todays_open(self):
+        # 11-19: SPY's same-day options were filled at the day before's closing quote at 09:40 and 10:00 (owner 11-20: 「都看你」)
+        from datetime import datetime
+        from hero import sleeve_rules, sleeves
+
+        def broker(stamp):
+            b = SleeveBroker(lambda s: (0.08, 0.10))
+            plain = b.option_snapshots
+            b.option_snapshots = lambda syms: {s: {**v, "latestQuote": {**v["latestQuote"], **({"t": stamp} if stamp else {})}} for s, v in plain(syms).items()}
+            return b
+
+        def live(stamp):
+            for f in ("sleeves.json", "trades.jsonl"):
+                (self.root / f).unlink(missing_ok=True)
+            b = broker(stamp)
+            book, log = self.cycle(b, 10, 0, self.specs[:1])
+            return len([o for o in b.orders.values() if o["side"] == "buy"]), [e for e in log if e["kind"] == "sleeve_skip"]
+
+        n, skips = live("2026-10-07T20:15:00Z")                              # yesterday's closing quote
+        self.assertEqual((n, len(skips), skips[0]["reason"], skips[0]["dry_run"], skips[0]["quote_at"]), (0, 1, "stale_quote", False, "2026-10-07T20:15:00Z"))
+        self.assertIn("报价是 10-07 16:15（美东）的，早于今天 09:30 开盘，这一单不下", skips[0]["why"])
+        self.assertEqual(live("2026-10-08T13:29:59Z")[0], 0)                 # a second before the open
+        self.assertEqual(live("2026-10-08T13:30:00Z"), (1, []))              # the open itself: a quote of today's session
+        self.assertEqual(live("2026-10-08T10:00:00-04:00"), (1, []))         # an offset instead of Z reads the same
+        self.assertEqual(live("2026-10-08T14:00:01.546520818Z"), (1, []))    # the broker's nine decimals
+        self.assertEqual(live(None), (1, []))                                # no timestamp: the order goes as before
+        self.assertEqual(live("yesterday"), (1, []))                         # one that cannot be read: the same
+        # the plan ledgers follow the same line: nothing is booked on an old quote
+        def plan(stamp):
+            for f in ("plan.json", "trades.jsonl"):
+                (self.root / f).unlink(missing_ok=True)
+            b = broker(stamp)
+            book = sleeves.Book(self.root / "plan.json", self.specs)
+            sleeves.Runner(b, Journal(self.root), self.cfg, self.specs, book, sleeve_rules.RULES, datetime(2026, 10, 8, 10, 0),
+                           date(2026, 10, 8), sleep=lambda s: None).plan()
+            log = [json.loads(l) for l in (self.root / "trades.jsonl").read_text().splitlines()]
+            return b, [e["kind"] for e in log], log
+        b, kinds, log = plan("2026-10-07T20:15:00Z")
+        self.assertEqual((b.orders, kinds), ({}, ["sleeve_plan", "sleeve_skip", "sleeve_plan", "sleeve_skip"]))
+        self.assertTrue(all(e["dry_run"] for e in log))
+        self.assertIn("（演算）", log[1]["why"])
+        self.assertIn("这一笔不记（报价太旧）", log[1]["why"])
+        self.assertEqual(plan("2026-10-08T14:00:01Z")[1], ["sleeve_plan", "sleeve_plan_fill", "sleeve_plan", "sleeve_plan_fill"])
+        self.assertEqual(plan(None)[1], ["sleeve_plan", "sleeve_plan_fill", "sleeve_plan", "sleeve_plan_fill"])
 
     def test_a_lost_ledger_is_rebuilt_from_the_broker_and_the_slot_is_not_bought_again(self):
         b = SleeveBroker(lambda s: (0.08, 0.10))

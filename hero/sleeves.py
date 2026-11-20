@@ -223,6 +223,7 @@ class Runner:
         self.c, self.j, self.cfg, self.specs, self.book, self.rules = client, journal, cfg, specs, book, rules
         self.p = settings(cfg)
         self.now, self.today, self.sleep = now, today, sleep
+        self.plan_notes: dict[str, dict] = {}      # one look at an option's quote time a cycle, shared by the plan ledgers
         self.hhmm = now.strftime("%H:%M")
 
     # ---- earnings guard (owner, 10-19: earnings only in shares or 2x funds; option IV collapses after the report) ----
@@ -325,6 +326,19 @@ class Runner:
             note = {"quote_at": q.get("t"), "quote_bid": q.get("bp"), "quote_ask": q.get("ap"), "last": t.get("p"), "last_at": t.get("t")}
             out[s] = {k: x for k, x in note.items() if x is not None}
         return out
+
+    def stale_quote(self, note: dict) -> str | None:
+        """Why an option's quote is too old to buy on, or None. Too old = made before today's 09:30 in New York (11-19:
+        at 09:40 and 10:00 the paper broker still showed the day before's closing quote for SPY's same-day options, and
+        filled at it). No timestamp, or one that cannot be read, is not a reason: a data hiccup must not stop every order.
+        The line was written before any day's quote times were looked at (notes/lessons.md, 2026-11-20)."""
+        m = re.match(r"(\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d)(?:\.\d+)?(Z|[+-]\d\d:\d\d)?$", str(note.get("quote_at") or ""))
+        if not m:
+            return None
+        ny = ZoneInfo("America/New_York")
+        made = datetime.fromisoformat(m.group(1) + ("+00:00" if m.group(2) in (None, "Z") else m.group(2))).astimezone(ny)
+        opened = datetime(self.today.year, self.today.month, self.today.day, 9, 30, tzinfo=ny)
+        return None if made >= opened else f"报价是 {made:%m-%d %H:%M}（美东）的，早于今天 09:30 开盘"
 
     # ---- the cycle ----
     def run(self) -> None:
@@ -575,7 +589,16 @@ class Runner:
                 self.j.event("sleeve_plan", dry_run=True, sleeve=spec["id"], symbol=pk["sym"],
                              why=f"{spec['id']}（演算，不下单）：{pk['why']}；{size}")
                 if qty and qty > 0:
-                    self.plan_open(spec, pk, qty, slot)
+                    old = None
+                    if pk["asset"] == "option":             # the same line as a live order: no entry on a quote from before today's open
+                        if pk["sym"] not in self.plan_notes:
+                            self.plan_notes[pk["sym"]] = self.quote_notes([pk["sym"]]).get(pk["sym"], {})
+                        old = self.stale_quote(self.plan_notes[pk["sym"]])
+                    if old:
+                        self.j.event("sleeve_skip", dry_run=True, sleeve=spec["id"], symbol=pk["sym"], reason="stale_quote",
+                                     **self.plan_notes[pk["sym"]], why=f"{spec['id']}（演算）：{pk['sym']} {old}，这一笔不记（报价太旧）")
+                    else:
+                        self.plan_open(spec, pk, qty, slot)
 
     def plan_open(self, spec: dict, pk: dict, qty, slot: str) -> None:
         """Book a plan pick as filled at the ask (the live limit is the ask + buy_pad; our fills land at or under it)."""
@@ -754,6 +777,12 @@ class Runner:
             live = []
             notes = self.quote_notes([o["pk"]["sym"] for o in orders]) if orders else {}
             for o in orders:
+                old = self.stale_quote(notes.get(o["pk"]["sym"], {}))
+                if old:        # owner 11-20 「都看你」: no order on a quote from before today's open
+                    self.j.event("sleeve_skip", dry_run=False, sleeve=o["spec"]["id"], symbol=o["pk"]["sym"], reason="stale_quote",
+                                 **notes.get(o["pk"]["sym"], {}),
+                                 why=f"{o['spec']['id']}：{o['pk']['sym']} {old}，这一单不下（报价太旧）")
+                    continue
                 o["cid"] = cid(o["spec"]["id"], o["tid"], f"b{attempt}")
                 self.j.event("sleeve_buy", dry_run=False, sleeve=o["spec"]["id"], symbol=o["pk"]["sym"], attempt=attempt,
                              ask=o["pk"].get("ask") if attempt == 1 else o.get("ask"), limit=o["limit"],  # for hero.research_fills
