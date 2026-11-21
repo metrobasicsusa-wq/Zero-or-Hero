@@ -10112,3 +10112,93 @@ class ResearchScoutTools(unittest.TestCase):
         self.assertIn("| 三个月看涨价差 |", text)
         self.assertIn("稳健性检查（个股，每只每段大跌日只算第一天）", text)
         self.assertEqual(st.cell(None), "—")
+
+
+class ResearchScoutPast(unittest.TestCase):
+    """hero/research_scout_past.py: the scout's price lines on past drop days, on the pool of the time."""
+
+    def series(self, t, rets, high=None):
+        """Closes up to index t ending at 100: flat (or at `high`) until the last len(rets) days, then the given returns."""
+        tail = [100.0]
+        for r in reversed(rets):
+            tail.append(tail[-1] / (1 + r))
+        tail.reverse()
+        return [high or tail[0]] * (t + 1 - len(tail)) + tail
+
+    def test_the_lines_step_by_step(self):
+        from hero import research_scout_past as sp
+        from hero import scout
+        t, n = 290, scout.MOVES_DAYS
+        a = [0.01 if k % 2 else -0.01 for k in range(n)]                 # technology's own wiggle
+        b = [0.01 if k % 4 < 2 else -0.01 for k in range(n)]             # something else
+        own = [0.012 if k % 5 == 0 else -0.003 for k in range(n)]
+        mix = lambda w: [x + w * y for x, y in zip(a, b)]                # noqa: E731
+        slide = [x - (0.016 if k >= n - 10 else 0.0) for k, x in enumerate(a)]      # sixteen points behind the group in ten days
+        funds = {"SPY": [100.0] * (t + 1), "XLK": self.series(t, a), "XLF": self.series(t, [-x for x in b]), "XLC": [None] * (t + 1)}
+        closes = {"AAA": self.series(t, a, 200), "BBB": self.series(t, mix(0.6), 200), "CCC": self.series(t, mix(1.5), 200), "DDD": self.series(t, a),
+                  "EEE": self.series(t, a, 200), "FFF": self.series(t, slide, 200), "GGG": self.series(t, own, 200), "HHH": self.series(t, a, 200)}
+        d = {"closes": closes, "dvol": {s: [2e8 if s == "EEE" else 5e8] * (t + 1) for s in closes}, "last": {s: t - 3 if s == "HHH" else t for s in closes}}
+        got = sp.picks(t, list(closes), d, funds)
+        self.assertEqual(got["pool"], ["AAA", "BBB", "CCC", "DDD", "EEE", "FFF", "GGG"])     # HHH no longer trades
+        self.assertEqual(got["deep"], ["AAA", "BBB", "CCC", "EEE", "FFF", "GGG"])            # DDD is at its high
+        self.assertEqual(got["lines"], ["AAA", "BBB", "CCC", "GGG"])                         # EEE too thinly traded, FFF has a trouble of its own
+        self.assertEqual(got["list"], ["AAA", "BBB", "GGG"])                                 # two a group, the ones most like it; GGG goes its own way
+
+    def test_held_to_the_last_close(self):
+        from hero import research_scout_past as sp
+        c = [100.0, 110.0, 121.0, 60.0, 60.0, 60.0, 60.0, 60.0, 60.0, 60.0, 60.0, 60.0]
+        r, full = sp.ahead(c, 11, 0, 2)
+        self.assertAlmostEqual(r, 0.21)
+        self.assertTrue(full)
+        r, full = sp.ahead(c, 3, 0, 5)                                                       # left the tape at 60: that is the result
+        self.assertAlmostEqual(r, -0.4)
+        self.assertFalse(full)
+        self.assertIsNone(sp.ahead(c, 11, 8, 5))                                             # simply not there yet
+        self.assertIsNone(sp.ahead(c, 9, 8, 5))                                              # a gap in the last few sessions is not a delisting
+
+    def test_run_and_report(self):
+        from unittest import mock
+        from hero import research_scout_past as sp
+        from hero import research_shock_pit as pit
+        days, d0 = [], date(2016, 1, 4)
+        while len(days) < 420:
+            if d0.weekday() < 5:
+                days.append(d0.isoformat())
+            d0 += timedelta(days=1)
+        ev = 340
+        path = {"SPY": lambda k: 100 * (0.98 if k >= ev else 1.0) * (1.001 ** max(0, k - ev)),
+                "AAA": lambda k: 200.0 if k < 200 else 100.0 + 0.2 * max(0, k - ev), "BBB": lambda k: 100.0 + 0.01 * k}
+
+        class Fake:
+            def assets(self):
+                return [{"symbol": s, "name": f"{s} Corp", "tradable": True, "marginable": True, "shortable": True, "fractionable": True, "exchange": "NYSE"} for s in ("AAA", "BBB")]
+
+            def _t(self, method, path_, params=None):
+                return []
+
+            def daily_bars(self, symbols, start, adjustment="all", feed="iex"):
+                return {s: [{"t": f"{x}T05:00:00Z", "c": path.get(s, lambda k: 50.0)(k), "v": 1e7} for k, x in enumerate(days)] for s in symbols if s in path or s in ("QQQ", "XLK")}
+        direct = lambda pace, call, *a, **kw: call(*a, **kw)                                 # noqa: E731
+        wait = type("P", (), {"wait": lambda self: None})()
+        with mock.patch.object(pit, "fetch", direct), mock.patch.object(sp, "fetch", direct):
+            rep = sp.run(Fake(), pace=wait, first=days[320])
+        self.assertEqual((rep["drop_days"], rep["stretches"], rep["pools"]["names"], rep["pools"]["floor_ok"]), (1, 1, 2, True))
+        self.assertEqual(rep["lists"], {days[ev]: ["AAA"]})                                  # half off its high; BBB is at its high
+        rows = {(r["h"], r["step"]): r for r in rep["rows"]}
+        self.assertEqual(sorted(rows), [("3m", "deep"), ("3m", "lines"), ("3m", "list"), ("3m", "pool")])    # a year on is past the end of the data
+        want = (100 + 0.2 * 63) / 100 - 1
+        self.assertAlmostEqual(rows[("3m", "list")]["ret"], want, places=4)
+        self.assertAlmostEqual(rows[("3m", "list")]["ex"], want - (1.001 ** 63 - 1), places=4)
+        self.assertEqual((rows[("3m", "pool")]["n"], rows[("3m", "list")]["n"], rep["left_early"]), (2, 1, 0))
+        table, md = sp.report(rep)
+        self.assertEqual(table["3m|list"]["all"]["days"], 1)
+        self.assertIsNone(table["1y|list"]["all"])
+        self.assertIn("一共 1 天，连着的算一段是 1 段", md)
+        self.assertIn("**没测**", md)
+        self.assertIn("| 清单（同一组只留两只） | 1 | 1.0 |", md)
+        many = [{"day": f"2022-0{1 + k // 3}-{10 + k % 3}", "h": "3m", "step": "list", "n": 4, "ret": -0.1, "spy": -0.05, "ex": -0.05} for k in range(9)]
+        self.assertEqual([r["day"] for r in sp.first_of_month(many)], ["2022-01-10", "2022-02-10", "2022-03-10"])
+        t2 = sp.tables(many + [{"day": "2023-05-02", "h": "3m", "step": "list", "n": 2, "ret": 0.2, "spy": 0.05, "ex": 0.15}])
+        self.assertAlmostEqual(t2["3m|list"]["y2022"]["ex"], -0.05)
+        self.assertAlmostEqual(t2["3m|list"]["other"]["ex"], 0.15)
+        self.assertEqual((t2["3m|list"]["monthly"]["n"], t2["3m|list"]["all"]["days"]), (4, 10))

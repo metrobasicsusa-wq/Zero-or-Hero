@@ -94,11 +94,11 @@ def best_volume(v: list[float], k: int = ru.LOOKBACK_DV) -> float:
     return best / k
 
 
-def load_daily(client, pace, stocks: dict[str, str], gone: frozenset | set = frozenset()) -> dict | None:
+def load_daily(client, pace, stocks: dict[str, str], gone: frozenset | set = frozenset(), since: str = DAILY_FROM) -> dict | None:
     """Adjusted daily closes and dollar volume on SPY's calendar, for the names that could ever make a pool. A request
     for names still trading must work (a hole would quietly change every pool); one for names that left the tape is
     cut in half until the piece the API refuses is small, and that piece is counted and left out."""
-    spy = fetch(pace, client.daily_bars, ["SPY"], DAILY_FROM, feed=sh.FEED)
+    spy = fetch(pace, client.daily_bars, ["SPY"], since, feed=sh.FEED)
     if not spy or not spy.get("SPY"):
         return None
     dates = [b["t"][:10] for b in spy["SPY"]]
@@ -116,7 +116,7 @@ def load_daily(client, pace, stocks: dict[str, str], gone: frozenset | set = fro
 
     live = sorted(s for s in stocks if s not in gone)
     for k in range(0, len(live), 200):
-        got = fetch(pace, client.daily_bars, live[k:k + 200], DAILY_FROM, feed=sh.FEED)
+        got = fetch(pace, client.daily_bars, live[k:k + 200], since, feed=sh.FEED)
         if got is None:
             return None
         keep(got)
@@ -127,7 +127,7 @@ def load_daily(client, pace, stocks: dict[str, str], gone: frozenset | set = fro
         pace.wait()
         tries += 1
         try:
-            keep(client.daily_bars(chunk, DAILY_FROM, feed=sh.FEED))
+            keep(client.daily_bars(chunk, since, feed=sh.FEED))
         except Exception:
             if len(chunk) > 1 and tries < SPLITS:
                 stack += [chunk[:len(chunk) // 2], chunk[len(chunk) // 2:]]
@@ -136,13 +136,13 @@ def load_daily(client, pace, stocks: dict[str, str], gone: frozenset | set = fro
     return out
 
 
-def pools_by_month(d: dict, stocks: dict[str, str]) -> tuple[dict[str, list[str]], dict[str, float]]:
-    """{month: that month's pool} from 2024-02 on, and each pool's cut-off (its last name's average dollar volume)."""
+def pools_by_month(d: dict, stocks: dict[str, str], start: str = START) -> tuple[dict[str, list[str]], dict[str, float]]:
+    """{month: that month's pool} from `start` on, and each pool's cut-off (its last name's average dollar volume)."""
     dates, closes, dvol = d["dates"], d["closes"], d["dvol"]
     have = {s: stocks.get(s, s) for s in dvol}
     firsts = {s: next((i for i, x in enumerate(closes[s]) if x is not None), None) for s in have}
-    start = next((i for i, x in enumerate(dates) if x >= START), len(dates))
-    raw = ru.monthly_pools(dates, closes, dvol, firsts, have, SIZE, start)
+    first = next((i for i, x in enumerate(dates) if x >= start), len(dates))
+    raw = ru.monthly_pools(dates, closes, dvol, firsts, have, SIZE, first)
     cut = {dates[t][:7]: sum(dvol[p[-1]][t - ru.LOOKBACK_DV:t]) / ru.LOOKBACK_DV for t, p in raw.items() if p}
     return {dates[t][:7]: p for t, p in raw.items()}, cut
 
