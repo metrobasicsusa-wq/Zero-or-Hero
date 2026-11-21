@@ -9725,3 +9725,163 @@ class ZdteFlip(unittest.TestCase):
             days[d]["10:00"]["res"]["0.05/0.05"] = 0.0
         self.assertEqual(zf.feature_row(days, cards, sorted(days), "just_over")["verdict"], "不算数")
         self.assertEqual(zf.feature_row(days, cards, sorted(days)[:40], "just_over")["verdict"], "样本不够")
+
+
+class ResearchSectors(unittest.TestCase):
+    """The sector study: one entry a stretch, the market's own state, and which funds were a bear market's epicentre."""
+
+    def r(self, day, env="down", dd=-0.12, market_down=False, m3=0.05, y1=0.1):
+        return {"day": day, "env": env, "dd": dd, "above50": False, "market_down": market_down, "m3": m3, "y1": y1}
+
+    def test_a_stretch_counts_once(self):
+        from hero import research_sectors as rs
+        rows = [self.r("2001-03-01", y1=-0.3), self.r("2001-03-02", y1=-0.2), self.r("2001-04-10", y1=-0.1),     # one stretch: under 45 days apart
+                self.r("2010-06-01", y1=0.4), self.r("2010-06-02", y1=0.5), self.r("2015-08-24", y1=0.2), self.r("2015-08-25", y1=None)]
+        self.assertEqual([x["day"] for x in rs.firsts(rows)], ["2001-03-01", "2010-06-01", "2015-08-24"])
+        b = rs.brief(rows, "y1")
+        self.assertEqual((b["days"], b["stretches"], b["first_n"]), (6, 3, 3))                  # the day without a year ahead is left out
+        self.assertAlmostEqual(b["mean"], 0.5 / 6)
+        self.assertAlmostEqual(b["first_mean"], (-0.3 + 0.4 + 0.2) / 3)                         # one entry a stretch
+        self.assertAlmostEqual(b["first_up"], 2 / 3)
+        self.assertIsNone(rs.brief(rows[:3], "y1")["first_mean"])                               # one stretch: no per-stretch average
+        self.assertEqual((rs.era("2001-05-01"), rs.era("2008-10-10"), rs.era("2022-06-01"), rs.era("2015-08-24")), ("2000-02", "2008", "2022", None))
+
+    def test_falling_alone_is_kept_apart_from_falling_with_the_market(self):
+        from hero import research_sectors as rs
+        rows = {"XLK": [self.r("2001-03-01", market_down=False, y1=-0.4), self.r("2001-03-02", market_down=True, y1=0.3),
+                        self.r("2012-05-01", market_down=False, y1=0.2), self.r("2012-05-02", env="up", dd=-0.01, y1=0.1)]}
+        d = rs.declines(rows)["XLK"]
+        self.assertEqual((d["down"]["y1"]["days"], d["with"]["y1"]["days"], d["alone"]["y1"]["days"], d["any"]["y1"]["days"]), (3, 1, 2, 4))
+        self.assertAlmostEqual(d["alone"]["y1"]["mean"], -0.1)
+        ta = rs.tech_alone(rows)
+        self.assertEqual((ta["2000-02"]["y1"]["days"], ta["since"]["y1"]["days"]), (1, 1))      # the same state, two eras
+        self.assertAlmostEqual(ta["2000-02"]["y1"]["mean"], -0.4)
+
+    def test_the_epicentre_is_the_sector_funds_deepest_under_their_highs(self):
+        from hero import research_sectors as rs
+        rows = {"SPY": [self.r("2008-10-10", dd=-0.40)], "XLF": [self.r("2008-10-10", dd=-0.70, y1=-0.2), self.r("2013-01-02", dd=-0.30, y1=0.5)],
+                "KRE": [self.r("2008-10-10", dd=-0.55, y1=-0.1)], "XLB": [self.r("2008-10-10", dd=-0.50, y1=0.4)], "XLP": [self.r("2008-10-10", dd=-0.20)]}
+        depth = rs.depths(rows)
+        self.assertEqual(depth["2008"]["XLF"], -0.70)
+        self.assertEqual(rs.epicentres(depth)["2008"], ["XLF", "KRE", "XLB"])                   # sector funds only: SPY is not one
+        self.assertEqual(rs.epicentres(depth)["2022"], [])
+        d = rs.deep(rows)
+        self.assertNotIn("XLP", d)                                                              # never 25% under its high
+        self.assertEqual((d["XLF"]["2008"]["days"], d["XLF"]["other"]["days"], d["XLF"]["2022"]["days"]), (1, 1, 0))
+        self.assertAlmostEqual(d["XLF"]["other"]["mean"], 0.5)
+        self.assertEqual(rs.cell(d["XLF"]["2022"]), "—")
+
+    def test_the_report_is_built_from_a_run(self):
+        from hero import research_sectors as rs
+        days = [(date(2000, 1, 3) + timedelta(days=i)).isoformat() for i in range(900)]
+        flat = [100.0] * 900
+        fall = [100.0] * 300 + [100 - min(i, 40) for i in range(600)]                          # 40% down and stays there
+        rep = rs.run({"SPY": list(zip(days, flat)), "XLK": list(zip(days, fall)), "XLF": list(zip(days, flat))})
+        self.assertGreater(rep["declines"]["XLK"]["alone"]["m3"]["days"], 0)                    # the market never fell: all of it is "alone"
+        self.assertEqual(rep["declines"]["XLK"]["with"]["m3"]["days"], 0)
+        self.assertEqual(rep["epicentre"]["2000-02"][0], "XLK")
+        text = rs.report(rep)
+        self.assertIn("## 二、「跟着大盘跌」和「自己跌」要分开", text)
+        self.assertIn("科技 −40%", text)
+        self.assertIn("稳健性检查", text)
+
+
+def rt_bs(spot, strike, t, rate, vol):
+    from hero import research_tools as rt
+    return rt.bs(spot, strike, t, rate, rt.YIELD.get("SPY", 0.0), vol, "C")
+
+
+class ResearchExpiries(unittest.TestCase):
+    """The same bullish structures at three expiries: what each pays, how the longer ones are priced, one entry a month."""
+
+    def test_the_term_ratio(self):
+        from hero import research_expiries as re_
+        self.assertEqual(re_.term(20.0, 22.0, None), 1.0)                          # three months: the fitted level itself
+        self.assertAlmostEqual(re_.term(20.0, 22.0, 1.0), 1.1)
+        self.assertAlmostEqual(re_.term(20.0, 22.0, 1.5), 1.1 ** 1.5)              # a year: half a step further, a guess
+        self.assertIsNone(re_.term(20.0, None, 1.0))                               # no VIX6M that day: no longer expiries
+
+    def test_what_each_structure_pays_at_expiry(self):
+        from hero import research_expiries as re_
+        from hero import research_tools as rt
+        vol = lambda m: 0.25                                                       # noqa: E731
+        c100 = rt.bs(100, 100, 0.25, 0.03, 0.0, 0.25, "C")
+        c110 = rt.bs(100, 110, 0.25, 0.03, 0.0, 0.25, "C")
+        p95 = rt.bs(100, 95, 0.25, 0.03, 0.0, 0.25, "P")
+        up = re_.structures(100.0, 125.0, 0.25, 0.03, 0.0, vol)
+        self.assertEqual(up["shares"], (25.0, 100.0))
+        self.assertAlmostEqual(up["call"][0], 25 - c100 * 1.05)
+        self.assertAlmostEqual(up["spread"][0], 10 - (c100 - c110) * 1.05)         # capped at the 10% width
+        self.assertAlmostEqual(up["spread"][1], (c100 - c110) * 1.05)
+        self.assertAlmostEqual(up["csp"][0], p95 * 0.95)                           # keeps the premium
+        self.assertAlmostEqual(up["csp"][1], 95 - p95 * 0.95)                      # the cash set aside, less what was received
+        down = re_.structures(100.0, 80.0, 0.25, 0.03, 0.0, vol)
+        self.assertAlmostEqual(down["call"][0] / down["call"][1], -1.0)
+        self.assertAlmostEqual(down["spread"][0] / down["spread"][1], -1.0)
+        self.assertAlmostEqual(down["csp"][0], p95 * 0.95 - 15)                    # assigned at 95, shares worth 80
+        self.assertNotIn("spread", re_.structures(100.0, 100.0, 0.25, 0.03, 0.0, lambda m: 0.25 if m < 1.05 else 0.9))   # an upper leg dearer than the lower: no spread
+
+    def test_one_entry_a_month_and_the_tables(self):
+        from hero import research_expiries as re_
+        r = lambda und, day, hor, spread, env="down": {"und": und, "day": day, "hor": hor, "env": env, "move": 0.0, "atm": 0.04,   # noqa: E731
+                                                         "risk": {"shares": 0.0, "call": spread, "spread": spread, "csp": 0.01}}
+        xs = [r("SPY", "2022-03-01", "3m", -1.0), r("SPY", "2022-03-02", "3m", -0.9), r("SPY", "2022-04-01", "3m", 0.5),
+              r("QQQ", "2022-03-01", "3m", -1.0), r("SPY", "2022-03-01", "1y", 0.2), r("AAPL", "2023-05-01", "3m", 0.8, env="pullback")]
+        self.assertEqual([(x["und"], x["day"], x["hor"]) for x in re_.monthly(xs)],
+                         [("SPY", "2022-03-01", "3m"), ("QQQ", "2022-03-01", "3m"), ("SPY", "2022-03-01", "1y"), ("SPY", "2022-04-01", "3m"), ("AAPL", "2023-05-01", "3m")])
+        t = re_.tables(xs)
+        c = t["指数"]["y2022"]["spread|3m"]
+        self.assertEqual((c["daily"]["n"], c["monthly"]["n"]), (4, 3))             # four days, three month-entries
+        self.assertAlmostEqual(c["daily"]["mean"], (-1.0 - 0.9 + 0.5 - 1.0) / 4)
+        self.assertAlmostEqual(c["daily"]["lost"], 0.5)                            # two of four lost 95% or more
+        self.assertEqual(t["指数"]["env"]["down|spread|1y"]["all"]["n"], 1)
+        self.assertIsNone(t["指数"]["env"]["pullback|spread|3m"]["all"])
+        self.assertEqual(t["个股"]["env"]["pullback|spread|3m"]["other"]["n"], 1)
+        self.assertEqual(len(t["指数"]["monthly"]["3m"]), 3)
+        self.assertEqual(re_.cell(None), "—")
+
+    def test_the_estimate_against_a_real_quote(self):
+        from hero import research_expiries as re_
+        skew = {"0.95": 1.2, "1.00": 1.0, "1.10": 0.8}
+        self.assertAlmostEqual(re_.skew_at(skew, 1.05), 0.9)                       # a straight line between the fitted points
+        self.assertEqual((re_.skew_at(skew, 0.80), re_.skew_at(skew, 1.30)), (1.2, 0.8))   # flat beyond them
+        days = [(date(2025, 1, 1) + timedelta(days=k)).isoformat() for k in range(300)]
+        closes = [100 + (k % 7) * 0.3 for k in range(300)]
+        hist = {"days": days, "closes": {"SPY": closes}, "index": {"SPY": {x: k for k, x in enumerate(days)}},
+                "vix3m": {x: 20.0 for x in days}, "rate": {x: 0.03 for x in days}}
+        fits = {"SPY": {"p": 0.0, "q": 1.0, "skew": {"1.00": 1.0, "1.10": 1.0}}}
+        day = days[-1]
+        e = lambda kind, expiry, mid, **more: {"symbol": "SPY", "day": day, "kind": kind, "spot": 100.0, "expiry": expiry, "mid": mid, "debit": (mid or 0.0) + 0.2,   # noqa: E731
+                                               "legs": [{"strike": 110.0, "side": "sell"}, {"strike": 100.0, "side": "buy"}]} | more
+        year = (date.fromisoformat(day) + timedelta(days=365)).isoformat()
+        got = re_.against_real([e("spread1y", year, 4.0), e("csp3m", year, 4.0), e("spread3m", year, 4.0, symbol="XYZ"), e("spread1y", year, None)],
+                               hist, fits, {day: 22.0})
+        self.assertEqual(len(got), 1)                                              # only call spreads on names the study has a fit for, with a mid
+        t_, vol = 1.0, 0.20 * 1.1 ** 1.5
+        want = rt_bs(100, 100, t_, 0.03, vol) - rt_bs(100, 110, t_, 0.03, vol)
+        self.assertAlmostEqual(got[0]["model"], want)
+        self.assertEqual((got[0]["strikes"], got[0]["width"], got[0]["now"]), ([100.0, 110.0], 10.0, 4.2))
+        self.assertEqual(re_.against_real([e("spread1y", year, 4.0)], hist, fits, {}), [])   # no VIX6M that day: nothing to compare
+        text = "\n".join(re_.real_lines(got))
+        self.assertIn("和真实报价对一下", text)
+        self.assertIn("便宜" if want < 4.0 else "贵", text)
+        self.assertEqual(re_.real_lines([]), [])
+
+    def test_rows_take_only_expiries_that_have_passed(self):
+        from hero import research_expiries as re_
+        days, d = [], date(2014, 1, 2)
+        while len(days) < 900:
+            if d.weekday() < 5:
+                days.append(d.isoformat())
+            d += timedelta(days=1)
+        closes = [100 + i * 0.05 for i in range(900)]
+        hist = {"days": days, "closes": {"SPY": closes}, "index": {"SPY": {x: i for i, x in enumerate(days)}},
+                "vix3m": {x: 20.0 for x in days}, "rate": {x: 0.02 for x in days}}
+        fits = {"SPY": {"p": 0.5, "q": 0.5, "skew": {"0.95": 1.1, "1.00": 1.0, "1.10": 0.9}}}
+        got = re_.rows(hist, fits, {x: 21.0 for x in days}, start=days[300])
+        self.assertTrue(got)
+        self.assertEqual({r["hor"] for r in got}, {"3m", "6m", "1y"})
+        last = {h: max(r["day"] for r in got if r["hor"] == h) for h in ("3m", "6m", "1y")}
+        self.assertTrue(last["1y"] < last["6m"] < last["3m"] < days[-1])           # the longer the expiry, the earlier the last usable entry
+        self.assertTrue(all(r["env"] in ("up", "rebound", "pullback", "down") and "csp" in r["risk"] for r in got))
+        self.assertEqual(re_.rows(hist, fits, {}, start=days[300])[0]["hor"], "3m")    # no VIX6M: only the three-month rows
