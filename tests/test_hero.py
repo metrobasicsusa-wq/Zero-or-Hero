@@ -9613,6 +9613,32 @@ class Goal(unittest.TestCase):
             # a recorded choice of nothing stays nothing
             self.assertEqual(goal.walk(trades + wk, ["2026-10-26"], {"2026-10-26": []})[0]["picks"], [])
 
+    def test_a_history_kept_another_way_and_a_choice_recorded_before_it_was_attached(self):
+        from unittest import mock
+        from hero import goal
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            for d in ("journal", "journal-s500", "research", "research/goal"):
+                (root / d).mkdir()
+            weeks = [f"2025-0{m}-0{d}" for m in (3, 4, 5) for d in (3, 7)]
+            rows = [{"week": w, "way": "sentiment", "symbol": "CAT", "side": 1, "r2": -0.2, "r3": 0.5} for w in weeks]
+            rows += [{"week": w, "way": "hot", "symbol": "CAT", "side": 1, "r2": 0.9, "r3": 0.9} for w in weeks] + [{"week": weeks[0], "way": "sentiment", "r2": None}]
+            (root / "research" / "2026-10-07-weekly-news.json").write_text(json.dumps({"start": "2025-03-03", "end": "2025-05-09", "rows": rows}))
+            prior = goal.priors(root)
+            self.assertEqual(sorted(prior), ["wk-news"])
+            self.assertEqual((prior["wk-news"]["n"], round(prior["wk-news"]["mean"], 2), prior["wk-news"]["cost"]), (6, -0.2, "买入多付 10%、卖出少拿 10%"))   # the ledger's own way and take only
+            trades = self.steady("wk-news", got=200)
+            self.assertEqual((goal.pick(trades, "2026-10-26"), goal.pick(trades, "2026-10-26", prior)), (["wk-news"], []))
+            closed = [{"closed": f"{x['day']} 15:30", "paid": 100.0, "proceeds": 200.0} for x in self.steady()]
+            (root / "journal-s500" / "sleeves.json").write_text(json.dumps({"sleeves": {"wk-news-500": {"closed": closed, "open": []}}}))
+            (root / "research" / "goal" / "ledger.json").write_text(json.dumps({"decisions": [{"week": "2026-11-02", "decided": "2026-10-31", "picks": ["wk-news"], "picks2": ["wk-news"]}]}))
+            with mock.patch.object(goal, "OUT", root / "research" / "goal"):
+                got = goal.run("2026-10-31", root=root)
+            self.assertEqual(got["next"]["picks2"], ["wk-news"])                         # what was written down stays
+            self.assertIn("第二版记下的选择里，周内新闻（更长的历史 −20%，6 笔）按现在手里的更长历史是亏的", got["page"])
+            self.assertIn("成本口径不同：买入多付 10%、卖出少拿 10%", got["page"])
+            self.assertEqual(len(json.loads((root / "research" / "goal" / "ledger.json").read_text())["decisions"]), 1)
+
     def test_a_run_writes_the_page_and_records_next_weeks_choice_only_at_the_weekend(self):
         from unittest import mock
         from hero import goal

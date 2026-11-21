@@ -52,7 +52,12 @@ COST = "0.05/0.05"       # the longer histories are read with 5% paid on the way
 # prices, 2024-02 on, 0.3% from the price, the ledgers' own exits. The 09:35 ledger is read from the 09:45 rows.
 PRIORS = {"spy0dte-near": ("research/2026-11-17-zdte-times.json", lambda r: r["t"] in ("09:45", "10:00")),
           "spy0dte": ("research/2026-11-17-zdte-times.json", lambda r: r["t"] == "10:00" and abs(r["move"]) >= 0.005),
-          "qqq0dte": ("research/2026-11-17-zdte-lines.json", lambda r: r.get("und") == "QQQ")}
+          "qqq0dte": ("research/2026-11-17-zdte-lines.json", lambda r: r.get("und") == "QQQ"),
+          # 11-21: the weekly news ledger is the 10-07 study's "sentiment" way with the 2x take (same picker, strike and
+          # exit); that study paid 10% on each side, not 5%, and the page says so. A third and fourth item say how to
+          # read a study that does not keep its rows the way the same-day studies do: (day, result per $1), its costs.
+          "wk-news": ("research/2026-10-07-weekly-news.json", lambda r: r.get("way") == "sentiment",
+                      lambda r: (r["week"], r.get("r2")), "买入多付 10%、卖出少拿 10%")}
 VARIANT = {"old": "旧规则", "r2": "第 2 名", "r3": "第 3 名", "opt": "买期权", "off": "不下注的日子"}
 
 
@@ -118,15 +123,17 @@ def eligible(s: dict) -> bool:
 def priors(root: Path = ROOT) -> dict[str, dict]:
     """The longer histories on file: per method, robust.summary of (day, result per $1 after costs)."""
     out, cache = {}, {}
-    for name, (rel, same_rule) in PRIORS.items():
+    for name, (rel, same_rule, *more) in PRIORS.items():
+        read = more[0] if more else (lambda r: (r["day"], r.get("res", {}).get(COST)))
         path = root / rel
         if not path.exists():
             continue
         if rel not in cache:
             cache[rel] = json.loads(path.read_text())
-        rows = [(r["day"], r["res"][COST]) for r in cache[rel]["rows"] if same_rule(r) and r.get("res", {}).get(COST) is not None]
+        rows = [x for x in (read(r) for r in cache[rel]["rows"] if same_rule(r)) if x[1] is not None]
         if rows:
-            out[name] = {**robust.summary(rows), "start": cache[rel]["start"], "end": cache[rel]["end"], "source": rel}
+            out[name] = {**robust.summary(rows), "start": cache[rel]["start"], "end": cache[rel]["end"], "source": rel,
+                         "cost": more[1] if len(more) > 1 else None}
     return out
 
 
@@ -258,14 +265,18 @@ def page(day: str, rows: list[dict], rows2: list[dict], table: list[dict], prior
     wk, ms, ms2, fixed = nxt
     out += ["", "## 三、下一周", "",
             f"{wk[5:]} 起的一周，第一版：**{names(ms)}**；第二版：**{names(ms2)}**。"
-            + ("（已记进账本）" if fixed else "（暂定：这一周还没走完，周六用到周五为止的成交再定、再记）"), "",
-            "## 四、要到目标，每种做法得押多少", "",
+            + ("（已记进账本）" if fixed else "（暂定：这一周还没走完，周六用到周五为止的成交再定、再记）"), ""]
+    late = [m for m in ms2 if m in prior and prior[m]["mean"] <= 0] if fixed else []
+    if late:
+        out += ["第二版记下的选择里，" + "、".join(f"{title(m)}（更长的历史 {pct(prior[m]['mean'])}，{prior[m]['n']} 笔）" for m in late)
+                + "按现在手里的更长历史是亏的：这段历史是记完以后才接上的。记下的不改；下一次选的时候它不够格。", ""]
+    out += ["## 四、要到目标，每种做法得押多少", "",
             "每种做法到现在的记录（10 笔以上的）。「每天要押」= 想靠它平均每天赚 $500，按它到现在每 $1 的结果和出手的天数，平均每个交易日要押的钱。"
             "最后一栏是我们手里更长的历史：同一条规则按真实期权价、买卖各多付 5% 算的每 $1；有这一栏的，先信这一栏。", "",
             "| 做法 | 笔数 | 周数 | 每 $1 | 去掉最好一周 | 最差的一周 | 出手的天数 | 每天要押 | 够格吗 | 更长的历史 |", "|---|---|---|---|---|---|---|---|---|---|"]
     for r in table:
         h = prior.get(r["method"])
-        long = f"{pct(h['mean'])}（{h['n']} 笔，{h['start'][:7]} 起；去掉最好 3 笔 {pct(h['trim'])}）" if h else "没有"
+        long = (f"{pct(h['mean'])}（{h['n']} 笔，{h['start'][:7]} 起；去掉最好 3 笔 {pct(h['trim'])}" + (f"；成本口径不同：{h['cost']}" if h.get("cost") else "") + "）") if h else "没有"
         out.append(f"| {title(r['method'])} | {r['n']} | {r['weeks']} | {pct(r['per'])} | {pct(r['rest'])} | {pct(r['worst'])} | {r['share']:.0%} | "
                    f"{usd(r['stake'], False) if r['stake'] else '赚不到'} | {'够' if r['eligible'] else '不够'} | {long} |")
     warn = [f"{title(m)}：{'；'.join(h['flags'])}" for m, h in prior.items() if h.get("flags")]
