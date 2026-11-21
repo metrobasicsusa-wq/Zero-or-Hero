@@ -9272,7 +9272,8 @@ class Scout(unittest.TestCase):
         self.assertIn("按同样的线回头数（2001 年以来", text)
         self.assertIn("| 所有大跌日 | 399 | 1 | ", text)
         self.assertIn("| 那一天的震中板块自己（不是标普） | 399 | 1 | +20.0%，涨 100%", text)
-        self.assertIn("清单的五条线还没有回头测过", text)
+        self.assertIn("research/2026-11-21-scout-past.md", text)
+        self.assertIn("两条没有历史，没测", text)
 
     def test_is_this_a_bear_market_is_read_from_how_deep_past_declines_went(self):
         from hero import scout
