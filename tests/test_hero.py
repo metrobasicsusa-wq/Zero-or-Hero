@@ -10043,3 +10043,72 @@ class ResearchShockPit(unittest.TestCase):
         self.assertIn("只跑到 2025-03-03 之前", bad)
         self.assertIn("没有事件", pit.report({**rep, "rows": []}, old=[])[1])
         self.assertIn("结果不能用", pit.report({**rep, "pools": pools | {"floor_ok": False}}, old=[])[1])
+
+
+class ResearchScoutTools(unittest.TestCase):
+    """hero/research_scout_tools.py: the scout's three structures on the drop days of the past, estimated prices."""
+
+    def test_drop_days_and_stretches(self):
+        from hero import research_scout_tools as st
+        moves = {"SPY": {"2024-08-05": -0.03, "2024-08-06": 0.01, "2024-08-07": -0.014}, "QQQ": {"2024-08-07": -0.021, "2024-08-08": -0.019},
+                 "SMH": {"2024-08-08": -0.031, "2024-08-09": -0.029}, "IWM": {"2024-08-09": -0.08}}
+        got = st.drop_days(moves)
+        self.assertEqual(sorted(got), ["2024-08-05", "2024-08-07", "2024-08-08"])          # the scout's own lines; small caps are not one of them
+        self.assertEqual(len(got["2024-08-05"]), 1)
+        self.assertEqual(st.first_days(["2024-10-01", "2024-08-05", "2024-08-07", "2024-09-20", "2024-11-16"]), ["2024-08-05", "2024-11-16"])
+        self.assertEqual(st.first_days(["2024-08-05", "2024-09-20"]), ["2024-08-05", "2024-09-20"])    # 46 days: a new stretch
+        self.assertEqual(st.first_days([]), [])
+
+    def test_what_each_structure_pays(self):
+        from hero import research_scout_tools as st
+        from hero import research_tools as rt
+        vol = lambda m: 0.30                                                                # noqa: E731
+        c = lambda k, t: rt.bs(100, k, t, 0.03, 0.0, 0.30, "C")                              # noqa: E731
+        p = lambda k, t: rt.bs(100, k, t, 0.03, 0.0, 0.30, "P")                              # noqa: E731
+        debit = c(100, 0.25) * 1.05 - c(110, 0.25) * 0.95                                   # every leg 5% worse
+        profit, risk = st.structure("spread3m", 100.0, 130.0, 0.25, 0.03, 0.0, vol, False)
+        self.assertAlmostEqual(risk, debit)
+        self.assertAlmostEqual(profit, 10 - debit)                                          # capped at the 10% width
+        profit, risk = st.structure("spread3m", 100.0, 104.0, 0.25, 0.03, 0.0, vol, True)   # an index: the short call 5% higher
+        self.assertAlmostEqual(risk, c(100, 0.25) * 1.05 - c(105, 0.25) * 0.95)
+        self.assertAlmostEqual(profit, 4 - risk)
+        profit, risk = st.structure("spread1y", 100.0, 90.0, 1.0, 0.03, 0.0, vol, False)    # a year: 20% higher
+        self.assertAlmostEqual(risk, c(100, 1.0) * 1.05 - c(120, 1.0) * 0.95)
+        self.assertAlmostEqual(profit / risk, -1.0)
+        got = p(90, 0.25) * 0.95
+        self.assertEqual(st.structure("csp3m", 100.0, 95.0, 0.25, 0.03, 0.0, vol, False), (got, 90 - got))    # above the strike: keeps the premium
+        profit, risk = st.structure("csp3m", 100.0, 80.0, 0.25, 0.03, 0.0, vol, False)
+        self.assertAlmostEqual(profit, got - 10)                                            # assigned at 90, worth 80
+        self.assertAlmostEqual(st.structure("csp3m", 100.0, 80.0, 0.25, 0.03, 0.0, vol, True)[1], 95 - p(95, 0.25) * 0.95)
+        self.assertIsNone(st.structure("spread3m", 100.0, 120.0, 0.25, 0.03, 0.0, lambda m: 0.01 if m == 1.0 else 3.0, False))   # the far call dearer than the near one
+
+    def test_rows_tables_and_report(self):
+        from hero import research_scout_tools as st
+        days, d = [], date(2014, 1, 2)
+        while len(days) < 900:
+            if d.weekday() < 5:
+                days.append(d.isoformat())
+            d += timedelta(days=1)
+        closes = [100 + i * 0.05 for i in range(900)]
+        hist = {"days": days, "closes": {"SPY": closes, "AAPL": closes}, "index": {u: {x: i for i, x in enumerate(days)} for u in ("SPY", "AAPL")},
+                "vix3m": {x: 20.0 for x in days}, "rate": {x: 0.02 for x in days}}
+        fit = {"p": 0.5, "q": 0.5, "skew": {"0.90": 1.2, "0.95": 1.1, "1.00": 1.0, "1.05": 0.95, "1.10": 0.9}}
+        drops = {days[320], days[321], days[322], days[420]}
+        got = st.rows(hist, {"SPY": fit, "AAPL": fit}, {x: 21.0 for x in days}, drops, start=days[300])
+        self.assertEqual({r["und"] for r in got}, {"SPY", "AAPL"})
+        one = next(r for r in got if r["und"] == "AAPL" and r["day"] == days[320])
+        self.assertTrue(one["drop"])
+        self.assertEqual(set(one["risk"]), {"spread3m", "spread1y", "csp3m"})
+        last = {k: max(r["day"] for r in got if k in r["risk"]) for k in ("spread3m", "spread1y")}
+        self.assertLess(last["spread1y"], last["spread3m"])                                 # a year needs a year of prices after it
+        self.assertEqual(set(st.rows(hist, {"SPY": fit}, {}, drops, start=days[300])[0]["risk"]), {"spread3m", "csp3m"})   # no VIX6M: no one-year column
+        t = st.tables(got)
+        c = t["指数"]["spread3m"]
+        self.assertEqual((c["drop"]["n"], c["stretches"], [d for d, _ in c["entries"]]), (4, 2, [days[320], days[420]]))   # four days, two stretches
+        self.assertGreater(c["all"]["n"], 300)
+        self.assertEqual(len(t["个股"]["csp3m"]["entries"]), 2)
+        text = st.report(t, {x: ["标普 500 -2.0%"] for x in drops}, {"SPY": fit, "AAPL": fit}, days[300], days[-1])
+        self.assertIn("大跌日一共 4 天，连着的算一段是 2 段", text)
+        self.assertIn("| 三个月看涨价差 |", text)
+        self.assertIn("稳健性检查（个股，每只每段大跌日只算第一天）", text)
+        self.assertEqual(st.cell(None), "—")
