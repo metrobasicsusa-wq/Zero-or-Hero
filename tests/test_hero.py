@@ -9885,3 +9885,161 @@ class ResearchExpiries(unittest.TestCase):
         self.assertTrue(last["1y"] < last["6m"] < last["3m"] < days[-1])           # the longer the expiry, the earlier the last usable entry
         self.assertTrue(all(r["env"] in ("up", "rebound", "pullback", "down") and "csp" in r["risk"] for r in got))
         self.assertEqual(re_.rows(hist, fits, {}, start=days[300])[0]["hor"], "3m")    # no VIX6M: only the three-month rows
+
+
+class ResearchShockPit(unittest.TestCase):
+    """hero/research_shock_pit.py: the flush line of the shock study on each month's own pool."""
+
+    def days(self, start, n):
+        out, d = [], date.fromisoformat(start)
+        while len(out) < n:
+            if d.weekday() < 5:
+                out.append(d.isoformat())
+            d += timedelta(days=1)
+        return out
+
+    def drop(self, i):
+        """From 11:00 down 0.35 a minute for twenty minutes on twenty times the volume, then flat at 93, 95 from 15:00."""
+        from hero import research_shock as sh
+        a = sh.idx("11:00")
+        if i <= a:
+            return 100.0, 100
+        if i <= a + 20:
+            return round(100 - 0.35 * (i - a), 2), 2000
+        return (95.0, 100) if i >= sh.idx("15:00") else (93.0, 100)
+
+    def client(self, days, shares, born, died, closes, paths, refuse=()):
+        """shares: {symbol: shares a day}; born / died: {symbol: first / last day index}; closes: {(symbol, day): close}."""
+        from hero import research_shock as sh
+        from hero.research_flow_open import utc
+
+        class Fake:
+            minute_calls = []
+
+            def assets(self):
+                return [{"symbol": s, "name": f"{s} Corp", "tradable": True, "marginable": True, "shortable": True, "fractionable": True,
+                         "exchange": "NYSE"} for s in shares if s not in died]
+
+            def _t(self, method, path, params=None):
+                return [{"symbol": s, "name": f"{s} Corp", "exchange": "NASDAQ"} for s in list(died) + ["ZZZ"]] + [{"symbol": "OLDF", "name": "Old ETF Fund", "exchange": "NYSE"}]
+
+            def daily_bars(self, symbols, start, adjustment="all", feed="iex"):
+                if set(symbols) & set(refuse):
+                    raise RuntimeError("invalid symbol")
+                out = {}
+                for s in symbols:
+                    if s == "SPY" or s in shares:
+                        lo, hi = born.get(s, 0), died.get(s, len(days) - 1)
+                        out[s] = [{"t": f"{d}T05:00:00Z", "c": closes.get((s, d), 100.0), "v": shares.get(s, 1e7)} for k, d in enumerate(days) if lo <= k <= hi]
+                return out
+
+            def stock_bars(self, symbols, start, end, timeframe="1Min", feed="iex"):
+                d = next(x for x in days if utc(x, "09:30") == start)
+                Fake.minute_calls.append((d, tuple(symbols)))
+                out = {}
+                for s in symbols:
+                    f = paths.get((s, d), lambda i: (100.0, 100))
+                    bars, prev = [], f(0)[0]
+                    for i in range(sh.SESSION):
+                        px, v = f(i)
+                        bars.append({"t": utc(d, sh.hhmm(i)), "o": prev, "c": px, "v": v})
+                        prev = px
+                    out[s] = bars
+                return out
+        return Fake()
+
+    def test_small_pieces(self):
+        from hero import research_shock_pit as pit
+        at = {"2024-01-02": 0, "2024-01-03": 1, "2024-01-04": 2, "2024-01-05": 3}
+        c, v, last = pit.series([{"t": "2024-01-03T05:00:00Z", "c": 10.0, "v": 5}, {"t": "2024-01-04T05:00:00Z", "c": 11.0, "v": 2},
+                                 {"t": "2023-12-29T05:00:00Z", "c": 9.0, "v": 1}], at, 4)
+        self.assertEqual((c, v, last), ([None, 10.0, 11.0, 11.0], [0.0, 50.0, 22.0, 0.0], 2))        # carried forward, but the last real day is known
+        self.assertEqual(pit.series([], at, 4)[2], None)
+        self.assertAlmostEqual(pit.best_volume([0.0] * 10 + [63.0] * 63 + [0.0] * 10), 63.0)
+        self.assertEqual(pit.best_volume([5.0] * 10), 0.0)                                           # too short to rank
+        self.assertEqual(pit.months_from("2025-11", 2), ["2025-11", "2025-12", "2026-01"])
+        self.assertEqual(pit.wanted({"2025-11": ["B", "A"], "2025-12": ["C"], "2026-01": ["A", "D"], "2026-02": ["E"]}, "2025-11"), ["A", "B", "C", "D"])
+        dates = ["2024-01-30", "2024-01-31", "2024-02-01", "2024-02-02", "2024-02-05", "2024-02-06", "2024-02-07"]
+        closes = [50.0, 80.0, 100.0, 100.0, 110.0, 121.0, 121.0]
+        self.assertAlmostEqual(pit.usual(closes, dates, 6, k=2), ((110 / 100 - 1) + (121 / 100 - 1) + (121 / 110 - 1)) / 3)   # from START on, every day it traded
+        self.assertAlmostEqual(pit.usual(closes, dates, 4, k=2), 0.10)                               # nothing past its last day
+        self.assertIsNone(pit.usual(closes, dates, 2, k=2))
+
+    def test_the_line(self):
+        from hero import research_shock_pit as pit
+        row = lambda k, ret, **more: {"sym": f"S{k % 7}", "day": f"2024-{1 + k // 28:02d}-{1 + k % 28:02d}", "ret": ret, "usual": 0.005, "active": True, "listed": True} | more   # noqa: E731
+        good = [row(k, 0.03 if k % 3 else -0.02) for k in range(66)]
+        v = pit.verdict(good)
+        self.assertTrue(v["pass"])
+        self.assertEqual((v["n"], v["stocks"], v["checks"]), (66, 7, {"excess": True, "hit": True, "halves": True, "trim": True, "n": True}))
+        self.assertAlmostEqual(v["mean"], (44 * 0.03 - 22 * 0.02) / 66, places=5)
+        self.assertAlmostEqual(v["excess"], v["mean"] - 0.005, places=5)
+        self.assertEqual(pit.verdict(good[:59])["checks"]["n"], False)                               # 59 trades: one short
+        self.assertFalse(pit.verdict([r | {"usual": 0.02} for r in good])["checks"]["excess"])        # these stocks usually do better than that
+        late = [row(k, 0.05) for k in range(33)] + [row(k + 33, -0.01) for k in range(33)]
+        self.assertEqual(pit.verdict(late)["checks"], {"excess": True, "hit": False, "halves": False, "trim": True, "n": True})
+        lucky = [row(k, -0.001) for k in range(63)] + [row(63 + k, 0.5) for k in range(3)]
+        self.assertFalse(pit.verdict(lucky)["checks"]["trim"])                                       # three trades made it
+        self.assertIsNone(pit.verdict([]))
+
+    def test_only_the_pool_of_the_month_counts(self):
+        from hero import research_shock_pit as pit
+        days = self.days("2023-01-02", 320)
+        feb = next(k for k, d in enumerate(days) if d >= "2024-02-01")
+        mar = next(k for k, d in enumerate(days) if d >= "2024-03-01")
+        shares = {"AAA": 4e6, "BBB": 2e6, "DDD": 3e6, "EEE": 5e6, "CCC": 1e3}     # x $100 a share; CCC never trades enough to matter
+        born = {"EEE": mar - 255}                                                 # a year of history by March, not by February
+        died = {"DDD": feb + 6}                                                   # leaves the tape three sessions after its flush
+        ev_feb, ev_mar = days[feb + 3], days[mar + 3]
+        closes = {("AAA", days[feb + 8]): 110.0, ("EEE", days[mar + 8]): 90.0}
+        paths = {(s, d): self.drop for s, d in (("AAA", ev_feb), ("EEE", ev_feb), ("DDD", ev_feb), ("CCC", ev_feb), ("EEE", ev_mar), ("BBB", ev_mar))}
+        c = self.client(days, shares, born, died, closes, paths, refuse=("ZZZ",))
+        wait = type("P", (), {"wait": lambda self: None})()
+        from unittest import mock
+        with mock.patch.object(pit, "SIZE", 3), mock.patch.object(pit, "fetch", lambda pace, call, *a, **kw: call(*a, **kw)):
+            rep = pit.run(c, "2024-02-01", "9999-12-31", pace=wait, listed=["AAA", "BBB"])
+        p = rep["pools"]
+        self.assertEqual((rep["candidates"], rep["inactive_candidates"], rep["inactive_error"]), (6, 2, None))   # the fund is not a company
+        self.assertEqual((p["months"], p["names"], p["gone"], p["not_today"]), (2, 4, ["DDD"], ["DDD", "EEE"]))
+        self.assertEqual((p["gone_served"], p["gone_refused"], p["floor_ok"]), (1, 1, True))          # ZZZ refused on its own, DDD still served
+        self.assertEqual([(r["sym"], r["day"]) for r in rep["rows"]], [("AAA", ev_feb), ("EEE", ev_mar)])
+        # EEE in February: too young for that pool. BBB in March: pushed out by EEE. CCC: never in. DDD: no close five sessions on.
+        self.assertEqual(rep["no_5d"], [["DDD", ev_feb]])
+        a, e = rep["rows"]
+        self.assertEqual((a["at"], a["entry_at"], a["active"], a["listed"], e["listed"]), ("11:15", "11:16", True, True, False))
+        self.assertAlmostEqual(a["ret"], 95.0 / 94.75 * 110 / 100 - 1 - 0.0005, places=4)            # the buyer's side, after the cost
+        self.assertAlmostEqual(e["ret"], 95.0 / 94.75 * 90 / 100 - 1 - 0.0005, places=4)
+        self.assertGreater(a["usual"], 0)                                                            # AAA's own usual five sessions (one +10% step)
+        asked = dict(c.minute_calls)
+        self.assertEqual(asked[days[feb - 5]], ("SPY", "AAA", "BBB", "DDD", "EEE"))                  # EEE's minutes from before its first pool: its usual volume
+        self.assertNotIn("CCC", {s for syms in asked.values() for s in syms})
+        self.assertEqual((rep["days"], rep["skipped"], rep["stopped_at"]), (len(days) - feb, [], None))
+
+    def test_report_and_combine(self):
+        import tempfile
+        from hero import research_shock_pit as pit
+        row = lambda k, ret, **more: {"sym": f"S{k % 7}", "day": f"2024-{1 + k // 28:02d}-{1 + k % 28:02d}", "ret": ret, "usual": 0.005, "active": True, "listed": True,   # noqa: E731
+                                      "move": -0.06, "volx": 6.0, "at": "11:15", "entry_at": "11:16"} | more
+        pools = {"months": 3, "names": 120, "gone": ["DDD"], "not_today": ["DDD", "EEE"], "cut_min": 5e8, "floor_ok": True, "dropped": 4000, "gone_served": 30, "gone_refused": 2}
+        part = lambda start, rows, **more: {"generated": "2026-11-21", "start": start, "end": "2024-06-30", "days": 100, "rows": rows, "pools": pools, "candidates": 5000,   # noqa: E731
+                                            "inactive_candidates": 900, "inactive_error": None, "short_days": [], "skipped": [], "stopped_at": None, "errors": [], "no_5d": []} | more
+        good = [row(k, 0.03 if k % 3 else -0.02, listed=bool(k % 2)) for k in range(66)]
+        with tempfile.TemporaryDirectory() as tmp:
+            a, b = Path(tmp) / "a.json", Path(tmp) / "b.json"
+            a.write_text(json.dumps(part("2024-02-01", good[:30])))
+            b.write_text(json.dumps(part("2025-01-01", good[30:], no_5d=[["DDD", "2025-02-03"]])))
+            rep = pit.combine([b, a])
+        self.assertEqual((rep["start"], rep["days"], len(rep["rows"]), rep["no_5d"]), ("2024-02-01", 200, 66, [["DDD", "2025-02-03"]]))
+        table, md = pit.report(rep, old=[{"sym": "S1", "day": "2024-01-02", "ret": 0.04}, {"sym": "XX", "day": "2024-03-05", "ret": 0.10}])
+        self.assertTrue(table["全部"]["pass"])
+        self.assertEqual((table["今天名单里的"]["n"], table["不在今天名单里的"]["n"], table["已经不在交易的"]), (33, 33, None))
+        self.assertIn("结论：过了线", md)
+        self.assertIn("两次都有的：1 次", md)
+        self.assertIn("只在今天的名单里有、当时不在池子里的：1 次，平均 +10.00%", md)
+        self.assertIn("DDD 2025-02-03", md)
+        _, bad = pit.report({**rep, "rows": [r | {"ret": -0.01} for r in good], "stopped_at": "2025-03-03"}, old=[])
+        self.assertIn("结论：没过线", bad)
+        self.assertIn("是池子造成的，这条线到此结束", bad)
+        self.assertIn("只跑到 2025-03-03 之前", bad)
+        self.assertIn("没有事件", pit.report({**rep, "rows": []}, old=[])[1])
+        self.assertIn("结果不能用", pit.report({**rep, "pools": pools | {"floor_ok": False}}, old=[])[1])
