@@ -48,16 +48,67 @@ STAKE_DAY = 500.0
 MONTH_STOP = 5_000.0
 MIN_WEEKS, MIN_TRADES, TOP = 3, 10, 3
 COST = "0.05/0.05"       # the longer histories are read with 5% paid on the way in and on the way out
-# method -> (a study's saved rows, which of its rows follow the same rule). SPY and QQQ same-day options at real
-# prices, 2024-02 on, 0.3% from the price, the ledgers' own exits. The 09:35 ledger is read from the 09:45 rows.
-PRIORS = {"spy0dte-near": ("research/2026-11-17-zdte-times.json", lambda r: r["t"] in ("09:45", "10:00")),
-          "spy0dte": ("research/2026-11-17-zdte-times.json", lambda r: r["t"] == "10:00" and abs(r["move"]) >= 0.005),
-          "qqq0dte": ("research/2026-11-17-zdte-lines.json", lambda r: r.get("und") == "QQQ"),
-          # 11-21: the weekly news ledger is the 10-07 study's "sentiment" way with the 2x take (same picker, strike and
-          # exit); that study paid 10% on each side, not 5%, and the page says so. A third and fourth item say how to
-          # read a study that does not keep its rows the way the same-day studies do: (day, result per $1), its costs.
-          "wk-news": ("research/2026-10-07-weekly-news.json", lambda r: r.get("way") == "sentiment",
-                      lambda r: (r["week"], r.get("r2")), "买入多付 10%、卖出少拿 10%")}
+TEN = "买入多付 10%、卖出少拿 10%"
+DAILY = "按期权的日线收盘卖"
+
+
+def _rows(follows, value=lambda r: (r["day"], (r.get("res") or {}).get(COST))):
+    """A study that keeps one row a trade: the rows that follow the ledger's rule, each read as (day, result per $1)."""
+    return lambda rep: [value(r) for r in rep["rows"] if follows(r)]
+
+
+def _top(follows, rank, value):
+    """One trade a day: among the rows that follow the rule, the one the ledger would have picked."""
+    def read(rep):
+        by = {}
+        for r in rep["rows"]:
+            if follows(r) and (r["day"] not in by or rank(r) > rank(by[r["day"]])):
+                by[r["day"]] = r
+        return [value(by[d]) for d in sorted(by)]
+    return read
+
+
+def _dip(*variants):
+    """The dip-week study: for each (leg, exit) a ledger of the method trades, the day's biggest gap-down."""
+    def read(rep):
+        return [x for leg, ex in variants
+                for x in _top(lambda r: r.get("leg") == leg and (r.get("res") or {}).get(ex) is not None, lambda r: -r["gap"],
+                              lambda r: (r["day"], r["res"][ex]))(rep)]
+    return read
+
+
+def _slots(und, *variants):
+    """The same-day study that keeps every entry time and strike in one row: (time|distance, exit) for each ledger."""
+    return lambda rep: [(r["day"], (r.get("res") or {}).get(slot, {}).get(ex)) for r in rep["rows"] if r.get("und") == und for slot, ex in variants]
+
+
+# method -> (a study's saved file, how to read the trades the ledger's rule would have made, what differs from the
+# book's own terms). Real option prices, 2024-02 on. 5% paid on each side unless the last item says otherwise; where
+# the two ledgers of a method are variants (another strike, time or take), both variants are read.
+PRIORS = {"spy0dte-near": ("research/2026-11-17-zdte-times.json", _rows(lambda r: r["t"] in ("09:45", "10:00")), None),   # the 09:35 ledger from the 09:45 rows
+          "spy0dte": ("research/2026-11-17-zdte-times.json", _rows(lambda r: r["t"] == "10:00" and abs(r["move"]) >= 0.005), None),
+          "qqq0dte": ("research/2026-11-17-zdte-lines.json", _rows(lambda r: r.get("und") == "QQQ"), None),
+          # 11-21: the weekly ledgers are the 10-07 study's ways with the 2x take (same picker, strike and exit)
+          "wk-news": ("research/2026-10-07-weekly-news.json", _rows(lambda r: r.get("way") == "sentiment", lambda r: (r["week"], r.get("r2"))), TEN),
+          # 11-22: the rest that match a saved study
+          "wk-trend": ("research/2026-10-07-weekly-news.json", _rows(lambda r: r.get("way") == "control", lambda r: (r["week"], r.get("r2"))), TEN),
+          "dipweek": ("research/2026-10-23-dip-week-broad.json", _dip(("otm3", "trail2"), ("atm", "trail2")), f"回测没有波动门槛，{DAILY}"),
+          "dipweek-hold": ("research/2026-10-23-dip-week-broad.json", _dip(("otm3", "d5"), ("atm", "d5")), "回测没有波动门槛"),
+          "dipweek-take": ("research/2026-10-23-dip-week-broad.json", _dip(("atm", "take2"), ("otm3", "take2")), f"回测没有波动门槛，{DAILY}"),
+          "overnight": ("research/2026-10-13-overnight.json",
+                        _top(lambda r: r["kind"] == "C" and r["trend"], lambda r: r["ret"], lambda r: (r["day"], r["res"].get("trail2"))), f"{TEN}，{DAILY}"),
+          "pead": ("research/2026-10-13-pead.json",
+                   lambda rep: [x for line in (0.10, 0.05)                         # the $500 ledger from 10% up, the $1,000 one from 5%
+                                for x in _rows(lambda r: r["kind"] == "C" and r["gap"] >= line, lambda r: (r["day"], r["res"].get("trail2")))(rep)],
+                   f"{TEN}，{DAILY}"),
+          "vixspike": ("research/2026-10-13-vixspike.json", _rows(lambda r: r["und"] == "SPY" and r["spike"], lambda r: (r["day"], r["res"].get("take3"))), TEN),
+          "nvda0dte": ("research/2026-10-16-zdte-minmove.json", _slots("NVDA", ("10:00|0.006", "take3_trail"), ("10:00|0.006", "take5_trail")), TEN),
+          "tsla0dte": ("research/2026-10-16-zdte-minmove.json", _slots("TSLA", ("10:00|0.006", "take3_trail"), ("09:35|0.006", "take3_trail")), TEN),
+          "tsla0dte-5x": ("research/2026-10-16-zdte-minmove.json", _slots("TSLA", ("10:00|0.006", "take5_trail"), ("10:00|0.003", "take5_trail")), TEN),
+          "fadelotto": ("research/2026-10-22-fade-lotto.json", _rows(lambda r: r.get("cap") == 1.0, lambda r: (r["day"], r["res"].get("half"))), TEN)}
+# why a method has no longer history although a study of the same idea is on file
+NO_PRIOR = {"gap": "对不上：回测是抽样的低开股票，不是每天挑的那两只", "flush": "对不上：回测是抽样的事件，不是每天挑的那两只",
+            "sniper": "对不上：账本每天靠当天的判断挑，存的是全部候选", "dia0dte": "没有存过 DIA 的历史"}
 VARIANT = {"old": "旧规则", "r2": "第 2 名", "r3": "第 3 名", "opt": "买期权", "off": "不下注的日子"}
 
 
@@ -123,17 +174,17 @@ def eligible(s: dict) -> bool:
 def priors(root: Path = ROOT) -> dict[str, dict]:
     """The longer histories on file: per method, robust.summary of (day, result per $1 after costs)."""
     out, cache = {}, {}
-    for name, (rel, same_rule, *more) in PRIORS.items():
-        read = more[0] if more else (lambda r: (r["day"], r.get("res", {}).get(COST)))
+    for name, (rel, read, note) in PRIORS.items():
         path = root / rel
         if not path.exists():
             continue
         if rel not in cache:
             cache[rel] = json.loads(path.read_text())
-        rows = [x for x in (read(r) for r in cache[rel]["rows"] if same_rule(r)) if x[1] is not None]
+        rows = [(d, r) for d, r in read(cache[rel]) if r is not None]
         if rows:
-            out[name] = {**robust.summary(rows), "start": cache[rel]["start"], "end": cache[rel]["end"], "source": rel,
-                         "cost": more[1] if len(more) > 1 else None}
+            days = sorted(d for d, _ in rows)
+            out[name] = {**robust.summary(rows), "start": cache[rel].get("start") or days[0], "end": cache[rel].get("end") or days[-1],
+                         "source": rel, "cost": note}
     return out
 
 
@@ -272,11 +323,11 @@ def page(day: str, rows: list[dict], rows2: list[dict], table: list[dict], prior
                 + "按现在手里的更长历史是亏的：这段历史是记完以后才接上的。记下的不改；下一次选的时候它不够格。", ""]
     out += ["## 四、要到目标，每种做法得押多少", "",
             "每种做法到现在的记录（10 笔以上的）。「每天要押」= 想靠它平均每天赚 $500，按它到现在每 $1 的结果和出手的天数，平均每个交易日要押的钱。"
-            "最后一栏是我们手里更长的历史：同一条规则按真实期权价、买卖各多付 5% 算的每 $1；有这一栏的，先信这一栏。", "",
+            "最后一栏是我们手里更长的历史：同一条规则按真实期权价、买卖各多付 5% 算的每 $1；和账本的做法有出入的（成本、卖法、少一道门槛）在括号里写明。有这一栏的，先信这一栏。", "",
             "| 做法 | 笔数 | 周数 | 每 $1 | 去掉最好一周 | 最差的一周 | 出手的天数 | 每天要押 | 够格吗 | 更长的历史 |", "|---|---|---|---|---|---|---|---|---|---|"]
     for r in table:
         h = prior.get(r["method"])
-        long = (f"{pct(h['mean'])}（{h['n']} 笔，{h['start'][:7]} 起；去掉最好 3 笔 {pct(h['trim'])}" + (f"；成本口径不同：{h['cost']}" if h.get("cost") else "") + "）") if h else "没有"
+        long = (f"{pct(h['mean'])}（{h['n']} 笔，{h['start'][:7]} 起；去掉最好 3 笔 {pct(h['trim'])}" + (f"；出入：{h['cost']}" if h.get("cost") else "") + "）") if h else NO_PRIOR.get(re.sub(r"-(old|opt|off|r\d+)$", "", r["method"]), "没有")
         out.append(f"| {title(r['method'])} | {r['n']} | {r['weeks']} | {pct(r['per'])} | {pct(r['rest'])} | {pct(r['worst'])} | {r['share']:.0%} | "
                    f"{usd(r['stake'], False) if r['stake'] else '赚不到'} | {'够' if r['eligible'] else '不够'} | {long} |")
     warn = [f"{title(m)}：{'；'.join(h['flags'])}" for m, h in prior.items() if h.get("flags")]

@@ -9637,8 +9637,44 @@ class Goal(unittest.TestCase):
                 got = goal.run("2026-10-31", root=root)
             self.assertEqual(got["next"]["picks2"], ["wk-news"])                         # what was written down stays
             self.assertIn("第二版记下的选择里，周内新闻（更长的历史 −20%，6 笔）按现在手里的更长历史是亏的", got["page"])
-            self.assertIn("成本口径不同：买入多付 10%、卖出少拿 10%", got["page"])
+            self.assertIn("出入：买入多付 10%、卖出少拿 10%", got["page"])
             self.assertEqual(len(json.loads((root / "research" / "goal" / "ledger.json").read_text())["decisions"]), 1)
+
+    def test_histories_read_the_trades_each_ledger_would_have_made(self):
+        from hero import goal
+        dip = {"start": "2025-03-03", "end": "2025-03-05", "rows": [
+            {"day": "2025-03-03", "und": "AAA", "gap": -0.03, "leg": "otm3", "res": {"d5": 0.5, "trail2": 0.4, "take2": 1.0}},
+            {"day": "2025-03-03", "und": "BBB", "gap": -0.06, "leg": "otm3", "res": {"d5": -0.9, "trail2": -0.8, "take2": -0.7}},     # the day's biggest gap-down
+            {"day": "2025-03-03", "und": "BBB", "gap": -0.06, "leg": "atm", "res": {"d5": -0.5, "trail2": -0.4, "take2": -0.3}},
+            {"day": "2025-03-04", "und": "AAA", "gap": -0.02, "leg": "otm3", "res": {"d5": 0.2, "trail2": None, "take2": 0.1}},
+            {"day": "2025-03-04", "und": "CCC", "gap": -0.09, "leg": None, "res": None}]}                                               # no contract that day
+        self.assertEqual(goal._dip(("otm3", "trail2"), ("atm", "trail2"))(dip), [("2025-03-03", -0.8), ("2025-03-03", -0.4)])     # both ledgers' strikes, the pick of the day
+        self.assertEqual(goal._dip(("otm3", "d5"))(dip), [("2025-03-03", -0.9), ("2025-03-04", 0.2)])
+        night = {"rows": [{"day": "2025-03-03", "kind": "C", "trend": True, "ret": 0.04, "res": {"trail2": 0.3}},
+                          {"day": "2025-03-03", "kind": "C", "trend": True, "ret": 0.07, "res": {"trail2": -0.6}},                     # the strongest one
+                          {"day": "2025-03-03", "kind": "C", "trend": False, "ret": 0.20, "res": {"trail2": 9.0}},                     # under its 50-day average
+                          {"day": "2025-03-04", "kind": "P", "trend": True, "ret": -0.09, "res": {"trail2": 2.0}}]}
+        self.assertEqual(goal.PRIORS["overnight"][1](night), [("2025-03-03", -0.6)])
+        same = {"rows": [{"und": "TSLA", "day": "2025-03-03", "res": {"10:00|0.006": {"take3_trail": 0.5, "take5_trail": 0.7}, "09:35|0.006": {"take3_trail": -1.0},
+                                                                     "10:00|0.003": {"take5_trail": 0.1}}},
+                         {"und": "NVDA", "day": "2025-03-03", "res": {"10:00|0.006": {"take3_trail": -0.2, "take5_trail": -0.3}}}]}
+        self.assertEqual(goal.PRIORS["tsla0dte"][1](same), [("2025-03-03", 0.5), ("2025-03-03", -1.0)])                               # 10:00 and the 09:35 variant
+        self.assertEqual(goal.PRIORS["tsla0dte-5x"][1](same), [("2025-03-03", 0.7), ("2025-03-03", 0.1)])
+        self.assertEqual(goal.PRIORS["nvda0dte"][1](same), [("2025-03-03", -0.2), ("2025-03-03", -0.3)])
+        drift = {"rows": [{"day": "2025-03-03", "kind": "C", "gap": 0.12, "res": {"trail2": 0.9}}, {"day": "2025-03-04", "kind": "C", "gap": 0.06, "res": {"trail2": -0.5}},
+                          {"day": "2025-03-05", "kind": "P", "gap": -0.2, "res": {"trail2": 3.0}}, {"day": "2025-03-06", "kind": "C", "gap": 0.03, "res": {"trail2": 3.0}}]}
+        self.assertEqual(goal.PRIORS["pead"][1](drift), [("2025-03-03", 0.9), ("2025-03-03", 0.9), ("2025-03-04", -0.5)])               # 10% up is in both ledgers
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "research").mkdir()
+            (root / "research" / "2026-10-23-dip-week-broad.json").write_text(json.dumps(dip))
+            (root / "research" / "2026-10-13-overnight.json").write_text(json.dumps(night))
+            prior = goal.priors(root)
+        self.assertEqual(sorted(prior), ["dipweek", "dipweek-hold", "dipweek-take", "overnight"])
+        self.assertEqual((prior["dipweek"]["n"], prior["dipweek-hold"]["n"], prior["overnight"]["start"]), (2, 3, "2025-03-03"))         # no start in the file: the first trade
+        self.assertIn("没有波动门槛", prior["dipweek"]["cost"])
+        self.assertTrue(all(len(v) == 3 for v in goal.PRIORS.values()))
+        self.assertTrue(set(goal.NO_PRIOR).isdisjoint(goal.PRIORS))
 
     def test_a_run_writes_the_page_and_records_next_weeks_choice_only_at_the_weekend(self):
         from unittest import mock
