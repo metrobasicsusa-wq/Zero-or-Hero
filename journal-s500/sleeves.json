@@ -2951,33 +2951,11 @@
   },
   "spy0dte-near-500": {
    "start": 500.0,
-   "cash": 204.0,
+   "cash": 211.0,
    "round": 7,
    "heroes": 0,
    "zeros": 6,
-   "open": [
-    {
-     "tid": "20261123-716fea",
-     "kind": "zdte",
-     "sym": "SPY261123P00719000",
-     "asset": "option",
-     "und": "SPY",
-     "qty": 1,
-     "cost": 2.96,
-     "paid": 296.0,
-     "opened": "2026-11-23 10:00",
-     "why": "SPY 开盘 $724.29、现在 $721.87，顺势买当天到期看跌 719（离现价 0.4%），3 倍止盈，15:30 平仓",
-     "expiry": "2026-11-23",
-     "exit_day": "2026-11-23",
-     "exit_at": "15:30",
-     "trail": false,
-     "best_bid": 2.58,
-     "expiry_out": null,
-     "take_x": 3,
-     "take": 8.9,
-     "take_cid": "sl-spy0dte-near-500-20261123-716fea-tb7fb"
-    }
-   ],
+   "open": [],
    "closed": [
     {
      "tid": "271d9ed519",
@@ -4377,6 +4355,34 @@
      "how": "券商已无持仓（到期作废）",
      "closed": "2026-11-23 09:30",
      "ret": -1.0
+    },
+    {
+     "tid": "20261123-716fea",
+     "kind": "zdte",
+     "sym": "SPY261123P00719000",
+     "asset": "option",
+     "und": "SPY",
+     "qty": 1,
+     "cost": 2.96,
+     "paid": 296.0,
+     "opened": "2026-11-23 10:00",
+     "why": "SPY 开盘 $724.29、现在 $721.87，顺势买当天到期看跌 719（离现价 0.4%），3 倍止盈，15:30 平仓",
+     "expiry": "2026-11-23",
+     "exit_day": "2026-11-23",
+     "exit_at": "15:30",
+     "trail": false,
+     "best_bid": 2.58,
+     "expiry_out": null,
+     "take_x": 3,
+     "take": 8.9,
+     "sell_cid": "sl-spy0dte-near-500-20261123-716fea-xb3ef",
+     "sell_why": "2026-11-23 15:30 到时卖出",
+     "state": "closed",
+     "exit_price": 0.07,
+     "proceeds": 7.0,
+     "how": "2026-11-23 15:30 到时卖出",
+     "closed": "2026-11-23 15:30",
+     "ret": -0.976
     }
    ],
    "slots": {
@@ -4457,51 +4463,11 @@
   },
   "spy0dte-near-1000": {
    "start": 1000.0,
-   "cash": 382.0,
+   "cash": 418.0,
    "round": 7,
    "heroes": 3,
    "zeros": 3,
-   "open": [
-    {
-     "tid": "20261123-e3f69b",
-     "kind": "zdte",
-     "sym": "SPY261123P00713000",
-     "asset": "option",
-     "und": "SPY",
-     "qty": 9,
-     "cost": 4.03,
-     "paid": 3627.0,
-     "opened": "2026-11-23 09:40",
-     "why": "SPY 开盘 $724.29、现在 $715.40，顺势买当天到期看跌 713（离现价 0.3%），3 倍止盈，15:30 平仓",
-     "expiry": "2026-11-23",
-     "exit_day": "2026-11-23",
-     "exit_at": "15:30",
-     "trail": false,
-     "best_bid": 2.43,
-     "expiry_out": null,
-     "take_x": 3,
-     "take": 12.1,
-     "take_cid": "sl-spy0dte-near-1000-20261123-e3f69b-td608"
-    },
-    {
-     "tid": "20261123-e3f69br",
-     "kind": "zdte",
-     "sym": "SPY261123P00713000",
-     "asset": "option",
-     "und": "SPY",
-     "qty": 9,
-     "cost": 4.03,
-     "paid": 3627.0,
-     "opened": "2026-11-23 09:40",
-     "why": "SPY 开盘 $724.29、现在 $715.40，顺势买当天到期看跌 713（离现价 0.3%），3 倍止盈，15:30 平仓",
-     "expiry": "2026-11-23",
-     "exit_day": "2026-11-23",
-     "exit_at": "15:30",
-     "trail": true,
-     "best_bid": 2.43,
-     "expiry_out": null
-    }
-   ],
+   "open": [],
    "closed": [
     {
      "tid": "a4cab2ccb2",
@@ -5948,6 +5914,60 @@
      "how": "2026-11-20 15:30 到时卖出",
      "closed": "2026-11-20 15:30",
      "ret": 5.142
+    },
+    {
+     "tid": "20261123-e3f69b",
+     "kind": "zdte",
+     "sym": "SPY261123P00713000",
+     "asset": "option",
+     "und": "SPY",
+     "qty": 9,
+     "cost": 4.03,
+     "paid": 3627.0,
+     "opened": "2026-11-23 09:40",
+     "why": "SPY 开盘 $724.29、现在 $715.40，顺势买当天到期看跌 713（离现价 0.3%），3 倍止盈，15:30 平仓",
+     "expiry": "2026-11-23",
+     "exit_day": "2026-11-23",
+     "exit_at": "15:30",
+     "trail": false,
+     "best_bid": 2.43,
+     "expiry_out": null,
+     "take_x": 3,
+     "take": 12.1,
+     "sell_cid": "sl-spy0dte-near-1000-20261123-e3f69b-x33c7",
+     "sell_why": "2026-11-23 15:30 到时卖出",
+     "state": "closed",
+     "exit_price": 0.02,
+     "proceeds": 18.0,
+     "how": "2026-11-23 15:30 到时卖出",
+     "closed": "2026-11-23 15:30",
+     "ret": -0.995
+    },
+    {
+     "tid": "20261123-e3f69br",
+     "kind": "zdte",
+     "sym": "SPY261123P00713000",
+     "asset": "option",
+     "und": "SPY",
+     "qty": 9,
+     "cost": 4.03,
+     "paid": 3627.0,
+     "opened": "2026-11-23 09:40",
+     "why": "SPY 开盘 $724.29、现在 $715.40，顺势买当天到期看跌 713（离现价 0.3%），3 倍止盈，15:30 平仓",
+     "expiry": "2026-11-23",
+     "exit_day": "2026-11-23",
+     "exit_at": "15:30",
+     "trail": true,
+     "best_bid": 2.43,
+     "expiry_out": null,
+     "sell_cid": "sl-spy0dte-near-1000-20261123-e3f69br-xb7fb",
+     "sell_why": "2026-11-23 15:30 到时卖出",
+     "state": "closed",
+     "exit_price": 0.02,
+     "proceeds": 18.0,
+     "how": "2026-11-23 15:30 到时卖出",
+     "closed": "2026-11-23 15:30",
+     "ret": -0.995
     }
    ],
    "slots": {
@@ -7110,7 +7130,7 @@
      "exit_day": "2026-11-26",
      "exit_at": "15:50",
      "trail": false,
-     "best_bid": 1.68,
+     "best_bid": 1.7,
      "expiry_out": null,
      "take_x": 2,
      "take": 1.9,
@@ -7387,7 +7407,7 @@
      "exit_day": "2026-11-26",
      "exit_at": "15:50",
      "trail": false,
-     "best_bid": 1.68,
+     "best_bid": 1.7,
      "expiry_out": null,
      "take_x": 2,
      "take": 1.9,
@@ -7663,7 +7683,7 @@
      "exit_day": "2026-11-26",
      "exit_at": "15:50",
      "trail": false,
-     "best_bid": 1.19,
+     "best_bid": 1.23,
      "expiry_out": null,
      "take_x": 2,
      "take": 1.5,
@@ -10650,7 +10670,9 @@
      "exit_at": "15:30",
      "trail": true,
      "best_bid": 2.59,
-     "expiry_out": null
+     "expiry_out": null,
+     "sell_cid": "sl-overnight-500-20261118-560bcc-xcf12",
+     "sell_why": "2026-11-23 15:30 到时卖出"
     }
    ],
    "closed": [
@@ -10807,7 +10829,9 @@
      "exit_at": "15:30",
      "trail": true,
      "best_bid": 2.59,
-     "expiry_out": null
+     "expiry_out": null,
+     "sell_cid": "sl-overnight-1000-20261118-6cfba7-x45af",
+     "sell_why": "2026-11-23 15:30 到时卖出"
     }
    ],
    "closed": [
@@ -12818,7 +12842,9 @@
      "exit_at": "15:30",
      "trail": true,
      "best_bid": 2.92,
-     "expiry_out": null
+     "expiry_out": null,
+     "sell_cid": "sl-bottom-500-20261116-f4c350-xb641",
+     "sell_why": "2026-11-23 15:30 到时卖出"
     }
    ],
    "closed": [],
@@ -12869,7 +12895,9 @@
      "exit_at": "15:30",
      "trail": false,
      "best_bid": 2.92,
-     "expiry_out": null
+     "expiry_out": null,
+     "sell_cid": "sl-bottom-1000-20261116-c0d312-x1d82",
+     "sell_why": "2026-11-23 15:30 到时卖出"
     }
    ],
    "closed": [
