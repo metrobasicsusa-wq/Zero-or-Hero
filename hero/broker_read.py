@@ -157,7 +157,7 @@ def history(a, period: str = "3M") -> list[dict]:
     ts, eq, pl, pct = (h.get(k) or [] for k in ("timestamp", "equity", "profit_loss", "profit_loss_pct"))
     out = []
     for i, t in enumerate(ts):
-        if i < len(eq) and eq[i] is not None:
+        if i < len(eq) and eq[i]:
             out.append({"day": datetime.fromtimestamp(t, ET).date().isoformat(), "equity": eq[i],
                         "pl": pl[i] if i < len(pl) else None, "pl_pct": pct[i] if i < len(pct) else None})
     return out
@@ -303,6 +303,11 @@ def run_account(a, name: str, today: date, data: Path = DATA) -> dict:
     return rec
 
 
+def recent_end(now: datetime | None = None) -> str:
+    """20 minutes ago, RFC3339: the free data plan refuses SIP data from the last 15 minutes."""
+    return ((now or datetime.now(timezone.utc)) - timedelta(minutes=20)).strftime("%Y-%m-%dT%H:%M:%SZ")
+
+
 def run_market(a, today: date, data: Path = DATA, symbols: list[str] | None = None) -> dict:
     """Auctions since the last stored day (or LOOKBACK days) and splits / dividends since 2015."""
     symbols, errors = symbols or watch_symbols(), {}
@@ -316,7 +321,7 @@ def run_market(a, today: date, data: Path = DATA, symbols: list[str] | None = No
                 prim[s] = (a.asset(s) or {}).get("exchange", "")
             except Exception:
                 prim[s] = ""
-        new = auction_rows(auctions(a, symbols, start, today.isoformat()), prim)
+        new = auction_rows(auctions(a, symbols, start, recent_end()), prim)
         save(data / "auctions.json", merge_auctions(old, new))
     except Exception as e:
         errors["auctions"] = redact(str(e))[:200]
@@ -369,7 +374,10 @@ def report(today: date, accounts: dict[str, dict], market_errors: dict, auc: dic
         acts = rec.get("activities") or []
         counts = rec.get("activity_counts") or {}
         out.append(f"**{ACCOUNTS.get(name, name)}**：这次读到的各类条数 " + ("，".join(f"{k} {v}" for k, v in counts.items()) or "无") + "。")
-        recent = [r for r in acts if r.get("date", "") >= (today - timedelta(days=14)).isoformat()]
+        since = (today - timedelta(days=14)).isoformat()
+        recent = [r for r in acts if r.get("date", "") >= since and r.get("activity_type") != "FEE"]
+        fees = sum(float(r.get("net_amount") or 0) for r in acts if r.get("date", "") >= since and r.get("activity_type") == "FEE")
+        out.append(f"最近 14 天的费用（监管费、清算费）合计 {money(fees)}，不逐条列。")
         if recent:
             out += ["", "| 日期 | 类型 | 代码 | 数量 | 金额 | 说明 |", "|---|---|---|---|---|---|"]
             out += [f"| {r.get('date', '')[:10]} | {r.get('activity_type')} | {r.get('symbol', '')} | {r.get('qty', '')} | {money(r.get('net_amount'))} | "
@@ -435,8 +443,13 @@ def opens_to_compare(auc: dict, days_back: int = 30) -> tuple[dict, dict]:
     syms = [s for s in ("SPY", "QQQ") if s in auc]
     if os.getenv("ALPACA_API_KEY") and syms:
         start = (date.today() - timedelta(days=days_back + 5)).isoformat()
-        for s, bars in Alpaca().daily_bars(syms, start, adjustment="raw", feed="sip").items():
-            daily[s] = {b["t"][:10]: b["o"] for b in bars}
+        try:
+            page = Alpaca()._d("/v2/stocks/bars", {"symbols": ",".join(syms), "timeframe": "1Day", "start": start, "end": recent_end(),
+                                                "adjustment": "raw", "feed": "sip", "limit": 10000}) or {}
+            for s, bars in (page.get("bars") or {}).items():
+                daily[s] = {b["t"][:10]: b["o"] for b in bars}
+        except Exception:
+            pass
     for s in syms:
         try:
             first = {}

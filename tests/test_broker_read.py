@@ -94,6 +94,9 @@ class TestHistoryLevelsQuotes(unittest.TestCase):
         ts = int(datetime(2026, 11, 20, 5, 0, tzinfo=timezone.utc).timestamp())       # midnight New York
         a = FakeBroker({"/v2/account/portfolio/history": {"timestamp": [ts, ts + 86400 * 3], "equity": [70956.37, None],
                                                            "profit_loss": [-6515.31, 0], "profit_loss_pct": [-0.0868, 0]}})
+        a.pages["/v2/account/portfolio/history"]["timestamp"].insert(0, ts - 86400)
+        for k, v in (("equity", 0.0), ("profit_loss", 0), ("profit_loss_pct", 0)):
+            a.pages["/v2/account/portfolio/history"][k].insert(0, v)          # before the account had money
         h = br.history(a)
         self.assertEqual(h, [{"day": "2026-11-20", "equity": 70956.37, "pl": -6515.31, "pl_pct": -0.0868}])
 
@@ -108,6 +111,7 @@ class TestHistoryLevelsQuotes(unittest.TestCase):
         now = datetime(2026, 11, 23, 17, 40, tzinfo=timezone.utc)
         self.assertEqual(br.age("2026-11-23T17:25:00.123456789Z", now), 15.0)
         self.assertEqual(br.age("2026-11-23T17:39:00Z", now), 1.0)
+        self.assertEqual(br.recent_end(now), "2026-11-23T17:20:00Z")
         self.assertIsNone(br.age(None, now))
 
     def test_quotes_side_by_side_and_opra_refused(self):
