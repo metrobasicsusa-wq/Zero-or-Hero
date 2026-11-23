@@ -1,0 +1,720 @@
+{
+ "week": "2026-11-23",
+ "sessions": 4,
+ "days": [
+  {
+   "date": "2026-11-23",
+   "weekday": "周一",
+   "open": true,
+   "holiday": null,
+   "close": "16:00",
+   "early_close": null,
+   "data": [],
+   "fed": [],
+   "earnings": [
+    {
+     "date": "2026-11-23",
+     "symbol": "CRWD",
+     "slot": "盘后",
+     "why": [
+      "股票池"
+     ],
+     "calendar_date": "2026-12-01",
+     "other_source": true,
+     "confirmed": false,
+     "trust": "**未确认**；Yahoo 说 2026-11-23",
+     "deep": null
+    },
+    {
+     "date": "2026-11-23",
+     "symbol": "HPE",
+     "slot": "盘后",
+     "why": [
+      "股票池"
+     ],
+     "calendar_date": "2026-11-23",
+     "other_source": false,
+     "confirmed": true,
+     "trust": "已确认",
+     "deep": "research/earnings-forecast/deep/HPE-2026-11-23.md"
+    }
+   ],
+   "expiry": [],
+   "held_expiring": {
+    "多账本": [
+     "AMZN 277.5C",
+     "IWM 273C",
+     "SPY 713P",
+     "SPY 719P"
+    ]
+   }
+  },
+  {
+   "date": "2026-11-24",
+   "weekday": "周二",
+   "open": true,
+   "holiday": null,
+   "close": "16:00",
+   "early_close": null,
+   "data": [],
+   "fed": [],
+   "earnings": [
+    {
+     "date": "2026-11-24",
+     "symbol": "ADI",
+     "slot": "盘前",
+     "why": [
+      "股票池"
+     ],
+     "calendar_date": "2026-11-24",
+     "other_source": false,
+     "confirmed": true,
+     "trust": "已确认",
+     "deep": "research/earnings-forecast/deep/ADI-2026-11-24.md"
+    },
+    {
+     "date": "2026-11-24",
+     "symbol": "MDT",
+     "slot": "盘前",
+     "why": [
+      "股票池"
+     ],
+     "calendar_date": "2026-11-24",
+     "other_source": false,
+     "confirmed": true,
+     "trust": "已确认",
+     "deep": "research/earnings-forecast/deep/MDT-2026-11-24.md"
+    },
+    {
+     "date": "2026-11-24",
+     "symbol": "DELL",
+     "slot": "盘后",
+     "why": [
+      "股票池"
+     ],
+     "calendar_date": "2026-11-24",
+     "other_source": false,
+     "confirmed": true,
+     "trust": "已确认",
+     "deep": "research/earnings-forecast/deep/DELL-2026-11-24.md"
+    }
+   ],
+   "expiry": [],
+   "held_expiring": {}
+  },
+  {
+   "date": "2026-11-25",
+   "weekday": "周三",
+   "open": true,
+   "holiday": null,
+   "close": "16:00",
+   "early_close": null,
+   "data": [
+    "08:30 PCE（个人收入和支出）：10 月",
+    "08:30 GDP：三季度，第二次估计"
+   ],
+   "fed": [],
+   "earnings": [],
+   "expiry": [],
+   "held_expiring": {}
+  },
+  {
+   "date": "2026-11-26",
+   "weekday": "周四",
+   "open": false,
+   "holiday": "感恩节",
+   "close": null,
+   "early_close": null,
+   "data": [],
+   "fed": [],
+   "earnings": [],
+   "expiry": [],
+   "held_expiring": {}
+  },
+  {
+   "date": "2026-11-27",
+   "weekday": "周五",
+   "open": true,
+   "holiday": null,
+   "close": "13:00",
+   "early_close": "13:00",
+   "data": [],
+   "fed": [],
+   "earnings": [],
+   "expiry": [
+    "今天到期的期权 13:00 停止交易（可延长交易的 13:15）"
+   ],
+   "held_expiring": {
+    "多账本": [
+     "GS 830C",
+     "GS 840C",
+     "MRNA 210C",
+     "UBER 64P",
+     "WFC 82C",
+     "WMT 127C",
+     "WMT 129C",
+     "WMT 130C"
+    ]
+   }
+  }
+ ],
+ "early_closes": [
+  "2026-11-27"
+ ],
+ "hardcoded": [
+  {
+   "file": "hero/sleeve_rules.py",
+   "line": 295,
+   "time": "15:00",
+   "func": "ZeroDTE.entries",
+   "kind": "进场窗口"
+  },
+  {
+   "file": "hero/sleeve_rules.py",
+   "line": 342,
+   "time": "15:30",
+   "func": "ZeroDTE.entries",
+   "kind": "卖出时间"
+  },
+  {
+   "file": "hero/sleeve_rules.py",
+   "line": 359,
+   "time": "15:55",
+   "func": "OneShot.entries",
+   "kind": "卖出时间"
+  },
+  {
+   "file": "hero/sleeve_rules.py",
+   "line": 359,
+   "time": "15:55",
+   "func": "OneShot.entries",
+   "kind": "卖出时间"
+  },
+  {
+   "file": "hero/sleeve_rules.py",
+   "line": 373,
+   "time": "15:30",
+   "func": "held_out",
+   "kind": "卖出时间"
+  },
+  {
+   "file": "hero/sleeve_rules.py",
+   "line": 373,
+   "time": "15:50",
+   "func": "held_out",
+   "kind": "卖出时间"
+  },
+  {
+   "file": "hero/sleeve_rules.py",
+   "line": 422,
+   "time": "15:45",
+   "func": "Overnight.entries",
+   "kind": "进场窗口"
+  },
+  {
+   "file": "hero/sleeve_rules.py",
+   "line": 422,
+   "time": "15:58",
+   "func": "Overnight.entries",
+   "kind": "进场窗口"
+  },
+  {
+   "file": "hero/sleeve_rules.py",
+   "line": 485,
+   "time": "15:00",
+   "func": "Pead.entries",
+   "kind": "进场窗口"
+  },
+  {
+   "file": "hero/sleeve_rules.py",
+   "line": 529,
+   "time": "15:00",
+   "func": "VixSpike.entries",
+   "kind": "进场窗口"
+  },
+  {
+   "file": "hero/sleeve_rules.py",
+   "line": 551,
+   "time": "15:00",
+   "func": "Weekly.entries",
+   "kind": "进场窗口"
+  },
+  {
+   "file": "hero/sleeve_rules.py",
+   "line": 567,
+   "time": "15:50",
+   "func": "Weekly.entries",
+   "kind": "卖出时间"
+  },
+  {
+   "file": "hero/sleeve_rules.py",
+   "line": 617,
+   "time": "15:00",
+   "func": "Net.entries",
+   "kind": "进场窗口"
+  },
+  {
+   "file": "hero/sleeve_rules.py",
+   "line": 643,
+   "time": "15:30",
+   "func": "Net.entries",
+   "kind": "卖出时间"
+  },
+  {
+   "file": "hero/sleeve_rules.py",
+   "line": 672,
+   "time": "15:50",
+   "func": "Gap.entries",
+   "kind": "卖出时间"
+  },
+  {
+   "file": "hero/sleeve_rules.py",
+   "line": 724,
+   "time": "15:30",
+   "func": "BreakGap.entries",
+   "kind": "卖出时间"
+  },
+  {
+   "file": "hero/sleeve_rules.py",
+   "line": 724,
+   "time": "15:50",
+   "func": "BreakGap.entries",
+   "kind": "卖出时间"
+  },
+  {
+   "file": "hero/sleeve_rules.py",
+   "line": 743,
+   "time": "15:45",
+   "func": "HikeRally.entries",
+   "kind": "进场窗口"
+  },
+  {
+   "file": "hero/sleeve_rules.py",
+   "line": 743,
+   "time": "15:58",
+   "func": "HikeRally.entries",
+   "kind": "进场窗口"
+  },
+  {
+   "file": "hero/sleeve_rules.py",
+   "line": 791,
+   "time": "15:45",
+   "func": "DipWeek.entries",
+   "kind": "进场窗口"
+  },
+  {
+   "file": "hero/sleeve_rules.py",
+   "line": 791,
+   "time": "15:58",
+   "func": "DipWeek.entries",
+   "kind": "进场窗口"
+  },
+  {
+   "file": "hero/sleeve_rules.py",
+   "line": 840,
+   "time": "15:45",
+   "func": "Pullback.entries",
+   "kind": "进场窗口"
+  },
+  {
+   "file": "hero/sleeve_rules.py",
+   "line": 840,
+   "time": "15:58",
+   "func": "Pullback.entries",
+   "kind": "进场窗口"
+  },
+  {
+   "file": "hero/sleeve_rules.py",
+   "line": 909,
+   "time": "15:45",
+   "func": "Streak.entries",
+   "kind": "进场窗口"
+  },
+  {
+   "file": "hero/sleeve_rules.py",
+   "line": 909,
+   "time": "15:58",
+   "func": "Streak.entries",
+   "kind": "进场窗口"
+  },
+  {
+   "file": "hero/sleeve_rules.py",
+   "line": 1005,
+   "time": "15:50",
+   "func": "Bounce.entries",
+   "kind": "卖出时间"
+  },
+  {
+   "file": "hero/sleeve_rules.py",
+   "line": 1005,
+   "time": "15:50",
+   "func": "Bounce.entries",
+   "kind": "卖出时间"
+  },
+  {
+   "file": "hero/sleeve_rules.py",
+   "line": 1041,
+   "time": "15:30",
+   "func": "OpenGap.entries",
+   "kind": "卖出时间"
+  },
+  {
+   "file": "hero/sleeve_rules.py",
+   "line": 1044,
+   "time": "15:30",
+   "func": "OpenGap.entries",
+   "kind": "卖出时间"
+  },
+  {
+   "file": "hero/sleeve_rules.py",
+   "line": 1044,
+   "time": "15:50",
+   "func": "OpenGap.entries",
+   "kind": "卖出时间"
+  },
+  {
+   "file": "hero/sleeve_rules.py",
+   "line": 1045,
+   "time": "15:30",
+   "func": "OpenGap.entries",
+   "kind": "卖出时间"
+  },
+  {
+   "file": "hero/sleeve_rules.py",
+   "line": 1045,
+   "time": "15:50",
+   "func": "OpenGap.entries",
+   "kind": "卖出时间"
+  },
+  {
+   "file": "hero/sleeve_rules.py",
+   "line": 1154,
+   "time": "15:30",
+   "func": "Sniper.entries",
+   "kind": "卖出时间"
+  },
+  {
+   "file": "hero/sleeve_rules.py",
+   "line": 1157,
+   "time": "15:30",
+   "func": "Sniper.entries",
+   "kind": "卖出时间"
+  },
+  {
+   "file": "hero/sleeve_rules.py",
+   "line": 1157,
+   "time": "15:50",
+   "func": "Sniper.entries",
+   "kind": "卖出时间"
+  },
+  {
+   "file": "hero/sleeve_rules.py",
+   "line": 1158,
+   "time": "15:30",
+   "func": "Sniper.entries",
+   "kind": "卖出时间"
+  },
+  {
+   "file": "hero/sleeve_rules.py",
+   "line": 1187,
+   "time": "15:50",
+   "func": "Flush.entries",
+   "kind": "卖出时间"
+  },
+  {
+   "file": "hero/sleeve_rules.py",
+   "line": 1201,
+   "time": "15:40",
+   "func": "EarningsLotto.entries",
+   "kind": "进场窗口"
+  },
+  {
+   "file": "hero/sleeve_rules.py",
+   "line": 1201,
+   "time": "15:56",
+   "func": "EarningsLotto.entries",
+   "kind": "进场窗口"
+  },
+  {
+   "file": "hero/sleeve_rules.py",
+   "line": 1280,
+   "time": "15:45",
+   "func": "LETF.entries",
+   "kind": "进场窗口"
+  },
+  {
+   "file": "hero/sleeve_rules.py",
+   "line": 1280,
+   "time": "15:58",
+   "func": "LETF.entries",
+   "kind": "进场窗口"
+  },
+  {
+   "file": "hero/sleeve_rules.py",
+   "line": 1297,
+   "time": "15:45",
+   "func": "LETF.exit_check",
+   "kind": "卖出时间"
+  },
+  {
+   "file": "hero/sleeve_rules.py",
+   "line": 1297,
+   "time": "15:58",
+   "func": "LETF.exit_check",
+   "kind": "卖出时间"
+  },
+  {
+   "file": "hero/sleeve_rules.py",
+   "line": 1335,
+   "time": "15:40",
+   "func": "Relay.lotto",
+   "kind": "进场窗口"
+  },
+  {
+   "file": "hero/sleeve_rules.py",
+   "line": 1335,
+   "time": "15:56",
+   "func": "Relay.lotto",
+   "kind": "进场窗口"
+  },
+  {
+   "file": "hero/sleeve_rules.py",
+   "line": 1437,
+   "time": "15:30",
+   "func": "FadeLotto.finds.scan",
+   "kind": "卖出时间"
+  },
+  {
+   "file": "hero/sleeve_rules.py",
+   "line": 1437,
+   "time": "15:50",
+   "func": "FadeLotto.finds.scan",
+   "kind": "卖出时间"
+  },
+  {
+   "file": "hero/sleeve_rules.py",
+   "line": 1441,
+   "time": "15:30",
+   "func": "FadeLotto.finds.scan",
+   "kind": "卖出时间"
+  },
+  {
+   "file": "hero/sleeve_rules.py",
+   "line": 1441,
+   "time": "15:50",
+   "func": "FadeLotto.finds.scan",
+   "kind": "卖出时间"
+  },
+  {
+   "file": "hero/sleeve_rules.py",
+   "line": 1450,
+   "time": "14:00",
+   "func": "FadeLotto.entries",
+   "kind": "进场窗口"
+  },
+  {
+   "file": "hero/sleeve_rules.py",
+   "line": 1532,
+   "time": "15:50",
+   "func": "Peer.entries",
+   "kind": "卖出时间"
+  },
+  {
+   "file": "hero/sleeve_rules.py",
+   "line": 1534,
+   "time": "15:50",
+   "func": "Peer.entries",
+   "kind": "卖出时间"
+  },
+  {
+   "file": "hero/sleeve_rules.py",
+   "line": 1553,
+   "time": "15:45",
+   "func": "Era.entries",
+   "kind": "进场窗口"
+  },
+  {
+   "file": "hero/sleeve_rules.py",
+   "line": 1553,
+   "time": "15:58",
+   "func": "Era.entries",
+   "kind": "进场窗口"
+  },
+  {
+   "file": "hero/sleeves.py",
+   "line": 41,
+   "time": "15:50",
+   "func": "",
+   "kind": "最后一轮交易"
+  },
+  {
+   "file": "hero/sleeves.py",
+   "line": 391,
+   "time": "15:30",
+   "func": "Runner.recover",
+   "kind": "卖出时间"
+  },
+  {
+   "file": "hero/sleeves.py",
+   "line": 391,
+   "time": "15:50",
+   "func": "Runner.recover",
+   "kind": "卖出时间"
+  },
+  {
+   "file": "hero/sleeves.py",
+   "line": 451,
+   "time": "15:30",
+   "func": "Runner.exit_reason",
+   "kind": "卖出时间"
+  },
+  {
+   "file": "hero/sleeves.py",
+   "line": 452,
+   "time": "15:30",
+   "func": "Runner.exit_reason",
+   "kind": "卖出时间"
+  },
+  {
+   "file": "hero/sleeves.py",
+   "line": 611,
+   "time": "15:30",
+   "func": "Runner.plan_open",
+   "kind": "卖出时间"
+  },
+  {
+   "file": "hero/sleeves.py",
+   "line": 614,
+   "time": "15:50",
+   "func": "Runner.plan_open",
+   "kind": "卖出时间"
+  },
+  {
+   "file": "hero/sleeves.py",
+   "line": 835,
+   "time": "15:30",
+   "func": "Runner.filled",
+   "kind": "卖出时间"
+  },
+  {
+   "file": "hero/sleeves.py",
+   "line": 885,
+   "time": "15:50",
+   "func": "Runner.buy_stocks",
+   "kind": "卖出时间"
+  }
+ ],
+ "earnings": {
+  "rows": [
+   {
+    "date": "2026-11-23",
+    "symbol": "CRWD",
+    "slot": "盘后",
+    "why": [
+     "股票池"
+    ],
+    "calendar_date": "2026-12-01",
+    "other_source": true,
+    "confirmed": false,
+    "trust": "**未确认**；Yahoo 说 2026-11-23",
+    "deep": null
+   },
+   {
+    "date": "2026-11-23",
+    "symbol": "HPE",
+    "slot": "盘后",
+    "why": [
+     "股票池"
+    ],
+    "calendar_date": "2026-11-23",
+    "other_source": false,
+    "confirmed": true,
+    "trust": "已确认",
+    "deep": "research/earnings-forecast/deep/HPE-2026-11-23.md"
+   },
+   {
+    "date": "2026-11-24",
+    "symbol": "ADI",
+    "slot": "盘前",
+    "why": [
+     "股票池"
+    ],
+    "calendar_date": "2026-11-24",
+    "other_source": false,
+    "confirmed": true,
+    "trust": "已确认",
+    "deep": "research/earnings-forecast/deep/ADI-2026-11-24.md"
+   },
+   {
+    "date": "2026-11-24",
+    "symbol": "MDT",
+    "slot": "盘前",
+    "why": [
+     "股票池"
+    ],
+    "calendar_date": "2026-11-24",
+    "other_source": false,
+    "confirmed": true,
+    "trust": "已确认",
+    "deep": "research/earnings-forecast/deep/MDT-2026-11-24.md"
+   },
+   {
+    "date": "2026-11-24",
+    "symbol": "DELL",
+    "slot": "盘后",
+    "why": [
+     "股票池"
+    ],
+    "calendar_date": "2026-11-24",
+    "other_source": false,
+    "confirmed": true,
+    "trust": "已确认",
+    "deep": "research/earnings-forecast/deep/DELL-2026-11-24.md"
+   }
+  ],
+  "not_in_calendar": [
+   "ANT",
+   "BRK.B",
+   "CBRS",
+   "DIS",
+   "JD",
+   "QXO",
+   "SPCX",
+   "TM"
+  ],
+  "fetched_at": "2026-11-23T09:00:34-05:00",
+  "age_days": 0,
+  "gap": null,
+  "names": 112
+ },
+ "next": {
+  "下一次 FOMC 利率决定": "2026-12-09",
+  "下一次 CPI": "2026-12-10",
+  "下一次非农": "2026-12-04",
+  "下一次 PCE": "2026-12-23",
+  "下一次 GDP": "2026-12-23",
+  "下一次零售销售": "2026-12-16",
+  "下一个休市或提前收盘": "2026-12-24",
+  "下一个月度期权到期": "2026-12-18"
+ },
+ "gaps": [],
+ "coverage": {
+  "data": [
+   "2026-11-01",
+   "2027-06-30"
+  ],
+  "fomc_to": "2027-11-17",
+  "fomc_next_listed": "2028-01-26"
+ },
+ "sources": {
+  "market": "https://www.nyse.com/markets/hours-calendars",
+  "options": "https://cdn.cboe.com/resources/options/Cboe2026OPTIONSCalendar.pdf",
+  "fed": "https://www.federalreserve.gov/monetarypolicy/fomccalendars.htm",
+  "cpi": "https://www.bls.gov/schedule/news_release/cpi.htm",
+  "jobs": "https://www.bls.gov/schedule/news_release/empsit.htm",
+  "pce": "https://www.bea.gov/news/schedule",
+  "gdp": "https://www.bea.gov/news/schedule",
+  "retail": "https://www.census.gov/retail/release_schedule.html"
+ },
+ "written": "2026-11-23T11:40-05:00"
+}
