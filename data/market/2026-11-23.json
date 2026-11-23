@@ -1,0 +1,902 @@
+{
+ "source": "alphavantage+alpaca-news",
+ "fetched_at": "2026-11-23T09:01:10-05:00",
+ "fetched_on": "2026-11-23",
+ "symbols": [
+  "AAPL",
+  "ABBV",
+  "ACN",
+  "ADI",
+  "ALAB",
+  "AMAT",
+  "AMD",
+  "AMZN",
+  "ANET",
+  "APH",
+  "APP",
+  "ARM",
+  "ASML",
+  "AVGO",
+  "BA",
+  "BAC",
+  "BE",
+  "BKNG",
+  "BSX",
+  "CAT",
+  "CIEN",
+  "COHR",
+  "COIN",
+  "COST",
+  "CRDO",
+  "CRM",
+  "CRWD",
+  "CRWV",
+  "CSCO",
+  "CVX",
+  "DASH",
+  "DDOG",
+  "DELL",
+  "DHR",
+  "DIA",
+  "ETN",
+  "GE",
+  "GEV",
+  "GLW",
+  "GOOGL",
+  "GS",
+  "HD",
+  "HOOD",
+  "HPE",
+  "INTC",
+  "INTU",
+  "IONQ",
+  "IREN",
+  "IWM",
+  "JNJ",
+  "JPM",
+  "KLAC",
+  "KO",
+  "LITE",
+  "LLY",
+  "LRCX",
+  "MA",
+  "MCD",
+  "MDT",
+  "META",
+  "MRK",
+  "MRNA",
+  "MRVL",
+  "MS",
+  "MSFT",
+  "MSTR",
+  "MU",
+  "NBIS",
+  "NEE",
+  "NET",
+  "NFLX",
+  "NKE",
+  "NOW",
+  "NU",
+  "NVDA",
+  "ORCL",
+  "PANW",
+  "PFE",
+  "PG",
+  "PLTR",
+  "QCOM",
+  "QQQ",
+  "RKLB",
+  "SHEL",
+  "SHOP",
+  "SMCI",
+  "SMH",
+  "SNDK",
+  "SNOW",
+  "SOFI",
+  "SOXL",
+  "SPOT",
+  "SPY",
+  "STX",
+  "T",
+  "TJX",
+  "TMO",
+  "TQQQ",
+  "TSLA",
+  "TSM",
+  "TXN",
+  "UBER",
+  "UNH",
+  "V",
+  "VLO",
+  "VRT",
+  "VZ",
+  "WDC",
+  "WFC",
+  "WMT",
+  "XLB",
+  "XLC",
+  "XLE",
+  "XLF",
+  "XLI",
+  "XLK",
+  "XLP",
+  "XLRE",
+  "XLU",
+  "XLV",
+  "XLY",
+  "XOM"
+ ],
+ "series": {
+  "us2y": {
+   "unit": "%",
+   "date": "2026-11-19",
+   "latest": 4.76,
+   "chg_1d": -0.04,
+   "chg_20d": -0.05
+  },
+  "us10y": {
+   "unit": "%",
+   "date": "2026-11-19",
+   "latest": 5.04,
+   "chg_1d": -0.03,
+   "chg_20d": -0.09
+  },
+  "wti": {
+   "unit": "$",
+   "date": "2026-11-17",
+   "latest": 89.53,
+   "chg_1d": 0.29,
+   "chg_20d": -18.36
+  }
+ },
+ "errors": {},
+ "gauges": {
+  "putcall": {
+   "date": "2026-11-20",
+   "total": 1.13,
+   "equity": 0.77,
+   "index": 1.27
+  },
+  "aaii": {
+   "date": "2026-11-18",
+   "bullish": 33.3,
+   "neutral": 24.4,
+   "bearish": 42.2,
+   "spread": -8.9
+  }
+ },
+ "news": {
+  "JNJ": {
+   "articles": 1,
+   "sentiment": 1.0,
+   "label": "偏多",
+   "top": [
+    {
+     "score": 1.0,
+     "title": "Johnson & Johnson Innovative Medicine China Hosts Guinness World Record Challenge for Blood Cancer Patient Support",
+     "source": "fiscal.ai",
+     "url": "https://www.prnasia.com/story/557607-1.shtml",
+     "published": "2026-11-22T14:01:21Z"
+    }
+   ]
+  },
+  "INTC": {
+   "articles": 1,
+   "sentiment": 0.0,
+   "label": "中性",
+   "top": [
+    {
+     "score": 0.0,
+     "title": "Glows.ai Joins Intel's Innovation Pass Program at SC26",
+     "source": "fiscal.ai",
+     "url": "https://www.prnewswire.com/jp/news-releases/konstsc2624365gpu24ai-302947653.html",
+     "published": "2026-11-22T14:01:27Z"
+    }
+   ]
+  },
+  "ACN": {
+   "articles": 1,
+   "sentiment": 0.0,
+   "label": "中性",
+   "top": [
+    {
+     "score": 0.0,
+     "title": "Accenture Plans Workforce Reduction in Portugal",
+     "source": "fiscal.ai",
+     "url": "https://www.portugalbusinessesnews.com/portugal-business-news-latest",
+     "published": "2026-11-22T21:01:21Z"
+    }
+   ]
+  },
+  "AVGO": {
+   "articles": 1,
+   "sentiment": -1.0,
+   "label": "偏空",
+   "top": [
+    {
+     "score": -1.0,
+     "title": "Broadcom Faces Unconfirmed Reports of Google Chip Order Reductions",
+     "source": "fiscal.ai",
+     "url": "https://world.storm.mg/articles/1183977",
+     "published": "2026-11-23T02:01:09Z"
+    }
+   ]
+  },
+  "COIN": {
+   "articles": 1,
+   "sentiment": 0.0,
+   "label": "中性",
+   "top": [
+    {
+     "score": 0.0,
+     "title": "Coinbase Contributes x402 Payments Protocol to Autonomous AI Framework",
+     "source": "fiscal.ai",
+     "url": "https://www.pymnts.com/news/artificial-intelligence/2026/ai-competitors-team-to-prevent-agentic-fragmentation/",
+     "published": "2026-11-23T02:01:58Z"
+    }
+   ]
+  },
+  "GS": {
+   "articles": 4,
+   "sentiment": 0.5,
+   "label": "偏多",
+   "top": [
+    {
+     "score": 1.0,
+     "title": "Goldman Sachs Initiates Coverage on Pinnacle Financial Partners",
+     "source": "fiscal.ai",
+     "url": "https://www.marketscreener.com/news/goldman-sachs-initiates-coverage-on-pinnacle-financial-partners-with-buy-rating-113-price-target-ce7851dadb8df02d",
+     "published": "2026-11-23T13:02:00Z"
+    },
+    {
+     "score": 1.0,
+     "title": "Goldman Sachs Updates Memory Chip Industry Outlook",
+     "source": "fiscal.ai",
+     "url": "https://www.moomoo.com/news/post/1005490284/global-research-picks-goldman-sachs-memory-chip-prices-may-drop",
+     "published": "2026-11-23T13:02:00Z"
+    },
+    {
+     "score": 0.0,
+     "title": "The Goldman Sachs Group, Inc. Files Major Shareholding Notification in Himalaya Shipping Ltd.",
+     "source": "fiscal.ai",
+     "url": "https://live.euronext.com/en/markets/oslo/equities/company-news",
+     "published": "2026-11-23T11:31:16Z"
+    }
+   ]
+  },
+  "AMZN": {
+   "articles": 1,
+   "sentiment": 0.0,
+   "label": "中性",
+   "top": [
+    {
+     "score": 0.0,
+     "title": "Amazon Kuiper Satellite Launch Status Update",
+     "source": "fiscal.ai",
+     "url": "https://news.europawire.eu/arianespace-halts-ariane-6-va271-countdown-after-ground-systems-technical-event/eu-press-release/2026/11/23/11/59/05/189178/",
+     "published": "2026-11-23T11:31:23Z"
+    }
+   ]
+  },
+  "CRWD": {
+   "articles": 2,
+   "sentiment": 0.5,
+   "label": "偏多",
+   "top": [
+    {
+     "score": 1.0,
+     "title": "CrowdStrike Reports Third Quarter Fiscal Year 2027 Financial Results",
+     "source": "fiscal.ai",
+     "url": "https://www.businesswire.com/newsroom/industry/technology/security",
+     "published": "2026-11-23T11:31:30Z"
+    },
+    {
+     "score": 0.0,
+     "title": "CrowdStrike to Acquire Zscaler in $43.9 Billion All-Stock Transaction",
+     "source": "fiscal.ai",
+     "url": "https://www.morningstar.com/news/dow-jones/202611232973/crowdstrike-to-buy-zscaler-in-439-billion-stock-swap-update",
+     "published": "2026-11-23T11:31:30Z"
+    }
+   ]
+  },
+  "HD": {
+   "articles": 1,
+   "sentiment": 0.0,
+   "label": "中性",
+   "top": [
+    {
+     "score": 0.0,
+     "title": "Guggenheim Adjusts Price Target on Home Depot to $400 From $425",
+     "source": "fiscal.ai",
+     "url": "https://www.marketscreener.com/news/guggenheim-adjusts-price-target-on-home-depot-to-400-from-425-ce7851dad88cf322",
+     "published": "2026-11-23T11:31:34Z"
+    }
+   ]
+  },
+  "ADI": {
+   "articles": 2,
+   "sentiment": 0.0,
+   "label": "中性",
+   "top": [
+    {
+     "score": 0.0,
+     "title": "Evercore ISI Adjusts Price Target on Analog Devices",
+     "source": "fiscal.ai",
+     "url": "https://www.marketscreener.com/news/evercore-isi-adjusts-price-target-on-analog-devices-to-425-from-462-ce7851dad881f125",
+     "published": "2026-11-23T11:32:06Z"
+    },
+    {
+     "score": 0.0,
+     "title": "Cantor Fitzgerald Adjusts Price Target on Analog Devices to $575 From $550",
+     "source": "fiscal.ai",
+     "url": "https://www.marketscreener.com/news/cantor-fitzgerald-adjusts-price-target-on-analog-devices-to-575-from-550-ce7851dadb88ff21",
+     "published": "2026-11-23T13:02:28Z"
+    }
+   ]
+  },
+  "CRM": {
+   "articles": 1,
+   "sentiment": 0.0,
+   "label": "中性",
+   "top": [
+    {
+     "score": 0.0,
+     "title": "TD Cowen Adjusts Price Target on Salesforce",
+     "source": "fiscal.ai",
+     "url": "https://www.marketscreener.com/news/td-cowen-adjusts-price-target-on-salesforce-to-275-from-300-ce7851dad88cf020",
+     "published": "2026-11-23T11:32:15Z"
+    }
+   ]
+  },
+  "APH": {
+   "articles": 1,
+   "sentiment": 0.0,
+   "label": "中性",
+   "top": [
+    {
+     "score": 0.0,
+     "title": "Baird Adjusts Price Target on Amphenol to $90 From $105",
+     "source": "fiscal.ai",
+     "url": "https://www.marketscreener.com/news/baird-adjusts-price-target-on-amphenol-to-90-from-105-ce7851dad881f322",
+     "published": "2026-11-23T11:32:54Z"
+    }
+   ]
+  },
+  "GEV": {
+   "articles": 2,
+   "sentiment": 0.5,
+   "label": "偏多",
+   "top": [
+    {
+     "score": 1.0,
+     "title": "GE Vernova Recognized for Gains in 2026 CPA-Zicklin Index",
+     "source": "fiscal.ai",
+     "url": "https://www.einnews.com/pr_news/958501177/2026-cpa-zicklin-index-finds-corporations-hold-firm-trendsetters-rises-to-114",
+     "published": "2026-11-23T13:02:13Z"
+    },
+    {
+     "score": 0.0,
+     "title": "Infosys and GE Vernova Collaborate on Digital Solutions for Utilities",
+     "source": "fiscal.ai",
+     "url": "https://energydigital.com/news/infosys-mitrankur-majumdar-on-uk-grid-balancing-solutions",
+     "published": "2026-11-23T12:31:39Z"
+    }
+   ]
+  },
+  "ABBV": {
+   "articles": 1,
+   "sentiment": 0.0,
+   "label": "中性",
+   "top": [
+    {
+     "score": 0.0,
+     "title": "AbbVie Eligible for China's National Monoclonal Antibody Procurement",
+     "source": "fiscal.ai",
+     "url": "https://www.moomoo.com/news/post/1005469595/national-centralized-procurement-document-no-1-for-monoclonal-antibodies-released",
+     "published": "2026-11-23T13:01:28Z"
+    }
+   ]
+  },
+  "DIA": {
+   "articles": 1,
+   "sentiment": 0.0,
+   "label": "中性",
+   "top": [
+    {
+     "score": 0.0,
+     "title": "Intesa Sanpaolo Adjusts Diasorin Rating and Target Price",
+     "source": "fiscal.ai",
+     "url": "https://www.milanofinanza.it/newsmarketdriver/market-driver-diasorin-isp-passa-a-neutral-202611231116024783",
+     "published": "2026-11-23T13:01:51Z"
+    }
+   ]
+  },
+  "GLW": {
+   "articles": 1,
+   "sentiment": 1.0,
+   "label": "偏多",
+   "top": [
+    {
+     "score": 1.0,
+     "title": "Mizuho Adjusts Price Target on Corning to $145 From $180",
+     "source": "fiscal.ai",
+     "url": "https://www.marketscreener.com/news/mizuho-adjusts-price-target-on-corning-to-145-from-180-keeps-outperform-rating-ce7851dad881f620",
+     "published": "2026-11-23T13:02:28Z"
+    }
+   ]
+  },
+  "ORCL": {
+   "articles": 2,
+   "sentiment": -0.5,
+   "label": "偏空",
+   "top": [
+    {
+     "score": -1.0,
+     "title": "Congressional Testimony Regarding VA Healthcare Modernization Contract",
+     "source": "fiscal.ai",
+     "url": "https://www.einpresswire.com/article/958334498/committee-cliff-notes-weekly-recap-week-of-november-16-2026",
+     "published": "2026-11-22T14:01:32Z"
+    },
+    {
+     "score": 0.0,
+     "title": "Oracle Confirms Full Funding for OpenAI Infrastructure Contract",
+     "source": "fiscal.ai",
+     "url": "https://www.moomoo.com/hant/news/post/1005475056/oracle-dismisses-reports-it-lacks-funding-to-fulfill-openai-contract",
+     "published": "2026-11-23T11:31:25Z"
+    }
+   ]
+  },
+  "META": {
+   "articles": 4,
+   "sentiment": 0.0,
+   "label": "中性",
+   "top": [
+    {
+     "score": 0.0,
+     "title": "Meta Signs 10-Year Lease for Flagship 'Meta Lab' Store on Fifth Avenue",
+     "source": "fiscal.ai",
+     "url": "https://www.milanofinanza.it/news/usa-la-fifth-avenue-riconquista-il-primato-mondiale-del-lusso-affitti-a-2-700-dollari-al-metro-202611181411468120",
+     "published": "2026-11-22T14:01:34Z"
+    },
+    {
+     "score": 0.0,
+     "title": "Taiwan Authorities Investigate Fake Threads Accounts for Alleged Election Interference",
+     "source": "fiscal.ai",
+     "url": "https://www.marketscreener.com/news/taiwan-flags-fake-threads-accounts-over-alleged-election-interference-ce785ed3d18ff02d",
+     "published": "2026-11-23T02:01:37Z"
+    },
+    {
+     "score": 0.0,
+     "title": "Morgan Stanley and Loop Capital Adjust Price Targets for Meta Platforms",
+     "source": "fiscal.ai",
+     "url": "https://www.marketscreener.com/news/morgan-stanley-adjusts-price-target-on-meta-platforms-to-720-from-820-ce7851dad88af427",
+     "published": "2026-11-23T11:32:01Z"
+    }
+   ]
+  },
+  "SMCI": {
+   "articles": 1,
+   "sentiment": 0.0,
+   "label": "中性",
+   "top": [
+    {
+     "score": 0.0,
+     "title": "Supermicro and Other Server Manufacturers Reportedly Raising Prices on AI Servers Post-Contract",
+     "source": "fiscal.ai",
+     "url": "https://www.euro2day.gr/amp/news/world/article/2381262/akomh-kai-45-pio-akrivoi-oi-servers-ai-mhnes-meta.html",
+     "published": "2026-11-22T14:01:40Z"
+    }
+   ]
+  },
+  "MRK": {
+   "articles": 1,
+   "sentiment": 0.0,
+   "label": "中性",
+   "top": [
+    {
+     "score": 0.0,
+     "title": "Merck Invests $550 Million in New Automated Laboratory",
+     "source": "fiscal.ai",
+     "url": "https://www.marketscale.com/industries/business-services/the-early-scale-2026-11-22",
+     "published": "2026-11-22T20:01:33Z"
+    }
+   ]
+  },
+  "NVDA": {
+   "articles": 3,
+   "sentiment": 0.0,
+   "label": "中性",
+   "top": [
+    {
+     "score": 0.0,
+     "title": "NVIDIA Launches Alpamayo 2 Edge Vision-Language-Action Model",
+     "source": "fiscal.ai",
+     "url": "https://af.net/realtime/nvidia-launches-2b-parameter-alpamayo-2-edge-vla-for-drive-thor/",
+     "published": "2026-11-23T02:01:26Z"
+    },
+    {
+     "score": 0.0,
+     "title": "Trump Administration Pushes for Reinstatement of Jensen Huang as NVIDIA CEO",
+     "source": "fiscal.ai",
+     "url": "https://www.morningstar.com/news/marketwatch/2026112333/nvidia-stock-bounces-as-trump-administration-pushes-for-rehiring-of-jensen-huang",
+     "published": "2026-11-23T11:31:37Z"
+    },
+    {
+     "score": 0.0,
+     "title": "NVIDIA Former CEO Jensen Huang Agrees to Senate Testimony",
+     "source": "fiscal.ai",
+     "url": "https://www.moomoo.com/stock/NVDA-US?chain_id=Name1K9-3FXPhg.1lg7sk0&global_content=%7B%22promote_id%22%3A13764%2C%22sub_promote_id%22%3A107%2C%22f%22%3A%22www.moomoo.com%2Fetfs%2FFAZ-US%22%7D",
+     "published": "2026-11-23T12:32:04Z"
+    }
+   ]
+  },
+  "MSFT": {
+   "articles": 3,
+   "sentiment": 0.0,
+   "label": "中性",
+   "top": [
+    {
+     "score": 0.0,
+     "title": "Microsoft to Retire Microsoft To Do App in 2027",
+     "source": "fiscal.ai",
+     "url": "https://infosertecla.com/2026/11/22/microsoft-cerrara-to-do-el-30-de-junio-de-2027/",
+     "published": "2026-11-23T02:01:29Z"
+    },
+    {
+     "score": 0.0,
+     "title": "Microsoft and Audi Launch Mobile Work Agent for In-Vehicle Productivity",
+     "source": "fiscal.ai",
+     "url": "https://www.globenewswire.com/news-release/2026/11/23/3408055/0/en/audi-debuts-cerence-ai-s-mobile-work-agent-bringing-enterprise-trusted-access-to-microsoft-365-to-the-car.html",
+     "published": "2026-11-23T11:31:23Z"
+    },
+    {
+     "score": 0.0,
+     "title": "Microsoft UAE and Space42 Release Report on Geospatial Agentic AI",
+     "source": "fiscal.ai",
+     "url": "https://www.globenewswire.com/news-release/2026/11/23/3408140/0/en/from-data-to-decisions-space42-and-microsoft-uae-release-report-on-geospatial-agentic-ai-s-potential-to-help-governments-better-serve-society.html",
+     "published": "2026-11-23T13:01:28Z"
+    }
+   ]
+  },
+  "PG": {
+   "articles": 2,
+   "sentiment": 0.5,
+   "label": "偏多",
+   "top": [
+    {
+     "score": 1.0,
+     "title": "Procter & Gamble Expands Autonomous Manufacturing Operations",
+     "source": "fiscal.ai",
+     "url": "https://www.pymnts.com/news/artificial-intelligence/2026/pg-steps-up-use-of-fully-autonomous-factory-shifts/",
+     "published": "2026-11-23T02:01:38Z"
+    },
+    {
+     "score": 0.0,
+     "title": "Morgan Stanley Adjusts Price Target and Rating for Procter & Gamble",
+     "source": "fiscal.ai",
+     "url": "https://www.marketscreener.com/news/morgan-stanley-adjusts-price-target-on-procter-gamble-to-192-from-185-ce7851dad88cf221",
+     "published": "2026-11-23T11:32:32Z"
+    }
+   ]
+  },
+  "MCD": {
+   "articles": 1,
+   "sentiment": 0.0,
+   "label": "中性",
+   "top": [
+    {
+     "score": 0.0,
+     "title": "McDonald's Opens New Branch in San Leonardo, Nueva Ecija",
+     "source": "fiscal.ai",
+     "url": "https://www.manilatimes.net/index.php?778pub",
+     "published": "2026-11-23T02:01:58Z"
+    }
+   ]
+  },
+  "LITE": {
+   "articles": 1,
+   "sentiment": 0.0,
+   "label": "中性",
+   "top": [
+    {
+     "score": 0.0,
+     "title": "Lumentum CEO Addresses Marvell Merger Status Amid Market Volatility",
+     "source": "fiscal.ai",
+     "url": "https://www.streetinsider.com/news.php?id=27383011&classic=1",
+     "published": "2026-11-23T02:01:59Z"
+    }
+   ]
+  },
+  "LLY": {
+   "articles": 2,
+   "sentiment": 0.0,
+   "label": "中性",
+   "top": [
+    {
+     "score": 0.0,
+     "title": "Eli Lilly and Company Acquires LoQus23 Therapeutics",
+     "source": "fiscal.ai",
+     "url": "https://www.globenewswire.com/news-release/2026/11/23/3408071/0/en/loqus23-therapeutics-acquired-by-lilly-to-accelerate-development-of-novel-small-molecule-therapy-for-huntington-s-disease.html",
+     "published": "2026-11-23T11:31:12Z"
+    },
+    {
+     "score": 0.0,
+     "title": "Digbi Health Joins Lilly Employer Connect Program",
+     "source": "fiscal.ai",
+     "url": "https://www.globenewswire.com/news-release/2026/11/23/3408117/0/en/digbi-health-joins-lilly-employer-connect-to-expand-employer-access-to-obesity-medicines-with-lifestyle-care-matched-to-each-member-s-biology.html",
+     "published": "2026-11-23T11:31:12Z"
+    }
+   ]
+  },
+  "MS": {
+   "articles": 2,
+   "sentiment": 0.0,
+   "label": "中性",
+   "top": [
+    {
+     "score": 1.0,
+     "title": "Morgan Stanley Strategist Issues Bullish Market Outlook",
+     "source": "fiscal.ai",
+     "url": "https://www.morningstar.com/news/marketwatch/2026112331/stocks-are-serving-up-a-fat-pitch-for-investors-right-now-as-morgan-stanleys-top-strategist",
+     "published": "2026-11-23T11:31:35Z"
+    },
+    {
+     "score": -1.0,
+     "title": "Morgan Stanley Infrastructure Partners Agrees to Sell StraitNZ",
+     "source": "fiscal.ai",
+     "url": "https://realassets.ipe.com/news/partners-group-buys-new-zealand-ferry-operator-from-morgan-stanley/10139479.article",
+     "published": "2026-11-23T13:01:38Z"
+    }
+   ]
+  },
+  "PANW": {
+   "articles": 1,
+   "sentiment": 1.0,
+   "label": "偏多",
+   "top": [
+    {
+     "score": 1.0,
+     "title": "Phillip Securities Upgrades Palo Alto Networks to Buy",
+     "source": "fiscal.ai",
+     "url": "https://www.marketscreener.com/news/phillip-securities-upgrades-palo-alto-networks-to-buy-price-target-is-418-ce7851dad88af122",
+     "published": "2026-11-23T11:31:46Z"
+    }
+   ]
+  },
+  "MDT": {
+   "articles": 1,
+   "sentiment": 0.0,
+   "label": "中性",
+   "top": [
+    {
+     "score": 0.0,
+     "title": "TD Cowen Adjusts Price Target on Medtronic to $115 From $110",
+     "source": "fiscal.ai",
+     "url": "https://www.marketscreener.com/news/td-cowen-adjusts-price-target-on-medtronic-to-115-from-110-ce7851dad880f222",
+     "published": "2026-11-23T11:31:53Z"
+    }
+   ]
+  },
+  "SNOW": {
+   "articles": 2,
+   "sentiment": 0.0,
+   "label": "中性",
+   "top": [
+    {
+     "score": 0.0,
+     "title": "Snowflake Insider Sold Shares Worth $13,844,500",
+     "source": "fiscal.ai",
+     "url": "https://www.fidelity.com/news/article/default/202611230400ACCESSWRNAPR_____1255434",
+     "published": "2026-11-23T11:31:53Z"
+    },
+    {
+     "score": 0.0,
+     "title": "Snowflake Insider Sells Shares Worth $84.37 Million",
+     "source": "fiscal.ai",
+     "url": "https://www.marketscreener.com/news/snowflake-insider-sold-shares-worth-84-365-360-according-to-a-recent-sec-filing-ce7851dad98fff2d",
+     "published": "2026-11-23T13:02:00Z"
+    }
+   ]
+  },
+  "MA": {
+   "articles": 2,
+   "sentiment": 0.0,
+   "label": "中性",
+   "top": [
+    {
+     "score": 0.0,
+     "title": "President Capital Adjusts Price Target on Mastercard to $735",
+     "source": "fiscal.ai",
+     "url": "https://www.marketscreener.com/news/president-capital-adjusts-price-target-on-mastercard-to-735-from-729-ce7851dad88cf023",
+     "published": "2026-11-23T11:31:54Z"
+    },
+    {
+     "score": 0.0,
+     "title": "Mastercard Releases Whitepaper on Real-Time Cashflow Data in Lending",
+     "source": "fiscal.ai",
+     "url": "https://fintechmagazine.com/whitepapers/grow-lending-while-staying-within-your-risk-appetite",
+     "published": "2026-11-23T13:01:34Z"
+    }
+   ]
+  },
+  "SNDK": {
+   "articles": 1,
+   "sentiment": 0.0,
+   "label": "中性",
+   "top": [
+    {
+     "score": 0.0,
+     "title": "Morgan Stanley Adjusts Price Target on Sandisk to $218 From $218.75",
+     "source": "fiscal.ai",
+     "url": "https://www.marketscreener.com/news/morgan-stanley-adjusts-price-target-on-sandisk-to-218-from-218-75-ce7851dad88ff227",
+     "published": "2026-11-23T11:32:16Z"
+    }
+   ]
+  },
+  "TSLA": {
+   "articles": 1,
+   "sentiment": 0.0,
+   "label": "中性",
+   "top": [
+    {
+     "score": 0.0,
+     "title": "Tesla Announces December Rollout for FSD V15",
+     "source": "fiscal.ai",
+     "url": "https://www.marketscreener.com/news/tesla-set-to-roll-out-fsd-v15-in-december-ce7851dad88af52c",
+     "published": "2026-11-23T11:32:22Z"
+    }
+   ]
+  },
+  "JPM": {
+   "articles": 1,
+   "sentiment": 0.0,
+   "label": "中性",
+   "top": [
+    {
+     "score": 0.0,
+     "title": "JPMorgan Chase Maintains Neutral Rating on Tesla",
+     "source": "fiscal.ai",
+     "url": "https://www.finanzen.ch/analyse/tesla-neutral-1122624",
+     "published": "2026-11-23T11:33:04Z"
+    }
+   ]
+  },
+  "NKE": {
+   "articles": 1,
+   "sentiment": -1.0,
+   "label": "偏空",
+   "top": [
+    {
+     "score": -1.0,
+     "title": "Berenberg Bank Initiates Coverage on Nike with Sell Rating",
+     "source": "fiscal.ai",
+     "url": "https://www.moomoo.com/hans/news/post/1005475369/berenberg-bank-initiates-nike-nkeus-with-sell-rating-announces-target",
+     "published": "2026-11-23T13:01:51Z"
+    }
+   ]
+  },
+  "MRNA": {
+   "articles": 1,
+   "sentiment": 0.0,
+   "label": "中性",
+   "top": [
+    {
+     "score": 0.0,
+     "title": "Moderna Announces Participation in Upcoming Investor Conferences in December 2026",
+     "source": "fiscal.ai",
+     "url": "https://www.newswire.com/news/moderna-to-present-at-upcoming-conferences-in-december-2026-22896307",
+     "published": "2026-11-23T13:01:59Z"
+    }
+   ]
+  },
+  "SPOT": {
+   "articles": 1,
+   "sentiment": 1.0,
+   "label": "偏多",
+   "top": [
+    {
+     "score": 1.0,
+     "title": "MoffettNathanson Raises Price Target on Spotify Technology to $630 From $524",
+     "source": "fiscal.ai",
+     "url": "https://www.marketscreener.com/news/moffettnathanson-raises-price-target-on-spotify-technology-to-630-from-524-keeps-neutral-rating-ce7851dadb88f620",
+     "published": "2026-11-23T13:02:03Z"
+    }
+   ]
+  },
+  "WFC": {
+   "articles": 1,
+   "sentiment": 0.0,
+   "label": "中性",
+   "top": [
+    {
+     "score": 0.0,
+     "title": "Wells Fargo Experiences Service Outages",
+     "source": "fiscal.ai",
+     "url": "https://cybermagazine.com/news/cyberattacks-acquisitions-threat-top-stories-in-cyber",
+     "published": "2026-11-23T02:01:34Z"
+    }
+   ]
+  },
+  "XOM": {
+   "articles": 1,
+   "sentiment": 0.0,
+   "label": "中性",
+   "top": [
+    {
+     "score": 0.0,
+     "title": "ExxonMobil and Partners Approve $4 Billion Redevelopment for Kizomba A and B",
+     "source": "fiscal.ai",
+     "url": "https://www.moomoo.com/stock/XOM-US?chain_id=Name1K9-3FXPhg.1lg6ie0&global_content=%7B%22promote_id%22%3A13764%2C%22sub_promote_id%22%3A57%2C%22f%22%3A%22www.moomoo.com%2Fstock%2FUBS-US%22%7D",
+     "published": "2026-11-23T02:01:57Z"
+    }
+   ]
+  },
+  "WMT": {
+   "articles": 1,
+   "sentiment": 0.0,
+   "label": "中性",
+   "top": [
+    {
+     "score": 0.0,
+     "title": "Walmart and Other Retailers Contacted Regarding Potential Grubhub Acquisition",
+     "source": "fiscal.ai",
+     "url": "https://www.marketscreener.com/news/walmart-others-contacted-about-potential-acquisition-of-grubhub-ce7851dad98ef42c",
+     "published": "2026-11-23T11:31:54Z"
+    }
+   ]
+  },
+  "UBER": {
+   "articles": 1,
+   "sentiment": 0.0,
+   "label": "中性",
+   "top": [
+    {
+     "score": 0.0,
+     "title": "Uber and Kijiji Announce Delivery Collaboration in Canada",
+     "source": "fiscal.ai",
+     "url": "https://www.newswire.ca/news-releases/found-it-on-kijiji-courier-on-uber-can-help-get-it-home-887999544.html",
+     "published": "2026-11-23T11:32:52Z"
+    }
+   ]
+  },
+  "VRT": {
+   "articles": 1,
+   "sentiment": -0.333,
+   "label": "略偏空",
+   "top": [
+    {
+     "score": -0.333,
+     "title": "Baird Downgrades Vertiv Holdings to Neutral",
+     "source": "fiscal.ai",
+     "url": "https://www.marketscreener.com/news/baird-downgrades-vertiv-holdings-to-neutral-from-outperform-price-target-is-200-ce7851dad88af527",
+     "published": "2026-11-23T11:33:03Z"
+    }
+   ]
+  },
+  "TXN": {
+   "articles": 2,
+   "sentiment": 0.5,
+   "label": "偏多",
+   "top": [
+    {
+     "score": 1.0,
+     "title": "Cantor Fitzgerald Upgrades Texas Instruments to Overweight",
+     "source": "fiscal.ai",
+     "url": "https://www.marketscreener.com/news/cantor-fitzgerald-upgrades-texas-instruments-to-overweight-from-neutral-price-target-is-385-ce7851dadb88f62d",
+     "published": "2026-11-23T12:32:02Z"
+    },
+    {
+     "score": 0.0,
+     "title": "Rothschild & Co Redburn Adjusts Price Target on Texas Instruments",
+     "source": "fiscal.ai",
+     "url": "https://www.marketscreener.com/news/rothschild-co-redburn-adjusts-price-target-on-texas-instruments-to-370-from-340-ce7851dad880fe26",
+     "published": "2026-11-23T12:32:02Z"
+    }
+   ]
+  }
+ },
+ "news_window": "since 2026-11-22T09:01-05:00 (Alpaca/Benzinga, 63 articles, word-list score)",
+ "attempts": 1,
+ "news_attempts": 1,
+ "gauge_attempts": 1
+}
