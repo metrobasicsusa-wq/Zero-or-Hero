@@ -123,8 +123,11 @@ def title(m: str) -> str:
     return f"{name}（{VARIANT.get(extra, extra)}）" if extra else name
 
 
-def load(root: Path = ROOT / "journal-s500") -> list[dict]:
-    """Every closed trade of the multi-ledger account, real and plan: the method, the day it closed, cost and proceeds."""
+def load(root: Path = ROOT / "journal-s500", today: str | None = None) -> list[dict]:
+    """Every closed trade of the multi-ledger account, real and plan: the method, the day it closed, cost and proceeds.
+    With `today`, an option still listed open after its expiry day counts as closed at nothing on that day: the 15:30
+    sale found no bid, it expired worthless, and the ledger only writes that down at its next cycle. On 11-21 the
+    weekend's choice was made without $10,172 of Friday's expired calls (only losers get stuck this way)."""
     out = []
     for name in ("sleeves.json", "sleeves_plan.json"):
         path = root / name
@@ -136,6 +139,10 @@ def load(root: Path = ROOT / "journal-s500") -> list[dict]:
                 if paid > 0 and c.get("closed"):
                     out.append({"method": method(sid), "day": str(c["closed"])[:10], "paid": paid, "got": float(c.get("proceeds") or 0),
                                 "plan": name != "sleeves.json" or bool(c.get("sim"))})
+            for o in s.get("open", []) if today else []:
+                paid, exp = float(o.get("paid") or 0), str(o.get("expiry") or "")[:10]
+                if paid > 0 and exp and exp < today:
+                    out.append({"method": method(sid), "day": exp, "paid": paid, "got": 0.0, "plan": name != "sleeves.json" or bool(o.get("sim")), "expired": True})
     return sorted(out, key=lambda t: (t["day"], t["method"]))
 
 
@@ -284,7 +291,7 @@ def names(ms: list[str]) -> str:
 
 
 def page(day: str, rows: list[dict], rows2: list[dict], table: list[dict], prior: dict[str, dict], spy: dict, main: dict, multi: dict,
-         nxt: tuple[str, list[str], list[str], bool], checks: str, open_cost: dict[str, float]) -> str:
+         nxt: tuple, checks: str, open_cost: dict[str, float]) -> str:
     wks, wks2 = weeks_of(rows), {w["week"]: w for w in weeks_of(rows2)}
     total, total2, n = sum(r["result"] for r in rows), sum(r["result"] for r in rows2), len(rows)
     live = [r for r in rows if r["picks"]]
@@ -313,14 +320,15 @@ def page(day: str, rows: list[dict], rows2: list[dict], table: list[dict], prior
             "规则是 11-20 才写的，上面这些周是回头走的，不是事先记的；从下一周起两版的选择都事先记在 `ledger.json`。"]
     if open_cost:
         out += ["", "还开着、没算进上表的仓（按花的钱）：" + "；".join(f"{title(m)} {usd(c, False)}" for m, c in sorted(open_cost.items(), key=lambda kv: -kv[1])) + "。"]
-    wk, ms, ms2, fixed = nxt
+    wk, ms, ms2, fixed, now1, now2 = nxt
     out += ["", "## 三、下一周", "",
             f"{wk[5:]} 起的一周，第一版：**{names(ms)}**；第二版：**{names(ms2)}**。"
             + ("（已记进账本）" if fixed else "（暂定：这一周还没走完，周六用到周五为止的成交再定、再记）"), ""]
-    late = [m for m in ms2 if m in prior and prior[m]["mean"] <= 0] if fixed else []
-    if late:
-        out += ["第二版记下的选择里，" + "、".join(f"{title(m)}（更长的历史 {pct(prior[m]['mean'])}，{prior[m]['n']} 笔）" for m in late)
-                + "按现在手里的更长历史是亏的：这段历史是记完以后才接上的。记下的不改；下一次选的时候它不够格。", ""]
+    gone1, gone2 = [m for m in ms if m not in now1], [m for m in ms2 if m not in now2]
+    if fixed and (gone1 or gone2):
+        out += ["记下的选择里，按现在手里的记录已经不够格的：" + "；".join(f"{v} {'、'.join(title(m) for m in ms_)}" for v, ms_ in (("第一版", gone1), ("第二版", gone2)) if ms_)
+                + "。原因是记完以后才知道的事：到期作废、当时还没入账的仓，或者后来才接上的更长历史。记下的不改；按现在的记录会选的是第一版 "
+                + f"{names(now1)}、第二版 {names(now2)}。", ""]
     out += ["## 四、要到目标，每种做法得押多少", "",
             "每种做法到现在的记录（10 笔以上的）。「每天要押」= 想靠它平均每天赚 $500，按它到现在每 $1 的结果和出手的天数，平均每个交易日要押的钱。"
             "最后一栏是我们手里更长的历史：同一条规则按真实期权价、买卖各多付 5% 算的每 $1；和账本的做法有出入的（成本、卖法、少一道门槛）在括号里写明。有这一栏的，先信这一栏。", "",
@@ -347,7 +355,7 @@ def page(day: str, rows: list[dict], rows2: list[dict], table: list[dict], prior
 def run(today: str | None = None, write: bool = True, root: Path = ROOT) -> dict:
     now = datetime.now(ET)
     today = today or now.date().isoformat()
-    trades = [t for t in load(root / "journal-s500") if t["day"] <= today]
+    trades = [t for t in load(root / "journal-s500", today) if t["day"] <= today]
     main, multi = account(root / "journal" / "equity.csv"), account(root / "journal-s500" / "equity.csv")
     first = min((t["day"] for t in trades), default=today)
     days = sorted({d for d in list(main) + list(multi) if first <= d <= today} | {t["day"] for t in trades})
@@ -378,7 +386,7 @@ def run(today: str | None = None, write: bool = True, root: Path = ROOT) -> dict
                     open_cost[method(sid)] = open_cost.get(method(sid), 0.0) + float(c.get("paid") or 0)
     text = page(today, rows, rows2, needs(trades, (date.fromisoformat(today) + timedelta(days=1)).isoformat(), len(days)), prior,
                 {d: v[1] for d, v in main.items() if v[1]}, {d: v[0] for d, v in main.items()}, {d: v[0] for d, v in multi.items()},
-                (nxt, next1, next2, nxt in decided), checks, open_cost)
+                (nxt, next1, next2, nxt in decided, pick(trades, nxt), pick(trades, nxt, prior)), checks, open_cost)
     brief = lambda rs: [{**w, "result": round(w["result"], 2), "every": round(w["every"], 2), "month": round(w["month"], 2)} for w in weeks_of(rs)]  # noqa: E731
     rep = {"day": today, "target_day": TARGET_DAY, "stake_day": STAKE_DAY, "month_stop": MONTH_STOP, "days": len(rows),
            "total": round(sum(r["result"] for r in rows), 2), "weeks": brief(rows),

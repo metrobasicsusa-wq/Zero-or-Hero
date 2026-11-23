@@ -9636,7 +9636,8 @@ class Goal(unittest.TestCase):
             with mock.patch.object(goal, "OUT", root / "research" / "goal"):
                 got = goal.run("2026-10-31", root=root)
             self.assertEqual(got["next"]["picks2"], ["wk-news"])                         # what was written down stays
-            self.assertIn("第二版记下的选择里，周内新闻（更长的历史 −20%，6 笔）按现在手里的更长历史是亏的", got["page"])
+            self.assertIn("记下的选择里，按现在手里的记录已经不够格的：第二版 周内新闻。", got["page"])
+            self.assertIn("按现在的记录会选的是第一版 周内新闻、第二版 空仓（没有够格的）。", got["page"])
             self.assertIn("出入：买入多付 10%、卖出少拿 10%", got["page"])
             self.assertEqual(len(json.loads((root / "research" / "goal" / "ledger.json").read_text())["decisions"]), 1)
 
@@ -9675,6 +9676,21 @@ class Goal(unittest.TestCase):
         self.assertIn("没有波动门槛", prior["dipweek"]["cost"])
         self.assertTrue(all(len(v) == 3 for v in goal.PRIORS.values()))
         self.assertTrue(set(goal.NO_PRIOR).isdisjoint(goal.PRIORS))
+
+    def test_an_option_past_its_expiry_and_still_listed_open_counts_as_lost(self):
+        from hero import goal
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            book = {"sleeves": {"spy0dte-500": {"closed": [{"closed": "2026-11-16 15:40", "paid": 500.0, "proceeds": 1300.0}],
+                                                "open": [{"sym": "SPY261120C00721000", "paid": 1159.55, "expiry": "2026-11-20"},       # no bid at 15:30: expired worthless
+                                                         {"sym": "SPY261127C00700000", "paid": 300.0, "expiry": "2026-11-27"},          # still alive
+                                                         {"sym": "AAPL", "paid": 900.0}]}}}                                            # shares: no expiry
+            (root / "sleeves.json").write_text(json.dumps(book))
+            self.assertEqual(len(goal.load(root)), 1)                                   # without a date: only what the ledger has written down
+            got = goal.load(root, "2026-11-21")
+            self.assertEqual([(x["day"], x["paid"], x["got"]) for x in got], [("2026-11-16", 500.0, 1300.0), ("2026-11-20", 1159.55, 0.0)])
+            self.assertTrue(got[1]["expired"])
+            self.assertEqual(len(goal.load(root, "2026-11-20")), 1)                     # on the expiry day itself it may still be sold
 
     def test_a_run_writes_the_page_and_records_next_weeks_choice_only_at_the_weekend(self):
         from unittest import mock
