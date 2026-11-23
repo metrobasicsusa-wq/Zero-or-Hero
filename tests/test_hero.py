@@ -10390,3 +10390,4 @@ class Weekbook(unittest.TestCase):
 # Feature tests kept in their own files (built in parallel on 11-23) run with this suite, so the pre-push hook sees them.
 from tests.test_calendar_week import TestCalendarWeek  # noqa: E402,F401
 from tests.test_horizonbook import Inputs, QuarterBook, WeekBook, Run  # noqa: E402,F401
+from tests.test_scoreboard import AgainstGap, Tomorrow, Follow, PmDir, Network, Build  # noqa: E402,F401
