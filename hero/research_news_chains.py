@@ -622,6 +622,18 @@ def fetch_news(client, sym: str, today: str, tries: int = 3, wait=time.sleep) ->
     return None
 
 
+LATE_DAYS = 120      # a stock whose first headline comes this long after START: its news history did not come back whole
+
+
+def news_from(firsts: dict[str, str | None]) -> dict:
+    """How far back the headlines really go. 11-21: two runs read 24,000 headlines where the week before read 210,000,
+    found 7 chains instead of 107 and said nothing -- the news service had answered without error, just with less."""
+    have = sorted(d for d in firsts.values() if d)
+    line = (date.fromisoformat(START) + timedelta(days=LATE_DAYS)).isoformat()
+    late = sorted(s for s, d in firsts.items() if not d or d > line)
+    return {"stocks": len(firsts), "median": have[len(have) // 2] if have else None, "late": len(late), "late_names": late[:12]}
+
+
 def run(client, root: Path, budget_min: float = BUDGET_MIN) -> dict:
     from hero import universe
     from hero.research_event_turn import Pace
@@ -637,7 +649,7 @@ def run(client, root: Path, budget_min: float = BUDGET_MIN) -> dict:
         for s, bs in client.daily_bars(syms, START, adjustment="raw").items():
             raw[s] = {b["t"][:10]: float(b["c"]) for b in bs}
     spy = adj.get("SPY", {})
-    chains, scanned, pressure, sdays, failed = [], 0, 0, {}, []
+    chains, scanned, pressure, sdays, failed, firsts = [], 0, 0, {}, [], {}
     for sym in pool:
         bars = adj.get(sym)
         if not bars:
@@ -647,6 +659,7 @@ def run(client, root: Path, budget_min: float = BUDGET_MIN) -> dict:
             failed.append(sym)   # 11-13: these used to be dropped without a word (78 chains one day, 107 the next)
             continue
         scanned += len(items)
+        firsts[sym] = min((n["created_at"][:10] for n in items if n.get("created_at")), default=None)
         sdays[sym] = sorted(bars)
         hits, ends = scan(items, sym, sdays[sym])
         named = successors(items, sym, sdays[sym])
@@ -706,7 +719,7 @@ def run(client, root: Path, budget_min: float = BUDGET_MIN) -> dict:
             "controls": len(placebos), "partial": partial, "misses": misses, "news_minutes": news_min,
             "minutes": round((time.monotonic() - t0) / 60, 1), "table": ordered(table), "peaks": pk,
             "chain_list": chains, "control_list": placebos, "successor_list": successor_rows(chains),
-            "news_failed": failed}
+            "news_failed": failed, "news_from": news_from(firsts)}
 
 
 def pct(x) -> str:
@@ -723,6 +736,10 @@ def markdown(rep: dict) -> str:
              f"找到 {rep['chains']} 条链（股价向下 {len(down)} 条、向上 {len(cs) - len(down)} 条），{rep['settled']} 条有「落地」的标题。"
              f"链的定义：5 个交易日里至少 {MIN_HITS} 条压力标题、是这只股票平时的 {MULT:.0f} 倍以上、分布在两天以上、两类以上。"
              "方向 = 链开始前一天收盘到确认那天收盘的涨跌。对照 = 同一只股票、确认日前 126 / 63 天和后 63 天。只研究，不改任何交易规则。", ""]
+    nf = rep.get("news_from") or {}
+    if nf.get("stocks") and nf["late"] > nf["stocks"] / 5:
+        lines += [f"⚠️ **新闻历史不完整，这一次的结果不能和以前比**：{nf['stocks']} 只股票里 {nf['late']} 只最早的标题比 {START} 晚了四个月以上"
+                  f"（最早标题的中位数是 {nf['median']}）。新闻接口没有报错，只是给得少了；链数、平时的条数和所有对照都会因此变样。", ""]
     if rep.get("news_failed"):
         lines += [f"⚠️ 有 {len(rep['news_failed'])} 只股票的新闻这次没取到（{'、'.join(rep['news_failed'])}），它们的链不在结果里；"
                   "和别的日期的结果比之前先看这一行。", ""]

@@ -2068,6 +2068,18 @@ class ResearchEvents(unittest.TestCase):
 
 
 class ResearchNewsChains(unittest.TestCase):
+    def test_a_news_history_that_came_back_short_is_said_out_loud(self):
+        from hero import research_news_chains as nc
+        whole = nc.news_from({"AAA": "2024-02-01", "BBB": "2024-02-03", "CCC": "2024-03-15", "DDD": "2024-02-02", "EEE": "2024-02-05", "FFF": "2026-01-10"})
+        self.assertEqual((whole["stocks"], whole["late"], whole["late_names"]), (6, 1, ["FFF"]))       # one young listing is not a broken feed
+        short = nc.news_from({"AAA": "2026-06-01", "BBB": "2026-07-03", "CCC": None, "DDD": "2024-02-02"})
+        self.assertEqual((short["late"], short["median"]), (3, "2026-06-01"))
+        base = {"generated": "2026-11-21", "start": "2024-02-01", "pool": 4, "headlines": 10, "pressure": 0, "chains": 0, "settled": 0, "priced": 0, "controls": 0,
+                "partial": False, "misses": {}, "news_minutes": 1.0, "minutes": 1.0, "table": {}, "peaks": {}, "chain_list": [], "control_list": [], "successor_list": []}
+        self.assertIn("新闻历史不完整", nc.markdown({**base, "news_from": short}))
+        self.assertNotIn("新闻历史不完整", nc.markdown({**base, "news_from": whole}))
+        self.assertNotIn("新闻历史不完整", nc.markdown(base))                                          # an old file without the check
+
     def test_headlines_chain_stages_and_option_exits(self):
         from hero import research_news_chains as nc
         self.assertEqual(nc.themes_of("Senators Call For Acme CEO To Step Down"), ["政治", "管理层"])
