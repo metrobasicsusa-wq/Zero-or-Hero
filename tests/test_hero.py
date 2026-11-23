@@ -10293,3 +10293,95 @@ class ResearchScoutPast(unittest.TestCase):
         self.assertAlmostEqual(t2["3m|list"]["y2022"]["ex"], -0.05)
         self.assertAlmostEqual(t2["3m|list"]["other"]["ex"], 0.15)
         self.assertEqual((t2["3m|list"]["monthly"]["n"], t2["3m|list"]["all"]["days"]), (4, 10))
+
+
+class Weekbook(unittest.TestCase):
+    """hero/weekbook.py: every past SPY week as a card, the coming week read against the weeks like it."""
+
+    def cards(self, n_weeks=520, seed=7):
+        """Day cards on real New York trading days: calm stretches and wild ones, the direction a coin toss."""
+        import random
+        from hero import weekbook as wb
+        rnd, out, px, mon = random.Random(seed), [], 100.0, date(2015, 1, 5)
+        for k in range(n_weeks):
+            wild = (k // 26) % 3 == 2                                  # every third half-year is wild
+            for d in wb.sessions(mon):
+                step = rnd.choice((-1, 1)) * (0.025 if wild else 0.002)
+                o = px * (1 + rnd.choice((-1, 1)) * 0.001)
+                c = px * (1 + step)
+                out.append({"day": d.isoformat(), "o": round(o, 4), "h": round(max(o, c) * 1.001, 4), "l": round(min(o, c) * 0.999, 4), "c": round(c, 4), "pc": round(px, 4)})
+                px = c
+            mon += timedelta(days=7)
+        return out
+
+    def test_the_calendar(self):
+        from hero import weekbook as wb
+        h26 = wb.holidays(2026)
+        for d in ("2026-01-01", "2026-04-03", "2026-06-19", "2026-07-03", "2026-11-26", "2026-12-25"):
+            self.assertIn(date.fromisoformat(d), h26)                 # Good Friday, Juneteenth, the 4th observed on Friday
+        self.assertNotIn(date(2021, 6, 18), wb.holidays(2021))        # Juneteenth only from 2022
+        self.assertEqual(wb.easter(2025), date(2025, 4, 20))
+        self.assertEqual([d.day for d in wb.sessions(date(2026, 11, 23))], [23, 24, 25, 27])
+        self.assertTrue(wb.opex(date(2026, 11, 16)))
+        self.assertFalse(wb.opex(date(2026, 11, 23)))
+        self.assertTrue(wb.opex(date(2025, 4, 14)))                   # the third Friday was Good Friday: still the expiry week
+        self.assertEqual(wb.target(date(2026, 11, 23)), date(2026, 11, 23))
+        self.assertEqual(wb.target(date(2026, 11, 21)), date(2026, 11, 23))    # a Saturday reads the next week
+
+    def test_a_week_card_knows_only_the_closes_before_it(self):
+        from hero import weekbook as wb
+        cs = self.cards(80)
+        vix = {c["day"]: 20.0 for c in cs}
+        ws = wb.weeks(cs, vix)
+        w = ws[3]
+        days = [i for i, c in enumerate(cs) if wb.monday_of(c["day"]).isoformat() == w["week"]]
+        pre = days[0] - 1
+        self.assertEqual((w["pc"], w["o"], w["c"]), (cs[pre]["c"], cs[days[0]]["o"], cs[days[-1]]["c"]))
+        self.assertEqual((w["h"], w["l"]), (max(cs[i]["h"] for i in days), min(cs[i]["l"] for i in days)))
+        import statistics
+        closes = [c["c"] for c in cs]
+        self.assertAlmostEqual(w["dd"], closes[pre] / max(closes[pre - 251:pre + 1]) - 1, places=4)
+        self.assertEqual(w["above20"], closes[pre] >= statistics.mean(closes[pre - 19:pre + 1]))
+        prev = [i for i, c in enumerate(cs) if wb.monday_of(c["day"]).isoformat() == ws[2]["week"]]
+        self.assertAlmostEqual(w["last"], closes[pre] / closes[prev[0] - 1] - 1, places=4)
+        self.assertEqual(w["vix_pre"], 20.0)
+        self.assertTrue(all(x["complete"] for x in ws))
+        lab = wb.labels(w)
+        self.assertEqual(set(lab), set(wb.KEYS))
+        self.assertEqual(wb.bucket(0.12, wb.VOLS), "波动 12–18%")
+        self.assertEqual(wb.bucket(-0.03, wb.LAST), "上周跌 1–3%")
+        self.assertEqual(wb.labels({**w, "vix_pre": None, "last": None}).keys() & {"vix", "last"}, set())
+
+    def test_size_can_be_learnt_and_direction_cannot(self):
+        from hero import weekbook as wb
+        cs = self.cards()
+        ws = wb.weeks(cs, {c["day"]: 20.0 for c in cs})
+        book = wb.Book(ws)
+        sc = book and wb.score(book)
+        self.assertTrue(sc["big"]["pass"])                             # wild weeks follow wild weeks
+        self.assertTrue(sc["range"]["pass"])
+        self.assertFalse(sc["up"]["pass"])                             # a coin toss stays a coin toss
+        self.assertFalse(sc["vix_down"]["pass"])                       # a flat VIX never falls: nothing to learn
+        r = book.read(book.labels[-1], len(ws))
+        self.assertGreaterEqual(r["weeks"], wb.MIN_WEEKS)
+        self.assertEqual(r["kept"][0], "vol")
+
+    def test_a_run_reads_the_coming_week_and_writes_it_down_once(self):
+        import tempfile
+        from hero import weekbook as wb
+        cs = self.cards()
+        vix = {c["day"]: 18.0 for c in cs}
+        last = date.fromisoformat(cs[-1]["day"])
+        sat = last + timedelta(days=(5 - last.weekday()) % 7)
+        with tempfile.TemporaryDirectory() as tmp:
+            out = Path(tmp)
+            got = wb.run(sat, cs, vix, out_dir=out)
+            mon = (sat + timedelta(days=2)).isoformat()
+            self.assertEqual(got["week"], mon)
+            self.assertTrue((out / f"{mon}.md").exists())
+            self.assertIn("这一周的标签", got["page"])
+            self.assertIn("过线", got["page"])
+            wb.run(sat, cs, vix, out_dir=out)
+            reads = json.loads((out / "ledger.json").read_text())["reads"]
+            self.assertEqual([x["week"] for x in reads], [mon])        # the second run does not write the week down again
+            self.assertEqual(set(reads[0]["p"]), set(wb.OUTCOMES))
