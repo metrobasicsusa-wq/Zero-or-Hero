@@ -1,0 +1,111 @@
+{
+  "schema_version": "1.0",
+  "producer": "claude",
+  "experiment": "Claude",
+  "mode": "alpaca_paper",
+  "currency": "USD",
+  "trading_date": "2026-11-23",
+  "timezone": "America/New_York",
+  "status": "post_market_review",
+  "as_of": "2026-11-23T16:55:19-05:00",
+  "generated_at": "2026-11-23T16:55:20-05:00",
+  "scope": "US equities and long single-leg options; momentum strategy, daily rebalance, 10-minute cycle",
+  "equity": {
+    "current_usd": 95255.0,
+    "previous_day_usd": 94809.67,
+    "previous_day_basis": "broker last_equity (prior close)",
+    "day_return": 0.004697094716182404,
+    "since_start_return": -0.04732815327080342,
+    "start_date": "2026-10-01",
+    "external_cash_flows_usd": 0
+  },
+  "benchmark": {
+    "symbol": "SPY",
+    "close": 722.56,
+    "previous_close": 690.68,
+    "basis": "broker daily bars (IEX)"
+  },
+  "orders": [],
+  "orders_basis": "decisions journaled before submission, with the quote/reference evidence they used, joined to broker acks and fills via hashed order ids",
+  "fills": [],
+  "fill_count": 0,
+  "positions": [
+    {
+      "asset_class": "us_equity",
+      "avg_entry_price": "345.392432",
+      "cost_basis": "12779.519984",
+      "current_price": "349.53",
+      "fair_price": null,
+      "lastday_price": "342.56",
+      "mark_source": null,
+      "market_value": "12932.61",
+      "qty": "37",
+      "side": "long",
+      "symbol": "AAPL",
+      "unrealized_intraday_pl": "257.89",
+      "unrealized_pl": "153.090016",
+      "unrealized_plpc": "0.01198"
+    },
+    {
+      "asset_class": "us_equity",
+      "avg_entry_price": "184.488028",
+      "cost_basis": "13098.649988",
+      "current_price": "179.88",
+      "fair_price": null,
+      "lastday_price": "177.24",
+      "mark_source": null,
+      "market_value": "12771.48",
+      "qty": "71",
+      "side": "long",
+      "symbol": "XLV",
+      "unrealized_intraday_pl": "187.44",
+      "unrealized_pl": "-327.169988",
+      "unrealized_plpc": "-0.02498"
+    }
+  ],
+  "positions_basis": "broker positions at 2026-11-23T16:55:19-05:00",
+  "open_orders": [
+    {
+      "asset_class": "us_equity",
+      "filled_at": null,
+      "filled_avg_price": null,
+      "filled_qty": "0",
+      "limit_price": null,
+      "protective_stop": true,
+      "qty": "71",
+      "side": "sell",
+      "status": "new",
+      "stop_price": "173.27",
+      "submitted_at": "2026-11-20T17:20:27.262523Z",
+      "symbol": "XLV",
+      "time_in_force": "gtc",
+      "type": "stop"
+    },
+    {
+      "asset_class": "us_equity",
+      "filled_at": null,
+      "filled_avg_price": null,
+      "filled_qty": "0",
+      "limit_price": null,
+      "protective_stop": true,
+      "qty": "37",
+      "side": "sell",
+      "status": "new",
+      "stop_price": "335.18",
+      "submitted_at": "2026-11-20T17:20:27.045615Z",
+      "symbol": "AAPL",
+      "time_in_force": "gtc",
+      "type": "stop"
+    }
+  ],
+  "strategy_generation": 3,
+  "notes": [
+    "今日 +0.47%，SPY +4.62%，跑输 4.15%。",
+    "浮盈最多：AAPL $153（+1.20%）。",
+    "浮亏最多：XLV -$327（-2.50%）。",
+    "券商端止损单覆盖 2/2 只股票。",
+    "宏观（只记录）：2 年期美债 4.76%，日变动 -4 基点，20 日 -5 基点（2026-11-19）；10 年期美债 5.04%，日变动 -3 基点，20 日 -9 基点（2026-11-19）；WTI 原油 $89.53，20 日 -18.36（2026-11-17）；10 年减 2 年利差 +28 基点；CBOE 认沽/认购比（2026-11-20）：全部 1.13，个股 0.77，指数 1.27；AAII 散户调查（2026-11-18）：看多 33.3%、中性 24.4%、看空 42.2%，多空差 -8.9 点（长期均值看多 37.5%、看空 31.0%）。"
+  ],
+  "rehearsal": null,
+  "replies": []
+}
