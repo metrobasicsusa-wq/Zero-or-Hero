@@ -10385,3 +10385,8 @@ class Weekbook(unittest.TestCase):
             reads = json.loads((out / "ledger.json").read_text())["reads"]
             self.assertEqual([x["week"] for x in reads], [mon])        # the second run does not write the week down again
             self.assertEqual(set(reads[0]["p"]), set(wb.OUTCOMES))
+
+
+# Feature tests kept in their own files (built in parallel on 11-23) run with this suite, so the pre-push hook sees them.
+from tests.test_calendar_week import TestCalendarWeek  # noqa: E402,F401
+from tests.test_horizonbook import Inputs, QuarterBook, WeekBook, Run  # noqa: E402,F401
