@@ -1,0 +1,56 @@
+name: broker
+
+# Read-only broker and market-data reads (hero/broker_read.py): official auction opens and closes, the accounts'
+# non-fill activity (expiries, exercises, assignments), their equity curves, the held options' quote ages, splits
+# and dividends, the options level. Only GET requests; never places, changes or cancels an order. Owner 11-23:
+# 「可以，先接第一组」. Commits only data/broker/ and research/broker/.
+on:
+  schedule:
+    - cron: "40 21 * * 1-5"   # 16:40 ET in winter (17:40 in summer): after the close, before the 17:25 routine reads it
+  workflow_dispatch:
+
+concurrency:
+  group: hero-broker-read
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  read:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install -r requirements.txt
+      - name: Main account
+        env:
+          ALPACA_API_KEY: ${{ secrets.ALPACA_API_KEY }}
+          ALPACA_SECRET_KEY: ${{ secrets.ALPACA_SECRET_KEY }}
+        run: python -m hero.broker_read account main
+      - name: Multi-ledger account
+        env:
+          ALPACA_API_KEY: ${{ secrets.ALPACA_S500_API_KEY }}
+          ALPACA_SECRET_KEY: ${{ secrets.ALPACA_S500_SECRET_KEY }}
+        run: python -m hero.broker_read account s500
+      - name: Market data and the page
+        env:
+          ALPACA_API_KEY: ${{ secrets.ALPACA_API_KEY }}
+          ALPACA_SECRET_KEY: ${{ secrets.ALPACA_SECRET_KEY }}
+        run: |
+          python -m hero.broker_read market
+          python -m hero.broker_read report
+      - name: Commit
+        run: |
+          git config user.name "zero-or-hero-bot"
+          git config user.email "zero-or-hero-bot@users.noreply.github.com"
+          git add data/broker research/broker
+          git diff --cached --quiet && exit 0
+          git commit -m "broker: read-only reads $(date -u +%F)"
+          for i in 1 2 3; do git pull --rebase && git push && exit 0; sleep 10; done
+          exit 1
