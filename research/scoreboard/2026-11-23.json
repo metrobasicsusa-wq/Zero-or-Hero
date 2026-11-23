@@ -1,0 +1,1902 @@
+{
+ "date": "2026-11-23",
+ "daybook_last": "2026-11-20",
+ "cards": [
+  {
+   "key": "against_gap",
+   "title": "简报：今天会不会反着缺口走（against_gap）",
+   "n": 5,
+   "range": [
+    "2026-11-16",
+    "2026-11-20"
+   ],
+   "ours": {
+    "hits": 1,
+    "n": 5
+   },
+   "baselines": [
+    {
+     "name": "一律不会",
+     "hits": 3,
+     "n": 5,
+     "beat": false
+    },
+    {
+     "name": "每日档案底数",
+     "rate": 0.5027,
+     "beat": false
+    }
+   ],
+   "headlines": [
+    {
+     "label": "反着缺口走（against_gap）",
+     "n": 5,
+     "ours": "1/5（20%）",
+     "best": "一律不会 60%",
+     "beat": false,
+     "enough": "不够（5 次，不到 20）",
+     "range": [
+      "2026-11-16",
+      "2026-11-20"
+     ]
+    }
+   ],
+   "rows": [
+    {
+     "day": "2026-11-16",
+     "call": "yes",
+     "gap": -0.00624,
+     "oc": -0.01295,
+     "against": false,
+     "hit": false,
+     "recorded": "miss"
+    },
+    {
+     "day": "2026-11-17",
+     "call": "yes",
+     "gap": -0.00211,
+     "oc": -0.00806,
+     "against": false,
+     "hit": false,
+     "recorded": "miss"
+    },
+    {
+     "day": "2026-11-18",
+     "call": "no",
+     "gap": 0.00127,
+     "oc": -0.00432,
+     "against": true,
+     "hit": false,
+     "recorded": "miss"
+    },
+    {
+     "day": "2026-11-19",
+     "call": "no",
+     "gap": 0.00994,
+     "oc": -0.02928,
+     "against": true,
+     "hit": false,
+     "recorded": "miss"
+    },
+    {
+     "day": "2026-11-20",
+     "call": "no",
+     "gap": -0.00323,
+     "oc": -0.03328,
+     "against": false,
+     "hit": true,
+     "recorded": "hit"
+    }
+   ],
+   "discrepancies": [],
+   "unparsed": []
+  },
+  {
+   "key": "spy_direction",
+   "title": "简报：SPY 收盘对昨收的方向",
+   "n": 23,
+   "range": [
+    "2026-10-06",
+    "2026-11-19"
+   ],
+   "ours": {
+    "hits": 17,
+    "n": 23
+   },
+   "baselines": [
+    {
+     "name": "跟着缺口走",
+     "hits": 17,
+     "n": 23,
+     "beat": false
+    },
+    {
+     "name": "一律猜涨",
+     "hits": 8,
+     "n": 23,
+     "beat": true
+    }
+   ],
+   "headlines": [
+    {
+     "label": "简报的 SPY 方向",
+     "n": 23,
+     "ours": "17/23（74%）",
+     "best": "跟着缺口走 17/23（74%）",
+     "beat": "平",
+     "enough": "够",
+     "range": [
+      "2026-10-06",
+      "2026-11-19"
+     ]
+    }
+   ],
+   "rows": [
+    {
+     "day": "2026-10-06",
+     "up": true,
+     "move": 0.0055,
+     "gap": 0.00428,
+     "hit": true,
+     "gap_hit": true,
+     "always_up": true,
+     "recorded": "hit"
+    },
+    {
+     "day": "2026-10-07",
+     "up": false,
+     "move": -0.0024,
+     "gap": -0.00426,
+     "hit": true,
+     "gap_hit": true,
+     "always_up": false,
+     "recorded": "hit"
+    },
+    {
+     "day": "2026-10-08",
+     "up": false,
+     "move": -0.00423,
+     "gap": -0.00304,
+     "hit": true,
+     "gap_hit": true,
+     "always_up": false,
+     "recorded": "hit"
+    },
+    {
+     "day": "2026-10-09",
+     "up": true,
+     "move": 0.006,
+     "gap": 0.00298,
+     "hit": true,
+     "gap_hit": true,
+     "always_up": true,
+     "recorded": "hit"
+    },
+    {
+     "day": "2026-10-14",
+     "up": false,
+     "move": -0.01081,
+     "gap": -0.00397,
+     "hit": true,
+     "gap_hit": true,
+     "always_up": false,
+     "recorded": "hit"
+    },
+    {
+     "day": "2026-10-15",
+     "up": false,
+     "move": 0.00285,
+     "gap": -0.00435,
+     "hit": false,
+     "gap_hit": false,
+     "always_up": true,
+     "recorded": "miss"
+    },
+    {
+     "day": "2026-10-16",
+     "up": true,
+     "move": -0.01107,
+     "gap": 0.00188,
+     "hit": false,
+     "gap_hit": false,
+     "always_up": false,
+     "recorded": "miss"
+    },
+    {
+     "day": "2026-10-19",
+     "up": true,
+     "move": 0.00423,
+     "gap": 0.00521,
+     "hit": true,
+     "gap_hit": true,
+     "always_up": true,
+     "recorded": "hit"
+    },
+    {
+     "day": "2026-10-21",
+     "up": true,
+     "move": 0.00525,
+     "gap": 0.00276,
+     "hit": true,
+     "gap_hit": true,
+     "always_up": true,
+     "recorded": "hit"
+    },
+    {
+     "day": "2026-10-22",
+     "up": false,
+     "move": -0.01181,
+     "gap": -0.00869,
+     "hit": true,
+     "gap_hit": true,
+     "always_up": false,
+     "recorded": "hit"
+    },
+    {
+     "day": "2026-10-23",
+     "up": false,
+     "move": -0.00522,
+     "gap": -0.00531,
+     "hit": true,
+     "gap_hit": true,
+     "always_up": false,
+     "recorded": "hit"
+    },
+    {
+     "day": "2026-10-29",
+     "up": false,
+     "move": -0.00382,
+     "gap": -0.00456,
+     "hit": true,
+     "gap_hit": true,
+     "always_up": false,
+     "recorded": "hit"
+    },
+    {
+     "day": "2026-10-30",
+     "up": false,
+     "move": -0.01773,
+     "gap": -0.01037,
+     "hit": true,
+     "gap_hit": true,
+     "always_up": false,
+     "recorded": "hit"
+    },
+    {
+     "day": "2026-11-02",
+     "up": true,
+     "move": -0.00479,
+     "gap": 0.00494,
+     "hit": false,
+     "gap_hit": false,
+     "always_up": false,
+     "recorded": "miss"
+    },
+    {
+     "day": "2026-11-06",
+     "up": true,
+     "move": 0.00312,
+     "gap": 0.00248,
+     "hit": true,
+     "gap_hit": true,
+     "always_up": true,
+     "recorded": "hit"
+    },
+    {
+     "day": "2026-11-09",
+     "up": true,
+     "move": 0.02366,
+     "gap": 0.00906,
+     "hit": true,
+     "gap_hit": true,
+     "always_up": true,
+     "recorded": "hit"
+    },
+    {
+     "day": "2026-11-10",
+     "up": false,
+     "move": -0.00368,
+     "gap": -0.00631,
+     "hit": true,
+     "gap_hit": true,
+     "always_up": false,
+     "recorded": "hit"
+    },
+    {
+     "day": "2026-11-11",
+     "up": true,
+     "move": 0.01319,
+     "gap": 0.00917,
+     "hit": true,
+     "gap_hit": true,
+     "always_up": true,
+     "recorded": "hit"
+    },
+    {
+     "day": "2026-11-12",
+     "up": false,
+     "move": -0.00354,
+     "gap": -0.00767,
+     "hit": true,
+     "gap_hit": true,
+     "always_up": false,
+     "recorded": "hit"
+    },
+    {
+     "day": "2026-11-13",
+     "up": true,
+     "move": -0.00363,
+     "gap": 0.0039,
+     "hit": false,
+     "gap_hit": false,
+     "always_up": false,
+     "recorded": "miss"
+    },
+    {
+     "day": "2026-11-16",
+     "up": false,
+     "move": -0.01912,
+     "gap": -0.00624,
+     "hit": true,
+     "gap_hit": true,
+     "always_up": false,
+     "recorded": "hit"
+    },
+    {
+     "day": "2026-11-18",
+     "up": true,
+     "move": -0.00306,
+     "gap": 0.00127,
+     "hit": false,
+     "gap_hit": false,
+     "always_up": false,
+     "recorded": "miss"
+    },
+    {
+     "day": "2026-11-19",
+     "up": true,
+     "move": -0.01962,
+     "gap": 0.00994,
+     "hit": false,
+     "gap_hit": false,
+     "always_up": false,
+     "recorded": "miss"
+    }
+   ],
+   "checks": [
+    {
+     "day": "2026-10-02",
+     "text": "SPY 收盘涨幅在 0% 到 +1.0%",
+     "move": 0.0074,
+     "hit": true,
+     "recorded": "hit"
+    },
+    {
+     "day": "2026-10-05",
+     "text": "SPY 收盘涨跌幅在 ±0.5% 以内",
+     "move": 0.00674,
+     "hit": false,
+     "recorded": "miss"
+    },
+    {
+     "day": "2026-10-09",
+     "text": "SPY 收盘涨跌幅在 ±1% 以内",
+     "move": 0.006,
+     "hit": true,
+     "recorded": "hit"
+    },
+    {
+     "day": "2026-10-12",
+     "text": "SPY 今天收盘涨跌幅在 ±0.5% 以内",
+     "move": -0.0006,
+     "hit": true,
+     "recorded": "hit"
+    },
+    {
+     "day": "2026-10-13",
+     "text": "SPY 收盘涨跌幅在 ±0.8% 以内",
+     "move": -0.00012,
+     "hit": true,
+     "recorded": "hit"
+    },
+    {
+     "day": "2026-10-16",
+     "text": "SPY 收盘涨跌幅在 ±1% 以内",
+     "move": -0.01107,
+     "hit": false,
+     "recorded": "miss"
+    },
+    {
+     "day": "2026-10-20",
+     "text": "SPY 收盘涨跌幅在 ±1% 以内",
+     "move": 0.00335,
+     "hit": true,
+     "recorded": "hit"
+    },
+    {
+     "day": "2026-10-21",
+     "text": "SPY 收盘涨跌幅在 ±1% 以内",
+     "move": 0.00525,
+     "hit": true,
+     "recorded": "hit"
+    },
+    {
+     "day": "2026-10-23",
+     "text": "SPY 收盘涨跌幅在 ±1% 以内",
+     "move": -0.00522,
+     "hit": true,
+     "recorded": "hit"
+    },
+    {
+     "day": "2026-10-26",
+     "text": "SPY 收盘涨跌幅在 ±0.5% 以内",
+     "move": 0.00711,
+     "hit": false,
+     "recorded": "miss"
+    },
+    {
+     "day": "2026-10-27",
+     "text": "SPY 收盘涨跌幅在 ±0.7% 以内",
+     "move": 0.00561,
+     "hit": true,
+     "recorded": "hit"
+    },
+    {
+     "day": "2026-10-28",
+     "text": "SPY 收盘涨跌幅在 ±0.7% 以内",
+     "move": 0.00344,
+     "hit": true,
+     "recorded": "hit"
+    },
+    {
+     "day": "2026-11-03",
+     "text": "SPY 今天收盘涨跌幅在 ±0.7% 以内（昨收约 752.04）",
+     "move": 0.00299,
+     "hit": true,
+     "recorded": "hit"
+    },
+    {
+     "day": "2026-11-04",
+     "text": "SPY 今天收盘涨跌幅在 ±0.7% 以内（昨收约 754.38）",
+     "move": 0.01652,
+     "hit": false,
+     "recorded": "miss"
+    },
+    {
+     "day": "2026-11-05",
+     "text": "SPY 今天收盘涨跌幅在 ±1% 以内（昨收约 766.73）",
+     "move": -0.04409,
+     "hit": false,
+     "recorded": "miss"
+    },
+    {
+     "day": "2026-11-17",
+     "text": "SPY 收盘涨跌幅在 ±1% 以内",
+     "move": -0.01015,
+     "hit": false,
+     "recorded": "miss"
+    },
+    {
+     "day": "2026-11-20",
+     "text": "SPY 收盘对昨收的涨跌幅超过 ±0.5%",
+     "move": -0.0364,
+     "hit": true,
+     "recorded": "hit"
+    }
+   ],
+   "discrepancies": [],
+   "unparsed": []
+  },
+  {
+   "key": "pm_dir",
+   "title": "午盘：12:00 到收盘的方向（pm_dir）",
+   "n": 5,
+   "range": [
+    "2026-11-16",
+    "2026-11-20"
+   ],
+   "ours": {
+    "at_write": [
+     3,
+     5
+    ],
+    "at_noon": [
+     5,
+     5
+    ]
+   },
+   "baselines": [
+    {
+     "name": "一律涨（按写的时候）",
+     "hits": 0,
+     "n": 5,
+     "beat": true
+    },
+    {
+     "name": "一律涨（按 12:00）",
+     "hits": 2,
+     "n": 5,
+     "beat": true
+    }
+   ],
+   "headlines": [
+    {
+     "label": "午盘方向（按写的时候）",
+     "n": 5,
+     "ours": "3/5（60%）",
+     "best": "一律涨 0/5（0%）",
+     "beat": true,
+     "enough": "不够（5 次，不到 20）",
+     "range": [
+      "2026-11-16",
+      "2026-11-20"
+     ]
+    },
+    {
+     "label": "午盘方向（按 12:00）",
+     "n": 5,
+     "ours": "5/5（100%）",
+     "best": "一律涨 2/5（40%）",
+     "beat": true,
+     "enough": "不够（5 次，不到 20）",
+     "range": [
+      "2026-11-16",
+      "2026-11-20"
+     ]
+    }
+   ],
+   "rows": [
+    {
+     "day": "2026-11-16",
+     "call": -1,
+     "p12": 745.18,
+     "close": 739.95,
+     "m12": -0.00702,
+     "h12": true,
+     "pw": 743.9,
+     "mw": -0.00531,
+     "hw": true
+    },
+    {
+     "day": "2026-11-17",
+     "call": 1,
+     "p12": 730.43,
+     "close": 732.44,
+     "m12": 0.00275,
+     "h12": true,
+     "pw": 733.66,
+     "mw": -0.00166,
+     "hw": false
+    },
+    {
+     "day": "2026-11-18",
+     "call": 1,
+     "p12": 729.78,
+     "close": 730.2,
+     "m12": 0.00058,
+     "h12": true,
+     "pw": 732.36,
+     "mw": -0.00295,
+     "hw": false
+    },
+    {
+     "day": "2026-11-19",
+     "call": -1,
+     "p12": 723.91,
+     "close": 715.87,
+     "m12": -0.01111,
+     "h12": true,
+     "pw": 724.07,
+     "mw": -0.01132,
+     "hw": true
+    },
+    {
+     "day": "2026-11-20",
+     "call": -1,
+     "p12": 702.87,
+     "close": 689.81,
+     "m12": -0.01858,
+     "h12": true,
+     "pw": 701.38,
+     "mw": -0.0165,
+     "hw": true
+    }
+   ],
+   "discrepancies": [],
+   "unparsed": []
+  },
+  {
+   "key": "tomorrow",
+   "title": "收盘：明天会怎样（概率，Brier 分数）",
+   "n": 11,
+   "range": [
+    "2026-11-06",
+    "2026-11-20"
+   ],
+   "ours": [
+    {
+     "label": "大波动（晚上版）",
+     "n": 11,
+     "brier": 0.298,
+     "range": [
+      "2026-11-06",
+      "2026-11-20"
+     ],
+     "baselines": [
+      {
+       "name": "一律 25%",
+       "brier": 0.3352,
+       "beat": true
+      },
+      {
+       "name": "事后的水平（这几天的比例 55%）",
+       "brier": 0.2479,
+       "beat": false
+      }
+     ]
+    },
+    {
+     "label": "大波动（早上版）",
+     "n": 11,
+     "brier": 0.2701,
+     "range": [
+      "2026-11-06",
+      "2026-11-20"
+     ],
+     "baselines": [
+      {
+       "name": "一律 25%",
+       "brier": 0.3352,
+       "beat": true
+      },
+      {
+       "name": "事后的水平（这几天的比例 55%）",
+       "brier": 0.2479,
+       "beat": false
+      }
+     ]
+    },
+    {
+     "label": "方向（晚上版）",
+     "n": 11,
+     "brier": 0.2761,
+     "range": [
+      "2026-11-06",
+      "2026-11-20"
+     ],
+     "baselines": [
+      {
+       "name": "一律 55%",
+       "brier": 0.2752,
+       "beat": false
+      },
+      {
+       "name": "事后的水平（这几天的比例 27%）",
+       "brier": 0.1983,
+       "beat": false
+      },
+      {
+       "name": "缺口死规则（高开 68%、低开 30%）",
+       "brier": 0.1949,
+       "beat": false
+      }
+     ]
+    },
+    {
+     "label": "方向（早上版）",
+     "n": 11,
+     "brier": 0.2239,
+     "range": [
+      "2026-11-06",
+      "2026-11-20"
+     ],
+     "baselines": [
+      {
+       "name": "一律 55%",
+       "brier": 0.2752,
+       "beat": true
+      },
+      {
+       "name": "事后的水平（这几天的比例 27%）",
+       "brier": 0.1983,
+       "beat": false
+      },
+      {
+       "name": "缺口死规则（高开 68%、低开 30%）",
+       "brier": 0.1949,
+       "beat": false
+      }
+     ]
+    },
+    {
+     "label": "开到收（早上）",
+     "n": 11,
+     "brier": 0.2836,
+     "range": [
+      "2026-11-06",
+      "2026-11-20"
+     ],
+     "baselines": [
+      {
+       "name": "一律 55%",
+       "brier": 0.257,
+       "beat": false
+      },
+      {
+       "name": "事后的水平（这几天的比例 45%）",
+       "brier": 0.2479,
+       "beat": false
+      }
+     ]
+    }
+   ],
+   "baselines": [],
+   "headlines": [
+    {
+     "label": "明天预测：大波动（晚上版）",
+     "n": 11,
+     "ours": "Brier 0.298",
+     "best": "事后的水平（这几天的比例 55%） 0.248",
+     "beat": false,
+     "enough": "不够（11 次，不到 20）",
+     "range": [
+      "2026-11-06",
+      "2026-11-20"
+     ]
+    },
+    {
+     "label": "明天预测：大波动（早上版）",
+     "n": 11,
+     "ours": "Brier 0.270",
+     "best": "事后的水平（这几天的比例 55%） 0.248",
+     "beat": false,
+     "enough": "不够（11 次，不到 20）",
+     "range": [
+      "2026-11-06",
+      "2026-11-20"
+     ]
+    },
+    {
+     "label": "明天预测：方向（晚上版）",
+     "n": 11,
+     "ours": "Brier 0.276",
+     "best": "缺口死规则（高开 68%、低开 30%） 0.195",
+     "beat": false,
+     "enough": "不够（11 次，不到 20）",
+     "range": [
+      "2026-11-06",
+      "2026-11-20"
+     ]
+    },
+    {
+     "label": "明天预测：方向（早上版）",
+     "n": 11,
+     "ours": "Brier 0.224",
+     "best": "缺口死规则（高开 68%、低开 30%） 0.195",
+     "beat": false,
+     "enough": "不够（11 次，不到 20）",
+     "range": [
+      "2026-11-06",
+      "2026-11-20"
+     ]
+    },
+    {
+     "label": "明天预测：开到收（早上）",
+     "n": 11,
+     "ours": "Brier 0.284",
+     "best": "事后的水平（这几天的比例 45%） 0.248",
+     "beat": false,
+     "enough": "不够（11 次，不到 20）",
+     "range": [
+      "2026-11-06",
+      "2026-11-20"
+     ]
+    }
+   ],
+   "rows": [
+    {
+     "day": "2026-11-06",
+     "eve_big": 0.7,
+     "eve_up": 0.54,
+     "mor_big": 0.72,
+     "mor_up": 0.55,
+     "oc": 0.55,
+     "y_big": false,
+     "y_up": true,
+     "y_oc": true,
+     "gap": 0.00248,
+     "move": 0.00312
+    },
+    {
+     "day": "2026-11-09",
+     "eve_big": 0.55,
+     "eve_up": 0.55,
+     "mor_big": 0.6,
+     "mor_up": 0.68,
+     "oc": 0.68,
+     "y_big": true,
+     "y_up": true,
+     "y_oc": true,
+     "gap": 0.00906,
+     "move": 0.02366
+    },
+    {
+     "day": "2026-11-10",
+     "eve_big": 0.5,
+     "eve_up": 0.55,
+     "mor_big": 0.55,
+     "mor_up": 0.3,
+     "oc": 0.3,
+     "y_big": false,
+     "y_up": false,
+     "y_oc": true,
+     "gap": -0.00631,
+     "move": -0.00368
+    },
+    {
+     "day": "2026-11-11",
+     "eve_big": 0.33,
+     "eve_up": 0.55,
+     "mor_big": 0.5,
+     "mor_up": 0.8,
+     "oc": 0.8,
+     "y_big": true,
+     "y_up": true,
+     "y_oc": true,
+     "gap": 0.00917,
+     "move": 0.01319
+    },
+    {
+     "day": "2026-11-12",
+     "eve_big": 0.22,
+     "eve_up": 0.55,
+     "mor_big": 0.5,
+     "mor_up": 0.3,
+     "oc": 0.3,
+     "y_big": false,
+     "y_up": false,
+     "y_oc": true,
+     "gap": -0.00767,
+     "move": -0.00354
+    },
+    {
+     "day": "2026-11-13",
+     "eve_big": 0.3,
+     "eve_up": 0.55,
+     "mor_big": 0.22,
+     "mor_up": 0.68,
+     "oc": 0.68,
+     "y_big": false,
+     "y_up": false,
+     "y_oc": false,
+     "gap": 0.0039,
+     "move": -0.00363
+    },
+    {
+     "day": "2026-11-16",
+     "eve_big": 0.28,
+     "eve_up": 0.55,
+     "mor_big": 0.38,
+     "mor_up": 0.32,
+     "oc": 0.54,
+     "y_big": true,
+     "y_up": false,
+     "y_oc": false,
+     "gap": -0.00624,
+     "move": -0.01912
+    },
+    {
+     "day": "2026-11-17",
+     "eve_big": 0.45,
+     "mor_big": 0.4,
+     "eve_up": 0.55,
+     "mor_up": 0.52,
+     "oc": 0.52,
+     "y_big": true,
+     "y_up": false,
+     "y_oc": false,
+     "gap": -0.00211,
+     "move": -0.01015
+    },
+    {
+     "day": "2026-11-18",
+     "eve_big": 0.45,
+     "mor_big": 0.38,
+     "eve_up": 0.55,
+     "mor_up": 0.55,
+     "oc": 0.5,
+     "y_big": false,
+     "y_up": false,
+     "y_oc": false,
+     "gap": 0.00127,
+     "move": -0.00306
+    },
+    {
+     "day": "2026-11-19",
+     "eve_big": 0.35,
+     "mor_big": 0.5,
+     "eve_up": 0.55,
+     "mor_up": 0.8,
+     "oc": 0.5,
+     "y_big": true,
+     "y_up": false,
+     "y_oc": false,
+     "gap": 0.00994,
+     "move": -0.01962
+    },
+    {
+     "day": "2026-11-20",
+     "eve_big": 0.45,
+     "mor_big": 0.45,
+     "eve_up": 0.55,
+     "mor_up": 0.4,
+     "oc": 0.52,
+     "y_big": true,
+     "y_up": false,
+     "y_oc": false,
+     "gap": -0.00323,
+     "move": -0.0364
+    }
+   ],
+   "discrepancies": [
+    "Brier 汇总表「早上版」的大波动：记的 0.269，重算 0.270（11 天）",
+    "Brier 汇总表「早上版」的方向：记的 0.225，重算 0.224（11 天）",
+    "Brier 汇总表「一律 25% 基线」的大波动：记的 0.337，重算 0.335（11 天）",
+    "Brier 汇总表「一律 55% 收涨」的方向：记的 0.274，重算 0.275（11 天）",
+    "Brier 汇总表「一律 55% 收涨」的开到收：记的 0.258，重算 0.257（11 天）",
+    "Brier 汇总表「一律 45%（事后看这 11 天的水平）」说是这几天的水平，这 11 天大波动实际的比例是 55%（按 55% 一律填是 0.248）"
+   ],
+   "unparsed": []
+  },
+  {
+   "key": "follow",
+   "title": "跟单卡（每 $1）",
+   "n": 24,
+   "range": [
+    "2026-10-19",
+    "2026-11-20"
+   ],
+   "ours": {
+    "concl": {
+     "booked": 4.97,
+     "strict": 2.38,
+     "mech": 3.98
+    },
+    "per": {
+     "booked": 0.22,
+     "strict": -1.38,
+     "mech": 0.22,
+     "with_missed": -0.34
+    }
+   },
+   "baselines": [
+    {
+     "name": "不跟 / 不做（$0）",
+     "value": 0.0
+    }
+   ],
+   "headlines": [
+    {
+     "label": "跟单卡「结论」（触发的几次）",
+     "n": 6,
+     "ours": "记的 +4.97 / 从严 +2.38 / 机械 +3.98",
+     "best": "不跟 $0（按从严比）",
+     "beat": true,
+     "enough": "不够（6 次，不到 20）",
+     "range": [
+      "2026-11-04",
+      "2026-11-16"
+     ]
+    },
+    {
+     "label": "跟单卡「一定要跟」",
+     "n": 24,
+     "ours": "记的 +0.22 / 从严 -1.38",
+     "best": "不做 $0（按从严比）",
+     "beat": false,
+     "enough": "够",
+     "range": [
+      "2026-10-19",
+      "2026-11-20"
+     ]
+    }
+   ],
+   "rows": [
+    {
+     "day": "2026-10-19",
+     "counted": true,
+     "concl": 0.0,
+     "per": -0.98,
+     "move": null,
+     "triggered": false,
+     "graze": false,
+     "line_alt": null,
+     "limit_broken": false,
+     "missed": null
+    },
+    {
+     "day": "2026-10-20",
+     "counted": true,
+     "concl": 0.0,
+     "per": 1.7,
+     "move": 0.0025,
+     "triggered": false,
+     "graze": false,
+     "line_alt": null,
+     "limit_broken": false,
+     "missed": null
+    },
+    {
+     "day": "2026-10-21",
+     "counted": true,
+     "concl": 0.0,
+     "per": -0.97,
+     "move": -0.0007000000000000001,
+     "triggered": false,
+     "graze": false,
+     "line_alt": null,
+     "limit_broken": false,
+     "missed": null
+    },
+    {
+     "day": "2026-10-22",
+     "counted": true,
+     "concl": 0.0,
+     "per": -0.98,
+     "move": 0.0007000000000000001,
+     "triggered": false,
+     "graze": false,
+     "line_alt": null,
+     "limit_broken": false,
+     "missed": null
+    },
+    {
+     "day": "2026-10-23",
+     "counted": true,
+     "concl": 0.0,
+     "per": -0.93,
+     "move": 0.001,
+     "triggered": false,
+     "graze": false,
+     "line_alt": null,
+     "limit_broken": false,
+     "missed": null
+    },
+    {
+     "day": "2026-10-26",
+     "counted": true,
+     "concl": 0.0,
+     "per": 1.22,
+     "move": 0.004,
+     "triggered": false,
+     "graze": false,
+     "line_alt": null,
+     "limit_broken": false,
+     "missed": null
+    },
+    {
+     "day": "2026-10-27",
+     "counted": true,
+     "concl": 0.0,
+     "per": -0.98,
+     "move": -0.0015,
+     "triggered": false,
+     "graze": false,
+     "line_alt": null,
+     "limit_broken": false,
+     "missed": null
+    },
+    {
+     "day": "2026-10-28",
+     "counted": true,
+     "concl": 0.0,
+     "per": -0.81,
+     "move": -0.0014000000000000002,
+     "triggered": false,
+     "graze": false,
+     "line_alt": null,
+     "limit_broken": false,
+     "missed": null
+    },
+    {
+     "day": "2026-10-29",
+     "counted": true,
+     "concl": 0.0,
+     "per": -0.77,
+     "move": 0.0004,
+     "triggered": false,
+     "graze": false,
+     "line_alt": null,
+     "limit_broken": false,
+     "missed": null
+    },
+    {
+     "day": "2026-10-30",
+     "counted": true,
+     "concl": 0.0,
+     "per": 1.06,
+     "move": -0.0003,
+     "triggered": false,
+     "graze": false,
+     "line_alt": null,
+     "limit_broken": false,
+     "missed": null
+    },
+    {
+     "day": "2026-11-02",
+     "counted": false,
+     "concl": null,
+     "per": null,
+     "move": 0.0011,
+     "triggered": false,
+     "graze": false,
+     "line_alt": null,
+     "limit_broken": false,
+     "missed": -0.56
+    },
+    {
+     "day": "2026-11-03",
+     "counted": true,
+     "concl": 0.0,
+     "per": -0.83,
+     "move": 0.0005,
+     "triggered": false,
+     "graze": false,
+     "line_alt": null,
+     "limit_broken": false,
+     "missed": null
+    },
+    {
+     "day": "2026-11-04",
+     "counted": true,
+     "concl": -0.96,
+     "per": -0.96,
+     "move": 0.0066,
+     "triggered": true,
+     "graze": false,
+     "line_alt": null,
+     "limit_broken": false,
+     "missed": null
+    },
+    {
+     "day": "2026-11-05",
+     "counted": true,
+     "concl": 2.7,
+     "per": 2.7,
+     "move": -0.0148,
+     "triggered": true,
+     "graze": false,
+     "line_alt": null,
+     "limit_broken": false,
+     "missed": null
+    },
+    {
+     "day": "2026-11-06",
+     "counted": true,
+     "concl": -0.99,
+     "per": -0.99,
+     "move": 0.0085,
+     "triggered": true,
+     "graze": false,
+     "line_alt": null,
+     "limit_broken": false,
+     "missed": null
+    },
+    {
+     "day": "2026-11-09",
+     "counted": true,
+     "concl": 1.15,
+     "per": 1.15,
+     "move": 0.0074,
+     "triggered": true,
+     "graze": false,
+     "line_alt": null,
+     "limit_broken": false,
+     "missed": null
+    },
+    {
+     "day": "2026-11-10",
+     "counted": true,
+     "concl": 0.0,
+     "per": -0.99,
+     "move": 0.004,
+     "triggered": false,
+     "graze": false,
+     "line_alt": null,
+     "limit_broken": false,
+     "missed": null
+    },
+    {
+     "day": "2026-11-11",
+     "counted": true,
+     "concl": 0.0,
+     "per": -1.0,
+     "move": -0.0005,
+     "triggered": false,
+     "graze": false,
+     "line_alt": null,
+     "limit_broken": false,
+     "missed": null
+    },
+    {
+     "day": "2026-11-12",
+     "counted": true,
+     "concl": 0.0,
+     "per": 1.75,
+     "move": 0.0040999999999999995,
+     "triggered": false,
+     "graze": false,
+     "line_alt": null,
+     "limit_broken": false,
+     "missed": null
+    },
+    {
+     "day": "2026-11-13",
+     "counted": true,
+     "concl": 1.47,
+     "per": 1.47,
+     "move": -0.008100000000000001,
+     "triggered": true,
+     "graze": false,
+     "line_alt": null,
+     "limit_broken": false,
+     "missed": null
+    },
+    {
+     "day": "2026-11-16",
+     "counted": true,
+     "concl": 1.6,
+     "per": 1.6,
+     "move": -0.0055000000000000005,
+     "triggered": true,
+     "graze": false,
+     "line_alt": null,
+     "limit_broken": true,
+     "missed": null
+    },
+    {
+     "day": "2026-11-17",
+     "counted": true,
+     "concl": 0.0,
+     "per": -0.99,
+     "move": 0.0014000000000000002,
+     "triggered": false,
+     "graze": false,
+     "line_alt": null,
+     "limit_broken": false,
+     "missed": null
+    },
+    {
+     "day": "2026-11-18",
+     "counted": true,
+     "concl": 0.0,
+     "per": -0.99,
+     "move": 0.0012,
+     "triggered": false,
+     "graze": false,
+     "line_alt": null,
+     "limit_broken": false,
+     "missed": null
+    },
+    {
+     "day": "2026-11-19",
+     "counted": true,
+     "concl": 0.0,
+     "per": 1.74,
+     "move": -0.0014000000000000002,
+     "triggered": false,
+     "graze": false,
+     "line_alt": null,
+     "limit_broken": false,
+     "missed": null
+    },
+    {
+     "day": "2026-11-20",
+     "counted": true,
+     "concl": 0.0,
+     "per": -1.0,
+     "move": 0.0051,
+     "triggered": false,
+     "graze": true,
+     "line_alt": -0.99,
+     "limit_broken": false,
+     "missed": null
+    }
+   ],
+   "robust": {
+    "n": 24,
+    "mean": 0.009166666666666675,
+    "trim": -0.2842857142857143,
+    "median": -0.88,
+    "flags": [
+     "只有 24 笔，样本少",
+     "去掉最好 3 笔就不赚（-28%），靠少数几笔",
+     "中位数 -88%，多数笔亏",
+     "买卖再各多 5% 成本就不赚（-9%）"
+    ]
+   },
+   "discrepancies": [],
+   "unparsed": []
+  },
+  {
+   "key": "earnings",
+   "title": "财报：方向对反应日的开盘",
+   "n": 18,
+   "range": [
+    "2026-11-16",
+    "2026-11-20"
+   ],
+   "ours": {
+    "hits": 10,
+    "n": 18
+   },
+   "baselines": [
+    {
+     "name": "一律跌",
+     "hits": 10,
+     "n": 18,
+     "beat": false
+    },
+    {
+     "name": "一律涨",
+     "hits": 8,
+     "n": 18,
+     "beat": true
+    },
+    {
+     "name": "跟着 SPY 缺口",
+     "hits": 12,
+     "n": 18,
+     "beat": false
+    }
+   ],
+   "headlines": [
+    {
+     "label": "财报方向（反应日开盘）",
+     "n": 18,
+     "ours": "10/18（56%）",
+     "best": "跟着 SPY 缺口 12/18（67%）",
+     "beat": false,
+     "enough": "不够（18 次，不到 20）",
+     "range": [
+      "2026-11-16",
+      "2026-11-20"
+     ]
+    }
+   ],
+   "rows": [
+    {
+     "day": "2026-11-16",
+     "written": "2026-11-13",
+     "symbol": "ARMK",
+     "call": "up",
+     "evidence": "profile",
+     "recorded_gap": -0.0462,
+     "spy_gap": -0.00624,
+     "text_gap": -0.046,
+     "fetched": true,
+     "gap": -0.04616,
+     "hit": false
+    },
+    {
+     "day": "2026-11-16",
+     "written": "2026-11-13",
+     "symbol": "TSN",
+     "call": "down",
+     "evidence": "profile",
+     "recorded_gap": 0.0354,
+     "spy_gap": -0.00624,
+     "text_gap": 0.035,
+     "fetched": true,
+     "gap": 0.03536,
+     "hit": false
+    },
+    {
+     "day": "2026-11-16",
+     "written": "2026-11-13",
+     "symbol": "BEKE",
+     "call": "up",
+     "evidence": "profile",
+     "recorded_gap": 0.0358,
+     "spy_gap": -0.00624,
+     "text_gap": 0.036000000000000004,
+     "fetched": true,
+     "gap": 0.03583,
+     "hit": true
+    },
+    {
+     "day": "2026-11-16",
+     "written": "2026-11-13",
+     "symbol": "XPEV",
+     "call": "up",
+     "evidence": "profile",
+     "recorded_gap": 0.0566,
+     "spy_gap": -0.00624,
+     "text_gap": 0.055999999999999994,
+     "fetched": true,
+     "gap": 0.05656,
+     "hit": true
+    },
+    {
+     "day": "2026-11-16",
+     "written": "2026-11-13",
+     "symbol": "HTHT",
+     "call": "up",
+     "evidence": "profile",
+     "recorded_gap": 0.0335,
+     "spy_gap": -0.00624,
+     "text_gap": 0.034,
+     "fetched": true,
+     "gap": 0.03354,
+     "hit": true
+    },
+    {
+     "day": "2026-11-16",
+     "written": "2026-11-13",
+     "symbol": "BIDU",
+     "call": "up",
+     "evidence": "profile",
+     "recorded_gap": -0.0029,
+     "spy_gap": -0.00624,
+     "text_gap": -0.001,
+     "fetched": true,
+     "gap": -0.00294,
+     "hit": false
+    },
+    {
+     "day": "2026-11-16",
+     "written": "2026-11-13",
+     "symbol": "BXDC",
+     "call": "up",
+     "evidence": "default",
+     "recorded_gap": 0.033,
+     "spy_gap": -0.00624,
+     "text_gap": null,
+     "fetched": true,
+     "gap": 0.03295,
+     "hit": true
+    },
+    {
+     "day": "2026-11-16",
+     "written": "2026-11-13",
+     "symbol": "POET",
+     "call": "up",
+     "evidence": "default",
+     "recorded_gap": -0.0906,
+     "spy_gap": -0.00624,
+     "text_gap": null,
+     "fetched": true,
+     "gap": -0.08967,
+     "hit": false
+    },
+    {
+     "day": "2026-11-16",
+     "written": "2026-11-13",
+     "symbol": "PERI",
+     "call": "up",
+     "evidence": "default",
+     "recorded_gap": -0.0084,
+     "spy_gap": -0.00624,
+     "text_gap": null,
+     "fetched": true,
+     "gap": -0.00792,
+     "hit": false
+    },
+    {
+     "day": "2026-11-16",
+     "written": "2026-11-13",
+     "symbol": "USDE",
+     "call": "up",
+     "evidence": "default",
+     "recorded_gap": -0.0736,
+     "spy_gap": -0.00624,
+     "text_gap": null,
+     "fetched": true,
+     "gap": -0.07358,
+     "hit": false
+    },
+    {
+     "day": "2026-11-17",
+     "written": "2026-11-16",
+     "symbol": "HD",
+     "call": "down",
+     "evidence": "profile",
+     "recorded_gap": -0.0358,
+     "spy_gap": -0.00211,
+     "text_gap": -0.036000000000000004,
+     "fetched": true,
+     "gap": -0.0358,
+     "hit": true
+    },
+    {
+     "day": "2026-11-17",
+     "written": "2026-11-16",
+     "symbol": "JD",
+     "call": "down",
+     "evidence": "profile",
+     "recorded_gap": -0.065,
+     "spy_gap": -0.00211,
+     "text_gap": -0.066,
+     "fetched": true,
+     "gap": -0.065,
+     "hit": true
+    },
+    {
+     "day": "2026-11-17",
+     "written": "2026-11-16",
+     "symbol": "DIS",
+     "call": "down",
+     "evidence": "profile",
+     "recorded_gap": -0.0037,
+     "spy_gap": -0.00211,
+     "text_gap": -0.004,
+     "fetched": true,
+     "gap": -0.00371,
+     "hit": true
+    },
+    {
+     "day": "2026-11-18",
+     "written": "2026-11-17",
+     "symbol": "NVDA",
+     "call": "up",
+     "evidence": "profile",
+     "recorded_gap": 0.024,
+     "spy_gap": 0.00127,
+     "text_gap": 0.024,
+     "fetched": true,
+     "gap": 0.02399,
+     "hit": true
+    },
+    {
+     "day": "2026-11-18",
+     "written": "2026-11-17",
+     "symbol": "TJX",
+     "call": "down",
+     "evidence": "profile",
+     "recorded_gap": 0.0551,
+     "spy_gap": 0.00127,
+     "text_gap": 0.055,
+     "fetched": true,
+     "gap": 0.05514,
+     "hit": false
+    },
+    {
+     "day": "2026-11-19",
+     "written": "2026-11-18",
+     "symbol": "PANW",
+     "call": "down",
+     "evidence": "profile",
+     "recorded_gap": 0.0467,
+     "spy_gap": 0.00994,
+     "text_gap": 0.047,
+     "fetched": true,
+     "gap": 0.04675,
+     "hit": false
+    },
+    {
+     "day": "2026-11-19",
+     "written": "2026-11-18",
+     "symbol": "WMT",
+     "call": "down",
+     "evidence": "profile",
+     "recorded_gap": -0.0292,
+     "spy_gap": 0.00994,
+     "text_gap": -0.028999999999999998,
+     "fetched": true,
+     "gap": -0.02921,
+     "hit": true
+    },
+    {
+     "day": "2026-11-20",
+     "written": "2026-11-19",
+     "symbol": "INTU",
+     "call": "down",
+     "evidence": "profile",
+     "recorded_gap": null,
+     "spy_gap": -0.00323,
+     "text_gap": -0.084,
+     "fetched": true,
+     "gap": -0.08374,
+     "hit": true
+    }
+   ],
+   "pending": [],
+   "discrepancies": [
+    "2026-11-16 BIDU：reasons.jsonl 写的开盘 -0.1%，日线开盘对前收 -0.3%（开 77.91，前收 78.14）"
+   ],
+   "unparsed": []
+  },
+  {
+   "key": "sniper",
+   "title": "狙击：开盘到收盘的方向",
+   "n": 14,
+   "range": [
+    "2026-11-03",
+    "2026-11-20"
+   ],
+   "ours": {
+    "hits": 7,
+    "n": 14,
+    "by_order": {
+     "没记": [
+      5,
+      9
+     ],
+     "first": [
+      1,
+      2
+     ],
+     "second": [
+      1,
+      3
+     ]
+    }
+   },
+   "baselines": [
+    {
+     "name": "一律看涨",
+     "hits": 4,
+     "n": 14,
+     "beat": true
+    },
+    {
+     "name": "一律看跌",
+     "hits": 10,
+     "n": 14,
+     "beat": false
+    }
+   ],
+   "headlines": [
+    {
+     "label": "狙击方向（开到收）",
+     "n": 14,
+     "ours": "7/14（50%）",
+     "best": "一律看跌 10/14（71%）",
+     "beat": false,
+     "enough": "不够（14 次，不到 20）",
+     "range": [
+      "2026-11-03",
+      "2026-11-20"
+     ]
+    }
+   ],
+   "rows": [
+    {
+     "day": "2026-11-03",
+     "symbol": "WDC",
+     "direction": "call",
+     "order": null,
+     "wrong_if": "",
+     "all_day_line": false,
+     "recorded_oc": -0.008,
+     "recorded_all_day": null,
+     "recorded_open": 350.06,
+     "fetched": true,
+     "oc": -0.00924,
+     "match": false
+    },
+    {
+     "day": "2026-11-04",
+     "symbol": "FSLR",
+     "direction": "call",
+     "order": null,
+     "wrong_if": "10:00 前跌回开盘价下方、或回补一半跳空（跌到约 $193 以下）——政策题材开盘就被卖",
+     "all_day_line": false,
+     "recorded_oc": -0.055999999999999994,
+     "recorded_all_day": true,
+     "recorded_open": 206.0,
+     "fetched": true,
+     "oc": -0.05578,
+     "match": false
+    },
+    {
+     "day": "2026-11-05",
+     "symbol": "NBIS",
+     "direction": "put",
+     "order": null,
+     "wrong_if": "10:00 前站回开盘价上方，或回到昨收 $141.5 以上（消息被市场当作旧闻）",
+     "all_day_line": false,
+     "recorded_oc": -0.10300000000000001,
+     "recorded_all_day": null,
+     "recorded_open": 134.16,
+     "fetched": true,
+     "oc": -0.10279,
+     "match": true
+    },
+    {
+     "day": "2026-11-06",
+     "symbol": "HIMS",
+     "direction": "call",
+     "order": null,
+     "wrong_if": "10:00 前跌回开盘价下方，或礼来 / 公司把合作条款说小（只是导流、不是平台内销售）",
+     "all_day_line": false,
+     "recorded_oc": 0.0085,
+     "recorded_all_day": null,
+     "recorded_open": 25.78,
+     "fetched": true,
+     "oc": 0.00853,
+     "match": true
+    },
+    {
+     "day": "2026-11-09",
+     "symbol": "AMD",
+     "direction": "call",
+     "order": null,
+     "wrong_if": "10:00 前跌回开盘价下方，或 NVDA 10:00 前收复开盘价（轮动反过来）",
+     "all_day_line": false,
+     "recorded_oc": 0.07400000000000001,
+     "recorded_all_day": null,
+     "recorded_open": 473.39,
+     "fetched": true,
+     "oc": 0.07434,
+     "match": true
+    },
+    {
+     "day": "2026-11-10",
+     "symbol": "SMCI",
+     "direction": "put",
+     "order": null,
+     "wrong_if": "10:00 时 SMCI 在开盘价上方（消息没人卖），或超微 / 监管方澄清这批服务器不在受限范围；过夜的线：当天收盘收在开盘价上方",
+     "all_day_line": true,
+     "recorded_oc": -0.0063,
+     "recorded_all_day": false,
+     "recorded_open": 27.97,
+     "fetched": true,
+     "oc": -0.00644,
+     "match": true
+    },
+    {
+     "day": "2026-11-11",
+     "symbol": "CORZ",
+     "direction": "call",
+     "order": null,
+     "wrong_if": "10:00 时 CRWV 在开盘价下方（龙头的跳空被卖），或 CRWV 守住而 CORZ 对开盘的涨跌幅落后它 2 个点以上（二线没人跟）；全天的线：当天收盘收在开盘价下方",
+     "all_day_line": true,
+     "recorded_oc": 0.048,
+     "recorded_all_day": false,
+     "recorded_open": 13.9,
+     "fetched": true,
+     "oc": 0.0482,
+     "match": true
+    },
+    {
+     "day": "2026-11-12",
+     "symbol": "NVDA",
+     "direction": "put",
+     "order": null,
+     "wrong_if": "10:00 时 NVDA 在开盘价上方（跌被买回来），或公司 / 董事会正式表态黄仁勋留任；全天的线：当天收盘收在开盘价上方",
+     "all_day_line": true,
+     "recorded_oc": 0.10099999999999999,
+     "recorded_all_day": true,
+     "recorded_open": 151.01,
+     "fetched": true,
+     "oc": 0.10052,
+     "match": false
+    },
+    {
+     "day": "2026-11-13",
+     "symbol": "VRT",
+     "direction": "call",
+     "order": null,
+     "wrong_if": "10:00 时 VRT 在开盘价下方，或 Modine 把盘前涨幅回吐一半以上（市场不信这笔交易），或三星 / Modine 否认在谈",
+     "all_day_line": false,
+     "recorded_oc": -0.05158171407115375,
+     "recorded_all_day": null,
+     "recorded_open": 213.06,
+     "fetched": true,
+     "oc": -0.05158,
+     "match": false
+    },
+    {
+     "day": "2026-11-16",
+     "symbol": "LHX",
+     "direction": "put",
+     "order": "first",
+     "wrong_if": "10:00 时 LHX 比开盘价高 1% 以上（低开被买回），或 FAA / 交通部说故障原因不在 L3Harris 的设备和施工。它最近的到期日是周五（11-20），按规则会拿过夜，所以再记一条全天的线：当天收盘收回开盘价（收在开盘价上方）。",
+     "all_day_line": true,
+     "recorded_oc": -0.0096,
+     "recorded_all_day": false,
+     "recorded_open": 264.28,
+     "fetched": true,
+     "oc": -0.00957,
+     "match": true
+    },
+    {
+     "day": "2026-11-17",
+     "symbol": "MRVL",
+     "direction": "call",
+     "order": "second",
+     "wrong_if": "10:00 时 MRVL 回到开盘价下方（高开被卖），或政府 / 白宫否认或推迟这项措施。它最近的到期日是周五（11-20），按规则会拿过夜，所以再记一条全天的线：当天收盘收回开盘价（收在开盘价下方）。",
+     "all_day_line": true,
+     "recorded_oc": -0.0097,
+     "recorded_all_day": true,
+     "recorded_open": 150.2,
+     "fetched": true,
+     "oc": -0.00972,
+     "match": false
+    },
+    {
+     "day": "2026-11-18",
+     "symbol": "MU",
+     "direction": "call",
+     "order": "second",
+     "wrong_if": "10:00 时英伟达跌到自己开盘价下方（龙头的高开被卖），或者英伟达守住而美光在自己开盘价下方（没跟龙头）。如果买到的是周五（11-20）到期的、会拿过夜，再记一条全天的线：美光当天收盘收在开盘价下方。",
+     "all_day_line": true,
+     "recorded_oc": -0.0184,
+     "recorded_all_day": null,
+     "recorded_open": 718.5,
+     "fetched": true,
+     "oc": -0.01841,
+     "match": false
+    },
+    {
+     "day": "2026-11-19",
+     "symbol": "INTC",
+     "direction": "call",
+     "order": "first",
+     "wrong_if": "10:00 时英特尔在自己开盘价下方（高开被卖），或者公司 / 客户出来说这不是量产订单。如果那时芯片 ETF（SMH）也在自己开盘价下方，另记一笔「整条链高开被卖」，和这条消息本身分开。如果买到的是周五（11-20）到期的、会拿过夜，再记全天的线：英特尔当天收盘收在开盘价下方。",
+     "all_day_line": true,
+     "recorded_oc": -0.032,
+     "recorded_all_day": true,
+     "recorded_open": 57.55,
+     "fetched": true,
+     "oc": -0.03096,
+     "match": false
+    },
+    {
+     "day": "2026-11-20",
+     "symbol": "META",
+     "direction": "put",
+     "order": "second",
+     "wrong_if": "10:00 时 Meta 在自己开盘价上方（低开被买回）。如果那时纳指 ETF（QQQ）也在自己开盘价上方，另记一笔「整条链低开被买」，和这条消息本身分开。或者苹果 / 彭博的报道被否认。",
+     "all_day_line": false,
+     "recorded_oc": -0.037894772957301814,
+     "recorded_all_day": null,
+     "recorded_open": 582.93,
+     "fetched": true,
+     "oc": -0.03951,
+     "match": true
+    }
+   ],
+   "discrepancies": [
+    "2026-11-03 WDC：收盘交流记的开盘 350.06，日线开盘 350.59（差 -0.15%；可能取的是分钟线第一根，11-22 定的口径是日线开盘）",
+    "2026-11-20 META：收盘交流记的开到收 -3.79%，日线 -3.95%（开 583.91 收 560.84）",
+    "2026-11-20 META：收盘交流记的开盘 582.93，日线开盘 583.91（差 -0.17%；可能取的是分钟线第一根，11-22 定的口径是日线开盘）"
+   ],
+   "unparsed": []
+  },
+  {
+   "key": "weekbook",
+   "title": "每周档案：事先记的读数",
+   "n": 0,
+   "range": null,
+   "ours": {
+    "brier": null,
+    "questions": 0
+   },
+   "baselines": [
+    {
+     "name": "底数",
+     "brier": null
+    }
+   ],
+   "headlines": [
+    {
+     "label": "每周档案（记下的读数）",
+     "n": 0,
+     "ours": "还没有走完的周",
+     "best": "—",
+     "beat": null,
+     "enough": "不够（0 次，不到 20）",
+     "range": null
+    }
+   ],
+   "rows": [],
+   "pending": [
+    "2026-11-23"
+   ],
+   "discrepancies": [],
+   "unparsed": []
+  }
+ ]
+}
