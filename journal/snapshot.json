@@ -1,16 +1,16 @@
 {
   "account": {
-    "buying_power": "349793.62",
+    "buying_power": "339763.55",
     "cash": "69550.91",
-    "equity": "95118.76",
+    "equity": "95479.76",
     "last_equity": "95205.69",
-    "long_market_value": "25567.85",
-    "portfolio_value": "95118.76"
+    "long_market_value": "25928.85",
+    "portfolio_value": "95479.76"
   },
   "benchmark": {
-    "close": 722.56,
-    "date": "2026-11-23",
-    "prev_close": 690.68,
+    "close": 714.52,
+    "date": "2026-11-24",
+    "prev_close": 722.56,
     "symbol": "SPY"
   },
   "open_orders": [
@@ -20,15 +20,15 @@
       "filled_avg_price": null,
       "filled_qty": "0",
       "limit_price": null,
-      "protective_stop": true,
-      "qty": "71",
-      "side": "sell",
-      "status": "pending_cancel",
-      "stop_price": "173.27",
-      "submitted_at": "2026-11-20T17:20:27.262523Z",
-      "symbol": "XLV",
-      "time_in_force": "gtc",
-      "type": "stop"
+      "protective_stop": false,
+      "qty": "48",
+      "side": "buy",
+      "status": "pending_new",
+      "stop_price": null,
+      "submitted_at": "2026-11-24T14:40:25.343434894Z",
+      "symbol": "XLY",
+      "time_in_force": "day",
+      "type": "market"
     },
     {
       "asset_class": "us_equity",
@@ -36,15 +36,47 @@
       "filled_avg_price": null,
       "filled_qty": "0",
       "limit_price": null,
-      "protective_stop": true,
-      "qty": "37",
+      "protective_stop": false,
+      "qty": "14",
+      "side": "buy",
+      "status": "pending_new",
+      "stop_price": null,
+      "submitted_at": "2026-11-24T14:40:25.332268235Z",
+      "symbol": "TSLA",
+      "time_in_force": "day",
+      "type": "market"
+    },
+    {
+      "asset_class": "us_equity",
+      "filled_at": null,
+      "filled_avg_price": null,
+      "filled_qty": "0",
+      "limit_price": null,
+      "protective_stop": false,
+      "qty": "39",
       "side": "sell",
-      "status": "pending_cancel",
-      "stop_price": "335.18",
-      "submitted_at": "2026-11-20T17:20:27.045615Z",
+      "status": "pending_new",
+      "stop_price": null,
+      "submitted_at": "2026-11-24T14:40:25.31665075Z",
+      "symbol": "XLV",
+      "time_in_force": "day",
+      "type": "market"
+    },
+    {
+      "asset_class": "us_equity",
+      "filled_at": null,
+      "filled_avg_price": null,
+      "filled_qty": "0",
+      "limit_price": null,
+      "protective_stop": false,
+      "qty": "20",
+      "side": "sell",
+      "status": "pending_new",
+      "stop_price": null,
+      "submitted_at": "2026-11-24T14:40:25.297701418Z",
       "symbol": "AAPL",
-      "time_in_force": "gtc",
-      "type": "stop"
+      "time_in_force": "day",
+      "type": "market"
     }
   ],
   "positions": [
@@ -52,34 +84,34 @@
       "asset_class": "us_equity",
       "avg_entry_price": "345.392432",
       "cost_basis": "12779.519984",
-      "current_price": "346.27",
+      "current_price": "351.1336",
       "fair_price": null,
       "lastday_price": "349.08",
       "mark_source": null,
-      "market_value": "12811.99",
+      "market_value": "12991.9432",
       "qty": "37",
       "side": "long",
       "symbol": "AAPL",
-      "unrealized_intraday_pl": "-103.97",
-      "unrealized_pl": "32.470016",
-      "unrealized_plpc": "0.00254"
+      "unrealized_intraday_pl": "75.9832",
+      "unrealized_pl": "212.423216",
+      "unrealized_plpc": "0.01662"
     },
     {
       "asset_class": "us_equity",
       "avg_entry_price": "184.488028",
       "cost_basis": "13098.649988",
-      "current_price": "179.66",
+      "current_price": "182.21",
       "fair_price": null,
       "lastday_price": "179.42",
       "mark_source": null,
-      "market_value": "12755.86",
+      "market_value": "12936.91",
       "qty": "71",
       "side": "long",
       "symbol": "XLV",
-      "unrealized_intraday_pl": "17.04",
-      "unrealized_pl": "-342.789988",
-      "unrealized_plpc": "-0.02617"
+      "unrealized_intraday_pl": "198.09",
+      "unrealized_pl": "-161.739988",
+      "unrealized_plpc": "-0.01235"
     }
   ],
-  "ts": "2026-11-24T14:30:46+00:00"
+  "ts": "2026-11-24T14:40:25+00:00"
 }
