@@ -1,0 +1,805 @@
+{
+  "previous_sessions_only": {
+    "sessions": 152,
+    "splits": {
+      "train": {
+        "start": "2026-04-23",
+        "end": "2026-08-27",
+        "sessions": 91
+      },
+      "validation": {
+        "start": "2026-08-28",
+        "end": "2026-10-08",
+        "sessions": 30
+      },
+      "holdout": {
+        "start": "2026-10-09",
+        "end": "2026-11-20",
+        "sessions": 31
+      }
+    },
+    "all_synthetic_rankings": [
+      {
+        "name": "orb30-volume1-top2",
+        "params": {
+          "opening_range_minutes": 30,
+          "volume_ratio": 1.0,
+          "top_n": 2,
+          "stop_pct": 0.015
+        },
+        "train": {
+          "sessions": 91,
+          "trades": 0,
+          "net_return": 0.0,
+          "expectancy": 0.0,
+          "max_drawdown": 0.0,
+          "win_rate": 0.0,
+          "cost_bps_per_side": 10,
+          "drawdown_basis": "closed-trade daily sleeve equity"
+        },
+        "validation": {
+          "sessions": 30,
+          "trades": 0,
+          "net_return": 0.0,
+          "expectancy": 0.0,
+          "max_drawdown": 0.0,
+          "win_rate": 0.0,
+          "cost_bps_per_side": 10,
+          "drawdown_basis": "closed-trade daily sleeve equity"
+        },
+        "eligible": false
+      },
+      {
+        "name": "orb30-volume1.5-top2",
+        "params": {
+          "opening_range_minutes": 30,
+          "volume_ratio": 1.5,
+          "top_n": 2,
+          "stop_pct": 0.015
+        },
+        "train": {
+          "sessions": 91,
+          "trades": 0,
+          "net_return": 0.0,
+          "expectancy": 0.0,
+          "max_drawdown": 0.0,
+          "win_rate": 0.0,
+          "cost_bps_per_side": 10,
+          "drawdown_basis": "closed-trade daily sleeve equity"
+        },
+        "validation": {
+          "sessions": 30,
+          "trades": 0,
+          "net_return": 0.0,
+          "expectancy": 0.0,
+          "max_drawdown": 0.0,
+          "win_rate": 0.0,
+          "cost_bps_per_side": 10,
+          "drawdown_basis": "closed-trade daily sleeve equity"
+        },
+        "eligible": false
+      },
+      {
+        "name": "orb60-volume1-top2",
+        "params": {
+          "opening_range_minutes": 60,
+          "volume_ratio": 1.0,
+          "top_n": 2,
+          "stop_pct": 0.015
+        },
+        "train": {
+          "sessions": 91,
+          "trades": 0,
+          "net_return": 0.0,
+          "expectancy": 0.0,
+          "max_drawdown": 0.0,
+          "win_rate": 0.0,
+          "cost_bps_per_side": 10,
+          "drawdown_basis": "closed-trade daily sleeve equity"
+        },
+        "validation": {
+          "sessions": 30,
+          "trades": 0,
+          "net_return": 0.0,
+          "expectancy": 0.0,
+          "max_drawdown": 0.0,
+          "win_rate": 0.0,
+          "cost_bps_per_side": 10,
+          "drawdown_basis": "closed-trade daily sleeve equity"
+        },
+        "eligible": false
+      },
+      {
+        "name": "orb60-volume1.5-top2",
+        "params": {
+          "opening_range_minutes": 60,
+          "volume_ratio": 1.5,
+          "top_n": 2,
+          "stop_pct": 0.015
+        },
+        "train": {
+          "sessions": 91,
+          "trades": 0,
+          "net_return": 0.0,
+          "expectancy": 0.0,
+          "max_drawdown": 0.0,
+          "win_rate": 0.0,
+          "cost_bps_per_side": 10,
+          "drawdown_basis": "closed-trade daily sleeve equity"
+        },
+        "validation": {
+          "sessions": 30,
+          "trades": 0,
+          "net_return": 0.0,
+          "expectancy": 0.0,
+          "max_drawdown": 0.0,
+          "win_rate": 0.0,
+          "cost_bps_per_side": 10,
+          "drawdown_basis": "closed-trade daily sleeve equity"
+        },
+        "eligible": false
+      },
+      {
+        "name": "orb30-volume1-top3",
+        "params": {
+          "opening_range_minutes": 30,
+          "volume_ratio": 1.0,
+          "top_n": 3,
+          "stop_pct": 0.015
+        },
+        "train": {
+          "sessions": 91,
+          "trades": 0,
+          "net_return": 0.0,
+          "expectancy": 0.0,
+          "max_drawdown": 0.0,
+          "win_rate": 0.0,
+          "cost_bps_per_side": 10,
+          "drawdown_basis": "closed-trade daily sleeve equity"
+        },
+        "validation": {
+          "sessions": 30,
+          "trades": 0,
+          "net_return": 0.0,
+          "expectancy": 0.0,
+          "max_drawdown": 0.0,
+          "win_rate": 0.0,
+          "cost_bps_per_side": 10,
+          "drawdown_basis": "closed-trade daily sleeve equity"
+        },
+        "eligible": false
+      },
+      {
+        "name": "orb30-volume1.5-top3",
+        "params": {
+          "opening_range_minutes": 30,
+          "volume_ratio": 1.5,
+          "top_n": 3,
+          "stop_pct": 0.015
+        },
+        "train": {
+          "sessions": 91,
+          "trades": 0,
+          "net_return": 0.0,
+          "expectancy": 0.0,
+          "max_drawdown": 0.0,
+          "win_rate": 0.0,
+          "cost_bps_per_side": 10,
+          "drawdown_basis": "closed-trade daily sleeve equity"
+        },
+        "validation": {
+          "sessions": 30,
+          "trades": 0,
+          "net_return": 0.0,
+          "expectancy": 0.0,
+          "max_drawdown": 0.0,
+          "win_rate": 0.0,
+          "cost_bps_per_side": 10,
+          "drawdown_basis": "closed-trade daily sleeve equity"
+        },
+        "eligible": false
+      },
+      {
+        "name": "orb60-volume1-top3",
+        "params": {
+          "opening_range_minutes": 60,
+          "volume_ratio": 1.0,
+          "top_n": 3,
+          "stop_pct": 0.015
+        },
+        "train": {
+          "sessions": 91,
+          "trades": 0,
+          "net_return": 0.0,
+          "expectancy": 0.0,
+          "max_drawdown": 0.0,
+          "win_rate": 0.0,
+          "cost_bps_per_side": 10,
+          "drawdown_basis": "closed-trade daily sleeve equity"
+        },
+        "validation": {
+          "sessions": 30,
+          "trades": 0,
+          "net_return": 0.0,
+          "expectancy": 0.0,
+          "max_drawdown": 0.0,
+          "win_rate": 0.0,
+          "cost_bps_per_side": 10,
+          "drawdown_basis": "closed-trade daily sleeve equity"
+        },
+        "eligible": false
+      },
+      {
+        "name": "orb60-volume1.5-top3",
+        "params": {
+          "opening_range_minutes": 60,
+          "volume_ratio": 1.5,
+          "top_n": 3,
+          "stop_pct": 0.015
+        },
+        "train": {
+          "sessions": 91,
+          "trades": 0,
+          "net_return": 0.0,
+          "expectancy": 0.0,
+          "max_drawdown": 0.0,
+          "win_rate": 0.0,
+          "cost_bps_per_side": 10,
+          "drawdown_basis": "closed-trade daily sleeve equity"
+        },
+        "validation": {
+          "sessions": 30,
+          "trades": 0,
+          "net_return": 0.0,
+          "expectancy": 0.0,
+          "max_drawdown": 0.0,
+          "win_rate": 0.0,
+          "cost_bps_per_side": 10,
+          "drawdown_basis": "closed-trade daily sleeve equity"
+        },
+        "eligible": false
+      }
+    ],
+    "trades": []
+  },
+  "through_1030": {
+    "sessions": 153,
+    "splits": {
+      "train": {
+        "start": "2026-04-23",
+        "end": "2026-08-27",
+        "sessions": 91
+      },
+      "validation": {
+        "start": "2026-08-28",
+        "end": "2026-10-09",
+        "sessions": 31
+      },
+      "holdout": {
+        "start": "2026-10-12",
+        "end": "2026-11-23",
+        "sessions": 31
+      }
+    },
+    "all_synthetic_rankings": [
+      {
+        "name": "orb30-volume1-top2",
+        "params": {
+          "opening_range_minutes": 30,
+          "volume_ratio": 1.0,
+          "top_n": 2,
+          "stop_pct": 0.015
+        },
+        "train": {
+          "sessions": 91,
+          "trades": 0,
+          "net_return": 0.0,
+          "expectancy": 0.0,
+          "max_drawdown": 0.0,
+          "win_rate": 0.0,
+          "cost_bps_per_side": 10,
+          "drawdown_basis": "closed-trade daily sleeve equity"
+        },
+        "validation": {
+          "sessions": 31,
+          "trades": 0,
+          "net_return": 0.0,
+          "expectancy": 0.0,
+          "max_drawdown": 0.0,
+          "win_rate": 0.0,
+          "cost_bps_per_side": 10,
+          "drawdown_basis": "closed-trade daily sleeve equity"
+        },
+        "eligible": false
+      },
+      {
+        "name": "orb30-volume1.5-top2",
+        "params": {
+          "opening_range_minutes": 30,
+          "volume_ratio": 1.5,
+          "top_n": 2,
+          "stop_pct": 0.015
+        },
+        "train": {
+          "sessions": 91,
+          "trades": 0,
+          "net_return": 0.0,
+          "expectancy": 0.0,
+          "max_drawdown": 0.0,
+          "win_rate": 0.0,
+          "cost_bps_per_side": 10,
+          "drawdown_basis": "closed-trade daily sleeve equity"
+        },
+        "validation": {
+          "sessions": 31,
+          "trades": 0,
+          "net_return": 0.0,
+          "expectancy": 0.0,
+          "max_drawdown": 0.0,
+          "win_rate": 0.0,
+          "cost_bps_per_side": 10,
+          "drawdown_basis": "closed-trade daily sleeve equity"
+        },
+        "eligible": false
+      },
+      {
+        "name": "orb60-volume1-top2",
+        "params": {
+          "opening_range_minutes": 60,
+          "volume_ratio": 1.0,
+          "top_n": 2,
+          "stop_pct": 0.015
+        },
+        "train": {
+          "sessions": 91,
+          "trades": 0,
+          "net_return": 0.0,
+          "expectancy": 0.0,
+          "max_drawdown": 0.0,
+          "win_rate": 0.0,
+          "cost_bps_per_side": 10,
+          "drawdown_basis": "closed-trade daily sleeve equity"
+        },
+        "validation": {
+          "sessions": 31,
+          "trades": 0,
+          "net_return": 0.0,
+          "expectancy": 0.0,
+          "max_drawdown": 0.0,
+          "win_rate": 0.0,
+          "cost_bps_per_side": 10,
+          "drawdown_basis": "closed-trade daily sleeve equity"
+        },
+        "eligible": false
+      },
+      {
+        "name": "orb60-volume1.5-top2",
+        "params": {
+          "opening_range_minutes": 60,
+          "volume_ratio": 1.5,
+          "top_n": 2,
+          "stop_pct": 0.015
+        },
+        "train": {
+          "sessions": 91,
+          "trades": 0,
+          "net_return": 0.0,
+          "expectancy": 0.0,
+          "max_drawdown": 0.0,
+          "win_rate": 0.0,
+          "cost_bps_per_side": 10,
+          "drawdown_basis": "closed-trade daily sleeve equity"
+        },
+        "validation": {
+          "sessions": 31,
+          "trades": 0,
+          "net_return": 0.0,
+          "expectancy": 0.0,
+          "max_drawdown": 0.0,
+          "win_rate": 0.0,
+          "cost_bps_per_side": 10,
+          "drawdown_basis": "closed-trade daily sleeve equity"
+        },
+        "eligible": false
+      },
+      {
+        "name": "orb30-volume1-top3",
+        "params": {
+          "opening_range_minutes": 30,
+          "volume_ratio": 1.0,
+          "top_n": 3,
+          "stop_pct": 0.015
+        },
+        "train": {
+          "sessions": 91,
+          "trades": 0,
+          "net_return": 0.0,
+          "expectancy": 0.0,
+          "max_drawdown": 0.0,
+          "win_rate": 0.0,
+          "cost_bps_per_side": 10,
+          "drawdown_basis": "closed-trade daily sleeve equity"
+        },
+        "validation": {
+          "sessions": 31,
+          "trades": 0,
+          "net_return": 0.0,
+          "expectancy": 0.0,
+          "max_drawdown": 0.0,
+          "win_rate": 0.0,
+          "cost_bps_per_side": 10,
+          "drawdown_basis": "closed-trade daily sleeve equity"
+        },
+        "eligible": false
+      },
+      {
+        "name": "orb30-volume1.5-top3",
+        "params": {
+          "opening_range_minutes": 30,
+          "volume_ratio": 1.5,
+          "top_n": 3,
+          "stop_pct": 0.015
+        },
+        "train": {
+          "sessions": 91,
+          "trades": 0,
+          "net_return": 0.0,
+          "expectancy": 0.0,
+          "max_drawdown": 0.0,
+          "win_rate": 0.0,
+          "cost_bps_per_side": 10,
+          "drawdown_basis": "closed-trade daily sleeve equity"
+        },
+        "validation": {
+          "sessions": 31,
+          "trades": 0,
+          "net_return": 0.0,
+          "expectancy": 0.0,
+          "max_drawdown": 0.0,
+          "win_rate": 0.0,
+          "cost_bps_per_side": 10,
+          "drawdown_basis": "closed-trade daily sleeve equity"
+        },
+        "eligible": false
+      },
+      {
+        "name": "orb60-volume1-top3",
+        "params": {
+          "opening_range_minutes": 60,
+          "volume_ratio": 1.0,
+          "top_n": 3,
+          "stop_pct": 0.015
+        },
+        "train": {
+          "sessions": 91,
+          "trades": 0,
+          "net_return": 0.0,
+          "expectancy": 0.0,
+          "max_drawdown": 0.0,
+          "win_rate": 0.0,
+          "cost_bps_per_side": 10,
+          "drawdown_basis": "closed-trade daily sleeve equity"
+        },
+        "validation": {
+          "sessions": 31,
+          "trades": 0,
+          "net_return": 0.0,
+          "expectancy": 0.0,
+          "max_drawdown": 0.0,
+          "win_rate": 0.0,
+          "cost_bps_per_side": 10,
+          "drawdown_basis": "closed-trade daily sleeve equity"
+        },
+        "eligible": false
+      },
+      {
+        "name": "orb60-volume1.5-top3",
+        "params": {
+          "opening_range_minutes": 60,
+          "volume_ratio": 1.5,
+          "top_n": 3,
+          "stop_pct": 0.015
+        },
+        "train": {
+          "sessions": 91,
+          "trades": 0,
+          "net_return": 0.0,
+          "expectancy": 0.0,
+          "max_drawdown": 0.0,
+          "win_rate": 0.0,
+          "cost_bps_per_side": 10,
+          "drawdown_basis": "closed-trade daily sleeve equity"
+        },
+        "validation": {
+          "sessions": 31,
+          "trades": 0,
+          "net_return": 0.0,
+          "expectancy": 0.0,
+          "max_drawdown": 0.0,
+          "win_rate": 0.0,
+          "cost_bps_per_side": 10,
+          "drawdown_basis": "closed-trade daily sleeve equity"
+        },
+        "eligible": false
+      }
+    ],
+    "trades": [
+      {
+        "entry_time": "2026-11-23T10:15:00-05:00",
+        "exit_time": "2026-11-23T10:30:00-05:00",
+        "exit_reason": "session_close",
+        "net_return": -0.001009881207900909
+      }
+    ]
+  },
+  "full_final_day": {
+    "sessions": 153,
+    "splits": {
+      "train": {
+        "start": "2026-04-23",
+        "end": "2026-08-27",
+        "sessions": 91
+      },
+      "validation": {
+        "start": "2026-08-28",
+        "end": "2026-10-09",
+        "sessions": 31
+      },
+      "holdout": {
+        "start": "2026-10-12",
+        "end": "2026-11-23",
+        "sessions": 31
+      }
+    },
+    "all_synthetic_rankings": [
+      {
+        "name": "orb30-volume1-top2",
+        "params": {
+          "opening_range_minutes": 30,
+          "volume_ratio": 1.0,
+          "top_n": 2,
+          "stop_pct": 0.015
+        },
+        "train": {
+          "sessions": 91,
+          "trades": 0,
+          "net_return": 0.0,
+          "expectancy": 0.0,
+          "max_drawdown": 0.0,
+          "win_rate": 0.0,
+          "cost_bps_per_side": 10,
+          "drawdown_basis": "closed-trade daily sleeve equity"
+        },
+        "validation": {
+          "sessions": 31,
+          "trades": 0,
+          "net_return": 0.0,
+          "expectancy": 0.0,
+          "max_drawdown": 0.0,
+          "win_rate": 0.0,
+          "cost_bps_per_side": 10,
+          "drawdown_basis": "closed-trade daily sleeve equity"
+        },
+        "eligible": false
+      },
+      {
+        "name": "orb30-volume1.5-top2",
+        "params": {
+          "opening_range_minutes": 30,
+          "volume_ratio": 1.5,
+          "top_n": 2,
+          "stop_pct": 0.015
+        },
+        "train": {
+          "sessions": 91,
+          "trades": 0,
+          "net_return": 0.0,
+          "expectancy": 0.0,
+          "max_drawdown": 0.0,
+          "win_rate": 0.0,
+          "cost_bps_per_side": 10,
+          "drawdown_basis": "closed-trade daily sleeve equity"
+        },
+        "validation": {
+          "sessions": 31,
+          "trades": 0,
+          "net_return": 0.0,
+          "expectancy": 0.0,
+          "max_drawdown": 0.0,
+          "win_rate": 0.0,
+          "cost_bps_per_side": 10,
+          "drawdown_basis": "closed-trade daily sleeve equity"
+        },
+        "eligible": false
+      },
+      {
+        "name": "orb60-volume1-top2",
+        "params": {
+          "opening_range_minutes": 60,
+          "volume_ratio": 1.0,
+          "top_n": 2,
+          "stop_pct": 0.015
+        },
+        "train": {
+          "sessions": 91,
+          "trades": 0,
+          "net_return": 0.0,
+          "expectancy": 0.0,
+          "max_drawdown": 0.0,
+          "win_rate": 0.0,
+          "cost_bps_per_side": 10,
+          "drawdown_basis": "closed-trade daily sleeve equity"
+        },
+        "validation": {
+          "sessions": 31,
+          "trades": 0,
+          "net_return": 0.0,
+          "expectancy": 0.0,
+          "max_drawdown": 0.0,
+          "win_rate": 0.0,
+          "cost_bps_per_side": 10,
+          "drawdown_basis": "closed-trade daily sleeve equity"
+        },
+        "eligible": false
+      },
+      {
+        "name": "orb60-volume1.5-top2",
+        "params": {
+          "opening_range_minutes": 60,
+          "volume_ratio": 1.5,
+          "top_n": 2,
+          "stop_pct": 0.015
+        },
+        "train": {
+          "sessions": 91,
+          "trades": 0,
+          "net_return": 0.0,
+          "expectancy": 0.0,
+          "max_drawdown": 0.0,
+          "win_rate": 0.0,
+          "cost_bps_per_side": 10,
+          "drawdown_basis": "closed-trade daily sleeve equity"
+        },
+        "validation": {
+          "sessions": 31,
+          "trades": 0,
+          "net_return": 0.0,
+          "expectancy": 0.0,
+          "max_drawdown": 0.0,
+          "win_rate": 0.0,
+          "cost_bps_per_side": 10,
+          "drawdown_basis": "closed-trade daily sleeve equity"
+        },
+        "eligible": false
+      },
+      {
+        "name": "orb30-volume1-top3",
+        "params": {
+          "opening_range_minutes": 30,
+          "volume_ratio": 1.0,
+          "top_n": 3,
+          "stop_pct": 0.015
+        },
+        "train": {
+          "sessions": 91,
+          "trades": 0,
+          "net_return": 0.0,
+          "expectancy": 0.0,
+          "max_drawdown": 0.0,
+          "win_rate": 0.0,
+          "cost_bps_per_side": 10,
+          "drawdown_basis": "closed-trade daily sleeve equity"
+        },
+        "validation": {
+          "sessions": 31,
+          "trades": 0,
+          "net_return": 0.0,
+          "expectancy": 0.0,
+          "max_drawdown": 0.0,
+          "win_rate": 0.0,
+          "cost_bps_per_side": 10,
+          "drawdown_basis": "closed-trade daily sleeve equity"
+        },
+        "eligible": false
+      },
+      {
+        "name": "orb30-volume1.5-top3",
+        "params": {
+          "opening_range_minutes": 30,
+          "volume_ratio": 1.5,
+          "top_n": 3,
+          "stop_pct": 0.015
+        },
+        "train": {
+          "sessions": 91,
+          "trades": 0,
+          "net_return": 0.0,
+          "expectancy": 0.0,
+          "max_drawdown": 0.0,
+          "win_rate": 0.0,
+          "cost_bps_per_side": 10,
+          "drawdown_basis": "closed-trade daily sleeve equity"
+        },
+        "validation": {
+          "sessions": 31,
+          "trades": 0,
+          "net_return": 0.0,
+          "expectancy": 0.0,
+          "max_drawdown": 0.0,
+          "win_rate": 0.0,
+          "cost_bps_per_side": 10,
+          "drawdown_basis": "closed-trade daily sleeve equity"
+        },
+        "eligible": false
+      },
+      {
+        "name": "orb60-volume1-top3",
+        "params": {
+          "opening_range_minutes": 60,
+          "volume_ratio": 1.0,
+          "top_n": 3,
+          "stop_pct": 0.015
+        },
+        "train": {
+          "sessions": 91,
+          "trades": 0,
+          "net_return": 0.0,
+          "expectancy": 0.0,
+          "max_drawdown": 0.0,
+          "win_rate": 0.0,
+          "cost_bps_per_side": 10,
+          "drawdown_basis": "closed-trade daily sleeve equity"
+        },
+        "validation": {
+          "sessions": 31,
+          "trades": 0,
+          "net_return": 0.0,
+          "expectancy": 0.0,
+          "max_drawdown": 0.0,
+          "win_rate": 0.0,
+          "cost_bps_per_side": 10,
+          "drawdown_basis": "closed-trade daily sleeve equity"
+        },
+        "eligible": false
+      },
+      {
+        "name": "orb60-volume1.5-top3",
+        "params": {
+          "opening_range_minutes": 60,
+          "volume_ratio": 1.5,
+          "top_n": 3,
+          "stop_pct": 0.015
+        },
+        "train": {
+          "sessions": 91,
+          "trades": 0,
+          "net_return": 0.0,
+          "expectancy": 0.0,
+          "max_drawdown": 0.0,
+          "win_rate": 0.0,
+          "cost_bps_per_side": 10,
+          "drawdown_basis": "closed-trade daily sleeve equity"
+        },
+        "validation": {
+          "sessions": 31,
+          "trades": 0,
+          "net_return": 0.0,
+          "expectancy": 0.0,
+          "max_drawdown": 0.0,
+          "win_rate": 0.0,
+          "cost_bps_per_side": 10,
+          "drawdown_basis": "closed-trade daily sleeve equity"
+        },
+        "eligible": false
+      }
+    ],
+    "trades": [
+      {
+        "entry_time": "2026-11-23T10:15:00-05:00",
+        "exit_time": "2026-11-23T15:45:00-05:00",
+        "exit_reason": "session_close",
+        "net_return": 0.007883205903008061
+      }
+    ]
+  }
+}
