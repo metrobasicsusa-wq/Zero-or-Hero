@@ -19,6 +19,8 @@ import math
 from datetime import date
 from pathlib import Path
 
+from hero import session
+
 DEFAULTS = {"underlying": "SPY", "entry": "12:00", "offset": 0.003, "direction": "trend", "take": 5,
             "fraction": 1.0, "exit_at": "15:30", "switch_at": 2.0,
             # live entry: a limit this far above the ask; if not filled within fill_wait_s, one re-quote
@@ -45,7 +47,8 @@ def direction(p: dict, day_open: float, spot: float) -> str:
 
 
 def hhmm(now) -> str:
-    return now.strftime("%H:%M")
+    """The rules' clock: on an early-close day the afternoon reads three hours later (hero/session.py)."""
+    return session.clock(now)
 
 
 class Book:

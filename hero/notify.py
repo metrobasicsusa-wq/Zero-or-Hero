@@ -26,6 +26,7 @@ from pathlib import Path
 from zoneinfo import ZoneInfo
 
 import requests
+from hero import session
 
 ET = ZoneInfo("America/New_York")
 LABEL = {"journal": "主账户 $100k", "journal-s500": "多账本 $50k"}
@@ -485,7 +486,7 @@ def push_journal(root: Path, url: str | None, now: datetime | None = None) -> in
         return 0
     now = (now or datetime.now(ET)).astimezone(ET)
     today = now.date().isoformat()
-    holdings = now.strftime("%H:%M") >= HOLDINGS_AFTER and state.get("holdings_day") != today and now.weekday() < 5
+    holdings = session.clock(now) >= HOLDINGS_AFTER and state.get("holdings_day") != today and now.weekday() < 5   # 11-24: early closes
     new = [e for e in events if e.get("ts", "") > state.get("ts", "") and wanted(e)]
     if new or holdings:
         title = LABEL.get(root.name, root.name) + ("（收盘持仓）" if holdings and not new else "")

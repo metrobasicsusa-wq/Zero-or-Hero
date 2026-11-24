@@ -19,6 +19,8 @@ import json
 from datetime import date, datetime, timedelta
 from pathlib import Path
 
+from hero import session
+
 ENTRY_AFTER = (15, 30)  # ET: buy in the last half hour, close to where the backtest bought
 DEFAULTS = {"stake_max": 50.0, "budget": 200.0, "otm": 0.10, "max_otm": 0.25, "hit": 9.0}
 
@@ -118,4 +120,4 @@ class Ledger:
 
 
 def entry_time(now: datetime) -> bool:
-    return (now.hour, now.minute) >= ENTRY_AFTER
+    return session.clock(now) >= f"{ENTRY_AFTER[0]:02d}:{ENTRY_AFTER[1]:02d}"   # 11-24: early closes (hero/session.py)

@@ -34,6 +34,8 @@ from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 from zoneinfo import ZoneInfo
 
+from hero import session
+
 ROOT = Path(__file__).resolve().parent.parent
 
 DEFAULTS = {"enabled": False, "fraction": 0.5, "zero_line": 0.1, "target": 10_000.0, "buy_pad": 0.01,
@@ -224,7 +226,7 @@ class Runner:
         self.p = settings(cfg)
         self.now, self.today, self.sleep = now, today, sleep
         self.plan_notes: dict[str, dict] = {}      # one look at an option's quote time a cycle, shared by the plan ledgers
-        self.hhmm = now.strftime("%H:%M")
+        self.hhmm = session.clock(now)            # 11-24: on an early-close day the afternoon reads 3 hours later
 
     # ---- earnings guard (owner, 10-19: earnings only in shares or 2x funds; option IV collapses after the report) ----
     def report_inside(self, und: str | None, until: str | None) -> dict | None:

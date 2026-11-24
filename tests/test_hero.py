@@ -10392,3 +10392,4 @@ from tests.test_calendar_week import TestCalendarWeek  # noqa: E402,F401
 from tests.test_horizonbook import Inputs, QuarterBook, WeekBook, Run  # noqa: E402,F401
 from tests.test_scoreboard import AgainstGap, Tomorrow, Follow, PmDir, Network, Build  # noqa: E402,F401
 from tests.test_broker_read import TestAuctions, TestActivities, TestHistoryLevelsQuotes, TestCorporateAndRun  # noqa: E402,F401
+from tests.test_session import TestSessionClock  # noqa: E402,F401
