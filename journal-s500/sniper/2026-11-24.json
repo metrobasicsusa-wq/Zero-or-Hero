@@ -1,0 +1,179 @@
+{
+ "date": "2026-11-24",
+ "sniper": {
+  "symbol": "NBIS",
+  "direction": "call",
+  "order": "first",
+  "catalyst": "Nebius 盘前公告和 Mega DC 签 80 MW 的 AI 基础设施合同（Benzinga 标题，research/premarket/2026-11-24.md）；整条 AI 链盘前跟着回吐（SMH 约 −5%），它也 −4.8%，自己的好消息还没反映在价格里。",
+  "catalyst_type": "company news",
+  "confidence": 0.25,
+  "wrong_if": "10:00 时 NBIS 对自己开盘价的涨跌比 CoreWeave（同组的小型云）差；或 10:00 前跌破开盘价 2% 以上——说明合同不够分量，它只是跟着板块走。"
+ },
+ "candidates": [
+  {
+   "rank": 1,
+   "symbol": "NBIS",
+   "direction": "call",
+   "confidence": 0.25,
+   "order": "first",
+   "why": "自己的合同消息（80 MW，Mega DC），盘前 −4.8% 是跟板块；没有突破 20 日高低点，跳空不到平时单日波动的 1 倍。",
+   "catalyst_type": "company news",
+   "wrong_if": "10:00 时对开盘比 CoreWeave 差，或 10:00 前跌破开盘价 2% 以上。"
+  },
+  {
+   "rank": 2,
+   "symbol": "AMD",
+   "direction": "call",
+   "confidence": 0.2,
+   "order": "first",
+   "why": "伯恩斯坦首次覆盖给买入、TrendForce 说 Helios 服务器需求在长（HPE 昨晚说 Helios 没算进明年展望）；盘前 −4.9% 跟板块。评级类消息减分；没有突破 20 日高低点。",
+   "catalyst_type": "analyst rating",
+   "wrong_if": "10:00 时 AMD 对开盘比英伟达差。"
+  },
+  {
+   "rank": 3,
+   "symbol": "SNY",
+   "direction": "put",
+   "confidence": 0.15,
+   "order": "first",
+   "why": "赛诺菲以每股 $175 现金、约 $410 亿收购 Insmed（盘前 Insmed +14%）；大额现金收购的收购方开盘常被卖。盘前价没查到；有没有一周内到期的期权没核实。",
+   "catalyst_type": "company news",
+   "wrong_if": "10:00 时 SNY 在开盘价上方。"
+  },
+  {
+   "rank": 4,
+   "symbol": "MU",
+   "direction": "put",
+   "confidence": 0.12,
+   "order": "first",
+   "why": "法巴把美光降到中性，盘前 −6.8%，周一 +19% 后回吐；只有评级、跳空约平时 1.5 倍，减分。",
+   "catalyst_type": "analyst rating",
+   "wrong_if": "10:00 时 MU 收回开盘价上方。"
+  }
+ ],
+ "skipped": [
+  {
+   "symbol": "INSM",
+   "direction": "call",
+   "gap": "+14%",
+   "reason": "跳空已吃掉",
+   "why_not": "现金收购价 $175 钉住了，没有上涨空间。"
+  },
+  {
+   "symbol": "DELL",
+   "direction": "put",
+   "gap": "-7.7%",
+   "reason": "财报临近",
+   "why_not": "今晚盘后发财报，HPE 的读穿已经在盘前价里。"
+  },
+  {
+   "symbol": "FLNC",
+   "direction": "call",
+   "gap": "+13% 到 +20%",
+   "reason": "财报反应日",
+   "why_not": "财年结果（创纪录的订单）是财报消息。"
+  },
+  {
+   "symbol": "SMCI",
+   "direction": "put",
+   "gap": "-4.9%",
+   "reason": "消息太弱",
+   "why_not": "HPE 的 AI 利润率读穿，没有它自己的消息，跟板块。"
+  },
+  {
+   "symbol": "BE",
+   "direction": "put",
+   "gap": "-5.7%",
+   "reason": "分析师评级",
+   "why_not": "只有目标价下调。"
+  },
+  {
+   "symbol": "MRVL",
+   "direction": "put",
+   "gap": "-5.5%",
+   "reason": "分析师评级",
+   "why_not": "只有目标价调整，跟板块。"
+  },
+  {
+   "symbol": "WDC",
+   "direction": "call",
+   "gap": "-5.4%",
+   "reason": "分析师评级",
+   "why_not": "美银首次覆盖给买入，盘前仍跟板块跌。"
+  },
+  {
+   "symbol": "TXN",
+   "direction": "put",
+   "gap": "-5.2%",
+   "reason": "消息太弱",
+   "why_not": "工厂里程碑的新闻，下跌是板块。"
+  },
+  {
+   "symbol": "NOK",
+   "direction": "call",
+   "gap": "-2.9%",
+   "reason": "消息太弱",
+   "why_not": "给 Aixtron 加订单，分量小。"
+  },
+  {
+   "symbol": "ANT",
+   "direction": "call",
+   "gap": "-5.3%",
+   "reason": "分析师评级",
+   "why_not": "Wedbush 首次覆盖。"
+  },
+  {
+   "symbol": "ADI",
+   "direction": "put",
+   "gap": "-11.7%",
+   "reason": "财报反应日",
+   "why_not": "今早盘前的财报。"
+  },
+  {
+   "symbol": "HPE",
+   "direction": "put",
+   "gap": "-11%",
+   "reason": "财报反应日",
+   "why_not": "昨晚盘后的财报。"
+  }
+ ],
+ "earnings_reaction_excluded": [
+  "A",
+  "ADI",
+  "AMTM",
+  "ANF",
+  "BBY",
+  "BILI",
+  "BURL",
+  "CENT",
+  "CENTA",
+  "CMBT",
+  "CMP",
+  "DAC",
+  "DKS",
+  "DLTR",
+  "DY",
+  "HPE",
+  "ITRN",
+  "J",
+  "KC",
+  "KSS",
+  "MDT",
+  "MMED",
+  "MOV",
+  "SJM",
+  "SMTC",
+  "SYM",
+  "TITN",
+  "VIPS",
+  "ZM",
+  "FLNC"
+ ],
+ "claude_b_pick": "不选（journal/bias/2026-11-24.json 的 sniper 是 null；它的判断是不押 SPY）",
+ "notes": [
+  "盘前整条 AI 链回吐：SMH 约 −5%、英伟达 −4.9%、美光 −6.8%；昨晚 HPE 超预期上调后被卖在利润率，戴尔 −7.7%（今晚财报）。期货另有财长贝森特宣布对伊朗新制裁、霍尔木兹海峡警告（Benzinga）。",
+  "08:35 的预选没写（前因不清楚）。今天选的第 1 名信心低：自己的合同消息逆着板块，是这一周里最弱的一类前因。",
+  "没有一只符合「破 20 日高低点 + 跳空 ≥3 倍」，都不拿过夜。"
+ ],
+ "generated_at": "2026-11-24T09:03-05:00"
+}
