@@ -6471,11 +6471,11 @@
      "exit_day": "2026-11-26",
      "exit_at": "15:50",
      "trail": false,
-     "best_bid": 0.89,
+     "best_bid": 0.92,
      "expiry_out": null,
      "take_x": 2,
      "take": 1.9,
-     "take_cid": "sl-wk-trend-500-2026W48-661867-t7c45"
+     "take_cid": "sl-wk-trend-500-2026W48-661867-t6447"
     }
    ],
    "closed": [
@@ -6726,11 +6726,11 @@
      "exit_day": "2026-11-26",
      "exit_at": "15:50",
      "trail": false,
-     "best_bid": 0.89,
+     "best_bid": 0.92,
      "expiry_out": null,
      "take_x": 3,
      "take": 2.85,
-     "take_cid": "sl-wk-trend-1000-2026W48-ba3402-td704"
+     "take_cid": "sl-wk-trend-1000-2026W48-ba3402-tfe09"
     }
    ],
    "closed": [
@@ -7089,7 +7089,7 @@
   },
   "wk-momo-1000": {
    "start": 1000.0,
-   "cash": 180.0,
+   "cash": 370.0,
    "round": 3,
    "heroes": 0,
    "zeros": 2,
@@ -7113,28 +7113,7 @@
      "expiry_out": null,
      "take_x": 2,
      "take": 14.5,
-     "take_cid": "sl-wk-momo-1000-2026W48-565f92-tc2e1"
-    },
-    {
-     "tid": "2026W48-8ebe6f",
-     "kind": "weekly",
-     "sym": "WMT261127C00129000",
-     "asset": "option",
-     "und": "WMT",
-     "qty": 1,
-     "cost": 0.95,
-     "paid": 95.0,
-     "opened": "2026-11-23 10:00",
-     "why": "WMT 63 天涨 +20%，股票池第一；买 11-27 到期看涨 129，2 倍止盈，到期前一天 15:50 卖；一半 $31.50 买不起一张，押上账本买 1 张",
-     "expiry": "2026-11-27",
-     "exit_day": "2026-11-26",
-     "exit_at": "15:50",
-     "trail": false,
-     "best_bid": 1.84,
-     "expiry_out": null,
-     "take_x": 2,
-     "take": 1.9,
-     "take_cid": "sl-wk-momo-1000-2026W48-8ebe6f-tb84d"
+     "take_cid": "sl-wk-momo-1000-2026W48-565f92-t13a8"
     }
    ],
    "closed": [
@@ -7331,6 +7310,33 @@
      "how": "2026-11-19 15:50 到时卖出",
      "closed": "2026-11-19 15:50",
      "ret": -0.965
+    },
+    {
+     "tid": "2026W48-8ebe6f",
+     "kind": "weekly",
+     "sym": "WMT261127C00129000",
+     "asset": "option",
+     "und": "WMT",
+     "qty": 1,
+     "cost": 0.95,
+     "paid": 95.0,
+     "opened": "2026-11-23 10:00",
+     "why": "WMT 63 天涨 +20%，股票池第一；买 11-27 到期看涨 129，2 倍止盈，到期前一天 15:50 卖；一半 $31.50 买不起一张，押上账本买 1 张",
+     "expiry": "2026-11-27",
+     "exit_day": "2026-11-26",
+     "exit_at": "15:50",
+     "trail": false,
+     "best_bid": 1.84,
+     "expiry_out": null,
+     "take_x": 2,
+     "take": 1.9,
+     "take_cid": "sl-wk-momo-1000-2026W48-8ebe6f-tb84d",
+     "state": "closed",
+     "exit_price": 1.9,
+     "proceeds": 190.0,
+     "how": "2 倍止盈（券商挂单成交）",
+     "closed": "2026-11-24 09:30",
+     "ret": 1.0
     }
    ],
    "slots": {
@@ -7366,7 +7372,7 @@
   },
   "wk-news-500": {
    "start": 500.0,
-   "cash": 242.0,
+   "cash": 622.0,
    "round": 1,
    "heroes": 0,
    "zeros": 0,
@@ -7390,28 +7396,7 @@
      "expiry_out": null,
      "take_x": 2,
      "take": 25.4,
-     "take_cid": "sl-wk-news-500-2026W48-230b1e-tc1d2"
-    },
-    {
-     "tid": "2026W48-cd03af",
-     "kind": "weekly",
-     "sym": "WMT261127C00129000",
-     "asset": "option",
-     "und": "WMT",
-     "qty": 2,
-     "cost": 0.95,
-     "paid": 190.0,
-     "opened": "2026-11-23 10:00",
-     "why": "WMT 周末 3 篇新闻，情绪 +0.33；买 11-27 到期看涨 129，2 倍止盈，到期前一天 15:50 卖",
-     "expiry": "2026-11-27",
-     "exit_day": "2026-11-26",
-     "exit_at": "15:50",
-     "trail": false,
-     "best_bid": 1.84,
-     "expiry_out": null,
-     "take_x": 2,
-     "take": 1.9,
-     "take_cid": "sl-wk-news-500-2026W48-cd03af-tb3bf"
+     "take_cid": "sl-wk-news-500-2026W48-230b1e-t2cad"
     }
    ],
    "closed": [
@@ -7605,6 +7590,33 @@
      "how": "券商已无持仓（到期作废）",
      "closed": "2026-11-23 09:30",
      "ret": -1.0
+    },
+    {
+     "tid": "2026W48-cd03af",
+     "kind": "weekly",
+     "sym": "WMT261127C00129000",
+     "asset": "option",
+     "und": "WMT",
+     "qty": 2,
+     "cost": 0.95,
+     "paid": 190.0,
+     "opened": "2026-11-23 10:00",
+     "why": "WMT 周末 3 篇新闻，情绪 +0.33；买 11-27 到期看涨 129，2 倍止盈，到期前一天 15:50 卖",
+     "expiry": "2026-11-27",
+     "exit_day": "2026-11-26",
+     "exit_at": "15:50",
+     "trail": false,
+     "best_bid": 1.84,
+     "expiry_out": null,
+     "take_x": 2,
+     "take": 1.9,
+     "take_cid": "sl-wk-news-500-2026W48-cd03af-tb3bf",
+     "state": "closed",
+     "exit_price": 1.9,
+     "proceeds": 380.0,
+     "how": "2 倍止盈（券商挂单成交）",
+     "closed": "2026-11-24 09:30",
+     "ret": 1.0
     }
    ],
    "slots": {
@@ -7645,7 +7657,7 @@
      "expiry_out": null,
      "take_x": 2,
      "take": 16.5,
-     "take_cid": "sl-wk-news-1000-2026W48-aa7bab-t9c09"
+     "take_cid": "sl-wk-news-1000-2026W48-aa7bab-t0710"
     },
     {
      "tid": "2026W48-6280ba",
@@ -7666,7 +7678,7 @@
      "expiry_out": null,
      "take_x": 2,
      "take": 0.82,
-     "take_cid": "sl-wk-news-1000-2026W48-6280ba-t1f4d"
+     "take_cid": "sl-wk-news-1000-2026W48-6280ba-t804e"
     },
     {
      "tid": "2026W48-336dbd",
@@ -7683,11 +7695,11 @@
      "exit_day": "2026-11-26",
      "exit_at": "15:50",
      "trail": false,
-     "best_bid": 1.31,
+     "best_bid": 1.6,
      "expiry_out": null,
      "take_x": 2,
      "take": 1.5,
-     "take_cid": "sl-wk-news-1000-2026W48-336dbd-t9e1e"
+     "take_cid": "sl-wk-news-1000-2026W48-336dbd-t47dc"
     }
    ],
    "closed": [
@@ -8029,7 +8041,7 @@
      "expiry_out": null,
      "take_x": 20,
      "take": 12.0,
-     "take_cid": "sl-net-500-2026W47-4cb2f8-td8a8"
+     "take_cid": "sl-net-500-2026W47-4cb2f8-t6b89"
     },
     {
      "tid": "2026W48-f21c48",
@@ -8050,7 +8062,7 @@
      "expiry_out": null,
      "take_x": 20,
      "take": 16.8,
-     "take_cid": "sl-net-500-2026W48-f21c48-t8aa0"
+     "take_cid": "sl-net-500-2026W48-f21c48-t0625"
     }
    ],
    "closed": [],
@@ -8092,7 +8104,7 @@
      "expiry_out": null,
      "take_x": 20,
      "take": 189.0,
-     "take_cid": "sl-net-1000-2026W46-2e6fc5-t49a1"
+     "take_cid": "sl-net-1000-2026W46-2e6fc5-t28bc"
     }
    ],
    "closed": [],
@@ -10349,7 +10361,7 @@
     }
    ],
    "round_from": 8,
-   "stopped_day": "2026-11-23"
+   "stopped_day": "2026-11-24"
   },
   "sniper-1000": {
    "start": 1000.0,
@@ -10679,7 +10691,7 @@
     }
    ],
    "round_from": 5,
-   "stopped_day": "2026-11-23"
+   "stopped_day": "2026-11-24"
   },
   "overnight-500": {
    "start": 500.0,
@@ -10687,28 +10699,7 @@
    "round": 1,
    "heroes": 0,
    "zeros": 0,
-   "open": [
-    {
-     "tid": "20261118-560bcc",
-     "kind": "overnight",
-     "sym": "AMZN261123C00277500",
-     "asset": "option",
-     "und": "AMZN",
-     "qty": 3,
-     "cost": 1.51,
-     "paid": 453.0,
-     "opened": "2026-11-18 15:50",
-     "why": "隔夜动量：AMZN 今天涨 +3.6%、收在当天区间 91% 处、在 50 日均线上方，买看涨 277.5（2026-11-23 到期），买价 $1.39 / 卖价 $1.50；翻倍后回撤 40% 卖，否则 11-23 15:30 卖",
-     "expiry": "2026-11-23",
-     "exit_day": "2026-11-23",
-     "exit_at": "15:30",
-     "trail": true,
-     "best_bid": 2.59,
-     "expiry_out": null,
-     "sell_cid": "sl-overnight-500-20261118-560bcc-xcf12",
-     "sell_why": "2026-11-23 15:30 到时卖出"
-    }
-   ],
+   "open": [],
    "closed": [
     {
      "tid": "6ed92ba4fe",
@@ -10813,6 +10804,32 @@
      "how": "2026-11-12 15:50 到时卖出",
      "closed": "2026-11-12 15:50",
      "ret": 1.262
+    },
+    {
+     "tid": "20261118-560bcc",
+     "kind": "overnight",
+     "sym": "AMZN261123C00277500",
+     "asset": "option",
+     "und": "AMZN",
+     "qty": 3,
+     "cost": 1.51,
+     "paid": 453.0,
+     "opened": "2026-11-18 15:50",
+     "why": "隔夜动量：AMZN 今天涨 +3.6%、收在当天区间 91% 处、在 50 日均线上方，买看涨 277.5（2026-11-23 到期），买价 $1.39 / 卖价 $1.50；翻倍后回撤 40% 卖，否则 11-23 15:30 卖",
+     "expiry": "2026-11-23",
+     "exit_day": "2026-11-23",
+     "exit_at": "15:30",
+     "trail": true,
+     "best_bid": 2.59,
+     "expiry_out": null,
+     "sell_cid": "sl-overnight-500-20261118-560bcc-xcf12",
+     "sell_why": "2026-11-23 15:30 到时卖出",
+     "state": "closed",
+     "exit_price": 0.0,
+     "proceeds": 0.0,
+     "how": "券商已无持仓（到期作废）",
+     "closed": "2026-11-24 09:30",
+     "ret": -1.0
     }
    ],
    "slots": {
@@ -10846,28 +10863,7 @@
    "round": 1,
    "heroes": 0,
    "zeros": 0,
-   "open": [
-    {
-     "tid": "20261118-6cfba7",
-     "kind": "overnight",
-     "sym": "AMZN261123C00277500",
-     "asset": "option",
-     "und": "AMZN",
-     "qty": 1,
-     "cost": 1.51,
-     "paid": 151.0,
-     "opened": "2026-11-18 15:50",
-     "why": "隔夜动量：AMZN 今天涨 +3.6%、收在当天区间 91% 处、在 50 日均线上方，买看涨 277.5（2026-11-23 到期），买价 $1.39 / 卖价 $1.50；翻倍后回撤 40% 卖，否则 11-23 15:30 卖；一半 $134.50 买不起一张，押上账本买 1 张",
-     "expiry": "2026-11-23",
-     "exit_day": "2026-11-23",
-     "exit_at": "15:30",
-     "trail": true,
-     "best_bid": 2.59,
-     "expiry_out": null,
-     "sell_cid": "sl-overnight-1000-20261118-6cfba7-x45af",
-     "sell_why": "2026-11-23 15:30 到时卖出"
-    }
-   ],
+   "open": [],
    "closed": [
     {
      "tid": "016b6721f5",
@@ -10998,6 +10994,32 @@
      "how": "2026-11-12 15:50 到时卖出",
      "closed": "2026-11-12 15:50",
      "ret": -0.727
+    },
+    {
+     "tid": "20261118-6cfba7",
+     "kind": "overnight",
+     "sym": "AMZN261123C00277500",
+     "asset": "option",
+     "und": "AMZN",
+     "qty": 1,
+     "cost": 1.51,
+     "paid": 151.0,
+     "opened": "2026-11-18 15:50",
+     "why": "隔夜动量：AMZN 今天涨 +3.6%、收在当天区间 91% 处、在 50 日均线上方，买看涨 277.5（2026-11-23 到期），买价 $1.39 / 卖价 $1.50；翻倍后回撤 40% 卖，否则 11-23 15:30 卖；一半 $134.50 买不起一张，押上账本买 1 张",
+     "expiry": "2026-11-23",
+     "exit_day": "2026-11-23",
+     "exit_at": "15:30",
+     "trail": true,
+     "best_bid": 2.59,
+     "expiry_out": null,
+     "sell_cid": "sl-overnight-1000-20261118-6cfba7-x45af",
+     "sell_why": "2026-11-23 15:30 到时卖出",
+     "state": "closed",
+     "exit_price": 0.0,
+     "proceeds": 0.0,
+     "how": "券商已无持仓（到期作废）",
+     "closed": "2026-11-24 09:30",
+     "ret": -1.0
     }
    ],
    "slots": {
@@ -11249,11 +11271,6 @@
    "best": 500.0,
    "created": null,
    "pead_watch": {
-    "2026-11-13": [
-     "AMAT",
-     "CSCO",
-     "NU"
-    ],
     "2026-11-17": [
      "HD"
     ],
@@ -12859,7 +12876,8 @@
    "round": 1,
    "heroes": 0,
    "zeros": 0,
-   "open": [
+   "open": [],
+   "closed": [
     {
      "tid": "20261116-f4c350",
      "kind": "bottom",
@@ -12878,10 +12896,15 @@
      "best_bid": 2.92,
      "expiry_out": null,
      "sell_cid": "sl-bottom-500-20261116-f4c350-xb641",
-     "sell_why": "2026-11-23 15:30 到时卖出"
+     "sell_why": "2026-11-23 15:30 到时卖出",
+     "state": "closed",
+     "exit_price": 0.0,
+     "proceeds": 0.0,
+     "how": "券商已无持仓（到期作废）",
+     "closed": "2026-11-24 09:30",
+     "ret": -1.0
     }
    ],
-   "closed": [],
    "slots": {
     "2026-10-27": "2026-10-27T15:50-04:00",
     "2026-10-28": "2026-10-28T15:50-04:00",
@@ -12909,32 +12932,11 @@
   },
   "bottom-1000": {
    "start": 1000.0,
-   "cash": 45.0,
-   "round": 1,
+   "cash": 1000.0,
+   "round": 2,
    "heroes": 0,
-   "zeros": 0,
-   "open": [
-    {
-     "tid": "20261116-c0d312",
-     "kind": "bottom",
-     "sym": "IWM261123C00273000",
-     "asset": "option",
-     "und": "IWM",
-     "qty": 1,
-     "cost": 3.2,
-     "paid": 320.0,
-     "opened": "2026-11-16 15:50",
-     "why": "抄底三连跌：IWM 连跌第 3 天（283.09 → 278.42 → 277.55 → 现价 272.50，三天 -3.7%）；买看涨 273（2026-11-23 到期，离现价 +0.2%），买价 $3.09 / 卖价 $3.21（价差占中间价 4%）；拿到 11-23 15:30 卖；一半 $182.50 买不起一张，押上账本买 1 张",
-     "expiry": "2026-11-23",
-     "exit_day": "2026-11-23",
-     "exit_at": "15:30",
-     "trail": false,
-     "best_bid": 2.92,
-     "expiry_out": null,
-     "sell_cid": "sl-bottom-1000-20261116-c0d312-x1d82",
-     "sell_why": "2026-11-23 15:30 到时卖出"
-    }
-   ],
+   "zeros": 1,
+   "open": [],
    "closed": [
     {
      "tid": "20261102-0378d7",
@@ -12961,6 +12963,32 @@
      "how": "2026-11-09 15:30 到时卖出",
      "closed": "2026-11-09 15:30",
      "ret": -0.91
+    },
+    {
+     "tid": "20261116-c0d312",
+     "kind": "bottom",
+     "sym": "IWM261123C00273000",
+     "asset": "option",
+     "und": "IWM",
+     "qty": 1,
+     "cost": 3.2,
+     "paid": 320.0,
+     "opened": "2026-11-16 15:50",
+     "why": "抄底三连跌：IWM 连跌第 3 天（283.09 → 278.42 → 277.55 → 现价 272.50，三天 -3.7%）；买看涨 273（2026-11-23 到期，离现价 +0.2%），买价 $3.09 / 卖价 $3.21（价差占中间价 4%）；拿到 11-23 15:30 卖；一半 $182.50 买不起一张，押上账本买 1 张",
+     "expiry": "2026-11-23",
+     "exit_day": "2026-11-23",
+     "exit_at": "15:30",
+     "trail": false,
+     "best_bid": 2.92,
+     "expiry_out": null,
+     "sell_cid": "sl-bottom-1000-20261116-c0d312-x1d82",
+     "sell_why": "2026-11-23 15:30 到时卖出",
+     "state": "closed",
+     "exit_price": 0.0,
+     "proceeds": 0.0,
+     "how": "券商已无持仓（到期作废）",
+     "closed": "2026-11-24 09:30",
+     "ret": -1.0
     }
    ],
    "slots": {
@@ -12986,7 +13014,18 @@
     "2026-11-23": "2026-11-23T15:50-05:00"
    },
    "best": 1000.0,
-   "created": null
+   "created": null,
+   "rounds": [
+    {
+     "round": 1,
+     "end": "zero",
+     "cash": 45.0,
+     "peak": 1000.0,
+     "trades": 2,
+     "day": "2026-11-24"
+    }
+   ],
+   "round_from": 2
   },
   "bounce-500": {
    "start": 500.0,
@@ -13254,5 +13293,5 @@
    "created": null
   }
  },
- "topups": -25662.18
+ "topups": -24707.18
 }
