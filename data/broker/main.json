@@ -1,6 +1,6 @@
 {
  "account": "main",
- "updated": "2026-11-24",
+ "updated": "2026-11-25",
  "levels": {
   "options_trading_level": 3,
   "options_approved_level": 3,
@@ -1197,12 +1197,28 @@
    "description": "REG fee for proceed of $25103.45 on 2026-11-20 by <account>",
    "status": "executed",
    "key": "f1f4e4b470986644"
+  },
+  {
+   "activity_type": "FEE",
+   "date": "2026-11-24",
+   "net_amount": "-0.01",
+   "description": "CAT fee for proceed of 14 trades on 2026-11-24 by <account>",
+   "status": "executed",
+   "key": "55f477a3b76e4426"
+  },
+  {
+   "activity_type": "FEE",
+   "date": "2026-11-24",
+   "net_amount": "-0.3",
+   "description": "REG fee for proceed of $14126.2 on 2026-11-24 by <account>",
+   "status": "executed",
+   "key": "92a8e6545c2a5023"
   }
  ],
  "activity_counts": {
   "DIV": 1,
-  "FEE": 23,
-  "FILL": 65
+  "FEE": 22,
+  "FILL": 76
  },
  "history": [
   {
@@ -2709,6 +2725,12 @@
    "day": "2026-11-23",
    "equity": 95205.69,
    "pl": 396.02,
+   "pl_pct": 0.0042
+  },
+  {
+   "day": "2026-11-24",
+   "equity": 95604.68,
+   "pl": 398.99,
    "pl_pct": 0.0042
   }
  ],
