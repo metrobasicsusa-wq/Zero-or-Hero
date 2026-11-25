@@ -1,7 +1,7 @@
 {
  "source": "alphavantage EARNINGS_CALENDAR horizon=3month",
- "fetched_at": "2026-11-24T09:00:30-05:00",
- "fetched_on": "2026-11-24",
+ "fetched_at": "2026-11-25T09:00:32-05:00",
+ "fetched_on": "2026-11-25",
  "horizon_days": 90,
  "symbols": [
   "AAPL",
@@ -128,36 +128,6 @@
   "XOM"
  ],
  "reports": {
-  "ADI": [
-   {
-    "date": "2026-11-24",
-    "time": "pre-market",
-    "estimate": "3.89",
-    "fiscal_end": "2026-10-31",
-    "checked": "nasdaq",
-    "confirmed": true
-   }
-  ],
-  "DELL": [
-   {
-    "date": "2026-11-24",
-    "time": "post-market",
-    "estimate": "6.55",
-    "fiscal_end": "2026-10-31",
-    "checked": "nasdaq",
-    "confirmed": true
-   }
-  ],
-  "MDT": [
-   {
-    "date": "2026-11-24",
-    "time": "pre-market",
-    "estimate": "1.34",
-    "fiscal_end": "2026-10-31",
-    "checked": "nasdaq",
-    "confirmed": true
-   }
-  ],
   "CRDO": [
    {
     "date": "2026-12-01",
@@ -166,17 +136,6 @@
     "fiscal_end": "2026-10-31",
     "checked": "nasdaq",
     "confirmed": true
-   }
-  ],
-  "CRWD": [
-   {
-    "date": "2026-12-01",
-    "time": "post-market",
-    "estimate": "0.0",
-    "fiscal_end": "2026-10-31",
-    "disputed": true,
-    "confirmed": false,
-    "yahoo_date": "2026-11-23"
    }
   ],
   "MRVL": [
@@ -321,20 +280,12 @@
   "nasdaq_days": 16,
   "moved": [],
   "time_filled": [],
-  "disputed": [
-   "CRWD"
-  ],
+  "disputed": [],
   "yahoo": {
-   "asked": 15,
-   "answered": 15,
-   "confirmed": 15,
-   "conflicts": [
-    [
-     "CRWD",
-     "2026-12-01",
-     "2026-11-23"
-    ]
-   ]
+   "asked": 11,
+   "answered": 11,
+   "confirmed": 11,
+   "conflicts": []
   }
  }
 }
