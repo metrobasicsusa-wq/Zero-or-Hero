@@ -1,14 +1,14 @@
 {
   "account": {
-    "buying_power": "349001.42",
-    "cash": "72638.37",
-    "equity": "94960.64",
+    "buying_power": "365753.18",
+    "cash": "83203.39",
+    "equity": "94967.54",
     "last_equity": "95604.68",
-    "long_market_value": "22322.27",
-    "portfolio_value": "94960.64"
+    "long_market_value": "11764.15",
+    "portfolio_value": "94967.54"
   },
   "benchmark": {
-    "close": 698.68,
+    "close": 697.64,
     "date": "2026-11-25",
     "prev_close": 718.91,
     "symbol": "SPY"
@@ -23,9 +23,9 @@
       "protective_stop": true,
       "qty": "32",
       "side": "sell",
-      "status": "pending_new",
+      "status": "new",
       "stop_price": "176.38",
-      "submitted_at": "2026-11-25T14:40:24.777550418Z",
+      "submitted_at": "2026-11-25T14:40:30.361851Z",
       "symbol": "XLV",
       "time_in_force": "gtc",
       "type": "stop"
@@ -39,44 +39,12 @@
       "protective_stop": true,
       "qty": "17",
       "side": "sell",
-      "status": "pending_new",
+      "status": "new",
       "stop_price": "338.56",
-      "submitted_at": "2026-11-25T14:40:24.705661975Z",
+      "submitted_at": "2026-11-25T14:40:30.235137Z",
       "symbol": "AAPL",
       "time_in_force": "gtc",
       "type": "stop"
-    },
-    {
-      "asset_class": "us_equity",
-      "filled_at": null,
-      "filled_avg_price": null,
-      "filled_qty": "0",
-      "limit_price": null,
-      "protective_stop": false,
-      "qty": "48",
-      "side": "sell",
-      "status": "pending_new",
-      "stop_price": null,
-      "submitted_at": "2026-11-25T14:40:24.628470928Z",
-      "symbol": "XLY",
-      "time_in_force": "day",
-      "type": "market"
-    },
-    {
-      "asset_class": "us_equity",
-      "filled_at": null,
-      "filled_avg_price": null,
-      "filled_qty": "0",
-      "limit_price": null,
-      "protective_stop": false,
-      "qty": "14",
-      "side": "sell",
-      "status": "pending_new",
-      "stop_price": null,
-      "submitted_at": "2026-11-25T14:40:24.556998749Z",
-      "symbol": "TSLA",
-      "time_in_force": "day",
-      "type": "market"
     }
   ],
   "positions": [
@@ -84,66 +52,34 @@
       "asset_class": "us_equity",
       "avg_entry_price": "352.337647",
       "cost_basis": "5989.739999",
-      "current_price": "349.065",
+      "current_price": "348.95",
       "fair_price": null,
       "lastday_price": "354.07",
       "mark_source": null,
-      "market_value": "5934.105",
+      "market_value": "5932.15",
       "qty": "17",
       "side": "long",
       "symbol": "AAPL",
-      "unrealized_intraday_pl": "-85.085",
-      "unrealized_pl": "-55.634999",
-      "unrealized_plpc": "-0.00929"
-    },
-    {
-      "asset_class": "us_equity",
-      "avg_entry_price": "387.092143",
-      "cost_basis": "5419.290002",
-      "current_price": "362.15",
-      "fair_price": null,
-      "lastday_price": "384.68",
-      "mark_source": null,
-      "market_value": "5070.1",
-      "qty": "14",
-      "side": "long",
-      "symbol": "TSLA",
-      "unrealized_intraday_pl": "-315.42",
-      "unrealized_pl": "-349.190002",
-      "unrealized_plpc": "-0.06443"
+      "unrealized_intraday_pl": "-87.04",
+      "unrealized_pl": "-57.589999",
+      "unrealized_plpc": "-0.00961"
     },
     {
       "asset_class": "us_equity",
       "avg_entry_price": "186.19",
       "cost_basis": "5958.08",
-      "current_price": "181.84",
+      "current_price": "182.25",
       "fair_price": null,
       "lastday_price": "184.72",
       "mark_source": null,
-      "market_value": "5818.88",
+      "market_value": "5832",
       "qty": "32",
       "side": "long",
       "symbol": "XLV",
-      "unrealized_intraday_pl": "-92.16",
-      "unrealized_pl": "-139.2",
-      "unrealized_plpc": "-0.02336"
-    },
-    {
-      "asset_class": "us_equity",
-      "avg_entry_price": "117.065417",
-      "cost_basis": "5619.140016",
-      "current_price": "114.61",
-      "fair_price": null,
-      "lastday_price": "117.72",
-      "mark_source": null,
-      "market_value": "5501.28",
-      "qty": "48",
-      "side": "long",
-      "symbol": "XLY",
-      "unrealized_intraday_pl": "-149.28",
-      "unrealized_pl": "-117.860016",
-      "unrealized_plpc": "-0.02097"
+      "unrealized_intraday_pl": "-79.04",
+      "unrealized_pl": "-126.08",
+      "unrealized_plpc": "-0.02116"
     }
   ],
-  "ts": "2026-11-25T14:40:25+00:00"
+  "ts": "2026-11-25T14:50:21+00:00"
 }
