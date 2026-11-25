@@ -9099,29 +9099,7 @@
    "round": 3,
    "heroes": 0,
    "zeros": 2,
-   "open": [
-    {
-     "tid": "20261125-a20a7d",
-     "kind": "zdte",
-     "sym": "SPY261125P00697000",
-     "asset": "option",
-     "und": "SPY",
-     "qty": 1,
-     "cost": 1.84,
-     "paid": 184.0,
-     "opened": "2026-11-25 10:00",
-     "why": "SPY 开盘 $703.15、现在 $702.20，顺势买当天到期看跌 697（离现价 0.7%），3 倍止盈，15:30 平仓",
-     "best_bid": 3.02,
-     "sim": true,
-     "expiry": "2026-11-25",
-     "exit_day": "2026-11-25",
-     "exit_at": "15:30",
-     "trail": false,
-     "expiry_out": null,
-     "take_x": 3,
-     "take": 5.5
-    }
-   ],
+   "open": [],
    "closed": [
     {
      "tid": "20261022-93ed6e",
@@ -10170,6 +10148,33 @@
      "how": "2026-11-24 15:30 到时卖出",
      "closed": "2026-11-24 15:30",
      "ret": -0.978
+    },
+    {
+     "tid": "20261125-a20a7d",
+     "kind": "zdte",
+     "sym": "SPY261125P00697000",
+     "asset": "option",
+     "und": "SPY",
+     "qty": 1,
+     "cost": 1.84,
+     "paid": 184.0,
+     "opened": "2026-11-25 10:00",
+     "why": "SPY 开盘 $703.15、现在 $702.20，顺势买当天到期看跌 697（离现价 0.7%），3 倍止盈，15:30 平仓",
+     "best_bid": 3.02,
+     "sim": true,
+     "expiry": "2026-11-25",
+     "exit_day": "2026-11-25",
+     "exit_at": "15:30",
+     "trail": false,
+     "expiry_out": null,
+     "take_x": 3,
+     "take": 5.5,
+     "state": "closed",
+     "exit_price": 0.0,
+     "proceeds": 0.0,
+     "how": "2026-11-25 15:30 到时卖出",
+     "closed": "2026-11-25 15:30",
+     "ret": -1.0
     }
    ],
    "slots": {
@@ -10222,29 +10227,7 @@
    "round": 2,
    "heroes": 0,
    "zeros": 1,
-   "open": [
-    {
-     "tid": "20261125-d82314",
-     "kind": "zdte",
-     "sym": "SPY261125P00697000",
-     "asset": "option",
-     "und": "SPY",
-     "qty": 1,
-     "cost": 1.84,
-     "paid": 184.0,
-     "opened": "2026-11-25 10:00",
-     "why": "SPY 开盘 $703.15、现在 $702.20，顺势买当天到期看跌 697（离现价 0.7%），3 倍止盈，15:30 平仓",
-     "best_bid": 3.02,
-     "sim": true,
-     "expiry": "2026-11-25",
-     "exit_day": "2026-11-25",
-     "exit_at": "15:30",
-     "trail": false,
-     "expiry_out": null,
-     "take_x": 3,
-     "take": 5.5
-    }
-   ],
+   "open": [],
    "closed": [
     {
      "tid": "20261022-fb0bdb",
@@ -11343,6 +11326,33 @@
      "how": "2026-11-24 15:30 到时卖出",
      "closed": "2026-11-24 15:30",
      "ret": -0.978
+    },
+    {
+     "tid": "20261125-d82314",
+     "kind": "zdte",
+     "sym": "SPY261125P00697000",
+     "asset": "option",
+     "und": "SPY",
+     "qty": 1,
+     "cost": 1.84,
+     "paid": 184.0,
+     "opened": "2026-11-25 10:00",
+     "why": "SPY 开盘 $703.15、现在 $702.20，顺势买当天到期看跌 697（离现价 0.7%），3 倍止盈，15:30 平仓",
+     "best_bid": 3.02,
+     "sim": true,
+     "expiry": "2026-11-25",
+     "exit_day": "2026-11-25",
+     "exit_at": "15:30",
+     "trail": false,
+     "expiry_out": null,
+     "take_x": 3,
+     "take": 5.5,
+     "state": "closed",
+     "exit_price": 0.0,
+     "proceeds": 0.0,
+     "how": "2026-11-25 15:30 到时卖出",
+     "closed": "2026-11-25 15:30",
+     "ret": -1.0
     }
    ],
    "slots": {
@@ -19093,27 +19103,7 @@
    "round": 4,
    "heroes": 0,
    "zeros": 3,
-   "open": [
-    {
-     "tid": "20261125-ecdf90",
-     "kind": "sniper",
-     "sym": "NVDA261125P00139000",
-     "asset": "option",
-     "und": "NVDA",
-     "qty": 1,
-     "cost": 1.68,
-     "paid": 168.0,
-     "opened": "2026-11-25 09:30",
-     "why": "开盘狙击 NVDA看跌 139（2026-11-25 到期，离现价 2.9%（平时一天波动 5.3% 的一半））：候选第 2 名：报道说黄仁勋向员工道歉、去做心理治疗——周一复职那条主线的反面；但盘前已 −6.6%，连跌第 2 天，追的减分。；翻倍后回撤 40% 卖，否则到期日 15:30 卖",
-     "best_bid": 1.41,
-     "sim": true,
-     "expiry": "2026-11-25",
-     "exit_day": "2026-11-25",
-     "exit_at": "15:30",
-     "trail": true,
-     "expiry_out": null
-    }
-   ],
+   "open": [],
    "closed": [
     {
      "tid": "20261023-00fbfa",
@@ -19289,6 +19279,31 @@
      "how": "2026-11-20 15:30 到时卖出",
      "closed": "2026-11-20 15:30",
      "ret": -1.0
+    },
+    {
+     "tid": "20261125-ecdf90",
+     "kind": "sniper",
+     "sym": "NVDA261125P00139000",
+     "asset": "option",
+     "und": "NVDA",
+     "qty": 1,
+     "cost": 1.68,
+     "paid": 168.0,
+     "opened": "2026-11-25 09:30",
+     "why": "开盘狙击 NVDA看跌 139（2026-11-25 到期，离现价 2.9%（平时一天波动 5.3% 的一半））：候选第 2 名：报道说黄仁勋向员工道歉、去做心理治疗——周一复职那条主线的反面；但盘前已 −6.6%，连跌第 2 天，追的减分。；翻倍后回撤 40% 卖，否则到期日 15:30 卖",
+     "best_bid": 1.41,
+     "sim": true,
+     "expiry": "2026-11-25",
+     "exit_day": "2026-11-25",
+     "exit_at": "15:30",
+     "trail": true,
+     "expiry_out": null,
+     "state": "closed",
+     "exit_price": 0.0,
+     "proceeds": 0.0,
+     "how": "2026-11-25 15:30 到时卖出",
+     "closed": "2026-11-25 15:30",
+     "ret": -1.0
     }
    ],
    "slots": {
@@ -19345,31 +19360,11 @@
   },
   "sniper-r3-plan-500": {
    "start": 500.0,
-   "cash": 1.0,
-   "round": 3,
+   "cash": 500.0,
+   "round": 4,
    "heroes": 0,
-   "zeros": 2,
-   "open": [
-    {
-     "tid": "20261125-259f91",
-     "kind": "sniper",
-     "sym": "TSLA261125P00357500",
-     "asset": "option",
-     "und": "TSLA",
-     "qty": 1,
-     "cost": 2.28,
-     "paid": 228.0,
-     "opened": "2026-11-25 09:30",
-     "why": "开盘狙击 TSLA看跌 357.5（2026-11-25 到期，离现价 2.1%（平时一天波动 3.0% 的一半））：候选第 3 名：欧盟推迟讨论批准它的自动驾驶，盘前 −3.8%（大盘 −2%）；监管类消息减分。；翻倍后回撤 40% 卖，否则到期日 15:30 卖",
-     "best_bid": 3.62,
-     "sim": true,
-     "expiry": "2026-11-25",
-     "exit_day": "2026-11-25",
-     "exit_at": "15:30",
-     "trail": true,
-     "expiry_out": null
-    }
-   ],
+   "zeros": 3,
+   "open": [],
    "closed": [
     {
      "tid": "20261023-2dfb61",
@@ -19620,6 +19615,31 @@
      "how": "2026-11-20 15:30 到时卖出",
      "closed": "2026-11-20 15:30",
      "ret": -1.0
+    },
+    {
+     "tid": "20261125-259f91",
+     "kind": "sniper",
+     "sym": "TSLA261125P00357500",
+     "asset": "option",
+     "und": "TSLA",
+     "qty": 1,
+     "cost": 2.28,
+     "paid": 228.0,
+     "opened": "2026-11-25 09:30",
+     "why": "开盘狙击 TSLA看跌 357.5（2026-11-25 到期，离现价 2.1%（平时一天波动 3.0% 的一半））：候选第 3 名：欧盟推迟讨论批准它的自动驾驶，盘前 −3.8%（大盘 −2%）；监管类消息减分。；翻倍后回撤 40% 卖，否则到期日 15:30 卖",
+     "best_bid": 3.62,
+     "sim": true,
+     "expiry": "2026-11-25",
+     "exit_day": "2026-11-25",
+     "exit_at": "15:30",
+     "trail": true,
+     "expiry_out": null,
+     "state": "closed",
+     "exit_price": 0.0,
+     "proceeds": 0.0,
+     "how": "2026-11-25 15:30 到时卖出",
+     "closed": "2026-11-25 15:30",
+     "ret": -1.0
     }
    ],
    "slots": {
@@ -19662,9 +19682,17 @@
      "peak": 500.0,
      "trades": 2,
      "day": "2026-11-19"
+    },
+    {
+     "round": 3,
+     "end": "zero",
+     "cash": 1.0,
+     "peak": 500.0,
+     "trades": 2,
+     "day": "2026-11-25"
     }
    ],
-   "round_from": 9
+   "round_from": 11
   },
   "iwm0dte-plan-500": {
    "start": 500.0,
@@ -20912,52 +20940,11 @@
   },
   "nvda0dte-plan-500": {
    "start": 500.0,
-   "cash": 733.0,
+   "cash": 1006.0,
    "round": 2,
    "heroes": 0,
    "zeros": 1,
-   "open": [
-    {
-     "tid": "20261125-d6d52a",
-     "kind": "zdte",
-     "sym": "NVDA261125C00147000",
-     "asset": "option",
-     "und": "NVDA",
-     "qty": 1,
-     "cost": 1.58,
-     "paid": 158.0,
-     "opened": "2026-11-25 10:00",
-     "why": "NVDA 开盘 $144.06、现在 $145.16，顺势买当天到期看涨 147（离现价 1.3%），3 倍止盈，15:30 平仓",
-     "best_bid": 1.97,
-     "sim": true,
-     "expiry": "2026-11-25",
-     "exit_day": "2026-11-25",
-     "exit_at": "15:30",
-     "trail": false,
-     "expiry_out": null,
-     "take_x": 3,
-     "take": 4.75
-    },
-    {
-     "tid": "20261125-d6d52ar",
-     "kind": "zdte",
-     "sym": "NVDA261125C00147000",
-     "asset": "option",
-     "und": "NVDA",
-     "qty": 2,
-     "cost": 1.58,
-     "paid": 316.0,
-     "opened": "2026-11-25 10:00",
-     "why": "NVDA 开盘 $144.06、现在 $145.16，顺势买当天到期看涨 147（离现价 1.3%），3 倍止盈，15:30 平仓",
-     "best_bid": 1.97,
-     "sim": true,
-     "expiry": "2026-11-25",
-     "exit_day": "2026-11-25",
-     "exit_at": "15:30",
-     "trail": true,
-     "expiry_out": null
-    }
-   ],
+   "open": [],
    "closed": [
     {
      "tid": "20261026-c569af",
@@ -21977,6 +21964,58 @@
      "how": "2026-11-24 15:30 到时卖出",
      "closed": "2026-11-24 15:30",
      "ret": 0.233
+    },
+    {
+     "tid": "20261125-d6d52a",
+     "kind": "zdte",
+     "sym": "NVDA261125C00147000",
+     "asset": "option",
+     "und": "NVDA",
+     "qty": 1,
+     "cost": 1.58,
+     "paid": 158.0,
+     "opened": "2026-11-25 10:00",
+     "why": "NVDA 开盘 $144.06、现在 $145.16，顺势买当天到期看涨 147（离现价 1.3%），3 倍止盈，15:30 平仓",
+     "best_bid": 1.97,
+     "sim": true,
+     "expiry": "2026-11-25",
+     "exit_day": "2026-11-25",
+     "exit_at": "15:30",
+     "trail": false,
+     "expiry_out": null,
+     "take_x": 3,
+     "take": 4.75,
+     "state": "closed",
+     "exit_price": 0.91,
+     "proceeds": 91.0,
+     "how": "2026-11-25 15:30 到时卖出",
+     "closed": "2026-11-25 15:30",
+     "ret": -0.424
+    },
+    {
+     "tid": "20261125-d6d52ar",
+     "kind": "zdte",
+     "sym": "NVDA261125C00147000",
+     "asset": "option",
+     "und": "NVDA",
+     "qty": 2,
+     "cost": 1.58,
+     "paid": 316.0,
+     "opened": "2026-11-25 10:00",
+     "why": "NVDA 开盘 $144.06、现在 $145.16，顺势买当天到期看涨 147（离现价 1.3%），3 倍止盈，15:30 平仓",
+     "best_bid": 1.97,
+     "sim": true,
+     "expiry": "2026-11-25",
+     "exit_day": "2026-11-25",
+     "exit_at": "15:30",
+     "trail": true,
+     "expiry_out": null,
+     "state": "closed",
+     "exit_price": 0.91,
+     "proceeds": 182.0,
+     "how": "2026-11-25 15:30 到时卖出",
+     "closed": "2026-11-25 15:30",
+     "ret": -0.424
     }
    ],
    "slots": {
@@ -22021,29 +22060,7 @@
    "round": 9,
    "heroes": 0,
    "zeros": 8,
-   "open": [
-    {
-     "tid": "20261125-4aa824",
-     "kind": "zdte",
-     "sym": "TSLA261125P00360000",
-     "asset": "option",
-     "und": "TSLA",
-     "qty": 1,
-     "cost": 2.77,
-     "paid": 277.0,
-     "opened": "2026-11-25 10:00",
-     "why": "TSLA 开盘 $370.51、现在 $362.75，顺势买当天到期看跌 360（离现价 0.8%），5 倍止盈，15:30 平仓",
-     "best_bid": 2.46,
-     "sim": true,
-     "expiry": "2026-11-25",
-     "exit_day": "2026-11-25",
-     "exit_at": "15:30",
-     "trail": false,
-     "expiry_out": null,
-     "take_x": 5,
-     "take": 13.85
-    }
-   ],
+   "open": [],
    "closed": [
     {
      "tid": "20261026-5d1d1b",
@@ -22659,6 +22676,33 @@
      "how": "2026-11-24 15:30 到时卖出",
      "closed": "2026-11-24 15:30",
      "ret": -0.526
+    },
+    {
+     "tid": "20261125-4aa824",
+     "kind": "zdte",
+     "sym": "TSLA261125P00360000",
+     "asset": "option",
+     "und": "TSLA",
+     "qty": 1,
+     "cost": 2.77,
+     "paid": 277.0,
+     "opened": "2026-11-25 10:00",
+     "why": "TSLA 开盘 $370.51、现在 $362.75，顺势买当天到期看跌 360（离现价 0.8%），5 倍止盈，15:30 平仓",
+     "best_bid": 2.46,
+     "sim": true,
+     "expiry": "2026-11-25",
+     "exit_day": "2026-11-25",
+     "exit_at": "15:30",
+     "trail": false,
+     "expiry_out": null,
+     "take_x": 5,
+     "take": 13.85,
+     "state": "closed",
+     "exit_price": 0.0,
+     "proceeds": 0.0,
+     "how": "2026-11-25 15:30 到时卖出",
+     "closed": "2026-11-25 15:30",
+     "ret": -1.0
     }
    ],
    "slots": {
@@ -23186,29 +23230,7 @@
    "round": 2,
    "heroes": 0,
    "zeros": 1,
-   "open": [
-    {
-     "tid": "20261125-9a2290",
-     "kind": "zdte",
-     "sym": "QQQ261125P00606000",
-     "asset": "option",
-     "und": "QQQ",
-     "qty": 1,
-     "cost": 3.0,
-     "paid": 300.0,
-     "opened": "2026-11-25 09:40",
-     "why": "QQQ 开盘 $617.09、现在 $610.52，顺势买当天到期看跌 606（离现价 0.7%），3 倍止盈，15:30 平仓",
-     "best_bid": 3.0,
-     "sim": true,
-     "expiry": "2026-11-25",
-     "exit_day": "2026-11-25",
-     "exit_at": "15:30",
-     "trail": false,
-     "expiry_out": null,
-     "take_x": 3,
-     "take": 9.0
-    }
-   ],
+   "open": [],
    "closed": [
     {
      "tid": "20261026-c3314b",
@@ -24003,6 +24025,33 @@
      "how": "2026-11-24 15:30 到时卖出",
      "closed": "2026-11-24 15:30",
      "ret": -0.872
+    },
+    {
+     "tid": "20261125-9a2290",
+     "kind": "zdte",
+     "sym": "QQQ261125P00606000",
+     "asset": "option",
+     "und": "QQQ",
+     "qty": 1,
+     "cost": 3.0,
+     "paid": 300.0,
+     "opened": "2026-11-25 09:40",
+     "why": "QQQ 开盘 $617.09、现在 $610.52，顺势买当天到期看跌 606（离现价 0.7%），3 倍止盈，15:30 平仓",
+     "best_bid": 3.0,
+     "sim": true,
+     "expiry": "2026-11-25",
+     "exit_day": "2026-11-25",
+     "exit_at": "15:30",
+     "trail": false,
+     "expiry_out": null,
+     "take_x": 3,
+     "take": 9.0,
+     "state": "closed",
+     "exit_price": 0.0,
+     "proceeds": 0.0,
+     "how": "2026-11-25 15:30 到时卖出",
+     "closed": "2026-11-25 15:30",
+     "ret": -1.0
     }
    ],
    "slots": {
@@ -24047,29 +24096,7 @@
    "round": 8,
    "heroes": 0,
    "zeros": 7,
-   "open": [
-    {
-     "tid": "20261125-4991ad",
-     "kind": "zdte",
-     "sym": "TSLA261125P00360000",
-     "asset": "option",
-     "und": "TSLA",
-     "qty": 1,
-     "cost": 2.77,
-     "paid": 277.0,
-     "opened": "2026-11-25 10:00",
-     "why": "TSLA 开盘 $370.51、现在 $362.75，顺势买当天到期看跌 360（离现价 0.8%），3 倍止盈，15:30 平仓",
-     "best_bid": 2.46,
-     "sim": true,
-     "expiry": "2026-11-25",
-     "exit_day": "2026-11-25",
-     "exit_at": "15:30",
-     "trail": false,
-     "expiry_out": null,
-     "take_x": 3,
-     "take": 8.3
-    }
-   ],
+   "open": [],
    "closed": [
     {
      "tid": "20261026-1b25c2",
@@ -24685,6 +24712,33 @@
      "how": "2026-11-24 15:30 到时卖出",
      "closed": "2026-11-24 15:30",
      "ret": -0.526
+    },
+    {
+     "tid": "20261125-4991ad",
+     "kind": "zdte",
+     "sym": "TSLA261125P00360000",
+     "asset": "option",
+     "und": "TSLA",
+     "qty": 1,
+     "cost": 2.77,
+     "paid": 277.0,
+     "opened": "2026-11-25 10:00",
+     "why": "TSLA 开盘 $370.51、现在 $362.75，顺势买当天到期看跌 360（离现价 0.8%），3 倍止盈，15:30 平仓",
+     "best_bid": 2.46,
+     "sim": true,
+     "expiry": "2026-11-25",
+     "exit_day": "2026-11-25",
+     "exit_at": "15:30",
+     "trail": false,
+     "expiry_out": null,
+     "take_x": 3,
+     "take": 8.3,
+     "state": "closed",
+     "exit_price": 0.0,
+     "proceeds": 0.0,
+     "how": "2026-11-25 15:30 到时卖出",
+     "closed": "2026-11-25 15:30",
+     "ret": -1.0
     }
    ],
    "slots": {
@@ -25311,5 +25365,5 @@
    "created": null
   }
  },
- "topups": 39661.8
+ "topups": 40160.8
 }
