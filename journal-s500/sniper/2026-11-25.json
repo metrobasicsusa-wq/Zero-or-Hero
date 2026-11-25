@@ -1,0 +1,135 @@
+{
+ "date": "2026-11-25",
+ "sniper": {
+  "symbol": "MSFT",
+  "direction": "put",
+  "order": "first",
+  "catalyst": "微软盘前标题「历史性宕机之后宣布 Code Red」（Benzinga，research/premarket/2026-11-25.md）：它自己的新消息；盘前 −2.9%，和纳指 ETF 同步（QQQ −2.9%），相对大盘还没跌，消息没被吃掉。",
+  "catalyst_type": "company news",
+  "confidence": 0.25,
+  "wrong_if": "10:00 时 MSFT 对自己开盘价的涨跌比 QQQ 好（宕机消息没让它比大盘更弱）；或者公司说宕机已经恢复、影响有限。"
+ },
+ "candidates": [
+  {
+   "rank": 1,
+   "symbol": "MSFT",
+   "direction": "put",
+   "confidence": 0.25,
+   "order": "first",
+   "why": "历史性宕机、内部「Code Red」，盘前 −2.9% 和大盘一样，相对没反映；破没破 20 日低点没查，跳空约平时 1 倍多。",
+   "catalyst_type": "company news",
+   "wrong_if": "10:00 时对开盘比 QQQ 好。"
+  },
+  {
+   "rank": 2,
+   "symbol": "NVDA",
+   "direction": "put",
+   "confidence": 0.2,
+   "order": "first",
+   "why": "报道说黄仁勋向员工道歉、去做心理治疗——周一复职那条主线的反面；但盘前已 −6.6%，连跌第 2 天，追的减分。",
+   "catalyst_type": "company news",
+   "wrong_if": "10:00 时 NVDA 在自己开盘价上方。"
+  },
+  {
+   "rank": 3,
+   "symbol": "TSLA",
+   "direction": "put",
+   "confidence": 0.15,
+   "order": "first",
+   "why": "欧盟推迟讨论批准它的自动驾驶，盘前 −3.8%（大盘 −2%）；监管类消息减分。",
+   "catalyst_type": "legal-regulatory",
+   "wrong_if": "10:00 时 TSLA 对开盘比 QQQ 好。"
+  },
+  {
+   "rank": 4,
+   "symbol": "NBIS",
+   "direction": "put",
+   "confidence": 0.1,
+   "order": "second",
+   "why": "标题说 HPE 的融资警示拖累它（HPE 财报的读穿，是二线），盘前 −9% 已经吃掉。",
+   "catalyst_type": "peer plan hits a group",
+   "wrong_if": "10:00 时 NBIS 在开盘价上方。"
+  }
+ ],
+ "skipped": [
+  {
+   "symbol": "MU",
+   "direction": "put",
+   "gap": "-9.0%",
+   "reason": "跳空已吃掉",
+   "why_not": "TrendForce 下调内存价格预测，盘前已 −9%，连跌第 3 天。"
+  },
+  {
+   "symbol": "SNDK",
+   "direction": "put",
+   "gap": "-8.8%",
+   "reason": "跳空已吃掉",
+   "why_not": "同一条内存消息；标题是高管卖股。"
+  },
+  {
+   "symbol": "MRVL",
+   "direction": "put",
+   "gap": "-6.6%",
+   "reason": "分析师评级",
+   "why_not": "只有目标价调整；下周一财报。"
+  },
+  {
+   "symbol": "ANT",
+   "direction": "put",
+   "gap": "-5.7%",
+   "reason": "消息太弱",
+   "why_not": "跌破发行价、首次覆盖，没有新的实质消息。"
+  },
+  {
+   "symbol": "PLTR",
+   "direction": "put",
+   "gap": "-4.7%",
+   "reason": "消息太弱",
+   "why_not": "高管卖股的例行披露。"
+  },
+  {
+   "symbol": "AMZN",
+   "direction": "put",
+   "gap": "-3.6%",
+   "reason": "消息太弱",
+   "why_not": "英国汽车市场、圆桌会议，都不是分量消息。"
+  },
+  {
+   "symbol": "KO",
+   "direction": "call",
+   "gap": "+0.7%",
+   "reason": "claude-b 已选",
+   "why_not": "claude-b 今天选了它。"
+  },
+  {
+   "symbol": "DELL",
+   "direction": "put",
+   "gap": "-7.5%",
+   "reason": "财报反应日",
+   "why_not": "昨晚盘后的财报。"
+  }
+ ],
+ "earnings_reaction_excluded": [
+  "ADSK",
+  "AMBA",
+  "BBAR",
+  "BZ",
+  "CLSK",
+  "DE",
+  "DELL",
+  "GASS",
+  "GDS",
+  "HPQ",
+  "LI",
+  "NTNX",
+  "URBN",
+  "WDAY"
+ ],
+ "claude_b_pick": "KO call（法巴上调目标价，08:31）",
+ "notes": [
+  "盘前：10 月 PCE 核心 3.3%（预期 3.2%），三季度 GDP 上修到 4.3%；SPY 约 −2%、QQQ −2.9%、芯片 ETF −5%，亚洲的海力士、三星、铠侠夜里大跌（Investing.com）。",
+  "08:35 没写预选（只有内存那条前因，已经吃掉）。09:03 写的。",
+  "没有一只符合「破 20 日高低点 + 跳空 ≥3 倍」，都不拿过夜。"
+ ],
+ "generated_at": "2026-11-25T09:03-05:00"
+}
