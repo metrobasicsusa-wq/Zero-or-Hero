@@ -4637,50 +4637,7 @@
    "round": 8,
    "heroes": 3,
    "zeros": 4,
-   "open": [
-    {
-     "tid": "20261125-222e4e",
-     "kind": "zdte",
-     "sym": "SPY261125P00696000",
-     "asset": "option",
-     "und": "SPY",
-     "qty": 1,
-     "cost": 3.38,
-     "paid": 338.0,
-     "opened": "2026-11-25 09:40",
-     "why": "SPY 开盘 $703.15、现在 $698.56，顺势买当天到期看跌 696（离现价 0.4%），3 倍止盈，15:30 平仓",
-     "expiry": "2026-11-25",
-     "exit_day": "2026-11-25",
-     "exit_at": "15:30",
-     "trail": false,
-     "best_bid": 3.5,
-     "expiry_out": null,
-     "take_x": 3,
-     "take": 10.15,
-     "sell_cid": "sl-spy0dte-near-1000-20261125-222e4e-x4fd6",
-     "sell_why": "2026-11-25 15:30 到时卖出"
-    },
-    {
-     "tid": "20261125-222e4er",
-     "kind": "zdte",
-     "sym": "SPY261125P00696000",
-     "asset": "option",
-     "und": "SPY",
-     "qty": 1,
-     "cost": 3.38,
-     "paid": 338.0,
-     "opened": "2026-11-25 09:40",
-     "why": "SPY 开盘 $703.15、现在 $698.56，顺势买当天到期看跌 696（离现价 0.4%），3 倍止盈，15:30 平仓",
-     "expiry": "2026-11-25",
-     "exit_day": "2026-11-25",
-     "exit_at": "15:30",
-     "trail": true,
-     "best_bid": 3.5,
-     "expiry_out": null,
-     "sell_cid": "sl-spy0dte-near-1000-20261125-222e4er-x8a62",
-     "sell_why": "2026-11-25 15:30 到时卖出"
-    }
-   ],
+   "open": [],
    "closed": [
     {
      "tid": "a4cab2ccb2",
@@ -6209,6 +6166,60 @@
      "how": "2026-11-24 15:30 到时卖出",
      "closed": "2026-11-24 15:30",
      "ret": -0.89
+    },
+    {
+     "tid": "20261125-222e4e",
+     "kind": "zdte",
+     "sym": "SPY261125P00696000",
+     "asset": "option",
+     "und": "SPY",
+     "qty": 1,
+     "cost": 3.38,
+     "paid": 338.0,
+     "opened": "2026-11-25 09:40",
+     "why": "SPY 开盘 $703.15、现在 $698.56，顺势买当天到期看跌 696（离现价 0.4%），3 倍止盈，15:30 平仓",
+     "expiry": "2026-11-25",
+     "exit_day": "2026-11-25",
+     "exit_at": "15:30",
+     "trail": false,
+     "best_bid": 3.5,
+     "expiry_out": null,
+     "take_x": 3,
+     "take": 10.15,
+     "sell_cid": "sl-spy0dte-near-1000-20261125-222e4e-x4fd6",
+     "sell_why": "2026-11-25 15:30 到时卖出",
+     "state": "closed",
+     "exit_price": 0.0,
+     "proceeds": 0.0,
+     "how": "券商已无持仓（到期作废）",
+     "closed": "2026-11-27 09:30",
+     "ret": -1.0
+    },
+    {
+     "tid": "20261125-222e4er",
+     "kind": "zdte",
+     "sym": "SPY261125P00696000",
+     "asset": "option",
+     "und": "SPY",
+     "qty": 1,
+     "cost": 3.38,
+     "paid": 338.0,
+     "opened": "2026-11-25 09:40",
+     "why": "SPY 开盘 $703.15、现在 $698.56，顺势买当天到期看跌 696（离现价 0.4%），3 倍止盈，15:30 平仓",
+     "expiry": "2026-11-25",
+     "exit_day": "2026-11-25",
+     "exit_at": "15:30",
+     "trail": true,
+     "best_bid": 3.5,
+     "expiry_out": null,
+     "sell_cid": "sl-spy0dte-near-1000-20261125-222e4er-x8a62",
+     "sell_why": "2026-11-25 15:30 到时卖出",
+     "state": "closed",
+     "exit_price": 0.0,
+     "proceeds": 0.0,
+     "how": "券商已无持仓（到期作废）",
+     "closed": "2026-11-27 09:30",
+     "ret": -1.0
     }
    ],
    "slots": {
@@ -6724,7 +6735,8 @@
      "expiry_out": null,
      "take_x": 2,
      "take": 1.9,
-     "take_cid": "sl-wk-trend-500-2026W48-661867-t4d2d"
+     "sell_cid": "sl-wk-trend-500-2026W48-661867-xe8f1",
+     "sell_why": "2026-11-26 15:50 到时卖出"
     }
    ],
    "closed": [
@@ -6979,7 +6991,8 @@
      "expiry_out": null,
      "take_x": 3,
      "take": 2.85,
-     "take_cid": "sl-wk-trend-1000-2026W48-ba3402-ta2f7"
+     "sell_cid": "sl-wk-trend-1000-2026W48-ba3402-x1435",
+     "sell_why": "2026-11-26 15:50 到时卖出"
     }
    ],
    "closed": [
@@ -7626,33 +7639,11 @@
   },
   "wk-news-500": {
    "start": 500.0,
-   "cash": 622.0,
+   "cash": 662.0,
    "round": 1,
    "heroes": 0,
    "zeros": 0,
-   "open": [
-    {
-     "tid": "2026W48-230b1e",
-     "kind": "weekly",
-     "sym": "GS261127C00830000",
-     "asset": "option",
-     "und": "GS",
-     "qty": 1,
-     "cost": 12.7,
-     "paid": 1270.0,
-     "opened": "2026-11-23 10:00",
-     "why": "GS 周末 5 篇新闻，情绪 +0.60；买 11-27 到期看涨 830，2 倍止盈，到期前一天 15:50 卖；一半 $283.67 买不起一张，押上账本买 1 张",
-     "expiry": "2026-11-27",
-     "exit_day": "2026-11-26",
-     "exit_at": "15:50",
-     "trail": false,
-     "best_bid": 13.53,
-     "expiry_out": null,
-     "take_x": 2,
-     "take": 25.4,
-     "take_cid": "sl-wk-news-500-2026W48-230b1e-tb747"
-    }
-   ],
+   "open": [],
    "closed": [
     {
      "tid": "24c4d60137",
@@ -7871,6 +7862,34 @@
      "how": "2 倍止盈（券商挂单成交）",
      "closed": "2026-11-24 09:30",
      "ret": 1.0
+    },
+    {
+     "tid": "2026W48-230b1e",
+     "kind": "weekly",
+     "sym": "GS261127C00830000",
+     "asset": "option",
+     "und": "GS",
+     "qty": 1,
+     "cost": 12.7,
+     "paid": 1270.0,
+     "opened": "2026-11-23 10:00",
+     "why": "GS 周末 5 篇新闻，情绪 +0.60；买 11-27 到期看涨 830，2 倍止盈，到期前一天 15:50 卖；一半 $283.67 买不起一张，押上账本买 1 张",
+     "expiry": "2026-11-27",
+     "exit_day": "2026-11-26",
+     "exit_at": "15:50",
+     "trail": false,
+     "best_bid": 13.53,
+     "expiry_out": null,
+     "take_x": 2,
+     "take": 25.4,
+     "sell_cid": "sl-wk-news-500-2026W48-230b1e-xc50d",
+     "sell_why": "2026-11-26 15:50 到时卖出",
+     "state": "closed",
+     "exit_price": 0.4,
+     "proceeds": 40.0,
+     "how": "2026-11-26 15:50 到时卖出",
+     "closed": "2026-11-27 09:30",
+     "ret": -0.969
     }
    ],
    "slots": {
@@ -7887,7 +7906,7 @@
   },
   "wk-news-1000": {
    "start": 1000.0,
-   "cash": 1141.0,
+   "cash": 1372.0,
    "round": 1,
    "heroes": 0,
    "zeros": 0,
@@ -7911,28 +7930,8 @@
      "expiry_out": null,
      "take_x": 2,
      "take": 16.5,
-     "take_cid": "sl-wk-news-1000-2026W48-aa7bab-t9834"
-    },
-    {
-     "tid": "2026W48-6280ba",
-     "kind": "weekly",
-     "sym": "WFC261127C00082000",
-     "asset": "option",
-     "und": "WFC",
-     "qty": 7,
-     "cost": 0.41,
-     "paid": 287.0,
-     "opened": "2026-11-23 10:00",
-     "why": "WFC 周末 3 篇新闻，情绪 +0.33；买 11-27 到期看涨 82，2 倍止盈，到期前一天 15:50 卖",
-     "expiry": "2026-11-27",
-     "exit_day": "2026-11-26",
-     "exit_at": "15:50",
-     "trail": false,
-     "best_bid": 0.52,
-     "expiry_out": null,
-     "take_x": 2,
-     "take": 0.82,
-     "take_cid": "sl-wk-news-1000-2026W48-6280ba-tc60d"
+     "sell_cid": "sl-wk-news-1000-2026W48-aa7bab-x59af",
+     "sell_why": "2026-11-26 15:50 到时卖出"
     }
    ],
    "closed": [
@@ -8261,6 +8260,34 @@
      "how": "2 倍止盈（券商挂单成交）",
      "closed": "2026-11-24 09:40",
      "ret": 1.12
+    },
+    {
+     "tid": "2026W48-6280ba",
+     "kind": "weekly",
+     "sym": "WFC261127C00082000",
+     "asset": "option",
+     "und": "WFC",
+     "qty": 7,
+     "cost": 0.41,
+     "paid": 287.0,
+     "opened": "2026-11-23 10:00",
+     "why": "WFC 周末 3 篇新闻，情绪 +0.33；买 11-27 到期看涨 82，2 倍止盈，到期前一天 15:50 卖",
+     "expiry": "2026-11-27",
+     "exit_day": "2026-11-26",
+     "exit_at": "15:50",
+     "trail": false,
+     "best_bid": 0.52,
+     "expiry_out": null,
+     "take_x": 2,
+     "take": 0.82,
+     "sell_cid": "sl-wk-news-1000-2026W48-6280ba-x49df",
+     "sell_why": "2026-11-26 15:50 到时卖出",
+     "state": "closed",
+     "exit_price": 0.33,
+     "proceeds": 231.0,
+     "how": "2026-11-26 15:50 到时卖出",
+     "closed": "2026-11-27 09:30",
+     "ret": -0.195
     }
    ],
    "slots": {
@@ -8301,7 +8328,7 @@
      "expiry_out": null,
      "take_x": 20,
      "take": 12.0,
-     "take_cid": "sl-net-500-2026W47-4cb2f8-te411"
+     "take_cid": "sl-net-500-2026W47-4cb2f8-t23a4"
     },
     {
      "tid": "2026W48-f21c48",
@@ -8322,7 +8349,7 @@
      "expiry_out": null,
      "take_x": 20,
      "take": 16.8,
-     "take_cid": "sl-net-500-2026W48-f21c48-t4abe"
+     "take_cid": "sl-net-500-2026W48-f21c48-td545"
     }
    ],
    "closed": [],
@@ -8364,7 +8391,7 @@
      "expiry_out": null,
      "take_x": 20,
      "take": 189.0,
-     "take_cid": "sl-net-1000-2026W46-2e6fc5-t5abc"
+     "take_cid": "sl-net-1000-2026W46-2e6fc5-tcc70"
     }
    ],
    "closed": [],
@@ -10635,7 +10662,7 @@
     }
    ],
    "round_from": 8,
-   "stopped_day": "2026-11-25"
+   "stopped_day": "2026-11-27"
   },
   "sniper-1000": {
    "start": 1000.0,
@@ -10965,7 +10992,7 @@
     }
    ],
    "round_from": 5,
-   "stopped_day": "2026-11-25"
+   "stopped_day": "2026-11-27"
   },
   "overnight-500": {
    "start": 500.0,
@@ -11570,6 +11597,10 @@
     "2026-12-02": [
      "CRDO",
      "MRVL"
+    ],
+    "2026-12-03": [
+     "CRM",
+     "SNOW"
     ]
    }
   },
@@ -12501,30 +12532,11 @@
   },
   "dipweek-hold-1000": {
    "start": 1000.0,
-   "cash": 266.0,
+   "cash": 731.0,
    "round": 1,
    "heroes": 0,
    "zeros": 0,
-   "open": [
-    {
-     "tid": "20261119-80a5da",
-     "kind": "dipweek",
-     "sym": "WMT261127C00127000",
-     "asset": "option",
-     "und": "WMT",
-     "qty": 1,
-     "cost": 1.95,
-     "paid": 195.0,
-     "opened": "2026-11-19 15:50",
-     "why": "抄底给一周：WMT 低开 -2.8%，已回到开盘之上；买看涨 127（2026-11-27 到期，离现价 0.4%），买价 $1.94 / 卖价 $1.97（价差占中间价 2%）；拿到 11-26 15:50 卖",
-     "expiry": "2026-11-27",
-     "exit_day": "2026-11-26",
-     "exit_at": "15:50",
-     "trail": false,
-     "best_bid": 5.79,
-     "expiry_out": null
-    }
-   ],
+   "open": [],
    "closed": [
     {
      "tid": "20261103-c68749",
@@ -12655,6 +12667,32 @@
      "how": "2026-11-19 15:50 到时卖出",
      "closed": "2026-11-19 15:50",
      "ret": -0.997
+    },
+    {
+     "tid": "20261119-80a5da",
+     "kind": "dipweek",
+     "sym": "WMT261127C00127000",
+     "asset": "option",
+     "und": "WMT",
+     "qty": 1,
+     "cost": 1.95,
+     "paid": 195.0,
+     "opened": "2026-11-19 15:50",
+     "why": "抄底给一周：WMT 低开 -2.8%，已回到开盘之上；买看涨 127（2026-11-27 到期，离现价 0.4%），买价 $1.94 / 卖价 $1.97（价差占中间价 2%）；拿到 11-26 15:50 卖",
+     "expiry": "2026-11-27",
+     "exit_day": "2026-11-26",
+     "exit_at": "15:50",
+     "trail": false,
+     "best_bid": 5.79,
+     "expiry_out": null,
+     "sell_cid": "sl-dipweek-hold-1000-20261119-80a5da-x3964",
+     "sell_why": "2026-11-26 15:50 到时卖出",
+     "state": "closed",
+     "exit_price": 4.65,
+     "proceeds": 465.0,
+     "how": "2026-11-26 15:50 到时卖出",
+     "closed": "2026-11-27 09:30",
+     "ret": 1.385
     }
    ],
    "slots": {
@@ -12704,11 +12742,11 @@
      "exit_day": "2026-12-02",
      "exit_at": "15:50",
      "trail": false,
-     "best_bid": 0.0,
+     "best_bid": 7.85,
      "expiry_out": null,
      "take_x": 2,
      "take": 12.2,
-     "take_cid": "sl-dipweek-take-500-20261125-32c537-td7f9"
+     "take_cid": "sl-dipweek-take-500-20261125-32c537-td758"
     }
    ],
    "closed": [
