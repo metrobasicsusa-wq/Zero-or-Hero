@@ -4653,7 +4653,7 @@
      "exit_day": "2026-11-27",
      "exit_at": "15:30",
      "trail": false,
-     "best_bid": 0.0,
+     "best_bid": 1.35,
      "expiry_out": null,
      "take_x": 3,
      "take": 4.95,
@@ -6733,34 +6733,11 @@
   },
   "wk-trend-500": {
    "start": 500.0,
-   "cash": 44.0,
-   "round": 3,
+   "cash": 500.0,
+   "round": 4,
    "heroes": 0,
-   "zeros": 2,
-   "open": [
-    {
-     "tid": "2026W48-661867",
-     "kind": "weekly",
-     "sym": "UBER261127P00064000",
-     "asset": "option",
-     "und": "UBER",
-     "qty": 1,
-     "cost": 0.95,
-     "paid": 95.0,
-     "opened": "2026-11-23 10:00",
-     "why": "随机挑中 UBER，20 日跌；买 11-27 到期看跌 64，2 倍止盈，到期前一天 15:50 卖；一半 $23.17 买不起一张，押上账本买 1 张",
-     "expiry": "2026-11-27",
-     "exit_day": "2026-11-26",
-     "exit_at": "15:50",
-     "trail": false,
-     "best_bid": 0.92,
-     "expiry_out": null,
-     "take_x": 2,
-     "take": 1.9,
-     "sell_cid": "sl-wk-trend-500-2026W48-661867-xe8f1",
-     "sell_why": "2026-11-26 15:50 到时卖出"
-    }
-   ],
+   "zeros": 3,
+   "open": [],
    "closed": [
     {
      "tid": "2026W43-79e5bb",
@@ -6954,6 +6931,34 @@
      "how": "券商已无持仓（到期作废）",
      "closed": "2026-11-23 09:30",
      "ret": -1.0
+    },
+    {
+     "tid": "2026W48-661867",
+     "kind": "weekly",
+     "sym": "UBER261127P00064000",
+     "asset": "option",
+     "und": "UBER",
+     "qty": 1,
+     "cost": 0.95,
+     "paid": 95.0,
+     "opened": "2026-11-23 10:00",
+     "why": "随机挑中 UBER，20 日跌；买 11-27 到期看跌 64，2 倍止盈，到期前一天 15:50 卖；一半 $23.17 买不起一张，押上账本买 1 张",
+     "expiry": "2026-11-27",
+     "exit_day": "2026-11-26",
+     "exit_at": "15:50",
+     "trail": false,
+     "best_bid": 0.92,
+     "expiry_out": null,
+     "take_x": 2,
+     "take": 1.9,
+     "sell_cid": "sl-wk-trend-500-2026W48-661867-xe8f1",
+     "sell_why": "2026-11-26 15:50 到时卖出",
+     "state": "closed",
+     "exit_price": 0.01,
+     "proceeds": 1.0,
+     "how": "2026-11-26 15:50 到时卖出",
+     "closed": "2026-11-27 09:50",
+     "ret": -0.989
     }
    ],
    "slots": {
@@ -6983,40 +6988,25 @@
      "peak": 835.0,
      "trades": 2,
      "day": "2026-11-16"
+    },
+    {
+     "round": 3,
+     "end": "zero",
+     "cash": 45.0,
+     "peak": 500.0,
+     "trades": 4,
+     "day": "2026-11-27"
     }
    ],
-   "round_from": 4
+   "round_from": 8
   },
   "wk-trend-1000": {
    "start": 1000.0,
-   "cash": 590.0,
+   "cash": 591.0,
    "round": 3,
    "heroes": 0,
    "zeros": 2,
-   "open": [
-    {
-     "tid": "2026W48-ba3402",
-     "kind": "weekly",
-     "sym": "UBER261127P00064000",
-     "asset": "option",
-     "und": "UBER",
-     "qty": 1,
-     "cost": 0.95,
-     "paid": 95.0,
-     "opened": "2026-11-23 10:00",
-     "why": "随机挑中 UBER，20 日跌；买 11-27 到期看跌 64，3 倍止盈，到期前一天 15:50 卖",
-     "expiry": "2026-11-27",
-     "exit_day": "2026-11-26",
-     "exit_at": "15:50",
-     "trail": false,
-     "best_bid": 0.92,
-     "expiry_out": null,
-     "take_x": 3,
-     "take": 2.85,
-     "sell_cid": "sl-wk-trend-1000-2026W48-ba3402-x1435",
-     "sell_why": "2026-11-26 15:50 到时卖出"
-    }
-   ],
+   "open": [],
    "closed": [
     {
      "tid": "fc29b774a1",
@@ -7318,6 +7308,34 @@
      "how": "券商已无持仓（到期作废）",
      "closed": "2026-11-23 09:30",
      "ret": -1.0
+    },
+    {
+     "tid": "2026W48-ba3402",
+     "kind": "weekly",
+     "sym": "UBER261127P00064000",
+     "asset": "option",
+     "und": "UBER",
+     "qty": 1,
+     "cost": 0.95,
+     "paid": 95.0,
+     "opened": "2026-11-23 10:00",
+     "why": "随机挑中 UBER，20 日跌；买 11-27 到期看跌 64，3 倍止盈，到期前一天 15:50 卖",
+     "expiry": "2026-11-27",
+     "exit_day": "2026-11-26",
+     "exit_at": "15:50",
+     "trail": false,
+     "best_bid": 0.92,
+     "expiry_out": null,
+     "take_x": 3,
+     "take": 2.85,
+     "sell_cid": "sl-wk-trend-1000-2026W48-ba3402-x1435",
+     "sell_why": "2026-11-26 15:50 到时卖出",
+     "state": "closed",
+     "exit_price": 0.01,
+     "proceeds": 1.0,
+     "how": "2026-11-26 15:50 到时卖出",
+     "closed": "2026-11-27 09:50",
+     "ret": -0.989
     }
    ],
    "slots": {
@@ -13679,5 +13697,5 @@
    "created": null
   }
  },
- "topups": -22269.18
+ "topups": -21814.18
 }
