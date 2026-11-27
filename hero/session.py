@@ -42,6 +42,62 @@ def early_close(day: date) -> str | None:
     return None
 
 
+def _easter(y: int) -> date:
+    a, b, c = y % 19, y // 100, y % 100
+    d, e = b // 4, b % 4
+    f = (b + 8) // 25
+    g = (b - f + 1) // 3
+    h = (19 * a + b - d - g + 15) % 30
+    i, k = c // 4, c % 4
+    l_ = (32 + 2 * e + 2 * i - h - k) % 7
+    m = (a + 11 * h + 22 * l_) // 451
+    return date(y, (h + l_ - 7 * m + 114) // 31, (h + l_ - 7 * m + 114) % 31 + 1)
+
+
+def _nth(y: int, month: int, weekday: int, n: int) -> date:
+    """The n-th `weekday` (Monday 0) of a month; n = -1 for the last one."""
+    if n > 0:
+        first = date(y, month, 1)
+        return first + timedelta(days=(weekday - first.weekday()) % 7 + 7 * (n - 1))
+    last = date(y + (month == 12), month % 12 + 1, 1) - timedelta(days=1)
+    return last - timedelta(days=(last.weekday() - weekday) % 7)
+
+
+def _observed(d: date) -> date:
+    return d - timedelta(days=1) if d.weekday() == 5 else d + timedelta(days=1) if d.weekday() == 6 else d
+
+
+def holidays(y: int) -> set[date]:
+    """NYSE full-day closures in year `y` (2026-11-27: the rules' "next session" skipped only weekends, so a ticket
+    meant to be sold the day before a Friday expiry was dated Thanksgiving and sold the Friday morning instead).
+    The usual rules, the same as hero.weekbook.holidays, which a test holds it to: a Saturday holiday is observed on
+    the Friday, a Sunday one on the Monday, except New Year's Day on a Saturday (no closure the Friday before)."""
+    out = {_observed(date(y, 1, 1)), _nth(y, 1, 0, 3), _nth(y, 2, 0, 3), _easter(y) - timedelta(days=2),
+           _nth(y, 5, 0, -1), _observed(date(y, 7, 4)), _nth(y, 9, 0, 1), _nth(y, 11, 3, 4), _observed(date(y, 12, 25))}
+    if y >= 2022:
+        out.add(_observed(date(y, 6, 19)))
+    return {d for d in out if d.year == y}
+
+
+def is_session(day: date) -> bool:
+    """The exchange is open that day (early closes count)."""
+    return day.weekday() < 5 and day not in holidays(day.year)
+
+
+def next_session(day: date) -> date:
+    day += timedelta(days=1)
+    while not is_session(day):
+        day += timedelta(days=1)
+    return day
+
+
+def prev_session(day: date) -> date:
+    day -= timedelta(days=1)
+    while not is_session(day):
+        day -= timedelta(days=1)
+    return day
+
+
 def clock(now) -> str:
     """The time of day the rules compare with: `now` (New York time) as "HH:MM", three hours on from 12:00 on an
     early-close day."""

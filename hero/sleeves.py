@@ -239,11 +239,7 @@ class Runner:
                 self._cal = (json.loads((ROOT / "data" / "earnings.json").read_text()).get("reports") or {})
             except Exception:
                 self._cal = {}
-        def next_session(d: date) -> date:
-            d += timedelta(days=1)
-            while d.weekday() >= 5:
-                d += timedelta(days=1)
-            return d
+        next_session = session.next_session        # 11-27: skips exchange holidays too
         for r in self._cal.get(und, []):
             d, when = date.fromisoformat(r["date"]), r.get("time") or ""
             # a report without a known time could be before the open (reaction that day) or after the close (the
@@ -255,15 +251,14 @@ class Runner:
 
     # ---- broker helpers ----
     def broker_orders(self) -> list[dict] | None:
-        """The broker's orders (any status) since the start of the previous weekday -- a cycle late in the day whose
-        commit was lost is caught the next morning -- read once per cycle; None if they could not be read."""
+        """The broker's orders (any status) since the start of the previous trading session -- a cycle late in the day
+        whose commit was lost is caught the next morning, holidays skipped (11-27) -- read once per cycle; None if they
+        could not be read."""
         if "_orders" not in self.__dict__:
             start = self.now.replace(hour=0, minute=0, second=0, microsecond=0)
             if start.tzinfo is None:
                 start = start.replace(tzinfo=ZoneInfo("America/New_York"))
-            start -= timedelta(days=1)
-            while start.weekday() >= 5:
-                start -= timedelta(days=1)
+            start -= timedelta(days=(start.date() - session.prev_session(start.date())).days)
             try:
                 self._orders = list(self.c.orders_since(start.astimezone(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")) or [])
             except Exception as e:

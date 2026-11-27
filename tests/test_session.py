@@ -2,7 +2,7 @@ import unittest
 from datetime import date, datetime, timedelta
 from zoneinfo import ZoneInfo
 
-from hero import calendar_week, lottery, session, sleeves, zero_dte
+from hero import calendar_week, lottery, session, sleeve_rules, sleeves, weekbook, zero_dte
 
 ET = ZoneInfo("America/New_York")
 
@@ -44,6 +44,36 @@ class TestSessionClock(unittest.TestCase):
         self.assertEqual(run.hhmm, "15:50")
         self.assertGreaterEqual(run.hhmm, sleeves.LAST_CYCLE)
         self.assertEqual(sleeves.Runner(None, None, {}, [], None, {}, at(full, 12, 50), full).hhmm, "12:50")
+
+
+class TestSessionDays(unittest.TestCase):
+    """11-27: "the session before / after" skipped only weekends, so the Friday 11-27 expiries meant to be sold the day
+    before (Wednesday 11-25) were dated Thanksgiving and sold the Friday morning."""
+
+    def test_holidays_match_the_research_calendar(self):
+        for y in range(2015, 2036):
+            self.assertEqual(session.holidays(y), weekbook.holidays(y), y)
+        d = date(2015, 1, 1)
+        while d < date(2036, 1, 1):
+            self.assertEqual(session.is_session(d), calendar_week.is_session(d), d)
+            d += timedelta(days=1)
+
+    def test_next_and_previous_session_skip_holidays(self):
+        self.assertEqual(session.prev_session(date(2026, 11, 27)), date(2026, 11, 25))   # Thanksgiving
+        self.assertEqual(session.next_session(date(2026, 11, 25)), date(2026, 11, 27))
+        self.assertEqual(session.next_session(date(2026, 12, 24)), date(2026, 12, 28))   # Christmas on a Friday
+        self.assertEqual(session.next_session(date(2026, 12, 31)), date(2027, 1, 4))     # New Year's Day on a Friday
+        self.assertEqual(session.prev_session(date(2026, 4, 6)), date(2026, 4, 2))       # Good Friday
+        self.assertTrue(session.is_session(date(2021, 12, 31)))                         # New Year's on a Saturday: open
+        self.assertTrue(session.is_session(date(2021, 6, 18)))                          # before Juneteenth was a holiday
+        self.assertTrue(session.is_session(date(2026, 11, 27)))                         # early close is a session
+        self.assertEqual(session.next_session(date(2026, 11, 20)), date(2026, 11, 23))  # plain weekend
+
+    def test_the_rules_use_it(self):
+        self.assertEqual(sleeve_rules.business_day_before(date(2026, 11, 27)), date(2026, 11, 25))
+        self.assertEqual(sleeve_rules.next_business_day(date(2026, 11, 25)), date(2026, 11, 27))
+        self.assertEqual(lottery.schedule({"date": "2026-11-25", "time": "post-market"})[1], date(2026, 11, 27))
+        self.assertEqual(lottery.schedule({"date": "2026-11-27", "time": "pre-market"})[0], date(2026, 11, 25))
 
 
 if __name__ == "__main__":

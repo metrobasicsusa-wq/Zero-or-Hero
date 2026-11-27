@@ -16,6 +16,8 @@ from datetime import date, datetime, timedelta
 from pathlib import Path
 from zoneinfo import ZoneInfo
 
+from hero import session
+
 ET = ZoneInfo("America/New_York")
 ROOT = Path(__file__).resolve().parent.parent
 FOCUS = ("NVDA", "AMD", "AVGO", "MU", "INTC", "QCOM", "TSM", "ARM", "MRVL", "AMAT", "LRCX", "KLAC", "ADI", "TXN", "ON",
@@ -189,17 +191,13 @@ def week_key(d: date) -> str:
 
 
 def business_day_before(d: date) -> date:
-    d -= timedelta(days=1)
-    while d.weekday() >= 5:
-        d -= timedelta(days=1)
-    return d
+    """The previous trading session (11-27: exchange holidays are skipped, not only weekends)."""
+    return session.prev_session(d)
 
 
 def next_business_day(d: date) -> date:
-    d += timedelta(days=1)
-    while d.weekday() >= 5:
-        d += timedelta(days=1)
-    return d
+    """The next trading session (11-27: exchange holidays are skipped, not only weekends)."""
+    return session.next_session(d)
 
 
 def option_pick(run, und: str, kind: str, spot: float, off: float, gte: str, lte: str, nearest: bool = True) -> tuple[dict, float] | None:

@@ -30,17 +30,13 @@ def settings(cfg: dict) -> dict:
 
 
 def prev_weekday(d: date) -> date:
-    d -= timedelta(days=1)
-    while d.weekday() >= 5:
-        d -= timedelta(days=1)
-    return d
+    """The previous trading session (11-27: exchange holidays are skipped, not only weekends)."""
+    return session.prev_session(d)
 
 
 def next_weekday(d: date) -> date:
-    d += timedelta(days=1)
-    while d.weekday() >= 5:
-        d += timedelta(days=1)
-    return d
+    """The next trading session (11-27: exchange holidays are skipped, not only weekends)."""
+    return session.next_session(d)
 
 
 def schedule(report: dict) -> tuple[date, date]:
