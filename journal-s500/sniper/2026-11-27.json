@@ -1,0 +1,70 @@
+{
+ "date": "2026-11-27",
+ "preselected": true,
+ "preselected_at": "2026-11-27T08:37-05:00",
+ "sniper": {
+  "symbol": "MO",
+  "direction": "put",
+  "order": "first",
+  "catalyst": "Altria 确认在考虑收购英国的帝国品牌（Imperial Brands）——它自己的消息，大额并购的收购方（CNBC 盘前异动 11-27）。Yahoo 08:36 的盘前价 $76.25 对昨收 $76.28 几乎没动（CNBC 写的是跌近 2%，以开盘为准），消息还没被吃掉；今天的盘面是科技反弹、必需消费被卖。",
+  "catalyst_type": "company news",
+  "confidence": 0.3,
+  "wrong_if": "10:00 前 MO 回到自己开盘价上方；或者 Altria / 帝国品牌说不再谈、只是小额交易。"
+ },
+ "candidates": [
+  {
+   "rank": 1,
+   "symbol": "MO",
+   "direction": "put",
+   "confidence": 0.3,
+   "order": "first",
+   "why": "大额并购的收购方，盘前几乎没动；没破 20 日低点（$73.12），跳空约平时 0 倍——还没反映。",
+   "catalyst_type": "company news",
+   "wrong_if": "10:00 前回到开盘价上方。"
+  },
+  {
+   "rank": 2,
+   "symbol": "VRTX",
+   "direction": "put",
+   "confidence": 0.25,
+   "order": "first",
+   "why": "FDA 把它的 IgA 肾病新药审评延长最多三个月，盘前 −7.3%（$523.14），约平时单日波动 4.3 倍；没破 20 日低点 $513.80。延期不是拒绝，大盘股跳 7% 可能已经吃掉。",
+   "catalyst_type": "legal-regulatory",
+   "wrong_if": "10:00 前回到开盘价上方。"
+  }
+ ],
+ "skipped": [
+  {
+   "symbol": "SNDK",
+   "direction": "call",
+   "gap": "+8%",
+   "reason": "跳空已吃掉",
+   "why_not": "芯片和内存整体反弹（板块消息），中盘股跳 8% 多半已反映。"
+  },
+  {
+   "symbol": "LITE",
+   "direction": "call",
+   "gap": "+8%",
+   "reason": "跳空已吃掉",
+   "why_not": "同上，板块反弹，没有它自己的消息。"
+  },
+  {
+   "symbol": "AMD",
+   "direction": "call",
+   "gap": "+7%",
+   "reason": "消息太弱",
+   "why_not": "跟着科技反弹，没有自己的新消息。"
+  },
+  {
+   "symbol": "SPCX",
+   "direction": "call",
+   "gap": "涨",
+   "reason": "消息太弱",
+   "why_not": "马斯克说要扩大给「川普账户」捐股，不是公司基本面的消息。"
+  }
+ ],
+ "earnings_reaction_excluded": [],
+ "claude_b_pick": "08:35 未知",
+ "notes": "今天半天市（13:00 收盘），当天到期的单按半天时钟 12:30 卖。没有财报反应日的股票：11-25 盘后、11-26 / 11-27 都没有记下的财报。盘前标普期货约 +1.7%、纳指 +2.4%（08:10，CNBC）。09:01 的例程确认、否决或换人。",
+ "generated_at": "2026-11-27T08:37-05:00"
+}
